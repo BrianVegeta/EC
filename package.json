@@ -1,19 +1,14 @@
 {
-  "name": "shareec",
-  "version": "1.0.0",
-  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
+  "name": "shareapp_ec2",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "6.9.0",
+    "npm": "4.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://ShareappWebEngineer@bitbucket.org/ShareappAdmin/shareec2.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/ShareappAdmin/shareec2#readme"
+    "postinstall": "cd client && yarn install",
+    "rails-server": "echo 'visit http://localhost:3000/hello_world' && foreman start -f Procfile.dev",
+    "test": "rspec"
+  }
 }
