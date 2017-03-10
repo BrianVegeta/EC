@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Home from '../components/Home';
-import * as actions from '../actions/homeActionCreators';
+import { initEnviroment } from '../actions/enviromentActions';
+
+const propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 class HomeContainer extends React.Component {
 
   componentDidMount() {
-    
+    const { dispatch } = this.props;
+    dispatch(initEnviroment());
   }
 
   render() {
@@ -14,10 +19,13 @@ class HomeContainer extends React.Component {
   }
 }
 
+HomeContainer.propTypes = propTypes;
+
+
 const mapStateToProps = (state) => {
   const { enviroment } = state;
   return ({
     enviroment,
   });
 };
-export default connect(mapStateToProps, actions)(HomeContainer);
+export default connect(mapStateToProps)(HomeContainer);
