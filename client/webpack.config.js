@@ -62,6 +62,15 @@ const config = {
           ]
         }),
       },
+      {
+        test: /\.(jpe?g|png|gif|svg|ico)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 1000000,
+          }
+        },
+      },
     ],
   },
 };
