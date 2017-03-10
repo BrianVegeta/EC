@@ -1,21 +1,10 @@
 import React from 'react';
+import CSS from 'react-css-modules';
+import styles from './css/home.css';
 
 const Home = ({ name, updateName }) => (
-  <div>
-    <h3> Hello, {name}! </h3>
-    <hr />
-    <form >
-      <label htmlFor="name">
-        Say hello to:
-      </label>
-      <input
-        id="name"
-        type="text"
-        value={name}
-        onChange={e => updateName(e.target.value)}
-      />
-    </form>
+  <div styleName="container">
+    HomeApp
   </div>
 );
-Home.prop
-export default Home;
+export default CSS(Home, styles);

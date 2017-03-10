@@ -3,6 +3,7 @@
  "only-multiline"} ] */
 
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const devBuild = process.env.NODE_ENV !== 'production';
 
@@ -11,7 +12,8 @@ const config = {
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
     'babel-polyfill',
-    './app/bundles/HelloWorld/startup/registration',
+    'react',
+    'redux',
     './app/bundles/Home/startup/registration',
   ],
 
@@ -25,6 +27,7 @@ const config = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
+    new ExtractTextPlugin({ filename: 'webpack-bundle.css', allChunks: true })
   ],
   module: {
     rules: [
@@ -43,6 +46,22 @@ const config = {
         use: 'babel-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                module: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              }
+            }
+          ]
+        }),
+      },
     ],
   },
 };
@@ -53,5 +72,16 @@ if (devBuild) {
   console.log('Webpack dev build for Rails'); // eslint-disable-line no-console
   module.exports.devtool = 'eval-source-map';
 } else {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compressor: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    })
+  );
   console.log('Webpack production build for Rails'); // eslint-disable-line no-console
 }
