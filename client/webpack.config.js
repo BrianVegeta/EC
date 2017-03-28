@@ -2,32 +2,51 @@
  {"functions": "never", "arrays": "only-multiline", "objects":
  "only-multiline"} ] */
 
+const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const devBuild = process.env.NODE_ENV !== 'production';
+const nodeEnv = devBuild ? 'development' : 'production';
 
 const config = {
-  entry: [
-    'es5-shim/es5-shim',
-    'es5-shim/es5-sham',
-    'babel-polyfill',
-    'react',
-    'redux',
-    './app/bundles/Home/startup/registration',
-  ],
+
+  entry: {
+    vendor: [
+      'babel-polyfill',
+      'es5-shim/es5-shim',
+      'es5-shim/es5-sham',
+      'whatwg-fetch',
+      'react',
+      'redux',
+    ],
+    app: [
+      './app/bundles/Home/startup/registration',
+    ],
+  },
 
   output: {
-    filename: 'webpack-bundle.js',
-    path: '../app/assets/webpack',
+    filename: '[name]-bundle.js',
+    chunkFilename: '[name]-chunk.js',
+    publicPath: '/assets/',
+    path: path.resolve(__dirname, '../app/assets/webpack'),
   },
 
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
-    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
-    new ExtractTextPlugin({ filename: 'webpack-bundle.css', allChunks: true })
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(nodeEnv),
+      },
+    }),
+    // new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
+    new ExtractTextPlugin({ filename: '[name]-bundle.css', allChunks: true }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor-bundle.js',
+    }),
   ],
   module: {
     rules: [

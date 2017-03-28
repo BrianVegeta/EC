@@ -1,9 +1,10 @@
 import ReactOnRails from 'react-on-rails';
 import Header from '../components/Header';
-import HomeApp from './HomeApp';
+// import App from './App';
+import App from './renderRouter';
 
 // This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
-  HomeApp,
+  App,
   Header,
 });

@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink, Link } from 'react-router';
+import Test from '../components/Test';
 
-class HomeContainer extends React.Component {
+class TestContainer extends React.Component {
   render() {
     return (
       <div>
-        home page test
-        <Link to="/test2" >link to test2</Link>
+        <div>test page</div>
+        <Test />
       </div>
     );
   }
@@ -18,4 +18,4 @@ const mapStateToProps = (state) => {
   const { enviroment } = state;
   return ({ enviroment });
 };
-export default connect(mapStateToProps)(HomeContainer);
+export default connect(mapStateToProps)(TestContainer);
