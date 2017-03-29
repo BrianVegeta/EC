@@ -1,14 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink, Link } from 'react-router';
+import Home from '../components/Home';
 
 class HomeContainer extends React.Component {
   render() {
     return (
-      <div>
-        home page test
-        <Link to="/test2" >link to test2</Link>
-      </div>
+      <Home {...this.props} />
     );
   }
 }

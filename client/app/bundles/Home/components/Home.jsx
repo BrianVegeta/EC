@@ -1,10 +1,15 @@
 import React from 'react';
-import CSS from 'react-css-modules';
-import styles from './css/home.css';
+import { Link } from 'react-router';
 
-const Home = ({ name, updateName }) => (
-  <div styleName="container">
-    HomeApp
-  </div>
-);
-export default CSS(Home, styles);
+class Home extends React.PureComponent {
+  render() {
+    return (
+      <div>
+        <h1>Home page</h1>
+        <Link to="/page/test2" >link to test2</Link>
+      </div>
+    );
+  }
+}
+
+export default Home;

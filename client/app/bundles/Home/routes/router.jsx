@@ -1,30 +1,35 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
-
-// export default (
-//   <Route path="/">
-//     <IndexRoute component={HomeContainer} />
-//     <Route path="test2" component={TestContainer} />
-//   </Route>
-// );
+import Layout from '../containers/LayoutContainer';
 
 export default {
+  path: '/',
+  component: Layout,
   childRoutes: [
     {
       path: '/',
-      getComponent(_nextState, callback) {
+      getComponents(_nextState, callback) {
         require.ensure([], (require) => {
           const component = require('../containers/HomeContainer').default;
-          callback(null, component);
+          callback(null, { main: component });
         });
       },
     },
     {
-      path: '/test2',
-      getComponent(location, cb) {
+      path: '/page',
+      getComponents(_nextState, callback) {
         require.ensure([], (require) => {
-          cb(null, require('../containers/TestContainer').default);
-        }); // 產生 Login.chunk.js
+          const component = require('../containers/HomeContainer').default;
+          callback(null, { main: component });
+        });
+      },
+    },
+    {
+      path: '/page/test2',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          const component = require('../containers/TestContainer').default;
+          callback(null, { main: component });
+        });
       },
     },
   ],
