@@ -15,7 +15,7 @@ class TestContainer extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  const { enviroment } = state;
-  return ({ enviroment });
+  const { environment } = state;
+  return ({ environment });
 };
 export default connect(mapStateToProps)(TestContainer);

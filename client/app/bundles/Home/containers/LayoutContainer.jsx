@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { initEnviroment } from '../actions/enviromentActions';
+import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
 import HomeContainer from './HomeContainer';
 
@@ -15,7 +15,7 @@ class LayoutContainer extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(initEnviroment());
+    dispatch(initEnvironment());
   }
 
   render() {
@@ -35,9 +35,9 @@ LayoutContainer.propTypes = propTypes;
 LayoutContainer.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  const { enviroment, auth } = state;
+  const { environment, auth } = state;
   return ({
-    enviroment,
+    environment,
     auth,
   });
 };

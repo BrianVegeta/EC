@@ -1,18 +1,30 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import Home from '../components/Home';
+import Banner from '../components/Slider';
+import ProductCarousel from '../components/ProductCarousel';
+import Firelane from '../components/Firelane';
+import { fetchBanners } from '../actions/bannersActions';
 
 class HomeContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.dispatch(fetchBanners());
+  }
   render() {
     return (
-      <Home {...this.props} />
+      <div>
+        <div style={{ height: '30px' }}></div>
+        <Banner {...this.props} />
+        <Firelane />
+        <ProductCarousel />
+      </div>
     );
   }
 }
 
 
 const mapStateToProps = (state) => {
-  const { enviroment } = state;
-  return ({ enviroment });
+  const { environment, banners } = state;
+  return ({ environment, banners });
 };
 export default connect(mapStateToProps)(HomeContainer);

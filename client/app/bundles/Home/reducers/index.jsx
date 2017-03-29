@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import enviroment from './enviromentReducer';
+import environment from './environmentReducer';
 import auth from './authReducer';
+import banners from './bannersReducer';
 
 export default combineReducers({
   routing: routerReducer,
-  enviroment,
+  environment,
   auth,
+  banners,
 });
