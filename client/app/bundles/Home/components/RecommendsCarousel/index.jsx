@@ -3,7 +3,7 @@ import Header from './Header';
 import CardsSlider from './CardsSlider';
 import { fetchRecommends } from '../../actions/recommendsActions';
 
-class ProductCarousel extends React.Component {
+class RecommendsCarousel extends React.Component {
 
   componentDidMount() {
     const { category, dispatch } = this.props;
@@ -27,6 +27,6 @@ class ProductCarousel extends React.Component {
   }
 }
 
-export default ProductCarousel;
+export default RecommendsCarousel;
 
 // 物品，服務，空間

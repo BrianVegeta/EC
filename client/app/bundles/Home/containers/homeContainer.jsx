@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Banner from '../components/Slider';
-import ProductCarousel from '../components/ProductCarousel';
+import RecommendsCarousel from '../components/RecommendsCarousel';
 import Firelane from '../components/Firelane';
 import { fetchBanners } from '../actions/bannersActions';
 
@@ -17,11 +17,11 @@ class HomeContainer extends React.Component {
         <div style={{ height: '30px' }} />
         <Banner {...this.props} />
         <Firelane />
-        <ProductCarousel category="goods" {...this.props} />
+        <RecommendsCarousel category="goods" {...this.props} />
         <Firelane />
-        <ProductCarousel category="service" {...this.props} />
+        <RecommendsCarousel category="service" {...this.props} />
         <Firelane />
-        <ProductCarousel category="space" {...this.props} />
+        <RecommendsCarousel category="space" {...this.props} />
         <Firelane />
       </div>
     );
