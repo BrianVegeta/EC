@@ -39,6 +39,8 @@ gem "react_on_rails", "~> 6"
 gem 'httparty'
 gem 'foreman'
 gem "haml-rails", "~> 0.9"
+gem "settingslogic"
+gem "font-awesome-rails"
 
 
 
