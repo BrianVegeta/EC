@@ -4,13 +4,9 @@ import styles from './header.css';
 
 class Header extends React.Component {
   mapHeader() {
-    const { carouselType } = this.props;
-    const initialHeaderState = {
-      seeAllPath: '/',
-      title: '推薦',
-    };
-    switch (carouselType) {
-      case 'item':
+    const initialHeaderState = { seeAllPath: '/', title: '推薦' };
+    switch (this.props.category) {
+      case 'goods':
         return Object.assign({}, initialHeaderState, {
           seeAllPath: '/', title: '產品推薦',
         });

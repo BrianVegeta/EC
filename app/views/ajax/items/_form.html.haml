@@ -1,0 +1,10 @@
+= form_for @ajax_item do |f|
+  - if @ajax_item.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@ajax_item.errors.count, "error")} prohibited this ajax_item from being saved:"
+      %ul
+        - @ajax_item.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

@@ -3,8 +3,9 @@ import Slider from 'react-slick';
 import Card from './Card';
 
 class CardSlider extends React.Component {
-  render() {
-    const settings = {
+
+  static sliderSettings() {
+    return {
       infinite: false,
       speed: 500,
       slidesToShow: 4,
@@ -13,17 +14,24 @@ class CardSlider extends React.Component {
       swipe: false,
       swipeToSlide: false,
     };
-    const collections = [1, 2, 3, 4, 5, 6];
+  }
+
+  render() {
+    const { items, category } = this.props;
+    const sliderSettings = this.constructor.sliderSettings();
+
     return (
       <div style={{ margin: '0 -15px' }} >
-        <Slider {...settings}>
+        <Slider {...sliderSettings}>
           {
-            collections.map((index) => {
-              const style = { width: '245px', padding: '0 15px' };
-              return (
-                <div key={`${index}key`} style={style}><Card /></div>
-              );
-            })
+            items.map((item, index) =>
+              <div
+                key={`${category}_${index}key`}
+                style={{ width: '245px', padding: '0 15px' }}
+              >
+                <Card item={item} />
+              </div>,
+            )
           }
         </Slider>
       </div>

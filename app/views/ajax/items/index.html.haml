@@ -1,0 +1,19 @@
+%h1 Listing ajax_items
+
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @ajax_items.each do |ajax_item|
+      %tr
+        %td= link_to 'Show', ajax_item
+        %td= link_to 'Edit', edit_ajax_item_path(ajax_item)
+        %td= link_to 'Destroy', ajax_item, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Item', new_ajax_item_path

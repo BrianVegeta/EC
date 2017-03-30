@@ -4,25 +4,23 @@ import styles from './card.css';
 
 class Card extends React.Component {
   render() {
+    const { coverUrl, title, price, user, score } = this.props.item;
+
     return (
       <div styleName="container">
-        <div styleName="cover">
-          cover
-        </div>
-        <div styleName="title">
-          微型迷你投影機家庭劇院神器迷你投影機
-        </div>
-        <div styleName="price">TWD$1000/天</div>
+        <div styleName="cover" style={{ backgroundImage: `url(${coverUrl})` }} />
+        <div styleName="title">{title}</div>
+        <div styleName="price">{price}</div>
         <div styleName="footer">
           <div styleName="footer-row">
             <div styleName="owner">
               <div styleName="user-avatar">
-                <img alt="" src="https://www.meionorte.com/uploads/pagina/2016/3/31/avatar-kate-hudson-dd704d2b-2cc3-4fd8-9f6d-1415f23a43a3.jpg" />
+                <img alt="" src={user.avatarUrl} />
               </div>
-              <span styleName="username">Yo, Mother fucker</span>
+              <span styleName="username">{user.name}</span>
             </div>
             <div styleName="evaluation">
-              <span styleName="score">999+</span>
+              <span styleName="score">{score}</span>
               <span styleName="mark">
                 <i className="fa fa-heart" />
               </span>

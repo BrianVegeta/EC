@@ -4,6 +4,7 @@ import environment from './environmentReducer';
 import auth from './authReducer';
 import banners from './bannersReducer';
 import routes from './routesReducer';
+import recommends from './recommendsReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   auth,
   banners,
   routes,
+  recommends,
 });

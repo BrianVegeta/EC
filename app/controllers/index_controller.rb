@@ -10,6 +10,7 @@ class IndexController < ApplicationController
         root: root_path,
         pageItem: pages_path('item'),
         ajaxGetBanners: ajax_banners_path(:json),
+        ajaxRecommendItems: recommend_ajax_items_path(':category', :json),
       }
     }
   end

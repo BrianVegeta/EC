@@ -6,17 +6,23 @@ import Firelane from '../components/Firelane';
 import { fetchBanners } from '../actions/bannersActions';
 
 class HomeContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.props.dispatch(fetchBanners());
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchBanners());
   }
+
   render() {
     return (
       <div>
-        <div style={{ height: '30px' }}></div>
+        <div style={{ height: '30px' }} />
         <Banner {...this.props} />
         <Firelane />
-        <ProductCarousel />
+        <ProductCarousel category="goods" {...this.props} />
+        <Firelane />
+        <ProductCarousel category="service" {...this.props} />
+        <Firelane />
+        <ProductCarousel category="space" {...this.props} />
+        <Firelane />
       </div>
     );
   }
@@ -24,7 +30,7 @@ class HomeContainer extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  const { environment, banners } = state;
-  return ({ environment, banners });
+  const { environment, banners, recommends } = state;
+  return ({ environment, banners, recommends });
 };
 export default connect(mapStateToProps)(HomeContainer);
