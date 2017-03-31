@@ -16,16 +16,17 @@ class Slider extends React.Component {
     const carouselMaxWidth = 1500
     const carouselMaxHeight = 840;
     const sliderHeight = Math.floor((containerWidth / carouselMaxWidth) * carouselMaxHeight);
+    const Placehoder = <Spinner height={500} />;
 
     if (this.props.banners.items.length === 0) {
-      return <Spinner height={sliderHeight} />;
+      return Placehoder;
     }
 
     const { items } = this.props.banners;
     const firstImageSrc = items[0].imageSrc;
     return (
       <Preload
-        loadingIndicator={<Spinner height={sliderHeight} />}
+        loadingIndicator={Placehoder}
         images={[firstImageSrc]}
         autoResolveDelay={3000}
         resolveOnError

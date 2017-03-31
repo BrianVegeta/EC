@@ -17,11 +17,8 @@ class RecommendsCarousel extends React.Component {
     return (
       <div>
         <Header category={category} />
-        {
-          items.length === 0 ?
-            <div>loading</div> :
-            <CardsSlider items={items} category={category} />
-        }
+        { items.length === 0 && <div>loading</div> }
+        { items.length > 0 && <CardsSlider items={items} category={category} /> }
       </div>
     );
   }

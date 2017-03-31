@@ -3,22 +3,15 @@ import React, { PropTypes } from 'react';
 class Header extends React.Component {
   mapHeader() {
     const { category } = this.props;
-    const initialHeaderState = { seeAllPath: '/', title: '推薦' };
     switch (category) {
       case 'goods':
-        return Object.assign({}, initialHeaderState, {
-          seeAllPath: '/', title: '產品推薦',
-        });
+        return { seeAllPath: '/', title: '產品推薦' };
       case 'service':
-        return Object.assign({}, initialHeaderState, {
-          seeAllPath: '/', title: '服務推薦',
-        });
+        return { seeAllPath: '/', title: '服務推薦' };
       case 'space':
-        return Object.assign({}, initialHeaderState, {
-          seeAllPath: '/', title: '空間推薦',
-        });
+        return { seeAllPath: '/', title: '空間推薦' };
       default:
-        return initialHeaderState;
+        return { seeAllPath: '/', title: '推薦分類' };
     }
   }
 
