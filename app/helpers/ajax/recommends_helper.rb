@@ -1,0 +1,2 @@
+module Ajax::RecommendsHelper
+end

@@ -1,10 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import * as TYPES from '../constants/actionTypes';
 
-const receiveItems = (items, category) => ({
+const receiveItems = (items, category, bannerUrl) => ({
   type: TYPES.RECOMMENDS_RECEIVED,
   items,
   category,
+  bannerUrl,
 });
 
 const fetchingItems = category => ({
@@ -17,13 +18,16 @@ export function fetchRecommends(category) {
     dispatch(fetchingItems(category));
 
     const { routes } = getState();
-    fetch(routes.ajaxRecommendItems.replace(':category', category), {
+    fetch(routes.ajax.recommend[category], {
       credentials: 'same-origin',
       method: 'GET',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     })
     .then(response => response.json())
-    .then(items => dispatch(receiveItems(items, category)))
+    .then((json) => {
+      const { items, bannerUrl } = json;
+      dispatch(receiveItems(items, category, bannerUrl));
+    })
     .catch((err) => { throw err; });
   };
 }

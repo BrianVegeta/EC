@@ -42,7 +42,7 @@ const App = (props, railsContext) => {
               path: routes.pageItem,
               getComponents(_nextState, callback) {
                 require.ensure([], (require) => {
-                  const component = require('../containers/TestContainer').default;
+                  const component = require('../containers/HomeContainer').default;
                   callback(null, { main: component });
                 });
               },

@@ -27,7 +27,7 @@ export default {
       path: '/page/test2',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
-          const component = require('../containers/TestContainer').default;
+          const component = require('../containers/HomeContainer').default;
           callback(null, { main: component });
         });
       },
