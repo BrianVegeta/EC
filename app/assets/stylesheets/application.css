@@ -11,12 +11,12 @@
  * It is generally better to create a new file per style scope.
  *
  *= require font-awesome
- *= require app-bundle
  *= require_tree .
  *= require_self
+ *= require app-bundle
  */
 
 
 body {
-  font-family: PingFang TC, Helvetica, Arial, sans-serif, Microsoft JhengHei;
+  font-family: PingFang TC, Helvetica, Arial, sans-serif, Microsoft JhengHei !important;
 }

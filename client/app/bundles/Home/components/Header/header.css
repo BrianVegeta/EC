@@ -7,14 +7,6 @@
   margin: 0;
   list-style: none;
 }
-.search-input {
-  height: 30px;
-  width: 300px;
-  font-size: 15px;
-  margin: 20px;
-  outline: 0;
-  border: 0;
-}
 .navs-right {
   float: right;
 }
