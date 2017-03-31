@@ -3,7 +3,6 @@
   top: 0;
   position: fixed;
   z-index: 1000;
-  border-bottom: 1px solid #222;
   .navbar-header {
     float: left;
     padding: 14px 0 13px 0;
@@ -23,6 +22,7 @@
     overflow: visible;
     ul.navs {
       margin: 0;
+      padding: 0;
       list-style: none;
       li.nav {
         display: block;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Banner from '../components/Slider';
+import Banner from '../components/Banner';
 import RecommendsCarousel from '../components/RecommendsCarousel';
 import Firelane from '../components/Firelane';
 import { fetchBanners } from '../actions/bannersActions';
@@ -14,7 +14,7 @@ class HomeContainer extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ height: '30px' }} />
+        <div style={{ height: '130px' }} />
         <Banner {...this.props} />
         <Firelane />
         <RecommendsCarousel category="goods" {...this.props} />

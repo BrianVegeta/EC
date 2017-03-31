@@ -1,11 +1,8 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
-import styles from './card.css';
 
 class Card extends React.Component {
   render() {
     const { coverUrl, title, price, user, score } = this.props.item;
-
     return (
       <div styleName="container">
         <div styleName="cover" style={{ backgroundImage: `url(${coverUrl})` }} />
@@ -32,4 +29,4 @@ class Card extends React.Component {
   }
 }
 
-export default CSS(Card, styles);
+export default Card;

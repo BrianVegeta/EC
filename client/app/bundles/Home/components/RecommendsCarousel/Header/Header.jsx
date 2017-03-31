@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
-import styles from './header.css';
 
 class Header extends React.Component {
   mapHeader() {
+    const { category } = this.props;
     const initialHeaderState = { seeAllPath: '/', title: '推薦' };
-    switch (this.props.category) {
+    switch (category) {
       case 'goods':
         return Object.assign({}, initialHeaderState, {
           seeAllPath: '/', title: '產品推薦',
@@ -39,5 +38,4 @@ class Header extends React.Component {
     );
   }
 }
-
-export default CSS(Header, styles);
+export default Header;

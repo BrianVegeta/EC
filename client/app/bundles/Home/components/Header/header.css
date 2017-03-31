@@ -10,3 +10,6 @@
 .navs-right {
   float: right;
 }
+.navbar-container {
+  border-bottom: 1px solid #222;
+}

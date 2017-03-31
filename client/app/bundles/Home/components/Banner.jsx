@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 import Carousel from 'nuka-carousel';
 import { Preload } from 'react-preload';
+import CSS from 'react-css-modules';
 import Spinner from './Spinner';
+import styles from './banner.css';
 
 class Slider extends React.Component {
   constructor(props) {
@@ -37,7 +39,11 @@ class Slider extends React.Component {
         >
           {
             items.map(item =>
-              <img key={item.imageSrc} src={item.imageSrc} alt="" height={sliderHeight} />,
+              <div
+                key={item.imageSrc}
+                styleName="banner"
+                style={{ backgroundImage: `url(${item.imageSrc})`, height: 500 }}
+              />,
             )
           }
         </Carousel>
@@ -46,4 +52,4 @@ class Slider extends React.Component {
   }
 }
 
-export default Slider;
+export default CSS(Slider, styles);
