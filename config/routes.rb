@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'index#pages'
-  get '/page/(*all)', to: 'index#pages', as: :pages
+  get '/p/(*all)', to: 'index#pages', as: :pages
 
   namespace :ajax, format: true, constraints: { format: :json } do
     resources :banners, only: :index

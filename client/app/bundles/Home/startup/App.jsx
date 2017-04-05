@@ -12,7 +12,7 @@ import Layout from '../containers/LayoutContainer';
 // knowing the locale. See the React on Rails documentation for more info on the railsContext
 
 const propTypes = {
-  routes: PropTypes.object.isRequired,
+  routesHelper: PropTypes.object.isRequired,
 };
 const App = (props, railsContext) => {
   const store = configureStore(props);
@@ -21,16 +21,16 @@ const App = (props, railsContext) => {
     store,
   );
 
-  const { routes } = props;
+  const { routesHelper } = props;
   return (
     <Provider store={store}>
       <Router history={history}>
         {{
-          path: routes.root,
+          path: routesHelper.root,
           component: Layout,
           childRoutes: [
             {
-              path: routes.root,
+              path: routesHelper.root,
               getComponents(_nextState, callback) {
                 require.ensure([], (require) => {
                   const component = require('../containers/HomeContainer').default;
@@ -39,10 +39,10 @@ const App = (props, railsContext) => {
               },
             },
             {
-              path: routes.pageItem,
+              path: routesHelper.items,
               getComponents(_nextState, callback) {
                 require.ensure([], (require) => {
-                  const component = require('../containers/HomeContainer').default;
+                  const component = require('../containers/ItemsContainer').default;
                   callback(null, { main: component });
                 });
               },

@@ -23,13 +23,11 @@ class CategorySlider extends React.Component {
     const { items, type } = this.props;
     const categories = items.map((item, index) => {
       const key = `${type}_${index}key`;
-      return <Category {...{ key, item }} />;
+      return <Category key={key} {...{ item }} />;
     });
 
     return (
-      <div>
-        { categories }
-      </div>
+      <div>{ categories }</div>
     );
   }
 }

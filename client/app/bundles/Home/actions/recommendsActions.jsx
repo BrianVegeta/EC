@@ -17,8 +17,8 @@ export function fetchRecommends(category) {
   return (dispatch, getState) => {
     dispatch(fetchingItems(category));
 
-    const { routes } = getState();
-    fetch(routes.ajax.recommend[category], {
+    const { routesHelper } = getState();
+    fetch(routesHelper.ajax.recommend[category], {
       credentials: 'same-origin',
       method: 'GET',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },

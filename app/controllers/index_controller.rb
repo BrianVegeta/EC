@@ -6,9 +6,9 @@ class IndexController < ApplicationController
   def pages
 
     @props = {
-      routes: {
+      routesHelper: {
         root: root_path,
-        pageItem: pages_path('item'),
+        items: pages_path('items'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {
           recommend: {

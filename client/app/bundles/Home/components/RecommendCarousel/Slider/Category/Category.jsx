@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const propTypes = { item: PropTypes.array.isRequired };
+const propTypes = { item: PropTypes.object.isRequired };
 const Category = (props) => {
   const { item } = props;
   const { coverUrl, name } = item;

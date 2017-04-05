@@ -1,19 +1,22 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
+
 
 class ShortcutNavbar extends React.Component {
   render() {
+    const { routesHelper } = this.props;
     return (
       <div className="navbar" styleName="navs-center">
         <ul className="navs clear">
           <li className="nav" styleName="nav">
-            <a href="/" styleName="link">
+            <Link to={routesHelper.items} styleName="link">
               <div styleName="icon-container">
                 <i className="fa fa-suitcase" />
               </div>
               <div styleName="name-container">
                 <span>物品</span>
               </div>
-            </a>
+            </Link>
           </li>
           <li className="nav" styleName="nav">
             <a href="/" styleName="link">

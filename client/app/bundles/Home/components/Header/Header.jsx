@@ -1,20 +1,24 @@
 import React, { PropTypes } from 'react';
+import { IndexLink } from 'react-router';
 import Navs from './Navs';
 import Search from './Search';
 import ShortcutNavbar from './ShortcutNavbar';
 
 const propTypes = {
   auth: PropTypes.object.isRequired,
+  routesHelper: PropTypes.object.isRequired,
 };
 class Header extends React.PureComponent {
   render() {
-    const { auth } = this.props;
+    const { auth, routesHelper } = this.props;
     return (
       <header className="navbar navbar-fixed-top" styleName="header">
         <div styleName="navbar-container">
           <div className="container clear">
             <div className="navbar-header">
-              <a href="/" ><div className="brand" /></a>
+              <IndexLink to={routesHelper.root}>
+                <div className="brand" />
+              </IndexLink>
             </div>
             <div className="navbar">
               <div styleName="navs-search">
@@ -45,7 +49,7 @@ class Header extends React.PureComponent {
         </div>
         <div styleName="navbar-container">
           <div className="container clear">
-            <ShortcutNavbar />
+            <ShortcutNavbar {...this.props} />
           </div>
         </div>
       </header>

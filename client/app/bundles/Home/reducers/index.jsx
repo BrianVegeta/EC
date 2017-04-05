@@ -3,7 +3,7 @@ import { routerReducer } from 'react-router-redux';
 import environment from './environmentReducer';
 import auth from './authReducer';
 import banners from './bannersReducer';
-import routes from './routesReducer';
+import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
 
 export default combineReducers({
@@ -11,6 +11,6 @@ export default combineReducers({
   environment,
   auth,
   banners,
-  routes,
+  routesHelper,
   recommends,
 });
