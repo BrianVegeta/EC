@@ -1,0 +1,17 @@
+export default [
+  { faClass: 'suitcase', text: '全部物品' },
+  { faClass: 'car', text: '交通工具' },
+  { faClass: 'flash', text: '3C' },
+  { faClass: 'desktop', text: '家電' },
+  { faClass: 'camera-retro', text: '相機攝影' },
+  { faClass: 'soccer-ball-o', text: '運動休閒' },
+  { faClass: 'apple', text: '精品配件' },
+  { faClass: 'child', text: '婦幼' },
+  { faClass: 'gamepad', text: '遊戲' },
+  { faClass: 'shopping-basket', text: '生活用品' },
+  { faClass: 'cut', text: '服飾' },
+  { faClass: 'suitcase', text: '鞋子' },
+  { faClass: 'suitcase', text: '包包' },
+  { faClass: 'suitcase', text: '書籍' },
+  { faClass: 'suitcase', text: '樂器' },
+];

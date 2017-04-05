@@ -1,0 +1,20 @@
+.container {
+  width: 245px;
+  padding-top: 30px;
+  background-color: #fafafa
+}
+.categories {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.category {
+  position: relative;
+  padding-left: 25px;
+  padding-bottom: 25px;
+}
+.icon {
+  display: inline-block;
+  width: 28px;
+  margin-right: 20px;
+}
