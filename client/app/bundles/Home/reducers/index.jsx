@@ -5,12 +5,14 @@ import auth from './authReducer';
 import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
+import items from './itemsReducer';
 
 export default combineReducers({
   routing: routerReducer,
   environment,
   auth,
   banners,
+  items,
   routesHelper,
   recommends,
 });

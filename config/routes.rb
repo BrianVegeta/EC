@@ -5,8 +5,7 @@ Rails.application.routes.draw do
   namespace :ajax, format: true, constraints: { format: :json } do
     resources :banners, only: :index
     resources :items, only: :index do
-      # get 'recommend_category/:category', on: :collection, to: 'items#recommend', as: :recommend
-      # get 'recommend_item/:category', on: :collection, to: 'items#recommend', as: :recommend
+      
     end
     resources :recommends, only: [] do
       collection do

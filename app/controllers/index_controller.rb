@@ -11,6 +11,7 @@ class IndexController < ApplicationController
         items: pages_path('items'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {
+          items: ajax_items_path(:json),
           recommend: {
             category: categories_ajax_recommends_path(:json),
             goods: goods_ajax_recommends_path(:json),
