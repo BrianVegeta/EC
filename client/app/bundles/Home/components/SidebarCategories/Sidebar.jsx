@@ -9,7 +9,7 @@ class Sidebar extends React.Component {
   }
 
   handleSubcatesToggle(index) {
-    const isOpen = !this.state.isOpen;
+    const isOpen = (this.state.index === index) ? !this.state.isOpen : this.state.isOpen;
     this.setState({ index, isOpen });
   }
 
@@ -31,11 +31,13 @@ class Sidebar extends React.Component {
                   </span>
                   {cate.text}
                   {
-                    cate.subcates !== undefined && this.state.index === index && this.state.isOpen &&
+                    cate.subcates !== undefined &&
+                    this.state.index === index &&
+                    this.state.isOpen &&
                       <ul styleName="subcates">
                         {
-                          cate.subcates.map(subcate =>
-                            <li>{subcate.text}</li>,
+                          cate.subcates.map((subcate, subIndex) =>
+                            <li key={`${subIndex + 1}`}>{subcate.text}</li>,
                           )
                         }
                       </ul>

@@ -27,5 +27,18 @@ export default [
   { faClass: 'suitcase', text: '鞋子' },
   { faClass: 'suitcase', text: '包包' },
   { faClass: 'suitcase', text: '書籍' },
-  { faClass: 'suitcase', text: '樂器' },
+  {
+    faClass: 'suitcase',
+    text: '樂器',
+    subcates: [
+      { text: '吉他' },
+      { text: '烏克麗麗' },
+      { text: '貝斯' },
+      { text: '打擊樂器' },
+      { text: '鍵盤樂器' },
+      { text: '音箱' },
+      { text: '樂器配件' },
+      { text: '其他' },
+    ],
+  },
 ];
