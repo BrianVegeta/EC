@@ -1072,6 +1072,10 @@ classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
+classstring@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/classstring/-/classstring-1.0.0.tgz#e1755fc9a29fcb458daafc4980dbeed7b17addcd"
+
 cli-cursor@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-1.0.2.tgz#64da3f7d56a54412e59794bd62dc35295e8f2987"
@@ -1751,6 +1755,10 @@ event-emitter@~0.3.5:
   dependencies:
     d "1"
     es5-ext "~0.10.14"
+
+eventdispatcher@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/eventdispatcher/-/eventdispatcher-2.1.2.tgz#34cf4bed6bf2ed8b46c796dcc127fd20f2e29bbe"
 
 events@^1.0.0:
   version "1.1.1"
@@ -2792,6 +2800,10 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
+object-assign@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
+
 object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -3632,6 +3644,12 @@ sax@~1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.2.tgz#fd8631a23bc7826bef5d871bdb87378c95647828"
 
+scrollfeatures@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/scrollfeatures/-/scrollfeatures-1.5.0.tgz#9219ae074f791e26720775db5024966b3d4a2185"
+  dependencies:
+    eventdispatcher "2.1.2"
+
 "semver@2 || 3 || 4 || 5", semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
@@ -3742,6 +3760,19 @@ sshpk@^1.7.0:
     jodid25519 "^1.0.0"
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
+
+sticky-position@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sticky-position/-/sticky-position-1.0.1.tgz#169f0ab75598c0a5fff0e34db1b55c434e301fce"
+
+sticky-state@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/sticky-state/-/sticky-state-2.4.1.tgz#2137a7451a72ca110a7635859c7609472d5fcf56"
+  dependencies:
+    classstring "1.0.0"
+    eventdispatcher "2.1.2"
+    object-assign "4.1.0"
+    scrollfeatures "1.5.0"
 
 stream-browserify@^2.0.1:
   version "2.0.1"

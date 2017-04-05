@@ -1,7 +1,21 @@
 export default [
   { faClass: 'suitcase', text: '全部物品' },
   { faClass: 'car', text: '交通工具' },
-  { faClass: 'flash', text: '3C' },
+  {
+    faClass: 'flash',
+    text: '3C',
+    subcates: [
+      { text: '精品配件' },
+      { text: '婦幼' },
+      { text: '遊戲' },
+      { text: '生活用品' },
+      { text: '服飾' },
+      { text: '鞋子' },
+      { text: '包包' },
+      { text: '書籍' },
+      { text: '樂器' },
+    ],
+  },
   { faClass: 'desktop', text: '家電' },
   { faClass: 'camera-retro', text: '相機攝影' },
   { faClass: 'soccer-ball-o', text: '運動休閒' },

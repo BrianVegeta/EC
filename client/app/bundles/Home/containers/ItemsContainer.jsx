@@ -27,10 +27,18 @@ class ItemsContainer extends React.Component {
         <ItemsFilter />
         <Firelane distance={30} />
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0 }}>
+          <div
+            style={{
+              width: 245,
+              display: 'inline-block',
+              float: 'left',
+              position: 'sticky',
+              top: 200,
+            }}
+          >
             <SidebarCategories />
           </div>
-          <div style={{ marginLeft: 245 }}>
+          <div style={{ width: 825, display: 'inline-block' }}>
             <ItemsList {...this.props} />
           </div>
         </div>

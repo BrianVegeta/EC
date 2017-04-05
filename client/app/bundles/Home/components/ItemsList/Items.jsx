@@ -6,8 +6,8 @@ class Items extends React.Component {
     return (
       <div>
         {
-          this.props.items.map(item =>
-            <div styleName="item-container" >
+          this.props.items.map((item, index) =>
+            <div key={`${index + 1}`} styleName="item-container" >
               <Card item={item} />
             </div>,
           )

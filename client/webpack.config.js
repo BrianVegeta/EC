@@ -16,6 +16,7 @@ const config = {
       'babel-polyfill',
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
+      'sticky-position',
       'whatwg-fetch',
       'react',
       'redux',

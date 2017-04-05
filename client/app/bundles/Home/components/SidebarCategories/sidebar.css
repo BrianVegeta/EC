@@ -17,4 +17,10 @@
   display: inline-block;
   width: 28px;
   margin-right: 20px;
+  font-size: 20px;
+  text-align: right;
+}
+.subcates {
+  list-style: none;
+  padding-left: 56px;
 }
