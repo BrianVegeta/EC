@@ -2,7 +2,7 @@ import * as TYPES from '../constants/actionTypes';
 
 const initialState = {
   fetchingState: 'init',
-  categories: [],
+  categories: {},
   records: [],
 };
 export default (state = initialState, action) => {
@@ -12,6 +12,12 @@ export default (state = initialState, action) => {
     case TYPES.ITEMS_FETCHED: {
       const { items } = action;
       return Object.assign({}, state, { fetchingState: 'fetched', records: items });
+    }
+    case TYPES.ITEMS_CATEGORIES_FETCHING:
+      return Object.assign({}, state, { categories: {} });
+    case TYPES.ITEMS_CATEGORIES_FETCHED: {
+      const { categories } = action;
+      return Object.assign({}, state, { categories });
     }
     default:
       return state;

@@ -7,13 +7,7 @@ Rails.application.routes.draw do
     resources :items, only: :index do
 
     end
-    resources :categories, only: [] do
-      collection do
-        get 'goods'
-        get 'service'
-        get 'space'
-      end
-    end
+    resources :categories, only: :index
     resources :recommends, only: [] do
       collection do
         get 'categories'

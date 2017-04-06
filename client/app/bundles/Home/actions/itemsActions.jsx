@@ -10,6 +10,15 @@ const fetchedItems = items => ({
   items,
 });
 
+const fetchingCategories = () => ({
+  type: TYPES.ITEMS_CATEGORIES_FETCHING,
+});
+
+const fetchedCategories = categories => ({
+  type: TYPES.ITEMS_CATEGORIES_FETCHED,
+  categories,
+});
+
 export function fetchItems() {
   return (dispatch, getState) => {
     dispatch(fetchingItems());
@@ -24,6 +33,22 @@ export function fetchItems() {
     .then((items) => {
       dispatch(fetchedItems(items));
     })
+    .catch((err) => { throw err; });
+  };
+}
+
+export function fetchCategories() {
+  return (dispatch, getState) => {
+    dispatch(fetchingCategories());
+
+    const { routesHelper } = getState();
+    fetch(routesHelper.ajax.categories, {
+      credentials: 'same-origin',
+      method: 'GET',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    })
+    .then(response => response.json())
+    .then(categories => dispatch(fetchedCategories(categories)))
     .catch((err) => { throw err; });
   };
 }

@@ -36,7 +36,7 @@ const App = (props, railsContext) => {
         },
       },
       {
-        path: routesHelper.items.goods,
+        path: '/p/i/:name-c.:id',
         getComponent(_nextState, callback) {
           require.ensure([], (require) => {
             const component = require('../containers/GoodsContainer').default;
@@ -45,19 +45,10 @@ const App = (props, railsContext) => {
         },
       },
       {
-        path: routesHelper.items.service,
+        path: '/p/i/:type',
         getComponent(_nextState, callback) {
           require.ensure([], (require) => {
-            const component = require('../containers/ServiceContainer').default;
-            callback(null, { main: component });
-          });
-        },
-      },
-      {
-        path: routesHelper.items.space,
-        getComponent(_nextState, callback) {
-          require.ensure([], (require) => {
-            const component = require('../containers/SpaceContainer').default;
+            const component = require('../containers/GoodsContainer').default;
             callback(null, { main: component });
           });
         },
