@@ -1,0 +1,14 @@
+.container {
+  position: relative;
+}
+.sidebar {
+  width: 245px;
+  display: inline-block;
+  float: left;
+  position: sticky;
+  top: 200px;
+}
+.main {
+  width: 825px;
+  display: inline-block;
+}

@@ -12,7 +12,7 @@ const fetchedItems = items => ({
 
 export function fetchItems() {
   return (dispatch, getState) => {
-    dispatch(fetchingItems);
+    dispatch(fetchingItems());
 
     const { routesHelper } = getState();
     fetch(routesHelper.ajax.items, {

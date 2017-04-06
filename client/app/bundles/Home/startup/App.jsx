@@ -22,34 +22,51 @@ const App = (props, railsContext) => {
   );
 
   const { routesHelper } = props;
+  const routes = {
+    path: routesHelper.root,
+    component: Layout,
+    childRoutes: [
+      {
+        path: routesHelper.root,
+        getComponent(_nextState, callback) {
+          require.ensure([], (require) => {
+            const component = require('../containers/HomeContainer').default;
+            callback(null, { main: component });
+          });
+        },
+      },
+      {
+        path: routesHelper.items.goods,
+        getComponent(_nextState, callback) {
+          require.ensure([], (require) => {
+            const component = require('../containers/GoodsContainer').default;
+            callback(null, { main: component });
+          });
+        },
+      },
+      {
+        path: routesHelper.items.service,
+        getComponent(_nextState, callback) {
+          require.ensure([], (require) => {
+            const component = require('../containers/ServiceContainer').default;
+            callback(null, { main: component });
+          });
+        },
+      },
+      {
+        path: routesHelper.items.space,
+        getComponent(_nextState, callback) {
+          require.ensure([], (require) => {
+            const component = require('../containers/SpaceContainer').default;
+            callback(null, { main: component });
+          });
+        },
+      },
+    ],
+  };
   return (
     <Provider store={store}>
-      <Router history={history}>
-        {{
-          path: routesHelper.root,
-          component: Layout,
-          childRoutes: [
-            {
-              path: routesHelper.root,
-              getComponents(_nextState, callback) {
-                require.ensure([], (require) => {
-                  const component = require('../containers/HomeContainer').default;
-                  callback(null, { main: component });
-                });
-              },
-            },
-            {
-              path: routesHelper.items,
-              getComponents(_nextState, callback) {
-                require.ensure([], (require) => {
-                  const component = require('../containers/ItemsContainer').default;
-                  callback(null, { main: component });
-                });
-              },
-            },
-          ],
-        }}
-      </Router>
+      <Router history={history} routes={routes} />
     </Provider>
   );
 };

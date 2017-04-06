@@ -9,7 +9,7 @@ class ShortcutNavbar extends React.Component {
       <div className="navbar" styleName="navs-center">
         <ul className="navs clear">
           <li className="nav" styleName="nav">
-            <Link to={routesHelper.items} styleName="link">
+            <Link to={routesHelper.items.goods} styleName="link">
               <div styleName="icon-container">
                 <i className="fa fa-suitcase" />
               </div>
@@ -19,24 +19,24 @@ class ShortcutNavbar extends React.Component {
             </Link>
           </li>
           <li className="nav" styleName="nav">
-            <a href="/" styleName="link">
+            <Link to={routesHelper.items.service} styleName="link">
               <div styleName="icon-container">
                 <i className="fa fa-group" />
               </div>
               <div styleName="name-container">
                 <span>服務</span>
               </div>
-            </a>
+            </Link>
           </li>
           <li className="nav" styleName="nav">
-            <a href="/" styleName="link">
+            <Link to={routesHelper.items.space} styleName="link">
               <div styleName="icon-container">
                 <i className="fa fa-home" />
               </div>
               <div styleName="name-container">
                 <span>空間</span>
               </div>
-            </a>
+            </Link>
           </li>
           <li className="nav" styleName="nav">
             <a href="/" styleName="link">

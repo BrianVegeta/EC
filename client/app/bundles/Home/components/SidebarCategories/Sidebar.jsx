@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import catesConfig from './catesConfig';
 
 class Sidebar extends React.Component {
+  static hasSubcates(category) {
+    const { subcates } = category;
+    return subcates !== undefined;
+  }
+
   constructor(props) {
     super(props);
     this.state = { index: 0, isOpen: false };
@@ -14,29 +20,31 @@ class Sidebar extends React.Component {
   }
 
   render() {
+    const { hasSubcates } = this.constructor;
     return (
       <div styleName="container">
         <ul styleName="categories">
           {
-            catesConfig.map((cate, index) => {
-              const { subcates } = cate;
+            catesConfig.map((category, index) => {
+              const { subcates } = category;
               return (
-                <li
-                  onClick={subcates === undefined ? null : () => (this.handleSubcatesToggle(index))}
-                  key={`${cate.text}_${index + 1}`}
-                  styleName="category"
-                >
-                  <span styleName="icon">
-                    <i className={`fa fa-${cate.faClass}`} aria-hidden="true" />
-                  </span>
-                  {cate.text}
+                <li key={`${category.text}_${index + 1}`} styleName="category">
+                  <Link
+                    to="/"
+                    onClick={hasSubcates(category) && (() => this.handleSubcatesToggle(index))}
+                  >
+                    <span styleName="icon">
+                      <i className={`fa fa-${category.faClass}`} aria-hidden="true" />
+                    </span>
+                    <span>{category.text}</span>
+                  </Link>
                   {
-                    cate.subcates !== undefined &&
+                    hasSubcates(category) &&
                     this.state.index === index &&
                     this.state.isOpen &&
                       <ul styleName="subcates">
                         {
-                          cate.subcates.map((subcate, subIndex) =>
+                          subcates.map((subcate, subIndex) =>
                             <li key={`${subIndex + 1}`}>{subcate.text}</li>,
                           )
                         }

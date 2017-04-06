@@ -8,7 +8,11 @@ class IndexController < ApplicationController
     @props = {
       routesHelper: {
         root: root_path,
-        items: pages_path('items'),
+        items: {
+          goods: pages_path('i/goods'),
+          service: pages_path('i/service'),
+          space: pages_path('i/space'),
+        },
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {
           items: ajax_items_path(:json),

@@ -22,7 +22,7 @@ class LayoutContainer extends React.Component {
     return (
       <div>
         <Header {...this.props} />
-        <div className="container clear red-border" style={{ minHeight: '1000px' }}>
+        <div className="container clear" style={{ minHeight: '1000px' }} >
           <div className="main-container">
             { this.props.main === null ? <HomeContainer /> : this.props.main }
           </div>

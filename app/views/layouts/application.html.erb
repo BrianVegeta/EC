@@ -2,11 +2,12 @@
 <html>
   <head>
     <title>Shareec</title>
+    <%= favicon_link_tag 'app_logo.png' %>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    
+
     <%= env_javascript_include_tag(hot: ['vendor-bundle.js', 'app-bundle.js']) %>
   </head>
 
