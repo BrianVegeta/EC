@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { Router, browserHistory } from 'react-router';
+import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
+import { useScroll } from 'react-router-scroll';
 import configureStore from '../store/homeStore';
 import Layout from '../containers/LayoutContainer';
 
@@ -14,6 +15,17 @@ import Layout from '../containers/LayoutContainer';
 const propTypes = {
   routesHelper: PropTypes.object.isRequired,
 };
+const customUseScroll = ((prevRouterProps, { routes }) => {
+  if (routes.some(route => route.ignoreScrollBehavior)) {
+    return false;
+  }
+
+  if (routes.some(route => route.scrollToTop)) {
+    return [0, 0];
+  }
+
+  return true;
+});
 const App = (props, railsContext) => {
   const store = configureStore(props);
   const history = syncHistoryWithStore(
@@ -55,9 +67,14 @@ const App = (props, railsContext) => {
       },
     ],
   };
+
   return (
     <Provider store={store}>
-      <Router history={history} routes={routes} />
+      <Router
+        history={history}
+        routes={routes}
+        render={applyRouterMiddleware(useScroll(customUseScroll))}
+      />
     </Provider>
   );
 };
