@@ -20,6 +20,9 @@ class Recommend extends React.Component {
     const { type, recommends } = this.props;
     const { bannerUrl, items } = recommends[type];
     const isFetching = (items.length === 0);
+    if (isFetching) {
+      return null;
+    }
     return (
       <div>
         { bannerUrl && <Banner bannerUrl={bannerUrl} /> }
