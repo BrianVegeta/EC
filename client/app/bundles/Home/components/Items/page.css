@@ -1,0 +1,20 @@
+.filter {
+  position: sticky;
+  top: 170px;
+  z-index: 100;
+  background-color: #fff;
+}
+.content {
+  position: relative;
+}
+.sidebar {
+  width: 245px;
+  display: inline-block;
+  float: left;
+  position: sticky;
+  top: 260px;
+}
+.main {
+  width: 825px;
+  display: inline-block;
+}

@@ -4,27 +4,13 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import configureStore from '../store/homeStore';
+import customUseScroll from './scroll';
 
-// See documentation for https://github.com/reactjs/react-redux.
-// This is how you get props from the Rails view into the redux store.
-// This code here binds your smart component to the redux store.
-// railsContext provides contextual information especially useful for server rendering, such as
-// knowing the locale. See the React on Rails documentation for more info on the railsContext
-const routesSetting = require('../routes/index');
+const routes = require('../routes');
 
 const propTypes = {
   routesHelper: PropTypes.object.isRequired,
 };
-const customUseScroll = ((prevRouterProps, { routes }) => {
-  if (routes.some(route => route.ignoreScrollBehavior)) {
-    return false;
-  }
-
-  if (routes.some(route => route.scrollToTop)) {
-    return [0, 0];
-  }
-  return true;
-});
 const App = (props, railsContext) => {
   const store = configureStore(props);
   const history = syncHistoryWithStore(
@@ -37,7 +23,7 @@ const App = (props, railsContext) => {
     <Provider store={store}>
       <Router
         history={history}
-        routes={routesSetting.default(routesHelper)}
+        routes={routes.default(routesHelper)}
         render={applyRouterMiddleware(useScroll(customUseScroll))}
       />
     </Provider>
@@ -45,3 +31,10 @@ const App = (props, railsContext) => {
 };
 App.propTypes = propTypes;
 export default App;
+
+
+// See documentation for https://github.com/reactjs/react-redux.
+// This is how you get props from the Rails view into the redux store.
+// This code here binds your smart component to the redux store.
+// railsContext provides contextual information especially useful for server rendering, such as
+// knowing the locale. See the React on Rails documentation for more info on the railsContext
