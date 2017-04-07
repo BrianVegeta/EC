@@ -14,13 +14,24 @@ const routes = routesHelper => ({
       },
     },
     {
-      path: '/p/i/goods',
+      path: 'p/i/goods',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           const component = require('../containers/GoodsContainer').default;
           callback(null, { main: component });
         });
       },
+      childRoutes: [
+        {
+          path: ':name-c.:id',
+          getComponent(_nextState, callback) {
+            require.ensure([], (require) => {
+              const component = require('../containers/ItemsContainer').default;
+              callback(null, { main: component });
+            });
+          },
+        },
+      ],
     },
     {
       path: '/p/i/service',
@@ -36,16 +47,6 @@ const routes = routesHelper => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           const component = require('../containers/SpaceContainer').default;
-          callback(null, { main: component });
-        });
-      },
-    },
-    {
-      path: '/p/i/:name-c.:id',
-      isCates: true,
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const component = require('../containers/GoodsContainer').default;
           callback(null, { main: component });
         });
       },

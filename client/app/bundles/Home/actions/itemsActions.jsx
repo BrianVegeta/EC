@@ -19,7 +19,7 @@ const fetchedCategories = categories => ({
   categories,
 });
 
-export function fetchItems() {
+export function fetchItems(callback) {
   return (dispatch, getState) => {
     dispatch(fetchingItems());
 
@@ -32,6 +32,10 @@ export function fetchItems() {
     .then(response => response.json())
     .then((items) => {
       dispatch(fetchedItems(items));
+      if (callback) {
+        console.log('callback');
+        callback();
+      }
     })
     .catch((err) => { throw err; });
   };

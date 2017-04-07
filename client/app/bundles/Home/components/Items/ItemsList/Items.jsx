@@ -5,7 +5,7 @@ class Items extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ minHeight: '1500px' }}>
         {
           this.props.items.records.map((item, index) =>
             <div key={`${index + 1}`} styleName="item-container" >

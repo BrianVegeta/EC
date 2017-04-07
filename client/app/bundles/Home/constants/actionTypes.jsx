@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
 export const CHANGE_RESOLUTION = 'CHANGE_RESOLUTION';
+export const ENVIRONMENT_CHANGE_SCROLLTOP = 'ENVIRONMENT_CHANGE_SCROLLTOP';
+export const ENVIRONMENT_CHECK_ITEMS_LAYOUT_FIXED = 'ENVIRONMENT_CHECK_ITEMS_LAYOUT_FIXED';
 // Auth
 export const AUTH_SET_LOGIN_STATUS = 'AUTH_SET_LOGIN_STATUS';
 // banners

@@ -1,6 +1,6 @@
 .filter {
-  position: sticky;
-  top: 170px;
+  /*position: sticky;
+  top: 170px;*/
   z-index: 100;
   background-color: #fff;
 }
@@ -17,4 +17,5 @@
 .main {
   width: 825px;
   display: inline-block;
+  min-height: 800px;
 }
