@@ -11,7 +11,7 @@
   width: 245px;
   display: inline-block;
   float: left;
-  position: sticky;
+  /*position: sticky;*/
   top: 260px;
 }
 .main {

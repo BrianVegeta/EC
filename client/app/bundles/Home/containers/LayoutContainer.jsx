@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import HomeContainer from './HomeContainer';
 
 const defaultProps = {
@@ -27,6 +28,7 @@ class LayoutContainer extends React.Component {
             { this.props.main === null ? <HomeContainer /> : this.props.main }
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

@@ -1,19 +1,23 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { fetchItems } from '../../../actions/itemsActions';
 
 const propTypes = {
   items: PropTypes.object.isRequired,
   currentType: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 class Sidebar extends React.Component {
+
+  static isCategoriesInclude(category, id) {
+    const { subcates } = category;
+    const ids = subcates.map(subcate => subcate.id);
+    return category.id === id || ids.indexOf(id) >= 0;
+  }
+
   constructor(props) {
     super(props);
     this.state = { index: 0, isOpen: false };
     this.handleSubcatesToggle = this.handleSubcatesToggle.bind(this);
-    this.linkOnClick = this.linkOnClick.bind(this);
   }
 
   handleSubcatesToggle(index) {
@@ -25,17 +29,32 @@ class Sidebar extends React.Component {
     const { params } = this.props;
     const { subcates } = category;
     return (
-      subcates &&
-      params.id &&
-      category.id === parseInt(params.id, 10)
+      subcates && params.id &&
+      this.constructor.isCategoriesInclude(category, parseInt(params.id, 10))
     );
   }
 
-  linkOnClick(e, link) {
-    e.preventDefault();
-    history.pushState(null, null, link);
-    const { dispatch } = this.props;
-    dispatch(fetchItems(() => window.scrollTo(0, 330)));
+  renderSubcates(categories) {
+    const { params } = this.props;
+    const currentCateId = (params.id ? parseInt(params.id, 10) : 0);
+    return (
+      <ul styleName="subcates">
+        {
+          categories.map((category, subIndex) =>
+            <li
+              key={`${subIndex + 1}`}
+              styleName="sub-category"
+            >
+              <Link to={category.link} styleName="link">
+                <div styleName={(category.id === currentCateId) && 'active-subcate-inner'}>
+                  {category.text}
+                </div>
+              </Link>
+            </li>,
+          )
+        }
+      </ul>
+    );
   }
 
   render() {
@@ -49,22 +68,15 @@ class Sidebar extends React.Component {
               const { subcates, text, link } = category;
               return (
                 <li key={`${text}_${index + 1}`} styleName="category">
-                  <Link to={link} onClick={e => this.linkOnClick(e, link)} >
-                    <span styleName="icon">
-                      <i className="fa fa-suitcase" aria-hidden="true" />
-                    </span>
-                    <span>{text}</span>
+                  <Link to={link} styleName="link">
+                    <div styleName={this.ableToExpandSubcates(category) && 'active-category-inner'}>
+                      <span styleName="icon">
+                        <i className="fa fa-suitcase" aria-hidden="true" />
+                      </span>
+                      <span styleName="text">{text}</span>
+                    </div>
                   </Link>
-                  {
-                    this.ableToExpandSubcates(category) &&
-                      <ul styleName="subcates">
-                        {
-                          subcates.map((subcate, subIndex) =>
-                            <li key={`${subIndex + 1}`}>{subcate.text}</li>,
-                          )
-                        }
-                      </ul>
-                  }
+                  { this.ableToExpandSubcates(category) && this.renderSubcates(subcates) }
                 </li>
               );
             })

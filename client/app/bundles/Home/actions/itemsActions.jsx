@@ -19,7 +19,7 @@ const fetchedCategories = categories => ({
   categories,
 });
 
-export function fetchItems(callback) {
+export function fetchItems() {
   return (dispatch, getState) => {
     dispatch(fetchingItems());
 
@@ -32,10 +32,6 @@ export function fetchItems(callback) {
     .then(response => response.json())
     .then((items) => {
       dispatch(fetchedItems(items));
-      if (callback) {
-        console.log('callback');
-        callback();
-      }
     })
     .catch((err) => { throw err; });
   };
@@ -43,6 +39,11 @@ export function fetchItems(callback) {
 
 export function fetchCategories() {
   return (dispatch, getState) => {
+    const { items } = getState();
+    const { categories } = items;
+    if (categories) {
+      return;
+    }
     dispatch(fetchingCategories());
 
     const { routesHelper } = getState();
@@ -52,7 +53,7 @@ export function fetchCategories() {
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     })
     .then(response => response.json())
-    .then(categories => dispatch(fetchedCategories(categories)))
+    .then(json => dispatch(fetchedCategories(json)))
     .catch((err) => { throw err; });
   };
 }

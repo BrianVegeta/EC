@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import FeatureBanner from './FeatureBanner';
+// import FeatureBanner from './FeatureBanner';
+import FeatureHeader from './FeatureHeader';
 import Firelane from '../Firelane';
 import ItemsFilter from './ItemsFilter';
 import SidebarCategories from './SidebarCategories';
@@ -14,14 +15,13 @@ const propTypes = {
 class Page extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchCategories());
-    dispatch(fetchItems(false));
+    dispatch(fetchItems());
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       const { dispatch } = this.props;
-      dispatch(fetchItems(() => window.scrollTo(0, 330)));
+      dispatch(fetchItems());
     }
   }
 
@@ -37,22 +37,10 @@ class Page extends React.Component {
     return (
       <div ref={page => (this.page = page)}>
         <div style={{ height: '130px' }} />
-        <FeatureBanner />
-        <Firelane distance={30} />
-        {
-          itemsLayoutFixed && <div style={{ height: 61 }} />
-        }
-        {
-          itemsLayoutFixed ?
-            <div className="container" style={{ position: 'fixed', zIndex: 100, top: 172 }}>
-              <div styleName="filter">
-                <ItemsFilter />
-              </div>
-            </div> :
-            <div styleName="filter">
-              <ItemsFilter />
-            </div>
-        }
+        <FeatureHeader />
+        <div styleName="filter">
+          <ItemsFilter />
+        </div>
         <Firelane distance={30} />
         <div styleName="content">
           <div styleName="sidebar">{sidebar}</div>
