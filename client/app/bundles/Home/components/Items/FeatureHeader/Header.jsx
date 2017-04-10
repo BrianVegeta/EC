@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
 
+const propTypes = {
+  text: PropTypes.string.isRequired,
+  hasIcon: PropTypes.bool.isRequired,
+};
 class Header extends React.Component {
   render() {
     return (
@@ -14,10 +18,13 @@ class Header extends React.Component {
           </div>
           <div styleName="title">
             <h1>
-              <span styleName="icon">
-                <i className="fa fa-suitcase" aria-hidden="true" />
-              </span>
-              全部物品
+              {
+                this.props.hasIcon &&
+                  <span styleName="icon">
+                    <i className="fa fa-suitcase" aria-hidden="true" />
+                  </span>
+              }
+              {this.props.text}
             </h1>
           </div>
         </div>
@@ -25,5 +32,5 @@ class Header extends React.Component {
     );
   }
 }
-
+Header.propTypes = propTypes;
 export default Header;

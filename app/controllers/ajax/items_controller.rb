@@ -4,7 +4,7 @@ class Ajax::ItemsController < ApplicationController
   # GET /ajax/items
   # GET /ajax/items.json
   def index
-    sleep(2)
+    sleep(1)
     covers = [
       'https://cfshopeetw-a.akamaihd.net/file/ba09d80607aff2201a868c07f240b71b_tn',
       'https://cfshopeetw-a.akamaihd.net/file/22e9483712eb643657f4622e8d17bf2a_tn',

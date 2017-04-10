@@ -49,6 +49,7 @@ const routes = routesHelper => ({
           });
         });
       },
+      onEnter: test => (console.log(test)),
     },
   ],
 });

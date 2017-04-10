@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Items from '../components/Items';
+import FeatureHeader from '../components/Items/FeatureHeader';
 import { fetchCategories } from '../actions/itemsActions';
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
-
+const ITEM_TYPE = 'goods';
+const FEATURE_HEADER_TEXT = '全部物品';
 class GoodsContainer extends React.Component {
 
   componentWillMount() {
@@ -14,21 +16,24 @@ class GoodsContainer extends React.Component {
   }
 
   render() {
-    return <Items category="goods" {...this.props} />;
+    const featureHeader = (
+      <FeatureHeader
+        text={FEATURE_HEADER_TEXT}
+        hasIcon
+      />
+    );
+    return (
+      <Items
+        currentType={ITEM_TYPE}
+        featureHeader={featureHeader}
+        {...this.props}
+      />
+    );
   }
 }
-
 GoodsContainer.propTypes = propTypes;
-
 const mapStateToProps = (state) => {
-  const {
-    environment,
-    items,
-  } = state;
-
-  return ({
-    environment,
-    items,
-  });
+  const { environment, items, routesHelper } = state;
+  return { environment, items, routesHelper };
 };
 export default connect(mapStateToProps)(GoodsContainer);

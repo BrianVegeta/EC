@@ -1,16 +1,17 @@
 import React, { PropTypes } from 'react';
-// import FeatureBanner from './FeatureBanner';
-import FeatureHeader from './FeatureHeader';
 import Firelane from '../Firelane';
 import ItemsFilter from './ItemsFilter';
 import SidebarCategories from './SidebarCategories';
 import ItemsList from './ItemsList';
-import { fetchCategories, fetchItems } from '../../actions/itemsActions';
+import { fetchItems } from '../../actions/itemsActions';
 import Spinner from '../../components/Spinner';
 
 const propTypes = {
-  category: PropTypes.string.isRequired,
+  currentType: PropTypes.string.isRequired,
+  items: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  featureHeader: PropTypes.node.isRequired,
 };
 class Page extends React.Component {
   componentDidMount() {
@@ -19,25 +20,23 @@ class Page extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.pathname !== this.props.location.pathname) {
-      const { dispatch } = this.props;
-      dispatch(fetchItems());
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.props.dispatch(fetchItems());
     }
   }
 
   render() {
-    const { items, category, environment } = this.props;
-    const { itemsLayoutFixed } = environment;
+    const { items, currentType } = this.props;
     const sidebar = (
       <SidebarCategories
         {...this.props}
-        currentType={category}
+        currentType={currentType}
       />
     );
     return (
       <div ref={page => (this.page = page)}>
         <div style={{ height: '130px' }} />
-        <FeatureHeader />
+        { this.props.featureHeader }
         <div styleName="filter">
           <ItemsFilter />
         </div>
@@ -47,8 +46,7 @@ class Page extends React.Component {
           <div styleName="main" >
             {
               items.fetchingState === 'fetching' ?
-                <Spinner height={500} /> :
-                (this.props.main || <ItemsList {...this.props} />)
+                <Spinner height={500} /> : <ItemsList {...this.props} />
             }
           </div>
         </div>
