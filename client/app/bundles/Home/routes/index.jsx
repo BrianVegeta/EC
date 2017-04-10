@@ -1,6 +1,7 @@
 import Layout from '../containers/LayoutContainer';
+import { fetchCategories, fetchItems } from '../actions/itemsActions';
 
-const routes = routesHelper => ({
+const routes = (routesHelper, dispatch) => ({
   path: routesHelper.root,
   component: Layout,
   childRoutes: [
@@ -21,6 +22,10 @@ const routes = routesHelper => ({
           callback(null, { main: component });
         });
       },
+      onEnter: () => {
+        dispatch(fetchItems());
+        dispatch(fetchCategories());
+      },
     },
     {
       path: '/p/i/service',
@@ -30,6 +35,10 @@ const routes = routesHelper => ({
           callback(null, { main: component });
         });
       },
+      onEnter: () => {
+        dispatch(fetchItems());
+        dispatch(fetchCategories());
+      },
     },
     {
       path: '/p/i/space',
@@ -38,6 +47,10 @@ const routes = routesHelper => ({
           const component = require('../containers/SpaceContainer').default;
           callback(null, { main: component });
         });
+      },
+      onEnter: () => {
+        dispatch(fetchItems());
+        dispatch(fetchCategories());
       },
     },
     {
@@ -49,7 +62,10 @@ const routes = routesHelper => ({
           });
         });
       },
-      onEnter: test => (console.log(test)),
+      onEnter: () => {
+        dispatch(fetchItems());
+        dispatch(fetchCategories());
+      },
     },
   ],
 });

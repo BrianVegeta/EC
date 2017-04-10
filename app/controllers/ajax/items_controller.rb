@@ -16,7 +16,7 @@ class Ajax::ItemsController < ApplicationController
 
     @items = (0..20).map do |n|
       OpenStruct.new({
-        cover_url: covers[(n % 6)],
+        cover_url: covers.sample,
         title: '微型迷你投影機家庭劇院神器迷你投影機',
         price: 'TWD$99,999/天',
         username: 'Yo, Mother fk',

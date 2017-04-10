@@ -1,21 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Items from '../components/Items';
-import Spinner from '../components/Spinner';
+// import Spinner from '../components/Spinner';
 import FeatureHeader from '../components/Items/FeatureHeader';
-import { fetchCategories } from '../actions/itemsActions';
 
 
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
   items: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
 };
 class CategoriedItemsContainer extends React.Component {
-
-  componentWillMount() {
-    this.props.dispatch(fetchCategories());
-  }
 
   getCurrentType() {
     const { items, params } = this.props;
@@ -90,7 +84,7 @@ class CategoriedItemsContainer extends React.Component {
         />
       );
     }
-    return <Spinner height={500} />;
+    return null;
   }
 }
 CategoriedItemsContainer.propTypes = propTypes;

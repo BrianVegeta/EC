@@ -3,28 +3,14 @@ import Firelane from '../Firelane';
 import ItemsFilter from './ItemsFilter';
 import SidebarCategories from './SidebarCategories';
 import ItemsList from './ItemsList';
-import { fetchItems } from '../../actions/itemsActions';
 import Spinner from '../../components/Spinner';
 
 const propTypes = {
   currentType: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
   featureHeader: PropTypes.node.isRequired,
 };
 class Page extends React.Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchItems());
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.location.pathname !== nextProps.location.pathname) {
-      this.props.dispatch(fetchItems());
-    }
-  }
-
   render() {
     const { items, currentType } = this.props;
     const sidebar = (

@@ -23,7 +23,7 @@ const App = (props, railsContext) => {
     <Provider store={store}>
       <Router
         history={history}
-        routes={routes.default(routesHelper)}
+        routes={routes.default(routesHelper, store.dispatch)}
         render={applyRouterMiddleware(useScroll(customUseScroll))}
       />
     </Provider>

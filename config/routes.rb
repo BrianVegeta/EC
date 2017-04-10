@@ -4,9 +4,7 @@ Rails.application.routes.draw do
 
   namespace :ajax, format: true, constraints: { format: :json } do
     resources :banners, only: :index
-    resources :items, only: :index do
-
-    end
+    resources :items, only: :index
     resources :categories, only: :index
     resources :recommends, only: [] do
       collection do
