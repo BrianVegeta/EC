@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
-import Firelane from '../Firelane';
 import ItemsFilter from './ItemsFilter';
 import SidebarCategories from './SidebarCategories';
 import ItemsList from './ItemsList';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../../../components/Spinner';
+import Firelane from '../../../../components/Firelane';
 
 const propTypes = {
   currentType: PropTypes.string.isRequired,
@@ -21,8 +21,9 @@ class Page extends React.Component {
     );
     return (
       <div ref={page => (this.page = page)}>
-        <div style={{ height: '130px' }} />
-        { this.props.featureHeader }
+        <div>
+          { this.props.featureHeader }
+        </div>
         <div styleName="filter">
           <ItemsFilter />
         </div>

@@ -19,7 +19,7 @@ const HomeContainer = props => (
   </div>
 );
 const mapStateToProps = (state) => {
-  const { environment, banners, recommends } = state;
-  return ({ environment, banners, recommends });
+  const { environment, banners, recommends, routesHelper } = state;
+  return ({ environment, banners, recommends, routesHelper });
 };
 export default connect(mapStateToProps)(HomeContainer);

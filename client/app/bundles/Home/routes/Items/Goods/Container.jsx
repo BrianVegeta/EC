@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ItemsPage, FeatureHeader } from '../../../components/Items';
+import { ItemsPage, FeatureHeader } from '../components/Items';
 
 
 const ITEM_TYPE = 'goods';

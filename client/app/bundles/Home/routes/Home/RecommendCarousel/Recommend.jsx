@@ -26,7 +26,7 @@ class Recommend extends React.Component {
     return (
       <div>
         { bannerUrl && <Banner bannerUrl={bannerUrl} /> }
-        <Header {...{ type }} />
+        <Header {...{ type }} {...this.props} />
         { isFetching && <div>loading</div> }
         { !isFetching && <Slider items={items} type={type} /> }
       </div>

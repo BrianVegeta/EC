@@ -1,31 +1,33 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 const propTypes = {
   type: PropTypes.string.isRequired,
+  routesHelper: PropTypes.object.isRequired,
 };
 class Header extends React.Component {
 
-  mapTitle() {
-    const { type } = this.props;
+  headerConf() {
+    const { type, routesHelper } = this.props;
     const mapper = {
-      goods: '物品推薦',
-      service: '服務推薦',
-      space: '空間推薦',
-      category: '推薦分類',
+      goods: { text: '物品推薦', link: routesHelper.items.goods },
+      service: { text: '服務推薦', link: routesHelper.items.service },
+      space: { text: '空間推薦', link: routesHelper.items.space },
+      category: { text: '推薦分類', link: routesHelper.categories },
     };
     return mapper[type];
   }
 
   render() {
-    const title = this.mapTitle();
+    const { link, text } = this.headerConf();
     return (
       <div styleName="container">
         <div styleName="row">
           <div styleName="title">
-            <h3>{title}</h3>
+            <h3>{text}</h3>
           </div>
           <div styleName="see-all">
-            <a href="/">查看全部</a>
+            <Link to={link} >查看全部</Link>
           </div>
         </div>
       </div>
