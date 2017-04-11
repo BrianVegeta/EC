@@ -1,0 +1,9 @@
+.container {
+  padding-top: 40px;
+  margin-left: -30px;
+}
+.card {
+  float: left;
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
