@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import HomeContainer from './HomeContainer';
 
 const defaultProps = {
   main: null,
@@ -24,8 +23,8 @@ class LayoutContainer extends React.Component {
       <div>
         <Header {...this.props} />
         <div className="container clear" style={{ minHeight: '1000px' }} >
-          <div className="main-container">
-            { this.props.main === null ? <HomeContainer /> : this.props.main }
+          <div className="main-container" style={{ paddingTop: 200 }}>
+            { this.props.main }
           </div>
         </div>
         <Footer />

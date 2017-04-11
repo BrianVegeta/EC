@@ -1,72 +1,19 @@
 import Layout from '../containers/LayoutContainer';
-import { fetchCategories, fetchItems } from '../actions/itemsActions';
+import HomeRoute from './Home';
+import GoodsRoute from './Items/Goods';
+import ServiceRoute from './Items/Service';
+import SpaceRoute from './Items/Space';
+import CategoriedRoute from './Items/Categoried';
 
 const routes = (routesHelper, dispatch) => ({
-  path: routesHelper.root,
+  path: '/',
   component: Layout,
+  indexRoute: HomeRoute(),
   childRoutes: [
-    {
-      path: routesHelper.root,
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const component = require('../containers/HomeContainer').default;
-          callback(null, { main: component });
-        });
-      },
-    },
-    {
-      path: 'p/i/goods',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const component = require('../containers/GoodsContainer').default;
-          callback(null, { main: component });
-        });
-      },
-      onEnter: () => {
-        dispatch(fetchItems());
-        dispatch(fetchCategories());
-      },
-    },
-    {
-      path: '/p/i/service',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const component = require('../containers/ServiceContainer').default;
-          callback(null, { main: component });
-        });
-      },
-      onEnter: () => {
-        dispatch(fetchItems());
-        dispatch(fetchCategories());
-      },
-    },
-    {
-      path: '/p/i/space',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const component = require('../containers/SpaceContainer').default;
-          callback(null, { main: component });
-        });
-      },
-      onEnter: () => {
-        dispatch(fetchItems());
-        dispatch(fetchCategories());
-      },
-    },
-    {
-      path: 'p/i/:name-c.:id',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          callback(null, {
-            main: require('../containers/CategoriedItemsContainer').default,
-          });
-        });
-      },
-      onEnter: () => {
-        dispatch(fetchItems());
-        dispatch(fetchCategories());
-      },
-    },
+    GoodsRoute(routesHelper, dispatch),
+    ServiceRoute(routesHelper, dispatch),
+    SpaceRoute(routesHelper, dispatch),
+    CategoriedRoute(routesHelper, dispatch),
   ],
 });
 export default routes;

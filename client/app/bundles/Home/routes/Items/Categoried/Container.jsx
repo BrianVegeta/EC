@@ -1,15 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Items from '../components/Items';
-// import Spinner from '../components/Spinner';
-import FeatureHeader from '../components/Items/FeatureHeader';
-
+import { ItemsPage, FeatureHeader } from '../../../components/Items';
 
 const propTypes = {
   items: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
 };
-class CategoriedItemsContainer extends React.Component {
+class CategoriedContainer extends React.Component {
 
   getCurrentType() {
     const { items, params } = this.props;
@@ -77,7 +74,7 @@ class CategoriedItemsContainer extends React.Component {
       );
       const currentType = this.getCurrentType();
       return (
-        <Items
+        <ItemsPage
           featureHeader={featureHeader}
           currentType={currentType}
           {...this.props}
@@ -87,7 +84,7 @@ class CategoriedItemsContainer extends React.Component {
     return null;
   }
 }
-CategoriedItemsContainer.propTypes = propTypes;
+CategoriedContainer.propTypes = propTypes;
 const mapStateToProps = (state) => {
   const {
     environment,
@@ -101,4 +98,4 @@ const mapStateToProps = (state) => {
     routesHelper,
   });
 };
-export default connect(mapStateToProps)(CategoriedItemsContainer);
+export default connect(mapStateToProps)(CategoriedContainer);

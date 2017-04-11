@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Header from './Header';
 import Slider from './Slider';
 import Banner from './Banner';
-import { fetchRecommends } from '../../actions/recommendsActions';
+import { fetchRecommends } from '../../../actions/recommendsActions';
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,

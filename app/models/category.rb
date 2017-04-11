@@ -1,6 +1,6 @@
 class Category
   include HTTParty
-  base_uri 'http://220.135.3.115:18080/ShareAPI-1.2.2'
+  base_uri 'http://220.135.3.115:18080/ShareAPI-1.2.4'
   HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
   headers HEADERS
 

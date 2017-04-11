@@ -9,6 +9,7 @@ class IndexController < ApplicationController
       routesHelper: {
         root: root_path,
         items: {
+          root: pages_path('i'),
           goods: pages_path('i/goods'),
           service: pages_path('i/service'),
           space: pages_path('i/space'),

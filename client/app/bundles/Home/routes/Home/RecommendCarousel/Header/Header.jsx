@@ -4,27 +4,25 @@ const propTypes = {
   type: PropTypes.string.isRequired,
 };
 class Header extends React.Component {
-  mapHeader() {
+
+  mapTitle() {
     const { type } = this.props;
-    switch (type) {
-      case 'goods':
-        return { title: '產品推薦' };
-      case 'service':
-        return { title: '服務推薦' };
-      case 'space':
-        return { title: '空間推薦' };
-      default:
-        return { title: '推薦分類' };
-    }
+    const mapper = {
+      goods: '物品推薦',
+      service: '服務推薦',
+      space: '空間推薦',
+      category: '推薦分類',
+    };
+    return mapper[type];
   }
 
   render() {
-    const settings = this.mapHeader();
+    const title = this.mapTitle();
     return (
       <div styleName="container">
         <div styleName="row">
           <div styleName="title">
-            <h3>{settings.title}</h3>
+            <h3>{title}</h3>
           </div>
           <div styleName="see-all">
             <a href="/">查看全部</a>
