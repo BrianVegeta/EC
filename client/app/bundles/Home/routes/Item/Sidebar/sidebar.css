@@ -1,0 +1,13 @@
+.container {
+  position: relative;
+  padding-bottom: 40px;
+}
+.share-board {
+  margin-top: 30px;
+}
+.report {
+  margin-top: 30px;
+}
+.report-content {
+  text-align: center;
+}

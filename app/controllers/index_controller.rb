@@ -14,6 +14,7 @@ class IndexController < ApplicationController
           service: pages_path('i/service'),
           space: pages_path('i/space'),
         },
+        item: pages_path,
         categories: pages_path('categories'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {

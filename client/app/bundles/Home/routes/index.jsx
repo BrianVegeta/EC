@@ -5,6 +5,7 @@ import ServiceRoute from './Items/Service';
 import SpaceRoute from './Items/Space';
 import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
+import ItemRoute from './Item';
 
 
 const routes = (routesHelper, dispatch) => ({
@@ -17,6 +18,7 @@ const routes = (routesHelper, dispatch) => ({
     SpaceRoute(routesHelper, dispatch),
     CategoriedRoute(routesHelper, dispatch),
     Categories(routesHelper, dispatch),
+    ItemRoute(routesHelper),
   ],
 });
 export default routes;

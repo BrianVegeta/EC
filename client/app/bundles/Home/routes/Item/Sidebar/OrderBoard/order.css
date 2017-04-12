@@ -1,0 +1,23 @@
+.container {
+  border: 1px solid #999;
+  border-radius: 4px;
+  min-height: 543px;
+  padding: 30px 20px;
+}
+.header {
+  position: relative;
+}
+.header-price {
+  font-size: 36px;
+  color: #222;
+}
+.header-unit {
+  font-size: 20px;
+  color: #333;
+  margin-left: 10px;
+}
+.header-notice {
+  font-size: 16px;
+  font-weight: 300;
+  color: #888;
+}
