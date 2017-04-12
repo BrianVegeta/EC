@@ -1,0 +1,8 @@
+@import '../../../../sprite/sprite.styl';
+
+for $sprite in $spritesheet_sprites {
+  $sprite_name = $sprite[9];
+  .icon-{$sprite_name} {
+    sprite($sprite);
+  }
+}

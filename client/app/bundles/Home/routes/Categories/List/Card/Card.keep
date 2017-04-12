@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import styles from './sprites.styl';
+// const styles = require('../../../../sprite/spritesmith-generated/sprite.styl');
+// import styles from '../../../../sprite/spritesmith-generated/sprite.styl';
+import styles from './card.styl';
 
 const propTypes = {
   text: PropTypes.string.isRequired,
@@ -14,7 +16,7 @@ const Card = (props) => {
       <Link to={link}>
         <div
           styleName="cover"
-          className={styles[`icon-category_${id}`]}
+          style={{ backgroundImage: `url(${props.coverSrc})` }}
         />
         <div styleName="title">{text}</div>
       </Link>

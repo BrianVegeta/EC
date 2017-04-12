@@ -1,0 +1,138 @@
+import React, { PropTypes } from 'react';
+import Card from '../Card';
+
+const propTypes = {
+  type: PropTypes.string.isRequired,
+  items: PropTypes.object.isRequired,
+};
+class Cards extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      width: 153,
+      distance: 30,
+      number: 6,
+    };
+    this.state.inputWidth = this.state.width;
+    this.state.inputDistance = this.state.distance;
+    this.state.inputNumber = this.state.number;
+
+    this.onWidthEnter = this.onWidthEnter.bind(this);
+    this.onWidthChange = this.onWidthChange.bind(this);
+    this.onDistanceEnter = this.onDistanceEnter.bind(this);
+    this.onDistanceChange = this.onDistanceChange.bind(this);
+    this.onNumberEnter = this.onNumberEnter.bind(this);
+    this.onNumberChnage = this.onNumberChnage.bind(this);
+  }
+
+  onWidthChange(e) {
+    const { target: { value } } = e;
+    const inputWidth = isNaN(parseInt(value, 10)) ? 0 : parseInt(value, 10);
+    this.setState({ inputWidth });
+  }
+
+  onWidthEnter(e) {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    const { number, inputWidth } = this.state;
+    const newDistance = (1070 - (number * inputWidth)) / (number - 1);
+    this.setState({
+      width: inputWidth,
+      distance: newDistance,
+      inputDistance: newDistance,
+    });
+  }
+
+  onDistanceChange(e) {
+    const { target: { value } } = e;
+    const inputDistance = isNaN(parseInt(value, 10)) ? 0 : parseInt(value, 10);
+    this.setState({ inputDistance });
+  }
+
+  onDistanceEnter(e) {
+    if (e.key !== 'Enter') { return; }
+    const { number, inputDistance } = this.state;
+    const newWidth = ((1070 + inputDistance) / number) - inputDistance;
+    this.setState({
+      distance: inputDistance,
+      width: newWidth,
+      inputWidth: newWidth,
+    });
+  }
+
+  onNumberEnter(e) {
+    if (e.key !== 'Enter') { return; }
+    const { distance, inputNumber } = this.state;
+    const newWidth = ((1070 + distance) / inputNumber) - distance;
+    this.setState({
+      number: inputNumber,
+      width: newWidth,
+      inputWidth: newWidth,
+    });
+  }
+
+  onNumberChnage(e) {
+    const { target: { value } } = e;
+    const inputNumber = isNaN(parseInt(value, 10)) ? 0 : parseInt(value, 10);
+    this.setState({ inputNumber });
+  }
+
+  render() {
+    const { items, type } = this.props;
+    const { categories } = items;
+
+    if (categories === false) {
+      return null;
+    }
+    const {
+      width, inputWidth,
+      distance, inputDistance,
+      number, inputNumber,
+    } = this.state;
+    return (
+      <div className="clear" styleName="container" style={{ marginLeft: -(distance) }}>
+        <div
+          style={{
+            zIndex: -1,
+            top: 0,
+            bottom: 0,
+            right: 0,
+            left: 0,
+            backgroundColor: '#fff',
+            position: 'absolute',
+            marginLeft: distance,
+          }}
+        />
+        <div style={{ marginBottom: 20, marginLeft: distance }}>
+          <input
+            type="number"
+            value={inputWidth}
+            onKeyPress={this.onWidthEnter}
+            onChange={this.onWidthChange}
+          />W
+          <span>&nbsp;&nbsp;</span>
+          <input
+            type="number"
+            value={inputDistance}
+            onKeyPress={this.onDistanceEnter}
+            onChange={this.onDistanceChange}
+          />Dis
+          <span>&nbsp;&nbsp;</span>
+          <input
+            value={inputNumber}
+            onChange={this.onNumberChnage}
+            onKeyPress={this.onNumberEnter}
+          />N
+        </div>
+        {categories[type].map(cateDetail =>
+          <div key={cateDetail.id} styleName="card" style={{ width: `${width}px`, height: `${width}`, marginLeft: `${distance}px` }}>
+            <Card {...cateDetail} />
+          </div>,
+        )}
+      </div>
+    );
+  }
+}
+Cards.propTypes = propTypes;
+export default Cards;

@@ -5,6 +5,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const SpritesmithPlugin = require('webpack-spritesmith');
 
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
@@ -35,6 +36,7 @@ const config = {
 
   resolve: {
     extensions: ['.js', '.jsx'],
+    modules: ['node_modules', 'spritesmith-generated'],
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -48,6 +50,19 @@ const config = {
       name: 'vendor',
       filename: 'vendor-bundle.js',
     }),
+    new SpritesmithPlugin({
+      src: {
+        cwd: path.resolve(__dirname, './app/bundles/Home/sprite/srcImgs'),
+        glob: '*.png'
+      },
+      target: {
+        image: path.resolve(__dirname, '../app/assets/webpack/sprite.[hash].png'),
+        css: path.resolve(__dirname, './app/bundles/Home/sprite/sprite.styl')
+      },
+      apiOptions: {
+        cssImageRef: '/assets/sprite.[hash].png'
+      }
+    })
   ],
   module: {
     rules: [
@@ -83,11 +98,30 @@ const config = {
         }),
       },
       {
+        test: /\.styl$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                module: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              }
+            },
+            {
+              loader: 'stylus-loader',
+            }
+          ]
+        }),
+      },
+      {
         test: /\.(jpe?g|png|gif|svg|ico)$/,
         use: {
           loader: 'url-loader',
           options: {
-            limit: 1000000,
+            limit: 100000000000000000000,
           }
         },
       },

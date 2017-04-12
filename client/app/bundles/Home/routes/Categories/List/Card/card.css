@@ -1,13 +1,11 @@
 .container {
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 .cover {
-  width: 153px;
-  height: 153px;
+  /*width: 153px;*/
   border-radius: 5px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 }
 .title {
   position: absolute;

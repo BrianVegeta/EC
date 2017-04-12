@@ -14,9 +14,9 @@ class Cards extends React.Component {
       return null;
     }
     return (
-      <div className="clear" styleName="container">
+      <div className="clear" styleName="container" >
         {categories[type].map(cateDetail =>
-          <div styleName="card">
+          <div key={cateDetail.id} styleName="card" >
             <Card {...cateDetail} />
           </div>,
         )}

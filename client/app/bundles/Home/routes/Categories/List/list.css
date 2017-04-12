@@ -1,3 +1,4 @@
 .cards {
-  height: 599px;
+  /*height: 599px;*/
+  position: relative;
 }
