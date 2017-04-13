@@ -47,11 +47,11 @@ class Header extends React.PureComponent {
             </div>
           </div>
         </div>
-        <div styleName="navbar-container">
+        { this.props.hasShortcut && <div styleName="navbar-container">
           <div className="container clear">
             <ShortcutNavbar {...this.props} />
           </div>
-        </div>
+        </div> }
       </header>
     );
   }

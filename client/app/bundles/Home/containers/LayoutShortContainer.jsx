@@ -22,9 +22,9 @@ class LayoutContainer extends React.Component {
     const { main } = this.props;
     return (
       <div>
-        <Header {...this.props} hasShortcut />
+        <Header {...this.props} />
         <div className="container clear" style={{ minHeight: '1000px' }} >
-          <div className="main-container" style={{ paddingTop: 200 }}>
+          <div className="main-container" style={{ paddingTop: 100 }}>
             { main }
           </div>
         </div>
