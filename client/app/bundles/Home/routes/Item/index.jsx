@@ -5,6 +5,6 @@ export default routesHelper => ({
       callback(null, {
         main: require('./Container').default,
       });
-    });
+    }, 'item');
   },
 });

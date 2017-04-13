@@ -91,7 +91,7 @@ const config = {
               options: {
                 module: true,
                 importLoaders: 1,
-                localIdentName: '[name]__[local]__[hash:base64:5]',
+                localIdentName: '[folder]_[local]_[hash:base64:5]',
               }
             }
           ]

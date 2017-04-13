@@ -1,0 +1,68 @@
+.container {
+  position: relative;
+}
+.collecting-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.container-btn {
+  outline: 0;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+
+  width: 100%;
+  height: 54px;
+  border: 1px solid #777;
+  color: #777;
+  border-radius: 4px;
+}
+
+.collect-btn {
+  outline: 0;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+
+  width: 100%;
+  height: 54px;
+  border: 1px solid #777;
+  color: #777;
+  border-radius: 4px;
+}
+.pending-btn {
+  composes: collect-btn;
+}
+.pending-btn:hover {
+  border: 1px solid #222;
+  color: #222;
+}
+.collected-btn {
+  composes: collect-btn;
+}
+.content {
+  position: relative;
+  margin: auto;
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.icon {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  font-size: 24px;
+}
+.text {
+  margin-left: 30px;
+}
