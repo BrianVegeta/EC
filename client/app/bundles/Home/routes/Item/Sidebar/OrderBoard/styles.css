@@ -8,16 +8,24 @@
   position: relative;
 }
 .header-price {
-  font-size: 36px;
   color: #222;
+  font-size: 36px;
+  font-weight: 500;
 }
 .header-unit {
-  font-size: 20px;
   color: #333;
+  font-size: 20px;
   margin-left: 10px;
 }
 .header-notice {
+  color: #888;
   font-size: 16px;
   font-weight: 300;
-  color: #888;
+}
+
+.lasting {
+  margin-bottom: 20px;
+}
+.amount {
+  margin-bottom: 20px;
 }

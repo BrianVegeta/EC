@@ -1,5 +1,5 @@
 import CSS from 'react-css-modules';
-import Order from './Order';
-import styles from './order.css';
+import OrderBoard from './Component';
+import styles from './styles.css';
 
-export default CSS(Order, styles);
+export default CSS(OrderBoard, styles);
