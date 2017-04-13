@@ -2,7 +2,7 @@
   border: 1px solid #999;
   border-radius: 4px;
   min-height: 543px;
-  padding: 30px 20px;
+  padding: 30px 20px 0 20px;
 }
 .header {
   position: relative;
@@ -28,4 +28,23 @@
 }
 .amount {
   margin-bottom: 20px;
+}
+
+.panel-footer {
+  padding: 10px 6px 0 6px;
+}
+.submit {
+  margin-bottom: 9px;
+}
+.notice {
+  text-align: center;
+}
+.notice-text {
+  line-height: 20px;
+  font-size: 14px;
+  font-weight: 300;
+  color: #999;
+}
+.contact {
+  margin: 20px 80px;
 }
