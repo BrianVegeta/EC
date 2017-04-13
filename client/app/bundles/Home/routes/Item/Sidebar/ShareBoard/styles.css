@@ -5,5 +5,13 @@
   padding: 30px 20px 0 20px;
 }
 .collect {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.collect-count {
+  text-align: center;
+  line-height: 14px;
+  font-size: 14px;
+  color: #666;
+
+  margin-bottom: 30px;
 }

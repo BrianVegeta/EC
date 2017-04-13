@@ -6,6 +6,9 @@ const Board = () => (
     <div styleName="collect">
       <CollectButton />
     </div>
+    <div styleName="collect-count">
+      <span>23</span>人已收藏
+    </div>
   </div>
 );
 export default Board;
