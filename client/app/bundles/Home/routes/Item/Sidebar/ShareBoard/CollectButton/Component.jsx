@@ -11,12 +11,15 @@ class CollectButton extends React.Component {
     this.mouseOverToCancel = this.mouseOverToCancel.bind(this);
     this.mouseOutToCollected = this.mouseOutToCollected.bind(this);
     this.cancelToPending = this.cancelToPending.bind(this);
+    this.pending = this.pending.bind(this);
+
+    this.iconHeartO = <i className="fa fa-heart-o" />;
+    this.iconHeart = <i className="fa fa-heart" />;
+    this.iconHeartBeat = <i className="fa fa-heartbeat" />;
   }
 
   cancelToPending() {
-    setTimeout(() => {
-      this.setState({ btnStatus: 'pending', isSaving: false });
-    }, 1000);
+    setTimeout(this.pending, 1000);
     this.setState({ isSaving: true });
   }
 
@@ -25,11 +28,12 @@ class CollectButton extends React.Component {
     this.setState({ isSaving: true });
   }
 
+  pending() {
+    this.setState({ btnStatus: 'pending', isSaving: false });
+  }
+
   collected() {
-    this.setState({
-      btnStatus: 'collected',
-      isSaving: false,
-    });
+    this.setState({ btnStatus: 'collected', isSaving: false });
   }
 
   mouseOverToCancel() {
@@ -42,26 +46,22 @@ class CollectButton extends React.Component {
 
   switchButtonRender() {
     switch (this.state.btnStatus) {
-      case 'collected':
-        return this.renderCollected();
-      case 'toCancel':
-        return this.renderToCancel();
-      default:
-        return this.renderToCollect();
+      case 'collected': return this.renderCollected();
+      case 'toCancel': return this.renderToCancel();
+      default: return this.renderToCollect();
     }
   }
 
   renderToCancel() {
+    const { isSaving } = this.state;
     return (
       <button
         styleName="collected-btn"
-        onMouseOut={this.mouseOutToCollected}
+        onMouseOut={!isSaving && this.mouseOutToCollected}
         onClick={this.cancelToPending}
       >
         <div styleName="content">
-          <div styleName="icon">
-            <i className="fa fa-heartbeat" />
-          </div>
+          <div styleName="icon">{this.iconHeartBeat}</div>
           <div styleName="text">取消收藏</div>
         </div>
       </button>
@@ -72,9 +72,7 @@ class CollectButton extends React.Component {
     return (
       <button styleName="pending-btn" onClick={this.collecting} >
         <div styleName="content">
-          <div styleName="icon">
-            <i className="fa fa-heart-o" />
-          </div>
+          <div styleName="icon">{this.iconHeartO}</div>
           <div styleName="text">收藏此物品</div>
         </div>
       </button>
@@ -82,12 +80,11 @@ class CollectButton extends React.Component {
   }
 
   renderCollected() {
+    const { isSaving } = this.state;
     return (
-      <button styleName="collected-btn" onMouseOver={this.mouseOverToCancel} >
+      <button styleName="collected-btn" onMouseOver={!isSaving && this.mouseOverToCancel} >
         <div styleName="content">
-          <div styleName="icon">
-            <i className="fa fa-heart" />
-          </div>
+          <div styleName="icon">{this.iconHeart}</div>
           <div styleName="text">已收藏</div>
         </div>
       </button>
