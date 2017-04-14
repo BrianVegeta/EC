@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import OrderBoard from './OrderBoard';
 import ShareBoard from './ShareBoard';
+import ReportLink from './ReportLink';
 
 const Sidebar = () => (
   <div styleName="container">
@@ -9,9 +10,7 @@ const Sidebar = () => (
       <ShareBoard />
     </div>
     <div styleName="report">
-      <div styleName="report-content">
-        檢舉此物品
-      </div>
+      <ReportLink />
     </div>
   </div>
 );
