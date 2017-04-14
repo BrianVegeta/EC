@@ -6,7 +6,7 @@ const propTypes = {
 };
 const Layout = props => (
   <div styleName="container" className="clear">
-    <div styleName="main">{props.children}</div>
+    <div styleName="main-container">{props.children}</div>
     <div styleName="sidebar">{props.sidebar}</div>
   </div>
 );

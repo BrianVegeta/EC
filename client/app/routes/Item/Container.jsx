@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LayoutWrapper from './LayoutWrapper';
 import Sidebar from './Sidebar';
+import Main from './Main';
 
 const ItemContainer = () => (
   <LayoutWrapper sidebar={<Sidebar />}>
-    <div>main</div>
+    <Main />
   </LayoutWrapper>
 );
 const mapStateToProps = (state) => {
