@@ -4064,6 +4064,14 @@ react-slick@^0.14.7:
     react-responsive-mixin "^0.4.0"
     slick-carousel "^1.6.0"
 
+react-text-truncate@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-text-truncate/-/react-text-truncate-0.8.3.tgz#3110387531e9344ff5dda5c25c37ec7d9e017f7f"
+
+react-truncate@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-truncate/-/react-truncate-2.1.0.tgz#58825921662842f2f1ac1e68650cb44b227f095c"
+
 react@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
