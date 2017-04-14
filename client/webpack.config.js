@@ -23,7 +23,7 @@ const config = {
       'redux',
     ],
     app: [
-      './app/bundles/Home/startup/registration',
+      './app/startup/registration',
     ],
   },
 
@@ -52,12 +52,12 @@ const config = {
     }),
     new SpritesmithPlugin({
       src: {
-        cwd: path.resolve(__dirname, './app/bundles/Home/sprite/srcImgs'),
+        cwd: path.resolve(__dirname, './app/sprite/srcImgs'),
         glob: '*.png'
       },
       target: {
         image: path.resolve(__dirname, '../app/assets/webpack/sprite.[hash].png'),
-        css: path.resolve(__dirname, './app/bundles/Home/sprite/sprite.styl')
+        css: path.resolve(__dirname, './app/sprite/sprite.styl')
       },
       apiOptions: {
         cssImageRef: '/assets/sprite.[hash].png'
