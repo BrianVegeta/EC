@@ -19,11 +19,9 @@ class Description extends React.Component {
 
   renderExpendButton() {
     return (
-      <div styleName="footer">
-        <button styleName="showall-btn" onClick={this.expandDescripton}>
-          <span styleName="showall-text">顯示全部描述</span>
-        </button>
-      </div>
+      <button styleName="showall-btn" onClick={this.expandDescripton}>
+        <span styleName="showall-text">顯示全部描述</span>
+      </button>
     );
   }
 
@@ -49,7 +47,9 @@ class Description extends React.Component {
         <div styleName="body">
           { isDescriptExpened ? description : this.renderTruncated() }
         </div>
-        { !isDescriptExpened && this.renderExpendButton() }
+        <div styleName="footer">
+          { !isDescriptExpened && this.renderExpendButton() }
+        </div>
       </div>
     );
   }
