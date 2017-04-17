@@ -41,9 +41,7 @@ class Description extends React.Component {
     const { isDescriptExpened } = this.state;
     return (
       <div styleName="container">
-        <div styleName="header">
-          <h2>物品描述</h2>
-        </div>
+        <h2 styleName="title">物品描述</h2>
         <div styleName="body">
           { isDescriptExpened ? description : this.renderTruncated() }
         </div>

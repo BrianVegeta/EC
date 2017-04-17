@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const CancelPolicy = () => (
   <div styleName="container">
-    <h2>退訂政策</h2>
+    <h2 styleName="title">退訂政策</h2>
     <div styleName="describe">
       合約開始的
       <span styleName="marked">前5天</span>

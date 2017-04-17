@@ -1,0 +1,57 @@
+.container
+  position: relative
+  padding: 50px 0
+  // box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.4)
+
+.title
+  composes: sub-title from '../styles.sass'
+
+.comments-scroll-box
+  overflow: hidden
+  overflow-y: auto
+  font-size: 20px
+  .scroll-inner
+    padding: 0 20px
+    width: 612px
+
+.comment-row
+  padding: 20px 0
+  border-bottom: 1px solid #999
+
+.comment-row-more
+  composes: comment-row
+  border-bottom: 0
+
+.comment-inner
+  position: relative
+  .avatar
+    position: absolute
+    top: 0
+    left: 0
+    width: 60px
+    height: 60px
+    border-radius: 50%
+    background-color: #888
+  .content-wrapper
+    margin-left: 80px
+    font-size: 16px
+    .header
+      margin-bottom: 20px
+      .name
+        font-weight: 600
+        margin-right: 10px
+      .relative-time
+        color: #999
+    .content
+      color: #444
+
+.more-btn
+  border: 1px solid #d1d1d1
+  width: 100%
+  padding: 15px
+  background-color: #f5f5f5
+  border-radius: 5px
+  font-size: 16px
+  line-height: 16px
+  cursor: pointer
+  outline: 0
