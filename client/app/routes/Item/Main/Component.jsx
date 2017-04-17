@@ -5,9 +5,21 @@ import Title from './Title';
 import TitleFooter from './TitleFooter';
 import Description from './Description';
 import Tags from './Tags';
+import Detail from './Detail';
+import Regulation from './Regulation';
+import CancelPolicy from './CancelPolicy';
 
 const title = '微型迷你投影機家庭劇院神器微型迷你投影機家庭劇院神器劇院神器';
 const description = '走到哪拍到哪，到處旅行收藏美麗的的畫面，這台復古相機，跟著我3年時間留下了很多回憶，走到哪拍到哪。面，這台復古相機，跟著我3年時間留下了很多回憶，這台復古相機到處旅行收藏美麗的的畫面，跟著我3年時間留下了很多回憶，走到哪拍到哪'
+const regulations = [
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
+];
 const Main = () => (
   <div styleName="container">
     <div styleName="cover">
@@ -23,6 +35,9 @@ const Main = () => (
       </div>
       <Description description={description} />
       <Tags />
+      <Detail />
+      <Regulation rules={regulations} />
+      <CancelPolicy />
     </div>
   </div>
 );
