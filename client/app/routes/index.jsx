@@ -1,5 +1,6 @@
 import Layout from '../containers/LayoutContainer';
 import LayoutShort from '../containers/LayoutShortContainer';
+import LayoutItem from '../containers/LayoutItemContainer';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
 import ServiceRoute from './Items/Service';
@@ -23,7 +24,7 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutShort,
+      component: LayoutItem,
       childRoutes: [
         ItemRoute(routesHelper),
       ],

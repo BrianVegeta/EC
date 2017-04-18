@@ -4,15 +4,24 @@ import Navs from './Navs';
 import Search from './Search';
 import ShortcutNavbar from './ShortcutNavbar';
 
+const defaultProps = {
+  hasShortcut: false,
+  positionStatic: false,
+};
 const propTypes = {
   auth: PropTypes.object.isRequired,
   routesHelper: PropTypes.object.isRequired,
+  hasShortcut: PropTypes.bool,
+  positionStatic: PropTypes.bool,
 };
 class Header extends React.PureComponent {
   render() {
-    const { auth, routesHelper } = this.props;
+    const { auth, routesHelper, positionStatic } = this.props;
     return (
-      <header className="navbar navbar-fixed-top" styleName="header">
+      <header
+        className={`navbar ${positionStatic ? 'navbar-static' : 'navbar-fixed-top'}`}
+        styleName="header"
+      >
         <div styleName="navbar-container">
           <div className="container clear">
             <div className="navbar-header">
@@ -56,5 +65,6 @@ class Header extends React.PureComponent {
     );
   }
 }
+Header.defaultProps = defaultProps;
 Header.propTypes = propTypes;
 export default Header;

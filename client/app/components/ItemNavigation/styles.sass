@@ -1,0 +1,32 @@
+.container
+  position: sticky
+  top: 0
+  z-index: 1005
+  background-color: #fff
+  .inner
+    position: relative
+    .menu
+      transition: height .2s ease-in-out
+    .order-header
+      width: 368px
+      height: 70px
+      background-color: #888
+      position: absolute
+      top: 0
+      right: 0
+
+.container-visible
+  composes: container
+  border-bottom: 1px solid #999
+  .inner
+    .menu
+      height: 69px
+      opacity: 1
+
+.container-hide
+  composes: container
+  border-bottom: 0
+  .inner
+    .menu
+      opacity: 0
+      height: 0
