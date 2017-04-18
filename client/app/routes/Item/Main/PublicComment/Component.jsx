@@ -5,24 +5,22 @@ class PublicComment extends React.Component {
     super(props);
     this.state = {
       comments: [1, 2, 3, 4],
-      scrollBoxHeight: false,
+      scrollBoxHeight: null,
+      isScrollHover: false,
     };
     this.onLoadMore = this.onLoadMore.bind(this);
     this.onScrollerWheel = this.onScrollerWheel.bind(this);
-  }
-
-  componentWillMount() {
-    // const style = window.getComputedStyle(this.scrollInner);
-    // console.log(style.height);
+    this.onEnterScrolling = this.onEnterScrolling.bind(this);
+    this.onLeaveScrolling = this.onLeaveScrolling.bind(this);
   }
 
   componentDidMount() {
-    const style = window.getComputedStyle(this.scroller);
-    this.onMount(style);
+    // const style = window.getComputedStyle(this.scroller);
+    this.onMount(this.scroller.clientHeight);
   }
 
-  onMount(style) {
-    this.setState({ scrollBoxHeight: style.height });
+  onMount(scrollBoxHeight) {
+    this.setState({ scrollBoxHeight });
   }
 
   onLoadMore() {
@@ -31,14 +29,22 @@ class PublicComment extends React.Component {
     this.setState({ comments });
   }
 
-  onScrollerWheel() {
-    console.log(this.scroller.scrollTop);
-  }
-
-  isScrollVisible() {
+  onScrollerWheel(e) {
+    // TODO: Browser issue?
+    const scrollBoxTop = this.scrollOuter.scrollTop;
     const { scrollBoxHeight } = this.state;
-    const style = window.getComputedStyle(this.scroller);
-    return style.height > scrollBoxHeight;
+    const scrollerHeight = this.scroller.clientHeight;
+
+    if (scrollBoxHeight === scrollerHeight) {
+      return;
+    }
+    if (e.deltaY < 0 && scrollBoxTop === 0) {
+      e.preventDefault();
+      return;
+    }
+    if (e.deltaY > 0 && (scrollBoxTop + scrollBoxHeight) >= scrollerHeight) {
+      e.preventDefault();
+    }
   }
 
   rCommentInner() {
@@ -51,32 +57,59 @@ class PublicComment extends React.Component {
             <span styleName="relative-time">23分鐘前</span>
           </div>
           <div styleName="content">
-            有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的 ...顯示更多
+            有沒有更清楚的規格可以看？
+            有沒有更清楚的規格可以看？
+            有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？
+            有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？有沒有更清楚的 ...顯示更多
           </div>
         </div>
       </div>
     );
   }
 
+  onEnterScrolling() {
+    console.log('scrolling');
+    this.setState({ isScrollHover: true });
+  }
+
+  onLeaveScrolling() {
+    console.log('leave scrolling');
+    this.setState({ isScrollHover: false });
+  }
+
   render() {
-    const { scrollBoxHeight, comments } = this.state;
-    console.log(scrollBoxHeight);
+    const { scrollBoxHeight, comments, isScrollHover } = this.state;
     return (
       <div styleName="container">
         <h2 styleName="title">公開留言 | 86則</h2>
-        <div styleName="comments-scroll-box" style={{ height: scrollBoxHeight || null }}>
+        <div styleName="box-border">
           <div
-            styleName="scroll-inner"
-            ref={inner => (this.scroller = inner)}
-            onWheel={this.onScrollerWheel}
+            styleName={isScrollHover ? 'scrolling-box' : 'scroll-box'}
+            style={{ height: scrollBoxHeight }}
+            ref={box => (this.scrollBox = box)}
+            onMouseEnter={this.onEnterScrolling}
+            onMouseLeave={this.onLeaveScrolling}
           >
-            {comments.map(n =>
-              <div key={n} styleName="comment-row">{this.rCommentInner()}</div>,
-            )}
-            <div styleName="comment-row-more">
-              <button styleName="more-btn" onClick={this.onLoadMore}>
-                查看更多留言
-              </button>
+            <div
+              styleName="scroll-outer"
+              ref={outer => (this.scrollOuter = outer)}
+              onWheel={this.onScrollerWheel}
+            >
+              <div
+                styleName="scroll-inner"
+                ref={inner => (this.scroller = inner)}
+              >
+                {comments.map(n =>
+                  <div key={n} styleName="comment-row">
+                    {this.rCommentInner()}
+                  </div>,
+                )}
+                <div styleName="comment-row-more">
+                  <button styleName="more-btn" onClick={this.onLoadMore}>
+                    查看更多留言
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
