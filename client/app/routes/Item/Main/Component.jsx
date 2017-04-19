@@ -74,7 +74,7 @@ class Main extends React.Component {
   rComment() {
     return (
       <div
-        style={{ borderTop: '1px solid red' }}
+        styleName="nav-anchor"
         id={ITEM_MAIN_COMMENT}
         ref={comment => (this.comment = comment)}
       >
@@ -86,7 +86,7 @@ class Main extends React.Component {
   rRegulation() {
     return (
       <div
-        style={{ borderTop: '1px solid red' }}
+        styleName="nav-anchor"
         id={ITEM_MAIN_REGULATION}
         ref={regulation => (this.regulation = regulation)}
       >
@@ -99,7 +99,7 @@ class Main extends React.Component {
   rIntroduction() {
     return (
       <div
-        style={{ borderTop: '1px solid red' }}
+        styleName="nav-anchor"
         id={ITEM_MAIN_INTRODUCTION}
         ref={intro => (this.introduction = intro)}
       >
@@ -120,9 +120,7 @@ class Main extends React.Component {
         <div styleName="cover">
           <Cover />
         </div>
-        <div styleName="breadcrumbs">
-          <Breadcrumbs />
-        </div>
+        <Breadcrumbs />
         {this.rIntroduction()}
         {this.rRegulation()}
         {this.rComment()}

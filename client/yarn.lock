@@ -4075,6 +4075,10 @@ react-router@^3.0.2:
     loose-envify "^1.2.0"
     warning "^3.0.0"
 
+react-scrollchor@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-scrollchor/-/react-scrollchor-2.2.0.tgz#ca6b21962ca4bde85216041250b47d438a351e6c"
+
 react-share@^1.13.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/react-share/-/react-share-1.13.0.tgz#399ce0ef4d4339c3f4676bd2e006e390d588f708"

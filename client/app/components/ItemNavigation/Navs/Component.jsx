@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Scrollchor from 'react-scrollchor';
 import {
   ITEM_MAIN_INTRODUCTION,
   ITEM_MAIN_REGULATION,
@@ -20,7 +21,9 @@ const Navs = (props) => {
     <ul styleName="navs">
       {navs.map(nav =>
         <li key={nav.id} styleName={nav.id === currentNav && 'active'} >
-          <div styleName="nav">{nav.text}</div>
+          <Scrollchor to={nav.id} animate={{ duration: 200 }}>
+            <div styleName="nav">{nav.text}</div>
+          </Scrollchor>
         </li>,
       )}
     </ul>
