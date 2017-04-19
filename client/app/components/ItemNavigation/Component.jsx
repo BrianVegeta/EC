@@ -8,7 +8,7 @@ const ItemNavigation = props => (
   <div styleName={props.isVisible ? 'container-visible' : 'container-hide'}>
     <div styleName="inner" className="container clear">
       <div styleName="menu">
-        <Navs />
+        <Navs {...props} />
       </div>
     </div>
   </div>

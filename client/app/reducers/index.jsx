@@ -6,6 +6,7 @@ import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
 import items from './itemsReducer';
+import itemLayout from './itemLayoutReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   items,
   routesHelper,
   recommends,
+  itemLayout,
 });

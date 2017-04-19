@@ -4,13 +4,13 @@ import LayoutWrapper from './LayoutWrapper';
 import Sidebar from './Sidebar';
 import Main from './Main';
 
-const ItemContainer = () => (
-  <LayoutWrapper sidebar={<Sidebar />}>
-    <Main />
+const ItemContainer = props => (
+  <LayoutWrapper sidebar={<Sidebar {...props} />}>
+    <Main {...props} />
   </LayoutWrapper>
 );
 const mapStateToProps = (state) => {
-  const { environment, routesHelper } = state;
-  return ({ environment, routesHelper });
+  const { environment, routesHelper, itemLayout } = state;
+  return ({ environment, routesHelper, itemLayout });
 };
 export default connect(mapStateToProps)(ItemContainer);

@@ -49,7 +49,10 @@ class LayoutContainer extends React.Component {
       <div ref={layout => (this.layout = layout)}>
         <Header {...this.props} positionStatic />
         <div style={{ paddingTop: 30 }} />
-        <ItemNavigation isVisible={isNavVisible} />
+        <ItemNavigation
+          isVisible={isNavVisible}
+          {...this.props}
+        />
         <div className="container clear" style={{ minHeight: '1000px' }} >
           <div className="main-container">{ main }</div>
         </div>
@@ -62,11 +65,12 @@ LayoutContainer.propTypes = propTypes;
 LayoutContainer.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  const { environment, auth, routesHelper } = state;
+  const { environment, auth, routesHelper, itemLayout } = state;
   return ({
     environment,
     auth,
     routesHelper,
+    itemLayout,
   });
 };
 export default connect(mapStateToProps)(LayoutContainer);
