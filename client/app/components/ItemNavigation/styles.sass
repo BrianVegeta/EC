@@ -1,12 +1,16 @@
 .container
   position: sticky
-  top: 0
+  left: 0
+  top: -70px
+  width: 100%
   z-index: 1005
   background-color: #fff
+  height: 0
+  transition: background-color .2s ease-in-out, top 220ms ease-in-out
   .inner
     position: relative
     .menu
-      transition: height .2s ease-in-out
+      transition: opacity .2s ease-in-out
     .order-header
       width: 368px
       height: 70px
@@ -17,16 +21,18 @@
 
 .container-visible
   composes: container
+  height: 69px
   border-bottom: 1px solid #999
+  top: 0px
   .inner
     .menu
-      height: 69px
       opacity: 1
 
 .container-hide
   composes: container
   border-bottom: 0
+  background-color: transparent
+  height: 0
   .inner
     .menu
       opacity: 0
-      height: 0

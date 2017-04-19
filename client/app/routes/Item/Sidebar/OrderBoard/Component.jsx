@@ -7,13 +7,7 @@ import ContactButton from './ContactButton';
 
 const OrderBoard = () => (
   <div styleName="container">
-    <div styleName="header">
-      <div styleName="header-price">
-        NT$99,999
-        <span styleName="header-unit">一日</span>
-      </div>
-      <div styleName="header-notice">於開始時間前1日寄達</div>
-    </div>
+    <div styleName="header-notice">於開始時間前1日寄達</div>
     <Splitline />
     <div styleName="lasting">
       <OptionLasting />
