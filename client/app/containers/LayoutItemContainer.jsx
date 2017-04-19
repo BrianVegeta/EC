@@ -17,9 +17,11 @@ class LayoutContainer extends React.Component {
   constructor(props) {
     super(props);
     this.onScroll = this.onScroll.bind(this);
+    this.prevTop = 0;
     this.state = {
       isNavVisible: false,
     };
+    console.log('1');
   }
 
   componentDidMount() {
@@ -34,11 +36,13 @@ class LayoutContainer extends React.Component {
 
   onScroll() {
     const top = this.layout.getBoundingClientRect().top;
+    console.log(`[${top}] - [${this.prevTop}] = ${top - this.prevTop}`);
     if (top < -800) {
       this.setState({ isNavVisible: true });
     } else {
       this.setState({ isNavVisible: false });
     }
+    this.prevTop = top;
   }
 
 
