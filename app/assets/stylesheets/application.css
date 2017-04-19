@@ -16,7 +16,6 @@
  *= require app-bundle
  */
 
-
 body, button, input, optgroup, select, textarea {
   font-family: PingFang TC, Helvetica, Arial, sans-serif, Microsoft JhengHei !important;
 }
