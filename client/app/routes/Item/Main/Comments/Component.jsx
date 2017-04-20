@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import CommentRow from './CommentRow';
+import CommentBox from './CommentBox';
 
 const fakerComment = {
   avatarSrc: 'https://www.meionorte.com/uploads/pagina/2016/3/31/avatar-kate-hudson-dd704d2b-2cc3-4fd8-9f6d-1415f23a43a3.jpg',
@@ -52,6 +53,7 @@ class Comments extends React.Component {
           })}
           {this.rloadMoreBtn()}
         </div>
+        <CommentBox />
       </div>
     );
   }
