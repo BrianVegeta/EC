@@ -8,7 +8,8 @@ import Tags from './Tags';
 import Detail from './Detail';
 import Regulation from './Regulation';
 import CancelPolicy from './CancelPolicy';
-import PublicComment from './PublicComment';
+// import PublicComment from './PublicComment';
+import Comments from './Comments';
 import {
   ITEM_MAIN_INTRODUCTION,
   ITEM_MAIN_REGULATION,
@@ -72,13 +73,11 @@ class Main extends React.Component {
   }
 
   rComment() {
+    const id = ITEM_MAIN_COMMENT;
+    const ref = comment => (this.comment = comment);
     return (
-      <div
-        styleName="nav-anchor"
-        id={ITEM_MAIN_COMMENT}
-        ref={comment => (this.comment = comment)}
-      >
-        <PublicComment />
+      <div styleName="nav-anchor" {...{ id, ref }} >
+        <Comments />
       </div>
     );
   }
