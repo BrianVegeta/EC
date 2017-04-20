@@ -4,6 +4,22 @@ import ShareBoard from './ShareBoard';
 import ReportLink from './ReportLink';
 
 class Sidebar extends React.Component {
+
+  static debounce(func, wait, immediate) {
+    let timeout;
+    return function inner() {
+      const context = this;
+      const later = function later() {
+        timeout = null;
+        if (!immediate) func.apply(context, [func, wait, immediate]);
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, [func, wait, immediate]);
+    };
+  }
+
   constructor(props) {
     super(props);
     this.onScroll = this.onScroll.bind(this);
@@ -24,13 +40,15 @@ class Sidebar extends React.Component {
 
   onScroll() {
     const containerTop = this.container.getBoundingClientRect().top;
+    let state = {};
     if (containerTop > 0) {
-      this.setState({ isFixing: false, isBodyBottom: false });
+      state = { isFixing: false, isBodyBottom: false };
     } else if (containerTop <= 0 && containerTop >= -(this.bottomLimit)) {
-      this.setState({ isFixing: true, isBodyBottom: false });
+      state = { isFixing: true, isBodyBottom: false };
     } else {
-      this.setState({ isFixing: true, isBodyBottom: true });
+      state = { isFixing: true, isBodyBottom: true };
     }
+    this.constructor.debounce(this.setState(state), 250);
     // const containerRect = this.container.getBoundingClientRect();
     // const headerRect = this.header.getBoundingClientRect();
     // console.log(`container top: ${containerRect.top}, bottom: ${containerRect.bottom}`);
