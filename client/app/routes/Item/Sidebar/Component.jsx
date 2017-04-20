@@ -2,23 +2,9 @@ import React from 'react';
 import OrderBoard from './OrderBoard';
 import ShareBoard from './ShareBoard';
 import ReportLink from './ReportLink';
+import debounce from '../../../funcs/debounce';
 
 class Sidebar extends React.Component {
-
-  static debounce(func, wait, immediate) {
-    let timeout;
-    return function inner() {
-      const context = this;
-      const later = function later() {
-        timeout = null;
-        if (!immediate) func.apply(context, [func, wait, immediate]);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, [func, wait, immediate]);
-    };
-  }
 
   constructor(props) {
     super(props);
@@ -48,7 +34,7 @@ class Sidebar extends React.Component {
     } else {
       state = { isFixing: true, isBodyBottom: true };
     }
-    this.constructor.debounce(this.setState(state), 250);
+    debounce(this.setState(state), 250);
     // const containerRect = this.container.getBoundingClientRect();
     // const headerRect = this.header.getBoundingClientRect();
     // console.log(`container top: ${containerRect.top}, bottom: ${containerRect.bottom}`);

@@ -1,16 +1,18 @@
 .container
+  transform: translate3d(0, 0, 0)
   position: fixed
   left: 0
-  top: -70px
+  top: 0
   width: 100%
   z-index: 1005
   background-color: #fff
-  height: 0
-  transition: background-color .2s ease-in-out, top 220ms ease-in-out
+  height: 70px
+  transition: background-color .1s ease-out, top 220ms ease-in-out
   .inner
     position: relative
     .menu
       transition: opacity .2s ease-in-out
+      height: 70px
     .order-header
       width: 368px
       height: 70px
@@ -21,9 +23,7 @@
 
 .container-visible
   composes: container
-  height: 70px
   border-bottom: 1px solid #999
-  top: 0px
   .inner
     .menu
       opacity: 1
@@ -31,8 +31,7 @@
 .container-hide
   composes: container
   border-bottom: 0
-  background-color: transparent
-  height: 0
+  background-color: rgba(255, 255, 255, 0)
   .inner
     .menu
       opacity: 0

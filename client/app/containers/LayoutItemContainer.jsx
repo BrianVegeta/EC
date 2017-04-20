@@ -4,6 +4,7 @@ import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ItemNavigation from '../components/ItemNavigation';
+import debounce from '../funcs/debounce';
 
 const defaultProps = {
   main: null,
@@ -21,7 +22,6 @@ class LayoutContainer extends React.Component {
     this.state = {
       isNavVisible: false,
     };
-    console.log('1');
   }
 
   componentDidMount() {
@@ -36,13 +36,11 @@ class LayoutContainer extends React.Component {
 
   onScroll() {
     const top = this.layout.getBoundingClientRect().top;
-    console.log(`[${top}] - [${this.prevTop}] = ${top - this.prevTop}`);
     if (top < -800) {
-      this.setState({ isNavVisible: true });
-    } else {
-      this.setState({ isNavVisible: false });
+      debounce(this.setState({ isNavVisible: true }), 250);
+    } else if (top > -700) {
+      debounce(this.setState({ isNavVisible: false }), 250);
     }
-    this.prevTop = top;
   }
 
 
