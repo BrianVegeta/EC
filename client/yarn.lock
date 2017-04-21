@@ -1620,6 +1620,14 @@ domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
+draft-js@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.0.tgz#29d16191012b932fdab28a9b37ec1538f421abf6"
+  dependencies:
+    fbjs "^0.8.7"
+    immutable "~3.7.4"
+    object-assign "^4.1.0"
+
 duplexer2@~0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -1751,6 +1759,10 @@ es6-set@~0.1.5:
     es6-iterator "~2.0.1"
     es6-symbol "3.1.1"
     event-emitter "~0.3.5"
+
+es6-shim@^0.35.3:
+  version "0.35.3"
+  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.3.tgz#9bfb7363feffff87a6cdb6cd93e405ec3c4b6f26"
 
 es6-symbol@3.1.1, es6-symbol@^3.1, es6-symbol@^3.1.1, es6-symbol@~3.1, es6-symbol@~3.1.1:
   version "3.1.1"
@@ -2066,7 +2078,7 @@ fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
-fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.7, fbjs@^0.8.9:
   version "0.8.9"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.9.tgz#180247fbd347dcc9004517b904f865400a0c8f14"
   dependencies:
@@ -2472,6 +2484,10 @@ ieee754@^1.1.4:
 ignore@^3.2.0:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.6.tgz#26e8da0644be0bb4cb39516f6c79f0e0f4ffe48c"
+
+immutable@~3.7.4:
+  version "3.7.6"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
 
 imports-loader@^0.7.1:
   version "0.7.1"
@@ -4032,6 +4048,10 @@ react-on-rails@6.8.0:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/react-on-rails/-/react-on-rails-6.8.0.tgz#9172d04d7615d6beef162d10a28d0f101d4676c4"
 
+react-plain-editable@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-plain-editable/-/react-plain-editable-2.0.0.tgz#834d2f2c568d5cdcca9841a5888063616deeb108"
+
 react-preload@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-preload/-/react-preload-0.5.0.tgz#5b1fb238097b7d0e1187653c1ac9c22f95fb2bb0"
@@ -4101,6 +4121,10 @@ react-slick@^0.14.7:
 react-text-truncate@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-text-truncate/-/react-text-truncate-0.8.3.tgz#3110387531e9344ff5dda5c25c37ec7d9e017f7f"
+
+react-textarea-autosize@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-4.0.5.tgz#55379f6a6fa575fc87d1b8de2756e57e3b6c995d"
 
 react-truncate@^2.1.0:
   version "2.1.0"

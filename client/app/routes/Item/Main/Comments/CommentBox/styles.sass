@@ -3,23 +3,57 @@
   .title
     line-height: 20px
     font-size: 18px
+    margin-bottom: 15px
 
-.input-scrollable
-  border: 1px solid #999
+.tb-container
+  border: 1px solid #979797
   border-radius: 4px
-  .input-box
-    min-height: 60px
-    padding: 10px 20px
+  margin-bottom: 15px
+  .textbox
+    padding: 19px
     outline: 0
-    height: auto
     font-size: 20px
     line-height: 20px
-    // height: 166px
-    // overflow-y: scroll
+    .placeholder
+      font-size: 20px
+      line-height: 20px
+      color: #999
+
+.tb-container-focusing
+  composes: tb-container
+  border: 2px solid #444
+  .textbox
+    padding: 18px
+
 
 .controller
-  padding: 0
-  .cancel
-    padding: 0
-  .send
-    padding: 0
+  min-height: 70px
+  // TODO: flex display research
+  display: -webkit-box
+  display: -moz-box
+  display: -ms-flexbox
+  display: -webkit-flex
+  display: flex
+  .buttons
+    margin: 0
+    margin-left: auto
+
+.button
+  margin: 0
+  border: 0
+  outline: 0
+  cursor: pointer
+  padding: 16px 27px
+  font-size: 18px
+  line-height: 20px
+  border: 1px solid #979797
+  border-radius: 5px
+
+.cancel
+  composes: button
+  background-color: #fff
+  margin-right: 10px
+.comment
+  composes: button
+  background-color: #222
+  color: #fff

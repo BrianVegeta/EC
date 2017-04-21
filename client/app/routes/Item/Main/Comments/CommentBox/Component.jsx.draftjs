@@ -1,0 +1,24 @@
+import 'babel-polyfill';
+import 'es5-shim';
+
+import React, { PropTypes } from 'react';
+import { Editor, EditorState } from 'draft-js';
+
+class Comment extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { editorState: EditorState.createEmpty() };
+    this.onChange = editorState => this.setState({ editorState });
+  }
+
+  render() {
+    return (
+      <div style={{ border: '1px solid red' }}>
+        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      </div>
+    );
+  }
+}
+
+export default Comment;

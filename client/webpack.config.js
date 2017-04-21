@@ -15,6 +15,7 @@ const config = {
   entry: {
     vendor: [
       'babel-polyfill',
+      'es6-shim',
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'sticky-position',
