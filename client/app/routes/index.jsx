@@ -8,6 +8,7 @@ import SpaceRoute from './Items/Space';
 import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
+import Tanzaku from './Tanzaku';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -21,6 +22,7 @@ const routes = (routesHelper, dispatch) => ({
         SpaceRoute(routesHelper, dispatch),
         CategoriedRoute(routesHelper, dispatch),
         Categories(routesHelper, dispatch),
+        Tanzaku(routesHelper, dispatch),
       ],
     },
     {

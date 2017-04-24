@@ -49,14 +49,14 @@ class ShortcutNavbar extends React.Component {
             </a>
           </li>
           <li className="nav" styleName="nav">
-            <a href="/" styleName="link">
+            <Link to={routesHelper.tanzaku} styleName="link">
               <div styleName="icon-container">
                 <i className="fa fa-magic" />
               </div>
               <div styleName="name-container">
                 <span>許願看板</span>
               </div>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

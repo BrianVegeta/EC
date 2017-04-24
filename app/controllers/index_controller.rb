@@ -15,6 +15,7 @@ class IndexController < ApplicationController
           space: pages_path('i/space'),
         },
         item: pages_path,
+        tanzaku: pages_path('wish'),
         categories: pages_path('categories'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {
