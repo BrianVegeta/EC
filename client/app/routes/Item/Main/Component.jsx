@@ -10,6 +10,7 @@ import Regulation from './Regulation';
 import CancelPolicy from './CancelPolicy';
 // import PublicComment from './PublicComment';
 import Comments from './Comments';
+import Sharer from './Sharer';
 import {
   ITEM_MAIN_INTRODUCTION,
   ITEM_MAIN_REGULATION,
@@ -56,6 +57,7 @@ class Main extends React.Component {
       ITEM_MAIN_INTRODUCTION,
       ITEM_MAIN_REGULATION,
       ITEM_MAIN_COMMENT,
+      ITEM_MAIN_SHARER,
     ];
     const blocks = ids.map((id) => {
       const top = this[id].getBoundingClientRect().top;
@@ -74,7 +76,7 @@ class Main extends React.Component {
 
   rComment() {
     const id = ITEM_MAIN_COMMENT;
-    const ref = comment => (this.comment = comment);
+    const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Comments />
@@ -83,12 +85,10 @@ class Main extends React.Component {
   }
 
   rRegulation() {
+    const id = ITEM_MAIN_REGULATION;
+    const ref = regulation => (this[ITEM_MAIN_REGULATION] = regulation);
     return (
-      <div
-        styleName="nav-anchor"
-        id={ITEM_MAIN_REGULATION}
-        ref={regulation => (this.regulation = regulation)}
-      >
+      <div styleName="nav-anchor" {...{ id, ref }} >
         <Regulation rules={regulations} />
         <CancelPolicy />
       </div>
@@ -96,12 +96,10 @@ class Main extends React.Component {
   }
 
   rIntroduction() {
+    const id = ITEM_MAIN_INTRODUCTION;
+    const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
     return (
-      <div
-        styleName="nav-anchor"
-        id={ITEM_MAIN_INTRODUCTION}
-        ref={intro => (this.introduction = intro)}
-      >
+      <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={title} />
         <div styleName="title-footer">
           <TitleFooter location="台北市中正區" orderedCount={8} />
@@ -109,6 +107,16 @@ class Main extends React.Component {
         <Description description={description} />
         <Tags />
         <Detail />
+      </div>
+    );
+  }
+
+  rSharer() {
+    const id = ITEM_MAIN_SHARER;
+    const ref = sharer => (this[ITEM_MAIN_SHARER] = sharer);
+    return (
+      <div styleName="nav-anchor" {...{ id, ref }} >
+        <Sharer />
       </div>
     );
   }
@@ -122,8 +130,8 @@ class Main extends React.Component {
         <Breadcrumbs />
         {this.rIntroduction()}
         {this.rRegulation()}
+        {this.rSharer()}
         {this.rComment()}
-        <div id="owner" />
       </div>
     );
   }

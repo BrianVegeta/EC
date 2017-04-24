@@ -15,6 +15,7 @@ const Navs = (props) => {
   const navs = [
     { id: ITEM_MAIN_INTRODUCTION, text: '介紹' },
     { id: ITEM_MAIN_REGULATION, text: '守則' },
+    { id: ITEM_MAIN_SHARER, text: '分享人' },
     { id: ITEM_MAIN_COMMENT, text: '留言' },
   ];
   return (
