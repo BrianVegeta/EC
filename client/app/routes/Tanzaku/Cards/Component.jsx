@@ -28,7 +28,7 @@ class Cards extends React.Component {
                   <div styleName="description"> {card.description}</div> }
                 <div styleName="lastDay">使用天數 {card.lastDayCount}天</div>
                 <div styleName="cardFooter">
-                  <ContactRequester />
+                  <ContactRequester {...card.ownBy} />
                 </div>
               </div>
             </div>
