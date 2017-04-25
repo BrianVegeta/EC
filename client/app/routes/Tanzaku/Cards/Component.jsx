@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Masonry from 'react-masonry-component';
+import ContactRequester from './ContactRequester';
 import cards from './sample';
 
 class Cards extends React.Component {
@@ -27,7 +28,7 @@ class Cards extends React.Component {
                   <div styleName="description"> {card.description}</div> }
                 <div styleName="lastDay">使用天數 {card.lastDayCount}天</div>
                 <div styleName="cardFooter">
-                  <div styleName="ownBy"></div>
+                  <ContactRequester />
                 </div>
               </div>
             </div>
