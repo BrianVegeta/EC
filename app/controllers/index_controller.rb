@@ -16,6 +16,7 @@ class IndexController < ApplicationController
         },
         item: pages_path,
         tanzaku: pages_path('wish'),
+        release: pages_path('release_item'),
         categories: pages_path('categories'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {

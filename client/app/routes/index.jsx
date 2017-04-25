@@ -9,6 +9,7 @@ import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
 import Tanzaku from './Tanzaku';
+import Release from './Release';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -23,6 +24,12 @@ const routes = (routesHelper, dispatch) => ({
         CategoriedRoute(routesHelper, dispatch),
         Categories(routesHelper, dispatch),
         Tanzaku(routesHelper, dispatch),
+      ],
+    },
+    {
+      component: LayoutShort,
+      childRoutes: [
+        Release(routesHelper, dispatch),
       ],
     },
     {
