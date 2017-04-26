@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import scrollTo from '../funcs/scroll';
 
 const defaultProps = {
   main: null,
@@ -19,12 +21,14 @@ class LayoutContainer extends React.Component {
   }
 
   render() {
-    const { main } = this.props;
+    const { mainComponent, sidebarComponent, environment } = this.props;
     return (
-      <div>
+      <div className="app release-wrapper" style={{ paddingTop: 70 }}>
+        <Scrollbars>
+          <div className="container clear">{mainComponent}</div>
+          <Footer />
+        </Scrollbars>
         <Header {...this.props} />
-        <div className="container clear">{main}</div>
-        <Footer />
       </div>
     );
   }

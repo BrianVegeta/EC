@@ -7,18 +7,14 @@ const propTypes = {
   environment: PropTypes.object.isRequired,
 };
 const ReleaseContainer = (props) => {
-  const paddingTop = 170;
-  const mainMinHeight = props.environment.height;
+  const minHeight = props.environment.height - 70;
   return (
-    <div className="release-wrapper" >
-      <div
-        className="sidebar-left"
-        style={{ paddingTop, backgroundColor: '#fff' }}
-      >
-        <SidebarNavs />
+    <div className="release-wrapper" style={{ minHeight }} >
+      <div className="main" style={{ minHeight }}>
+        {props.formComponent}
       </div>
-      <div className="main" style={{ minHeight: mainMinHeight }} >
-        <MainForm />
+      <div className="sidebar-left" style={{ minHeight }}>
+        <SidebarNavs />
       </div>
     </div>
   );
