@@ -1,5 +1,5 @@
 import Layout from '../containers/LayoutContainer';
-import LayoutShort from '../containers/LayoutShortContainer';
+import LayoutRelease from '../containers/LayoutReleaseContainer';
 import LayoutItem from '../containers/LayoutItemContainer';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
@@ -27,7 +27,7 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutShort,
+      component: LayoutRelease,
       childRoutes: [
         Release(routesHelper, dispatch),
       ],
