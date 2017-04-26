@@ -1,20 +1,24 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import SidebarNavs from './SidebarNavs';
+import MainForm from './MainForm';
 
 const propTypes = {
   environment: PropTypes.object.isRequired,
 };
 const ReleaseContainer = (props) => {
-  const wrapperPaddingTop = 70;
-  const mainMinHeight = props.environment.height - wrapperPaddingTop;
+  const paddingTop = 170;
+  const mainMinHeight = props.environment.height;
   return (
-    <div className="release-wrapper" style={{ paddingTop: wrapperPaddingTop }} >
-      <div className="sidebar-left">
+    <div className="release-wrapper" >
+      <div
+        className="sidebar-left"
+        style={{ paddingTop, backgroundColor: '#fff' }}
+      >
         <SidebarNavs />
       </div>
       <div className="main" style={{ minHeight: mainMinHeight }} >
-        <div className="tooltip" />
+        <MainForm />
       </div>
     </div>
   );
