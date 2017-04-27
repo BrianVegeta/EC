@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import CSS from 'react-css-modules';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import styles from './styles.sass';
-import NextButton from './NextButton';
+import NextButton from '../NextButton';
 
 class CoverContainer extends React.Component {
 
@@ -29,7 +29,6 @@ class CoverContainer extends React.Component {
   render() {
     return (
       <div styleName="container">
-        <h2 styleName="title">上傳照片</h2>
         <ul styleName="noticeList">
           <li>最多新增3張照片</li>
           <li>圖片格式：jpg、jpge、png</li>

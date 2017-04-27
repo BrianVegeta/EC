@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import Scrollchor from 'react-scrollchor';
+import React from 'react';
+import { Link } from 'react-router';
 import navsMapper from './navsMapper';
 
 class SidebarNavs extends React.Component {
@@ -11,17 +11,13 @@ class SidebarNavs extends React.Component {
   rAnchor(nav) {
     const { isNavUnlocked } = this.constructor;
     if (isNavUnlocked(nav)) {
-      const scrollchorConfig = {
-        to: nav.labelFor,
-        animate: { duration: 200 },
-      };
       return (
-        <Scrollchor styleName="nav-link" {...scrollchorConfig} >
+        <Link to="/" styleName="nav-link">
           <div styleName="nav">
             <span styleName="icon" />
             <div styleName="nav-text">{nav.text}</div>
           </div>
-        </Scrollchor>
+        </Link>
       );
     }
     return (

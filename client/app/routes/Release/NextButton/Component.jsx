@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Spinner from '../../../../components/SpinnerCircle';
+import Spinner from '../../../components/SpinnerCircle';
 
 const propTypes = {
   editStatus: PropTypes.string.isRequired,

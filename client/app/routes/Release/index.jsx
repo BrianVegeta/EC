@@ -1,22 +1,23 @@
 import {
   getCoverComponent,
   getAboutComponent,
-} from './children';
+} from './steps';
 
-export default routesHelper => ({
+const getChildRoutes = dispatch => (
+  [
+    getAboutComponent(dispatch, 'step2'),
+  ]
+);
+export default (routesHelper, dispatch) => ({
   path: routesHelper.release,
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, {
         mainComponent: require('./Container').default,
       });
-    }, 'itemRelease');
+    }, 'release.item');
   },
-  indexRoute: getCoverComponent,
-  childRoutes: [
-    getAboutComponent(),
-  ],
-  onLeave: () => {
-    console.log('on leave');
-  },
+  indexRoute: getCoverComponent(dispatch),
+  childRoutes: getChildRoutes(dispatch),
+  onLeave: () => console.log('on leave'),
 });
