@@ -9,7 +9,7 @@ const getCoverComponent = {
 };
 
 const getAboutComponent = () => ({
-  path: 'about',
+  path: 'step2',
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       const formComponent = require('./About/Container').default;
