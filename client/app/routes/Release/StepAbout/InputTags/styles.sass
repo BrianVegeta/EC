@@ -1,0 +1,29 @@
+.inputGroup
+  composes: inputGroup from '../styles.sass'
+.inputHeader
+  composes: inputHeader from '../styles.sass'
+.inputControl
+  position: relative
+
+.inputBox
+  composes: inputField from '../styles.sass'
+  position: relative
+  padding-left: 35px
+  margin-bottom: 20px
+  .hash
+    display: inline-block
+    height: 20px
+    position: absolute
+    top: 20px
+    left: 20px
+    color: #949494
+  .inputField
+    height: 20px
+
+.inputField
+  composes: inputPlaceholder from '../styles.sass'
+  margin: 0
+  padding: 0
+  outline: 0
+  border: 0
+  width: 100%

@@ -2,31 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import InputTitle from './InputTitle';
+import TextareaDescription from './TextareaDescription';
+import InputTags from './InputTags';
 
-const placeholders = {
-  name: '請輸入',
-  description: '清楚介紹您的物品，敘述更多吸引人的細節',
-};
 const Container = () => (
   <div styleName="container">
-    <div styleName="inputControl">
-      <div styleName="inputHeader">
-        <label>物品名稱</label><span>0/30</span>
-      </div>
-      <input
-        styleName="inputField"
-        placeholder={placeholders.name}
-      />
-    </div>
-    <div styleName="inputControl">
-      <div styleName="inputHeader">
-        <label>物品描述</label><span>0/250</span>
-      </div>
-      <textarea
-        styleName="inputField"
-        placeholder={placeholders.description}
-      />
-    </div>
+    <InputTitle styleName="inputGroup" />
+    <TextareaDescription styleName="inputGroup" />
+    <InputTags styleName="inputGroup" />
   </div>
 );
 
