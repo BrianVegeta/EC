@@ -36,7 +36,7 @@ class Component extends React.Component {
             <div styleName="dropdownBox">
               <div style={{ width: 640 }}>
                 <Panel categories={categories.goods} {...this.props} />
-                <Panel categories={subCategories} {...this.props} style={subPanelStyle} hasPrev />
+                <Panel categories={subCategories} {...this.props} style={subPanelStyle} isSubcate />
               </div>
             </div>
           </div>
