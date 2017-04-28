@@ -28,6 +28,7 @@
     "draft-js": "^0.10.0",
     "es5-shim": "^4.5.9",
     "es6-shim": "^0.35.3",
+    "lodash": "^4.17.4",
     "nuka-carousel": "^2.0.4",
     "react": "^15.4.2",
     "react-autosize-textarea": "^0.4.3",

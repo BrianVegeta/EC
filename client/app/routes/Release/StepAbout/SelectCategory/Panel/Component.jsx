@@ -1,10 +1,28 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
+import {
+  setCategorySelectionParent,
+  purgeCategorySelectionParent,
+} from '../../../../../actions/releaseActions';
 
+const propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  categories: PropTypes.array.isRequired,
+};
 class Component extends React.Component {
 
   constructor(props) {
     super(props);
     this.fixScroll = this.fixScroll.bind(this);
+    this.setParentCategory = this.setParentCategory.bind(this);
+    this.forwardPrevPage = this.forwardPrevPage.bind(this);
+  }
+
+  setParentCategory(id) {
+    this.props.dispatch(setCategorySelectionParent(id));
+  }
+
+    forwardPrevPage() {
+    this.props.dispatch(purgeCategorySelectionParent());
   }
 
   fixScroll(e) {
@@ -31,7 +49,7 @@ class Component extends React.Component {
   }
 
   render() {
-    const { categories, style } = this.props;
+    const { categories, style, hasPrev } = this.props;
     return (
       <div
         {...{ style }}
@@ -40,20 +58,26 @@ class Component extends React.Component {
         onWheel={this.fixScroll}
       >
         <div ref={scroller => (this.scroller = scroller)}>
-          {categories.map((cate, i) => (
-            <div
-              key={`${i + 1}`}
-              role="button"
-              styleName="cateColumn"
-              onClick={() => console.log(1)}
-            >
-              {cate.text}
-            </div>
-          ))}
+          {categories.map((cate, i) => {
+            const onClick =
+              cate.subcates && (() => this.setParentCategory(cate.id));
+            return (
+              <div
+                key={`${i + 1}`}
+                role="button"
+                styleName="cateColumn"
+                onClick={onClick}
+              >
+                {cate.text}
+              </div>
+            );
+          })}
+          { hasPrev &&
+            <button onClick={this.forwardPrevPage}> prev </button> }
         </div>
       </div>
     );
   }
 }
-
+Component.propTypes = propTypes;
 export default Component;

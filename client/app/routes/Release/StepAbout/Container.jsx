@@ -41,7 +41,7 @@ const Container = props => (
 );
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, items } = state;
-  return ({ environment, routesHelper, items });
+  const { environment, routesHelper, items, release } = state;
+  return ({ environment, routesHelper, items, release });
 };
 export default connect(mapStateToProps)(CSS(Container, styles));
