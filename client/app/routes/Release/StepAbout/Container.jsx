@@ -8,9 +8,28 @@ import InputTags from './InputTags';
 
 const Container = () => (
   <div styleName="container">
-    <InputTitle styleName="inputGroup" />
-    <TextareaDescription styleName="inputGroup" />
-    <InputTags styleName="inputGroup" />
+    <div styleName="inputGroup">
+      <div styleName="inputHeader">
+        <label>物品名稱</label>
+        <span styleName="inputLimit">0/30</span>
+      </div>
+      <div styleName="inputControl">
+        <InputTitle styleName="inputControl" />
+      </div>
+    </div>
+    <div styleName="inputGroup">
+      <div styleName="inputHeader">
+        <label>物品描述</label>
+        <span styleName="inputLimit">0/250</span>
+      </div>
+      <TextareaDescription styleName="inputControl" />
+    </div>
+    <div styleName="inputGroup">
+      <div styleName="inputHeader">
+        <label>加入 #標籤</label>
+      </div>
+      <InputTags styleName="inputControl" />
+    </div>
   </div>
 );
 

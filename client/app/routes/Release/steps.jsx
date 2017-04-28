@@ -1,5 +1,6 @@
 import * as TITLE from './constants/title';
 import { setTitle } from '../../actions/releaseActions';
+import { fetchCategories } from '../../actions/itemsActions';
 
 const getCoverComponent = dispatch => ({
   getComponent(_nextState, callback) {
@@ -19,7 +20,10 @@ const getAboutComponent = (dispatch, path) => ({
       callback(null, { formComponent });
     });
   },
-  onEnter: () => dispatch(setTitle(TITLE.ABOUT)),
+  onEnter: () => {
+    dispatch(setTitle(TITLE.ABOUT));
+    dispatch(fetchCategories());
+  },
 });
 
 module.exports = {

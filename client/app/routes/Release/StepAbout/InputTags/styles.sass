@@ -1,7 +1,3 @@
-.inputGroup
-  composes: inputGroup from '../styles.sass'
-.inputHeader
-  composes: inputHeader from '../styles.sass'
 .inputControl
   position: relative
 
@@ -10,15 +6,27 @@
   position: relative
   padding-left: 35px
   margin-bottom: 20px
+  line-height: 30px
+  padding-top: 14px
+  padding-bottom: 14px
   .hash
     display: inline-block
-    height: 20px
     position: absolute
-    top: 20px
+    top: 14px
+    bottom: 14px
     left: 20px
     color: #949494
   .inputField
-    height: 20px
+    line-height: 30px
+
+.inputBoxFocus
+  composes: inputBox
+
+  border-color: #222
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  .hash
+    color: #222
 
 .inputField
   composes: inputPlaceholder from '../styles.sass'
@@ -27,3 +35,7 @@
   outline: 0
   border: 0
   width: 100%
+
+.inputFieldFocus
+  composes: inputLightPlaceholder from '../styles.sass'
+  composes: inputField
