@@ -7,7 +7,7 @@ import TextareaDescription from './TextareaDescription';
 import InputTags from './InputTags';
 import SelectCategory from './SelectCategory';
 
-const Container = () => (
+const Container = props => (
   <div styleName="container">
     <div styleName="inputGroup">
       <div styleName="inputHeader">
@@ -35,13 +35,13 @@ const Container = () => (
       <div styleName="inputHeader">
         <label>分類</label>
       </div>
-      <SelectCategory styleName="inputControl" />
+      <SelectCategory className={styles.inputControl} {...props} />
     </div>
   </div>
 );
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper } = state;
-  return ({ environment, routesHelper });
+  const { environment, routesHelper, items } = state;
+  return ({ environment, routesHelper, items });
 };
 export default connect(mapStateToProps)(CSS(Container, styles));

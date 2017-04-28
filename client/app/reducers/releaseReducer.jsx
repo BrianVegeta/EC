@@ -4,6 +4,10 @@ const initialState = {
   currentStep: {
     title: '',
   },
+  selectedCategory: {
+    parentId: false,
+    id: false,
+  },
 };
 export default (state = initialState, action) => {
   switch (action.type) {
