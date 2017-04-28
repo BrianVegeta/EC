@@ -22,7 +22,6 @@ class InputTags extends React.Component {
   }
 
   isFocusing(boxId) {
-    console.log(boxId);
     return boxId === this.state.focusingId;
   }
 
@@ -30,8 +29,11 @@ class InputTags extends React.Component {
     const { isFocusing } = this;
     return (
       <div {...this.props}>
-        {this.tags.map(boxId =>
-          <div styleName={isFocusing(boxId) ? 'inputBoxFocus' : 'inputBox'}>
+        {this.tags.map((boxId, i) =>
+          <div
+            key={`${i + 1}`}
+            styleName={isFocusing(boxId) ? 'inputBoxFocus' : 'inputBox'}
+          >
             <span styleName="hash">#</span>
             <input
               styleName={isFocusing(boxId) ? 'inputFieldFocus' : 'inputField'}

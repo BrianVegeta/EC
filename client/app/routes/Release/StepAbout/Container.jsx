@@ -5,6 +5,7 @@ import styles from './styles.sass';
 import InputTitle from './InputTitle';
 import TextareaDescription from './TextareaDescription';
 import InputTags from './InputTags';
+import SelectCategory from './SelectCategory';
 
 const Container = () => (
   <div styleName="container">
@@ -29,6 +30,12 @@ const Container = () => (
         <label>加入 #標籤</label>
       </div>
       <InputTags styleName="inputControl" />
+    </div>
+    <div styleName="inputGroup">
+      <div styleName="inputHeader">
+        <label>分類</label>
+      </div>
+      <SelectCategory styleName="inputControl" />
     </div>
   </div>
 );
