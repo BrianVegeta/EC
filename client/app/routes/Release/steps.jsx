@@ -79,5 +79,5 @@ module.exports = {
   getPriceComponent,
   getRegulationComponent,
   getCancelPolicyComponent,
-  getConfirmComponent
+  getConfirmComponent,
 };

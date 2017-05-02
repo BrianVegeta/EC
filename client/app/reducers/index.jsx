@@ -7,7 +7,7 @@ import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
 import items from './itemsReducer';
 import itemLayout from './itemLayoutReducer';
-import release from './releaseReducer';
+import itemRelease from './itemReleaseReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -18,5 +18,5 @@ export default combineReducers({
   routesHelper,
   recommends,
   itemLayout,
-  release,
+  itemRelease,
 });

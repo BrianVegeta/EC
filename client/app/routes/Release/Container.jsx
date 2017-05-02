@@ -22,7 +22,7 @@ const ReleaseContainer = (props) => {
 };
 ReleaseContainer.propTypes = propTypes;
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, release } = state;
-  return ({ environment, routesHelper, release });
+  const { environment, routesHelper, itemRelease } = state;
+  return ({ environment, routesHelper, itemRelease });
 };
 export default connect(mapStateToProps)(ReleaseContainer);
