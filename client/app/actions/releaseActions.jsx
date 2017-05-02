@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import * as TYPES from '../constants/actionTypes';
 
+// TODO: unused func(setTitle)
 export const setTitle = title => ({
   type: TYPES.RELEASE_SET_TITLE,
   title,

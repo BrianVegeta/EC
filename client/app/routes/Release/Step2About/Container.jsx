@@ -9,6 +9,7 @@ import InputTags from './InputTags';
 import SelectCategory from './SelectCategory';
 import CounterAmount from './CounterAmount';
 import NextController from '../NextController';
+import { ABOUT } from '../constants/title';
 
 const saveAndNext = () => {
   setTimeout(() =>
@@ -17,7 +18,7 @@ const saveAndNext = () => {
 };
 const Container = props => (
   <div styleName="container">
-    <h2 styleName="title">關於物品</h2>
+    <h2 styleName="title">{ABOUT}</h2>
     <div styleName="inputGroup">
       <div styleName="inputHeader">
         <label>物品名稱</label>

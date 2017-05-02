@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import styles from './styles.sass';
 import NextController from '../NextController';
+import { CANCEL_POLICY } from '../constants/title';
 
-class CoverContainer extends React.Component {
+class CancelPolicyContainer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -14,24 +15,14 @@ class CoverContainer extends React.Component {
 
   saveAndNext() {
     setTimeout(() =>
-      browserHistory.push('/p/release_item/step2')
+      browserHistory.push('/p/release_item/step7')
     , 2000);
   }
 
   render() {
     return (
       <div styleName="container">
-        <h2 styleName="title">上傳照片</h2>
-        <ul styleName="noticeList">
-          <li>最多新增3張照片</li>
-          <li>圖片格式：jpg、jpge、png</li>
-          <li>每一張不得超過2MB</li>
-        </ul>
-        <div styleName="gallery">
-          <div styleName="imageUploader" />
-          <div styleName="imageUploader" />
-          <div styleName="imageUploader" />
-        </div>
+        <h2 styleName="title">{CANCEL_POLICY}</h2>
         <NextController next={this.saveAndNext} />
       </div>
     );
@@ -42,4 +33,4 @@ const mapStateToProps = (state) => {
   const { environment, routesHelper } = state;
   return ({ environment, routesHelper });
 };
-export default connect(mapStateToProps)(CSS(CoverContainer, styles));
+export default connect(mapStateToProps)(CSS(CancelPolicyContainer, styles));

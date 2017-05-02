@@ -1,11 +1,21 @@
 import {
   getCoverComponent,
   getAboutComponent,
+  getDeliveryComponent,
+  getPriceComponent,
+  getRegulationComponent,
+  getCancelPolicyComponent,
+  getConfirmComponent,
 } from './steps';
 
 const getChildRoutes = dispatch => (
   [
     getAboutComponent(dispatch, 'step2'),
+    getDeliveryComponent('step3'),
+    getPriceComponent('step4'),
+    getRegulationComponent('step5'),
+    getCancelPolicyComponent('step6'),
+    getConfirmComponent('step7'),
   ]
 );
 export default (routesHelper, dispatch) => ({
