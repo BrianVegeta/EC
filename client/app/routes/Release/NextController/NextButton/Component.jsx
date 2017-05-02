@@ -1,19 +1,18 @@
 import React, { PropTypes } from 'react';
-import Spinner from '../../../components/SpinnerCircle';
+import Spinner from '../../../../components/SpinnerCircle';
 
 const propTypes = {
-  editStatus: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+  next: PropTypes.func.isRequired,
 };
 const NextButton = (props) => {
-  const { editStatus } = props;
-  switch (editStatus) {
+  switch (props.status) {
     case 'ready':
       return (
         <button
           className="button"
           styleName="next"
-          onClick={props.dispatch}
+          onClick={props.next}
         >
           下一步
         </button>

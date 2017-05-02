@@ -1,14 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CSS from 'react-css-modules';
+import { browserHistory } from 'react-router';
 import styles from './styles.sass';
 import InputTitle from './InputTitle';
 import TextareaDescription from './TextareaDescription';
 import InputTags from './InputTags';
 import SelectCategory from './SelectCategory';
+import CounterAmount from './CounterAmount';
+import NextController from '../NextController';
 
+const saveAndNext = () => {
+  setTimeout(() =>
+    browserHistory.push('/p/release_item/step3')
+  , 2000);
+};
 const Container = props => (
   <div styleName="container">
+    <h2 styleName="title">關於物品</h2>
     <div styleName="inputGroup">
       <div styleName="inputHeader">
         <label>物品名稱</label>
@@ -37,6 +46,13 @@ const Container = props => (
       </div>
       <SelectCategory className={styles.inputControl} {...props} />
     </div>
+    <div styleName="inputGroup">
+      <div styleName="inputHeader">
+        <label>數量</label>
+      </div>
+      <CounterAmount styleName="inputControl" />
+    </div>
+    <NextController next={saveAndNext} />
   </div>
 );
 
