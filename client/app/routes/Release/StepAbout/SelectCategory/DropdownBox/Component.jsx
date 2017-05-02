@@ -13,7 +13,7 @@ class Component extends React.Component {
     this.navigateSubcates = this.navigateSubcates.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.state = {
-      pickingParent: false,
+      pickingParent: null,
       subcates: [],
     };
   }
@@ -44,6 +44,7 @@ class Component extends React.Component {
               navigateSubcates={this.navigateSubcates}
             />
             <Panel2nd
+              pickingParent={pickingParent}
               categories={this.state.subcates}
               prevPage={this.prevPage}
               style={panel2ndStyle}

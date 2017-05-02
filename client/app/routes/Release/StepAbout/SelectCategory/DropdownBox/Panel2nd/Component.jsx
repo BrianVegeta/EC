@@ -11,10 +11,22 @@ const propTypes = {
 };
 class Component extends React.Component {
   render() {
-    const { categories, style, prevPage } = this.props;
+    const { categories, style, prevPage, pickingParent } = this.props;
     return (
       <div styleName="container" {...{ style }}>
         <FixedScroll>
+          <div style={{ height: 45, width: '100%', position: 'absolute' }}>
+            <div
+              className="button"
+              styleName="controlColumn"
+              style={{ width: '100%', textAlign: 'left' }}
+              onClick={() => prevPage()}
+            >
+              <span className="fa fa-angle-left" />
+              {pickingParent && <span>{pickingParent.text}</span>}
+            </div>
+          </div>
+          <div style={{ height: 45, width: '100%' }} />
           {categories.map((cate, i) =>
             <div
               key={`${i + 1}`}
@@ -24,7 +36,6 @@ class Component extends React.Component {
               {cate.text}
             </div>,
           )}
-          { <button onClick={() => prevPage()}> prev </button> }
         </FixedScroll>
       </div>
     );
