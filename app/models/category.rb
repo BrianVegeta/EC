@@ -1,9 +1,4 @@
-class Category
-  include HTTParty
-  base_uri Settings.api_base_uri
-  HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
-  headers HEADERS
-  PATH = '/client/item/category/list'
+class Category < ApiBase
 
   # service, page useless
   # def initialize(service, page)
