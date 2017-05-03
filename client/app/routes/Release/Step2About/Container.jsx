@@ -30,13 +30,15 @@ class Container extends React.Component {
   }
 
   rTitleField() {
-    const { itemRelease } = this.props;
+    const { titleLength, isTitleOverLength } = this.props.itemRelease.form;
     return (
       <div styleName="inputGroup">
         <div styleName="inputHeader">
           <label htmlFor="title">物品名稱</label>
           <span styleName="inputLimit">
-            {itemRelease.form.titleLength}/30
+            <span styleName={isTitleOverLength && 'limitError'}>
+              {titleLength}
+            </span>/30
           </span>
         </div>
         <div styleName="inputControl">
