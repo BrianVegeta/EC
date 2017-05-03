@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Paginable from './Paginable';
 
 const defaultProps = {
   arrangement: 'single',
@@ -48,11 +49,13 @@ class Selection extends React.Component {
   }
 
   rDropdownBox() {
+    const { arrangement, options } = this.props;
     return (
       <div styleName="dropdownBox">
         <div styleName="dropdownPanel">
-          {this.props.arrangement === 'single' && this.rSingleSelection()}
-          {this.props.arrangement === 'grid' && this.rGribSelection()}
+          {arrangement === 'single' && this.rSingleSelection()}
+          {arrangement === 'grid' && this.rGribSelection()}
+          {arrangement === 'paginable' && <Paginable options={options} />}
         </div>
       </div>
     );

@@ -34,9 +34,29 @@ class DeliveryContainer extends React.Component {
     return _.range(1, 8).map(n => `合約開始前${n}日內`);
   }
 
+  static cities() {
+    return [
+      {
+        text: '台北市',
+        children: [
+          { text: '中正區' },
+          { text: '大同區' },
+        ],
+      },
+      {
+        text: '新北市',
+        children: [
+          { text: '萬里區' },
+          { text: '金山區' },
+        ],
+      },
+    ];
+  }
+
   constructor(props) {
     super(props);
     this.saveAndNext = this.saveAndNext.bind(this);
+    this.updateCity = this.updateCity.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +67,10 @@ class DeliveryContainer extends React.Component {
     setTimeout(() =>
       browserHistory.push('/p/release_item/step4')
     , 2000);
+  }
+
+  updateCity(value) {
+    console.log(value);
   }
 
   render() {
@@ -61,6 +85,15 @@ class DeliveryContainer extends React.Component {
             onSelected={value => dispatch(updateCity(value))}
             value={form.city}
             arrangement="grid"
+            placeholder="城市/地區"
+          />
+        </InputField>
+        <InputField headerText="物品地區">
+          <Selection
+            options={this.constructor.cities()}
+            onSelected={value => dispatch(updateCity(value))}
+            value=""
+            arrangement="paginable"
             placeholder="城市/地區"
           />
         </InputField>
