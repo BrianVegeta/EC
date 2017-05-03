@@ -10,10 +10,16 @@ import NextController from '../NextController';
 import InputField from './InputField';
 import Selection from './Selection';
 import Title from '../Title';
+import {
+  updateCity,
+  updateShipping,
+  updateShippingDays,
+} from '../../../actions/itemReleaseActions';
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
   cities: PropTypes.array.isRequired,
+  form: PropTypes.object.isRequired,
 };
 class DeliveryContainer extends React.Component {
 
@@ -45,12 +51,15 @@ class DeliveryContainer extends React.Component {
 
   render() {
     const { deliveryWays, deliveryDays } = this.constructor;
+    const { dispatch, form } = this.props;
     return (
       <div styleName="container">
         <Title text={DELIVERY} />
         <InputField headerText="物品地區">
           <Selection
             options={this.props.cities}
+            onSelected={value => dispatch(updateCity(value))}
+            value={form.city}
             arrangement="grid"
             placeholder="城市/地區"
           />
@@ -58,12 +67,16 @@ class DeliveryContainer extends React.Component {
         <InputField headerText="寄件方式">
           <Selection
             options={deliveryWays()}
+            onSelected={value => dispatch(updateShipping(value))}
+            value={form.shipping}
             placeholder="請選擇"
           />
         </InputField>
         <InputField headerText="合約開始前出貨日">
           <Selection
             options={deliveryDays()}
+            onSelected={value => dispatch(updateShippingDays(value))}
+            value={form.shippingDays}
             placeholder="請選擇"
           />
         </InputField>
@@ -74,8 +87,9 @@ class DeliveryContainer extends React.Component {
 }
 DeliveryContainer.propTypes = propTypes;
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, address } = state;
+  const { environment, routesHelper, address, itemRelease } = state;
   const { cities } = address;
-  return ({ environment, routesHelper, cities });
+  const { form } = itemRelease;
+  return ({ environment, routesHelper, cities, form });
 };
 export default connect(mapStateToProps)(CSS(DeliveryContainer, styles));

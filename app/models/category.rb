@@ -1,5 +1,5 @@
 class Category < ApiBase
-
+  PATH = '/client/item/category/list'
   # service, page useless
   # def initialize(service, page)
   #   @options = { query: { site: service, page: page } }

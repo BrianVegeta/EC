@@ -7,6 +7,8 @@ const propTypes = {
   arrangement: PropTypes.string,
   options: PropTypes.array.isRequired,
   placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onSelected: PropTypes.func.isRequired,
 };
 class Selection extends React.Component {
 
@@ -18,8 +20,8 @@ class Selection extends React.Component {
     super(props);
     this.openDropdown = this.openDropdown.bind(this);
     this.closeDropdown = this.closeDropdown.bind(this);
+    this.select = this.select.bind(this);
     this.state = {
-      value: this.props.placeholder,
       isDropdowning: false,
     };
   }
@@ -30,6 +32,19 @@ class Selection extends React.Component {
 
   closeDropdown() {
     this.setState({ isDropdowning: false });
+  }
+
+  select(value) {
+    this.button.blur();
+    this.props.onSelected(value);
+  }
+
+  selectedValue() {
+    const { value, placeholder } = this.props;
+    if (value === '') {
+      return <span styleName="placeholder">{placeholder}</span>;
+    }
+    return value;
   }
 
   rDropdownBox() {
@@ -48,7 +63,13 @@ class Selection extends React.Component {
       <div styleName="selectionGrid">
         {this.props.options.map((option, i) =>
           <div key={`${i + 1}`} styleName="option">
-            <div styleName="optionInner">{option}</div>
+            <div
+              role="button"
+              styleName="optionInner"
+              onClick={() => this.select(option)}
+            >
+              {option}
+            </div>
           </div>,
         )}
       </div>
@@ -61,11 +82,21 @@ class Selection extends React.Component {
         {this.props.options.map((option, i) =>
           <div key={`${i + 1}`} styleName="option">
             {this.constructor.isObject(option) ?
-              <div styleName="optionInner">
+              <div
+                role="button"
+                styleName="optionInner"
+                onClick={() => this.select(option.text)}
+              >
                 {option.text}
                 <span styleName="optionAddition">{option.addition}</span>
               </div> :
-              <div styleName="optionInner">{option}</div>}
+              <div
+                role="button"
+                styleName="optionInner"
+                onClick={() => this.select(option)}
+              >
+                {option}
+              </div>}
           </div>,
         )}
       </div>
@@ -77,10 +108,16 @@ class Selection extends React.Component {
       <button
         className="button"
         styleName="selectBtn"
+        ref={button => (this.button = button)}
         onFocus={this.openDropdown}
         onBlur={this.closeDropdown}
       >
-        <div styleName="innerWrapper">{this.state.value}</div>
+        <div styleName="innerWrapper">
+          {this.selectedValue()}
+          <div styleName="dropdownArrow">
+            <span className="fa fa-angle-down" />
+          </div>
+        </div>
         { this.state.isDropdowning && this.rDropdownBox() }
       </button>
     );

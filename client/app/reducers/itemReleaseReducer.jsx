@@ -1,37 +1,22 @@
 import * as TYPES from '../constants/actionTypes';
+import formReducer from './itemReleaseFormReducer';
 
-const titleLimit = 30;
-const descriptLimit = 250;
 const initialState = {
-  form: {
-    title: '',
-    titleLength: 0,
-    isTitleOverLength: false,
-    descript: '',
-    descriptLength: 0,
-    isDescriptOverLength: false,
-  },
+  form: formReducer(undefined, { type: null }),
 };
 export default (state = initialState, action) => {
+  const { form } = state;
   switch (action.type) {
-    case TYPES.ITEM_RELEASE_SET_TITLE: {
-      const { title } = action;
-      const titleLength = title.length;
-      const isTitleOverLength = titleLength > titleLimit;
-      const form = Object.assign({}, state.form, { title, titleLength, isTitleOverLength });
-      return Object.assign({}, state, { form });
-    }
-    case TYPES.ITEM_RELEASE_SET_DESCRIPTION: {
-      const { descript } = action;
-      const descriptLength = descript.replace(/\n/g, '').length;
-      const isDescriptOverLength = descriptLength > descriptLimit;
-      const form = Object.assign({}, state.form, {
-        descript,
-        descriptLength,
-        isDescriptOverLength,
-      });
-      return Object.assign({}, state, { form });
-    }
+    case TYPES.ITEM_RELEASE_SET_TITLE:
+      return Object.assign({}, state, { form: formReducer(form, action) });
+    case TYPES.ITEM_RELEASE_SET_DESCRIPTION:
+      return Object.assign({}, state, { form: formReducer(form, action) });
+    case TYPES.ITEM_RELEASE_FORM_SET_CITY:
+      return Object.assign({}, state, { form: formReducer(form, action) });
+    case TYPES.ITEM_RELEASE_FORM_SET_SHIPPING:
+      return Object.assign({}, state, { form: formReducer(form, action) });
+    case TYPES.ITEM_RELEASE_FORM_SET_SHIPPING_DAYS:
+      return Object.assign({}, state, { form: formReducer(form, action) });
     default:
       return state;
   }
