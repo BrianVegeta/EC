@@ -1,0 +1,15 @@
+defaults: &defaults
+  cool:
+    saweet: nested settings
+  neat_setting: 24
+  awesome_setting: <%= "Did you know 5 + 5 = #{5 + 5}?" %>
+
+development:
+  <<: *defaults
+  api_base_uri: http://220.135.3.115:18080/ShareAPI-1.2.4
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

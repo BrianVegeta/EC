@@ -1,0 +1,19 @@
+%h1 Listing ajax_addresses
+
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @ajax_addresses.each do |ajax_address|
+      %tr
+        %td= link_to 'Show', ajax_address
+        %td= link_to 'Edit', edit_ajax_address_path(ajax_address)
+        %td= link_to 'Destroy', ajax_address, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Address', new_ajax_address_path

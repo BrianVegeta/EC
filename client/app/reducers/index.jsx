@@ -8,6 +8,7 @@ import recommends from './recommendsReducer';
 import items from './itemsReducer';
 import itemLayout from './itemLayoutReducer';
 import itemRelease from './itemReleaseReducer';
+import address from './addressReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   recommends,
   itemLayout,
   itemRelease,
+  address,
 });

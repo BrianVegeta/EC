@@ -1,0 +1,10 @@
+= form_for @ajax_address do |f|
+  - if @ajax_address.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@ajax_address.errors.count, "error")} prohibited this ajax_address from being saved:"
+      %ul
+        - @ajax_address.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

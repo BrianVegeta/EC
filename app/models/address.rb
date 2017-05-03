@@ -1,17 +1,18 @@
-class Category
+class Address
   include HTTParty
   base_uri Settings.api_base_uri
   HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
   headers HEADERS
-  PATH = '/client/item/category/list'
+  PATH = '/client/other/cities'
+
 
   # service, page useless
   # def initialize(service, page)
   #   @options = { query: { site: service, page: page } }
   # end
 
-  def list
-    response = self.class.post(PATH)
+  def get_cities
+    response = self.class.get(PATH)
     case response.code
     when 200
       response['data']
@@ -20,10 +21,5 @@ class Category
     else
       raise "ZOMG ERROR #{response.code}"
     end
-  end
-
-  def self.map_id shortname
-    map = { goods: 1, service: 2, space: 3 }
-    map[shortname]
   end
 end

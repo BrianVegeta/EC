@@ -4,7 +4,6 @@ class IndexController < ApplicationController
   end
 
   def pages
-
     @props = {
       routesHelper: {
         root: root_path,
@@ -22,6 +21,7 @@ class IndexController < ApplicationController
         ajax: {
           items: ajax_items_path(:json),
           categories: ajax_categories_path(:json),
+          cities: cities_ajax_addresses_path(:json),
           recommend: {
             category: categories_ajax_recommends_path(:json),
             goods: goods_ajax_recommends_path(:json),

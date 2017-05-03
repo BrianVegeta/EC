@@ -6,6 +6,11 @@ Rails.application.routes.draw do
     resources :banners, only: :index
     resources :items, only: :index
     resources :categories, only: :index
+    resources :addresses, only: [] do
+      collection do
+        get 'cities'
+      end
+    end
     resources :recommends, only: [] do
       collection do
         get 'categories'
