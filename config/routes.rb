@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :addresses, only: [] do
       collection do
         get 'cities'
+        get 'zones'
       end
     end
     resources :recommends, only: [] do

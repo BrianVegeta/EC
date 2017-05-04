@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import { DELIVERY } from '../constants/title';
-import { fetchCities } from '../../../actions/addressActions';
 import styles from './styles.sass';
 import NextController from '../NextController';
 import InputField from './InputField';
 import Selection from './Selection';
 import Title from '../Title';
+import { fetchCities, fetchZones } from '../../../actions/addressActions';
 import {
   updateCity,
   updateShipping,
@@ -34,23 +34,11 @@ class DeliveryContainer extends React.Component {
     return _.range(1, 8).map(n => `合約開始前${n}日內`);
   }
 
-  static cities() {
-    return [
-      {
-        text: '台北市',
-        children: [
-          { text: '中正區' },
-          { text: '大同區' },
-        ],
-      },
-      {
-        text: '新北市',
-        children: [
-          { text: '萬里區' },
-          { text: '金山區' },
-        ],
-      },
-    ];
+  static generateCities(cities) {
+    return cities.map(city => ({
+      text: city.city,
+      children: city.zones.map(zone => ({ text: zone })),
+    }));
   }
 
   constructor(props) {
@@ -75,23 +63,15 @@ class DeliveryContainer extends React.Component {
 
   render() {
     const { deliveryWays, deliveryDays } = this.constructor;
-    const { dispatch, form } = this.props;
+    const { dispatch, form, cities } = this.props;
     return (
       <div styleName="container">
         <Title text={DELIVERY} />
         <InputField headerText="物品地區">
           <Selection
-            options={this.props.cities}
-            onSelected={value => dispatch(updateCity(value))}
-            value={form.city}
-            arrangement="grid"
-            placeholder="城市/地區"
-          />
-        </InputField>
-        <InputField headerText="物品地區">
-          <Selection
-            options={this.constructor.cities()}
-            onSelected={value => dispatch(updateCity(value))}
+            options={this.constructor.generateCities(cities)}
+            onParentSelect={value => dispatch(fetchZones(value))}
+            onLeafSelect={value => dispatch(updateCity(value))}
             value=""
             arrangement="paginable"
             placeholder="城市/地區"
@@ -120,8 +100,7 @@ class DeliveryContainer extends React.Component {
 }
 DeliveryContainer.propTypes = propTypes;
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, address, itemRelease } = state;
-  const { cities } = address;
+  const { environment, routesHelper, cities, itemRelease } = state;
   const { form } = itemRelease;
   return ({ environment, routesHelper, cities, form });
 };

@@ -15,7 +15,7 @@ class Paginable extends React.Component {
 
   onParentClick(option) {
     this.setState({ choosedText: option.text });
-    this.props.onParentSelect();
+    this.props.onParentSelect(option.text);
   }
 
   onLeafClick(option) {
@@ -52,6 +52,7 @@ class Paginable extends React.Component {
   }
 
   render() {
+    console.log(this.props.options);
     const { type, options } = this.handleOptions();
     return (
       <div styleName="selectionGrid">

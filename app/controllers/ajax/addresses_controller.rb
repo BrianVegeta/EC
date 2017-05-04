@@ -14,6 +14,12 @@ class Ajax::AddressesController < ApplicationController
     render json: @cities
   end
 
+  # GET /ajax/addresses/zones.json?city=""
+  def zones
+    @zones = Address.new.get_zones(params[:city])
+    render json: @zones
+  end
+
   # GET /ajax/addresses/1
   # GET /ajax/addresses/1.json
   def show

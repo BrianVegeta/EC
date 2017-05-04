@@ -1,17 +1,23 @@
 import React, { PropTypes } from 'react';
 import Paginable from './Paginable';
 
-const defaultProps = {
-  arrangement: 'single',
-};
-const propTypes = {
-  arrangement: PropTypes.string,
-  options: PropTypes.array.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onSelected: PropTypes.func.isRequired,
-};
 class Selection extends React.Component {
+  static defaultProps = {
+    arrangement: 'single',
+    onSelected: null,
+    onLeafSelect: null,
+    onParentSelect: null,
+  };
+
+  static propTypes = {
+    arrangement: PropTypes.string,
+    options: PropTypes.array.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    onSelected: PropTypes.func,
+    onLeafSelect: PropTypes.func,
+    onParentSelect: PropTypes.func,
+  };
 
   static isObject(val) {
     return typeof val === 'object' && val !== null;
@@ -36,7 +42,6 @@ class Selection extends React.Component {
 
   onParentSelect() {
     // TODO: paginable testing
-    console.log('parent select');
   }
 
   select(value) {
@@ -63,7 +68,11 @@ class Selection extends React.Component {
   }
 
   rDropdownBox() {
+    if (!this.state.isDropdowning) {
+      return null;
+    }
     const { arrangement, options } = this.props;
+    console.log(options);
     return (
       <div styleName="dropdownBox">
         <div styleName="dropdownPanel">
@@ -73,8 +82,8 @@ class Selection extends React.Component {
             arrangement === 'paginable' &&
             <Paginable
               options={options}
-              onLeafSelect={this.onLeafSelect}
-              onParentSelect={this.onParentSelect}
+              onLeafSelect={value => this.props.onLeafSelect(value)}
+              onParentSelect={value => this.props.onParentSelect(value)}
             />
           }
         </div>
@@ -137,11 +146,9 @@ class Selection extends React.Component {
             <span className="fa fa-angle-down" />
           </div>
         </div>
-        { this.state.isDropdowning && this.rDropdownBox() }
+        {this.rDropdownBox()}
       </button>
     );
   }
 }
-Selection.defaultProps = defaultProps;
-Selection.propTypes = propTypes;
 export default Selection;

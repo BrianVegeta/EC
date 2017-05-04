@@ -22,6 +22,7 @@ class IndexController < ApplicationController
           items: ajax_items_path(:json),
           categories: ajax_categories_path(:json),
           cities: cities_ajax_addresses_path(:json),
+          cityZones: zones_ajax_addresses_path(:json, city: 'qCity'),
           recommend: {
             category: categories_ajax_recommends_path(:json),
             goods: goods_ajax_recommends_path(:json),
