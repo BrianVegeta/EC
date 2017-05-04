@@ -22,9 +22,26 @@ class Selection extends React.Component {
     this.openDropdown = this.openDropdown.bind(this);
     this.closeDropdown = this.closeDropdown.bind(this);
     this.select = this.select.bind(this);
+    this.onParentSelect = this.onParentSelect.bind(this);
+    this.onLeafSelect = this.onLeafSelect.bind(this);
     this.state = {
-      isDropdowning: false,
+      // TODO: paginable testing
+      isDropdowning: this.props.arrangement === 'paginable',
     };
+  }
+
+  onLeafSelect() {
+    this.button.blur();
+  }
+
+  onParentSelect() {
+    // TODO: paginable testing
+    console.log('parent select');
+  }
+
+  select(value) {
+    this.button.blur();
+    this.props.onSelected(value);
   }
 
   openDropdown() {
@@ -32,12 +49,9 @@ class Selection extends React.Component {
   }
 
   closeDropdown() {
+    // TODO: paginable testing
+    return;
     this.setState({ isDropdowning: false });
-  }
-
-  select(value) {
-    this.button.blur();
-    this.props.onSelected(value);
   }
 
   selectedValue() {
@@ -55,7 +69,14 @@ class Selection extends React.Component {
         <div styleName="dropdownPanel">
           {arrangement === 'single' && this.rSingleSelection()}
           {arrangement === 'grid' && this.rGribSelection()}
-          {arrangement === 'paginable' && <Paginable options={options} />}
+          {
+            arrangement === 'paginable' &&
+            <Paginable
+              options={options}
+              onLeafSelect={this.onLeafSelect}
+              onParentSelect={this.onParentSelect}
+            />
+          }
         </div>
       </div>
     );
@@ -67,9 +88,8 @@ class Selection extends React.Component {
         {this.props.options.map((option, i) =>
           <div key={`${i + 1}`} styleName="option">
             <div
-              role="button"
               styleName="optionInner"
-              onClick={() => this.select(option)}
+              {...{ role: 'button', onClick: () => this.select(option) }}
             >
               {option}
             </div>
@@ -80,28 +100,24 @@ class Selection extends React.Component {
   }
 
   rSingleSelection() {
+    const { isObject } = this.constructor;
     return (
       <div styleName="selectionSingleLine">
-        {this.props.options.map((option, i) =>
-          <div key={`${i + 1}`} styleName="option">
-            {this.constructor.isObject(option) ?
+        {this.props.options.map((option, i) => {
+          const text = isObject(option) ? option.text : option;
+          return (
+            <div key={`${i + 1}`} styleName="option">
               <div
-                role="button"
                 styleName="optionInner"
-                onClick={() => this.select(option.text)}
+                {...{ role: 'button', onClick: () => this.select(text) }}
               >
-                {option.text}
-                <span styleName="optionAddition">{option.addition}</span>
-              </div> :
-              <div
-                role="button"
-                styleName="optionInner"
-                onClick={() => this.select(option)}
-              >
-                {option}
-              </div>}
-          </div>,
-        )}
+                {text}
+                {isObject(option) &&
+                  <span styleName="optionAddition">{option.addition}</span>}
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }
