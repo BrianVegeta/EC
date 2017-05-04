@@ -1,61 +1,42 @@
 import React, { PropTypes } from 'react';
-import Paginable from './Paginable';
+import DropdownCities from './DropdownCities';
+import DropdownList from './DropdownList';
 
 class Selection extends React.Component {
   static defaultProps = {
-    arrangement: 'single',
-    onSelected: null,
-    onLeafSelect: null,
-    onParentSelect: null,
+    arrangement: 'list',
+    onSelect: null,
+    onPagination: null,
   };
 
   static propTypes = {
     arrangement: PropTypes.string,
-    options: PropTypes.array.isRequired,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
     placeholder: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    onSelected: PropTypes.func,
-    onLeafSelect: PropTypes.func,
-    onParentSelect: PropTypes.func,
+    onSelect: PropTypes.func,
+    onPagination: PropTypes.arrayOf(PropTypes.func),
   };
-
-  static isObject(val) {
-    return typeof val === 'object' && val !== null;
-  }
 
   constructor(props) {
     super(props);
-    this.openDropdown = this.openDropdown.bind(this);
-    this.closeDropdown = this.closeDropdown.bind(this);
-    this.select = this.select.bind(this);
-    this.onParentSelect = this.onParentSelect.bind(this);
-    this.onLeafSelect = this.onLeafSelect.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.state = {
-      // TODO: paginable testing
-      isDropdowning: this.props.arrangement === 'paginable',
+      isDropdowning: false,
     };
   }
 
-  onLeafSelect() {
+  onSelect(v) {
+    this.props.onSelect(v);
     this.button.blur();
   }
 
-  onParentSelect() {
-    // TODO: paginable testing
-  }
-
-  select(value) {
-    this.button.blur();
-    this.props.onSelected(value);
-  }
-
-  openDropdown() {
+  onFocus() {
     this.setState({ isDropdowning: true });
   }
 
-  closeDropdown() {
-    // TODO: paginable testing
-    return;
+  onBlur() {
     this.setState({ isDropdowning: false });
   }
 
@@ -67,66 +48,26 @@ class Selection extends React.Component {
     return value;
   }
 
-  rDropdownBox() {
-    if (!this.state.isDropdowning) {
-      return null;
-    }
+  renderDropdownContent() {
     const { arrangement, options } = this.props;
-    console.log(options);
+    const props = {
+      options,
+      onSelect: v => this.onSelect(v),
+    };
+    switch (arrangement) {
+      case 'cities':
+        return <DropdownCities {...props} onPagination={this.props.onPagination} />;
+      default:
+        return <DropdownList {...props} />;
+    }
+  }
+
+  renderDropdownBox() {
     return (
       <div styleName="dropdownBox">
         <div styleName="dropdownPanel">
-          {arrangement === 'single' && this.rSingleSelection()}
-          {arrangement === 'grid' && this.rGribSelection()}
-          {
-            arrangement === 'paginable' &&
-            <Paginable
-              options={options}
-              onLeafSelect={value => this.props.onLeafSelect(value)}
-              onParentSelect={value => this.props.onParentSelect(value)}
-            />
-          }
+          {this.renderDropdownContent()}
         </div>
-      </div>
-    );
-  }
-
-  rGribSelection() {
-    return (
-      <div styleName="selectionGrid">
-        {this.props.options.map((option, i) =>
-          <div key={`${i + 1}`} styleName="option">
-            <div
-              styleName="optionInner"
-              {...{ role: 'button', onClick: () => this.select(option) }}
-            >
-              {option}
-            </div>
-          </div>,
-        )}
-      </div>
-    );
-  }
-
-  rSingleSelection() {
-    const { isObject } = this.constructor;
-    return (
-      <div styleName="selectionSingleLine">
-        {this.props.options.map((option, i) => {
-          const text = isObject(option) ? option.text : option;
-          return (
-            <div key={`${i + 1}`} styleName="option">
-              <div
-                styleName="optionInner"
-                {...{ role: 'button', onClick: () => this.select(text) }}
-              >
-                {text}
-                {isObject(option) &&
-                  <span styleName="optionAddition">{option.addition}</span>}
-              </div>
-            </div>
-          );
-        })}
       </div>
     );
   }
@@ -136,9 +77,9 @@ class Selection extends React.Component {
       <button
         className="button"
         styleName="selectBtn"
-        ref={button => (this.button = button)}
-        onFocus={this.openDropdown}
-        onBlur={this.closeDropdown}
+        ref={b => (this.button = b)}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
       >
         <div styleName="innerWrapper">
           {this.selectedValue()}
@@ -146,7 +87,7 @@ class Selection extends React.Component {
             <span className="fa fa-angle-down" />
           </div>
         </div>
-        {this.rDropdownBox()}
+        {this.state.isDropdowning && this.renderDropdownBox()}
       </button>
     );
   }

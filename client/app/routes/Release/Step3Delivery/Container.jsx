@@ -31,7 +31,7 @@ class DeliveryContainer extends React.Component {
   }
 
   static deliveryDays() {
-    return _.range(1, 8).map(n => `合約開始前${n}日內`);
+    return _.range(1, 8).map(n => ({ text: `合約開始前${n}日內` }));
   }
 
   static generateCities(cities) {
@@ -44,7 +44,6 @@ class DeliveryContainer extends React.Component {
   constructor(props) {
     super(props);
     this.saveAndNext = this.saveAndNext.bind(this);
-    this.updateCity = this.updateCity.bind(this);
   }
 
   componentDidMount() {
@@ -57,30 +56,49 @@ class DeliveryContainer extends React.Component {
     , 2000);
   }
 
-  updateCity(value) {
-    console.log(value);
+  onCitySelect(option) {
+    this.props.dispatch(fetchZones(option.text));
+  }
+
+  onCityZoneSelect(tracks) {
+    console.log(tracks);
+    // TODO: wk
+  }
+
+  onShippingSelect(option) {
+    this.props.dispatch(
+      updateShipping(option.text),
+    );
+  }
+
+  onShippingDaysSelect(option) {
+    this.props.dispatch(
+      updateShippingDays(option.text),
+    );
   }
 
   render() {
     const { deliveryWays, deliveryDays } = this.constructor;
-    const { dispatch, form, cities } = this.props;
+    const { form, cities } = this.props;
     return (
       <div styleName="container">
         <Title text={DELIVERY} />
         <InputField headerText="物品地區">
           <Selection
             options={this.constructor.generateCities(cities)}
-            onParentSelect={value => dispatch(fetchZones(value))}
-            onLeafSelect={value => dispatch(updateCity(value))}
+            onPagination={[
+              v => this.onCitySelect(v),
+            ]}
+            onSelect={v => this.onCityZoneSelect(v)}
             value=""
-            arrangement="paginable"
+            arrangement="cities"
             placeholder="城市/地區"
           />
         </InputField>
         <InputField headerText="寄件方式">
           <Selection
             options={deliveryWays()}
-            onSelected={value => dispatch(updateShipping(value))}
+            onSelect={v => this.onShippingSelect(v)}
             value={form.shipping}
             placeholder="請選擇"
           />
@@ -88,7 +106,7 @@ class DeliveryContainer extends React.Component {
         <InputField headerText="合約開始前出貨日">
           <Selection
             options={deliveryDays()}
-            onSelected={value => dispatch(updateShippingDays(value))}
+            onSelect={v => this.onShippingDaysSelect(v)}
             value={form.shippingDays}
             placeholder="請選擇"
           />
