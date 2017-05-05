@@ -9,7 +9,7 @@ const initialState = {
   descript: '',
   descriptLength: 0,
   isDescriptOverLength: false,
-  city: '',
+  cityzone: '',
   shipping: '',
   shippingDays: '',
 };
@@ -31,9 +31,9 @@ export default (state = initialState, action) => {
         isDescriptOverLength,
       });
     }
-    case TYPES.ITEM_RELEASE_FORM_SET_CITY: {
-      const { city } = action;
-      return Object.assign({}, state, { city });
+    case TYPES.ITEM_RELEASE_FORM_SET_CITYZONE: {
+      const { cityzone } = action;
+      return Object.assign({}, state, { cityzone });
     }
     case TYPES.ITEM_RELEASE_FORM_SET_SHIPPING: {
       const { shipping } = action;

@@ -11,9 +11,9 @@ export const setDescript = descript => ({
   descript,
 });
 
-export const updateCity = city => ({
-  type: TYPES.ITEM_RELEASE_FORM_SET_CITY,
-  city,
+export const updateCityzone = cityzone => ({
+  type: TYPES.ITEM_RELEASE_FORM_SET_CITYZONE,
+  cityzone,
 });
 
 export const updateShipping = shipping => ({

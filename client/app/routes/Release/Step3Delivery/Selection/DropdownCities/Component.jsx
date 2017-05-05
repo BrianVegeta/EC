@@ -27,6 +27,10 @@ class Cities extends React.Component {
     this.setState({ tracks });
   }
 
+  onSelect(tracks, option) {
+    this.props.onSelect([tracks, option]);
+  }
+
   prevPage() {
     const tracks = _.clone(this.state.tracks);
     tracks.pop();
@@ -66,7 +70,6 @@ class Cities extends React.Component {
   // }
 
   renderLeaves(options) {
-    const { onSelect } = this.props;
     const minHeight = (options.length === 0 && this.rootMinHeight);
     return (
       <div styleName="selection" style={{ minHeight }}>
@@ -85,7 +88,10 @@ class Cities extends React.Component {
             <div key={`${i + 1}`} styleName="leafOption">
               <div
                 styleName="optioner"
-                {...{ role: 'button', onClick: () => onSelect(this.state.tracks) }}
+                {...{
+                  role: 'button',
+                  onClick: () => this.onSelect(this.state.tracks, opt),
+                }}
               >
                 {opt.text}
               </div>

@@ -11,7 +11,7 @@ import Selection from './Selection';
 import Title from '../Title';
 import { fetchCities, fetchZones } from '../../../actions/addressActions';
 import {
-  updateCity,
+  updateCityzone,
   updateShipping,
   updateShippingDays,
 } from '../../../actions/itemReleaseActions';
@@ -60,9 +60,12 @@ class DeliveryContainer extends React.Component {
     this.props.dispatch(fetchZones(option.text));
   }
 
-  onCityZoneSelect(tracks) {
-    console.log(tracks);
-    // TODO: wk
+  onCityZoneSelect(tracksTailedOption) {
+    const tracks = tracksTailedOption[0];
+    const option = tracksTailedOption[1];
+    this.props.dispatch(
+      updateCityzone(`${tracks.join('')}${option.text}`),
+    );
   }
 
   onShippingSelect(option) {
@@ -90,7 +93,7 @@ class DeliveryContainer extends React.Component {
               v => this.onCitySelect(v),
             ]}
             onSelect={v => this.onCityZoneSelect(v)}
-            value=""
+            value={form.cityzone}
             arrangement="cities"
             placeholder="城市/地區"
           />

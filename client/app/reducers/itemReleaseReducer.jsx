@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { form: formReducer(form, action) });
     case TYPES.ITEM_RELEASE_SET_DESCRIPTION:
       return Object.assign({}, state, { form: formReducer(form, action) });
-    case TYPES.ITEM_RELEASE_FORM_SET_CITY:
+    case TYPES.ITEM_RELEASE_FORM_SET_CITYZONE:
       return Object.assign({}, state, { form: formReducer(form, action) });
     case TYPES.ITEM_RELEASE_FORM_SET_SHIPPING:
       return Object.assign({}, state, { form: formReducer(form, action) });
