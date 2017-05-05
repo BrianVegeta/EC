@@ -20,7 +20,7 @@ class Number extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.state = {
       isFocusing: false,
-      value: 0,
+      value: '',
     };
   }
 
@@ -34,7 +34,9 @@ class Number extends React.Component {
 
   onInputChange() {
     const input = this.input;
-    console.log(input.refs.input.getValueAsNumber());
+    if (input) {
+      console.log(input.refs.input.getValueAsNumber());
+    }
   }
 
   render() {

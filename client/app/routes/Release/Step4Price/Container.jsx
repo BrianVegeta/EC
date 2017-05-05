@@ -31,7 +31,7 @@ class PriceContainer extends React.Component {
         <FormGroup headerText="租金" helperText="一天的價格為單位">
           <InputCurrency
             unit={CURRENCY_UNIT}
-            value="1"
+            value="12"
           />
         </FormGroup>
         <FormGroup headerText="押金" helperText="請依物品狀況，設定合理的價格">

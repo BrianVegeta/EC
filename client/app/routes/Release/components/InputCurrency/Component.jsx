@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import NumberFormat from 'react-number-format';
 
 class InputCurrency extends React.Component {
 
@@ -41,12 +42,13 @@ class InputCurrency extends React.Component {
         >
           {this.props.unit}
         </span>
-        <input
+        <NumberFormat
           ref={i => (this.input = i)}
           styleName="inputInner"
           placeholder={this.props.placeholder}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          thousandSeparator
         />
       </div>
     );
