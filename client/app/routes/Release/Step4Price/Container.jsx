@@ -1,7 +1,7 @@
 import React from 'react';
 import CSS from 'react-css-modules';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import styles from './styles.sass';
 import NextController from '../NextController';
 import { PRICE } from '../constants/title';
@@ -11,6 +11,8 @@ import InputCurrency from '../components/InputCurrency';
 import InputNumber from '../components/InputNumber';
 
 const CURRENCY_UNIT = 'NT$';
+const NEW_DISCOUNT_PATH = '/p/release_item/step4/new_discount';
+// TODO: routes for discount
 class PriceContainer extends React.Component {
 
   constructor(props) {
@@ -52,9 +54,22 @@ class PriceContainer extends React.Component {
           helperText="使用折扣能吸引更多用戶前來下單"
           optional
         >
-          TEST
+          <Link to={NEW_DISCOUNT_PATH}>
+            <button
+              style={{
+                height: 40,
+                border: '1px solid #444',
+                borderRadius: 4,
+                padding: '8px 20px',
+              }}
+              className="button"
+            >
+              新增折扣
+            </button>
+          </Link>
         </FormGroup>
         <NextController next={this.saveAndNext} />
+        <div>{this.props.modalComponent}</div>
       </div>
     );
   }
