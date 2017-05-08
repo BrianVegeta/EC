@@ -43,15 +43,6 @@ const getPriceComponent = path => ({
   },
   childRoutes: [
     {
-      path: 'new_discount',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          const modalComponent = require('./Step4Price/DiscountCreate/Container').default;
-          callback(null, { modalComponent });
-        }, 'discount');
-      },
-    },
-    {
       path: 'd_c',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {

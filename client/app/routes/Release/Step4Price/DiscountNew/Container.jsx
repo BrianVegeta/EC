@@ -13,7 +13,6 @@ class DiscountContainer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.goBack = this.goBack.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
