@@ -8,10 +8,11 @@ import { PRICE } from '../constants/title';
 import Title from '../components/Title';
 import FormGroup from '../components/FormGroup';
 import InputCurrency from '../components/InputCurrency';
-import InputNumber from '../components/InputNumber';
+import InputCounter from '../components/InputCounter';
 
 const CURRENCY_UNIT = 'NT$';
 const NEW_DISCOUNT_PATH = '/p/release_item/step4/new_discount';
+const CREATE_DISCOUNT_PATH = '/p/release_item/step4/d_c';
 // TODO: routes for discount
 class PriceContainer extends React.Component {
 
@@ -22,11 +23,13 @@ class PriceContainer extends React.Component {
 
   saveAndNext() {
     setTimeout(() =>
+      // TODO: path
       browserHistory.push('/p/release_item/step5')
     , 2000);
   }
 
   render() {
+    // TODO: now
     return (
       <div styleName="container">
         <Title text={PRICE} helperText="合理的價格有助於成交機率" />
@@ -47,14 +50,14 @@ class PriceContainer extends React.Component {
           helperText="一天的價格為單位"
           optional
         >
-          <InputNumber value="1" />
+          <InputCounter value={1} suffix="天" />
         </FormGroup>
         <FormGroup
           headerText="自訂折扣"
           helperText="使用折扣能吸引更多用戶前來下單"
           optional
         >
-          <Link to={NEW_DISCOUNT_PATH}>
+          <Link to={CREATE_DISCOUNT_PATH}>
             <button
               style={{
                 height: 40,

@@ -1,0 +1,47 @@
+.modal
+  position: fixed
+  z-index: 1040
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+
+.backdrop
+  composes: modal
+  background-color: #000
+  opacity: 0.5
+
+.dialog
+  position: fixed
+  z-index: 1050
+  width: 585px
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  border: 1px solid #e5e5e5
+  background-color: #fff
+  box-shadow: 0 5px 15px rgba(0,0,0,.5)
+  outline: 0
+  background-clip: padding-box
+
+.header
+  border-bottom: 1px solid #979797
+  padding: 30px 40px
+  .title
+    font-size: 30px
+
+.close
+  float: right
+
+.body
+  border-bottom: 1px solid #979797
+  padding: 30px 40px
+.footer
+  padding: 30px 40px
+
+.saveBtn
+  background-color: #222
+  color: #fff
+  padding: 17px 45px
+  font-size: 20px
+  float: right
