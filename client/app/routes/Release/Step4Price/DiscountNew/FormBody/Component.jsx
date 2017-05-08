@@ -1,10 +1,16 @@
 import React, { PropTypes } from 'react';
 import FormGroup from '../../../components/FormGroup';
-import InputCurrency from '../../../components/InputCurrency';
 import InputCounter from '../../../components/InputCounter';
 import InputUnit from '../../../components/InputUnit';
+import SelectionCategory from '../../../components/SelectionCategory';
+import { fetchCategories } from '../../../../../actions/itemsActions';
 
 class FormBody extends React.Component {
+
+  componentDidMount() {
+    this.props.dispatch(fetchCategories());
+  }
+
   render() {
     const headerTextStyle = {
       fontSize: 18,
@@ -35,11 +41,11 @@ class FormBody extends React.Component {
           headerText="選擇常用的分類"
           headerTextStyle={headerTextStyle}
         >
-          <InputCurrency value={1} />
+          <SelectionCategory categories={this.props.items.categories.goods} />
         </FormGroup>
       </div>
     );
   }
 }
-
+// TODO: categories goods
 export default FormBody;

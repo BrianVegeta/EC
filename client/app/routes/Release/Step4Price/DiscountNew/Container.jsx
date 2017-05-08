@@ -31,7 +31,7 @@ class DiscountContainer extends React.Component {
             </button>
           </div>
           <div styleName="body">
-            <FormBody />
+            <FormBody {...this.props} />
           </div>
           <div styleName="footer" className="clear">
             <button className="button" styleName="saveBtn" >
@@ -45,7 +45,7 @@ class DiscountContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper } = state;
-  return ({ environment, routesHelper });
+  const { environment, routesHelper, items } = state;
+  return ({ environment, routesHelper, items });
 };
 export default connect(mapStateToProps)(CSS(DiscountContainer, styles));

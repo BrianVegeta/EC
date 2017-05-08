@@ -11,7 +11,6 @@ import InputCurrency from '../components/InputCurrency';
 import InputCounter from '../components/InputCounter';
 
 const CURRENCY_UNIT = 'NT$';
-const NEW_DISCOUNT_PATH = '/p/release_item/step4/new_discount';
 const CREATE_DISCOUNT_PATH = '/p/release_item/step4/d_c';
 // TODO: routes for discount
 class PriceContainer extends React.Component {
@@ -58,15 +57,7 @@ class PriceContainer extends React.Component {
           optional
         >
           <Link to={CREATE_DISCOUNT_PATH}>
-            <button
-              style={{
-                height: 40,
-                border: '1px solid #444',
-                borderRadius: 4,
-                padding: '8px 20px',
-              }}
-              className="button"
-            >
+            <button styleName="newDiscountBtn" className="button">
               新增折扣
             </button>
           </Link>
