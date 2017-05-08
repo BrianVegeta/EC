@@ -18,21 +18,26 @@ class FormBody extends React.Component {
     };
     const groupHalfStyle = {
       width: '50%',
-      paddingRight: 10,
       display: 'inline-block',
     };
     return (
       <div>
         <FormGroup
           headerText="一次租用天數"
-          groupStyle={groupHalfStyle}
+          groupStyle={{
+            ...groupHalfStyle,
+            paddingRight: 10,
+          }}
           headerTextStyle={headerTextStyle}
         >
           <InputCounter value={1} suffix="天" />
         </FormGroup>
         <FormGroup
           headerText="優惠折扣"
-          groupStyle={groupHalfStyle}
+          groupStyle={{
+            ...groupHalfStyle,
+            paddingLeft: 10,
+          }}
           headerTextStyle={headerTextStyle}
         >
           <InputUnit placeholder="如：95折" suffix="折" />
