@@ -1,10 +1,12 @@
-.PanelFull
-  width: auto
-
-.Panel
+.panel
   width: 100%
+  transition: width .25s ease
+  vertical-align: top
+  white-space: normal
 
 .category
+  display: block
+  width: 100%
   padding: 12px 20px
   font-size: 18px
   .text
@@ -13,3 +15,5 @@
   .arrow
     display: inline-block
     float: right
+  &:hover
+    background: #999

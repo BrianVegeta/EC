@@ -4,7 +4,6 @@ class Panel extends React.Component {
   static defaultProps = {
     style: {},
     onSelect: null,
-    isFull: false,
   };
 
   static propTypes = {
@@ -14,20 +13,19 @@ class Panel extends React.Component {
       PropTypes.string,
       PropTypes.number,
     ])),
-    isFull: PropTypes.bool,
   };
 
   render() {
-    const { categories, style, isFull } = this.props;
+    const { categories, style, onSelect } = this.props;
     return (
-      <div styleName={isFull ? 'PanelFull' : 'Panel'} style={style} >
+      <div style={style} styleName="panel">
         {categories.map((category, i) =>
           <div
+            styleName="category"
             {...{
               key: `${i + 1}`,
               role: 'button',
-              onClick: () => this.props.onSelect(category.text),
-              styleName: 'category',
+              onClick: onSelect && (() => onSelect(category.text)),
             }}
           >
             <div styleName="text">

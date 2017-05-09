@@ -33,7 +33,7 @@ class SelectionCategory extends React.Component {
     const { isFocusing } = this.state;
     const { categories } = this.props;
     return (
-      <button
+      <div
         styleName={isFocusing ? 'inputFocusing' : 'input'}
         className="button"
         onFocus={this.onFocus}
@@ -41,7 +41,7 @@ class SelectionCategory extends React.Component {
       >
         <div styleName="innerWrapper">select</div>
         { categories && <Dropdown categories={categories} /> }
-      </button>
+      </div>
     );
   }
 }
