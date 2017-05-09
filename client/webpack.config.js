@@ -22,6 +22,7 @@ const config = {
       'whatwg-fetch',
       'react',
       'redux',
+      'lodash',
     ],
     app: [
       './app/startup/registration',
