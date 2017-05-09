@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { Motion, spring } from 'react-motion';
 import Panel from '../Panel';
-import styles from './styles.sass';
 
 class SelectionCategory extends React.Component {
 
@@ -46,21 +45,13 @@ class SelectionCategory extends React.Component {
           />
           {
             tracks[0] &&
-            <CSSTransitionGroup
-              transitionName={{
-                appear: styles.appear,
-                appearActive: styles.appearActive,
-              }}
-              transitionAppear
-              transitionAppearTimeout={500}
-              transitionEnter={false}
-              transitionLeave={false}
-              style={{ display: 'table-cell' }}
-              className={styles.test}
-              component="div"
-            >
-              <Panel categories={this.childrenCategories(tracks[0])} />
-            </CSSTransitionGroup>
+            <Motion defaultStyle={{ x: 140 }} style={{ x: spring(248) }}>
+              {value =>
+                <div style={{ display: 'table-cell', width: value.x }}>
+                  <Panel categories={this.childrenCategories(tracks[0])} />
+                </div>
+              }
+            </Motion>
           }
         </div>
       </div>
