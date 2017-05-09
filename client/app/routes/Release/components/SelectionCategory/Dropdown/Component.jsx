@@ -45,9 +45,12 @@ class SelectionCategory extends React.Component {
           />
           {
             tracks[0] &&
-            <Motion defaultStyle={{ x: 140 }} style={{ x: spring(248) }}>
+            <Motion
+              defaultStyle={{ x: 140 }}
+              style={{ x: spring(248, { stiffness: 500, damping: 50, precision: 1 }) }}
+            >
               {value =>
-                <div style={{ display: 'table-cell', width: value.x }}>
+                <div style={{ display: 'table-cell', width: Math.floor(value.x) }}>
                   <Panel categories={this.childrenCategories(tracks[0])} />
                 </div>
               }
