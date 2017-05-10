@@ -8,6 +8,7 @@
   composes: imageDrop
   background: #fff center center/contain no-repeat
   border: 1px solid #e8e8e8
+  cursor: move
 
 .imageDropzone
   composes: imageDrop
@@ -40,3 +41,27 @@
   bottom: -1px
   left: -1px
   right: -1px
+
+
+
+.controller
+  position: relative
+  position: absolute
+  right: 0
+  top: 0
+  padding: 5px
+
+.controlIcon
+  display: inline-block
+  background: #333
+  text-align: center
+  cursor: pointer
+  width: 26px
+  height: 26px
+  padding: 5px
+  border-radius: 26px
+  transition: background-color 200ms ease
+  &:not(:last-child)
+    margin-right: 5px
+  &:hover
+    background: red
