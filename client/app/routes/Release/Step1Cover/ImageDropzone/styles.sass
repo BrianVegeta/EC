@@ -1,0 +1,41 @@
+.imageDrop
+  position: relative
+  display: block
+  height: 160px
+  width: 160px
+.imageDropped
+  composes: imageDrop
+  border: 1px solid #e8e8e8
+  background: #fff center center/contain no-repeat
+
+.imageDropzone
+  composes: imageDrop
+  border: 1px dashed #949494
+  cursor: pointer
+.imageDropzone:hover
+  border: 1px dashed #222
+  .coverLabel
+    background: #222
+    color: #fff
+  .cameraLabel
+    .noticeHelper
+      color: #222
+
+.cameraLabel
+  text-align: center
+  position: relative
+  top: 40px
+  .noticeHelper
+    color: #666
+    font-size: 15px
+    margin-top: 10px
+
+
+.coverLabel
+  position: absolute
+  bottom: -1px
+  left: -1px
+  right: -1px
+  background: #999
+  text-align: center
+  padding: 10px

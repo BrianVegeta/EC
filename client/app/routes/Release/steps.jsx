@@ -6,7 +6,7 @@ const getCoverComponent = () => ({
     require.ensure([], (require) => {
       const formComponent = require('./Step1Cover/Container').default;
       callback(null, { formComponent });
-    });
+    }, 'release.step1');
   },
 });
 // step 2

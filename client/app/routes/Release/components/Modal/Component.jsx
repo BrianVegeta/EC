@@ -6,18 +6,20 @@ class ModalComponent extends React.Component {
 
   static defaultProps = {
     onClose: null,
+    isShow: true,
   };
 
   static propTypes = {
     onClose: PropTypes.func,
     children: PropTypes.node.isRequired,
+    isShow: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.state = {
-      isModalOpen: true,
+      isModalOpen: this.props.isShow,
       dialogHeight: null,
     };
   }
