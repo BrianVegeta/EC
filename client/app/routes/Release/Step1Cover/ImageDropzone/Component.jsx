@@ -6,20 +6,20 @@ class Dropzone extends React.Component {
   static defaultProps = {
     isCover: false,
     containerClass: null,
+    imageBlob: null,
   };
   static propTypes = {
     isCover: PropTypes.bool,
     containerClass: PropTypes.string,
+    imageBlob: PropTypes.string,
+    onDrop: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.setDropped = this.setDropped.bind(this);
-    this.state = {
-      isHover: false,
-      imageBlob: null,
-    };
+    this.state = { isHover: false };
   }
   onMouseEnter() {
     this.setState({ isHover: true });
@@ -28,8 +28,7 @@ class Dropzone extends React.Component {
     this.setState({ isHover: false });
   }
   setDropped(image) {
-    console.log(image);
-    this.setState({ imageBlob: image.preview });
+    this.props.onDrop(image.preview);
   }
   renderCameraIcon() {
     const { isHover } = this.state;
@@ -37,14 +36,16 @@ class Dropzone extends React.Component {
   }
   render() {
     const { isCover } = this.props;
-    const { imageBlob } = this.state;
+    const { imageBlob } = this.props;
     if (imageBlob) {
       return (
         <div
           style={{ backgroundImage: `url(${imageBlob})` }}
           styleName="imageDropped"
           className={this.props.containerClass}
-        />
+        >
+          {isCover && <div styleName="coverLabel">封面</div>}
+        </div>
       );
     }
     return (
