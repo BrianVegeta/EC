@@ -1362,6 +1362,10 @@ create-react-class@^15.5.2:
     fbjs "^0.8.9"
     object-assign "^4.1.1"
 
+cropperjs@^0.8.0:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-0.8.1.tgz#3dc01813e2f6d1df2c8909e1ce092146c692548e"
+
 cross-spawn@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
@@ -4132,6 +4136,13 @@ react-bootstrap@^0.31.0:
     react-prop-types "^0.4.0"
     uncontrollable "^4.1.0"
     warning "^3.0.0"
+
+react-cropper@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-0.12.0.tgz#4b1e7f947e476d72d60ef9b228d9a308fe5be8b5"
+  dependencies:
+    cropperjs "^0.8.0"
+    prop-types "^15.5.8"
 
 react-css-modules@^4.1.0:
   version "4.1.0"
