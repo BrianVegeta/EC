@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 import CropperJS from 'react-cropper';
 import Modal from './Modal';
 
+const IMAGE_1 = 'http://cdn.collider.com/wp-content/uploads/2015/10/charlize-theron-mad-max-fury-road.jpg';
+const IMAGE_2 = 'https://i0.wp.com/www.imagesqueen.com/wp-content/uploads/2016/09/Hot-Shruti-Hassan-Hot-4.jpg';
 class ImageCropper extends React.Component {
-
   render() {
     const config = {
       viewMode: 3,
@@ -33,13 +34,12 @@ class ImageCropper extends React.Component {
     };
     return (
       <Modal onClose={() => console.log('close')} {...this.props}>
-        <div styleName="cropperContainer">
-          <CropperJS
-            ref={c => (this.cropper = c)}
-            src="https://i0.wp.com/www.imagesqueen.com/wp-content/uploads/2016/09/Hot-Shruti-Hassan-Hot-4.jpg"
-            {...config}
-          />
-        </div>
+        <CropperJS
+          ref={c => (this.cropper = c)}
+          src={IMAGE_1}
+          {...config}
+        />
+        <div>controller</div>
       </Modal>
     );
   }
