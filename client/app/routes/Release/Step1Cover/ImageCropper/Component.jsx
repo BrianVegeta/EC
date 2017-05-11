@@ -1,17 +1,41 @@
 import React, { PropTypes } from 'react';
 import CropperJS from 'react-cropper';
-import Modal from './Modal';
+import Modal from './ModalStatic';
+import CH1 from './CH1.jpg';
+import CH2 from './CH2.jpg';
+import CH3 from './CH3.jpg';
 
-const IMAGE_1 = 'http://cdn.collider.com/wp-content/uploads/2015/10/charlize-theron-mad-max-fury-road.jpg';
-const IMAGE_2 = 'https://i0.wp.com/www.imagesqueen.com/wp-content/uploads/2016/09/Hot-Shruti-Hassan-Hot-4.jpg';
+const DIALOG_HEIGHT = 750;
+const CROPPER_HEIGHT = 700;
+const CROP_BOX = 650;
+const DIALOG_WIDTH = 780;
 class ImageCropper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onCropperReady = this.onCropperReady.bind(this);
+  }
+
+  onCropperReady() {
+    console.log(this.cropper.getCanvasData());
+    this.cropper.setCanvasData({ height: CROP_BOX, width: 975, top: 40 });
+    this.cropper.setCropBoxData({
+      top: 40,
+      left: 75,
+      width: CROP_BOX,
+      height: CROP_BOX,
+    });
+    // console.log(this.cropper.getCanvasData());
+    // const width = this.cropper.getCanvasData().width;
+    // this.cropper.setCanvasData({ left: (780 - width) / 2 });
+    // console.log(this.cropper.getCanvasData());
+  }
+
   render() {
-    const config = {
-      viewMode: 3,
+    const config2 = {
+      viewMode: 1,
       dragMode: 'move',
-      autoCropArea: 1,
+      responsive: false,
       restore: false,
-      modal: false,
       center: false,
       background: false,
       guides: false,
@@ -21,23 +45,13 @@ class ImageCropper extends React.Component {
       toggleDragModeOnDblclick: false,
       style: { height: '100%', width: '100%' },
     };
-    const config2 = {
-      viewMode: 1,
-      dragMode: 'move',
-      autoCropArea: 0.65,
-      restore: false,
-      guides: false,
-      highlight: false,
-      cropBoxMovable: false,
-      cropBoxResizable: false,
-      style: { height: '100%', width: '100%' },
-    };
     return (
       <Modal onClose={() => console.log('close')} {...this.props}>
         <CropperJS
           ref={c => (this.cropper = c)}
-          src={IMAGE_1}
-          {...config}
+          src={CH2}
+          {...config2}
+          ready={this.onCropperReady}
         />
         <div>controller</div>
       </Modal>
