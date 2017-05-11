@@ -40,7 +40,8 @@ class ModalComponent extends React.Component {
   }
 
   render() {
-    const screenCurrentH = this.props.environment.height;
+    const { environment } = this.props;
+    const screenCurrentH = environment.height;
     const { dialogMaxH } = this.state;
     const isDialogContain = dialogMaxH < screenCurrentH;
     return (
@@ -59,8 +60,8 @@ class ModalComponent extends React.Component {
               top: isDialogContain ? '50%' : 0,
             }}
           >
-            <div role="document" styleName="content">
-              <div styleName="cropper">
+            <div role="document" styleName="content" >
+              <div styleName="cropper" >
                 {this.props.children[0]}
               </div>
               <div styleName="controller">
