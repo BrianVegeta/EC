@@ -8,7 +8,7 @@ import styles from './styles.sass';
 import NextController from '../NextController';
 import { UPLOAD_COVER } from '../constants/title';
 import ImageDropzone from './ImageDropzone';
-import ImageCropper from './ImageCropper';
+import ImageEditor from './ImageEditor';
 
 class CoverContainer extends React.Component {
   constructor(props) {
@@ -73,7 +73,7 @@ class CoverContainer extends React.Component {
           onSortEnd={this.onSortEnd}
         />
         <NextController next={this.saveAndNext} />
-        <ImageCropper {...this.props} />
+        <ImageEditor {...this.props} />
       </div>
     );
   }
