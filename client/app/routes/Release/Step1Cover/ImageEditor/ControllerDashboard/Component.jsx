@@ -1,29 +1,21 @@
 import React, { PropTypes } from 'react';
 import RotateRightIcon from 'react-icons/lib/md/rotate-right';
 import RotateLeftIcon from 'react-icons/lib/md/rotate-left';
-import Slider from 'rc-slider';
+import CropIcon from 'react-icons/lib/md/crop-free';
 
 class Controller extends React.Component {
   static propTypes = {
-    zoom: PropTypes.func.isRequired,
     rotate: PropTypes.func.isRequired,
+    toCrop: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
-    this.onSliderChange = this.onSliderChange.bind(this);
     this.onRightRotate = this.onRightRotate.bind(this);
     this.onLeftRotate = this.onLeftRotate.bind(this);
-    this.sliderProps = {
-      handleStyle: { marginTop: -11, width: 25, height: 25 },
-      onChange: this.onSliderChange,
-      max: 250,
-      min: 0,
-      step: 1,
-    };
+    this.onEnterCropping = this.onEnterCropping.bind(this);
   }
-  onSliderChange(value) {
-    const ratio = value / this.sliderProps.max;
-    this.props.zoom(ratio);
+  onEnterCropping() {
+    this.props.toCrop();
   }
   onRightRotate() {
     this.props.rotate('right');
@@ -40,17 +32,30 @@ class Controller extends React.Component {
           onClick={this.onLeftRotate}
         >
           <RotateLeftIcon size={30} />
+          <span styleName="text">左旋轉</span>
         </button>
         <button
           className="button"
           styleName="rotateBtn"
-          onClick={this.onLeftRotate}
+          onClick={this.onRightRotate}
         >
           <RotateRightIcon size={30} />
+          <span styleName="text">右旋轉</span>
         </button>
-        <div styleName="sliderContainer">
-          <Slider {...this.sliderProps} />
-        </div>
+        <button
+          className="button"
+          styleName="cropBtn"
+          onClick={this.onEnterCropping}
+        >
+          <CropIcon size={25} />
+          <span styleName="text">裁切</span>
+        </button>
+        <button
+          className="button"
+          styleName="saveBtn"
+        >
+          儲存變更
+        </button>
       </div>
     );
   }

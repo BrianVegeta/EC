@@ -4,7 +4,7 @@ import {
   CROP_BOX,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
-} from '../../../../../../constants/coverCropper';
+} from '../../../../../constants/coverCropper';
 
 class ImageCropper extends React.Component {
   static propTypes = {
@@ -49,6 +49,7 @@ class ImageCropper extends React.Component {
     this.cropper.zoomTo(realRatio + ((realRatio * 2) * increase));
   }
   cropperConf() {
+    // TODO: disable wheel zoom in
     return {
       src: this.props.src,
       viewMode: 1,
@@ -59,6 +60,7 @@ class ImageCropper extends React.Component {
       background: false,
       guides: false,
       highlight: false,
+      zoomOnWheel: false,
       cropBoxMovable: false,
       cropBoxResizable: false,
       ready: this.onCropperReady,

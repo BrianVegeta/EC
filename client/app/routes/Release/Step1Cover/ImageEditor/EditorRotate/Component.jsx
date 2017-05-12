@@ -3,7 +3,7 @@ import CropperJS from 'react-cropper';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
-} from '../../../../../../constants/coverCropper';
+} from '../../../../../constants/coverCropper';
 
 class ImageCropper extends React.Component {
   static propTypes = {
@@ -41,6 +41,9 @@ class ImageCropper extends React.Component {
       background: false,
       guides: false,
       highlight: false,
+      movable: false,
+      scalable: false,
+      zoomable: false,
       cropBoxMovable: false,
       cropBoxResizable: false,
       toggleDragModeOnDblclick: false,

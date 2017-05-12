@@ -3,7 +3,7 @@ import Slider from 'rc-slider';
 
 class Controller extends React.Component {
   static propTypes = {
-    zoom: PropTypes.func.isRequired,
+    zoomTo: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
   };
@@ -20,11 +20,12 @@ class Controller extends React.Component {
   }
   onSliderChange(value) {
     const ratio = value / this.sliderProps.max;
-    this.props.zoom(ratio);
+    this.props.zoomTo(ratio);
   }
   render() {
     return (
-      <div styleName="container">
+      <div styleName="container" className="clear">
+        <span styleName="sliderText">縮放</span>
         <div styleName="sliderContainer">
           <Slider {...this.sliderProps} />
         </div>
