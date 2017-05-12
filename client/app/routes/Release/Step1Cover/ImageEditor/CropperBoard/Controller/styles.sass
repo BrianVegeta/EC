@@ -1,7 +1,26 @@
 .container
-  padding: 9px 0 9px 80px
-
+  padding: 9px 80px
   .sliderContainer
     display: inline-block
-    margin-left: 100px
     width: 250px
+.btnGroups
+  float: right
+
+.btn
+  font-size: 16px
+  height: 36px
+  margin-top: -3px
+  vertical-align: middle
+  padding: 0 15px
+  &:not(:last-child)
+    margin-right: 10px
+
+.cancelBtn
+  composes: btn
+  border: 1px solid #333
+  border-radius: 2px
+.doneBtn
+  composes: btn
+  color: #fff
+  background: #333
+  border-radius: 2px

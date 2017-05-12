@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
-import RotateRightIcon from 'react-icons/lib/md/rotate-right';
-import RotateLeftIcon from 'react-icons/lib/md/rotate-left';
 import Slider from 'rc-slider';
 
 class Controller extends React.Component {
   static propTypes = {
     zoom: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -27,6 +27,22 @@ class Controller extends React.Component {
       <div styleName="container">
         <div styleName="sliderContainer">
           <Slider {...this.sliderProps} />
+        </div>
+        <div styleName="btnGroups">
+          <button
+            className="button"
+            styleName="cancelBtn"
+            onClick={() => this.props.onCancel()}
+          >
+            取消
+          </button>
+          <button
+            className="button"
+            styleName="doneBtn"
+            onClick={() => this.props.onDone()}
+          >
+            完成
+          </button>
         </div>
       </div>
     );

@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import Cropper from './Cropper';
 import Controller from './Controller';
 
-class Dashboard extends React.Component {
+class CropperBoard extends React.Component {
   static propTypes = {
     imageSrc: PropTypes.string.isRequired,
+    cancelCropping: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -13,10 +14,6 @@ class Dashboard extends React.Component {
       ref: c => (this.cropper = c),
     };
   }
-  zoomTo(increase) {
-    const realRatio = this.canvasData.width / this.canvasData.naturalWidth;
-    this.cropper.zoomTo(realRatio + ((realRatio * 2) * increase));
-  }
   render() {
     return (
       <div styleName="container">
@@ -24,11 +21,15 @@ class Dashboard extends React.Component {
           <Cropper {...this.editorProps} />
         </div>
         <div styleName="controller">
-          <Controller zoom={direc => this.zoomTo(direc)} />
+          <Controller
+            zoom={increase => this.cropper.zoomTo(increase)}
+            onCancel={() => this.props.cancelCropping()}
+            onDone={() => console.log('done')}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default CropperBoard;
