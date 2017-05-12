@@ -11,6 +11,10 @@ class Controller extends React.Component {
     super(props);
     this.onRightRotate = this.onRightRotate.bind(this);
     this.onLeftRotate = this.onLeftRotate.bind(this);
+    this.onEnterCropping = this.onEnterCropping.bind(this);
+  }
+  onEnterCropping() {
+    this.props.enterCroping();
   }
   onRightRotate() {
     this.props.rotate('right');
@@ -40,6 +44,7 @@ class Controller extends React.Component {
         <button
           className="button"
           styleName="cropBtn"
+          onClick={this.onEnterCropping}
         >
           <CropIcon size={25} />
           <span styleName="text">裁切</span>

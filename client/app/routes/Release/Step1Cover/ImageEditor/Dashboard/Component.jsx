@@ -13,7 +13,10 @@ class Dashboard extends React.Component {
           <Rotator src={this.props.imageSrc} ref={r => (this.rotator = r)} />
         </div>
         <div styleName="controller">
-          <Controller rotate={direc => this.rotator.rotate(direc)} />
+          <Controller
+            rotate={direc => this.rotator.rotate(direc)}
+            enterCroping={this.props.enterCroping}
+          />
         </div>
       </div>
     );
