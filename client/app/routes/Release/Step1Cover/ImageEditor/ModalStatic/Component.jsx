@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Modal } from 'react-overlays';
+import IconClose from 'react-icons/lib/md/close';
 import styles from './styles.sass';
 
 class ModalComponent extends React.Component {
@@ -30,7 +31,7 @@ class ModalComponent extends React.Component {
     this.setState({ dialogMaxH: this.dialog.clientHeight });
   }
   closeModal() {
-    this.props.onClose();
+    // this.props.onClose();
     this.setState({ isModalOpen: false });
   }
   render() {
@@ -57,6 +58,13 @@ class ModalComponent extends React.Component {
             <div role="document" styleName="content" >
               {this.props.children}
             </div>
+            <button
+              onClick={this.closeModal}
+              styleName="closeCross"
+              className="button"
+            >
+              <IconClose size={40} />
+            </button>
           </div>
         </div>
       </Modal>
