@@ -4,6 +4,7 @@ import EditorCrop from './EditorCrop';
 import EditorRotate from './EditorRotate';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
+import { cancelEditor } from '../../../../actions/editorCoversActions';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
@@ -11,12 +12,17 @@ class ImageCropper extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     image: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
     this.enterCroping = this.enterCroping.bind(this);
     this.cancelCropping = this.cancelCropping.bind(this);
+    this.onEditorCancel = this.onEditorCancel.bind(this);
     this.state = { editorStatus: EDITOR_STATUS_DASHBOARD };
+  }
+  onEditorCancel() {
+    this.props.dispatch(cancelEditor());
   }
   enterCroping() {
     this.setState({ editorStatus: EDITOR_STATUS_CROPPING });
@@ -69,7 +75,11 @@ class ImageCropper extends React.Component {
   }
   render() {
     return (
-      <Modal {...this.props} isShow={this.props.open} >
+      <Modal
+        {...this.props}
+        isShow={this.props.open}
+        onClose={this.onEditorCancel}
+      >
         <div styleName="container">
           <div styleName="cropper">
             {this.renderEditor()}

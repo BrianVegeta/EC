@@ -14,6 +14,10 @@ const environment = (state = initialState, action) => {
           blob: action.image,
         }),
       });
+    case TYPES.EDITOR_COVERS_CANCEL_EDIT:
+      return Object.assign({}, state, {
+        current: initialState.current,
+      });
     default:
       return state;
   }

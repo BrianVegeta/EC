@@ -4,11 +4,8 @@ import IconClose from 'react-icons/lib/md/close';
 import styles from './styles.sass';
 
 class ModalComponent extends React.Component {
-  static defaultProps = {
-    onClose: null,
-  };
   static propTypes = {
-    onClose: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
     isShow: PropTypes.bool.isRequired,
     environment: PropTypes.objectOf(PropTypes.oneOfType([
@@ -17,7 +14,6 @@ class ModalComponent extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.closeModal = this.closeModal.bind(this);
     this.state = { dialogMaxH: null };
   }
   componentDidMount() {
@@ -30,10 +26,6 @@ class ModalComponent extends React.Component {
     if (this.dialog && this.state.dialogMaxH) {
       this.setState({ dialogMaxH: this.dialog.clientHeight });
     }
-  }
-  closeModal() {
-    // this.props.onClose();
-    this.setState({ isModalOpen: false });
   }
   render() {
     const { environment } = this.props;
@@ -51,8 +43,8 @@ class ModalComponent extends React.Component {
     return (
       <Modal
         backdropClassName={styles.backdrop}
+        onHide={this.props.onClose}
         show={this.props.isShow}
-        onHide={this.closeModal}
       >
         <div role="dialog" styleName="modal">
           <div role="dialog" styleName="dialog" {...dialogProps}>
@@ -60,7 +52,7 @@ class ModalComponent extends React.Component {
               {this.props.children}
             </div>
             <button
-              onClick={this.closeModal}
+              onClick={this.props.onClose}
               styleName="closeCross"
               className="button"
             >
