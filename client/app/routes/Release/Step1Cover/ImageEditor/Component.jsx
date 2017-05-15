@@ -4,11 +4,14 @@ import EditorCrop from './EditorCrop';
 import EditorRotate from './EditorRotate';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import IMAGE_SRC from './CH4.jpg';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
 class ImageCropper extends React.Component {
+  static propTypes = {
+    open: PropTypes.bool.isRequired,
+    image: PropTypes.string.isRequired,
+  };
   constructor(props) {
     super(props);
     this.enterCroping = this.enterCroping.bind(this);
@@ -39,10 +42,10 @@ class ImageCropper extends React.Component {
     );
   }
   renderEditorCrop() {
-    return <EditorCrop src={IMAGE_SRC} ref={c => (this.cropper = c)} />;
+    return <EditorCrop src={this.props.image} ref={c => (this.cropper = c)} />;
   }
   renderEditorRotate() {
-    return <EditorRotate src={IMAGE_SRC} ref={r => (this.rotator = r)} />;
+    return <EditorRotate src={this.props.image} ref={r => (this.rotator = r)} />;
   }
   renderController() {
     switch (this.state.editorStatus) {

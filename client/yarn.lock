@@ -4222,6 +4222,13 @@ react-addons-transition-group@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-anything-sortable@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-anything-sortable/-/react-anything-sortable-1.7.2.tgz#8c21e656ea946fe11f74c105ad7da2ff552fd3c9"
+  dependencies:
+    create-react-class "^15.5.2"
+    prop-types "^15.5.8"
+
 react-autosize-textarea@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/react-autosize-textarea/-/react-autosize-textarea-0.4.3.tgz#71aa029a1278352dc805841fea880223cb99737a"

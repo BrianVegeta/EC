@@ -6,25 +6,19 @@ import styles from './styles.sass';
 class ModalComponent extends React.Component {
   static defaultProps = {
     onClose: null,
-    isShow: true,
   };
   static propTypes = {
     onClose: PropTypes.func,
     children: PropTypes.node.isRequired,
     isShow: PropTypes.bool.isRequired,
     environment: PropTypes.objectOf(PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.bool,
-      PropTypes.string,
+      PropTypes.number, PropTypes.bool, PropTypes.string,
     ])).isRequired,
   };
   constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
-    this.state = {
-      isModalOpen: this.props.isShow,
-      dialogMaxH: null,
-    };
+    this.state = { dialogMaxH: null };
   }
   componentDidMount() {
     // TODO: to preload height
@@ -57,7 +51,7 @@ class ModalComponent extends React.Component {
     return (
       <Modal
         backdropClassName={styles.backdrop}
-        show={this.state.isModalOpen}
+        show={this.props.isShow}
         onHide={this.closeModal}
       >
         <div role="dialog" styleName="modal">

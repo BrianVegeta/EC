@@ -1,0 +1,50 @@
+.gallery
+  position: relative
+  margin-bottom: 40px
+  .imageDropzone
+    float: left
+    &:not(:last-child)
+      margin-right: 20px
+
+.imageDropzone
+  position: relative
+  display: -webkit-box
+  display: -webkit-flex
+  display: -ms-flexbox
+  display: flex
+  -webkit-box-align: center
+  -webkit-align-items: center
+  -ms-flex-align: center
+  align-items: center
+  background-color: #FFF
+  box-sizing: border-box
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  color: #333
+  font-weight: 500
+
+
+
+.controller
+  position: absolute
+  padding: 5px
+  right: 0
+  top: 0
+
+
+.controlIcon
+  display: inline-block
+  text-align: center
+  background: #333
+  cursor: pointer
+  padding: 5px
+  height: 26px
+  width: 26px
+  border-radius: 26px
+  transition: background-color 200ms ease
+  &:not(:last-child)
+    margin-right: 5px
+  &:hover
+    background: red
