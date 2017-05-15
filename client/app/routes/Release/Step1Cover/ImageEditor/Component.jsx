@@ -4,7 +4,7 @@ import EditorCrop from './EditorCrop';
 import EditorRotate from './EditorRotate';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import IMAGE_SRC from './CH3.jpg';
+import IMAGE_SRC from './CH4.jpg';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
@@ -66,7 +66,7 @@ class ImageCropper extends React.Component {
   }
   render() {
     return (
-      <Modal {...this.props}>
+      <Modal {...this.props} isShow={this.props.open} >
         <div styleName="container">
           <div styleName="cropper">
             {this.renderEditor()}

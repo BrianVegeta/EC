@@ -38,6 +38,7 @@
     "react-cropper": "^0.12.0",
     "react-css-modules": "^4.1.0",
     "react-custom-scrollbars": "^4.1.0",
+    "react-dnd": "^2.4.0",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.13.1",
     "react-icons": "^2.2.5",

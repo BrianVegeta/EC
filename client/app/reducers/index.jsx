@@ -9,6 +9,7 @@ import items from './itemsReducer';
 import itemLayout from './itemLayoutReducer';
 import itemRelease from './itemReleaseReducer';
 import cities from './citiesReducer';
+import editorCovers from './editorCoversReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   itemLayout,
   itemRelease,
   cities,
+  editorCovers,
 });
