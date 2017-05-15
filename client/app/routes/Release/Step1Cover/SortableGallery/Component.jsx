@@ -51,6 +51,14 @@ class SortableGallery extends React.Component {
   openModal(e, image) {
     this.props.dispatch(openEditorModal(image));
   }
+  removeImg(key) {
+    const images = this.state.images.concat();
+    const index = _.findIndex(images, { key });
+    if (index < 0) return;
+    images.splice(index, 1);
+    images.push({ key, blob: null });
+    this.setState({ images });
+  }
   render() {
     const itemClass = styles.imageDropzone;
     const ctrlGroupClass = styles.controller;
@@ -74,7 +82,10 @@ class SortableGallery extends React.Component {
             >
               <EditIcon {...iconProps} />
             </button>
-            <button className={`${ctrlIcon} button`}>
+            <button
+              className={`${ctrlIcon} button`}
+              onClick={() => this.removeImg(value.key)}
+            >
               <RemoveIcon {...iconProps} />
             </button>
           </div>
