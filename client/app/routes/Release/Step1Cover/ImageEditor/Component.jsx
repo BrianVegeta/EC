@@ -4,7 +4,7 @@ import EditorCrop from './EditorCrop';
 import EditorRotate from './EditorRotate';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import { cancelEditor } from '../../../../actions/editorCoversActions';
+import { cancelEditor, setEditorCurrent } from '../../../../actions/editorCoversActions';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
@@ -25,10 +25,14 @@ class ImageCropper extends React.Component {
     this.props.dispatch(cancelEditor());
   }
   enterCroping() {
+    this.props.dispatch(setEditorCurrent(this.rotator.getDataUrl()));
     this.setState({ editorStatus: EDITOR_STATUS_CROPPING });
   }
   cancelCropping() {
     this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
+  }
+  rotateWithDir(dir) {
+    this.rotator.rotate(dir);
   }
   renderControllerCrop() {
     return (
@@ -42,7 +46,7 @@ class ImageCropper extends React.Component {
   renderControllerDashboard() {
     return (
       <ControllerDashboard
-        rotate={dir => this.rotator.rotate(dir)}
+        rotate={dir => this.rotateWithDir(dir)}
         toCrop={this.enterCroping}
       />
     );

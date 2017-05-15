@@ -8,3 +8,7 @@ export const openEditorModal = image => ({
 export const cancelEditor = () => ({
   type: TYPES.EDITOR_COVERS_CANCEL_EDIT,
 });
+export const setEditorCurrent = image => ({
+  type: TYPES.EDITOR_COVERS_SET_CURRENT,
+  image,
+});

@@ -5,10 +5,13 @@ import {
   CANVAS_HEIGHT,
 } from '../../../../../constants/coverCropper';
 
-class ImageCropper extends React.Component {
+class ImageRotator extends React.Component {
   static propTypes = {
     src: PropTypes.string.isRequired,
   };
+  getDataUrl() {
+    return this.cropper.getCroppedCanvas().toDataURL();
+  }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
     const left = (CANVAS_WIDTH - canvasData.width) / 2;
@@ -57,4 +60,4 @@ class ImageCropper extends React.Component {
   }
 }
 
-export default ImageCropper;
+export default ImageRotator;

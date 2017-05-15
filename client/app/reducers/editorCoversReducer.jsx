@@ -18,6 +18,12 @@ const environment = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: initialState.current,
       });
+    case TYPES.EDITOR_COVERS_SET_CURRENT:
+      return Object.assign({}, state, {
+        current: Object.assign({}, state.current, {
+          blob: action.image,
+        }),
+      });
     default:
       return state;
   }
