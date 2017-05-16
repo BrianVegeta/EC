@@ -19,10 +19,12 @@ class ImageCropper extends React.Component {
     this.cancelCropping = this.cancelCropping.bind(this);
     this.completeCropped = this.completeCropped.bind(this);
     this.onEditorCancel = this.onEditorCancel.bind(this);
+    this.modalReady = this.modalReady.bind(this);
     this.state = {
       image: this.props.image,
       editorStatus: EDITOR_STATUS_DASHBOARD,
       croppedCanvas: null,
+      isModalOpened: false,
     };
   }
   onEditorCancel() {
@@ -37,6 +39,10 @@ class ImageCropper extends React.Component {
       default:
         return 'dashboard';
     }
+  }
+  modalReady() {
+    console.log('modal ready');
+    this.setState({ isModalOpened: true });
   }
   enterCroping() {
     this.setState({ editorStatus: EDITOR_STATUS_CROPPING, croppedCanvas: null });
@@ -92,31 +98,35 @@ class ImageCropper extends React.Component {
         {...this.props}
         isShow={this.props.open}
         onClose={this.onEditorCancel}
+        onEntered={this.modalReady}
       >
-        <div styleName="container">
-          <div styleName="cropper">
-            { this.state.croppedCanvas &&
-              <div styleName="croppedCanvas">
-                <div
-                  style={{
-                    height: 550,
-                    width: 550,
-                    background: `url(${this.state.croppedCanvas}) center center/cover no-repeat`,
-                    margin: '0 auto',
-                  }}
-                />
-              </div>
-            }
-            <Cropper
-              src={this.state.image}
-              type={this.getCropperType()}
-              ref={c => (this.cropper = c)}
-            />
+        {
+          this.state.isModalOpened &&
+          <div styleName="container">
+            <div styleName="cropper">
+              { this.state.croppedCanvas &&
+                <div styleName="croppedCanvas">
+                  <div
+                    style={{
+                      height: 550,
+                      width: 550,
+                      background: `url(${this.state.croppedCanvas}) center center/cover no-repeat`,
+                      margin: '0 auto',
+                    }}
+                  />
+                </div>
+              }
+              <Cropper
+                src={this.state.image}
+                type={this.getCropperType()}
+                ref={c => (this.cropper = c)}
+              />
+            </div>
+            <div styleName="controller">
+              {this.renderController()}
+            </div>
           </div>
-          <div styleName="controller">
-            {this.renderController()}
-          </div>
-        </div>
+        }
       </Modal>
     );
   }

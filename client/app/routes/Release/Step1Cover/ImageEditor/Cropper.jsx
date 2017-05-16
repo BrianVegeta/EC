@@ -108,6 +108,7 @@ class Cropper extends React.Component {
   cropperConf() {
     return {
       src: this.props.src,
+      checkOrientation: true,
       autoCrop: true,
       viewMode: 1,
       dragMode: 'move',

@@ -6,6 +6,7 @@ import styles from './styles.sass';
 class ModalComponent extends React.Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
+    onEntered: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
     isShow: PropTypes.bool.isRequired,
     environment: PropTypes.objectOf(PropTypes.oneOfType([
@@ -44,6 +45,7 @@ class ModalComponent extends React.Component {
       <Modal
         backdropClassName={styles.backdrop}
         onHide={this.props.onClose}
+        onShow={this.props.onEntered}
         show={this.props.isShow}
       >
         <div role="dialog" styleName="modal">

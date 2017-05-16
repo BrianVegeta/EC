@@ -4,7 +4,6 @@ const initialState = {
   covers: [],
   current: {
     blob: null,
-    data: null,
     croppedCanvs: null,
   },
 };
