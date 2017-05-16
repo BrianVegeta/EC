@@ -17,7 +17,7 @@ class ImageCropper extends React.Component {
   onCropperReady() {
     const canvas = this.cropper.getCanvasData();
     const canvasContain = {};
-    if (canvas.naturalHeight < canvas.naturalWidth) {
+    if (canvas.naturalHeight <= canvas.naturalWidth) {
       canvasContain.height = CROP_BOX;
       canvasContain.width =
         (canvasContain.height / canvas.naturalHeight)
@@ -37,6 +37,12 @@ class ImageCropper extends React.Component {
       top: 40, left: 115, width: CROP_BOX, height: CROP_BOX,
     });
     this.canvasData = this.cropper.getCanvasData();
+  }
+  getDataUrl() {
+    return this.cropper.getCroppedCanvas().toDataURL();
+  }
+  getBlob() {
+    return this.cropper.getCroppedCanvas().toBlob(blob => (blob));
   }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();

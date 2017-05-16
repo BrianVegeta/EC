@@ -18,6 +18,7 @@ class ImageCropper extends React.Component {
     super(props);
     this.enterCroping = this.enterCroping.bind(this);
     this.cancelCropping = this.cancelCropping.bind(this);
+    this.completeCropped = this.completeCropped.bind(this);
     this.onEditorCancel = this.onEditorCancel.bind(this);
     this.state = { editorStatus: EDITOR_STATUS_DASHBOARD };
   }
@@ -27,6 +28,10 @@ class ImageCropper extends React.Component {
   enterCroping() {
     this.props.dispatch(setEditorCurrent(this.rotator.getDataUrl()));
     this.setState({ editorStatus: EDITOR_STATUS_CROPPING });
+  }
+  completeCropped() {
+    this.props.dispatch(setEditorCurrent(this.cropper.getDataUrl()));
+    this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
   }
   cancelCropping() {
     this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
@@ -39,7 +44,7 @@ class ImageCropper extends React.Component {
       <ControllerCrop
         zoomTo={increase => this.cropper.zoomTo(increase)}
         onCancel={this.cancelCropping}
-        onDone={this.cancelCropping}
+        onDone={this.completeCropped}
       />
     );
   }

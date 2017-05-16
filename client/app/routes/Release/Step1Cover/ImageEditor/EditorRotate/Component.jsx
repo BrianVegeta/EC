@@ -12,6 +12,11 @@ class ImageRotator extends React.Component {
   getDataUrl() {
     return this.cropper.getCroppedCanvas().toDataURL();
   }
+  getBlob(callback) {
+    this.cropper.getCroppedCanvas().toBlob((blob) => {
+      callback(URL.createObjectURL(blob));
+    });
+  }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
     const left = (CANVAS_WIDTH - canvasData.width) / 2;
