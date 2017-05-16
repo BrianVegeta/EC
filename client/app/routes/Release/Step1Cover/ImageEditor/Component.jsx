@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import Modal from './ModalStatic';
-import EditorCrop from './EditorCrop';
-import EditorRotate from './EditorRotate';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import { cancelEditor, setEditorCurrent } from '../../../../actions/editorCoversActions';
+import { cancelEditor } from '../../../../actions/editorCoversActions';
+import Cropper from './Cropper';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
@@ -20,24 +19,45 @@ class ImageCropper extends React.Component {
     this.cancelCropping = this.cancelCropping.bind(this);
     this.completeCropped = this.completeCropped.bind(this);
     this.onEditorCancel = this.onEditorCancel.bind(this);
-    this.state = { editorStatus: EDITOR_STATUS_DASHBOARD };
+    this.state = {
+      image: this.props.image,
+      editorStatus: EDITOR_STATUS_DASHBOARD,
+      croppedCanvas: null,
+    };
   }
   onEditorCancel() {
     this.props.dispatch(cancelEditor());
   }
+  getCropperType() {
+    switch (this.state.editorStatus) {
+      case EDITOR_STATUS_CROPPING:
+        return 'cropper';
+      case EDITOR_STATUS_DASHBOARD:
+        return 'dashboard';
+      default:
+        return 'dashboard';
+    }
+  }
   enterCroping() {
-    this.props.dispatch(setEditorCurrent(this.rotator.getDataUrl()));
-    this.setState({ editorStatus: EDITOR_STATUS_CROPPING });
+    this.setState({ editorStatus: EDITOR_STATUS_CROPPING, croppedCanvas: null });
   }
   completeCropped() {
-    this.props.dispatch(setEditorCurrent(this.cropper.getDataUrl()));
-    this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
+    // this.props.dispatch(
+    //   setCroppedCanvas(
+    //     this.cropper.getCroppedCanvas(),
+    //   ),
+    // );
+    this.setState({
+      editorStatus: EDITOR_STATUS_DASHBOARD,
+      croppedCanvas: this.cropper.getCroppedCanvas(),
+    });
   }
   cancelCropping() {
     this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
   }
   rotateWithDir(dir) {
-    this.rotator.rotate(dir);
+    this.cropper.rotate(dir);
+    this.setState({ croppedCanvas: null });
   }
   renderControllerCrop() {
     return (
@@ -56,12 +76,6 @@ class ImageCropper extends React.Component {
       />
     );
   }
-  renderEditorCrop() {
-    return <EditorCrop src={this.props.image} ref={c => (this.cropper = c)} />;
-  }
-  renderEditorRotate() {
-    return <EditorRotate src={this.props.image} ref={r => (this.rotator = r)} />;
-  }
   renderController() {
     switch (this.state.editorStatus) {
       case EDITOR_STATUS_CROPPING:
@@ -70,16 +84,6 @@ class ImageCropper extends React.Component {
         return this.renderControllerDashboard();
       default:
         return this.renderControllerDashboard();
-    }
-  }
-  renderEditor() {
-    switch (this.state.editorStatus) {
-      case EDITOR_STATUS_CROPPING:
-        return this.renderEditorCrop();
-      case EDITOR_STATUS_DASHBOARD:
-        return this.renderEditorRotate();
-      default:
-        return this.renderEditorRotate();
     }
   }
   render() {
@@ -91,7 +95,23 @@ class ImageCropper extends React.Component {
       >
         <div styleName="container">
           <div styleName="cropper">
-            {this.renderEditor()}
+            { this.state.croppedCanvas &&
+              <div styleName="croppedCanvas">
+                <div
+                  style={{
+                    height: 550,
+                    width: 550,
+                    background: `url(${this.state.croppedCanvas}) center center/cover no-repeat`,
+                    margin: '0 auto',
+                  }}
+                />
+              </div>
+            }
+            <Cropper
+              src={this.state.image}
+              type={this.getCropperType()}
+              ref={c => (this.cropper = c)}
+            />
           </div>
           <div styleName="controller">
             {this.renderController()}

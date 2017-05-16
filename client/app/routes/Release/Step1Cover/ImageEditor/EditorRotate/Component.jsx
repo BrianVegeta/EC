@@ -6,16 +6,37 @@ import {
 } from '../../../../../constants/coverCropper';
 
 class ImageRotator extends React.Component {
+  static defaultProps = {
+    data: null,
+  };
   static propTypes = {
     src: PropTypes.string.isRequired,
+    data: PropTypes.objectOf(PropTypes.number),
   };
+  constructor(props) {
+    super(props);
+    this.onCropperReady = this.onCropperReady.bind(this);
+  }
+  onCropperReady() {
+    const { data } = this.props;
+    if (this.props.data) {
+      console.log(data);
+      this.cropper.setData(this.props.data);
+    }
+  }
   getDataUrl() {
     return this.cropper.getCroppedCanvas().toDataURL();
   }
-  getBlob(callback) {
+  setBlob(callback) {
     this.cropper.getCroppedCanvas().toBlob((blob) => {
       callback(URL.createObjectURL(blob));
     });
+  }
+  getImageData() {
+    return this.cropper.getImageData();
+  }
+  getData() {
+    return this.cropper.getData();
   }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
@@ -40,6 +61,7 @@ class ImageRotator extends React.Component {
   cropperConf() {
     return {
       src: this.props.src,
+      ready: this.onCropperReady,
       viewMode: 2,
       autoCrop: false,
       dragMode: 'none',

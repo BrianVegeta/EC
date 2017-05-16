@@ -24,7 +24,7 @@ class CoverContainer extends React.Component {
     , 2000);
   }
   render() {
-    const { blob } = this.props.editorCovers.current;
+    const { blob, croppedCanvs } = this.props.editorCovers.current;
     return (
       <div styleName="container">
         <h2 styleName="title">{UPLOAD_COVER}</h2>
@@ -35,7 +35,7 @@ class CoverContainer extends React.Component {
         </ul>
         <SortableGallery {...this.props} />
         <NextController next={this.saveAndNext} />
-        { blob && <ImageEditor image={blob} open {...this.props} /> }
+        { blob && <ImageEditor image={blob} croppedCanvs={croppedCanvs} open {...this.props} /> }
       </div>
     );
   }

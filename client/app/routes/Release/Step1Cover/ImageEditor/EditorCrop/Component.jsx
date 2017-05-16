@@ -7,14 +7,22 @@ import {
 } from '../../../../../constants/coverCropper';
 
 class ImageCropper extends React.Component {
+  static defaultProps = {
+    data: null,
+  };
   static propTypes = {
     src: PropTypes.string.isRequired,
+    data: PropTypes.objectOf(PropTypes.number),
   };
   constructor(props) {
     super(props);
     this.onCropperReady = this.onCropperReady.bind(this);
   }
   onCropperReady() {
+    if (this.props.data) {
+      console.log(this.props.data);
+      this.cropper.setData(this.props.data);
+    }
     const canvas = this.cropper.getCanvasData();
     const canvasContain = {};
     if (canvas.naturalHeight <= canvas.naturalWidth) {
@@ -41,8 +49,19 @@ class ImageCropper extends React.Component {
   getDataUrl() {
     return this.cropper.getCroppedCanvas().toDataURL();
   }
+  getImageData() {
+    return this.cropper.getImageData();
+  }
   getBlob() {
     return this.cropper.getCroppedCanvas().toBlob(blob => (blob));
+  }
+  getData() {
+    return this.cropper.getData();
+  }
+  test() {
+    this.cropper.setCropBoxData({
+      top: 0, left: 0, width: 780, height: 600,
+    });
   }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
