@@ -20,12 +20,6 @@ const environment = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: initialState.current,
       });
-    case TYPES.EDITOR_COVERS_SET_CURRENT_DATA:
-      return Object.assign({}, state, {
-        current: Object.assign({}, state.current, {
-          data: action.data,
-        }),
-      });
     case TYPES.EDITOR_COVERS_GET_CROPPED_CANVAS:
       return Object.assign({}, state, {
         current: Object.assign({}, state.current, {

@@ -8,10 +8,6 @@ export const openEditorModal = image => ({
 export const cancelEditor = () => ({
   type: TYPES.EDITOR_COVERS_CANCEL_EDIT,
 });
-export const setCurrentData = data => ({
-  type: TYPES.EDITOR_COVERS_SET_CURRENT_DATA,
-  data,
-});
 export const setCroppedCanvas = data => ({
   type: TYPES.EDITOR_COVERS_GET_CROPPED_CANVAS,
   data,
