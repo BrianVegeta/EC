@@ -2,7 +2,11 @@ import React, { PropTypes } from 'react';
 import Modal from './ModalStatic';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import { cancelEditor } from '../../../../actions/editorCoversActions';
+import {
+  cancelEditor,
+  updatingCover,
+  updatedCover,
+} from '../../../../actions/editorCoversActions';
 import Cropper from './Cropper';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
@@ -10,9 +14,18 @@ const EDITOR_STATUS_CROPPING = 'CROPPING';
 class ImageCropper extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
-    image: PropTypes.string.isRequired,
+    current: PropTypes.objectOf(PropTypes.string).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
+  static toBlob(dataUrl) {
+    const binStr = atob(dataUrl.split(',')[1]);
+    const len = binStr.length;
+    const arr = new Uint8Array(len);
+    for (let i = 0; i < len; i += 1) {
+      arr[i] = binStr.charCodeAt(i);
+    }
+    return new Blob([arr], { type: 'image/png' });
+  }
   constructor(props) {
     super(props);
     this.enterCroping = this.enterCroping.bind(this);
@@ -20,8 +33,9 @@ class ImageCropper extends React.Component {
     this.completeCropped = this.completeCropped.bind(this);
     this.onEditorCancel = this.onEditorCancel.bind(this);
     this.modalReady = this.modalReady.bind(this);
+    this.onComplete = this.onComplete.bind(this);
     this.state = {
-      image: this.props.image,
+      image: this.props.current.blob,
       editorStatus: EDITOR_STATUS_DASHBOARD,
       croppedCanvas: null,
       isModalOpened: false,
@@ -29,6 +43,22 @@ class ImageCropper extends React.Component {
   }
   onEditorCancel() {
     this.props.dispatch(cancelEditor());
+  }
+  onComplete() {
+    const { dispatch, current } = this.props;
+    const croppedDataUrl = this.state.croppedCanvas.toDataURL();
+    dispatch(
+      updatingCover(
+        current.key,
+        croppedDataUrl,
+      ),
+    );
+    dispatch(cancelEditor());
+    console.log('updating');
+    const blob = this.constructor.toBlob(croppedDataUrl);
+    console.log(blob);
+    console.log(URL.createObjectURL(blob));
+    console.log('updated');
   }
   getCropperType() {
     switch (this.state.editorStatus) {
@@ -44,25 +74,27 @@ class ImageCropper extends React.Component {
     this.setState({ isModalOpened: true });
   }
   enterCroping() {
-    this.setState({ editorStatus: EDITOR_STATUS_CROPPING, croppedCanvas: null });
+    this.setState({
+      editorStatus: EDITOR_STATUS_CROPPING,
+      croppedCanvas: null,
+    });
   }
   completeCropped() {
-    // this.props.dispatch(
-    //   setCroppedCanvas(
-    //     this.cropper.getCroppedCanvas(),
-    //   ),
-    // );
     this.setState({
       editorStatus: EDITOR_STATUS_DASHBOARD,
       croppedCanvas: this.cropper.getCroppedCanvas(),
     });
   }
   cancelCropping() {
-    this.setState({ editorStatus: EDITOR_STATUS_DASHBOARD });
+    this.setState({
+      editorStatus: EDITOR_STATUS_DASHBOARD,
+    });
   }
   rotateWithDir(dir) {
     this.cropper.rotate(dir);
-    this.setState({ croppedCanvas: null });
+    this.setState({
+      croppedCanvas: null,
+    });
   }
   renderControllerCrop() {
     return (
@@ -78,6 +110,7 @@ class ImageCropper extends React.Component {
       <ControllerDashboard
         rotate={dir => this.rotateWithDir(dir)}
         toCrop={this.enterCroping}
+        onComplete={this.onComplete}
       />
     );
   }
@@ -92,6 +125,7 @@ class ImageCropper extends React.Component {
     }
   }
   render() {
+    const { croppedCanvas } = this.state;
     return (
       <Modal
         {...this.props}
@@ -103,13 +137,13 @@ class ImageCropper extends React.Component {
           this.state.isModalOpened &&
           <div styleName="container">
             <div styleName="cropper">
-              { this.state.croppedCanvas &&
+              { croppedCanvas &&
                 <div styleName="croppedCanvas">
                   <div
                     style={{
                       height: 550,
                       width: 550,
-                      background: `url(${this.state.croppedCanvas}) center center/cover no-repeat`,
+                      background: `url(${croppedCanvas.toDataURL()}) center center/cover no-repeat`,
                       margin: '0 auto',
                     }}
                   />

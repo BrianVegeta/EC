@@ -26,7 +26,7 @@ class CoverContainer extends React.Component {
   }
   render() {
     const { editorCovers, dispatch } = this.props;
-    const { blob, croppedCanvs } = editorCovers.current;
+    const { current, covers } = editorCovers;
     return (
       <div styleName="container">
         <h2 styleName="title">{UPLOAD_COVER}</h2>
@@ -35,9 +35,10 @@ class CoverContainer extends React.Component {
           <li>圖片格式：jpg、jpge、png</li>
           <li>每一張不得超過2MB</li>
         </ul>
-        <SortableGallery covers={editorCovers.covers} dispatch={dispatch} />
+        <SortableGallery covers={covers} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
-        { blob && <ModalEditor image={blob} croppedCanvs={croppedCanvs} open {...this.props} /> }
+        { current.blob &&
+          <ModalEditor current={current} open {...this.props} /> }
       </div>
     );
   }

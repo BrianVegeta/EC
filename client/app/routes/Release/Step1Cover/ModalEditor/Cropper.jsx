@@ -78,7 +78,23 @@ class Cropper extends React.Component {
     this.centerCanvas();
   }
   getCroppedCanvas() {
-    return this.cropper.getCroppedCanvas({ height: 650, width: 650 }).toDataURL();
+    return this.cropper.getCroppedCanvas({ height: 650, width: 650 });
+  }
+  getCroppedCanvasThumb() {
+    return this.cropper.getCroppedCanvas({ height: 160, width: 160 });
+  }
+  test() {
+    console.log('updating');
+    this.cropper.getCroppedCanvas().toBlob((blob) => {
+      console.log(URL.createObjectURL(blob));
+      // dispatch(
+      //   updatedCover(
+      //     current.key,
+      //     this.state.croppedCanvas,
+      //   ),
+      // );
+      console.log('uploaded');
+    });
   }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();

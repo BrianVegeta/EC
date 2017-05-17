@@ -7,15 +7,12 @@ class Controller extends React.Component {
   static propTypes = {
     rotate: PropTypes.func.isRequired,
     toCrop: PropTypes.func.isRequired,
+    onComplete: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
     this.onRightRotate = this.onRightRotate.bind(this);
     this.onLeftRotate = this.onLeftRotate.bind(this);
-    this.onEnterCropping = this.onEnterCropping.bind(this);
-  }
-  onEnterCropping() {
-    this.props.toCrop();
   }
   onRightRotate() {
     this.props.rotate('right');
@@ -45,7 +42,7 @@ class Controller extends React.Component {
         <button
           className="button"
           styleName="cropBtn"
-          onClick={this.onEnterCropping}
+          onClick={this.props.toCrop}
         >
           <CropIcon size={25} />
           <span styleName="text">裁切</span>
@@ -53,6 +50,7 @@ class Controller extends React.Component {
         <button
           className="button"
           styleName="saveBtn"
+          onClick={this.props.onComplete}
         >
           儲存變更
         </button>

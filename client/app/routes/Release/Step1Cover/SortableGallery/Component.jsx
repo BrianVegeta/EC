@@ -46,9 +46,9 @@ class SortableGallery extends React.Component {
       removeCover(key),
     );
   }
-  openModal(blob) {
+  openModal(key, blob) {
     this.props.dispatch(
-      openEditorModal(blob),
+      openEditorModal(key, blob),
     );
   }
   render() {
@@ -66,7 +66,7 @@ class SortableGallery extends React.Component {
             <ThumbDropped
               coverLabel={value.isCover && coverLabel}
               coverUrl={value.blob}
-              onEdit={() => this.openModal(value.blob)}
+              onEdit={() => this.openModal(value.key, value.blob)}
               onRemove={() => this.removeCover(value.key)}
             />
         }
