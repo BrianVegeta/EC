@@ -14,7 +14,7 @@ export const setCroppedCanvas = data => ({
 });
 // covers operations
 export const newCoverWithBlob = blob => ({
-  type: TYPES.EDITOR_COVERS_SET_IMAGE_BLOB,
+  type: TYPES.EDITOR_COVERS_NEW_COVER_WITH_BLOB,
   blob,
 });
 export const updateCovers = covers => ({

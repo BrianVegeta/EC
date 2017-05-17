@@ -3,9 +3,7 @@ import * as TYPES from '../constants/actionTypes';
 
 const initialCover = { key: '?', blob: null };
 const initialState = {
-  covers: ['1st', '2nd', '3rd'].map(key =>
-    Object.assign({}, initialCover, { key }),
-  ),
+  covers: [],
   current: {
     blob: null,
     croppedCanvs: null,
@@ -29,20 +27,26 @@ const environment = (state = initialState, action) => {
           croppedCanvs: action.data,
         }),
       });
-    case TYPES.EDITOR_COVERS_NEW_COVER_WITH_BLOB:
-      return state;
-    case TYPES.EDITOR_COVERS_UPDATE_COVERS:
-      return state;
-    case TYPES.EDITOR_COVERS_REMOVE_COVER: {
+    case TYPES.EDITOR_COVERS_NEW_COVER_WITH_BLOB: {
       const covers = state.covers.concat();
-      const { key } = action;
-      const index = _.findIndex(covers, { key });
-      if (index < 0) return state;
-      covers.splice(index, 1).push(
-        Object.assign({}, initialCover, { key }),
+      covers.push(
+        Object.assign({}, initialCover, {
+          key: Date.now(),
+          blob: action.blob,
+        }),
       );
       return Object.assign({}, state, { covers });
     }
+    case TYPES.EDITOR_COVERS_UPDATE_COVERS:
+      return Object.assign({}, state, {
+        covers: action.covers,
+      });
+    case TYPES.EDITOR_COVERS_REMOVE_COVER:
+      return Object.assign({}, state, {
+        covers: state.covers.concat().splice(
+          _.findIndex(state.covers, { key: action.key }), 1,
+        ),
+      });
     default:
       return state;
   }

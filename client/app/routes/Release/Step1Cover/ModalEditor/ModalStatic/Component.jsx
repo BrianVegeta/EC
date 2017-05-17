@@ -15,18 +15,18 @@ class ModalComponent extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = { dialogMaxH: null };
+    this.state = { dialogMaxH: 650 };
   }
   componentDidMount() {
     // TODO: to preload height
-    if (this.dialog) {
-      this.setState({ dialogMaxH: this.dialog.clientHeight });
-    }
+    // if (this.dialog) {
+    //   this.setState({ dialogMaxH: this.dialog.clientHeight });
+    // }
   }
   componentDidUpdate() {
-    if (this.dialog && this.state.dialogMaxH) {
-      this.setState({ dialogMaxH: this.dialog.clientHeight });
-    }
+    // if (this.dialog && this.state.dialogMaxH) {
+    //   this.setState({ dialogMaxH: this.dialog.clientHeight });
+    // }
   }
   render() {
     const { environment } = this.props;

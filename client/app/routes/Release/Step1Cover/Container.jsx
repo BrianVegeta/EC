@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 import styles from './styles.sass';
 import NextController from '../NextController';
 import { UPLOAD_COVER } from '../constants/title';
-import ImageEditor from './ImageEditor';
+import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
 
 class CoverContainer extends React.Component {
@@ -13,6 +13,7 @@ class CoverContainer extends React.Component {
     editorCovers: PropTypes.objectOf(PropTypes.oneOfType([
       PropTypes.array, PropTypes.object, PropTypes.string,
     ])).isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -24,7 +25,8 @@ class CoverContainer extends React.Component {
     , 2000);
   }
   render() {
-    const { blob, croppedCanvs } = this.props.editorCovers.current;
+    const { editorCovers, dispatch } = this.props;
+    const { blob, croppedCanvs } = editorCovers.current;
     return (
       <div styleName="container">
         <h2 styleName="title">{UPLOAD_COVER}</h2>
@@ -33,9 +35,9 @@ class CoverContainer extends React.Component {
           <li>圖片格式：jpg、jpge、png</li>
           <li>每一張不得超過2MB</li>
         </ul>
-        <SortableGallery {...this.props} />
+        <SortableGallery covers={editorCovers.covers} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
-        { blob && <ImageEditor image={blob} croppedCanvs={croppedCanvs} open {...this.props} /> }
+        { blob && <ModalEditor image={blob} croppedCanvs={croppedCanvs} open {...this.props} /> }
       </div>
     );
   }

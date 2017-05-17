@@ -1,94 +1,74 @@
 import React, { PropTypes } from 'react';
-import EditIcon from 'react-icons/lib/md/edit';
-import RemoveIcon from 'react-icons/lib/go/trashcan';
-import update from 'react/lib/update';
-import _ from 'lodash';
 import {
   SortableContainer,
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc';
-import ImageDropzone from '../ImageDropzone';
-import { openEditorModal } from '../../../../actions/editorCoversActions';
+import ThumbDropzone from '../ThumbDropzone';
+import ThumbDropped from '../ThumbDropped';
+import {
+  openEditorModal,
+  newCoverWithBlob,
+  updateCovers,
+  removeCover,
+} from '../../../../actions/editorCoversActions';
 import styles from './styles.sass';
 
+
+const LEAST_COVER_SHOWN = 3;
 class SortableGallery extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    covers: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
   static shouldCancelStart(e) {
     const tagName = e.target.tagName.toLowerCase();
-    if (['svg', 'path', 'button'].indexOf(tagName) >= 0) {
-      return true; // Return true to cancel sorting
-    }
-    return false;
+    return ['svg', 'path', 'button'].indexOf(tagName) >= 0;
   }
   constructor(props) {
     super(props);
     this.onSortEnd = this.onSortEnd.bind(this);
-    this.state = {
-      images: ['1st', '2nd', '3rd'].map(key => ({ key, blob: null })),
-    };
   }
   onSortEnd({ oldIndex, newIndex }) {
-    const images = arrayMove(this.state.images, oldIndex, newIndex);
-    this.setState({ images });
+    this.props.dispatch(
+      updateCovers(
+        arrayMove(this.props.covers, oldIndex, newIndex),
+      ),
+    );
   }
-  updateImg(key, blob) {
-    const index = _.findIndex(this.state.images, { key });
-    if (index < 0) return;
-    this.setState(update(this.state, {
-      images: {
-        [index]: {
-          blob: { $set: blob },
-        },
-      },
-    }));
+  createCover(blob) {
+    this.props.dispatch(
+      newCoverWithBlob(blob),
+    );
   }
-  isFirst(image) {
-    return _.findIndex(this.state.images, image) === 0;
+  removeCover(key) {
+    this.props.dispatch(
+      removeCover(key),
+    );
   }
-  openModal(e, image) {
-    this.props.dispatch(openEditorModal(image));
-  }
-  removeImg(key) {
-    const images = this.state.images.concat();
-    const index = _.findIndex(images, { key });
-    if (index < 0) return;
-    images.splice(index, 1);
-    images.push({ key, blob: null });
-    this.setState({ images });
+  openModal(blob) {
+    this.props.dispatch(
+      openEditorModal(blob),
+    );
   }
   render() {
     const itemClass = styles.imageDropzone;
-    const ctrlGroupClass = styles.controller;
-    const ctrlIcon = styles.controlIcon;
-    const iconProps = { size: 16, color: '#fff', style: { display: 'block' } };
     const galleryClass = styles.gallery;
+    const coverLabel = <div className={styles.coverLabel}>封面</div>;
     const SortableItem = SortableElement(({ value }) =>
       <div className={itemClass} >
-        <ImageDropzone
-          onDrop={blob => this.updateImg(value.key, blob)}
-          isCover={this.isFirst(value)}
-          imageBlob={value.blob}
-          {...this.props}
-        />
         {
-          value.blob &&
-          <div className={ctrlGroupClass} >
-            <button
-              className={`${ctrlIcon} button`}
-              onClick={e => this.openModal(e, value.blob)}
-            >
-              <EditIcon {...iconProps} />
-            </button>
-            <button
-              className={`${ctrlIcon} button`}
-              onClick={() => this.removeImg(value.key)}
-            >
-              <RemoveIcon {...iconProps} />
-            </button>
-          </div>
+          value.isEmpty ?
+            <ThumbDropzone
+              onDrop={blob => this.createCover(blob)}
+              coverLabel={value.isCover && coverLabel}
+            /> :
+            <ThumbDropped
+              coverLabel={value.isCover && coverLabel}
+              coverUrl={value.blob}
+              onEdit={() => this.openModal(value.blob)}
+              onRemove={() => this.removeCover(value.key)}
+            />
         }
       </div>,
     );
@@ -104,10 +84,17 @@ class SortableGallery extends React.Component {
         ))}
       </div>,
     );
+    const { covers } = this.props;
+    // immutable
+    const emptyCovers = Array((LEAST_COVER_SHOWN - covers.length)).fill(
+      Object.assign({}, { isEmpty: true }),
+    );
+    const items = covers.concat(emptyCovers);
+    items[0] = Object.assign({}, items[0], { isCover: true });
     return (
       <SortableList
         axis="x"
-        items={this.state.images}
+        items={items}
         onSortEnd={this.onSortEnd}
         shouldCancelStart={this.constructor.shouldCancelStart}
       />

@@ -41,7 +41,6 @@ class ImageCropper extends React.Component {
     }
   }
   modalReady() {
-    console.log('modal ready');
     this.setState({ isModalOpened: true });
   }
   enterCroping() {
