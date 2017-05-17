@@ -5,7 +5,7 @@ import ControllerCrop from './ControllerCrop';
 import {
   cancelEditor,
   updatingCover,
-  updatedCover,
+  uploadCover,
 } from '../../../../actions/editorCoversActions';
 import Cropper from './Cropper';
 
@@ -55,7 +55,26 @@ class ImageCropper extends React.Component {
     );
     dispatch(cancelEditor());
     console.log('updating');
+
     const blob = this.constructor.toBlob(croppedDataUrl);
+    const formData = new FormData();
+    formData.append('croppedImage', blob);
+    this.props.dispatch(
+      uploadCover(formData),
+    );
+    // $.ajax('/path/to/upload', {
+    //   method: "POST",
+    //   data: formData,
+    //   processData: false,
+    //   contentType: false,
+    //   success: function () {
+    //     console.log('Upload success');
+    //   },
+    //   error: function () {
+    //     console.log('Upload error');
+    //   }
+    // });
+
     console.log(blob);
     console.log(URL.createObjectURL(blob));
     console.log('updated');

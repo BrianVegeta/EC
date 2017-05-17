@@ -38,7 +38,12 @@ class CoverContainer extends React.Component {
         <SortableGallery covers={covers} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
         { current.blob &&
-          <ModalEditor current={current} open {...this.props} /> }
+          <ModalEditor
+            current={current}
+            open
+            {...this.props}
+          />
+        }
       </div>
     );
   }

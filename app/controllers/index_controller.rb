@@ -19,6 +19,7 @@ class IndexController < ApplicationController
         categories: pages_path('categories'),
         ajaxGetBanners: ajax_banners_path(:json),
         ajax: {
+          itemCover: item_cover_ajax_images_path(:json),
           items: ajax_items_path(:json),
           categories: ajax_categories_path(:json),
           cities: cities_ajax_addresses_path(:json),

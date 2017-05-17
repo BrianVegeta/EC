@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import * as TYPES from '../constants/actionTypes';
+import { UPLOAD_PUT } from './methods';
 
 export const openEditorModal = (key, cover) => ({
   type: TYPES.EDITOR_COVERS_OPEN_EDIT_MODAL,
@@ -32,3 +33,17 @@ export const updatedCover = (key, blob) => ({
   blob,
   key,
 });
+export function uploadCover(formData) {
+  return (dispatch, getState) => {
+    const { routesHelper } = getState();
+    fetch(routesHelper.ajax.itemCover, {
+      ...UPLOAD_PUT,
+      body: formData,
+    })
+    .then(response => response.json())
+    .then((json) => {
+      console.log(json);
+    })
+    .catch((err) => { throw err; });
+  };
+}
