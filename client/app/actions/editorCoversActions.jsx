@@ -43,34 +43,19 @@ function toBlob(dataBase64, type) {
   }
   return new Blob([arr], { type: (type || 'image/jpg') });
 }
-function corsToBlob(crossUrl) {
-  const image = new Image();
-  image.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = this.width;
-    canvas.height = this.height;
-
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(this, 0, 0);
-
-    const dataURL = canvas.toDataURL('image/jpg');
-    console.log(dataURL);
+function s3ImageToBlob(s3Url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', s3Url, true);
+  xhr.responseType = 'arraybuffer';
+  xhr.onload = () => {
+    const arrayBufferView = new Uint8Array(xhr.response);
+    const blob = new Blob([arrayBufferView], { type: 'image/jpg' });
+    const urlCreator = window.URL || window.webkitURL;
+    const blobUrl = urlCreator.createObjectURL(blob);
+    callback(blobUrl);
   };
-  // image.crossOrigin = 'Anonymous';
-  image.src = crossUrl;
-  // const xhr = new XMLHttpRequest();
-  // xhr.open('GET', crossUrl, true);
-  // xhr.responseType = 'arraybuffer';
-  //
-  // xhr.onload = () => {
-  //   const arrayBufferView = new Uint8Array(this.response);
-  //   const blob = new Blob([arrayBufferView], { type: 'image/jpg' });
-  //   const urlCreator = window.URL || window.webkitURL;
-  //   const imageUrl = urlCreator.createObjectURL(blob);
-  //   console.log(imageUrl);
-  // };
-  //
-  // xhr.send();
+
+  xhr.send();
 }
 export function preload(imageSrc, callback) {
   const image = new Image();
@@ -79,7 +64,7 @@ export function preload(imageSrc, callback) {
   };
   image.src = imageSrc;
 }
-export function uploadCover(dataBase64, callback) {
+export function uploadCover(dataBase64, updatedCoverCB) {
   return (dispatch, getState) => {
     const { routesHelper } = getState();
     const formData = new FormData();
@@ -90,10 +75,7 @@ export function uploadCover(dataBase64, callback) {
     })
     .then(response => response.json())
     .then((json) => {
-      preload(json.photoUrl, () => {
-        callback(json.photoUrl);
-      });
-      console.log('updated');
+      s3ImageToBlob(json.photoUrl, updatedCoverCB);
     })
     .catch((err) => { throw err; });
   };
