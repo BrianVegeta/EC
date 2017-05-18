@@ -1,0 +1,49 @@
+.backdrop
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1040
+  background-color: #000
+  opacity: 0.5
+
+.modal
+  display: block
+  overflow-x: hidden
+  overflow-y: auto
+  padding-right: 15px
+  // TODO: fix modal open fixed element padding right issue
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1050
+  -webkit-overflow-scrolling: touch
+  outline: 0
+
+.dialog
+  position: relative
+  width: 780px
+  margin: auto
+.content
+  position: relative
+  height: 650px
+  background: #fff
+  // background: rgba(255, 255, 255, 0.2)
+  // border: 1px solid #999
+  // border: 1px solid rgba(0, 0, 0, 0.2)
+  // border-radius: 6px
+  // -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5)
+  // box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5)
+  background-clip: padding-box
+  outline: 0
+
+
+
+.closeCross
+  color: #fff
+  position: absolute
+  right: -40px
+  top: 0

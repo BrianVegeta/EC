@@ -14,7 +14,7 @@ class ReleaseEnterModal extends React.Component {
   };
   constructor(props) {
     super(props);
-    ReactModal.setAppElement('#test');
+    ReactModal.setAppElement('[id^="App-react-component-"]');
   }
   render() {
     return (
