@@ -56,7 +56,7 @@ Rails.application.configure do
     storage: :s3,
     s3_region: 'ap-northeast-1',
     s3_protocol: 'https',
-    path: '/:basename_:style.:extension',
+    path: '/:useridxtimestamp.:extension',
     s3_credentials: {
       s3_host_name: 's3-ap-northeast-1.amazonaws.com',
       bucket: 'shareapisd',

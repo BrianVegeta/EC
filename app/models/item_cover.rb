@@ -11,14 +11,23 @@ class ItemCover
   define_model_callbacks :destroy, only: [:before, :after]
 
   attr_accessor :photo_file_name, :photo_content_type, :photo_file_size, :photo_updated_at, :id
+  attr_accessor :userid, :timestamp
 
-  # Paperclip.interpolates :timestamp do |attachment, style|
-  #   attachment.instance.category.name
-  # end
-  has_attached_file :photo, styles: {
-    :original => ["650x650", :jpg],
-    :s => ["300x300", :jpg],
-  }
+  Paperclip.interpolates :useridxtimestamp do |attachment, style|
+    "#{attachment.instance.userid}_#{attachment.instance.timestamp}"
+  end
+
+  Paperclip.interpolates :style do |attachment, style|
+    "#{style.to_sym == :original ? '' : style.to_sym}"
+  end
+  has_attached_file :photo,
+                    styles: {
+                      :original => ["650x650", :jpg],
+                      :s => ["300x300", :jpg],
+                    },
+                    url: '/:useridxtimestamp:style.:extension',
+                    path: '/:useridxtimestamp:style.:extension',
+                    use_timestamp: false
   do_not_validate_attachment_file_type :photo
 
   def save

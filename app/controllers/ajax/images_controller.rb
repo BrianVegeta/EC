@@ -10,9 +10,11 @@ class Ajax::ImagesController < ApplicationController
   # GET /images/item_cover.json
   def item_cover
     @uploader = ItemCover.new
+    @uploader.userid = 'SAG00079'
+    @uploader.timestamp = Time.now.to_i * 1000
     @uploader.photo = params[:croppedImage]
     @uploader.save
-    render json: { result: @uploader.photo }
+    render json: { photoUrl: @uploader.photo.url }
   end
 
   # GET /images/1
