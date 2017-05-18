@@ -43,7 +43,42 @@ function toBlob(dataBase64, type) {
   }
   return new Blob([arr], { type: (type || 'image/jpg') });
 }
+function corsToBlob(crossUrl) {
+  const image = new Image();
+  image.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = this.width;
+    canvas.height = this.height;
 
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(this, 0, 0);
+
+    const dataURL = canvas.toDataURL('image/jpg');
+    console.log(dataURL);
+  };
+  // image.crossOrigin = 'Anonymous';
+  image.src = crossUrl;
+  // const xhr = new XMLHttpRequest();
+  // xhr.open('GET', crossUrl, true);
+  // xhr.responseType = 'arraybuffer';
+  //
+  // xhr.onload = () => {
+  //   const arrayBufferView = new Uint8Array(this.response);
+  //   const blob = new Blob([arrayBufferView], { type: 'image/jpg' });
+  //   const urlCreator = window.URL || window.webkitURL;
+  //   const imageUrl = urlCreator.createObjectURL(blob);
+  //   console.log(imageUrl);
+  // };
+  //
+  // xhr.send();
+}
+export function preload(imageSrc, callback) {
+  const image = new Image();
+  image.onload = () => {
+    callback();
+  };
+  image.src = imageSrc;
+}
 export function uploadCover(dataBase64, callback) {
   return (dispatch, getState) => {
     const { routesHelper } = getState();
@@ -55,7 +90,9 @@ export function uploadCover(dataBase64, callback) {
     })
     .then(response => response.json())
     .then((json) => {
-      callback(json.photoUrl);
+      preload(json.photoUrl, () => {
+        callback(json.photoUrl);
+      });
       console.log('updated');
     })
     .catch((err) => { throw err; });

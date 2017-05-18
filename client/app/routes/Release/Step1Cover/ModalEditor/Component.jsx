@@ -53,24 +53,12 @@ class ImageCropper extends React.Component {
       croppedCanvas.toDataURL() :
       this.cropper.getCroppedCanvas().toDataURL()
     );
-    dispatch(
-      updatingCover(
-        current.key, croppedDataUrl,
-      ),
-    );
-    console.log('updating');
+    dispatch(updatingCover(current.key, croppedDataUrl));
     dispatch(cancelEditor());
-    console.log('close modal');
     const uploadCB = (returnUrl) => {
-      dispatch(
-        updatedCover(
-          current.key, returnUrl,
-        ),
-      );
+      dispatch(updatedCover(current.key, returnUrl));
     };
-    dispatch(
-      uploadCover(croppedDataUrl, uploadCB),
-    );
+    dispatch(uploadCover(croppedDataUrl, uploadCB));
   }
   getCropperType() {
     switch (this.state.editorStatus) {

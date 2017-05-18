@@ -83,19 +83,6 @@ class Cropper extends React.Component {
   getCroppedCanvasThumb() {
     return this.cropper.getCroppedCanvas({ height: 160, width: 160 });
   }
-  test() {
-    console.log('updating');
-    this.cropper.getCroppedCanvas().toBlob((blob) => {
-      console.log(URL.createObjectURL(blob));
-      // dispatch(
-      //   updatedCover(
-      //     current.key,
-      //     this.state.croppedCanvas,
-      //   ),
-      // );
-      console.log('uploaded');
-    });
-  }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
     const left = (CANVAS_WIDTH - canvasData.width) / 2;
@@ -125,6 +112,8 @@ class Cropper extends React.Component {
     return {
       src: this.props.src,
       checkOrientation: true,
+      checkImageOrigin: false,
+      checkCrossOrigin: false,
       autoCrop: true,
       viewMode: 1,
       dragMode: 'move',
@@ -146,6 +135,7 @@ class Cropper extends React.Component {
     return (
       <CropperJS
         ref={c => (this.cropper = c)}
+        crossOrigin="Anonymous"
         {...this.cropperConf()}
       />
     );
