@@ -26,3 +26,4 @@ Things you may want to cover:
 
 
 imagemagick
+AWS S3 AllowedOrigin

@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
+import CSS from 'react-css-modules';
 import CameraIcon from 'react-icons/lib/ti/camera-outline';
 import Dropper from './Dropper';
+import { DROPBOX_SIZE } from '../../../../../constants/coverCropper';
+import styles from './styles.sass';
+
 
 class Dropzone extends React.Component {
   static defaultProps = {
@@ -31,7 +35,11 @@ class Dropzone extends React.Component {
     const { onMouseEnter, onMouseLeave } = this;
     return (
       <div
-        styleName="imageDropzone"
+        styleName="thumbDropzone"
+        style={{
+          width: DROPBOX_SIZE,
+          height: DROPBOX_SIZE,
+        }}
         {...{ onMouseEnter, onMouseLeave }}
       >
         <div styleName="cameraLabel">
@@ -48,4 +56,4 @@ class Dropzone extends React.Component {
   }
 }
 
-export default Dropzone;
+export default CSS(Dropzone, styles);

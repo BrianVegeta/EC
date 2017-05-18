@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import CropperJS from 'react-cropper';
 import {
   CROP_BOX,
+  DROPBOX_SIZE,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
 } from '../../../../constants/coverCropper';
@@ -11,6 +12,13 @@ class Cropper extends React.Component {
     src: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   };
+  static directionToDegree(direction) {
+    switch (direction) {
+      case 'left': return -90;
+      case 'right': return 90;
+      default: return 0;
+    }
+  }
   constructor(props) {
     super(props);
     this.onCropperReady = this.onCropperReady.bind(this);
@@ -19,10 +27,7 @@ class Cropper extends React.Component {
     };
   }
   componentDidUpdate() {
-    if (!this.state.isCropperReady) {
-      return;
-    }
-    if (this.props.type === 'cropper') {
+    if (this.state.isCropperReady && this.props.type === 'cropper') {
       const { width, naturalWidth } = this.cropper.getCanvasData();
       this.cropperInit = { width, naturalWidth };
       this.setCropperCover();
@@ -81,7 +86,7 @@ class Cropper extends React.Component {
     return this.cropper.getCroppedCanvas({ height: 650, width: 650 });
   }
   getCroppedCanvasThumb() {
-    return this.cropper.getCroppedCanvas({ height: 160, width: 160 });
+    return this.cropper.getCroppedCanvas({ height: DROPBOX_SIZE, width: DROPBOX_SIZE });
   }
   centerCanvas() {
     const canvasData = this.cropper.getCanvasData();
@@ -90,16 +95,7 @@ class Cropper extends React.Component {
     this.cropper.setCanvasData({ left, top });
   }
   rotate(direction) {
-    let rotateDegree = 0;
-    switch (direction) {
-      case 'left':
-        rotateDegree = -90;
-        break;
-      case 'right':
-        rotateDegree = 90;
-        break;
-      default:
-    }
+    const rotateDegree = this.constructor.directionToDegree(direction);
     this.cropper.rotate(rotateDegree);
     this.setRotatorContain();
   }

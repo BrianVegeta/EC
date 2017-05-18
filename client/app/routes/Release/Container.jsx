@@ -11,8 +11,10 @@ const ReleaseContainer = (props) => {
   const paddingTop = 100;
   return (
     <div className="release-wrapper" style={{ minHeight }} >
-      <div className="main" style={{ minHeight, paddingTop, paddingLeft: 50 }}>
-        {props.formComponent}
+      <div className="main" style={{ minHeight, paddingTop }}>
+        <div className="content-wrapper">
+          {props.formComponent}
+        </div>
       </div>
       <div className="sidebar-left" style={{ minHeight, paddingTop }}>
         <SidebarNavs />

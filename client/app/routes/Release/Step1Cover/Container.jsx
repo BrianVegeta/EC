@@ -39,8 +39,8 @@ class CoverContainer extends React.Component {
         <NextController next={this.saveAndNext} />
         { current.blob &&
           <ModalEditor
-            current={current}
             open
+            current={current}
             {...this.props}
           />
         }

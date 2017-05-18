@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
+import CSS from 'react-css-modules';
 import EditIcon from 'react-icons/lib/md/edit';
 import RemoveIcon from 'react-icons/lib/go/trashcan';
+import styles from './styles.sass';
+import { DROPBOX_SIZE } from '../../../../../constants/coverCropper';
 
 class ThumbDropped extends React.Component {
   static defaultProps = {
@@ -18,7 +21,11 @@ class ThumbDropped extends React.Component {
     return (
       <div
         styleName="imageDropped"
-        style={{ backgroundImage: `url(${coverUrl})` }}
+        style={{
+          backgroundImage: `url(${coverUrl})`,
+          width: DROPBOX_SIZE,
+          height: DROPBOX_SIZE,
+        }}
       >
         {this.props.coverLabel}
         <div styleName="ctrlGroups" >
@@ -34,4 +41,4 @@ class ThumbDropped extends React.Component {
   }
 }
 
-export default ThumbDropped;
+export default CSS(ThumbDropped, styles);

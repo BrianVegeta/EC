@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { initEnvironment } from '../actions/environmentActions';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
@@ -20,7 +19,6 @@ class LayoutContainer extends React.Component {
     return (
       <div className="app release-wrapper" style={{ paddingTop: 70 }}>
         <div className="container clear">{mainComponent}</div>
-        <Footer />
         <Header {...this.props} />
       </div>
     );
