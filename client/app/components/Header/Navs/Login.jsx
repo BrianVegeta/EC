@@ -5,6 +5,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.login = this.login.bind(this);
+    this.props.dispatch(setLoginStatus(true)); // remove
   }
 
   login() {
