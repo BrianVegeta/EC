@@ -33,16 +33,30 @@ export const updatedCover = (key, blob) => ({
   blob,
   key,
 });
-export function uploadCover(formData) {
+
+function toBlob(dataBase64, type) {
+  const binStr = atob(dataBase64.split(',')[1]);
+  const len = binStr.length;
+  const arr = new Uint8Array(len);
+  for (let i = 0; i < len; i += 1) {
+    arr[i] = binStr.charCodeAt(i);
+  }
+  return new Blob([arr], { type: (type || 'image/jpg') });
+}
+
+export function uploadCover(dataBase64, callback) {
   return (dispatch, getState) => {
     const { routesHelper } = getState();
+    const formData = new FormData();
+    formData.append('croppedImage', toBlob(dataBase64));
     fetch(routesHelper.ajax.itemCover, {
       ...UPLOAD_PUT,
       body: formData,
     })
     .then(response => response.json())
     .then((json) => {
-      console.log(json);
+      callback(json.photoUrl);
+      console.log('updated');
     })
     .catch((err) => { throw err; });
   };

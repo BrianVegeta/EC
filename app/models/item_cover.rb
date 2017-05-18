@@ -16,14 +16,17 @@ class ItemCover
   Paperclip.interpolates :useridxtimestamp do |attachment, style|
     "#{attachment.instance.userid}_#{attachment.instance.timestamp}"
   end
-
   Paperclip.interpolates :style do |attachment, style|
     "#{style.to_sym == :original ? '' : style.to_sym}"
   end
   has_attached_file :photo,
                     styles: {
-                      :original => ["650x650", :jpg],
-                      :s => ["300x300", :jpg],
+                      :original => ['650x650#', :jpg],
+                      :s => ['300x300#', :jpg],
+                    },
+                    :convert_options => {
+                      original: '-background white -alpha remove',
+                      s: '-background white -alpha remove'
                     },
                     url: '/:useridxtimestamp:style.:extension',
                     path: '/:useridxtimestamp:style.:extension',
