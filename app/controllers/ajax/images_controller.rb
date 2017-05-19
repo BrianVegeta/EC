@@ -11,7 +11,7 @@ class Ajax::ImagesController < ApplicationController
   def item_cover
     @uploader = ItemCover.new
     @uploader.userid = 'SAG00079'
-    @uploader.timestamp = Time.now.to_i * 1000
+    @uploader.timestamp = (Time.now.to_f * 1000).to_i
     @uploader.photo = params[:croppedImage]
     @uploader.save
     render json: { photoUrl: @uploader.photo.url }

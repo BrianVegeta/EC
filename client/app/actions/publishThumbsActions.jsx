@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import _ from 'lodash';
 import {
   PUBLISH_THUMBS_CREATE,
   PUBLISH_THUMBS_UPDATE_ORDERS,
@@ -32,7 +33,22 @@ function s3ImageToBlob(s3Url, callback) {
 
   xhr.send();
 }
-
+function containCropToCanvasDataURL(dataURL, callback) {
+  const img = new Image();
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 650;
+  canvas.height = 650;
+  img.onload = () => {
+    const min = Math.min(img.width, img.height);
+    ctx.drawImage(img,
+      (img.width - min) / 2, (img.height - min) / 2, min, min,
+      0, 0, 650, 650,
+    );
+    callback(canvas.toDataURL());
+  };
+  img.src = dataURL;
+}
 
 export const thumbCreate = blobUrl => ({
   type: PUBLISH_THUMBS_CREATE,
@@ -51,9 +67,10 @@ export const updatingFromThumbs = (key, blobUrl) => ({
   blobUrl,
   key,
 });
-export const updatedFromThumbs = (key, blobUrl) => ({
+export const updatedFromThumbs = (key, blobUrl, s3Url) => ({
   type: PUBLISH_THUMBS_UPDATED_ONE,
   blobUrl,
+  s3Url,
   key,
 });
 
@@ -72,10 +89,22 @@ export function uploadCoverAndUpdateThumbs(key, dataBase64Url) {
     })
     .then(response => response.json())
     .then((json) => {
-      s3ImageToBlob(json.photoUrl, responseBlobUrl =>
-        dispatch(updatedFromThumbs(key, responseBlobUrl)),
-      );
+      const { photoUrl } = json;
+      s3ImageToBlob(photoUrl, (responseBlobUrl) => {
+        dispatch(updatedFromThumbs(key, responseBlobUrl, photoUrl));
+      });
     })
     .catch((err) => { throw err; });
+  };
+}
+
+export function checkThumbsAndUpload() {
+  return (dispatch, getState) => {
+    const { coverThumbs } = getState().publish;
+    _.each(coverThumbs, (thumb) => {
+      containCropToCanvasDataURL(thumb.blobUrl, (dataURL) => {
+        dispatch(uploadCoverAndUpdateThumbs(thumb.key, dataURL));
+      });
+    });
   };
 }

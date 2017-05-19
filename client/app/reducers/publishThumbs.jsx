@@ -11,6 +11,8 @@ const initialThumb = {
   key: '?',
   blobUrl: null,
   isUploading: false,
+  isStored: false,
+  s3Url: '',
 };
 const initialState = [];
 export default (state = initialState, action) => {
@@ -40,17 +42,20 @@ export default (state = initialState, action) => {
       const index = _.findIndex(thumbs, { key });
       thumbs[index] = Object.assign({}, thumbs[index], {
         isUploading: true,
+        isStored: false,
         blobUrl,
       });
       return thumbs;
     }
     case PUBLISH_THUMBS_UPDATED_ONE: {
-      const { key, blobUrl } = action;
+      const { key, blobUrl, s3Url } = action;
       const thumbs = state.concat();
       const index = _.findIndex(thumbs, { key });
       thumbs[index] = Object.assign({}, thumbs[index], {
         isUploading: false,
+        isSotred: true,
         blobUrl,
+        s3Url,
       });
       return thumbs;
     }

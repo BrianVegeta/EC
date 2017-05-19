@@ -7,6 +7,7 @@ import NextController from '../../components/NextController';
 import { UPLOAD_COVER } from '../../constants/title';
 import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
+import { checkThumbsAndUpload } from '../../../../actions/publishThumbsActions';
 
 class CoverContainer extends React.Component {
   static propTypes = {
@@ -20,9 +21,10 @@ class CoverContainer extends React.Component {
     this.saveAndNext = this.saveAndNext.bind(this);
   }
   saveAndNext() {
-    setTimeout(() =>
-      browserHistory.push('/p/release_item/step2')
-    , 2000);
+    this.props.dispatch(checkThumbsAndUpload());
+    // setTimeout(() =>
+    //   browserHistory.push('/p/release_item/step2')
+    // , 2000);
   }
   render() {
     const { publish, dispatch } = this.props;
