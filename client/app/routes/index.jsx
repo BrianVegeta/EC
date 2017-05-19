@@ -1,5 +1,6 @@
 import Layout from '../containers/LayoutContainer';
 import LayoutRelease from '../containers/LayoutReleaseContainer';
+import LayoutPublish from '../containers/LayoutPublishContainer';
 import LayoutItem from '../containers/LayoutItemContainer';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
@@ -28,10 +29,15 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
+      component: LayoutPublish,
+      childRoutes: [
+        ReleaseGoods(routesHelper),
+      ],
+    },
+    {
       component: LayoutRelease,
       childRoutes: [
         Release(routesHelper, dispatch),
-        ReleaseGoods(routesHelper),
       ],
     },
     {

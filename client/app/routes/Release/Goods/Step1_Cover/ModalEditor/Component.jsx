@@ -1,32 +1,24 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
 import Modal from './ModalStatic';
 import ControllerDashboard from './ControllerDashboard';
 import ControllerCrop from './ControllerCrop';
-import {
-  cancelEditor,
-  updatingCover,
-  updatedCover,
-  uploadCover,
-} from '../../../../../actions/editorCoversActions';
+import { uploadCoverAndUpdateThumbs } from '../../../../../actions/publishThumbsActions';
+import { closeCropper } from '../../../../../actions/publishCropperActions';
 import Cropper from './Cropper';
+import CroppedCanvas from './CroppedCanvas';
 
 const EDITOR_STATUS_DASHBOARD = 'DASHBOARD';
 const EDITOR_STATUS_CROPPING = 'CROPPING';
-class ImageCropper extends React.Component {
+class ModalCropper extends React.Component {
   static propTypes = {
-    open: PropTypes.bool.isRequired,
-    current: PropTypes.objectOf(PropTypes.string).isRequired,
+    publish: PropTypes.shape({
+      coverCropper: PropTypes.object,
+    }).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
-  static toBlob(dataUrl) {
-    const binStr = atob(dataUrl.split(',')[1]);
-    const len = binStr.length;
-    const arr = new Uint8Array(len);
-    for (let i = 0; i < len; i += 1) {
-      arr[i] = binStr.charCodeAt(i);
-    }
-    return new Blob([arr], { type: 'image/png' });
-  }
   constructor(props) {
     super(props);
     this.enterCroping = this.enterCroping.bind(this);
@@ -36,29 +28,24 @@ class ImageCropper extends React.Component {
     this.modalReady = this.modalReady.bind(this);
     this.onComplete = this.onComplete.bind(this);
     this.state = {
-      image: this.props.current.blob,
+      image: props.publish.coverCropper.blob,
       editorStatus: EDITOR_STATUS_DASHBOARD,
       croppedCanvas: null,
       isModalOpened: false,
     };
   }
   onEditorCancel() {
-    this.props.dispatch(cancelEditor());
+    this.props.dispatch(closeCropper());
   }
   onComplete() {
-    const { dispatch, current } = this.props;
+    const { dispatch, publish } = this.props;
+    const { coverCropper } = publish;
     const { croppedCanvas } = this.state;
-    const croppedDataUrl = (
-      croppedCanvas ?
+    const croppedDataUrl = croppedCanvas ?
       croppedCanvas.toDataURL() :
-      this.cropper.getCroppedCanvas().toDataURL()
-    );
-    dispatch(updatingCover(current.key, croppedDataUrl));
-    dispatch(cancelEditor());
-    const uploadCB = (returnUrl) => {
-      dispatch(updatedCover(current.key, returnUrl));
-    };
-    dispatch(uploadCover(croppedDataUrl, uploadCB));
+      this.cropper.getCroppedCanvas().toDataURL();
+    dispatch(uploadCoverAndUpdateThumbs(coverCropper.key, croppedDataUrl));
+    dispatch(closeCropper());
   }
   getCropperType() {
     switch (this.state.editorStatus) {
@@ -125,29 +112,24 @@ class ImageCropper extends React.Component {
     }
   }
   render() {
-    const { croppedCanvas } = this.state;
+    const { croppedCanvas, isModalOpened } = this.state;
     return (
       <Modal
+        isShow
         {...this.props}
-        isShow={this.props.open}
         onClose={this.onEditorCancel}
         onEntered={this.modalReady}
       >
         {
-          this.state.isModalOpened &&
+          isModalOpened &&
           <div styleName="container">
             <div styleName="cropper">
-              { croppedCanvas &&
-                <div styleName="croppedCanvas">
-                  <div
-                    style={{
-                      height: 550,
-                      width: 550,
-                      background: `url(${croppedCanvas.toDataURL()}) center center/cover no-repeat`,
-                      margin: '0 auto',
-                    }}
-                  />
-                </div>
+              {
+                croppedCanvas &&
+                <CroppedCanvas
+                  className={styles.croppedCanvas}
+                  dataUrl={croppedCanvas.toDataURL()}
+                />
               }
               <Cropper
                 src={this.state.image}
@@ -165,4 +147,8 @@ class ImageCropper extends React.Component {
   }
 }
 
-export default ImageCropper;
+const mapStateToProps = (state) => {
+  const { environment, routesHelper, publish } = state;
+  return ({ environment, routesHelper, publish });
+};
+export default connect(mapStateToProps)(CSS(ModalCropper, styles));

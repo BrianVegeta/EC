@@ -1,39 +1,14 @@
 /* eslint-disable import/prefer-default-export */
-import * as TYPES from '../constants/actionTypes';
+import {
+  PUBLISH_THUMBS_CREATE,
+  PUBLISH_THUMBS_UPDATE_ORDERS,
+  PUBLISH_THUMBS_REMOVE_ONE,
+  PUBLISH_THUMBS_UPDATING_ONE,
+  PUBLISH_THUMBS_UPDATED_ONE,
+} from '../constants/actionTypes';
 import { UPLOAD_PUT } from './methods';
 
-export const openEditorModal = (key, cover) => ({
-  type: TYPES.EDITOR_COVERS_OPEN_EDIT_MODAL,
-  key,
-  cover,
-});
-export const cancelEditor = () => ({
-  type: TYPES.EDITOR_COVERS_CANCEL_EDIT,
-});
-// covers operations
-export const newCoverWithBlob = blob => ({
-  type: TYPES.EDITOR_COVERS_NEW_COVER_WITH_BLOB,
-  blob,
-});
-export const updateCovers = covers => ({
-  type: TYPES.EDITOR_COVERS_UPDATE_COVERS,
-  covers,
-});
-export const removeCover = key => ({
-  type: TYPES.EDITOR_COVERS_REMOVE_COVER,
-  key,
-});
-export const updatingCover = (key, blob) => ({
-  type: TYPES.EDITOR_COVERS_UPDATING_COVER,
-  blob,
-  key,
-});
-export const updatedCover = (key, blob) => ({
-  type: TYPES.EDITOR_COVERS_UPDATED_COVER,
-  blob,
-  key,
-});
-
+// private funcs
 function toBlob(dataBase64, type) {
   const binStr = atob(dataBase64.split(',')[1]);
   const len = binStr.length;
@@ -57,25 +32,49 @@ function s3ImageToBlob(s3Url, callback) {
 
   xhr.send();
 }
-export function preload(imageSrc, callback) {
-  const image = new Image();
-  image.onload = () => {
-    callback();
-  };
-  image.src = imageSrc;
-}
-export function uploadCover(dataBase64, updatedCoverCB) {
+
+
+export const thumbCreate = blobUrl => ({
+  type: PUBLISH_THUMBS_CREATE,
+  blobUrl,
+});
+export const thumbsUpdateOrders = thumbs => ({
+  type: PUBLISH_THUMBS_UPDATE_ORDERS,
+  thumbs,
+});
+export const removeFromThumbs = key => ({
+  type: PUBLISH_THUMBS_REMOVE_ONE,
+  key,
+});
+export const updatingFromThumbs = (key, blobUrl) => ({
+  type: PUBLISH_THUMBS_UPDATING_ONE,
+  blobUrl,
+  key,
+});
+export const updatedFromThumbs = (key, blobUrl) => ({
+  type: PUBLISH_THUMBS_UPDATED_ONE,
+  blobUrl,
+  key,
+});
+
+export function uploadCoverAndUpdateThumbs(key, dataBase64Url) {
   return (dispatch, getState) => {
+    const blob = toBlob(dataBase64Url);
+    const blobUrl = URL.createObjectURL(blob);
+    dispatch(updatingFromThumbs(key, blobUrl));
+
     const { routesHelper } = getState();
     const formData = new FormData();
-    formData.append('croppedImage', toBlob(dataBase64));
+    formData.append('croppedImage', blob);
     fetch(routesHelper.ajax.itemCover, {
       ...UPLOAD_PUT,
       body: formData,
     })
     .then(response => response.json())
     .then((json) => {
-      s3ImageToBlob(json.photoUrl, updatedCoverCB);
+      s3ImageToBlob(json.photoUrl, responseBlobUrl =>
+        dispatch(updatedFromThumbs(key, responseBlobUrl)),
+      );
     })
     .catch((err) => { throw err; });
   };

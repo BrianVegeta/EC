@@ -8,11 +8,11 @@ import {
 import ThumbDropzone from './ThumbDropzone';
 import ThumbDropped from './ThumbDropped';
 import {
-  openEditorModal,
-  newCoverWithBlob,
-  updateCovers,
-  removeCover,
-} from '../../../../../actions/editorCoversActions';
+  thumbCreate,
+  thumbsUpdateOrders,
+  removeFromThumbs,
+} from '../../../../../actions/publishThumbsActions';
+import { openCropper } from '../../../../../actions/publishCropperActions';
 import styles from './styles.sass';
 
 
@@ -32,24 +32,24 @@ class SortableGallery extends React.Component {
   }
   onSortEnd({ oldIndex, newIndex }) {
     this.props.dispatch(
-      updateCovers(
+      thumbsUpdateOrders(
         arrayMove(this.props.covers, oldIndex, newIndex),
       ),
     );
   }
   createCover(blob) {
     this.props.dispatch(
-      newCoverWithBlob(blob),
+      thumbCreate(blob),
     );
   }
   removeCover(key) {
     this.props.dispatch(
-      removeCover(key),
+      removeFromThumbs(key),
     );
   }
-  openModal(key, blob) {
+  openModal(key, blobUrl) {
     this.props.dispatch(
-      openEditorModal(key, blob),
+      openCropper(key, blobUrl),
     );
   }
   render() {
@@ -66,8 +66,8 @@ class SortableGallery extends React.Component {
             /> :
             <ThumbDropped
               coverLabel={value.isCover && coverLabel}
-              coverUrl={value.blob}
-              onEdit={() => this.openModal(value.key, value.blob)}
+              coverUrl={value.blobUrl}
+              onEdit={() => this.openModal(value.key, value.blobUrl)}
               onRemove={() => this.removeCover(value.key)}
             />
         }
@@ -80,7 +80,7 @@ class SortableGallery extends React.Component {
             key={`item-${index + 1}`}
             index={index}
             value={image}
-            disabled={!image.blob}
+            disabled={!image.blobUrl}
           />
         ))}
       </div>,

@@ -9,11 +9,8 @@ import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
 
 class CoverContainer extends React.Component {
-  static routerWillLeave(nextLocation) {
-    console.log(1);
-  }
   static propTypes = {
-    editorCovers: PropTypes.objectOf(PropTypes.oneOfType([
+    publish: PropTypes.objectOf(PropTypes.oneOfType([
       PropTypes.array, PropTypes.object, PropTypes.string,
     ])).isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -28,8 +25,8 @@ class CoverContainer extends React.Component {
     , 2000);
   }
   render() {
-    const { editorCovers, dispatch } = this.props;
-    const { current, covers } = editorCovers;
+    const { publish, dispatch } = this.props;
+    const { coverCropper, coverThumbs } = publish;
     return (
       <div styleName="container">
         <h2 styleName="title">{UPLOAD_COVER}</h2>
@@ -38,22 +35,16 @@ class CoverContainer extends React.Component {
           <li>圖片格式：jpg、jpge、png</li>
           <li>每一張不得超過2MB</li>
         </ul>
-        <SortableGallery covers={covers} dispatch={dispatch} />
+        <SortableGallery covers={coverThumbs} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
-        { current.blob &&
-          <ModalEditor
-            open
-            current={current}
-            {...this.props}
-          />
-        }
+        { coverCropper.blob && <ModalEditor /> }
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, editorCovers } = state;
-  return ({ environment, routesHelper, editorCovers });
+  const { environment, routesHelper, publish } = state;
+  return ({ environment, routesHelper, publish });
 };
 export default connect(mapStateToProps)(CSS(CoverContainer, styles));
