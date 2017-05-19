@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import _ from 'lodash';
 import styles from './styles.sass';
 import NextController from '../../components/NextController';
 import { UPLOAD_COVER } from '../../constants/title';
@@ -26,6 +27,14 @@ class CoverContainer extends React.Component {
     //   browserHistory.push('/p/release_item/step2')
     // , 2000);
   }
+  checkImagesUploaded() {
+    const { publish } = this.props;
+    const unStoreds = _.filter(publish.coverThumbs, thumb =>
+      !thumb.isStored,
+    );
+
+    console.log(unStoreds);
+  }
   render() {
     const { publish, dispatch } = this.props;
     const { coverCropper, coverThumbs } = publish;
@@ -39,6 +48,7 @@ class CoverContainer extends React.Component {
         </ul>
         <SortableGallery covers={coverThumbs} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
+        {this.checkImagesUploaded()}
         { coverCropper.blob && <ModalEditor /> }
       </div>
     );

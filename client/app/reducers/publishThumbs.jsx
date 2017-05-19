@@ -48,12 +48,13 @@ export default (state = initialState, action) => {
       return thumbs;
     }
     case PUBLISH_THUMBS_UPDATED_ONE: {
+      console.log('updated');
       const { key, blobUrl, s3Url } = action;
       const thumbs = state.concat();
       const index = _.findIndex(thumbs, { key });
       thumbs[index] = Object.assign({}, thumbs[index], {
         isUploading: false,
-        isSotred: true,
+        isStored: true,
         blobUrl,
         s3Url,
       });
