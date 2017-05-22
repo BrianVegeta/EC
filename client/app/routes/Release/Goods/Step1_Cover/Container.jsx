@@ -17,23 +17,29 @@ class CoverContainer extends React.Component {
     ])).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
+  static getUnStoreds(props) {
+    const { publish } = props;
+    const unStoreds = _.filter(publish.coverThumbs, thumb =>
+      !thumb.isStored,
+    );
+    return unStoreds;
+  }
   constructor(props) {
     super(props);
     this.saveAndNext = this.saveAndNext.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    const { getUnStoreds } = this.constructor;
+    if (getUnStoreds(prevProps).length > 0 && getUnStoreds(this.props).length === 0) {
+      console.log('excute');
+    }
+    // TODO: today
   }
   saveAndNext() {
     this.props.dispatch(checkThumbsAndUpload());
     // setTimeout(() =>
     //   browserHistory.push('/p/release_item/step2')
     // , 2000);
-  }
-  checkImagesUploaded() {
-    const { publish } = this.props;
-    const unStoreds = _.filter(publish.coverThumbs, thumb =>
-      !thumb.isStored,
-    );
-
-    console.log(unStoreds);
   }
   render() {
     const { publish, dispatch } = this.props;
@@ -48,7 +54,6 @@ class CoverContainer extends React.Component {
         </ul>
         <SortableGallery covers={coverThumbs} dispatch={dispatch} />
         <NextController next={this.saveAndNext} />
-        {this.checkImagesUploaded()}
         { coverCropper.blob && <ModalEditor /> }
       </div>
     );

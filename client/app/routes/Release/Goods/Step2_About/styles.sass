@@ -1,0 +1,70 @@
+.title
+  font-size: 40px
+  margin: 0
+  margin-bottom: 4px
+
+.container
+  width: 520px
+
+.inputGroup
+  margin-bottom: 40px
+
+.inputControl
+  position: relative
+
+// compoeses
+.inputHeader
+  font-size: 20px
+  margin-bottom: 10px
+  color: #555
+  .inputLimit
+    float: right
+  .limitError
+    color: red
+
+.inputPlaceholder
+  &::-webkit-input-placeholder
+    color: #949494
+  &::-moz-placeholder
+    color: #949494
+  &:-ms-input-placeholder
+    color: #949494
+  &:-moz-placeholder
+    color: #949494
+
+.inputLightPlaceholder
+  &::-webkit-input-placeholder
+    color: #ddd
+  &::-moz-placeholder
+    color: #ddd
+  &:-ms-input-placeholder
+    color: #ddd
+  &:-moz-placeholder
+    color: #ddd
+
+.inputLightFocusPlaceholder
+  &:focus
+    &::-webkit-input-placeholder
+      color: #ddd
+    &::-moz-placeholder
+      color: #ddd
+    &:-ms-input-placeholder
+      color: #ddd
+    &:-moz-placeholder
+      color: #ddd
+
+.inputField
+  height: 60px
+  line-height: 20px
+  padding: 19px
+
+  font-size: 20px
+  font-weight: 300
+  border: 1px solid #444
+
+  margin: 0
+  outline: 0
+  &:focus
+    border-color: #222
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
