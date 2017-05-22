@@ -31,7 +31,7 @@ const routes = (routesHelper, dispatch) => ({
     {
       component: LayoutPublish,
       childRoutes: [
-        ReleaseGoods(routesHelper),
+        ReleaseGoods(routesHelper, dispatch),
       ],
     },
     {

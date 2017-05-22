@@ -31,15 +31,11 @@ class CoverContainer extends React.Component {
   componentDidUpdate(prevProps) {
     const { getUnStoreds } = this.constructor;
     if (getUnStoreds(prevProps).length > 0 && getUnStoreds(this.props).length === 0) {
-      console.log('excute');
+      browserHistory.push('/p/release-goods/s2_a'); // TODO: path
     }
-    // TODO: today
   }
   saveAndNext() {
     this.props.dispatch(checkThumbsAndUpload());
-    // setTimeout(() =>
-    //   browserHistory.push('/p/release_item/step2')
-    // , 2000);
   }
   render() {
     const { publish, dispatch } = this.props;
