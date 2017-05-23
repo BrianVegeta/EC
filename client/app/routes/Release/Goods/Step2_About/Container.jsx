@@ -25,7 +25,7 @@ class Container extends React.Component {
   static propTypes = {
     publish: PropTypes.object.isRequired,
     items: PropTypes.shape({
-      categories: PropTypes.object,
+      categories: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     }).isRequired,
     dispatch: PropTypes.func.isRequired,
   };

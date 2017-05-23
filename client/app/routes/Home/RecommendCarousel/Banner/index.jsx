@@ -1,5 +1,18 @@
+import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
-import Banner from './Banner';
-import styles from './banner.css';
+import styles from './styles.sass';
 
+const propTypes = {
+  bannerUrl: PropTypes.string.isRequired,
+};
+const Banner = (props) => {
+  const { bannerUrl } = props;
+  const backgroundImage = `url(${bannerUrl})`;
+  return (
+    <div styleName="container">
+      <div styleName="banner" style={{ backgroundImage }} />
+    </div>
+  );
+};
+Banner.propTypes = propTypes;
 export default CSS(Banner, styles);

@@ -1,5 +1,16 @@
+import React from 'react';
+import { Link } from 'react-router';
 import CSS from 'react-css-modules';
-import Component from './Component';
-import styles from './styles.css';
+import styles from './styles.sass';
 
-export default CSS(Component, styles);
+const ReportLink = () => (
+  <div styleName="container">
+    <Link to="/">
+      <span styleName="report-icon">
+        <i className="fa fa-flag" />
+      </span>
+      檢舉此物品
+    </Link>
+  </div>
+);
+export default CSS(ReportLink, styles);

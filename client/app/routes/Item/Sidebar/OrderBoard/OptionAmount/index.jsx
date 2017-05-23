@@ -1,5 +1,16 @@
+import React from 'react';
 import CSS from 'react-css-modules';
-import Component from './Component';
-import styles from './styles.css';
+import styles from './styles.sass';
+import PickerButton from '../PickerButton';
 
-export default CSS(Component, styles);
+const OptionAmount = () => (
+  <div styleName="container">
+    <div styleName="label">件數</div>
+    <div styleName="amount">
+      <PickerButton
+        placeholder="1件"
+      />
+    </div>
+  </div>
+);
+export default CSS(OptionAmount, styles);

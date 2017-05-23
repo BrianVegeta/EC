@@ -1,6 +1,6 @@
 import CSS from 'react-css-modules';
 import Page from './Page';
-import styles from './page.css';
+import styles from './styles.sass';
 import FeatureHeader from './FeatureHeader';
 
 module.exports = {

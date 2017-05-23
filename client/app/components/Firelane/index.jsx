@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
-import styles from './firelane.css';
+import styles from './styles.sass';
 
 
 const defaultProps = { distance: 80 };

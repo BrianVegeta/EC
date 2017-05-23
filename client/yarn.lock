@@ -866,6 +866,12 @@ babel-runtime@6.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
+babel-runtime@^5.8.38:
+  version "5.8.38"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-5.8.38.tgz#1c0b02eb63312f5f087ff20450827b425c9d4c19"
+  dependencies:
+    core-js "^1.0.0"
+
 babel-template@^6.22.0, babel-template@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.23.0.tgz#04d4f270adbb3aa704a8143ae26faa529238e638"
@@ -1152,7 +1158,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@2.2.5, classnames@^2.2.5:
+classnames@2.2.5, classnames@^2.2.3, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -2570,6 +2576,10 @@ http-signature@~1.1.0:
 https-browserify@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
+
+icheck@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
 
 iconv-lite@~0.4.13:
   version "0.4.15"
@@ -4307,6 +4317,15 @@ react-dropzone@^3.13.1:
   dependencies:
     attr-accept "^1.0.3"
     prop-types "^15.5.7"
+
+react-icheck@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/react-icheck/-/react-icheck-0.3.8.tgz#b66fe95b3376b99490408052851414a60dcf52ff"
+  dependencies:
+    babel-runtime "^5.8.38"
+    classnames "^2.2.3"
+    icheck "^1.0.2"
+    prop-types "^15.5.8"
 
 react-icon-base@2.0.7:
   version "2.0.7"
