@@ -7,11 +7,17 @@ import styles from './styles.sass';
 import NextController from '../../components/NextController';
 import FormGroup from '../../components/FormGroup';
 import InputChecksGroup from '../../components/InputChecksGroup';
+import ReturnAddress from './ReturnAddress';
+import { fetchCities } from '../../../../actions/addressActions';
 
 
 class DeliveryContainer extends React.Component {
+  static defaultProps = {
+    cities: null,
+  };
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    cities: PropTypes.arrayOf(PropTypes.object),
   };
   static saveAndNext() {
     browserHistory.push('/p/release-goods/s4_p');
@@ -25,6 +31,10 @@ class DeliveryContainer extends React.Component {
     this.onReturnSeven = this.onReturnSeven.bind(this);
     this.onReturnMail = this.onReturnMail.bind(this);
     this.onReturnInperson = this.onReturnInperson.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(fetchCities());
   }
 
   onSendSeven(isChecked) {
@@ -55,7 +65,7 @@ class DeliveryContainer extends React.Component {
       { text: '7-11交貨便', onChange: this.onReturnSeven },
       { text: '自行寄件',
         onChange: this.onReturnMail,
-        collectedNode: (<div>test</div>),
+        collectedNode: <ReturnAddress cities={this.props.cities} dispatch={this.props.dispatch} />,
       },
       { text: '面交（自行協調取貨地點）', onChange: this.onReturnInperson },
     ];
@@ -74,7 +84,7 @@ class DeliveryContainer extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  const { environment, routesHelper } = state;
-  return ({ environment, routesHelper });
+  const { environment, routesHelper, cities } = state;
+  return ({ environment, routesHelper, cities });
 };
 export default connect(mapStateToProps)(CSS(DeliveryContainer, styles));
