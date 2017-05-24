@@ -8,18 +8,20 @@ class CheckBox extends React.PureComponent {
     bottomSpacing: 20,
     onChange: null,
     collectedNode: null,
+    checked: false,
   };
   static propTypes = {
     bottomSpacing: PropTypes.number,
     labelText: PropTypes.string.isRequired,
     collectedNode: PropTypes.node,
     onChange: PropTypes.func,
+    checked: PropTypes.bool.isRequired,
   };
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.state = {
-      isChecked: false,
+      isChecked: this.props.checked,
     };
   }
   onChange(isChecked) {
@@ -28,10 +30,10 @@ class CheckBox extends React.PureComponent {
   }
   render() {
     const { onChange } = this;
-    const { labelText, bottomSpacing } = this.props;
+    const { labelText, bottomSpacing, checked } = this.props;
     return (
       <div style={{ marginBottom: bottomSpacing }}>
-        <InputCheck {...{ onChange, labelText }} />
+        <InputCheck {...{ onChange, labelText, checked }} />
         {this.state.isChecked && this.props.collectedNode}
       </div>
     );

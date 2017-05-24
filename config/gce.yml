@@ -1,0 +1,5 @@
+development:
+  provider: Google
+  google_storage_access_key_id: 00b4903a971c6d310e2b6cbecf400fa7cc9e2836db7e4301d1309a5472b27461
+  google_storage_secret_access_key: AIzaSyBe2OywVlDVU_lcJSa57TV3OpfjxjOaOSQ
+  

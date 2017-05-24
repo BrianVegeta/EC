@@ -7,11 +7,12 @@ import styles from './style.sass';
 class InputCheck extends React.PureComponent {
   static defaultProps = {
     onChange: null,
-    extra: null,
+    checked: false,
   };
   static propTypes = {
     labelText: PropTypes.string.isRequired,
     onChange: PropTypes.func,
+    checked: PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -31,6 +32,7 @@ class InputCheck extends React.PureComponent {
         checkboxClass="icheckbox_square"
         onChange={this.onChange}
         label={labelInner}
+        checked={this.props.checked}
       />
     );
   }

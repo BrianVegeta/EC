@@ -2,6 +2,7 @@ import coverCropper, { initialState as initialCoverCropper } from './publishCrop
 import coverThumbs from './publishThumbs';
 import titleHandler, { initialState as initialTitle } from './publishTitle';
 import descHandler, { initialState as initialDescript } from './publishDescript';
+import { insertOption, removeOption } from './publishOptions';
 import {
   PUBLISH_OEPN_CROPPER,
   PUBLISH_CLOSE_CROPPER,
@@ -15,6 +16,9 @@ import {
   PUBLISH_TITLE_UPDATE,
   PUBLISH_DESC_UPDATE,
   PUBLISH_TAGS_UPDATE,
+
+  PUBLISH_SEND_OPTIONS_UPDATE,
+  PUBLISH_RETURN_OPTIONS_UPDATE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -23,6 +27,8 @@ const initialState = {
   title: initialTitle,
   descript: initialDescript,
   hashtags: [null, null, null],
+  sendOptions: '012',
+  returnOptions: '012',
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -76,6 +82,20 @@ export default (state = initialState, action) => {
         hashtags: action.hashtags,
       });
 
+    case PUBLISH_SEND_OPTIONS_UPDATE: {
+      const { optionKey, isChecked } = action;
+      const handleOptions = isChecked ? insertOption : removeOption;
+      return Object.assign({}, state, {
+        sendOptions: handleOptions(state.sendOptions, optionKey),
+      });
+    }
+    case PUBLISH_RETURN_OPTIONS_UPDATE: {
+      const { optionKey, isChecked } = action;
+      const handleOptions = isChecked ? insertOption : removeOption;
+      return Object.assign({}, state, {
+        returnOptions: handleOptions(state.returnOptions, optionKey),
+      });
+    }
     default:
       return state;
   }

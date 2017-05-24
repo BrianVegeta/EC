@@ -20,6 +20,7 @@ class InputChecksGroup extends React.PureComponent {
             labelText={v.text}
             onChange={v.onChange}
             collectedNode={v.collectedNode}
+            checked={v.isChecked}
           />,
         )}
       </div>
