@@ -7,17 +7,13 @@ import styles from './styles.sass';
 import NextController from '../../components/NextController';
 import FormGroup from '../../components/FormGroup';
 import InputChecksGroup from '../../components/InputChecksGroup';
-import ReturnAddress from './ReturnAddress';
+import ReturnAddressContainer from './ReturnAddress/Container';
 import { fetchCities } from '../../../../actions/addressActions';
 
 
 class DeliveryContainer extends React.Component {
-  static defaultProps = {
-    cities: null,
-  };
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    cities: PropTypes.arrayOf(PropTypes.object),
   };
   static saveAndNext() {
     browserHistory.push('/p/release-goods/s4_p');
@@ -65,7 +61,7 @@ class DeliveryContainer extends React.Component {
       { text: '7-11交貨便', onChange: this.onReturnSeven },
       { text: '自行寄件',
         onChange: this.onReturnMail,
-        collectedNode: <ReturnAddress cities={this.props.cities} dispatch={this.props.dispatch} />,
+        collectedNode: <ReturnAddressContainer />,
       },
       { text: '面交（自行協調取貨地點）', onChange: this.onReturnInperson },
     ];

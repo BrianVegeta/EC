@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import CSS from 'react-css-modules';
 import _ from 'lodash';
-import InputSelectionCities from '../../../components/InputSelectionCities';
-import InputText from '../../../components/InputText';
+import { InputText, InputSelectionCities } from '../../../components';
 import { fetchZones } from '../../../../../actions/addressActions';
+import styles from './styles.sass';
 
 class ReturnAddress extends React.Component {
   static propTypes = {
-    cities: PropTypes.array.isRequired,
+    cities: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
   constructor(props) {
@@ -39,9 +41,9 @@ class ReturnAddress extends React.Component {
   render() {
     const citiesCollection = this.collectCities();
     return (
-      <div style={{ marginLeft: 28, marginTop: 10 }} >
+      <div styleName="container">
         <InputSelectionCities citiesCollection={citiesCollection} />
-        <div style={{ marginTop: 20 }}>
+        <div styleName="addressDetailContainer">
           <InputText placeholder="請輸入" value="" onChange={this.onAddressChange} />
         </div>
       </div>
@@ -49,4 +51,8 @@ class ReturnAddress extends React.Component {
   }
 }
 
-export default ReturnAddress;
+const mapStateToProps = (state) => {
+  const { environment, routesHelper, cities } = state;
+  return ({ environment, routesHelper, cities });
+};
+export default connect(mapStateToProps)(CSS(ReturnAddress, styles));

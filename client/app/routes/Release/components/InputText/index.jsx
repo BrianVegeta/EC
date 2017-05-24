@@ -37,7 +37,6 @@ class InputText extends React.Component {
     this.props.onChange(e.target.value);
   }
   render() {
-    const { onFocus, onBlur, onChange } = this;
     const { placeholder, value, width } = this.props;
     const { isFocusing } = this.state;
     return (
@@ -45,11 +44,11 @@ class InputText extends React.Component {
         {...{
           styleName: isFocusing ? 'inputFocusing' : 'input',
           style: { width },
-          placeholder,
           value,
-          onFocus,
-          onBlur,
-          onChange,
+          placeholder,
+          onFocus: this.onFocus,
+          onBlur: this.onBlur,
+          onChange: this.onChange,
         }}
       />
     );
