@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import InputSelectionCities from '../../../components/InputSelectionCities';
+import InputText from '../../../components/InputText';
 import { fetchZones } from '../../../../../actions/addressActions';
 
 class ReturnAddress extends React.Component {
@@ -8,20 +9,27 @@ class ReturnAddress extends React.Component {
     cities: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
-  onCityAreaSelect(cityName, areaName) {
-    console.log(cityName, areaName);
+  constructor(props) {
+    super(props);
+    this.onAddressChange = this.onAddressChange.bind(this);
   }
-  getZones(cityName) {
-    this.props.dispatch(fetchZones(cityName));
+  onAddressChange(text) {
+    console.log(text);
   }
   collectCities() {
+    const getZones = (cityName) => {
+      this.props.dispatch(fetchZones(cityName));
+    };
+    const onCityAreaSelect = (cityName, areaName) => {
+      console.log(cityName, areaName);
+    };
     return this.props.cities.map((cityZone) => {
       let areas = null;
       if (_.isEmpty(cityZone.zones)) {
-        areas = () => this.getZones(cityZone.city);
+        areas = () => getZones(cityZone.city);
       } else {
         areas = cityZone.zones.map(zoneName => ({
-          onSelect: () => this.onCityAreaSelect(cityZone.city, zoneName),
+          onSelect: () => onCityAreaSelect(cityZone.city, zoneName),
           area: zoneName,
         }));
       }
@@ -31,8 +39,11 @@ class ReturnAddress extends React.Component {
   render() {
     const citiesCollection = this.collectCities();
     return (
-      <div>
+      <div style={{ marginLeft: 28, marginTop: 10 }} >
         <InputSelectionCities citiesCollection={citiesCollection} />
+        <div style={{ marginTop: 20 }}>
+          <InputText placeholder="請輸入" value="" onChange={this.onAddressChange} />
+        </div>
       </div>
     );
   }

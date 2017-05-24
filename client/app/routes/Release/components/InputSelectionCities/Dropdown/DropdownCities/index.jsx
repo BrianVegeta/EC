@@ -21,26 +21,24 @@ class DropdownCities extends React.Component {
     ).isRequired,
     onSelect: PropTypes.func.isRequired,
   };
-  onSelect(cityName, requestAreas) {
-    this.props.onSelect(cityName);
-    if (_.isFunction(requestAreas)) {
-      requestAreas();
-    }
+  onSelect(cityAreas) {
+    this.props.onSelect(cityAreas.city);
+    if (_.isFunction(cityAreas.areas)) { cityAreas.areas(); }
   }
   render() {
     const { citiesCollection } = this.props;
     return (
-      <div styleName="citiesOuter" className="clear">
+      <div styleName="citiesWrapper" className="clear">
         {citiesCollection.map((cityAreas, i) =>
           <div
-            key={`${i + 1}`}
-            styleName="cityCol"
             {...{
+              key: `${i + 1}`,
               role: 'button',
-              onClick: () => this.onSelect(cityAreas.city, cityAreas.areas),
+              styleName: 'cityContainer',
+              onClick: () => this.onSelect(cityAreas),
             }}
           >
-            {cityAreas.city}
+            <div styleName="city">{cityAreas.city}</div>
           </div>,
         )}
       </div>

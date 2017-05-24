@@ -1,4 +1,5 @@
 // TODO: max min 0508
+// ex: <InputText placeholder="請輸入" value="" onChange={} width={100} />
 import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -7,11 +8,15 @@ class InputText extends React.Component {
   static defaultProps = {
     placeholder: null,
     value: null,
+    width: '100%',
   };
   static propTypes = {
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string,
+    width: PropTypes.oneOfType([
+      PropTypes.string, PropTypes.number,
+    ]).isRequired,
   };
   constructor(props) {
     super(props);
@@ -33,18 +38,18 @@ class InputText extends React.Component {
   }
   render() {
     const { onFocus, onBlur, onChange } = this;
-    const { placeholder, value } = this.props;
+    const { placeholder, value, width } = this.props;
     const { isFocusing } = this.state;
     return (
       <input
         {...{
-          ref: i => (this.input = i),
           styleName: isFocusing ? 'inputFocusing' : 'input',
+          style: { width },
           placeholder,
+          value,
           onFocus,
           onBlur,
           onChange,
-          value,
         }}
       />
     );

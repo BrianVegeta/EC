@@ -13,40 +13,38 @@ class DropdownAreas extends React.Component {
     ).isRequired,
     onSelect: PropTypes.func.isRequired,
     onBack: PropTypes.func.isRequired,
-    city: PropTypes.string.isRequired,
+    cityName: PropTypes.string.isRequired,
   };
   constructor(props) {
     super(props);
-    this.onBackToCities = this.onBackToCities.bind(this);
+    this.onBack = this.onBack.bind(this);
   }
   onSelect(areaSet) {
     const areaName = areaSet.area;
     this.props.onSelect(areaName);
     areaSet.onSelect(areaName);
   }
-  onBackToCities() {
-    this.props.onBack();
-  }
+  onBack() { this.props.onBack(); }
   render() {
-    const { areas, city } = this.props;
+    const { areas, cityName } = this.props;
     return (
-      <div styleName="citiesOuter" className="clear">
+      <div styleName="areasWrapper" className="clear">
         <div styleName="cityHeader">
           <div styleName="backCitiesBtn">
-            <BackIcon size={30} color="#333" onClick={this.onBackToCities} />
+            <BackIcon size={30} color="#333" onClick={this.onBack} />
           </div>
-          <span styleName="cityText">{city}</span>
+          <span styleName="cityText">{cityName}</span>
         </div>
         {areas.map((areaSet, i) =>
           <div
-            key={`${i + 1}`}
-            styleName="cityCol"
             {...{
+              key: `${i + 1}`,
               role: 'button',
+              styleName: 'areaContainer',
               onClick: () => this.onSelect(areaSet),
             }}
           >
-            {areaSet.area}
+            <div styleName="area">{areaSet.area}</div>
           </div>,
         )}
       </div>
