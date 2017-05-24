@@ -20,6 +20,8 @@ class SelectionCities extends React.Component {
         ]),
       }),
     ).isRequired,
+    cityName: PropTypes.string.isRequired,
+    areaName: PropTypes.string.isRequired,
   };
   constructor(props) {
     super(props);
@@ -29,12 +31,13 @@ class SelectionCities extends React.Component {
     this.selectBtn.closeDropdown();
   }
   render() {
-    const { citiesCollection } = this.props;
+    const { citiesCollection, cityName, areaName } = this.props;
     const { closeDropdown } = this;
     return (
       <SelectionButton
         ref={sb => (this.selectBtn = sb)}
         placeholder="城市/地區"
+        value={`${cityName}${areaName}`}
         width={300}
       >
         <Dropdown {...{ citiesCollection, closeDropdown }} />

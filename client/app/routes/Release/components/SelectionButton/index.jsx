@@ -1,14 +1,17 @@
 import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
 import ArrowDownIcon from 'react-icons/lib/md/keyboard-arrow-down';
+import _ from 'lodash';
 import styles from './styles.sass';
 
 class SelectionButton extends React.Component {
   static defaultProps = {
+    value: null,
     placeholder: null,
     width: '100%',
   };
   static propTypes = {
+    value: PropTypes.string,
     placeholder: PropTypes.string,
     width: PropTypes.number,
     children: PropTypes.node.isRequired,
@@ -50,7 +53,7 @@ class SelectionButton extends React.Component {
   }
   render() {
     const { isFocusing, isDropdownOpen } = this.state;
-    const { placeholder, children } = this.props;
+    const { placeholder, children, value } = this.props;
     const buttonEvents = {
       ref: btn => (this.button = btn),
       onClick: this.onButtonPress,
@@ -69,7 +72,10 @@ class SelectionButton extends React.Component {
         {...buttonEvents}
       >
         <div styleName="innerWrapper" {...buttonInnerEvents}>
-          {placeholder}
+          { _.isEmpty(value) ?
+            <span styleName="placeholder">{placeholder}</span> :
+            value
+          }
           <span styleName="dropdownArrow">
             <ArrowDownIcon size={40} color="#333" />
           </span>

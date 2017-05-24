@@ -4,26 +4,38 @@ import CSS from 'react-css-modules';
 import _ from 'lodash';
 import { InputText, InputSelectionCities } from '../../../components';
 import { fetchZones } from '../../../../../actions/addressActions';
+import {
+  updateReturnAddressCityarea,
+  updateReturnAddressDetail,
+} from '../../../../../actions/publishActions';
+import {
+  INDEX_RETURN_ADDRESSES_DETAIL,
+  INDEX_RETURN_ADDRESSES_CITY,
+  INDEX_RETURN_ADDRESSES_AREA,
+} from '../../../../../reducers/publishReducer';
+
 import styles from './styles.sass';
 
 class ReturnAddress extends React.Component {
   static propTypes = {
     cities: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatch: PropTypes.func.isRequired,
+    publish: PropTypes.object.isRequired,
   };
   constructor(props) {
     super(props);
-    this.onAddressChange = this.onAddressChange.bind(this);
+    this.onAddressDetailChange = this.onAddressDetailChange.bind(this);
   }
-  onAddressChange(text) {
-    console.log(text);
+  onAddressDetailChange(text) {
+    this.props.dispatch(updateReturnAddressDetail(text));
   }
   collectCities() {
+    const { dispatch } = this.props;
     const getZones = (cityName) => {
-      this.props.dispatch(fetchZones(cityName));
+      dispatch(fetchZones(cityName));
     };
     const onCityAreaSelect = (cityName, areaName) => {
-      console.log(cityName, areaName);
+      dispatch(updateReturnAddressCityarea(cityName, areaName));
     };
     return this.props.cities.map((cityZone) => {
       let areas = null;
@@ -40,11 +52,20 @@ class ReturnAddress extends React.Component {
   }
   render() {
     const citiesCollection = this.collectCities();
+    const { returnAddresses } = this.props.publish;
     return (
       <div styleName="container">
-        <InputSelectionCities citiesCollection={citiesCollection} />
+        <InputSelectionCities
+          citiesCollection={citiesCollection}
+          cityName={returnAddresses[INDEX_RETURN_ADDRESSES_CITY]}
+          areaName={returnAddresses[INDEX_RETURN_ADDRESSES_AREA]}
+        />
         <div styleName="addressDetailContainer">
-          <InputText placeholder="請輸入" value="" onChange={this.onAddressChange} />
+          <InputText
+            placeholder="請輸入"
+            value={returnAddresses[INDEX_RETURN_ADDRESSES_DETAIL]}
+            onChange={this.onAddressDetailChange}
+          />
         </div>
       </div>
     );
@@ -52,7 +73,7 @@ class ReturnAddress extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, cities } = state;
-  return ({ environment, routesHelper, cities });
+  const { environment, routesHelper, cities, publish } = state;
+  return ({ environment, routesHelper, cities, publish });
 };
 export default connect(mapStateToProps)(CSS(ReturnAddress, styles));

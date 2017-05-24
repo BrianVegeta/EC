@@ -19,16 +19,24 @@ import {
 
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
+  PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
+  PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
 } from '../constants/actionTypes';
 
+export const INDEX_RETURN_ADDRESSES_CITY = 0;
+export const INDEX_RETURN_ADDRESSES_AREA = 1;
+export const INDEX_RETURN_ADDRESSES_DETAIL = 2;
 const initialState = {
   coverThumbs: [],
   coverCropper: initialCoverCropper,
   title: initialTitle,
   descript: initialDescript,
   hashtags: [null, null, null],
-  sendOptions: '012',
-  returnOptions: '012',
+  sendOptions: '',
+  returnOptions: '',
+  returnAddresses: ['', '', ''],
+  // ['宜蘭縣', '大同鄉', '中正一路']
+  returnAddress: '',
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -94,6 +102,25 @@ export default (state = initialState, action) => {
       const handleOptions = isChecked ? insertOption : removeOption;
       return Object.assign({}, state, {
         returnOptions: handleOptions(state.returnOptions, optionKey),
+      });
+    }
+    case PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA: {
+      const { city, area } = action;
+      const returnAddresses = state.returnAddresses.concat();
+      returnAddresses[INDEX_RETURN_ADDRESSES_CITY] = city;
+      returnAddresses[INDEX_RETURN_ADDRESSES_AREA] = area;
+      const returnAddress = returnAddresses.join('');
+      return Object.assign({}, state, {
+        returnAddresses, returnAddress,
+      });
+    }
+    case PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL: {
+      const { detail } = action;
+      const returnAddresses = state.returnAddresses.concat();
+      returnAddresses[INDEX_RETURN_ADDRESSES_DETAIL] = detail;
+      const returnAddress = returnAddresses.join('');
+      return Object.assign({}, state, {
+        returnAddresses, returnAddress,
       });
     }
     default:

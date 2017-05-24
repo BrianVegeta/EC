@@ -6,6 +6,8 @@ import {
 
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
+  PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
+  PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
 } from '../constants/actionTypes';
 
 export const updateTitle = title => ({
@@ -33,4 +35,14 @@ export const updateReturnOptions = (optionKey, isChecked) => ({
   type: PUBLISH_RETURN_OPTIONS_UPDATE,
   optionKey,
   isChecked,
+});
+
+export const updateReturnAddressCityarea = (city, area) => ({
+  type: PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
+  city,
+  area,
+});
+export const updateReturnAddressDetail = detail => ({
+  type: PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
+  detail,
 });
