@@ -1,77 +1,58 @@
+@import "./input.sass"
+$controllerWidth: 39px
+$arrowBgColor: #999
+$arrowHoverBgColor: #ABABAB
+$arrowActiveBgColor: #666
+$arrowDisableBgColor: #888
+
+.inputOuter
+  composes: inputer
+  position: relative
+
+.inputOuterFocusing
+  composes: inputOuter
+  border-color: $inputFocusingBorderColor
+  box-shadow: $inputFocusingShadow
+
 .input
-  position: relative
+  border: 0
+  padding: 0
+  margin: 0
+  outline: 0
   width: 100%
-  height: 50px
-  line-height: 20px
-  font-size: 18px
-  font-weight: 300
-  border: 1px solid #444
-  position: relative
-  .inputInner
-    border: 0
-    padding: 0
-    margin: 0
-    outline: 0
-    width: 100%
-    height: 100%
-    padding: 10px 60px 10px 10px
-  .controller
-    display: inline-block
-    width: 50px
-    position: absolute
-    right: 0
-    top: 0
-    bottom: 0
+  height: 100%
+  border-radius: $inputRadius - $inputBorderWidth
+  padding: $inputPaddingTop ($inputPaddingRight + $controllerWidth) $inputPaddingTop $inputPaddingRight
 
-.inputFocusing
-  composes: input
-  border-color: #222
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
+.controller
+  width: $controllerWidth
+  display: inline-block
+  position: absolute
+  right: 0
+  top: 0
+  bottom: 0
 
-
-.arrowBtn
+.arrow
   position: relative
   width: 100%
   height: 50%
   display: block
-  background: rgb(255, 255, 255)
-  border-color: rgba(0, 0, 0, 0.0980392)
-  border-style: solid
-  border-width: 2px
+  background: $arrowBgColor
   text-align: center
   transition: all 0.1s
+  cursor: pointer
   &:hover
-    background: rgba(0,0,0,0.2)
+    background: $arrowHoverBgColor
   &:active
-    background: rgba(0,0,0,0.4)
+    background: $arrowActiveBgColor
+  &:disabled
+    background: $arrowDisableBgColor
+    cursor: default
+
 .up
-  composes: arrowBtn
-  border-radius: 2px
-  border-top-left-radius: 2px
-  border-top-right-radius: 2px
-  .upIcon
-    position: absolute
-    top: 50%
-    left: 50%
-    width: 0px
-    height: 0px
-    border-width: 0px 0.6ex 0.6ex
-    border-color: transparent transparent rgba(0, 0, 0, 0.701961)
-    border-style: solid
-    margin: -0.3ex 0px 0px -0.56ex
+  composes: arrow
+  border-top-right-radius: $inputRadius - $inputBorderWidth
 
 .down
-  composes: arrowBtn
-  border-bottom-left-radius: 2px
-  border-bottom-right-radius: 2px
-  .downIcon
-    position: absolute
-    top: 50%
-    left: 50%
-    width: 0px
-    height: 0px
-    border-width: 0.6ex 0.6ex 0px
-    border-color: rgba(0, 0, 0, 0.701961) transparent transparent
-    border-style: solid
-    margin: -0.3ex 0px 0px -0.56ex
+  composes: arrow
+  border-bottom-right-radius: $inputRadius - $inputBorderWidth

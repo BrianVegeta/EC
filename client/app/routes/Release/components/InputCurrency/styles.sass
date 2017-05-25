@@ -1,34 +1,32 @@
-.input
-  width: 100%
-  height: 50px
-  line-height: 20px
-  font-size: 18px
-  font-weight: 300
-  border: 1px solid #444
-  position: relative
-  .unit
-    display: inline-block
-    position: absolute
-    top: 14px
-    left: 19px
-    color: #888
-    -webkit-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: none
-    user-select: none
-  .inputInner
-    border: 0
-    padding: 0
-    margin: 0
-    outline: 0
-    width: 100%
-    height: 100%
-    padding: 10px 20px 10px 60px
+@import "./input.sass"
+$unitWidth: 40px
 
-.inputFocusing
-  composes: input
-  border-color: #222
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
+.inputOuter
+  composes: inputer
+  position: relative
+
+.inputOuterFocusing
+  composes: inputOuter
+  border-color: $inputFocusingBorderColor
+  box-shadow: $inputFocusingShadow
+  .unit
+    color: $inputTextColor
+
+.unit
+  user-select: none
+  display: inline-block
+  position: absolute
+  top: (($inputHeight - $inputLineHeight) / 2) - $inputBorderWidth
+  left: $inputPaddingRight
+  width: $unitWidth
+  color: $inputPlaceholderColor
+
+.input
+  border: 0
+  padding: 0
+  margin: 0
+  outline: 0
+  width: 100%
+  height: 100%
+  border-radius: $inputRadius - $inputBorderWidth
+  padding: $inputPaddingTop $inputPaddingRight $inputPaddingTop ($unitWidth + $inputPaddingRight)

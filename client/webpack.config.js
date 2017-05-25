@@ -111,6 +111,22 @@ const config = {
         }),
       },
       {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                module: true,
+                importLoaders: 1,
+                localIdentName: '[folder]_[local]_[hash:base64:5]',
+              }
+            },
+          ]
+        }),
+      },
+      {
         test: /\.styl$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',

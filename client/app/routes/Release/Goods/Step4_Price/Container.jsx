@@ -3,16 +3,20 @@ import CSS from 'react-css-modules';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import styles from './styles.sass';
-import NextController from '../NextController';
-import { PRICE } from '../constants/title';
-import Title from '../components/Title';
-import FormGroup from '../components/FormGroup';
-import InputCurrency from '../components/InputCurrency';
-import InputCounter from '../components/InputCounter';
+import NextController from '../../components/NextController';
+import { PRICE } from '../../constants/title';
+import {
+  FormGroup,
+  BlockFormGroup,
+  InputCounter,
+  InputCurrency,
+  TitleWrapper,
+} from '../../components';
 
 const CURRENCY_UNIT = 'NT$';
 const CREATE_DISCOUNT_PATH = '/p/release_item/step4/d_c';
 // TODO: routes for discount
+const NEXT_PATH = '/p/release-goods/s5_r';
 class PriceContainer extends React.Component {
 
   constructor(props) {
@@ -21,49 +25,38 @@ class PriceContainer extends React.Component {
   }
 
   saveAndNext() {
-    setTimeout(() =>
-      // TODO: path
-      browserHistory.push('/p/release_item/step5')
-    , 2000);
+    browserHistory.push(NEXT_PATH);
   }
 
   render() {
     // TODO: now
     return (
       <div styleName="container">
-        <Title text={PRICE} helperText="合理的價格有助於成交機率" />
-        <FormGroup headerText="租金" helperText="一天的價格為單位">
-          <InputCurrency
-            unit={CURRENCY_UNIT}
-            value="12"
-          />
+        <TitleWrapper>{PRICE}</TitleWrapper>
+        <FormGroup headerText="租金" helperBottomText="如需要運費，請記得加上！">
+          <InputCurrency unit={CURRENCY_UNIT} value="" />
         </FormGroup>
-        <FormGroup headerText="押金" helperText="請依物品狀況，設定合理的價格">
+        <FormGroup headerText="押金">
           <InputCurrency
             unit={CURRENCY_UNIT}
             value="1"
           />
         </FormGroup>
-        <FormGroup
-          headerText="至少租借天數"
-          helperText="一天的價格為單位"
-          optional
-        >
-          <InputCounter value={1} suffix="天" />
+        <FormGroup headerText="至少租借天數" optional>
+          <InputCounter value={null} suffix="天" placeholder="請輸入" width={152} />
         </FormGroup>
-        <FormGroup
+        <BlockFormGroup
           headerText="自訂折扣"
-          helperText="使用折扣能吸引更多用戶前來下單"
-          optional
+          helperText="使用折扣能吸引更多訂單"
+          multiple
         >
           <Link to={CREATE_DISCOUNT_PATH}>
             <button styleName="newDiscountBtn" className="button">
               新增折扣
             </button>
           </Link>
-        </FormGroup>
+        </BlockFormGroup>
         <NextController next={this.saveAndNext} />
-        <div>{this.props.modalComponent}</div>
       </div>
     );
   }

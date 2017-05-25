@@ -4,6 +4,7 @@ import styles from './styles.sass';
 
 const defaultProps = {
   helperText: null,
+  helperBottomText: null,
   limiter: null,
   optional: false,
   multiple: false,
@@ -14,6 +15,7 @@ const propTypes = {
   headerText: PropTypes.string.isRequired,
   limiter: PropTypes.node,
   helperText: PropTypes.string,
+  helperBottomText: PropTypes.string,
   optional: PropTypes.bool,
   multiple: PropTypes.bool,
   children: PropTypes.node.isRequired,
@@ -25,13 +27,14 @@ const InputField = props => (
     <div styleName="inputHeader">
       <div style={props.headerTextStyle}>
         {props.headerText}
-        {props.optional && <span styleName="optional">（選填）</span>}
+        {props.optional && <span styleName="optional">（非必填）</span>}
         {props.multiple && <span styleName="multiple">（多選）</span>}
         <span styleName="inputLimiter">{props.limiter}</span>
       </div>
       {props.helperText && <div styleName="helper">{props.helperText}</div>}
     </div>
     <div styleName="inputControl">{props.children}</div>
+    {props.helperBottomText && <div styleName="helperBottom">{props.helperBottomText}</div>}
   </div>
 );
 InputField.defaultProps = defaultProps;
