@@ -31,6 +31,7 @@
     "icheck": "^1.0.2",
     "lodash": "^4.17.4",
     "nuka-carousel": "^2.0.4",
+    "numeral": "^2.0.6",
     "postcss-nesting": "^4.0.1",
     "rc-slider": "^7.0.6",
     "react": "^15.4.2",

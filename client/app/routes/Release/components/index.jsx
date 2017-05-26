@@ -8,6 +8,8 @@ import InputCurrency from './InputCurrency';
 import InputCounter from './InputCounter';
 import InputUnit from './InputUnit';
 import DiscountGroup from './DiscountGroup';
+import AlertPanel from './AlertPanel';
+import Tooltip from './Tooltip';
 
 const exports = {
   FormGroup,
@@ -20,5 +22,7 @@ const exports = {
   InputSelectionCities,
   InputCheck,
   InputUnit,
+  AlertPanel,
+  Tooltip,
 };
 module.exports = exports;

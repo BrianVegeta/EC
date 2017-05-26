@@ -21,6 +21,11 @@ import {
   PUBLISH_RETURN_OPTIONS_UPDATE,
   PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
+
+  PUBLISH_PRICE_UPDATE,
+  PUBLISH_DEPOSIT_UPDATE,
+  PUBLISH_MIN_LEASE_DAYS_UPDATE,
+
 } from '../constants/actionTypes';
 
 export const INDEX_RETURN_ADDRESSES_CITY = 0;
@@ -37,6 +42,10 @@ const initialState = {
   returnAddresses: ['', '', ''],
   // ['宜蘭縣', '大同鄉', '中正一路']
   returnAddress: '',
+  // price settings
+  price: null,
+  deposit: null,
+  minLeaseDays: null,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -123,6 +132,15 @@ export default (state = initialState, action) => {
         returnAddresses, returnAddress,
       });
     }
+    case PUBLISH_PRICE_UPDATE:
+      return Object.assign({}, state, { price: action.price });
+
+    case PUBLISH_DEPOSIT_UPDATE:
+      return Object.assign({}, state, { deposit: action.deposit });
+
+    case PUBLISH_MIN_LEASE_DAYS_UPDATE:
+      return Object.assign({}, state, { minLeaseDays: action.minLeaseDays });
+
     default:
       return state;
   }

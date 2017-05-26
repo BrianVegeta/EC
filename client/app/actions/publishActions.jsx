@@ -8,6 +8,11 @@ import {
   PUBLISH_RETURN_OPTIONS_UPDATE,
   PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
+
+  PUBLISH_PRICE_UPDATE,
+  PUBLISH_DEPOSIT_UPDATE,
+  PUBLISH_MIN_LEASE_DAYS_UPDATE,
+
 } from '../constants/actionTypes';
 
 export const updateTitle = title => ({
@@ -45,4 +50,17 @@ export const updateReturnAddressCityarea = (city, area) => ({
 export const updateReturnAddressDetail = detail => ({
   type: PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
   detail,
+});
+// price settings
+export const updatePrice = price => ({
+  type: PUBLISH_PRICE_UPDATE,
+  price,
+});
+export const updateDeposit = deposit => ({
+  type: PUBLISH_DEPOSIT_UPDATE,
+  deposit,
+});
+export const updateMinLeaseDays = minLeaseDays => ({
+  type: PUBLISH_MIN_LEASE_DAYS_UPDATE,
+  minLeaseDays,
 });

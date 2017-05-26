@@ -4,7 +4,7 @@ import _ from 'lodash';
 import styles from './styles.sass';
 import NewDiscountBtn from './NewDiscountBtn';
 import DiscountRule from './DiscountRule';
-import Alert from './Alert';
+import AlertPanel from '../AlertPanel';
 
 const defaultDiscount = {
   days: 5,
@@ -55,11 +55,8 @@ class DiscountGroup extends React.Component {
             hasHeader={i === 0}
           />,
         )}
-        <NewDiscountBtn
-          onClick={this.onNew}
-          disabled={discounts.length >= DISCOUNT_MAX}
-        />
-        { this.isDiscountsDuplicate() && <Alert /> }
+        <NewDiscountBtn onClick={this.onNew} disabled={discounts.length >= DISCOUNT_MAX} />
+        {this.isDiscountsDuplicate() && <AlertPanel message="重複的折扣組合" />}
       </div>
     );
   }
