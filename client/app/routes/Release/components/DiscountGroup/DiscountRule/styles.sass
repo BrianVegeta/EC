@@ -1,0 +1,24 @@
+@import "../../formGroup.sass"
+
+$columWidth: 200px
+.ruleContainer
+  margin-bottom: 15px
+  .headers
+    .daysHead, .offerHead
+      float: left
+      width: $columWidth
+  .inputs
+    display: inline-block
+    vertical-align: middle
+    .days, .offer
+      float: left
+      width: $columWidth
+  .remove
+    display: inline-block
+    width: 40px
+
+.daysHead
+  composes: header
+
+.offerHead
+  composes: header

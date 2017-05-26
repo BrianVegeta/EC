@@ -1,12 +1,12 @@
 // TODO: max min 0508
-// <InputCounter value={1} suffix="天" onChange={} />
+// <InputCounter value={1} suffix="天" max={} min={} width={} onChange={} />
 
 
 import React, { PropTypes } from 'react';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
 import IconDown from 'react-icons/lib/md/keyboard-arrow-down';
-import IconUp from 'react-icons/lib/md/keyboard-arrow-up'
+import IconUp from 'react-icons/lib/md/keyboard-arrow-up';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -52,7 +52,6 @@ class InputCounter extends React.Component {
     this.setState({ value });
     const { onChange } = this.props;
     const number = _.isEmpty(value) ? null : _.parseInt(value);
-    console.log(number);
     if (!onChange) { return; }
     onChange(number);
   }
@@ -68,6 +67,7 @@ class InputCounter extends React.Component {
   }
   valueRanged(value) {
     const number = _.parseInt(value);
+    console.log(number);
     const { max, min } = this.props;
     if (max && number > max) { return max.toString(); }
     if (min && number < min) { return min.toString(); }

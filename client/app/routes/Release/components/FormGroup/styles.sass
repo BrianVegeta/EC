@@ -1,12 +1,8 @@
-@import "./vars.scss"
+@import "../formGroup.sass"
 
 .inputGroup
   margin-bottom: 40px
   .inputHeader
-    font-size: 16px
-    font-weight: 400
-    color: $inputHeaderColor
-    margin-bottom: 10px
     .inputLimiter
       float: right
     .multiple
@@ -21,3 +17,6 @@
     color: $bottomHelperColor
     font-size: 14px
     margin-top: 10px
+
+.inputHeader
+  composes: header
