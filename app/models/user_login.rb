@@ -1,7 +1,7 @@
 class UserLogin < ApiBase
   PATH = '/client/session/email/login'
-
-  def initialize(email, password, os_type = 'test', device_type = 'test')
+  # sx15@mailnesia.com, qwertyui
+  def initialize(email = 'sx15@mailnesia.com', password = 'qwertyui', os_type = 'test', device_type = 'test')
     @options = {
       body: {
         email: email,
@@ -14,6 +14,7 @@ class UserLogin < ApiBase
 
   def getApiToken
     response = self.class.post(PATH, @options)
+    puts response.body
     case response.code
     when 200
       response.headers['apitoken']

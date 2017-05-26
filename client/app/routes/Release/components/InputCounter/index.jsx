@@ -1,5 +1,5 @@
-// TODO: max min 0508
 // <InputCounter value={1} suffix="天" max={} min={} width={} onChange={} />
+// ps. need allow null
 
 
 import React, { PropTypes } from 'react';
@@ -67,7 +67,6 @@ class InputCounter extends React.Component {
   }
   valueRanged(value) {
     const number = _.parseInt(value);
-    console.log(number);
     const { max, min } = this.props;
     if (max && number > max) { return max.toString(); }
     if (min && number < min) { return min.toString(); }
