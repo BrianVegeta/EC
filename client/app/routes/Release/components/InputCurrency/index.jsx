@@ -4,6 +4,7 @@
 //   placeholder=""
 //   width={}
 //   onChange={}
+//   onBlur={}
 // />
 
 
@@ -18,6 +19,7 @@ class InputCurrency extends React.Component {
     placeholder: null,
     width: null,
     onChange: null,
+    onBlur: null,
     unit: 'NT$',
   };
   static propTypes = {
@@ -26,6 +28,7 @@ class InputCurrency extends React.Component {
     value: PropTypes.string,
     width: PropTypes.number,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -35,6 +38,8 @@ class InputCurrency extends React.Component {
     this.state = { isFocusing: false };
   }
   onBlur() {
+    const { onBlur } = this.props;
+    if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
   onFocus() {

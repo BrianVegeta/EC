@@ -1,4 +1,12 @@
-// <InputCounter value={1} suffix="天" max={} min={} width={} onChange={} />
+// <InputCounter
+//   value={1}
+//   suffix="天"
+//   max={}
+//   min={}
+//   width={}
+//   onChange={}
+//   onBlur={}
+// />
 // ps. need allow null
 
 
@@ -16,6 +24,7 @@ class InputCounter extends React.Component {
     value: null,
     suffix: null,
     onChange: null,
+    onBlur: null,
     width: null,
     max: 30,
     min: 1,
@@ -25,6 +34,7 @@ class InputCounter extends React.Component {
     value: PropTypes.number,
     suffix: PropTypes.string,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     width: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
@@ -43,6 +53,8 @@ class InputCounter extends React.Component {
     };
   }
   onBlur() {
+    const { onBlur } = this.props;
+    if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
   onFocus() {

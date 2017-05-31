@@ -44,6 +44,9 @@ class PriceContainer extends React.Component {
     this.onDepositChange = this.onDepositChange.bind(this);
     this.onMinLeaseDayChange = this.onMinLeaseDayChange.bind(this);
     this.validateAll = this.validateAll.bind(this);
+    this.onPriceBlur = this.onPriceBlur.bind(this);
+    this.onDepositBlur = this.onDepositBlur.bind(this);
+    this.onMinLeaseDaysBlur = this.onMinLeaseDaysBlur.bind(this);
     this.state = {
       priceError: null,
       depositError: null,
@@ -60,30 +63,42 @@ class PriceContainer extends React.Component {
   onMinLeaseDayChange(value) {
     this.props.dispatch(updateMinLeaseDays(value));
   }
+  onPriceBlur() {
+    this.validate('price');
+  }
+  onDepositBlur() {
+    this.validate('deposit');
+  }
+  onMinLeaseDaysBlur() {
+    this.validate('minLeaseDays');
+  }
   validateAll() {
     const { price, deposit, minLeaseDays } = this.props.publish;
     const errors = validate({ price, deposit, minLeaseDays }, constraints);
-    let totalError = null;
+    const state = {
+      priceError: null,
+      depositError: null,
+      totalError: null,
+      minLeaseDaysError: null,
+    };
     if (!errors.price && !errors.deposit) {
       if (_.parseInt(price) + _.parseInt(deposit) > TOTLE_PRICE_LIMIT) {
-        totalError = `${PRICE_LABEL} + ${DEPOSIT_LABEL}不得超過 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`;
+        state.totalError = `${PRICE_LABEL} + ${DEPOSIT_LABEL}不得超過 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`;
       }
     }
     if (errors) {
-      this.setState({
-        priceError: errors.price ? errors.price[0] : null,
-        depositError: errors.deposit ? errors.deposit[0] : null,
-        totalError,
-        minLeaseDaysError: errors.minLeaseDays ? errors.minLeaseDays[0] : null,
-      });
-    } else {
-      this.setState({
-        priceError: null,
-        depositError: null,
-        totalError,
-        minLeaseDaysError: null,
-      });
+      state.priceError = errors.price ? errors.price[0] : null;
+      state.depositError = errors.deposit ? errors.deposit[0] : null;
+      state.minLeaseDaysError = errors.minLeaseDays ? errors.minLeaseDays[0] : null;
     }
+    this.setState(state);
+  }
+  validate(name) {
+    const { publish } = this.props;
+    const errors = validate.single(publish[name], constraints[name]);
+    const state = {};
+    state[`${name}Error`] = errors ? errors[0] : null;
+    this.setState(state);
   }
   hasErrors() {
     const { price, deposit, minLeaseDays } = this.props.publish;
@@ -105,6 +120,7 @@ class PriceContainer extends React.Component {
             <InputCurrency
               value={publish.price}
               onChange={this.onPriceChange}
+              onBlur={this.onPriceBlur}
             />
           </WithError>
         </FormGroup>
@@ -115,6 +131,7 @@ class PriceContainer extends React.Component {
             <InputCurrency
               value={publish.deposit}
               onChange={this.onDepositChange}
+              onBlur={this.onDepositBlur}
             />
           </WithError>
         </FormGroup>
@@ -127,6 +144,7 @@ class PriceContainer extends React.Component {
               placeholder="請輸入"
               width={INPUT_DAYS_COUNTER_WIDTH}
               onChange={this.onMinLeaseDayChange}
+              onBlur={this.onMinLeaseDaysBlur}
             />
           </WithError>
         </FormGroup>
