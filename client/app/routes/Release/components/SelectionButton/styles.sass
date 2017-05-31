@@ -1,55 +1,60 @@
+@import "../input.sass"
+
+$arrowSize: 30px
+$buttonZindex: 1001
+$dropdownZindex: 1000
+
 .input
   width: 100%
-  height: 50px
-  line-height: 20px
-  font-size: 18px
+  height: $inputHeight
+  line-height: $inputLineHeight
+  font-size: $inputTextSize
   font-weight: 300
   position: relative
+  border-radius: $inputRadius
   .innerWrapper
-    font-size: 20px
-    padding: 14px
+    padding: $inputPaddingTop $inputPaddingRight
+
     text-align: left
-    color: #333
+    border: 1px solid $inputBorderColor
+    border-radius: $inputRadius
+    color: $inputTextColor
 
     position: relative
     z-index: 1
     height: 100%
     background-color: #fff
-    border-color: #444
-    border-width: 1px
-    border-style: solid
     .placeholder
-      color: #949494
+      color: $placeholderColor
 
     .dropdownArrow
       float: right
-      margin: -10px
+      margin: (($inputHeight - ($inputPaddingTop * 2)) - $arrowSize) / 2
 
 .inputFocusing
   composes: input
   border-bottom: 0
 .inputFocusing
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
+  box-shadow: $inputFocusingShadow
   .innerWrapper
-    border-color: #222
-    z-index: 1001
+    border-color: $inputFocusingBorderColor
+    z-index: $buttonZindex
 
 
 
 .dropdown
   width: 100%
-  min-width: 500px
+  // min-width: 500px
   background-color: #fff
   position: absolute
-  z-index: 1000
+  z-index: $dropdownZindex
   left: 0
   top: 100%
   margin-top: -1px
   margin-bottom: 20px
-  border: 1px solid #222
+  border: 1px solid $inputBorderColor
   text-align: left
   cursor: default
-
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)
+  border-bottom-left-radius: $inputRadius
+  border-bottom-right-radius: $inputRadius
+  box-shadow: $inputFocusingShadow

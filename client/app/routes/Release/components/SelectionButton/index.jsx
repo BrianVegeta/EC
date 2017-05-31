@@ -64,6 +64,10 @@ class SelectionButton extends React.Component {
       onMouseOver: this.innerMouseEnter,
       onMouseOut: this.innerMouseOut,
     };
+    const buttonInnerStyle = {
+      borderBottomLeftRadius: isDropdownOpen ? 0 : null,
+      borderBottomRightRadius: isDropdownOpen ? 0 : null,
+    };
     return (
       <button
         style={{ width: this.props.width }}
@@ -71,13 +75,13 @@ class SelectionButton extends React.Component {
         className="button"
         {...buttonEvents}
       >
-        <div styleName="innerWrapper" {...buttonInnerEvents}>
+        <div styleName="innerWrapper" {...buttonInnerEvents} style={buttonInnerStyle}>
           { _.isEmpty(value) ?
             <span styleName="placeholder">{placeholder}</span> :
             value
           }
           <span styleName="dropdownArrow">
-            <ArrowDownIcon size={40} color="#333" />
+            <ArrowDownIcon size={30} color="#333" />
           </span>
         </div>
         {isDropdownOpen && <div styleName="dropdown">{children}</div>}

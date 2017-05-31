@@ -12,6 +12,7 @@ import AlertPanel from './AlertPanel';
 import WithError from './WithError';
 import NextStep from './NextStep';
 import InputTextarea from './InputTextarea';
+import InputSelection from './InputSelection';
 
 const exports = {
   FormGroup,
@@ -23,6 +24,7 @@ const exports = {
   InputText,
   InputTextarea,
   InputSelectionCities,
+  InputSelection,
   InputCheck,
   InputUnit,
   AlertPanel,
