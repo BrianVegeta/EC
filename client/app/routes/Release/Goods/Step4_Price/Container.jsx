@@ -81,7 +81,7 @@ class PriceContainer extends React.Component {
       totalError: null,
       minLeaseDaysError: null,
     };
-    if (!errors.price && !errors.deposit) {
+    if (errors && !errors.price && !errors.deposit) {
       if (_.parseInt(price) + _.parseInt(deposit) > TOTLE_PRICE_LIMIT) {
         state.totalError = `${PRICE_LABEL} + ${DEPOSIT_LABEL}不得超過 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`;
       }
