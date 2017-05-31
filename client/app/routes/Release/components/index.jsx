@@ -9,7 +9,8 @@ import InputCounter from './InputCounter';
 import InputUnit from './InputUnit';
 import DiscountGroup from './DiscountGroup';
 import AlertPanel from './AlertPanel';
-import Tooltip from './Tooltip';
+import WithError from './WithError';
+import NextStep from './NextStep';
 
 const exports = {
   FormGroup,
@@ -23,6 +24,7 @@ const exports = {
   InputCheck,
   InputUnit,
   AlertPanel,
-  Tooltip,
+  WithError,
+  NextStep,
 };
 module.exports = exports;

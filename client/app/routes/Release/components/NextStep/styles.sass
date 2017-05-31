@@ -1,0 +1,22 @@
+.button
+  font-size: 20px
+  width: 200px
+  padding: 20px
+  border-radius: 5px
+  margin-bottom: 40px
+
+.activeButton
+  composes: button
+.activeButton
+  background-color: #666
+  color: #fff
+  &:active
+    background: #444
+  &:hover
+    background: #999
+
+.disableButton
+  composes: button
+  background: #EAEAEA
+  color: #B8B8B8
+  cursor: default

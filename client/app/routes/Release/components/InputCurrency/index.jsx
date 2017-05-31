@@ -11,7 +11,6 @@ import React, { PropTypes } from 'react';
 import NumberFormat from 'react-number-format';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import Tooltip from '../Tooltip';
 
 class InputCurrency extends React.Component {
   static defaultProps = {
@@ -50,7 +49,6 @@ class InputCurrency extends React.Component {
     const outerStyleName = this.state.isFocusing ? 'inputOuterFocusing' : 'inputOuter';
     return (
       <div styleName={outerStyleName} style={{ width }} >
-        <Tooltip message="此欄位必填" />
         <span styleName="unit">{unit}</span>
         <NumberFormat
           styleName="input"
