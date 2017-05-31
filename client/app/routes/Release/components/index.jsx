@@ -11,6 +11,7 @@ import DiscountGroup from './DiscountGroup';
 import AlertPanel from './AlertPanel';
 import WithError from './WithError';
 import NextStep from './NextStep';
+import InputTextarea from './InputTextarea';
 
 const exports = {
   FormGroup,
@@ -20,6 +21,7 @@ const exports = {
   InputCounter,
   InputCurrency,
   InputText,
+  InputTextarea,
   InputSelectionCities,
   InputCheck,
   InputUnit,

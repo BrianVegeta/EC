@@ -26,6 +26,8 @@ import {
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
 
+
+  PUBLISH_REGULATION_UPDATE,
 } from '../constants/actionTypes';
 
 export const INDEX_RETURN_ADDRESSES_CITY = 0;
@@ -46,6 +48,9 @@ const initialState = {
   price: null,
   deposit: null,
   minLeaseDays: null,
+
+  // regulation
+  regulation: '',
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -140,6 +145,9 @@ export default (state = initialState, action) => {
 
     case PUBLISH_MIN_LEASE_DAYS_UPDATE:
       return Object.assign({}, state, { minLeaseDays: action.minLeaseDays });
+
+    case PUBLISH_REGULATION_UPDATE:
+      return Object.assign({}, state, { regulation: action.regulation });
 
     default:
       return state;

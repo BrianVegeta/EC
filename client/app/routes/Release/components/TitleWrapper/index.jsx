@@ -4,14 +4,19 @@ import styles from './styles.sass';
 
 const defaultProps = {
   helperText: null,
+  optional: false,
 };
 const propTypes = {
   children: PropTypes.string.isRequired,
   helperText: PropTypes.string,
+  optional: PropTypes.bool,
 };
 const Title = props => (
   <div styleName="container">
-    <h2 styleName="title">{props.children}</h2>
+    <h2 styleName="title">
+      {props.children}
+      {props.optional && <span styleName="titleHelper">（非必填）</span>}
+    </h2>
     {props.helperText && <span styleName="helper">{props.helperText}</span>}
   </div>
 );

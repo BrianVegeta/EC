@@ -1,6 +1,17 @@
+@import "../input.sass"
+
 .inputControl
   position: relative
 .textareaField
-  composes: inputField inputPlaceholder inputLightFocusPlaceholder from '../styles.sass'
-  width: 100%
+  composes: inputer
+  height: auto
   resize: none
+  outline: 0
+  padding: $inputPaddingTop $inputPaddingRight
+  &::placeholder
+    color: $placeholderColor
+  &:focus
+    border-color: $inputFocusingBorderColor
+    box-shadow: $inputFocusingShadow
+    &::placeholder
+      color: $focusingPlaceholderColor

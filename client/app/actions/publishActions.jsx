@@ -13,6 +13,8 @@ import {
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
 
+
+  PUBLISH_REGULATION_UPDATE,
 } from '../constants/actionTypes';
 
 export const updateTitle = title => ({
@@ -63,4 +65,10 @@ export const updateDeposit = deposit => ({
 export const updateMinLeaseDays = minLeaseDays => ({
   type: PUBLISH_MIN_LEASE_DAYS_UPDATE,
   minLeaseDays,
+});
+
+
+export const updateRegulation = regulation => ({
+  type: PUBLISH_REGULATION_UPDATE,
+  regulation,
 });
