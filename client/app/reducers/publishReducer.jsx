@@ -28,6 +28,8 @@ import {
 
 
   PUBLISH_REGULATION_UPDATE,
+  PUBLISH_CANCEL_POLICY_UPDATE,
+  PUBLISH_CANCEL_POLICY_PURGE,
 } from '../constants/actionTypes';
 
 export const INDEX_RETURN_ADDRESSES_CITY = 0;
@@ -51,6 +53,7 @@ const initialState = {
 
   // regulation
   regulation: '',
+  cancelPolicy: null, // { advanceDays, rate }
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -148,6 +151,16 @@ export default (state = initialState, action) => {
 
     case PUBLISH_REGULATION_UPDATE:
       return Object.assign({}, state, { regulation: action.regulation });
+
+    case PUBLISH_CANCEL_POLICY_UPDATE: {
+      const { advanceDays, rate } = action;
+      return Object.assign({}, state, {
+        cancelPolicy: { advanceDays, rate },
+      });
+    }
+
+    case PUBLISH_CANCEL_POLICY_PURGE:
+      return Object.assign({}, state, { cancelPolicy: null });
 
     default:
       return state;

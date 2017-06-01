@@ -15,6 +15,8 @@ import {
 
 
   PUBLISH_REGULATION_UPDATE,
+  PUBLISH_CANCEL_POLICY_PURGE,
+  PUBLISH_CANCEL_POLICY_UPDATE,
 } from '../constants/actionTypes';
 
 export const updateTitle = title => ({
@@ -67,8 +69,17 @@ export const updateMinLeaseDays = minLeaseDays => ({
   minLeaseDays,
 });
 
-
+// 守則
 export const updateRegulation = regulation => ({
   type: PUBLISH_REGULATION_UPDATE,
   regulation,
+});
+// 退訂
+export const updateCancelPolicy = ({ advanceDays, rate }) => ({
+  type: PUBLISH_CANCEL_POLICY_UPDATE,
+  advanceDays,
+  rate,
+});
+export const purgeCancelPolicy = () => ({
+  type: PUBLISH_CANCEL_POLICY_PURGE,
 });
