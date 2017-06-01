@@ -14,6 +14,7 @@ import WithError from './WithError';
 import NextStep from './NextStep';
 import InputTextarea from './InputTextarea';
 import InputSelection from './InputSelection';
+import OverduePolicy from './OverduePolicy';
 
 const exports = {
   FormGroup,
@@ -32,5 +33,6 @@ const exports = {
   AlertPanel,
   WithError,
   NextStep,
+  OverduePolicy,
 };
 module.exports = exports;

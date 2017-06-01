@@ -4,8 +4,6 @@ import { browserHistory } from 'react-router';
 import validate from 'validate.js';
 import numeral from 'numeral';
 import _ from 'lodash';
-import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import { PRICE } from '../../constants/title';
 import { INPUT_DAYS_COUNTER_WIDTH } from '../../../../constants/dimesions';
 import {
@@ -19,6 +17,7 @@ import {
   WithError,
   NextStep,
 } from '../../components';
+import OverduePolicy from '../../components/OverduePolicy';
 import {
   updatePrice,
   updateDeposit,
@@ -47,11 +46,13 @@ class PriceContainer extends React.Component {
     this.onPriceBlur = this.onPriceBlur.bind(this);
     this.onDepositBlur = this.onDepositBlur.bind(this);
     this.onMinLeaseDaysBlur = this.onMinLeaseDaysBlur.bind(this);
+    this.onActiveOverdue = this.onActiveOverdue.bind(this);
     this.state = {
       priceError: null,
       depositError: null,
       totolError: null,
       minLeaseDaysError: null,
+      isOverdueActivating: false,
     };
   }
   onPriceChange(value) {
@@ -68,6 +69,9 @@ class PriceContainer extends React.Component {
   }
   onDepositBlur() {
     this.validate('deposit');
+  }
+  onActiveOverdue(checked) {
+    this.setState({ isOverdueActivating: checked });
   }
   onMinLeaseDaysBlur() {
     this.validate('minLeaseDays');
@@ -109,43 +113,48 @@ class PriceContainer extends React.Component {
   render() {
     const { publish } = this.props;
     const { totalError } = this.state;
+    const priceInputProps = {
+      value: publish.price,
+      onChange: this.onPriceChange,
+      onBlur: this.onPriceBlur,
+    };
+    const depositInputProps = {
+      value: publish.deposit,
+      onChange: this.onDepositChange,
+      onBlur: this.onDepositBlur,
+    };
+    const minLeaseDaysInputProps = {
+      value: publish.minLeaseDays,
+      suffix: '天',
+      placeholder: '請輸入',
+      width: INPUT_DAYS_COUNTER_WIDTH,
+      onChange: this.onMinLeaseDayChange,
+      onBlur: this.onMinLeaseDaysBlur,
+    };
     return (
-      <div styleName="container">
+      <div>
         <TitleWrapper>{PRICE}</TitleWrapper>
         <FormGroup
           headerText={PRICE_LABEL}
           helperBottomText="如需要運費，請記得加上！"
         >
           <WithError error={this.state.priceError}>
-            <InputCurrency
-              value={publish.price}
-              onChange={this.onPriceChange}
-              onBlur={this.onPriceBlur}
-            />
+            <InputCurrency {...priceInputProps} />
           </WithError>
         </FormGroup>
         <FormGroup
           headerText={DEPOSIT_LABEL}
+          helperBottomText="押金至少需要 NT$ 100 喔！"
         >
           <WithError error={this.state.depositError}>
-            <InputCurrency
-              value={publish.deposit}
-              onChange={this.onDepositChange}
-              onBlur={this.onDepositBlur}
-            />
+            <InputCurrency {...depositInputProps} />
           </WithError>
         </FormGroup>
         {totalError && <AlertPanel message={totalError} marginBottom={40} />}
+        <OverduePolicy />
         <FormGroup headerText="至少租借天數" optional>
           <WithError error={this.state.minLeaseDaysError}>
-            <InputCounter
-              value={publish.minLeaseDays}
-              suffix="天"
-              placeholder="請輸入"
-              width={INPUT_DAYS_COUNTER_WIDTH}
-              onChange={this.onMinLeaseDayChange}
-              onBlur={this.onMinLeaseDaysBlur}
-            />
+            <InputCounter {...minLeaseDaysInputProps} />
           </WithError>
         </FormGroup>
         <BlockFormGroup
@@ -169,4 +178,4 @@ const mapStateToProps = (state) => {
   const { environment, routesHelper, publish } = state;
   return ({ environment, routesHelper, publish });
 };
-export default connect(mapStateToProps)(CSS(PriceContainer, styles));
+export default connect(mapStateToProps)(PriceContainer);

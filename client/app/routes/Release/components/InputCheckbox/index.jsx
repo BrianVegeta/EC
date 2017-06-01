@@ -10,10 +10,12 @@ class InputCheckbox extends React.Component {
     checked: false,
     disabled: false,
     readOnly: false,
+    helper: null,
   };
   static propTypes = {
     readOnly: PropTypes.bool,
     children: PropTypes.node.isRequired,
+    helper: PropTypes.node.isRequired,
     onChange: PropTypes.func.isRequired,
     checked: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -42,32 +44,41 @@ class InputCheckbox extends React.Component {
       disabled,
       readOnly,
       children,
+      helper,
     } = this.props;
     const { checked } = this.state;
-    const labelEnableProps = {
-      onClick: this.onLabelClick,
-      style: { cursor: 'pointer' },
+
+    const checkboxProps = {
+      styleName: checked ? 'checkboxChecked' : 'checkbox',
+      className: disabled && styles.checkboxDisable,
     };
-    const labelProps = disabled ? {} : labelEnableProps;
+    const checkboxInputProps = {
+      styleName: 'checkboxInput',
+      type: 'checkbox',
+      name: this.name,
+      onChange: this.onChange,
+      disabled,
+      checked,
+      readOnly,
+    };
+    const labelInnerProps = {
+      styleName: 'labelInner',
+    };
+    if (!disabled) {
+      labelInnerProps.onClick = this.onLabelClick;
+      labelInnerProps.style = { cursor: 'pointer' };
+    }
     return (
-      <label htmlFor={this.name} styleName="label">
-        <span
-          styleName={`${checked ? 'checkboxChecked' : 'checkbox'}`}
-          className={disabled && styles.checkboxDisable}
-        >
-          <input
-            styleName="checkboxInput"
-            type="checkbox"
-            name={this.name}
-            onChange={this.onChange}
-            disabled={disabled}
-            checked={checked}
-            readOnly={readOnly}
-          />
-          <span styleName="checkboxInner" />
-        </span>
-        <span styleName="labelInner" {...labelProps} >{children}</span>
-      </label>
+      <div styleName="container">
+        <label htmlFor={this.name} styleName="label">
+          <span {...checkboxProps}>
+            <input {...checkboxInputProps} />
+            <span styleName="checkboxInner" />
+          </span>
+          <span {...labelInnerProps} >{children}</span>
+        </label>
+        {helper && <div styleName="helper">{helper}</div>}
+      </div>
     );
   }
 }

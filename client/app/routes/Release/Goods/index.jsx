@@ -46,17 +46,6 @@ export default (routesHelper, dispatch) => ({
           callback(null, { formComponent: require('./Step4_Price/Container').default });
         }, 'r-g-4');
       },
-      childRoutes: [
-        {
-          path: 'd_c',
-          getComponent(_nextState, callback) {
-            require.ensure([], (require) => {
-              const modalComponent = require('./Step4_Price/DiscountNew/Container').default;
-              callback(null, { modalComponent });
-            }, 'd_c');
-          },
-        },
-      ],
     },
     {
       path: 's5_r',
@@ -75,10 +64,10 @@ export default (routesHelper, dispatch) => ({
       },
     },
     {
-      path: 's7_c',
+      path: 's7_od',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
-          callback(null, { formComponent: require('./Container').default });
+          callback(null, { formComponent: require('./Step7_Overdue/Container').default });
         }, 'r-g-7');
       },
     },
