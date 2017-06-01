@@ -6,6 +6,7 @@ import styles from './styles.sass';
 import {
   TitleWrapper,
   InputCheck,
+  InputCheckbox,
   InputSelection,
   NextStep,
 } from '../../components';
@@ -49,10 +50,11 @@ class CancelPolicyContainer extends React.Component {
         </TitleWrapper>
         <div styleName="formGroup">
           <div styleName="isActive">
-            <InputCheck
+            <InputCheckbox
               onChange={this.onChecked}
-              labelText="啟用退訂政策"
-            />
+            >
+              <span styleName="activeText">啟用退訂政策</span>
+            </InputCheckbox>
           </div>
           <div styleName="policy">
             <span styleName="text">開始租借</span>
@@ -70,7 +72,7 @@ class CancelPolicyContainer extends React.Component {
                 options={rateOptions}
                 choice={rateOptions[0]}
                 onSelect={this.onRateSelect}
-                width={150}
+                width={175}
               />
             </span>
           </div>

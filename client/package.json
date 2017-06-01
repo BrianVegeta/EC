@@ -33,6 +33,7 @@
     "nuka-carousel": "^2.0.4",
     "numeral": "^2.0.6",
     "postcss-nesting": "^4.0.1",
+    "rc-checkbox": "^2.0.3",
     "rc-slider": "^7.0.6",
     "react": "^15.4.2",
     "react-addons-transition-group": "^15.5.2",

@@ -1,0 +1,102 @@
+$checkboxBorderWidth: 2px
+$activeColor: #333
+$blankColor: #fff
+$pendingColor: #777
+$checkboxSize: 20px
+$checkboxBorderRadius: 2px
+
+$disableDarkColor: #d9d9d9
+$disableLightColor: #f3f3f3
+
+.label
+  display: inline-block
+.labelInner
+  vertical-align: middle
+
+.check
+  width: $checkboxSize
+  height: $checkboxSize
+  vertical-align: middle
+  white-space: nowrap
+  cursor: pointer
+  outline: none
+  display: inline-block
+  position: relative
+  line-height: 1
+  .checkboxInner
+    position: relative
+    width: $checkboxSize
+    height: $checkboxSize
+    top: 0
+    left: 0
+    display: inline-block
+    border-width: $checkboxBorderWidth
+    border-style: solid
+    border-radius: $checkboxBorderRadius
+  .checkboxInput
+    position: absolute
+    z-index: 9999
+    cursor: pointer
+    opacity: 0
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    width: 100%
+    height: 100%
+
+.checked
+  .checkboxInner
+    &::after
+      transform: rotate(45deg)
+      position: absolute
+      left: 4px
+      top: 1px
+      display: table
+      width: ($checkboxSize * 6) / 16
+      height: ($checkboxSize * 9) / 16
+      border: 2px solid $blankColor
+      border-top: 0
+      border-left: 0
+      content: ' '
+
+.checkbox
+  composes: check
+  &:hover
+    .checkboxInner
+      border-color: $activeColor
+  .checkboxInner
+    border-color: $pendingColor
+    background-color: $blankColor
+
+.checkboxChecked
+  composes: check checked
+  &:hover
+    .checkboxInner
+      border-color: $activeColor
+  .checkboxInner
+    border-color: $activeColor
+    background-color: $activeColor
+
+
+.checkboxDisable
+  &.checkbox
+    &:hover
+      .checkboxInner
+        border-color: $disableDarkColor
+    .checkboxInner
+      background-color: $disableLightColor
+      border-color: $disableDarkColor
+      &::after
+        border-color: $disableLightColor
+  &.checkboxChecked
+    &:hover
+      .checkboxInner
+        border-color: $disableDarkColor
+    .checkboxInner
+      background-color: $disableDarkColor
+      border-color: $disableDarkColor
+      &::after
+        border-color: $disableLightColor
+  .checkboxInput
+    cursor: default

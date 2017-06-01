@@ -4,6 +4,7 @@ import TitleWrapper from './TitleWrapper';
 import InputText from './InputText';
 import InputSelectionCities from './InputSelectionCities';
 import InputCheck from './InputCheck';
+import InputCheckbox from './InputCheckbox';
 import InputCurrency from './InputCurrency';
 import InputCounter from './InputCounter';
 import InputUnit from './InputUnit';
@@ -26,6 +27,7 @@ const exports = {
   InputSelectionCities,
   InputSelection,
   InputCheck,
+  InputCheckbox,
   InputUnit,
   AlertPanel,
   WithError,
