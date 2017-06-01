@@ -9,11 +9,13 @@ class SelectionButton extends React.Component {
     value: null,
     placeholder: null,
     width: '100%',
+    disabled: false,
   };
   static propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
     width: PropTypes.number,
+    disabled: PropTypes.bool,
     children: PropTypes.node.isRequired,
   };
   constructor(props) {
@@ -51,38 +53,49 @@ class SelectionButton extends React.Component {
   closeDropdown() {
     this.setState({ isDropdownOpen: false });
   }
+  renderBtnValue() {
+    const { value, placeholder } = this.props;
+    if (!_.isEmpty(value)) {
+      return value;
+    }
+    return <span styleName="placeholder">{placeholder}</span>;
+  }
   render() {
     const { isFocusing, isDropdownOpen } = this.state;
-    const { placeholder, children, value } = this.props;
-    const buttonEvents = {
+    const { children, width, disabled } = this.props;
+
+    const arrow = (
+      <span styleName="dropdownArrow">
+        <ArrowDownIcon size={30} />
+      </span>
+    );
+    const btnProps = {
+      styleName: 'input',
       ref: btn => (this.button = btn),
       onClick: this.onButtonPress,
       onFocus: this.onFocus,
       onBlur: this.onBlur,
+      style: { width },
+      className: 'button',
+      disabled,
     };
-    const buttonInnerEvents = {
+    if (disabled) { btnProps.styleName = 'inputDisabled'; }
+    if (isFocusing) { btnProps.styleName = 'inputFocusing'; }
+    const btnInnerProps = {
+      styleName: 'innerWrapper',
       onMouseOver: this.innerMouseEnter,
       onMouseOut: this.innerMouseOut,
     };
-    const buttonInnerStyle = {
-      borderBottomLeftRadius: isDropdownOpen ? 0 : null,
-      borderBottomRightRadius: isDropdownOpen ? 0 : null,
-    };
+    if (isDropdownOpen) {
+      btnInnerProps.style = {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+      };
+    }
     return (
-      <button
-        style={{ width: this.props.width }}
-        styleName={isFocusing ? 'inputFocusing' : 'input'}
-        className="button"
-        {...buttonEvents}
-      >
-        <div styleName="innerWrapper" {...buttonInnerEvents} style={buttonInnerStyle}>
-          { _.isEmpty(value) ?
-            <span styleName="placeholder">{placeholder}</span> :
-            value
-          }
-          <span styleName="dropdownArrow">
-            <ArrowDownIcon size={30} color="#333" />
-          </span>
+      <button {...btnProps}>
+        <div {...btnInnerProps}>
+          {this.renderBtnValue()}{arrow}
         </div>
         {isDropdownOpen && <div styleName="dropdown">{children}</div>}
       </button>

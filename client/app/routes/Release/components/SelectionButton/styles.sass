@@ -4,6 +4,14 @@ $arrowSize: 30px
 $buttonZindex: 1001
 $dropdownZindex: 1000
 
+$disableBgColor: #E9E9E9
+$disableBorderColor: #B8B8B8
+
+// Access SASS variables from css-module in a React component
+// @value disableBorderColor #{$disableBorderColor}
+// @value inputBorderColor #{$inputBorderColor}
+// @value inputFocusingBorderColor #{$inputFocusingBorderColor}
+
 .input
   width: 100%
   height: $inputHeight
@@ -14,19 +22,16 @@ $dropdownZindex: 1000
   border-radius: $inputRadius
   .innerWrapper
     padding: $inputPaddingTop $inputPaddingRight
-
     text-align: left
     border: 1px solid $inputBorderColor
     border-radius: $inputRadius
     color: $inputTextColor
-
     position: relative
     z-index: 1
     height: 100%
     background-color: #fff
     .placeholder
       color: $placeholderColor
-
     .dropdownArrow
       float: right
       margin: (($inputHeight - ($inputPaddingTop * 2)) - $arrowSize) / 2
@@ -39,8 +44,12 @@ $dropdownZindex: 1000
   .innerWrapper
     border-color: $inputFocusingBorderColor
     z-index: $buttonZindex
-
-
+.inputDisabled
+  composes: input
+  .innerWrapper
+    border-color: $disableBorderColor
+    color: $disableBorderColor
+    background: $disableBgColor
 
 .dropdown
   width: 100%

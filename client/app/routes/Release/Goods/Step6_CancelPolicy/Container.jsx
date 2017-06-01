@@ -23,6 +23,9 @@ class CancelPolicyContainer extends React.Component {
     super(props);
     this.onChecked = this.onChecked.bind(this);
     this.onAdvanceDaysSelect = this.onAdvanceDaysSelect.bind(this);
+    this.state = {
+      isActivating: false,
+    }
   }
   validateAll() {
     console.log('validate all');
@@ -31,7 +34,7 @@ class CancelPolicyContainer extends React.Component {
     return false;
   }
   onChecked(isChecked) {
-    console.log(isChecked);
+    this.setState({ isActivating: isChecked });
   }
   onAdvanceDaysSelect(option) {
     console.log(option);
@@ -40,6 +43,21 @@ class CancelPolicyContainer extends React.Component {
     console.log(option);
   }
   render() {
+    const { isActivating } = this.state;
+    const advanceDaysProps = {
+      options: advanceDayOptions,
+      choice: advanceDayOptions[0],
+      onSelect: this.onAdvanceDaysSelect,
+      disabled: !isActivating,
+      width: 150,
+    };
+    const rateProps = {
+      options: rateOptions,
+      choice: rateOptions[0],
+      onSelect: this.onRateSelect,
+      disabled: !isActivating,
+      width: 175,
+    };
     return (
       <div styleName="container">
         <TitleWrapper
@@ -50,30 +68,18 @@ class CancelPolicyContainer extends React.Component {
         </TitleWrapper>
         <div styleName="formGroup">
           <div styleName="isActive">
-            <InputCheckbox
-              onChange={this.onChecked}
-            >
+            <InputCheckbox onChange={this.onChecked}>
               <span styleName="activeText">啟用退訂政策</span>
             </InputCheckbox>
           </div>
           <div styleName="policy">
             <span styleName="text">開始租借</span>
             <span styleName="advanceDays">
-              <InputSelection
-                options={advanceDayOptions}
-                choice={advanceDayOptions[0]}
-                onSelect={this.onAdvanceDaysSelect}
-                width={150}
-              />
+              <InputSelection {...advanceDaysProps} />
             </span>
             <span styleName="text">如取消訂單將</span>
             <span styleName="rate">
-              <InputSelection
-                options={rateOptions}
-                choice={rateOptions[0]}
-                onSelect={this.onRateSelect}
-                width={175}
-              />
+              <InputSelection {...rateProps} />
             </span>
           </div>
         </div>

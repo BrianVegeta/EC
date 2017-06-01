@@ -33,7 +33,9 @@ class InputCheckbox extends React.Component {
     this.setState({ checked });
   }
   onLabelClick() {
-    this.setState({ checked: !this.state.checked });
+    const { checked } = this.state;
+    this.props.onChange(!checked);
+    this.setState({ checked: !checked });
   }
   render() {
     const {
