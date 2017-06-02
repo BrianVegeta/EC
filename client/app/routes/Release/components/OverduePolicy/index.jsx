@@ -23,6 +23,7 @@ class OverduePolicy extends React.Component {
     this.setState({ isActivating: checked });
   }
   onSliderChange(value) {
+    this.slider.focus();
     this.setState({ percentage: value });
   }
   calculateAmountPerDay() {
@@ -39,7 +40,11 @@ class OverduePolicy extends React.Component {
     const overdueMaxDays = this.calculateMaxDaysFromOverdue();
     return (
       <div styleName="controlPanel">
-        <div styleName="slider">
+        <div
+          styleName="slider"
+          ref={slider => (this.slider = slider)}
+          tabIndex="0"
+        >
           <Slider {...sliderProps} />
         </div>
         <div styleName="calculated">

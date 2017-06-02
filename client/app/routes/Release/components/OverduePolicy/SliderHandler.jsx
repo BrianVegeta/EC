@@ -6,10 +6,6 @@ import styles from './styles.sass';
 
 const Handler = (props) => {
   const { value, dragging, ...otherProps } = props;
-  if (dragging) {
-    this.hiddenInput.focus();
-  }
-  console.log(dragging);
   const containerStyle = {
     position: 'absolute',
     display: 'inline-block',
@@ -25,7 +21,6 @@ const Handler = (props) => {
   const percentage = <span styleName="number">{value}%</span>;
   return (
     <div>
-      <input type="hidden" ref={i => (this.hiddenInput = i)} />
       <Slider.Handle value={value} {...otherProps} />
       <span style={containerStyle}>
         <span style={innerStyle}>
@@ -37,5 +32,6 @@ const Handler = (props) => {
 };
 Handler.propTypes = {
   value: PropTypes.number.isRequired,
+  dragging: PropTypes.bool.isRequired,
 };
 export default CSS(Handler, styles);
