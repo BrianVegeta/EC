@@ -10,11 +10,13 @@
 
 import React, { PropTypes } from 'react';
 import NumberFormat from 'react-number-format';
+import classnames from 'classnames/bind';
 import _ from 'lodash';
 import numeral from 'numeral';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const classbind = classnames.bind(styles);
 class InputCurrency extends React.Component {
   static defaultProps = {
     value: '',
@@ -61,9 +63,14 @@ class InputCurrency extends React.Component {
   }
   render() {
     const { unit, placeholder, value, width } = this.props;
-    const outerStyleName = this.state.isFocusing ? 'inputOuterFocusing' : 'inputOuter';
+    const { isFocusing } = this.state;
+    const inputOuterClass = classbind({
+      inputOuterFocusing: isFocusing,
+      inputOuter: !isFocusing,
+    });
+    const unitClass = classbind('unit');
     const numberFormatProps = {
-      styleName: 'input',
+      className: classbind('input'),
       placeholder,
       value,
       onFocus: this.onFocus,
@@ -73,8 +80,8 @@ class InputCurrency extends React.Component {
       allowNegative: false,
     };
     return (
-      <div styleName={outerStyleName} style={{ width }} >
-        <span styleName="unit">{unit}</span>
+      <div className={inputOuterClass} style={{ width }} >
+        <span className={unitClass}>{unit}</span>
         <NumberFormat {...numberFormatProps} />
       </div>
     );
