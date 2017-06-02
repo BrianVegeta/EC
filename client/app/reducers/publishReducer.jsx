@@ -25,6 +25,7 @@ import {
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
+  PUBLISH_DISCOUNTS_UPDATE,
 
 
   PUBLISH_REGULATION_UPDATE,
@@ -47,9 +48,10 @@ const initialState = {
   // ['宜蘭縣', '大同鄉', '中正一路']
   returnAddress: '',
   // price settings
-  price: '100',
-  deposit: '0',
+  price: null,
+  deposit: null,
   minLeaseDays: null,
+  discounts: [],
 
   // regulation
   regulation: '',
@@ -148,6 +150,9 @@ export default (state = initialState, action) => {
 
     case PUBLISH_MIN_LEASE_DAYS_UPDATE:
       return Object.assign({}, state, { minLeaseDays: action.minLeaseDays });
+
+    case PUBLISH_DISCOUNTS_UPDATE:
+      return Object.assign({}, state, { discounts: action.discounts });
 
     case PUBLISH_REGULATION_UPDATE:
       return Object.assign({}, state, { regulation: action.regulation });

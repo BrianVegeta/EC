@@ -6,7 +6,10 @@ import InputSelectionCities from './InputSelectionCities';
 import InputCheck from './InputCheck';
 import InputCheckbox from './InputCheckbox';
 import InputCurrency from './InputCurrency';
+import InputCurrencyWithError from './InputCurrencyWithError';
 import InputCounter from './InputCounter';
+import InputCounterWithError from './InputCounterWithError';
+import InputWithError from './InputWithError';
 import InputUnit from './InputUnit';
 import DiscountGroup from './DiscountGroup';
 import AlertPanel from './AlertPanel';
@@ -22,7 +25,10 @@ const exports = {
   TitleWrapper,
   DiscountGroup,
   InputCounter,
+  InputCounterWithError,
   InputCurrency,
+  InputCurrencyWithError,
+  InputWithError,
   InputText,
   InputTextarea,
   InputSelectionCities,

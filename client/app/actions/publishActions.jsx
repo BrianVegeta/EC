@@ -12,6 +12,7 @@ import {
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
+  PUBLISH_DISCOUNTS_UPDATE,
 
 
   PUBLISH_REGULATION_UPDATE,
@@ -67,6 +68,10 @@ export const updateDeposit = deposit => ({
 export const updateMinLeaseDays = minLeaseDays => ({
   type: PUBLISH_MIN_LEASE_DAYS_UPDATE,
   minLeaseDays,
+});
+export const updateDiscounts = discounts => ({
+  type: PUBLISH_DISCOUNTS_UPDATE,
+  discounts,
 });
 
 // 守則

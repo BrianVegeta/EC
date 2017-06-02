@@ -19,12 +19,12 @@ import styles from './styles.sass';
 const classbind = classnames.bind(styles);
 class InputCurrency extends React.Component {
   static defaultProps = {
-    value: '',
+    unit: 'NT$',
     placeholder: null,
+    value: '',
     width: null,
     onChange: null,
     onBlur: null,
-    unit: 'NT$',
   };
   static propTypes = {
     unit: PropTypes.string,
@@ -69,8 +69,8 @@ class InputCurrency extends React.Component {
       inputOuter: !isFocusing,
     });
     const unitClass = classbind('unit');
-    const numberFormatProps = {
-      className: classbind('input'),
+    const inputClass = classbind('input');
+    const numformatProps = {
       placeholder,
       value,
       onFocus: this.onFocus,
@@ -82,7 +82,7 @@ class InputCurrency extends React.Component {
     return (
       <div className={inputOuterClass} style={{ width }} >
         <span className={unitClass}>{unit}</span>
-        <NumberFormat {...numberFormatProps} />
+        <NumberFormat className={inputClass} {...numformatProps} />
       </div>
     );
   }

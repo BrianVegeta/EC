@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import _ from 'lodash';
 import styles from './styles.sass';
@@ -12,37 +13,41 @@ const defaultDiscount = {
 };
 const DISCOUNT_MAX = 3;
 class DiscountGroup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onNew = this.onNew.bind(this);
-    this.state = { discounts: [] };
-  }
-  onNew() {
-    const discounts = this.state.discounts.concat();
-    if (discounts.length >= DISCOUNT_MAX) { return; }
-    discounts.push(defaultDiscount);
-    this.setState({ discounts });
-  }
-  changeDiscount(days, offer, index) {
-    const discounts = this.state.discounts.concat();
-    discounts[index] = Object.assign({}, discounts[index], { days, offer });
-    this.setState({ discounts });
-  }
-  remove(index) {
-    const discounts = this.state.discounts.concat();
-    discounts.splice(index, 1);
-    this.setState({ discounts });
-  }
-  isDiscountsDuplicate() {
-    const { discounts } = this.state;
+  static isDuplicate(discounts) {
     const uniqs = _.uniqBy(discounts, 'offer');
     return uniqs.length !== discounts.length;
   }
-  checkDuplicate() {
-    this.setState({ isDuplicate: this.isDiscountsDuplicate() });
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    discounts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  };
+  constructor(props) {
+    super(props);
+    this.onNew = this.onNew.bind(this);
+  }
+  onNew() {
+    const discounts = this.props.discounts.concat();
+    if (discounts.length >= DISCOUNT_MAX) { return; }
+    discounts.push(defaultDiscount);
+    this.props.onChange(discounts);
+  }
+  changeDiscount(days, offer, index) {
+    const discounts = this.props.discounts.concat();
+    discounts[index] = Object.assign({}, discounts[index], { days, offer });
+    this.props.onChange(discounts);
+  }
+  remove(index) {
+    const discounts = this.props.discounts.concat();
+    discounts.splice(index, 1);
+    this.props.onChange(discounts);
+  }
+  isDiscountsDuplicate() {
+    const { discounts } = this.props;
+    const uniqs = _.uniqBy(discounts, 'offer');
+    return uniqs.length !== discounts.length;
   }
   render() {
-    const { discounts } = this.state;
+    const { discounts } = this.props;
     return (
       <div>
         {discounts.map((discount, i) =>
@@ -56,7 +61,9 @@ class DiscountGroup extends React.Component {
           />,
         )}
         <NewDiscountBtn onClick={this.onNew} disabled={discounts.length >= DISCOUNT_MAX} />
-        {this.isDiscountsDuplicate() && <AlertPanel message="重複的折扣組合" />}
+        {this.constructor.isDuplicate(discounts) &&
+          <AlertPanel message="重複的折扣組合" />
+        }
       </div>
     );
   }
