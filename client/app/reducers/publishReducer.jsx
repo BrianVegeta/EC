@@ -47,8 +47,8 @@ const initialState = {
   // ['宜蘭縣', '大同鄉', '中正一路']
   returnAddress: '',
   // price settings
-  price: null,
-  deposit: null,
+  price: '100',
+  deposit: '0',
   minLeaseDays: null,
 
   // regulation

@@ -10,6 +10,8 @@
 
 import React, { PropTypes } from 'react';
 import NumberFormat from 'react-number-format';
+import _ from 'lodash';
+import numeral from 'numeral';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -30,11 +32,16 @@ class InputCurrency extends React.Component {
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
   };
+  static naturalizeValue(value) {
+    const numbericValue = _.parseInt(value);
+    return numeral(numbericValue).format('0,000');
+  }
   constructor(props) {
     super(props);
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.format = this.format.bind(this);
     this.state = { isFocusing: false };
   }
   onBlur() {
@@ -49,21 +56,26 @@ class InputCurrency extends React.Component {
     const { onChange } = this.props;
     if (onChange) { onChange(value); }
   }
+  format(value) {
+    return this.constructor.naturalizeValue(value);
+  }
   render() {
     const { unit, placeholder, value, width } = this.props;
     const outerStyleName = this.state.isFocusing ? 'inputOuterFocusing' : 'inputOuter';
+    const numberFormatProps = {
+      styleName: 'input',
+      placeholder,
+      value,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
+      onChange: this.onChange,
+      format: this.format,
+      allowNegative: false,
+    };
     return (
       <div styleName={outerStyleName} style={{ width }} >
         <span styleName="unit">{unit}</span>
-        <NumberFormat
-          styleName="input"
-          placeholder={placeholder}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          onChange={this.onChange}
-          value={value}
-          thousandSeparator
-        />
+        <NumberFormat {...numberFormatProps} />
       </div>
     );
   }

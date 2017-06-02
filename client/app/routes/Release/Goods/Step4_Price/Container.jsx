@@ -122,6 +122,10 @@ class PriceContainer extends React.Component {
       value: publish.deposit,
       onChange: this.onDepositChange,
       onBlur: this.onDepositBlur,
+      allowNull: false,
+    };
+    const overdueProps = {
+      deposit: _.isEmpty(publish.deposit) ? 0 : _.parseInt(publish.deposit),
     };
     const minLeaseDaysInputProps = {
       value: publish.minLeaseDays,
@@ -151,7 +155,7 @@ class PriceContainer extends React.Component {
           </WithError>
         </FormGroup>
         {totalError && <AlertPanel message={totalError} marginBottom={40} />}
-        <OverduePolicy />
+        <OverduePolicy {...overdueProps} />
         <FormGroup headerText="至少租借天數" optional>
           <WithError error={this.state.minLeaseDaysError}>
             <InputCounter {...minLeaseDaysInputProps} />

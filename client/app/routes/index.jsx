@@ -1,5 +1,4 @@
 import Layout from '../containers/LayoutContainer';
-import LayoutRelease from '../containers/LayoutReleaseContainer';
 import LayoutPublish from '../containers/LayoutPublishContainer';
 import LayoutItem from '../containers/LayoutItemContainer';
 import HomeRoute from './Home';
@@ -10,7 +9,6 @@ import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
 import Tanzaku from './Tanzaku';
-import Release from './Release';
 import ReleaseGoods from './Release/Goods';
 
 const routes = (routesHelper, dispatch) => ({
@@ -32,12 +30,6 @@ const routes = (routesHelper, dispatch) => ({
       component: LayoutPublish,
       childRoutes: [
         ReleaseGoods(routesHelper, dispatch),
-      ],
-    },
-    {
-      component: LayoutRelease,
-      childRoutes: [
-        Release(routesHelper, dispatch),
       ],
     },
     {
