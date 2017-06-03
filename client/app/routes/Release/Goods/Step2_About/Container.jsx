@@ -7,7 +7,6 @@ import styles from './styles.sass';
 
 import NextController from '../../components/NextController';
 import FormGroup from '../../components/FormGroup';
-import InputCounter from '../../components/InputCounter';
 import InputTextarea from '../../components/InputTextarea';
 import InputTags from '../../components/InputTags';
 import SelectionCategory from '../../components/SelectionCategory';
@@ -128,13 +127,13 @@ class Container extends React.Component {
         <FormGroup headerText={ABOUT.DESC_LABEL} limiter={renderLimiter(descript, 250)} >
           <InputTextarea {...descProps} />
         </FormGroup>
-        <div>
-          <div style={{ width: 320, display: 'inline-block' }}>
+        <div styleName="group">
+          <div styleName="cities">
             <FormGroup headerText={ABOUT.CITIES_LABEL}>
               <InputSelectionCities {...citiesProps} />
             </FormGroup>
           </div>
-          <div style={{ display: 'inline-block' }}>
+          <div styleName="amount">
             <FormGroup headerText={ABOUT.AMOUNT_LABEL}>
               <InputCounterWithError {...amountProps} />
             </FormGroup>

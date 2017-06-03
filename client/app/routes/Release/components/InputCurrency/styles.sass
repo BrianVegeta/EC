@@ -16,10 +16,12 @@ $unitWidth: 40px
   user-select: none
   display: inline-block
   position: absolute
-  top: (($inputHeight - $inputLineHeight) / 2) - $inputBorderWidth
+  top: $inputPaddingTop
   left: $inputPaddingRight
-  width: $unitWidth
   color: $inputPlaceholderColor
+  width: $unitWidth
+  height: ($inputHeight - ($inputBorderWidth * 2)) - ($inputPaddingTop * 2)
+  border: $inputBorderWidth solid transparent
 
 .input
   border: 0
@@ -27,6 +29,6 @@ $unitWidth: 40px
   margin: 0
   outline: 0
   width: 100%
-  height: 100%
+  height: $inputHeight - ($inputBorderWidth * 2)
   border-radius: $inputRadius - $inputBorderWidth
   padding: $inputPaddingTop $inputPaddingRight $inputPaddingTop ($unitWidth + $inputPaddingRight)

@@ -1,41 +1,44 @@
+@import "../input.sass"
+$unitWidth: 15px
+
 .inputControl
   position: relative
 
 .inputBox
-  composes: inputField from '../styles.sass'
-  position: relative
-  padding-left: 35px
+  composes: inputer
   margin-bottom: 20px
-  line-height: 30px
-  padding-top: 9px
-  padding-bottom: 9px
-  .hash
-    display: inline-block
-    position: absolute
-    top: 9px
-    bottom: 9px
-    left: 20px
-    color: #949494
+  position: relative
   .inputField
-    line-height: 30px
+    &::placeholder
+      color: $placeholderColor
 
 .inputBoxFocus
   composes: inputBox
-
-  border-color: #222
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  border-color: $inputFocusingBorderColor
+  box-shadow: $inputFocusingShadow
   .hash
-    color: #222
+    color: $inputTextColor
+  .inputField
+    &::placeholder
+      color: $focusingPlaceholderColor
+
+.hash
+  user-select: none
+  display: inline-block
+  position: absolute
+  top: $inputPaddingTop
+  left: $inputPaddingRight
+  color: $inputPlaceholderColor
+  width: $unitWidth
+  height: ($inputHeight - ($inputBorderWidth * 2)) - ($inputPaddingTop * 2)
+  border: $inputBorderWidth solid transparent
 
 .inputField
-  composes: inputPlaceholder from '../styles.sass'
-  margin: 0
-  padding: 0
-  outline: 0
   border: 0
+  padding: 0
+  margin: 0
+  outline: 0
   width: 100%
-
-.inputFieldFocus
-  composes: inputLightPlaceholder from '../styles.sass'
-  composes: inputField
+  height: $inputHeight - ($inputBorderWidth * 2)
+  border-radius: $inputRadius - $inputBorderWidth
+  padding: $inputPaddingTop $inputPaddingRight $inputPaddingTop ($unitWidth + $inputPaddingRight)

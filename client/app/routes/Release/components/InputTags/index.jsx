@@ -45,7 +45,7 @@ class InputTags extends React.Component {
           >
             <span styleName="hash">#</span>
             <input
-              styleName={isFocusing(index) ? 'inputFieldFocus' : 'inputField'}
+              styleName="inputField"
               placeholder={placeholder}
               onFocus={() => this.focusBox(index)}
               onBlur={this.blurBox}
