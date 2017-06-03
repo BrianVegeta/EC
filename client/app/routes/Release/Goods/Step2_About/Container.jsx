@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CSS from 'react-css-modules';
 import { browserHistory } from 'react-router';
@@ -7,23 +8,41 @@ import styles from './styles.sass';
 import NextController from '../../components/NextController';
 import FormGroup from '../../components/FormGroup';
 import InputCounter from '../../components/InputCounter';
-import InputText from '../../components/InputText';
 import InputTextarea from '../../components/InputTextarea';
 import InputTags from '../../components/InputTags';
 import SelectionCategory from '../../components/SelectionCategory';
-import { ABOUT } from '../../constants/title';
+import { TITLE, ABOUT } from '../../constants';
+import {
+  TitleWrapper,
+  InputTextWithError,
+  InputSelectionCities,
+  InputCounterWithError,
+  IntervalLine,
+  NextStep,
+} from '../../components';
 import {
   updateTitle,
   updateDesc,
   updateTags,
 } from '../../../../actions/publishActions';
+import { fetchZones, fetchCities } from '../../../../actions/addressActions';
+
 
 class Container extends React.Component {
   static saveAndNext() {
     browserHistory.push('/p/release-goods/s3_d');
   }
   static propTypes = {
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string,
+      ]),
+    ).isRequired,
+    cities: PropTypes.arrayOf(
+      PropTypes.object,
+    ).isRequired,
     items: PropTypes.shape({
       categories: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     }).isRequired,
@@ -43,6 +62,11 @@ class Container extends React.Component {
     this.onDescChange = this.onDescChange.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onTagsChange = this.onTagsChange.bind(this);
+    this.onFetchZones = this.onFetchZones.bind(this);
+    this.onCitiesChange = this.onCitiesChange.bind(this);
+  }
+  componentDidMount() {
+    this.props.dispatch(fetchCities());
   }
   onDescChange(value) {
     this.props.dispatch(updateDesc(value));
@@ -53,42 +77,74 @@ class Container extends React.Component {
   onTagsChange(values) {
     this.props.dispatch(updateTags(values));
   }
+  onFetchZones(cityName) {
+    this.props.dispatch(fetchZones(cityName));
+  }
+  onCitiesChange(cityName, areaName) {
+    console.log(cityName, areaName);
+  }
   render() {
     const { categories } = this.props.items;
     const { title, descript, hashtags } = this.props.publish;
     const { renderLimiter } = this.constructor;
+    const titleProps = {
+      placeholder: ABOUT.TITLE_PLACEHOLDER,
+      onChange: this.onTitleChange,
+      value: title.value,
+    };
+    const descProps = {
+      placeholder: ABOUT.DESC_PLACEHOLDER,
+      onChange: this.onDescChange,
+      value: descript.value,
+    };
+    const tagProps = {
+      placeholder: ABOUT.TAG_PLACEHOLDER,
+      onChange: this.onTagsChange,
+      values: hashtags,
+    };
+    const categoriesProps = {
+      categories: categories.goods,
+      placeholder: ABOUT.CATEGORY_PLACEHOLDER,
+    };
+    const citiesProps = {
+      cities: this.props.cities,
+      placeholder: ABOUT.CITIES_PLACEHOLDER,
+      onSelect: this.onCitiesChange,
+      onFetchZones: this.onFetchZones,
+      cityName: '',
+      areaName: '',
+    };
+    const amountProps = {
+      value: 1,
+      suffix: ABOUT.AMOUNT_UNIT,
+      width: 152,
+    };
     return (
       <div styleName="container">
-        <h2 styleName="title">{ABOUT}</h2>
-        <FormGroup headerText="物品名稱" limiter={renderLimiter(title, 30)} >
-          <InputText
-            placeholder="請輸入"
-            onChange={this.onTitleChange}
-            value={title.value}
-          />
+        <TitleWrapper>{TITLE.ABOUT}</TitleWrapper>
+        <FormGroup headerText={ABOUT.TITLE_LABEL} limiter={renderLimiter(title, 30)} >
+          <InputTextWithError {...titleProps} />
         </FormGroup>
-        <FormGroup headerText="物品描述" limiter={renderLimiter(descript, 250)} >
-          <InputTextarea
-            placeholder="清楚介紹您的物品，敘述更多吸引人的細節"
-            onChange={this.onDescChange}
-            value={descript.value}
-          />
+        <FormGroup headerText={ABOUT.DESC_LABEL} limiter={renderLimiter(descript, 250)} >
+          <InputTextarea {...descProps} />
         </FormGroup>
-        <FormGroup headerText="加入 #標籤">
-          <InputTags
-            placeholder="標籤"
-            onChange={this.onTagsChange}
-            values={hashtags}
-          />
+        <div>
+          <div style={{ width: 320, display: 'inline-block' }}>
+            <FormGroup headerText={ABOUT.CITIES_LABEL}>
+              <InputSelectionCities {...citiesProps} />
+            </FormGroup>
+          </div>
+          <div style={{ display: 'inline-block' }}>
+            <FormGroup headerText={ABOUT.AMOUNT_LABEL}>
+              <InputCounterWithError {...amountProps} />
+            </FormGroup>
+          </div>
+        </div>
+        <FormGroup headerText={ABOUT.TAG_LABEL}>
+          <InputTags {...tagProps} />
         </FormGroup>
-        <FormGroup headerText="分類">
-          <SelectionCategory
-            categories={categories.goods}
-            placeholder="請選擇分類"
-          />
-        </FormGroup>
-        <FormGroup headerText="數量">
-          <InputCounter value={1} suffix="件" />
+        <FormGroup headerText={ABOUT.CATEGORY_LABEL}>
+          <SelectionCategory {...categoriesProps} />
         </FormGroup>
         <NextController next={this.constructor.saveAndNext} />
       </div>

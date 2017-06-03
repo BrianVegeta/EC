@@ -2,6 +2,7 @@ import FormGroup from './FormGroup';
 import BlockFormGroup from './BlockFormGroup';
 import TitleWrapper from './TitleWrapper';
 import InputText from './InputText';
+import InputTextWithError from './InputTextWithError';
 import InputSelectionCities from './InputSelectionCities';
 import InputCheck from './InputCheck';
 import InputCheckbox from './InputCheckbox';
@@ -32,6 +33,7 @@ const exports = {
   InputCurrencyWithError,
   InputWithError,
   InputText,
+  InputTextWithError,
   InputTextarea,
   InputSelectionCities,
   InputSelection,

@@ -7,10 +7,15 @@ export default function inputWithError(InputComponent) {
   return class extends React.Component {
     static defaultProps = {
       onBlur: null,
+      width: '100%',
     };
     static propTypes = {
       onBlur: PropTypes.func,
       validator: PropTypes.func.isRequired,
+      width: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
     };
     constructor(props) {
       super(props);
@@ -36,16 +41,18 @@ export default function inputWithError(InputComponent) {
       const {
         onBlur,
         validator,
+        width,
         ...otherProps
       } = this.props;
       const inputProps = {
         ...otherProps,
+        width,
         onBlur: this.onBlur,
       };
       const { errors } = this.state;
       const error = _.isEmpty(errors) ? null : errors[0];
       return (
-        <WithError error={error}>
+        <WithError error={error} width={width}>
           <InputComponent {...inputProps} />
         </WithError>
       );

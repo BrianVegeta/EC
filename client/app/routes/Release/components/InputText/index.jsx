@@ -1,18 +1,20 @@
-// TODO: max min 0508
-// ex: <InputText placeholder="請輸入" value="" onChange={} width={100} />
 import React, { PropTypes } from 'react';
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const classbinding = classnames.bind(styles);
 class InputText extends React.Component {
   static defaultProps = {
     placeholder: null,
     value: null,
     width: '100%',
+    onBlur: null,
   };
   static propTypes = {
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     value: PropTypes.string,
     width: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number,
@@ -28,6 +30,8 @@ class InputText extends React.Component {
     };
   }
   onBlur() {
+    const { onBlur } = this.props;
+    if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
   onFocus() {
@@ -39,18 +43,17 @@ class InputText extends React.Component {
   render() {
     const { placeholder, value, width } = this.props;
     const { isFocusing } = this.state;
+    const inputProps = {
+      className: classbinding({ inputFocusing: isFocusing, input: !isFocusing }),
+      style: { width },
+      value,
+      placeholder,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
+      onChange: this.onChange,
+    };
     return (
-      <input
-        {...{
-          styleName: isFocusing ? 'inputFocusing' : 'input',
-          style: { width },
-          value,
-          placeholder,
-          onFocus: this.onFocus,
-          onBlur: this.onBlur,
-          onChange: this.onChange,
-        }}
-      />
+      <input {...inputProps} />
     );
   }
 }

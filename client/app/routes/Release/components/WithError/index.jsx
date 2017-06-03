@@ -6,15 +6,20 @@ import Tooltip from '../Tooltip';
 class WithError extends React.Component {
   static defaultProps = {
     error: null,
+    width: '100%',
   };
   static propTypes = {
     children: PropTypes.node.isRequired,
     error: PropTypes.string,
+    width: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
   };
   render() {
-    const { error, children } = this.props;
+    const { error, children, width } = this.props;
     return (
-      <div styleName="container">
+      <div styleName="container" style={{ width }}>
         {error && <Tooltip message={error} />}
         {children}
       </div>

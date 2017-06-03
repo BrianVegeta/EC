@@ -9,12 +9,14 @@ class SelectionButton extends React.Component {
     value: null,
     placeholder: null,
     width: '100%',
+    dropdownWidth: '100%',
     disabled: false,
   };
   static propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
     width: PropTypes.number,
+    dropdownWidth: PropTypes.number,
     disabled: PropTypes.bool,
     children: PropTypes.node.isRequired,
   };
@@ -62,7 +64,7 @@ class SelectionButton extends React.Component {
   }
   render() {
     const { isFocusing, isDropdownOpen } = this.state;
-    const { children, width, disabled } = this.props;
+    const { children, width, dropdownWidth, disabled } = this.props;
 
     const arrow = (
       <span styleName="dropdownArrow">
@@ -97,7 +99,14 @@ class SelectionButton extends React.Component {
         <div {...btnInnerProps}>
           {this.renderBtnValue()}{arrow}
         </div>
-        {isDropdownOpen && <div styleName="dropdown">{children}</div>}
+        {isDropdownOpen &&
+          <div
+            styleName="dropdown"
+            style={{ width: dropdownWidth }}
+          >
+            {children}
+          </div>
+        }
       </button>
     );
   }
