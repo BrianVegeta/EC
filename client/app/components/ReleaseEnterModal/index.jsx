@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
+import { Link } from 'react-router';
 import ReactModal from 'react-modal';
 import GoodsIcon from 'react-icons/lib/md/work';
 import ServiceIcon from 'react-icons/lib/md/people';
 import SpaceIcon from 'react-icons/lib/md/home';
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import { ICONS } from '../../constants';
 
-const ICON_SIZE = 50;
-const ICON_COLOR = '#222';
 class ReleaseEnterModal extends React.Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
@@ -17,6 +17,7 @@ class ReleaseEnterModal extends React.Component {
     ReactModal.setAppElement('[id^="App-react-component-"]');
   }
   render() {
+    const size = ICONS.RELEASE_ENTRANCE_SIZE;
     return (
       <ReactModal
         isOpen
@@ -28,20 +29,22 @@ class ReleaseEnterModal extends React.Component {
         <div className="container">
           <div styleName="entranceContainer">
             <div styleName="text">物品</div>
-            <div styleName="entrance">
-              <GoodsIcon size={ICON_SIZE} color={ICON_COLOR} />
-            </div>
+            <Link to="/p/release-goods">
+              <div styleName="entrance">
+                <GoodsIcon size={size} />
+              </div>
+            </Link>
           </div>
           <div styleName="entranceContainer">
             <div styleName="text">服務</div>
             <div styleName="entrance">
-              <ServiceIcon size={ICON_SIZE} color={ICON_COLOR} />
+              <ServiceIcon size={size} />
             </div>
           </div>
           <div styleName="entranceContainer">
             <div styleName="text">空間</div>
             <div styleName="entrance">
-              <SpaceIcon size={ICON_SIZE} color={ICON_COLOR} />
+              <SpaceIcon size={size} />
             </div>
           </div>
         </div>

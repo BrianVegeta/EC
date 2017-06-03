@@ -1,59 +1,80 @@
 import React, { PropTypes } from 'react';
-import Spinner from 'react-spinkit';
+import { ThreeBounce } from 'better-react-spinkit';
+import classnames from 'classnames/bind';
+import _ from 'lodash';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const classbinding = classnames.bind(styles);
 class NextStep extends React.Component {
   static defaultProps = {
     isDisabled: false,
+    beforeNext: null,
+    waitingCount: null,
   };
   static propTypes = {
     isDisabled: PropTypes.bool,
+    beforeNext: PropTypes.func,
+    waitingCount: PropTypes.number,
     onNext: PropTypes.func.isRequired,
     onValid: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
-    this.onClick = this.onClick.bind(this);
+    this.onReadyClick = this.onReadyClick.bind(this);
     this.onDisabledClick = this.onDisabledClick.bind(this);
+    this.toNext = this.toNext.bind(this);
     this.state = { isLoading: false };
+  }
+  componentDidUpdate() {
+    const { beforeNext, waitingCount } = this.props;
+    const { isLoading } = this.state;
+    if (isLoading && !_.isNull(waitingCount) && beforeNext) {
+      if (waitingCount === 0) {
+        this.toNext();
+      }
+    }
   }
   onDisabledClick() {
     this.props.onValid();
   }
-  onClick() {
-    setTimeout(() => this.props.onNext(), 1000);
+  onReadyClick() {
+    const { beforeNext } = this.props;
+    if (beforeNext) {
+      beforeNext();
+      // callback container 處理
+    } else {
+      setTimeout(this.toNext, 1000);
+    }
     this.props.onValid();
     this.setState({ isLoading: true });
+  }
+  getClickEvent() {
+    if (this.props.isDisabled) {
+      return this.onDisabledClick;
+    } else if (!this.state.isLoading) {
+      return this.onReadyClick;
+    }
+    return null;
+  }
+  toNext() {
+    this.props.onNext();
   }
   render() {
     const { isDisabled } = this.props;
     const { isLoading } = this.state;
-    if (isDisabled) {
-      return (
-        <button
-          styleName="disableButton"
-          onClick={this.onDisabledClick}
-          className="button"
-        >
-          下一步
-        </button>
-      );
-    }
-    if (isLoading) {
-      return (
-        <button styleName="disableButton" className="button">
-          <Spinner name="three-bounce" color="#666" />
-        </button>
-      );
-    }
+    const btnClassbindings = classbinding({
+      disableButton: isDisabled || isLoading,
+      activeButton: !(isDisabled || isLoading),
+      button: true,
+    });
+    const buttonProps = {
+      className: `${btnClassbindings} button`,
+      onClick: this.getClickEvent(),
+    };
     return (
-      <button
-        styleName="activeButton"
-        onClick={this.onClick}
-        className="button"
-      >
-        下一步
+      <button {...buttonProps}>
+        { isLoading ? <ThreeBounce color="#666" /> : '下一步' }
       </button>
     );
   }

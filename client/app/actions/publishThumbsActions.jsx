@@ -103,7 +103,9 @@ export function checkThumbsAndUpload() {
     const { coverThumbs } = getState().publish;
     _.each(coverThumbs, (thumb) => {
       containCropToCanvasDataURL(thumb.blobUrl, (dataURL) => {
-        dispatch(uploadCoverAndUpdateThumbs(thumb.key, dataURL));
+        dispatch(
+          uploadCoverAndUpdateThumbs(thumb.key, dataURL),
+        );
       });
     });
   };

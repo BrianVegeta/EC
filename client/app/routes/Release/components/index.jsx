@@ -19,6 +19,7 @@ import NextStep from './NextStep';
 import InputTextarea from './InputTextarea';
 import InputSelection from './InputSelection';
 import OverduePolicy from './OverduePolicy';
+import IntervalLine from './IntervalLine';
 
 const exports = {
   FormGroup,
@@ -42,5 +43,6 @@ const exports = {
   WithError,
   NextStep,
   OverduePolicy,
+  IntervalLine,
 };
 module.exports = exports;

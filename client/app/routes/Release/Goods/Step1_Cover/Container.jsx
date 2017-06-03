@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import styles from './styles.sass';
-import NextController from '../../components/NextController';
-import { UPLOAD_COVER } from '../../constants/title';
 import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
 import { checkThumbsAndUpload } from '../../../../actions/publishThumbsActions';
+import { TITLE, COVER, PATH } from '../../constants';
+import {
+  TitleWrapper,
+  IntervalLine,
+  AlertPanel,
+  NextStep,
+} from '../../components';
 
 class CoverContainer extends React.Component {
   static propTypes = {
@@ -17,39 +22,70 @@ class CoverContainer extends React.Component {
     ])).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
-  static getUnStoreds(props) {
-    const { publish } = props;
-    const unStoreds = _.filter(publish.coverThumbs, thumb =>
+  static getUnStoredsCount(coverThumbs) {
+    if (_.isEmpty(coverThumbs)) {
+      return null;
+    }
+    const unStoreds = _.filter(coverThumbs, thumb =>
       !thumb.isStored,
     );
-    return unStoreds;
+    return unStoreds.length;
+  }
+  static saveAndNext() {
+    browserHistory.push(PATH.STEP_2_ABOUT);
   }
   constructor(props) {
     super(props);
-    this.saveAndNext = this.saveAndNext.bind(this);
+    this.validateAll = this.validateAll.bind(this);
+    this.beforeNext = this.beforeNext.bind(this);
+    this.state = {
+      atLeastOneCoverError: null,
+    };
   }
-  componentDidUpdate(prevProps) {
-    const { getUnStoreds } = this.constructor;
-    if (getUnStoreds(prevProps).length > 0 && getUnStoreds(this.props).length === 0) {
-      browserHistory.push('/p/release-goods/s2_a'); // TODO: path
-    }
-  }
-  saveAndNext() {
+  beforeNext() {
     this.props.dispatch(checkThumbsAndUpload());
   }
+  validateAll() {
+    const errorMessage = COVER.ERROR_AT_LEAST_ONE_COVER;
+    this.setState({
+      atLeastOneCoverError: (this.hasLeastOneCover() ? null : errorMessage),
+    });
+  }
+  isAllValid() {
+    return this.hasLeastOneCover();
+  }
+  hasLeastOneCover() {
+    const { publish } = this.props;
+    return publish.coverThumbs.length > 0;
+  }
   render() {
+    const { atLeastOneCoverError } = this.state;
     const { publish, dispatch } = this.props;
     const { coverCropper, coverThumbs } = publish;
+    const nextStepProps = {
+      onNext: this.constructor.saveAndNext,
+      onValid: this.validateAll,
+      isDisabled: !this.isAllValid(),
+      beforeNext: this.beforeNext,
+      waitingCount: this.constructor.getUnStoredsCount(coverThumbs),
+    };
     return (
       <div styleName="container">
-        <h2 styleName="title">{UPLOAD_COVER}</h2>
+        <TitleWrapper>{TITLE.UPLOAD_COVER}</TitleWrapper>
         <ul styleName="noticeList">
-          <li>最多新增3張照片</li>
-          <li>圖片格式：jpg、jpge、png</li>
-          <li>每一張不得超過2MB</li>
+          <li>{COVER.NOTICE_MOST}</li>
+          <li>{COVER.NOTICE_FORMAT_REQUIRED}</li>
+          <li>{COVER.NOTICE_SIZE_LIMIT}</li>
+          <li>{COVER.NOTICE_PIXEL_SUGGESTION}</li>
         </ul>
         <SortableGallery covers={coverThumbs} dispatch={dispatch} />
-        <NextController next={this.saveAndNext} />
+        {atLeastOneCoverError &&
+          <div>
+            <AlertPanel message={atLeastOneCoverError} marginBottom={20} />
+          </div>
+        }
+        <IntervalLine marginBottom={60} color="#888" />
+        <NextStep {...nextStepProps} />
         { coverCropper.blob && <ModalEditor /> }
       </div>
     );
