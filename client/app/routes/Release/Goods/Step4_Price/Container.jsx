@@ -87,14 +87,19 @@ class PriceContainer extends React.Component {
     if (isPriceValid && isDepositValid) {
       this.totalValid();
     }
+    this.discounts.valid();
   }
   isAllValid() {
     const isPriceValid = _.isEmpty(this.priceValidator());
     const isDepositValid = _.isEmpty(this.depositValidator());
     const isMinLeaseDaysValid = _.isEmpty(this.minLeaseDaysValidator());
     const totalErrors = (isPriceValid && isDepositValid) ? this.totalValidator() : null;
-    console.log('discounts valid: ', this.isDiscountsValid());
-    return isPriceValid && isDepositValid && isMinLeaseDaysValid && _.isEmpty(totalErrors);
+    const isDiscountsValid = this.isDiscountsValid();
+    return isPriceValid &&
+      isDepositValid &&
+      isMinLeaseDaysValid &&
+      _.isEmpty(totalErrors) &&
+      isDiscountsValid;
   }
   validator(name) {
     const { publish } = this.props;
@@ -118,7 +123,11 @@ class PriceContainer extends React.Component {
   }
   isDiscountsValid() {
     const { discounts } = this.props.publish;
-    return !DiscountGroup.isDuplicate(discounts);
+    const isDuplcateValid = !DiscountGroup.isDuplicate(discounts);
+    const isAllPresence = _.filter(discounts, discount =>
+      !discount.days || !discount.offer,
+    ).length <= 0;
+    return isDuplcateValid && isAllPresence;
   }
   minLeaseDaysValidator() {
     return this.validator('minLeaseDays');

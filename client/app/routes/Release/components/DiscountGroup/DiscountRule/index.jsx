@@ -1,17 +1,12 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
 import IconRemove from 'react-icons/lib/md/close';
+import validate from 'validate.js';
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import InputCounter from '../../InputCounter';
-import InputUnit from '../../InputUnit';
-import {
-  INPUT_DAYS_COUNTER_WIDTH,
-  INPUT_DISCOUNT_OFFER_WIDTH,
-} from '../../../../../constants/dimesions';
-import {
-  ICON_SIZE_DISCOUNT_CONTROL,
-  ICON_COLOR_DISCOUNT_REMOVE,
-} from '../../../../../constants/icons';
+import constraints from '../constraints';
+import InputCounterWithError from '../../InputCounterWithError';
+import InputUnitWithError from '../../InputUnitWithError';
+import { DIMESIONS, ICONS } from '../../../../../constants';
 
 class DiscountRule extends React.Component {
   static defaultProps = {
@@ -30,19 +25,53 @@ class DiscountRule extends React.Component {
     super(props);
     this.onDaysChange = this.onDaysChange.bind(this);
     this.onOfferChange = this.onOfferChange.bind(this);
+    this.daysValidator = this.daysValidator.bind(this);
+    this.offerValidator = this.offerValidator.bind(this);
     this.onRemove = this.onRemove.bind(this);
   }
   onDaysChange(value) {
     this.props.onChange(value, this.props.offer);
   }
-  onOfferChange(value) {
-    this.props.onChange(this.props.days, value);
-  }
   onRemove() {
     this.props.onRemove();
   }
+  onOfferChange(value) {
+    const { onChange, days } = this.props;
+    onChange(days, value);
+  }
+  valid() {
+    this.daysInput.valid();
+  }
+  validator(name) {
+    return validate.single(this.props[name], constraints[name]);
+  }
+  daysValidator() {
+    return this.validator('days');
+  }
+  offerValidator() {
+    return this.validator('offer');
+  }
   render() {
-    const { days, offer, hasHeader } = this.props;
+    const { hasHeader } = this.props;
+    const daysProps = {
+      ref: di => (this.daysInput = di),
+      value: this.props.days,
+      suffix: '天',
+      min: 1,
+      max: 30,
+      width: DIMESIONS.INPUT_DAYS_COUNTER_WIDTH,
+      onChange: this.onDaysChange,
+      validator: this.daysValidator,
+    };
+    const offerProps = {
+      value: this.props.offer,
+      suffix: '折',
+      max: 99,
+      min: 1,
+      width: DIMESIONS.INPUT_DISCOUNT_OFFER_WIDTH,
+      onChange: this.onOfferChange,
+      validator: this.offerValidator,
+    };
     return (
       <div styleName="ruleContainer">
         <div styleName="headers">
@@ -51,31 +80,17 @@ class DiscountRule extends React.Component {
         </div>
         <div styleName="inputs" className="clear">
           <div styleName="days">
-            <InputCounter
-              value={days}
-              suffix="天"
-              min={1}
-              max={30}
-              width={INPUT_DAYS_COUNTER_WIDTH}
-              onChange={this.onDaysChange}
-            />
+            <InputCounterWithError {...daysProps} />
           </div>
           <div styleName="offer">
-            <InputUnit
-              value={offer}
-              suffix="折"
-              max={100}
-              min={1}
-              width={INPUT_DISCOUNT_OFFER_WIDTH}
-              onChange={this.onOfferChange}
-            />
+            <InputUnitWithError {...offerProps} />
           </div>
         </div>
         <div styleName="remove">
           <button className="button" onClick={this.onRemove}>
             <IconRemove
-              size={ICON_SIZE_DISCOUNT_CONTROL}
-              color={ICON_COLOR_DISCOUNT_REMOVE}
+              size={ICONS.ICON_SIZE_DISCOUNT_CONTROL}
+              color={ICONS.ICON_COLOR_DISCOUNT_REMOVE}
             />
           </button>
         </div>

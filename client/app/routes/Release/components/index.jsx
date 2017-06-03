@@ -11,6 +11,7 @@ import InputCounter from './InputCounter';
 import InputCounterWithError from './InputCounterWithError';
 import InputWithError from './InputWithError';
 import InputUnit from './InputUnit';
+import InputUnitWithError from './InputUnitWithError';
 import DiscountGroup from './DiscountGroup';
 import AlertPanel from './AlertPanel';
 import WithError from './WithError';
@@ -36,6 +37,7 @@ const exports = {
   InputCheck,
   InputCheckbox,
   InputUnit,
+  InputUnitWithError,
   AlertPanel,
   WithError,
   NextStep,

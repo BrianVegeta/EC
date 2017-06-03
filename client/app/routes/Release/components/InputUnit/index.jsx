@@ -18,6 +18,7 @@ class InputUnit extends React.Component {
     value: null,
     suffix: null,
     onChange: null,
+    onBlur: null,
     width: null,
     max: 30,
     min: 1,
@@ -27,6 +28,7 @@ class InputUnit extends React.Component {
     value: PropTypes.number,
     suffix: PropTypes.string,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     width: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
@@ -43,6 +45,10 @@ class InputUnit extends React.Component {
     };
   }
   onBlur() {
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur();
+    }
     this.setState({ isFocusing: false });
   }
   onFocus() {

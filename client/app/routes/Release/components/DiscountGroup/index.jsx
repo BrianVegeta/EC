@@ -24,12 +24,18 @@ class DiscountGroup extends React.Component {
   constructor(props) {
     super(props);
     this.onNew = this.onNew.bind(this);
+    this.discounts = new Map();
   }
   onNew() {
     const discounts = this.props.discounts.concat();
     if (discounts.length >= DISCOUNT_MAX) { return; }
     discounts.push(defaultDiscount);
     this.props.onChange(discounts);
+  }
+  valid() {
+    this.discounts.forEach(discount =>
+      discount.valid(),
+    );
   }
   changeDiscount(days, offer, index) {
     const discounts = this.props.discounts.concat();
@@ -53,6 +59,7 @@ class DiscountGroup extends React.Component {
         {discounts.map((discount, i) =>
           <DiscountRule
             key={`${i + 1}`}
+            ref={d => (this.discounts.set(i, d))}
             days={discount.days}
             offer={discount.offer}
             onRemove={() => this.remove(i)}
@@ -60,7 +67,10 @@ class DiscountGroup extends React.Component {
             hasHeader={i === 0}
           />,
         )}
-        <NewDiscountBtn onClick={this.onNew} disabled={discounts.length >= DISCOUNT_MAX} />
+        <NewDiscountBtn
+          onClick={this.onNew}
+          disabled={discounts.length >= DISCOUNT_MAX}
+        />
         {this.constructor.isDuplicate(discounts) &&
           <AlertPanel message="重複的折扣組合" />
         }
