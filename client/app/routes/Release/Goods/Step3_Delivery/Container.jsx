@@ -5,11 +5,16 @@ import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import { DELIVERY } from '../../constants/title';
 import styles from './styles.sass';
-import NextController from '../../components/NextController';
 import FormGroup from '../../components/FormGroup';
 import InputChecksGroup from '../../components/InputChecksGroup';
 import ReturnAddressContainer from './ReturnAddress/Container';
 import { fetchCities } from '../../../../actions/addressActions';
+import {
+  TitleWrapper,
+  IntervalLine,
+  AlertPanel,
+  NextStep,
+} from '../../components';
 import {
   OPTION_IN_PERSON,
   OPTION_MAIL,
@@ -18,15 +23,23 @@ import {
   updateReturnOptions,
 } from '../../../../actions/publishActions';
 import { unzip } from '../../../../reducers/publishOptions';
+import { PATH } from '../../constants';
 
 
 class DeliveryContainer extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    ).isRequired,
   };
   static saveAndNext() {
-    browserHistory.push('/p/release-goods/s4_p');
+    browserHistory.push(PATH.STEP_4_PRICE);
   }
   constructor(props) {
     super(props);
@@ -37,6 +50,12 @@ class DeliveryContainer extends React.Component {
     this.onReturnSeven = this.onReturnSeven.bind(this);
     this.onReturnMail = this.onReturnMail.bind(this);
     this.onReturnInperson = this.onReturnInperson.bind(this);
+
+    this.validateAll = this.validateAll.bind(this);
+    this.state = {
+      sendOptionsError: null,
+      returnOptionsError: null,
+    };
   }
 
   componentDidMount() {
@@ -73,6 +92,33 @@ class DeliveryContainer extends React.Component {
       updateReturnOptions(OPTION_IN_PERSON, isChecked),
     );
   }
+  optionsValidator(name) {
+    const { publish } = this.props;
+    return _.isEmpty(publish[name]) ? ['至少需選一項'] : [];
+  }
+  sendOptionsValidator() {
+    return this.optionsValidator('sendOptions');
+  }
+  validSendOptions() {
+    const errors = this.sendOptionsValidator();
+    this.setState({ sendOptionsError: _.isEmpty(errors) ? null : errors[0] });
+  }
+  returnOptionsValidator() {
+    return this.optionsValidator('returnOptions');
+  }
+  validReturnOptions() {
+    const errors = this.returnOptionsValidator();
+    this.setState({ returnOptionsError: _.isEmpty(errors) ? null : errors[0] });
+  }
+  validateAll() {
+    this.validSendOptions();
+    this.validReturnOptions();
+  }
+  isAllValid() {
+    const isSendOptionsValid = _.isEmpty(this.sendOptionsValidator());
+    const isReturnOptionsValid = _.isEmpty(this.returnOptionsValidator());
+    return isSendOptionsValid && isReturnOptionsValid;
+  }
   render() {
     const { publish } = this.props;
     const sendOptKeys = unzip(publish.sendOptions);
@@ -94,22 +140,30 @@ class DeliveryContainer extends React.Component {
         isChecked: !_.isUndefined(returnOptKeys[OPTION_SEVEN]) },
       { text: '自行寄件',
         onChange: this.onReturnMail,
-        collectedNode: <ReturnAddressContainer />,
+        collectedNode: <ReturnAddressContainer ref={ra => (this.returnAddress = ra)} />,
         isChecked: !_.isUndefined(returnOptKeys[OPTION_MAIL]) },
       { text: '面交（自行協調取貨地點）',
         onChange: this.onReturnInperson,
         isChecked: !_.isUndefined(returnOptKeys[OPTION_IN_PERSON]) },
     ];
+    const nextStepProps = {
+      onNext: this.constructor.saveAndNext,
+      onValid: this.validateAll,
+      isDisabled: !this.isAllValid(),
+    };
     return (
       <div styleName="container">
-        <h2 styleName="title">{DELIVERY}</h2>
+        <TitleWrapper>{DELIVERY}</TitleWrapper>
         <FormGroup headerText="可提供的寄件方式" multiple>
           <InputChecksGroup options={sendOptions} />
+          {this.state.sendOptionsError && <AlertPanel message={this.state.sendOptionsError} />}
         </FormGroup>
         <FormGroup headerText="可接受的寄還方式" multiple>
           <InputChecksGroup options={returnOptions} />
+          {this.state.returnOptionsError && <AlertPanel message={this.state.returnOptionsError} />}
         </FormGroup>
-        <NextController next={this.constructor.saveAndNext} />
+        <IntervalLine marginBottom={20} color="#888" />
+        <NextStep {...nextStepProps} />
       </div>
     );
   }

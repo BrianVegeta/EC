@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
 import ArrowDownIcon from 'react-icons/lib/md/keyboard-arrow-down';
 import _ from 'lodash';
+import classnames from 'classnames/bind';
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const classbindings = classnames.bind(styles);
 class SelectionButton extends React.Component {
   static defaultProps = {
     value: null,
@@ -11,14 +13,16 @@ class SelectionButton extends React.Component {
     width: '100%',
     dropdownWidth: '100%',
     disabled: false,
+    onBlur: null,
   };
   static propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
-    width: PropTypes.number,
-    dropdownWidth: PropTypes.number,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    dropdownWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     disabled: PropTypes.bool,
     children: PropTypes.node.isRequired,
+    onBlur: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -35,16 +39,16 @@ class SelectionButton extends React.Component {
     };
   }
   onBlur() {
+    const { onBlur } = this.props;
+    if (onBlur) onBlur();
     this.setState({ isFocusing: false, isDropdownOpen: false });
   }
   onFocus() {
     this.setState({ isFocusing: true });
   }
   onButtonPress() {
-    const { isHoverOnButtonInner } = this.state;
-    if (isHoverOnButtonInner) {
-      this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
-    }
+    const { isHoverOnButtonInner, isDropdownOpen } = this.state;
+    if (isHoverOnButtonInner) this.setState({ isDropdownOpen: !isDropdownOpen });
   }
   innerMouseEnter() {
     this.setState({ isHoverOnButtonInner: true });
@@ -72,17 +76,18 @@ class SelectionButton extends React.Component {
       </span>
     );
     const btnProps = {
-      styleName: 'input',
+      className: `${classbindings({
+        input: !disabled && !isFocusing,
+        inputDisabled: disabled,
+        inputFocusing: isFocusing,
+      })} button`,
       ref: btn => (this.button = btn),
       onClick: this.onButtonPress,
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       style: { width },
-      className: 'button',
       disabled,
     };
-    if (disabled) { btnProps.styleName = 'inputDisabled'; }
-    if (isFocusing) { btnProps.styleName = 'inputFocusing'; }
     const btnInnerProps = {
       styleName: 'innerWrapper',
       onMouseOver: this.innerMouseEnter,
@@ -100,10 +105,7 @@ class SelectionButton extends React.Component {
           {this.renderBtnValue()}{arrow}
         </div>
         {isDropdownOpen &&
-          <div
-            styleName="dropdown"
-            style={{ width: dropdownWidth }}
-          >
+          <div styleName="dropdown" style={{ width: dropdownWidth }} >
             {children}
           </div>
         }

@@ -15,7 +15,7 @@ class InputCheckbox extends React.Component {
   static propTypes = {
     readOnly: PropTypes.bool,
     children: PropTypes.node.isRequired,
-    helper: PropTypes.node.isRequired,
+    helper: PropTypes.node,
     onChange: PropTypes.func.isRequired,
     checked: PropTypes.bool,
     disabled: PropTypes.bool,

@@ -64,10 +64,10 @@ export default (routesHelper, dispatch) => ({
       },
     },
     {
-      path: 's7_od',
+      path: 's7_cf',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
-          callback(null, { formComponent: require('./Step7_Overdue/Container').default });
+          callback(null, { formComponent: require('./Step7_Confirm/Container').default });
         }, 'r-g-7');
       },
     },

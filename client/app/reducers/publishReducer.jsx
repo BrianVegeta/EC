@@ -15,7 +15,10 @@ import {
 
   PUBLISH_TITLE_UPDATE,
   PUBLISH_DESC_UPDATE,
+  PUBLISH_CITY_AREA_UPDATE,
+  PUBLISH_AMOUNT_UPDATE,
   PUBLISH_TAGS_UPDATE,
+  PUBLISH_CATEGORY_UPDATE,
 
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
@@ -41,15 +44,20 @@ const initialState = {
   coverCropper: initialCoverCropper,
   title: initialTitle,
   descript: initialDescript,
+  city: '',
+  area: '',
+  amount: 1,
   hashtags: [null, null, null],
+  categoryId: null,
+  // Delivery
   sendOptions: '',
   returnOptions: '',
   returnAddresses: ['', '', ''],
   // ['宜蘭縣', '大同鄉', '中正一路']
   returnAddress: '',
   // price settings
-  price: null,
-  deposit: null,
+  price: '100',
+  deposit: '0',
   minLeaseDays: null,
   discounts: [],
 
@@ -104,9 +112,24 @@ export default (state = initialState, action) => {
         descript: descHandler(state.descript, action),
       });
 
+    case PUBLISH_CITY_AREA_UPDATE:
+      return Object.assign({}, state, {
+        city: action.city, area: action.area,
+      });
+
+    case PUBLISH_AMOUNT_UPDATE:
+      return Object.assign({}, state, {
+        amount: action.amont,
+      });
+
     case PUBLISH_TAGS_UPDATE:
       return Object.assign({}, state, {
         hashtags: action.hashtags,
+      });
+
+    case PUBLISH_CATEGORY_UPDATE:
+      return Object.assign({}, state, {
+        categoryId: action.categoryId,
       });
 
     case PUBLISH_SEND_OPTIONS_UPDATE: {

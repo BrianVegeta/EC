@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import validate from 'validate.js';
 import numeral from 'numeral';
 import _ from 'lodash';
-import { PRICE } from '../../constants/title';
 import { INPUT_DAYS_COUNTER_WIDTH } from '../../../../constants/dimesions';
 import {
   TitleWrapper,
@@ -23,10 +22,10 @@ import {
   updateMinLeaseDays,
   updateDiscounts,
 } from '../../../../actions/publishActions';
-import constraints from './constraints';
+import constraints, { numberNotInRage } from './constraints';
+import { PATH, TITLE } from '../../constants';
 
 
-const NEXT_PATH = '/p/release-goods/s5_r';
 const PRICE_LABEL = '租金';
 const PRICE_HELPER = '如需要運費，請記得加上！';
 const DEPOSIT_LABEL = '押金';
@@ -39,10 +38,17 @@ const DISCOUNTS_HELPER = '使用折扣能吸引更多訂單';
 
 class PriceContainer extends React.Component {
   static saveAndNext() {
-    browserHistory.push(NEXT_PATH);
+    browserHistory.push(PATH.STEP_5_REGULATION);
   }
   static propTypes = {
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    ).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
   constructor(props) {
@@ -109,6 +115,7 @@ class PriceContainer extends React.Component {
     return this.validator('price');
   }
   depositValidator() {
+    validate.validators.numberNotInRage = numberNotInRage;
     return this.validator('deposit');
   }
   totalValidator() {
@@ -171,7 +178,7 @@ class PriceContainer extends React.Component {
     };
     return (
       <div>
-        <TitleWrapper>{PRICE}</TitleWrapper>
+        <TitleWrapper>{TITLE.PRICE}</TitleWrapper>
         <FormGroup headerText={PRICE_LABEL} helperBottomText={PRICE_HELPER}>
           <InputCurrencyWithError {...priceProps} />
         </FormGroup>

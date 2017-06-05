@@ -29,8 +29,8 @@ class InputCurrency extends React.Component {
   static propTypes = {
     unit: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.string,
-    width: PropTypes.number,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
   };

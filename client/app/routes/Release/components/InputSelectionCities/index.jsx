@@ -8,6 +8,7 @@ import SelectionButton from '../SelectionButton';
 class SelectionCities extends React.Component {
   static defaultProps = {
     placeholder: '請選擇',
+    onBlur: null,
   };
   static propTypes = {
     cities: PropTypes.arrayOf(
@@ -18,6 +19,7 @@ class SelectionCities extends React.Component {
     cityName: PropTypes.string.isRequired,
     areaName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    onBlur: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -42,13 +44,14 @@ class SelectionCities extends React.Component {
     });
   }
   render() {
-    const { cityName, areaName, placeholder } = this.props;
+    const { cityName, areaName, placeholder, onBlur } = this.props;
     const btnProps = {
       ref: sb => (this.selectBtn = sb),
       placeholder,
       value: `${cityName}${areaName}`,
       width: 290,
       dropdownWidth: 500,
+      onBlur,
     };
     const dropdownProps = {
       citiesCollection: this.collectCities(),

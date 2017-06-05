@@ -30,9 +30,8 @@ class Dropdown extends React.Component {
     this.emptyCity = this.emptyCity.bind(this);
     this.state = { cityName: null };
   }
-  onAreaSelect(areaName) {
+  onAreaSelect() {
     this.props.closeDropdown();
-    console.log('area select', this.state.cityName, areaName);
   }
   onCitySelect(cityName) { this.setState({ cityName }); }
   getCityAreas(cityName) {

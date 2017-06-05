@@ -11,18 +11,23 @@ class Dropdown extends React.Component {
   };
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
+    onSelect: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
     this.onLeftPanelSelect = this.onLeftPanelSelect.bind(this);
+    this.onRightPanelSelect = this.onRightPanelSelect.bind(this);
     this.state = {
       tracks: [],
       rightPanelWidth: null,
     };
   }
-  onLeftPanelSelect(text) {
+  onLeftPanelSelect(category) {
     // TODO: set select value
-    this.setState({ tracks: [text] });
+    this.setState({ tracks: [category.text] });
+  }
+  onRightPanelSelect(category) {
+    this.props.onSelect(category);
   }
   childrenCategories(text) {
     const find = _.find(this.props.categories, { text });
@@ -31,19 +36,27 @@ class Dropdown extends React.Component {
   render() {
     const { tracks } = this.state;
     const { categories } = this.props;
+    const panelLeftProps = {
+      categories,
+      onSelect: this.onLeftPanelSelect,
+      style: tracks[0] && {
+        width: '50%',
+        borderRight: `2px solid ${styles.inputBorderColor}`,
+      },
+      isParent: true,
+    };
     return (
       <div styleName="dropdown">
         <div styleName="dropdownInner">
-          <Panel
-            categories={categories}
-            onSelect={text => (this.onLeftPanelSelect(text))}
-            style={{ width: (tracks[0] && '50%') }}
-          />
+          <Panel {...panelLeftProps} />
           {
             tracks[0] &&
             <Panel
-              categories={this.childrenCategories(tracks[0])}
-              style={{ width: (tracks[0] && '50%') }}
+              {...{
+                categories: this.childrenCategories(tracks[0]),
+                style: { width: '50%' },
+                onSelect: this.onRightPanelSelect,
+              }}
             />
           }
         </div>

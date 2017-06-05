@@ -5,33 +5,44 @@ import { browserHistory } from 'react-router';
 import styles from './styles.sass';
 import {
   TitleWrapper,
-  InputTextarea,
+  InputTextareaWithError,
   NextStep,
 } from '../../components';
 import {
   updateRegulation,
 } from '../../../../actions/publishActions';
-import { REGULATION } from '../../constants/title';
+import { PATH, TITLE } from '../../constants';
 
-const NEXT_PATH = '/p/release-goods/s6_cp';
 class RegulationContainer extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    ).isRequired,
   };
   static saveAndNext() {
-    browserHistory.push(NEXT_PATH);
+    browserHistory.push(PATH.STEP_6_CANCEL_POLICY);
   }
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    
     this.validateAll = this.validateAll.bind(this);
+    this.regulationValidator = this.regulationValidator.bind(this);
   }
   validateAll() {
-    console.log('validate all');
+    this.regulationInput.valid();
   }
   hasErrors() {
     return false;
+  }
+  regulationValidator() {
+    return [];
   }
   onChange(value) {
     this.props.dispatch(
@@ -40,16 +51,19 @@ class RegulationContainer extends React.Component {
   }
   render() {
     const { publish } = this.props;
+    const inputProps = {
+      ref: input => (this.regulationInput = input),
+      value: publish.regulation,
+      placeholder: '清楚敘述您希望享用人能遵守的內容，以確保交易順利',
+      onChange: this.onChange,
+      minHeight: 250,
+      validator: this.regulationValidator,
+    };
     return (
       <div styleName="container">
-        <TitleWrapper optional>{REGULATION}</TitleWrapper>
+        <TitleWrapper optional>{TITLE.REGULATION}</TitleWrapper>
         <div styleName="formGroup">
-          <InputTextarea
-            value={publish.regulation}
-            placeholder="清楚敘述您希望享用人能遵守的內容，以確保交易順利"
-            onChange={this.onChange}
-            minHeight={250}
-          />
+          <InputTextareaWithError {...inputProps} />
         </div>
         <NextStep
           onNext={this.constructor.saveAndNext}

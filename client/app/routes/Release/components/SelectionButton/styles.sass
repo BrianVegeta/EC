@@ -33,6 +33,7 @@ $disableBorderColor: #B8B8B8
     .placeholder
       color: $placeholderColor
     .dropdownArrow
+      color: $inputBorderColor
       float: right
       margin: (($inputHeight - ($inputPaddingTop * 2)) - $arrowSize) / 2
 
@@ -44,6 +45,7 @@ $disableBorderColor: #B8B8B8
   .innerWrapper
     border-color: $inputFocusingBorderColor
     z-index: $buttonZindex
+
 .inputDisabled
   composes: input
   .innerWrapper

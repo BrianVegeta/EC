@@ -2,7 +2,10 @@
 import {
   PUBLISH_TITLE_UPDATE,
   PUBLISH_DESC_UPDATE,
+  PUBLISH_CITY_AREA_UPDATE,
+  PUBLISH_AMOUNT_UPDATE,
   PUBLISH_TAGS_UPDATE,
+  PUBLISH_CATEGORY_UPDATE,
 
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
@@ -28,9 +31,22 @@ export const updateDesc = descript => ({
   type: PUBLISH_DESC_UPDATE,
   descript,
 });
+export const updateCityArea = (city, area) => ({
+  type: PUBLISH_CITY_AREA_UPDATE,
+  city,
+  area,
+});
+export const updateAmount = amount => ({
+  type: PUBLISH_AMOUNT_UPDATE,
+  amount,
+});
 export const updateTags = hashtags => ({
   type: PUBLISH_TAGS_UPDATE,
   hashtags,
+});
+export const updateCategory = categoryId => ({
+  type: PUBLISH_CATEGORY_UPDATE,
+  categoryId,
 });
 
 export const OPTION_IN_PERSON = 0;

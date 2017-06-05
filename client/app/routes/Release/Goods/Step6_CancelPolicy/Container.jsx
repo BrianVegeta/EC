@@ -10,13 +10,12 @@ import {
   InputSelection,
   NextStep,
 } from '../../components';
-import { CANCEL_POLICY } from '../../constants/title';
+import { TITLE, PATH } from '../../constants';
 import {
   purgeCancelPolicy,
   updateCancelPolicy,
 } from '../../../../actions/publishActions';
 
-const NEXT_PATH = '/p/release-goods/s7_od';
 const ADVANCE_DAYS_VALUES = ['3', '5', '7'];
 const RATE_VALUES = ['30', '50', '70'];
 const INITIAL_POLICY = {
@@ -25,7 +24,7 @@ const INITIAL_POLICY = {
 };
 class CancelPolicyContainer extends React.Component {
   static saveAndNext() {
-    browserHistory.push(NEXT_PATH);
+    browserHistory.push(PATH.STEP_7_CONFIRM);
   }
   static getOption(value, options) {
     const index = _.findIndex(options, opt => opt.value === value);
@@ -118,7 +117,7 @@ class CancelPolicyContainer extends React.Component {
           helperText="退訂政策是由分享人自訂，享用人提出預訂即表示同意"
           optional
         >
-          {CANCEL_POLICY}
+          {TITLE.CANCEL_POLICY}
         </TitleWrapper>
         <div styleName="formGroup">
           <div styleName="isActive">
