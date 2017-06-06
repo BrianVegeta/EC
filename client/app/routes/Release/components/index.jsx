@@ -24,6 +24,7 @@ import NextStep from './NextStep';
 import InputSelection from './InputSelection';
 import OverduePolicy from './OverduePolicy';
 import IntervalLine from './IntervalLine';
+import DeliveryOptions from './DeliveryOptions';
 
 const exports = {
   FormGroup,
@@ -52,5 +53,6 @@ const exports = {
   NextStep,
   OverduePolicy,
   IntervalLine,
+  DeliveryOptions,
 };
 module.exports = exports;

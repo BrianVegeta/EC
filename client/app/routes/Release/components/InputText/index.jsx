@@ -6,12 +6,14 @@ import styles from './styles.sass';
 const classbinding = classnames.bind(styles);
 class InputText extends React.Component {
   static defaultProps = {
+    disabled: false,
     placeholder: null,
     value: null,
     width: '100%',
     onBlur: null,
   };
   static propTypes = {
+    disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func,
@@ -41,7 +43,7 @@ class InputText extends React.Component {
     this.props.onChange(e.target.value);
   }
   render() {
-    const { placeholder, value, width } = this.props;
+    const { placeholder, value, width, disabled } = this.props;
     const { isFocusing } = this.state;
     const inputProps = {
       className: classbinding({ inputFocusing: isFocusing, input: !isFocusing }),
@@ -51,6 +53,7 @@ class InputText extends React.Component {
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
+      disabled,
     };
     return (
       <input {...inputProps} />

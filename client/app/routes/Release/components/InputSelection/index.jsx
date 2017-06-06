@@ -1,29 +1,44 @@
 import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
+import _ from 'lodash';
 import styles from './styles.sass';
 import SelectionButton from '../SelectionButton';
 
 const choicePt = PropTypes.shape({
-  value: PropTypes.string, text: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  text: PropTypes.string,
 });
 class Selection extends React.Component {
   static defaultProps = {
     width: null,
-    choice: { text: null, value: null },
+    choice: null,
     disabled: false,
+    value: null,
   };
   static propTypes = {
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     options: PropTypes.arrayOf(choicePt).isRequired,
     choice: choicePt,
     onSelect: PropTypes.func.isRequired,
     width: PropTypes.number,
     disabled: PropTypes.bool,
   };
+  static getChoiceFromValue(options, value) {
+    return _.find(options, { value });
+  }
   constructor(props) {
     super(props);
     this.onSelect = this.onSelect.bind(this);
+    const { choice, options, value } = props;
+    const { getChoiceFromValue } = this.constructor;
     this.state = {
-      choice: props.choice,
+      choice: choice || getChoiceFromValue(options, value),
     };
   }
   onSelect(option) {

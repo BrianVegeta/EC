@@ -6,23 +6,21 @@ import _ from 'lodash';
 import { DELIVERY } from '../../constants/title';
 import styles from './styles.sass';
 import FormGroup from '../../components/FormGroup';
-import InputChecksGroup from '../../components/InputChecksGroup';
-import ReturnAddressContainer from './ReturnAddress/Container';
+import Contact from './Contact';
 import { fetchCities } from '../../../../actions/addressActions';
 import {
   TitleWrapper,
   IntervalLine,
   AlertPanel,
   NextStep,
+  InputSelection,
+  DeliveryOptions,
 } from '../../components';
 import {
-  OPTION_IN_PERSON,
-  OPTION_MAIL,
-  OPTION_SEVEN,
   updateSendOptions,
   updateReturnOptions,
+  updateShipBeforeStartDays,
 } from '../../../../actions/publishActions';
-import { unzip } from '../../../../reducers/publishOptions';
 import { PATH } from '../../constants';
 
 
@@ -43,61 +41,32 @@ class DeliveryContainer extends React.Component {
   }
   constructor(props) {
     super(props);
-
-    this.onSendSeven = this.onSendSeven.bind(this);
-    this.onSendMail = this.onSendMail.bind(this);
-    this.onSendInperson = this.onSendInperson.bind(this);
-    this.onReturnSeven = this.onReturnSeven.bind(this);
-    this.onReturnMail = this.onReturnMail.bind(this);
-    this.onReturnInperson = this.onReturnInperson.bind(this);
-
+    this.onShipDaysChange = this.onShipDaysChange.bind(this);
+    this.onSendOptionsChange = this.onSendOptionsChange.bind(this);
+    this.onReturnOptionsChange = this.onReturnOptionsChange.bind(this);
     this.validateAll = this.validateAll.bind(this);
     this.state = {
       sendOptionsError: null,
       returnOptionsError: null,
     };
   }
-
   componentDidMount() {
-    this.props.dispatch(fetchCities());
+    this.dispatch(fetchCities());
   }
-
-  onSendSeven(isChecked) {
-    this.props.dispatch(
-      updateSendOptions(OPTION_SEVEN, isChecked),
-    );
+  onShipDaysChange(option) {
+    this.dispatch(updateShipBeforeStartDays(option.value));
   }
-  onSendMail(isChecked) {
-    this.props.dispatch(
-      updateSendOptions(OPTION_MAIL, isChecked),
-    );
+  onSendOptionsChange(options) {
+    this.dispatch(updateSendOptions(options));
   }
-  onSendInperson(isChecked) {
-    this.props.dispatch(
-      updateSendOptions(OPTION_IN_PERSON, isChecked),
-    );
-  }
-  onReturnSeven(isChecked) {
-    this.props.dispatch(
-      updateReturnOptions(OPTION_SEVEN, isChecked),
-    );
-  }
-  onReturnMail(isChecked) {
-    this.props.dispatch(
-      updateReturnOptions(OPTION_MAIL, isChecked),
-    );
-  }
-  onReturnInperson(isChecked) {
-    this.props.dispatch(
-      updateReturnOptions(OPTION_IN_PERSON, isChecked),
-    );
-  }
-  optionsValidator(name) {
-    const { publish } = this.props;
-    return _.isEmpty(publish[name]) ? ['至少需選一項'] : [];
+  onReturnOptionsChange(options) {
+    this.dispatch(updateReturnOptions(options));
   }
   sendOptionsValidator() {
     return this.optionsValidator('sendOptions');
+  }
+  dispatch(excution) {
+    this.props.dispatch(excution);
   }
   validSendOptions() {
     const errors = this.sendOptionsValidator();
@@ -113,54 +82,94 @@ class DeliveryContainer extends React.Component {
   validateAll() {
     this.validSendOptions();
     this.validReturnOptions();
+    // TODO: options
+    const { returnOptions } = this.props.publish;
+    if (_.includes(returnOptions, '1')) {
+      this.returnOptions.valid();
+    }
+    this.inputContact.valid();
   }
   isAllValid() {
     const isSendOptionsValid = _.isEmpty(this.sendOptionsValidator());
     const isReturnOptionsValid = _.isEmpty(this.returnOptionsValidator());
+    // TODO: options
+    const { returnOptions } = this.props.publish;
+    if (_.includes(returnOptions, '1')) {
+      const { returnAddresses } = this.props.publish;
+      if (_.isEmpty(returnAddresses.join(''))) {
+        return false;
+      }
+    }
     return isSendOptionsValid && isReturnOptionsValid;
+  }
+  optionsValidator(name) {
+    const { publish } = this.props;
+    return _.isEmpty(publish[name]) ? ['至少需選一項'] : [];
+  }
+  needContact() {
+    const { returnOptions } = this.props.publish;
+    const allowReturnSeven = _.includes(returnOptions, '2');
+    const allowReturnMail = _.includes(returnOptions, '1');
+    return allowReturnSeven || allowReturnMail;
   }
   render() {
     const { publish } = this.props;
-    const sendOptKeys = unzip(publish.sendOptions);
-    const sendOptions = [
-      { text: '7-11交貨便',
-        onChange: this.onSendSeven,
-        isChecked: !_.isUndefined(sendOptKeys[OPTION_SEVEN]) },
-      { text: '自行寄件',
-        onChange: this.onSendMail,
-        isChecked: !_.isUndefined(sendOptKeys[OPTION_MAIL]) },
-      { text: '面交（自行協調取貨地點）',
-        onChange: this.onSendInperson,
-        isChecked: !_.isUndefined(sendOptKeys[OPTION_IN_PERSON]) },
-    ];
-    const returnOptKeys = unzip(publish.returnOptions);
-    const returnOptions = [
-      { text: '7-11交貨便',
-        onChange: this.onReturnSeven,
-        isChecked: !_.isUndefined(returnOptKeys[OPTION_SEVEN]) },
-      { text: '自行寄件',
-        onChange: this.onReturnMail,
-        collectedNode: <ReturnAddressContainer ref={ra => (this.returnAddress = ra)} />,
-        isChecked: !_.isUndefined(returnOptKeys[OPTION_MAIL]) },
-      { text: '面交（自行協調取貨地點）',
-        onChange: this.onReturnInperson,
-        isChecked: !_.isUndefined(returnOptKeys[OPTION_IN_PERSON]) },
-    ];
     const nextStepProps = {
       onNext: this.constructor.saveAndNext,
       onValid: this.validateAll,
       isDisabled: !this.isAllValid(),
     };
+    const shipBeforeStartDaysOptions = [1, 2, 3, 4, 5, 6, 7].map(n =>
+      ({ value: n, text: `使用的前${n}天內到貨` }),
+    );
     return (
       <div styleName="container">
         <TitleWrapper>{DELIVERY}</TitleWrapper>
-        <FormGroup headerText="可提供的寄件方式" multiple>
-          <InputChecksGroup options={sendOptions} />
-          {this.state.sendOptionsError && <AlertPanel message={this.state.sendOptionsError} />}
+        <FormGroup headerText="寄件日期">
+          <InputSelection
+            options={shipBeforeStartDaysOptions}
+            value={1}
+            onSelect={this.onShipDaysChange}
+          />
         </FormGroup>
-        <FormGroup headerText="可接受的寄還方式" multiple>
-          <InputChecksGroup options={returnOptions} />
-          {this.state.returnOptionsError && <AlertPanel message={this.state.returnOptionsError} />}
+        <IntervalLine marginBottom={20} color="#888" />
+        <FormGroup headerText="提供的寄件方式" multiple large>
+          <DeliveryOptions
+            onChange={this.onSendOptionsChange}
+            options={publish.sendOptions}
+          />
+          {this.state.sendOptionsError &&
+            <AlertPanel message={this.state.sendOptionsError} />
+          }
+        </FormGroup>
+        <IntervalLine marginBottom={20} color="#888" />
+        <FormGroup headerText="接受的寄還方式" multiple large>
+          <DeliveryOptions
+            ref={deopt => (this.returnOptions = deopt)}
+            onChange={this.onReturnOptionsChange}
+            options={publish.returnOptions}
+            requireAddress
+            cities={this.props.cities}
+            dispatch={this.props.dispatch}
+            returnAddresses={publish.returnAddresses}
+          />
+          {this.state.returnOptionsError &&
+            <AlertPanel message={this.state.returnOptionsError} />
+          }
+        </FormGroup>
+        <IntervalLine marginBottom={20} color="#888" />
+        <FormGroup
+          headerText="收件人資訊"
+          helperText="為保護您的個資，您的聯絡資訊只有在您同意預訂單後才會提供給使用人喔！"
+          large
+        >
+          <Contact
+            ref={ic => (this.inputContact = ic)}
+            name={publish.contactName}
+            phone={publish.contactPhone}
+            disabled={!this.needContact()}
+            dispatch={this.props.dispatch}
+          />
         </FormGroup>
         <IntervalLine marginBottom={20} color="#888" />
         <NextStep {...nextStepProps} />

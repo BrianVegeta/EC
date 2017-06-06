@@ -2,7 +2,6 @@ import coverCropper, { initialState as initialCoverCropper } from './publishCrop
 import coverThumbs from './publishThumbs';
 import titleHandler, { initialState as initialTitle } from './publishTitle';
 import descHandler, { initialState as initialDescript } from './publishDescript';
-import { insertOption, removeOption } from './publishOptions';
 import {
   PUBLISH_OEPN_CROPPER,
   PUBLISH_CLOSE_CROPPER,
@@ -20,10 +19,13 @@ import {
   PUBLISH_TAGS_UPDATE,
   PUBLISH_CATEGORY_UPDATE,
 
+  PUBLISH_SHIP_DAYS_UPDATE,
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
   PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
+  PUBLISH_CONTACT_NAME_UPDATE,
+  PUBLISH_CONTACT_PHONE_UPDATE,
 
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
@@ -50,21 +52,30 @@ const initialState = {
   hashtags: [null, null, null],
   categoryId: null,
   // Delivery
+  shipBeforeStartDays: 1,
   sendOptions: '',
   returnOptions: '',
   returnAddresses: ['', '', ''],
   // ['宜蘭縣', '大同鄉', '中正一路']
   returnAddress: '',
+  contactName: '',
+  contactPhone: '',
   // price settings
   price: '100',
   deposit: '0',
+  overduePercentagePerDay: 0, // %
   minLeaseDays: null,
-  discounts: [],
+  discounts: [], // { offer, days }
 
   // regulation
   regulation: '',
   cancelPolicy: null, // { advanceDays, rate }
 };
+function updateState(state, name, value) {
+  const stateToUpdate = {};
+  stateToUpdate[name] = value;
+  return Object.assign({}, state, stateToUpdate);
+}
 export default (state = initialState, action) => {
   switch (action.type) {
     case PUBLISH_OEPN_CROPPER:
@@ -119,7 +130,7 @@ export default (state = initialState, action) => {
 
     case PUBLISH_AMOUNT_UPDATE:
       return Object.assign({}, state, {
-        amount: action.amont,
+        amount: action.amount,
       });
 
     case PUBLISH_TAGS_UPDATE:
@@ -131,21 +142,27 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         categoryId: action.categoryId,
       });
+    case PUBLISH_SHIP_DAYS_UPDATE:
+      return Object.assign({}, state, {
+        shipBeforeStartDays: action.shipBeforeStartDays,
+      });
 
     case PUBLISH_SEND_OPTIONS_UPDATE: {
-      const { optionKey, isChecked } = action;
-      const handleOptions = isChecked ? insertOption : removeOption;
       return Object.assign({}, state, {
-        sendOptions: handleOptions(state.sendOptions, optionKey),
+        sendOptions: action.options,
       });
     }
     case PUBLISH_RETURN_OPTIONS_UPDATE: {
-      const { optionKey, isChecked } = action;
-      const handleOptions = isChecked ? insertOption : removeOption;
       return Object.assign({}, state, {
-        returnOptions: handleOptions(state.returnOptions, optionKey),
+        returnOptions: action.options,
       });
     }
+    case PUBLISH_CONTACT_NAME_UPDATE:
+      return updateState(state, 'contactName', action.name);
+
+    case PUBLISH_CONTACT_PHONE_UPDATE:
+      return updateState(state, 'contactPhone', action.phone);
+
     case PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA: {
       const { city, area } = action;
       const returnAddresses = state.returnAddresses.concat();

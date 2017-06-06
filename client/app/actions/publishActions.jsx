@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import _ from 'lodash';
 import {
   PUBLISH_TITLE_UPDATE,
   PUBLISH_DESC_UPDATE,
@@ -7,10 +8,13 @@ import {
   PUBLISH_TAGS_UPDATE,
   PUBLISH_CATEGORY_UPDATE,
 
+  PUBLISH_SHIP_DAYS_UPDATE,
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
   PUBLISH_RETURN_ADDRESS_UPDATE_CITYAREA,
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
+  PUBLISH_CONTACT_NAME_UPDATE,
+  PUBLISH_CONTACT_PHONE_UPDATE,
 
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
@@ -48,19 +52,41 @@ export const updateCategory = categoryId => ({
   type: PUBLISH_CATEGORY_UPDATE,
   categoryId,
 });
+export const getCategoryNamesFromId = (categoryId, categories) => {
+  let parentCategory = null;
+  let category = null;
+  _.forEach(categories, parentCate =>
+    _.forEach(parentCate.subcates, (cate) => {
+      if (cate.id === _.parseInt(categoryId)) {
+        category = cate;
+        parentCategory = parentCate;
+        return false;
+      }
+      return true;
+    }),
+  );
+  return {
+    parentCateName: parentCategory.text,
+    categoryName: category.text,
+  };
+};
 
+export const updateShipBeforeStartDays = shipBeforeStartDays => ({
+  type: PUBLISH_SHIP_DAYS_UPDATE,
+  shipBeforeStartDays,
+});
+// TODO: useless const
 export const OPTION_IN_PERSON = 0;
 export const OPTION_MAIL = 1;
 export const OPTION_SEVEN = 2;
-export const updateSendOptions = (optionKey, isChecked) => ({
+
+export const updateSendOptions = options => ({
   type: PUBLISH_SEND_OPTIONS_UPDATE,
-  optionKey,
-  isChecked,
+  options,
 });
-export const updateReturnOptions = (optionKey, isChecked) => ({
+export const updateReturnOptions = options => ({
   type: PUBLISH_RETURN_OPTIONS_UPDATE,
-  optionKey,
-  isChecked,
+  options,
 });
 
 export const updateReturnAddressCityarea = (city, area) => ({
@@ -72,7 +98,18 @@ export const updateReturnAddressDetail = detail => ({
   type: PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
   detail,
 });
-// price settings
+// contact name
+export const updateContactName = name => ({
+  type: PUBLISH_CONTACT_NAME_UPDATE,
+  name,
+});
+// contact phone
+export const updateContactPhone = phone => ({
+  type: PUBLISH_CONTACT_PHONE_UPDATE,
+  phone,
+});
+
+// STEP4 price settings
 export const updatePrice = price => ({
   type: PUBLISH_PRICE_UPDATE,
   price,

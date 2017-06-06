@@ -1,17 +1,21 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const cx = classnames.bind(styles);
 const defaultProps = {
   helperText: null,
   helperBottomText: null,
   limiter: null,
   optional: false,
   multiple: false,
+  large: false,
   groupStyle: {},
   headerTextStyle: {},
 };
 const propTypes = {
+  large: PropTypes.bool,
   headerText: PropTypes.string.isRequired,
   limiter: PropTypes.node,
   helperText: PropTypes.string,
@@ -24,12 +28,12 @@ const propTypes = {
 };
 const InputField = props => (
   <div styleName="inputGroup" style={props.groupStyle}>
-    <div styleName="inputHeader">
+    <div className={cx('inputHeader', { inputHeaderLarge: props.large })}>
       <div style={props.headerTextStyle}>
         {props.headerText}
         {props.optional && <span styleName="optional">（非必填）</span>}
-        {props.multiple && <span styleName="multiple">（多選）</span>}
-        <span styleName="inputLimiter">{props.limiter}</span>
+        {props.multiple && <span styleName="multiple">（可多選）</span>}
+        {props.limiter && <span styleName="inputLimiter">{props.limiter}</span>}
       </div>
       {props.helperText && <div styleName="helper">{props.helperText}</div>}
     </div>

@@ -1,34 +1,52 @@
-import React, { PropTypes } from 'react';
-import _ from 'lodash';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class Block extends React.Component {
+  static defaultProps = {
+    wrapper: 'table',
+  };
   static propTypes = {
     title: PropTypes.string.isRequired,
-    content: PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.node, PropTypes.string, PropTypes.object,
-    ])).isRequired,
+    content: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.string,
+        PropTypes.object,
+        PropTypes.array,
+      ])),
+      PropTypes.string,
+      PropTypes.node,
+    ]).isRequired,
+    wrapper: PropTypes.string,
   };
-  renderContent() {
-    const { content } = this.props;
-    if (_.isArray(content)) {
+  renderformcontent() {
+    const { content, wrapper } = this.props;
+    if (wrapper === 'table') {
       return (
-        <table>
-          {content.map((body, head) =>
-            <tr styleName="row">
-              <th styleName="head" width={154}>{head}</th>
-              <td styleName="body">{body}</td>
-            </tr>,
-          )}
+        <table styleName="table">
+          <tbody>
+            {content.map((row, i) =>
+              <tr styleName="row" key={`${i + 1}`}>
+                <th styleName="head" width={154}>{row[0]}</th>
+                <td styleName="body">{row[1]}</td>
+              </tr>,
+            )}
+          </tbody>
         </table>
       );
     }
+    if (wrapper === 'photo') {
+      return content;
+    }
     return (
-      <table>
-        <tr styleName="row">
-          <td styleName="body">{content}</td>
-        </tr>
+      <table styleName="table">
+        <tbody>
+          <tr styleName="row">
+            <td styleName="body">{content}</td>
+          </tr>
+        </tbody>
       </table>
     );
   }
@@ -37,7 +55,7 @@ class Block extends React.Component {
     return (
       <div styleName="container">
         <div styleName="title">{title}</div>
-        {this.renderContent()}
+        {this.renderformcontent()}
       </div>
     );
   }

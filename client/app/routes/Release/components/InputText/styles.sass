@@ -7,6 +7,10 @@
   padding: $inputPaddingTop $inputPaddingRight
   &::placeholder
     color: $placeholderColor
+  &:disabled
+    color: $disabledColor
+    background: $disabledBgColor
+
 
 .inputFocusing
   composes: input

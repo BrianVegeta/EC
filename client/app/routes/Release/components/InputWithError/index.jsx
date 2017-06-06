@@ -8,10 +8,11 @@ export default function inputWithError(InputComponent) {
     static defaultProps = {
       onBlur: null,
       width: '100%',
+      validator: null,
     };
     static propTypes = {
       onBlur: PropTypes.func,
-      validator: PropTypes.func.isRequired,
+      validator: PropTypes.func,
       width: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
@@ -33,6 +34,7 @@ export default function inputWithError(InputComponent) {
     }
     valid() {
       const { validator } = this.props;
+      if (!validator) return true;
       const errors = validator();
       this.setState({ errors });
       return _.isEmpty(errors);

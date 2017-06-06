@@ -5,7 +5,7 @@ class IntervalLine extends React.Component {
     width: '100%',
     marginTop: 0,
     marginBottom: 0,
-    color: '#666',
+    color: '#CECECE',
   };
   static propTypes = {
     width: PropTypes.oneOfType([

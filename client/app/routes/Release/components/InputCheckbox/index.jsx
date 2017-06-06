@@ -45,6 +45,7 @@ class InputCheckbox extends React.Component {
       readOnly,
       children,
       helper,
+      block,
     } = this.props;
     const { checked } = this.state;
 

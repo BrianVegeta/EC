@@ -131,8 +131,8 @@ class Container extends React.Component {
     return this.validator('categoryId');
   }
   validTags() {
-    const { tags } = this.props.publish;
-    const tagsError = _.isEmpty(_.compact(tags)) ? '至少填一個標籤' : null;
+    const { hashtags } = this.props.publish;
+    const tagsError = _.isEmpty(_.compact(hashtags)) ? '至少填一個標籤' : null;
     this.setState({ tagsError });
   }
   isAllValid() {
@@ -141,8 +141,9 @@ class Container extends React.Component {
     const isCitiesValid = _.isEmpty(this.citiesValidator());
     const isAmountValid = _.isEmpty(this.amountValidator());
 
-    const { tags } = this.props.publish;
-    const isTagsValid = _.isEmpty(_.compact(tags));
+    const { hashtags } = this.props.publish;
+
+    const isTagsValid = !_.isEmpty(_.compact(hashtags));
     const isCategoryValid = _.isEmpty(this.categoryValidator());
     return isTitleValid
       && isDescValid
