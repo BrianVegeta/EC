@@ -5,8 +5,8 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import constraints from '../constraints';
 import InputCounterWithError from '../../InputCounterWithError';
-import InputUnitWithError from '../../InputUnitWithError';
-import { DIMESIONS, ICONS, LIMIT } from '../../../../../constants';
+import InputCurrencyWithError from '../../InputCurrencyWithError';
+import { DIMESIONS, ICONS } from '../../../../../constants';
 
 class DiscountRule extends React.Component {
   static defaultProps = {
@@ -44,7 +44,7 @@ class DiscountRule extends React.Component {
     this.daysInput.valid();
   }
   validator(name) {
-    return validate.single(this.props[name], constraints[name]);
+    return validate.single(this.props[name], constraints(this.props.price)[name]);
   }
   daysValidator() {
     return this.validator('days');
@@ -67,8 +67,6 @@ class DiscountRule extends React.Component {
     const offerProps = {
       value: this.props.offer,
       suffix: '元',
-      max: this.props.price,
-      min: LIMIT.PRICE_MIN,
       width: DIMESIONS.INPUT_DISCOUNT_OFFER_WIDTH,
       onChange: this.onOfferChange,
       validator: this.offerValidator,
@@ -84,7 +82,7 @@ class DiscountRule extends React.Component {
             <InputCounterWithError {...daysProps} />
           </div>
           <div styleName="offer">
-            <InputUnitWithError {...offerProps} />
+            <InputCurrencyWithError {...offerProps} />
           </div>
         </div>
         <div styleName="remove">

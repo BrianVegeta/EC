@@ -19,7 +19,10 @@ import {
 class CoverContainer extends React.Component {
   static propTypes = {
     publish: PropTypes.objectOf(PropTypes.oneOfType([
-      PropTypes.array, PropTypes.object, PropTypes.string,
+      PropTypes.array,
+      PropTypes.object,
+      PropTypes.string,
+      PropTypes.number,
     ])).isRequired,
     dispatch: PropTypes.func.isRequired,
   };

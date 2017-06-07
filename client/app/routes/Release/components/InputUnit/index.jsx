@@ -20,8 +20,8 @@ class InputUnit extends React.Component {
     onChange: null,
     onBlur: null,
     width: null,
-    max: 30,
-    min: 1,
+    max: null,
+    min: null,
   };
   static propTypes = {
     placeholder: PropTypes.string,

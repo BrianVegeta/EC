@@ -24,7 +24,6 @@ import {
 import constraints, { numberNotInRage } from './constraints';
 import { PATH, TITLE } from '../../constants';
 import * as DIMESIONS from '../../../../constants/dimesions';
-import * as LIMIT from '../../../../constants/limit';
 
 
 const PRICE_LABEL = '租金';

@@ -58,7 +58,15 @@ class InputCurrency extends React.Component {
   }
   onChange(e, value) {
     const { onChange } = this.props;
-    if (onChange) { onChange(value); }
+    if (onChange) {
+      onChange(
+        this.typerizeValue(value),
+      );
+    }
+  }
+  typerizeValue(value) {
+    if (_.isNumber(this.props.value)) return _.parseInt(value);
+    return value;
   }
   naturalizeValue(value) {
     const numbericValue = _.parseInt(value);
@@ -75,9 +83,6 @@ class InputCurrency extends React.Component {
       return min.toString();
     }
     return number;
-  }
-  valueExcluded(number) {
-    const { max, min } = this.props;
   }
   format(value) {
     return this.naturalizeValue(value);
