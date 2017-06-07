@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import {
   fetchCategories,
 } from '../../../actions/itemsActions';
+import SidebarContainer from './Sidebar/Container';
 
-class ReleaseGoods extends React.PureComponent {
+class ServiceContainer extends React.PureComponent {
   static propTypes = {
     formComponent: PropTypes.node.isRequired,
     environment: PropTypes.objectOf(
@@ -42,7 +43,9 @@ class ReleaseGoods extends React.PureComponent {
             {this.props.formComponent}
           </div>
         </div>
-        <div className="sidebar-left" style={sidebarLeftStyle} ></div>
+        <div className="sidebar-left" style={sidebarLeftStyle} >
+          <SidebarContainer />
+        </div>
       </div>
     );
   }
@@ -52,4 +55,4 @@ const mapStateToProps = (state) => {
   const { environment, routesHelper } = state;
   return ({ environment, routesHelper });
 };
-export default connect(mapStateToProps)(withRouter(ReleaseGoods));
+export default connect(mapStateToProps)(withRouter(ServiceContainer));

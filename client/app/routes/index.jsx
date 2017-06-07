@@ -10,6 +10,7 @@ import Categories from './Categories';
 import ItemRoute from './Item';
 import Tanzaku from './Tanzaku';
 import ReleaseGoods from './Release/Goods';
+import ReleaseService from './Release/Service';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -30,6 +31,7 @@ const routes = (routesHelper, dispatch) => ({
       component: LayoutPublish,
       childRoutes: [
         ReleaseGoods(routesHelper, dispatch),
+        ReleaseService(routesHelper, dispatch),
       ],
     },
     {
