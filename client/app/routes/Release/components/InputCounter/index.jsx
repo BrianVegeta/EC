@@ -62,20 +62,24 @@ class InputCounter extends React.Component {
   }
   onChange(e, value) {
     this.setState({ value });
-    const { onChange } = this.props;
     const number = _.isEmpty(value) ? null : _.parseInt(value);
-    if (!onChange) { return; }
-    onChange(number);
+    this.dispatchOnChange(number);
   }
   onCounterUp() {
     const { value } = this.state;
     const number = value ? (_.parseInt(value) + 1) : 1;
     this.setState({ value: this.valueRanged(number) });
+    this.dispatchOnChange(this.valueRanged(number));
   }
   onCounterDown() {
     const { value } = this.state;
     const number = value ? _.parseInt(value) - 1 : 0;
     this.setState({ value: this.valueRanged(number) });
+    this.dispatchOnChange(this.valueRanged(number));
+  }
+  dispatchOnChange(number) {
+    const { onChange } = this.props;
+    if (onChange) onChange(number);
   }
   valueRanged(value) {
     const number = _.parseInt(value);

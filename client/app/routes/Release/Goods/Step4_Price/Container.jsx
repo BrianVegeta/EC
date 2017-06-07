@@ -19,6 +19,7 @@ import {
   updatePrice,
   updateDeposit,
   updateMinLeaseDays,
+  updateOverduePolicy,
   updateDiscounts,
 } from '../../../../actions/publishActions';
 import constraints, { numberNotInRage } from './constraints';
@@ -63,6 +64,7 @@ class PriceContainer extends React.Component {
 
     this.priceValidator = this.priceValidator.bind(this);
     this.depositValidator = this.depositValidator.bind(this);
+    this.onOverdueChange = this.onOverdueChange.bind(this);
     this.minLeaseDaysValidator = this.minLeaseDaysValidator.bind(this);
     this.state = {
       isOverdueActivating: false,
@@ -74,6 +76,9 @@ class PriceContainer extends React.Component {
   }
   onDepositChange(value) {
     this.props.dispatch(updateDeposit(value));
+  }
+  onOverdueChange(value) {
+    this.props.dispatch(updateOverduePolicy(value));
   }
   onMinLeaseDayChange(value) {
     this.props.dispatch(updateMinLeaseDays(value));
@@ -156,6 +161,7 @@ class PriceContainer extends React.Component {
     };
     const overdueProps = {
       deposit: _.isEmpty(publish.deposit) ? 0 : _.parseInt(publish.deposit),
+      onChange: this.onOverdueChange,
     };
     const minLeaseDaysProps = {
       ref: input => (this.minLeaseDaysInput = input),

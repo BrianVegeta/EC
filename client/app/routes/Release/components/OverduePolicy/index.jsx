@@ -9,7 +9,14 @@ import InputCheckbox from '../InputCheckbox';
 class OverduePolicy extends React.Component {
   static propTypes = {
     deposit: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
   };
+  static calAmountPerDay(percentage, deposit) {
+    return Math.ceil((deposit * percentage) / 100);
+  }
+  static calMaxsDaysOverdue(percentage) {
+    return Math.ceil(100 / percentage);
+  }
   constructor(props) {
     super(props);
     this.onActive = this.onActive.bind(this);
@@ -25,19 +32,14 @@ class OverduePolicy extends React.Component {
   onSliderChange(value) {
     this.slider.focus();
     this.setState({ percentage: value });
-  }
-  calculateAmountPerDay() {
-    const { deposit } = this.props;
-    const { percentage } = this.state;
-    return Math.ceil((deposit * percentage) / 100);
-  }
-  calculateMaxDaysFromOverdue() {
-    const { percentage } = this.state;
-    return Math.ceil(100 / percentage);
+    this.props.onChange(value);
   }
   renderControlPanel(sliderProps) {
-    const amountPerDay = this.calculateAmountPerDay();
-    const overdueMaxDays = this.calculateMaxDaysFromOverdue();
+    const { deposit } = this.props;
+    const { percentage } = this.state;
+    const { calAmountPerDay, calMaxsDaysOverdue } = this.constructor;
+    const amountPerDay = calAmountPerDay(percentage, deposit);
+    const overdueMaxDays = calMaxsDaysOverdue(percentage);
     return (
       <div styleName="controlPanel">
         <div
@@ -50,7 +52,11 @@ class OverduePolicy extends React.Component {
         <div styleName="calculated">
           一天約扣 <span styleName="number">{amountPerDay}</span> 元
           {amountPerDay > 0 &&
-            <span>，<span styleName="number">{overdueMaxDays}</span> 天扣完</span>
+            <span>
+              ，
+              <span styleName="number">{overdueMaxDays}</span>
+              天扣完
+            </span>
           }
         </div>
       </div>

@@ -10,7 +10,7 @@ import {
   OPTION_IN_PERSON,
   OPTION_MAIL,
   OPTION_SEVEN,
-  getCategoryNamesFromId,
+  getCategoryFromId,
 } from '../../../../actions/publishActions';
 import {
   fetchCities,
@@ -41,19 +41,29 @@ class ConfirmContainer extends React.Component {
       wrapper: 'photo',
       content: (
         <div className={cx('photos')}>
-          {coverThumbs.map(cover =>
-            <image className={cx('photo')} src={cover.s3Url} />,
+          {coverThumbs.map((cover, i) =>
+            <div key={`${i + 1}`}>
+              <img
+                className={cx('photo')}
+                src={cover.s3Url}
+                alt={i === 0 ? '封面' : '圖片'}
+              />
+              <div className={styles.coverLabel}>封面</div>
+            </div>,
           )}
         </div>
       ),
     };
     const { title, descript, city, area, amount, categoryId, hashtags } = publish;
     const { categories } = this.props.items;
-    const categoryInitial = { parentCateName: '', categoryName: '' };
+    const categoryInitial = {
+      parentCategory: { text: '' },
+      category: { text: '' },
+    };
     const {
-      parentCateName,
-      categoryName,
-    } = categories ? getCategoryNamesFromId(categoryId, categories) : categoryInitial;
+      category,
+      parentCategory,
+    } = (categories ? getCategoryFromId(categoryId, categories.goods) : categoryInitial);
     const aboutProps = {
       title: '關於物品',
       wrapper: 'table',
@@ -72,9 +82,9 @@ class ConfirmContainer extends React.Component {
         ],
         ['分類',
           (<div>
-            {parentCateName}
+            {parentCategory.text}
             <span className={cx('categoryArrow')}>&gt;</span>
-            {categoryName}
+            {category.text}
           </div>),
         ],
         ['標籤', (

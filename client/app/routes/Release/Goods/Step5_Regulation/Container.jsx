@@ -31,7 +31,7 @@ class RegulationContainer extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    
+
     this.validateAll = this.validateAll.bind(this);
     this.regulationValidator = this.regulationValidator.bind(this);
   }

@@ -29,6 +29,7 @@ import {
 
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
+  PUBLISH_OVERDUE_POLICY_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
   PUBLISH_DISCOUNTS_UPDATE,
 
@@ -60,7 +61,7 @@ const initialState = {
   returnAddress: '',
   contactName: '',
   contactPhone: '',
-  // price settings
+  // Step 4 price
   price: '100',
   deposit: '0',
   overduePercentagePerDay: 0, // %
@@ -187,6 +188,9 @@ export default (state = initialState, action) => {
 
     case PUBLISH_DEPOSIT_UPDATE:
       return Object.assign({}, state, { deposit: action.deposit });
+
+    case PUBLISH_OVERDUE_POLICY_UPDATE:
+      return updateState(state, 'overduePercentagePerDay', action.percentage);
 
     case PUBLISH_MIN_LEASE_DAYS_UPDATE:
       return Object.assign({}, state, { minLeaseDays: action.minLeaseDays });

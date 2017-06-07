@@ -18,6 +18,7 @@ import {
 
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
+  PUBLISH_OVERDUE_POLICY_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
   PUBLISH_DISCOUNTS_UPDATE,
 
@@ -52,7 +53,7 @@ export const updateCategory = categoryId => ({
   type: PUBLISH_CATEGORY_UPDATE,
   categoryId,
 });
-export const getCategoryNamesFromId = (categoryId, categories) => {
+export const getCategoryFromId = (categoryId, categories) => {
   let parentCategory = null;
   let category = null;
   _.forEach(categories, parentCate =>
@@ -65,10 +66,7 @@ export const getCategoryNamesFromId = (categoryId, categories) => {
       return true;
     }),
   );
-  return {
-    parentCateName: parentCategory.text,
-    categoryName: category.text,
-  };
+  return { parentCategory, category };
 };
 
 export const updateShipBeforeStartDays = shipBeforeStartDays => ({
@@ -117,6 +115,10 @@ export const updatePrice = price => ({
 export const updateDeposit = deposit => ({
   type: PUBLISH_DEPOSIT_UPDATE,
   deposit,
+});
+export const updateOverduePolicy = percentage => ({
+  type: PUBLISH_OVERDUE_POLICY_UPDATE,
+  percentage,
 });
 export const updateMinLeaseDays = minLeaseDays => ({
   type: PUBLISH_MIN_LEASE_DAYS_UPDATE,

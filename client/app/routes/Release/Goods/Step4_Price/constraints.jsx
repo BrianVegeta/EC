@@ -8,7 +8,7 @@ export const numberNotInRage = (value, options) => {
   const max = options[1];
   const numbericValue = _.parseInt(value);
   if (numbericValue.isNaN) return null;
-  if (numbericValue <= max && numbericValue >= min) {
+  if (numbericValue < max && numbericValue > min) {
     return `請填 0 或大於 ${max} 以上的數字`;
   }
   return null;
@@ -23,8 +23,8 @@ export default {
       notInteger: '^請填數字',
       lessThanOrEqualTo: TOTLE_PRICE_LIMIT,
       notLessThanOrEqualTo: `^請小於 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`,
-      greaterThan: PRICE_MIN,
-      notGreaterThan: `^至少要${PRICE_MIN}元以上的租金`,
+      greaterThanOrEqualTo: PRICE_MIN,
+      notGreaterThanOrEqualTo: `^至少要${PRICE_MIN}元以上的租金`,
     },
   },
   deposit: {
