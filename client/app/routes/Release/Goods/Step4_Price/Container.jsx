@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import validate from 'validate.js';
 import numeral from 'numeral';
 import _ from 'lodash';
-import { INPUT_DAYS_COUNTER_WIDTH } from '../../../../constants/dimesions';
 import {
   TitleWrapper,
   FormGroup,
@@ -24,6 +23,8 @@ import {
 } from '../../../../actions/publishActions';
 import constraints, { numberNotInRage } from './constraints';
 import { PATH, TITLE } from '../../constants';
+import * as DIMESIONS from '../../../../constants/dimesions';
+import * as LIMIT from '../../../../constants/limit';
 
 
 const PRICE_LABEL = '租金';
@@ -33,8 +34,8 @@ const DEPOSIT_HELPER = `${DEPOSIT_LABEL}至少需要 NT$ 100 喔！`;
 const TOTLE_PRICE_LIMIT = 99999;
 const TOTAL_ERROR_MSG = `${PRICE_LABEL} + ${DEPOSIT_LABEL}不得超過 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`;
 const MIN_LEASE_DAYS_LABEL = '至少租借天數';
-const DISCOUNTS_LABEL = '自訂折扣';
-const DISCOUNTS_HELPER = '使用折扣能吸引更多訂單';
+const DISCOUNTS_LABEL = '設定優惠價';
+const DISCOUNTS_HELPER = '優惠價能吸引更多人前來預訂喔';
 
 class PriceContainer extends React.Component {
   static saveAndNext() {
@@ -162,7 +163,7 @@ class PriceContainer extends React.Component {
       value: publish.minLeaseDays,
       suffix: '天',
       placeholder: '請輸入',
-      width: INPUT_DAYS_COUNTER_WIDTH,
+      width: DIMESIONS.INPUT_DAYS_COUNTER_WIDTH,
       onChange: this.onMinLeaseDayChange,
       validator: this.minLeaseDaysValidator,
     };
@@ -174,6 +175,7 @@ class PriceContainer extends React.Component {
     const discountsProps = {
       discounts: publish.discounts,
       onChange: this.onDiscountsChange,
+      price: _.parseInt(publish.price),
       ref: dis => (this.discounts = dis),
     };
     return (

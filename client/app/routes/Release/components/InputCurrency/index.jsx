@@ -25,6 +25,9 @@ class InputCurrency extends React.Component {
     width: null,
     onChange: null,
     onBlur: null,
+    max: null,
+    min: null,
+    allowZero: false,
   };
   static propTypes = {
     unit: PropTypes.string,
@@ -33,11 +36,10 @@ class InputCurrency extends React.Component {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    max: PropTypes.number,
+    min: PropTypes.number,
+    allowZero: PropTypes.bool,
   };
-  static naturalizeValue(value) {
-    const numbericValue = _.parseInt(value);
-    return numeral(numbericValue).format('0,000');
-  }
   constructor(props) {
     super(props);
     this.onBlur = this.onBlur.bind(this);
@@ -58,8 +60,27 @@ class InputCurrency extends React.Component {
     const { onChange } = this.props;
     if (onChange) { onChange(value); }
   }
+  naturalizeValue(value) {
+    const numbericValue = _.parseInt(value);
+    const rangedValue = this.valueRanged(numbericValue);
+    return numeral(rangedValue).format('0,000');
+  }
+  valueRanged(number) {
+    const { max, min, allowZero } = this.props;
+    if (max && number > max) { return max.toString(); }
+    if (min && number < min) {
+      if (allowZero) {
+        console.log((Math.round(number / min)) * min);
+      }
+      return min.toString();
+    }
+    return number;
+  }
+  valueExcluded(number) {
+    const { max, min } = this.props;
+  }
   format(value) {
-    return this.constructor.naturalizeValue(value);
+    return this.naturalizeValue(value);
   }
   render() {
     const { unit, placeholder, value, width } = this.props;

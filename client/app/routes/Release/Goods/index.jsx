@@ -1,5 +1,7 @@
 import { fetchCategories } from '../../../actions/itemsActions';
 import { confirmLeavePage } from '../../../funcs/confirm';
+import { checkStepRestart } from '../../../actions/routerAction';
+import { PATH } from '../../Release/constants';
 
 
 export default (routesHelper, dispatch) => ({
@@ -19,6 +21,7 @@ export default (routesHelper, dispatch) => ({
     },
   },
   onEnter: () => {
+    // dispatch(checkStepRestart(PATH.STEP_1_COVER_INDEX));
     window.addEventListener('beforeunload', confirmLeavePage);
   },
   childRoutes: [

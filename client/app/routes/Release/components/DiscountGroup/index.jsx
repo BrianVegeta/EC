@@ -9,7 +9,7 @@ import AlertPanel from '../AlertPanel';
 
 const defaultDiscount = {
   days: 5,
-  offer: 95,
+  offer: 100,
 };
 const DISCOUNT_MAX = 3;
 class DiscountGroup extends React.Component {
@@ -20,6 +20,7 @@ class DiscountGroup extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     discounts: PropTypes.arrayOf(PropTypes.object).isRequired,
+    price: PropTypes.number.isRequired,
   };
   constructor(props) {
     super(props);
@@ -62,6 +63,7 @@ class DiscountGroup extends React.Component {
             ref={d => (this.discounts.set(i, d))}
             days={discount.days}
             offer={discount.offer}
+            price={this.props.price}
             onRemove={() => this.remove(i)}
             onChange={(days, offer) => this.changeDiscount(days, offer, i)}
             hasHeader={i === 0}

@@ -6,7 +6,7 @@ import styles from './styles.sass';
 import constraints from '../constraints';
 import InputCounterWithError from '../../InputCounterWithError';
 import InputUnitWithError from '../../InputUnitWithError';
-import { DIMESIONS, ICONS } from '../../../../../constants';
+import { DIMESIONS, ICONS, LIMIT } from '../../../../../constants';
 
 class DiscountRule extends React.Component {
   static defaultProps = {
@@ -17,9 +17,10 @@ class DiscountRule extends React.Component {
   static propTypes = {
     days: PropTypes.number,
     offer: PropTypes.number,
+    hasHeader: PropTypes.bool,
+    price: PropTypes.number.isRequired,
     onRemove: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    hasHeader: PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -65,9 +66,9 @@ class DiscountRule extends React.Component {
     };
     const offerProps = {
       value: this.props.offer,
-      suffix: '折',
-      max: 99,
-      min: 1,
+      suffix: '元',
+      max: this.props.price,
+      min: LIMIT.PRICE_MIN,
       width: DIMESIONS.INPUT_DISCOUNT_OFFER_WIDTH,
       onChange: this.onOfferChange,
       validator: this.offerValidator,
@@ -75,8 +76,8 @@ class DiscountRule extends React.Component {
     return (
       <div styleName="ruleContainer">
         <div styleName="headers">
-          { hasHeader && <div styleName="daysHead">租滿天數（最多30天）</div>}
-          { hasHeader && <div styleName="offerHead">優惠折扣</div>}
+          { hasHeader && <div styleName="daysHead">租借天數（最多30天）</div>}
+          { hasHeader && <div styleName="offerHead">每件優惠價</div>}
         </div>
         <div styleName="inputs" className="clear">
           <div styleName="days">
