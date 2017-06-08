@@ -26,13 +26,10 @@ class Tooltip extends React.Component {
     switch (this.props.align) {
       case 'right':
         return { right: 0 };
-
       case 'center':
         return { left: '50%', marginLeft: -(tooltipWidth / 2) };
-
       case 'left':
         return null;
-
       default:
         return null;
     }

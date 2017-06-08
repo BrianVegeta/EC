@@ -1,8 +1,7 @@
 import numeral from 'numeral';
 import _ from 'lodash';
-import { PRICE_MIN } from '../../../../constants/limit';
+import { PRICE_MIN, PRICE_MAX } from '../../../../constants/limit';
 
-const TOTLE_PRICE_LIMIT = 99999;
 export const numberNotInRage = (value, options) => {
   const min = options[0];
   const max = options[1];
@@ -13,7 +12,51 @@ export const numberNotInRage = (value, options) => {
   }
   return null;
 };
+
 export default {
+  title: {
+    presence: {
+      message: '^此欄位必填',
+    },
+    length: {
+      maximum: 30,
+      tooLong: '^請在%{count}個字以內',
+    },
+  },
+  descript: {
+    presence: {
+      message: '^此欄位必填',
+    },
+    length: {
+      maximum: 250,
+      tooLong: '^請在%{count}個字以內',
+    },
+  },
+  cityarea: {
+    presence: {
+      message: '^此欄位必填',
+    },
+  },
+  address: {
+    presence: {
+      message: '^此欄位必填',
+    },
+  },
+  amount: {
+    presence: {
+      message: '^此欄位必填',
+    },
+  },
+  categoryId: {
+    presence: {
+      message: '^此欄位必填',
+    },
+  },
+  assignmentOptions: {
+    presence: {
+      message: '^至少選一項',
+    },
+  },
   price: {
     presence: {
       message: '^此欄位必填',
@@ -21,22 +64,22 @@ export default {
     numericality: {
       onlyInteger: true,
       notInteger: '^請填數字',
-      lessThanOrEqualTo: TOTLE_PRICE_LIMIT,
-      notLessThanOrEqualTo: `^請小於 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`,
+      lessThanOrEqualTo: PRICE_MAX,
+      notLessThanOrEqualTo: `^請小於 ${numeral(PRICE_MAX).format('$0,000')}`,
       greaterThanOrEqualTo: PRICE_MIN,
       notGreaterThanOrEqualTo: `^至少要${PRICE_MIN}元以上的租金`,
     },
   },
   deposit: {
     presence: {
-      message: '^此欄位必填',
+      message: '^請填押金，如不需要押金請填 0。',
     },
     numberNotInRage: [1, 100],
     numericality: {
       onlyInteger: true,
       notInteger: '^請填數字',
-      lessThanOrEqualTo: TOTLE_PRICE_LIMIT,
-      notLessThanOrEqualTo: `^請小於 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`,
+      lessThanOrEqualTo: PRICE_MAX,
+      notLessThanOrEqualTo: `^請小於 ${numeral(PRICE_MAX).format('$0,000')}`,
     },
   },
   minLeaseDays: {

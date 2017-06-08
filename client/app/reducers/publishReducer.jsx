@@ -19,6 +19,10 @@ import {
   PUBLISH_TAGS_UPDATE,
   PUBLISH_CATEGORY_UPDATE,
 
+  PUBLISH_APPOINTMENT_PRIOR_UPDATE, // @@service
+  PUBLISH_ASSIGNMENT_OPTIONS_UPDATE, // @@service
+  PUBLISH_ASSIGN_CITYAREA_UPDATE, // @@service
+  PUBLISH_ASSIGN_ADDRESS_UPDATE, // @@service
   PUBLISH_SHIP_DAYS_UPDATE,
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
@@ -27,6 +31,7 @@ import {
   PUBLISH_CONTACT_NAME_UPDATE,
   PUBLISH_CONTACT_PHONE_UPDATE,
 
+  PUBLISH_CHARGE_TYPE_UPDATE, // @@service
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_OVERDUE_POLICY_UPDATE,
@@ -52,7 +57,14 @@ const initialState = {
   amount: 1,
   hashtags: [null, null, null],
   categoryId: null,
-  // Delivery
+  // STEP 3 DELIVERY
+  appointmentPrior: 1, // @@service
+  assignmentOptions: '', // @@service
+  assignCity: '', // @@service
+  assignArea: '', // @@service
+  assignAddress: '', // @@service
+  // STEP 4 PRICE
+  chargeType: '', // @@service
   shipBeforeStartDays: 1,
   sendOptions: '',
   returnOptions: '',
@@ -143,6 +155,22 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         categoryId: action.categoryId,
       });
+
+    case PUBLISH_APPOINTMENT_PRIOR_UPDATE:
+      return updateState(state, 'appointmentPrior', action.days);
+
+    case PUBLISH_ASSIGNMENT_OPTIONS_UPDATE:
+      return updateState(state, 'assignmentOptions', action.options);
+
+    case PUBLISH_ASSIGN_CITYAREA_UPDATE:
+      return Object.assign({}, state, {
+        assignCity: action.city,
+        assignArea: action.area,
+      });
+
+    case PUBLISH_ASSIGN_ADDRESS_UPDATE:
+      return updateState(state, 'assignAddress', action.address);
+
     case PUBLISH_SHIP_DAYS_UPDATE:
       return Object.assign({}, state, {
         shipBeforeStartDays: action.shipBeforeStartDays,
@@ -183,6 +211,10 @@ export default (state = initialState, action) => {
         returnAddresses, returnAddress,
       });
     }
+    // STEP4 PRICE
+    case PUBLISH_CHARGE_TYPE_UPDATE:
+      return updateState(state, 'chargeType', action.chargeType);
+
     case PUBLISH_PRICE_UPDATE:
       return Object.assign({}, state, { price: action.price });
 

@@ -2,11 +2,8 @@ import React, { PropTypes } from 'react';
 import CSS from 'react-css-modules';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import _ from 'lodash';
-import { DELIVERY } from '../../constants/title';
 import styles from './styles.sass';
 import FormGroup from '../../components/FormGroup';
-import Contact from './Contact';
 import { fetchCities } from '../../../../actions/addressActions';
 import {
   TitleWrapper,
@@ -14,14 +11,14 @@ import {
   AlertPanel,
   NextStep,
   InputSelection,
-  DeliveryOptions,
 } from '../../components';
 import {
-  updateSendOptions,
-  updateReturnOptions,
-  updateShipBeforeStartDays,
+  updateAppointmentRrior,
+  updateAssignmentOptions,
 } from '../../../../actions/publishActions';
-import { PATH } from '../../constants';
+import { PATH, TITLE } from '../constants';
+import ServiceOptions from './ServiceOptions';
+import Model from '../Model';
 
 
 class DeliveryContainer extends React.Component {
@@ -35,144 +32,74 @@ class DeliveryContainer extends React.Component {
         PropTypes.number,
       ]),
     ).isRequired,
+    cities: PropTypes.array.isRequired,
   };
   static saveAndNext() {
     browserHistory.push(PATH.STEP_4_PRICE);
   }
   constructor(props) {
     super(props);
-    this.onShipDaysChange = this.onShipDaysChange.bind(this);
-    this.onSendOptionsChange = this.onSendOptionsChange.bind(this);
-    this.onReturnOptionsChange = this.onReturnOptionsChange.bind(this);
-    this.validateAll = this.validateAll.bind(this);
+    this.onPriorChange = this.onPriorChange.bind(this);
+    this.valid = this.valid.bind(this);
+    this.onAssignmentChange = this.onAssignmentChange.bind(this);
     this.state = {
-      sendOptionsError: null,
-      returnOptionsError: null,
+      optionsError: null,
     };
   }
   componentDidMount() {
-    this.dispatch(fetchCities());
+    this.props.dispatch(fetchCities());
   }
-  onShipDaysChange(option) {
-    this.dispatch(updateShipBeforeStartDays(option.value));
+  onPriorChange(option) {
+    this.props.dispatch(updateAppointmentRrior(option.value));
   }
-  onSendOptionsChange(options) {
-    this.dispatch(updateSendOptions(options));
+  onAssignmentChange(options) {
+    this.props.dispatch(updateAssignmentOptions(options));
   }
-  onReturnOptionsChange(options) {
-    this.dispatch(updateReturnOptions(options));
+  valid() {
+    const model = new Model(this.props.publish);
+    model.assignment.validOptions(error => this.setState({ optionsError: error }));
+    this.serviceOptions.valid();
   }
-  sendOptionsValidator() {
-    return this.optionsValidator('sendOptions');
-  }
-  dispatch(excution) {
-    this.props.dispatch(excution);
-  }
-  validSendOptions() {
-    const errors = this.sendOptionsValidator();
-    this.setState({ sendOptionsError: _.isEmpty(errors) ? null : errors[0] });
-  }
-  returnOptionsValidator() {
-    return this.optionsValidator('returnOptions');
-  }
-  validReturnOptions() {
-    const errors = this.returnOptionsValidator();
-    this.setState({ returnOptionsError: _.isEmpty(errors) ? null : errors[0] });
-  }
-  validateAll() {
-    this.validSendOptions();
-    this.validReturnOptions();
-    // TODO: options
-    const { returnOptions } = this.props.publish;
-    if (_.includes(returnOptions, '1')) {
-      this.returnOptions.valid();
+  isValid() {
+    const { assignment } = new Model(this.props.publish);
+    const isAssignmentValid = assignment.isOptionsValid();
+    if (assignment.isRequiredAddress) {
+      return isAssignmentValid && assignment.isAddressesValid();
     }
-    this.inputContact.valid();
-  }
-  isAllValid() {
-    const isSendOptionsValid = _.isEmpty(this.sendOptionsValidator());
-    const isReturnOptionsValid = _.isEmpty(this.returnOptionsValidator());
-    // TODO: options
-    const { returnOptions } = this.props.publish;
-    if (_.includes(returnOptions, '1')) {
-      const { returnAddresses } = this.props.publish;
-      if (_.isEmpty(returnAddresses.join(''))) {
-        return false;
-      }
-    }
-    return isSendOptionsValid && isReturnOptionsValid;
-  }
-  optionsValidator(name) {
-    const { publish } = this.props;
-    return _.isEmpty(publish[name]) ? ['至少需選一項'] : [];
-  }
-  needContact() {
-    const { returnOptions } = this.props.publish;
-    const allowReturnSeven = _.includes(returnOptions, '2');
-    const allowReturnMail = _.includes(returnOptions, '1');
-    return allowReturnSeven || allowReturnMail;
+    return isAssignmentValid;
   }
   render() {
-    const { publish } = this.props;
-    const nextStepProps = {
-      onNext: this.constructor.saveAndNext,
-      onValid: this.validateAll,
-      isDisabled: !this.isAllValid(),
-    };
-    const shipBeforeStartDaysOptions = [1, 2, 3, 4, 5, 6, 7].map(n =>
-      ({ value: n, text: `使用的前${n}天內到貨` }),
-    );
+    const { publish, dispatch } = this.props;
+    const model = new Model(publish, dispatch);
+    const { optionsError } = this.state;
     return (
       <div styleName="container">
-        <TitleWrapper>{DELIVERY}</TitleWrapper>
-        <FormGroup headerText="寄件日期">
+        <TitleWrapper>{TITLE.DELIVERY}</TitleWrapper>
+        <FormGroup headerText="提前預約天數">
           <InputSelection
-            options={shipBeforeStartDaysOptions}
-            value={1}
-            onSelect={this.onShipDaysChange}
+            options={model.appointmentPrior.options}
+            onSelect={this.onPriorChange}
+            value={model.appointmentPrior.value}
           />
         </FormGroup>
-        <IntervalLine marginBottom={20} color="#888" />
-        <FormGroup headerText="提供的寄件方式" multiple large>
-          <DeliveryOptions
-            onChange={this.onSendOptionsChange}
-            options={publish.sendOptions}
-          />
-          {this.state.sendOptionsError &&
-            <AlertPanel message={this.state.sendOptionsError} />
-          }
-        </FormGroup>
-        <IntervalLine marginBottom={20} color="#888" />
-        <FormGroup headerText="接受的寄還方式" multiple large>
-          <DeliveryOptions
-            ref={deopt => (this.returnOptions = deopt)}
-            onChange={this.onReturnOptionsChange}
-            options={publish.returnOptions}
-            requireAddress
+        <IntervalLine marginBottom={20} />
+        <FormGroup headerText="可提供的服務方式" multiple large>
+          <ServiceOptions
+            ref={options => (this.serviceOptions = options)}
+            onChange={this.onAssignmentChange}
+            assignment={model.assignment}
             cities={this.props.cities}
             dispatch={this.props.dispatch}
-            returnAddresses={publish.returnAddresses}
           />
-          {this.state.returnOptionsError &&
-            <AlertPanel message={this.state.returnOptionsError} />
-          }
+          {optionsError && <AlertPanel message={optionsError} /> }
         </FormGroup>
-        <IntervalLine marginBottom={20} color="#888" />
-        <FormGroup
-          headerText="收件人資訊"
-          helperText="為保護您的個資，您的聯絡資訊只有在您同意預訂單後才會提供給使用人喔！"
-          large
-        >
-          <Contact
-            ref={ic => (this.inputContact = ic)}
-            name={publish.contactName}
-            phone={publish.contactPhone}
-            disabled={!this.needContact()}
-            dispatch={this.props.dispatch}
-          />
-        </FormGroup>
-        <IntervalLine marginBottom={20} color="#888" />
-        <NextStep {...nextStepProps} />
+        <NextStep
+          {...{
+            onNext: this.constructor.saveAndNext,
+            onValid: this.valid,
+            isDisabled: !this.isValid(),
+          }}
+        />
       </div>
     );
   }

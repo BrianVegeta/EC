@@ -8,6 +8,11 @@ import {
   PUBLISH_TAGS_UPDATE,
   PUBLISH_CATEGORY_UPDATE,
 
+  // STEP3 DELIVERY
+  PUBLISH_APPOINTMENT_PRIOR_UPDATE, // @@service
+  PUBLISH_ASSIGNMENT_OPTIONS_UPDATE, // @@service
+  PUBLISH_ASSIGN_CITYAREA_UPDATE, // @@service
+  PUBLISH_ASSIGN_ADDRESS_UPDATE, // @@service
   PUBLISH_SHIP_DAYS_UPDATE,
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
@@ -15,7 +20,8 @@ import {
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
   PUBLISH_CONTACT_NAME_UPDATE,
   PUBLISH_CONTACT_PHONE_UPDATE,
-
+  // STEP 4 PRICE
+  PUBLISH_CHARGE_TYPE_UPDATE, // @@service
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_OVERDUE_POLICY_UPDATE,
@@ -69,6 +75,27 @@ export const getCategoryFromId = (categoryId, categories) => {
   return { parentCategory, category };
 };
 
+
+// STEP 3 DELIVERY
+// For service (the days before make a reservation)
+export const updateAppointmentRrior = days => ({
+  type: PUBLISH_APPOINTMENT_PRIOR_UPDATE,
+  days,
+});
+export const updateAssignmentOptions = options => ({
+  type: PUBLISH_ASSIGNMENT_OPTIONS_UPDATE,
+  options,
+});
+export const updateAssignCityarea = (city, area) => ({
+  type: PUBLISH_ASSIGN_CITYAREA_UPDATE,
+  city,
+  area,
+});
+export const updateAssignAddress = address => ({
+  type: PUBLISH_ASSIGN_ADDRESS_UPDATE,
+  address,
+});
+
 export const updateShipBeforeStartDays = shipBeforeStartDays => ({
   type: PUBLISH_SHIP_DAYS_UPDATE,
   shipBeforeStartDays,
@@ -96,18 +123,22 @@ export const updateReturnAddressDetail = detail => ({
   type: PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
   detail,
 });
-// contact name
+// @@ goods
 export const updateContactName = name => ({
   type: PUBLISH_CONTACT_NAME_UPDATE,
   name,
 });
-// contact phone
+// @@ goods
 export const updateContactPhone = phone => ({
   type: PUBLISH_CONTACT_PHONE_UPDATE,
   phone,
 });
 
 // STEP4 price settings
+export const updateChargeType = chargeType => ({
+  type: PUBLISH_CHARGE_TYPE_UPDATE,
+  chargeType,
+});
 export const updatePrice = price => ({
   type: PUBLISH_PRICE_UPDATE,
   price,

@@ -17,7 +17,7 @@ export default (routesHelper, dispatch) => ({
     getComponent(_nextState, callback) {
       require.ensure([], (require) => {
         callback(null, { formComponent: require('./Step1_Cover/Container').default });
-      }, 'r-g-1');
+      }, 'r-s-1');
     },
   },
   onEnter: () => {
@@ -30,7 +30,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step2_About/Container').default });
-        }, 'r-g-2');
+        }, 'r-s-2');
       },
       onEnter: () => dispatch(fetchCategories()),
     },
@@ -39,7 +39,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step3_Delivery/Container').default });
-        }, 'r-g-3');
+        }, 'r-s-3');
       },
     },
     {
@@ -47,7 +47,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step4_Price/Container').default });
-        }, 'r-g-4');
+        }, 'r-s-4');
       },
     },
     {
@@ -55,7 +55,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step5_Regulation/Container').default });
-        }, 'r-g-5');
+        }, 'r-s-5');
       },
     },
     {
@@ -63,7 +63,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step6_CancelPolicy/Container').default });
-        }, 'r-g-6');
+        }, 'r-s-6');
       },
     },
     {
@@ -71,7 +71,7 @@ export default (routesHelper, dispatch) => ({
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Step7_Confirm/Container').default });
-        }, 'r-g-7');
+        }, 'r-s-7');
       },
     },
   ],

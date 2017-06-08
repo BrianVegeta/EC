@@ -14,17 +14,21 @@ import {
   AlertPanel,
   NextStep,
 } from '../../components';
+import InputRadio from '../../components/InputRadio';
+import TooltipHelp from '../../components/TooltipHelp';
+import Tooltip from '../../components/Tooltip';
 import OverduePolicy from '../../components/OverduePolicy';
 import {
-  updatePrice,
+  updateChargeType,
   updateDeposit,
-  updateMinLeaseDays,
   updateOverduePolicy,
   updateDiscounts,
 } from '../../../../actions/publishActions';
-import constraints, { numberNotInRage } from './constraints';
-import { PATH, TITLE } from '../../constants';
+import { PATH, TITLE } from '../constants';
 import * as DIMESIONS from '../../../../constants/dimesions';
+import Model from '../Model';
+import ChargeType from './ChargeType';
+import Dates from './Dates';
 
 
 const PRICE_LABEL = '租金';
@@ -54,34 +58,19 @@ class PriceContainer extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.onPriceChange = this.onPriceChange.bind(this);
-    this.onDepositChange = this.onDepositChange.bind(this);
-    this.onMinLeaseDayChange = this.onMinLeaseDayChange.bind(this);
     this.onDiscountsChange = this.onDiscountsChange.bind(this);
-
     this.validateAll = this.validateAll.bind(this);
     this.onActiveOverdue = this.onActiveOverdue.bind(this);
-
-    this.priceValidator = this.priceValidator.bind(this);
-    this.depositValidator = this.depositValidator.bind(this);
     this.onOverdueChange = this.onOverdueChange.bind(this);
-    this.minLeaseDaysValidator = this.minLeaseDaysValidator.bind(this);
     this.state = {
       isOverdueActivating: false,
       discounts: null,
     };
-  }
-  onPriceChange(value) {
-    this.props.dispatch(updatePrice(value));
-  }
-  onDepositChange(value) {
-    this.props.dispatch(updateDeposit(value));
+
+    this.changeChargeType = this.changeChargeType.bind(this);
   }
   onOverdueChange(value) {
     this.props.dispatch(updateOverduePolicy(value));
-  }
-  onMinLeaseDayChange(value) {
-    this.props.dispatch(updateMinLeaseDays(value));
   }
   onActiveOverdue(checked) {
     this.setState({ isOverdueActivating: checked });
@@ -94,34 +83,20 @@ class PriceContainer extends React.Component {
   validateAll() {
     const isPriceValid = this.priceInput.valid();
     const isDepositValid = this.depositInput.valid();
-    this.minLeaseDaysInput.valid();
     if (isPriceValid && isDepositValid) {
       this.totalValid();
     }
     this.discounts.valid();
   }
   isAllValid() {
-    const isPriceValid = _.isEmpty(this.priceValidator());
-    const isDepositValid = _.isEmpty(this.depositValidator());
-    const isMinLeaseDaysValid = _.isEmpty(this.minLeaseDaysValidator());
+    const isPriceValid = false;
+    const isDepositValid = false;
     const totalErrors = (isPriceValid && isDepositValid) ? this.totalValidator() : null;
     const isDiscountsValid = this.isDiscountsValid();
     return isPriceValid &&
       isDepositValid &&
-      isMinLeaseDaysValid &&
       _.isEmpty(totalErrors) &&
       isDiscountsValid;
-  }
-  validator(name) {
-    const { publish } = this.props;
-    return validate.single(publish[name], constraints[name]);
-  }
-  priceValidator() {
-    return this.validator('price');
-  }
-  depositValidator() {
-    validate.validators.numberNotInRage = numberNotInRage;
-    return this.validator('deposit');
   }
   totalValidator() {
     const { price, deposit } = this.props.publish;
@@ -141,36 +116,15 @@ class PriceContainer extends React.Component {
     ).length <= 0;
     return isDuplcateValid && isAllPresence;
   }
-  minLeaseDaysValidator() {
-    return this.validator('minLeaseDays');
+  changeChargeType(type) {
+    this.props.dispatch(updateChargeType(type));
   }
   render() {
     const { publish } = this.props;
     const { totalError } = this.state;
-    const priceProps = {
-      ref: input => (this.priceInput = input),
-      value: publish.price,
-      onChange: this.onPriceChange,
-      validator: this.priceValidator,
-    };
-    const depositProps = {
-      ref: input => (this.depositInput = input),
-      value: publish.deposit,
-      onChange: this.onDepositChange,
-      validator: this.depositValidator,
-    };
     const overdueProps = {
       deposit: _.isEmpty(publish.deposit) ? 0 : _.parseInt(publish.deposit),
       onChange: this.onOverdueChange,
-    };
-    const minLeaseDaysProps = {
-      ref: input => (this.minLeaseDaysInput = input),
-      value: publish.minLeaseDays,
-      suffix: '天',
-      placeholder: '請輸入',
-      width: DIMESIONS.INPUT_DAYS_COUNTER_WIDTH,
-      onChange: this.onMinLeaseDayChange,
-      validator: this.minLeaseDaysValidator,
     };
     const nextStepProps = {
       onNext: this.constructor.saveAndNext,
@@ -183,24 +137,42 @@ class PriceContainer extends React.Component {
       price: _.parseInt(publish.price),
       ref: dis => (this.discounts = dis),
     };
+    const { dispatch } = this.props;
+    const { chargeType, payment } = new Model(publish, dispatch);
     return (
       <div>
         <TitleWrapper>{TITLE.PRICE}</TitleWrapper>
-        <FormGroup headerText={PRICE_LABEL} helperBottomText={PRICE_HELPER}>
-          <InputCurrencyWithError {...priceProps} />
+        <FormGroup headerText="計費方式" large>
+          <ChargeType
+            {...{
+              chargeType,
+              onChange: this.changeChargeType,
+            }}
+          />
         </FormGroup>
-        <FormGroup headerText={DEPOSIT_LABEL} helperBottomText={DEPOSIT_HELPER}>
-          <InputCurrencyWithError {...depositProps} />
+        <FormGroup headerText="價格">
+          <InputCurrencyWithError
+            {...{
+              ref: input => (this.priceInput = input),
+              value: payment.price,
+              onChange: payment.updatePrice,
+              validator: payment.priceValidator,
+            }}
+          />
         </FormGroup>
-        {totalError && <AlertPanel message={totalError} marginBottom={40} />}
-        <OverduePolicy {...overdueProps} />
-        <FormGroup headerText={MIN_LEASE_DAYS_LABEL} optional>
-          <InputCounterWithError {...minLeaseDaysProps} />
+        <FormGroup headerText="押金">
+          <InputCurrencyWithError
+            {...{
+              ref: input => (this.depositInput = input),
+              value: payment.deposit,
+              onChange: payment.updateDeposit,
+              validator: payment.depositValidator,
+            }}
+          />
         </FormGroup>
-        <BlockFormGroup headerText={DISCOUNTS_LABEL} helperText={DISCOUNTS_HELPER} optional>
-          <DiscountGroup {...discountsProps} />
-        </BlockFormGroup>
-        <NextStep {...nextStepProps} />
+        <FormGroup headerText="活動日期">
+          <Dates />
+        </FormGroup>
       </div>
     );
   }

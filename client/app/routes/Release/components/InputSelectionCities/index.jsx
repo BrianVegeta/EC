@@ -7,7 +7,7 @@ import SelectionButton from '../SelectionButton';
 
 class SelectionCities extends React.Component {
   static defaultProps = {
-    placeholder: '請選擇',
+    placeholder: '城市/地區',
     onBlur: null,
   };
   static propTypes = {

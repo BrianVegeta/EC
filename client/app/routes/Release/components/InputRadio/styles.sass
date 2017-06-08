@@ -1,0 +1,38 @@
+$activeColor: #31ABBA
+$inactiveColor: #999
+
+.radio
+  position: relative
+  cursor: pointer
+  padding-left: 28px
+  display: inline-block
+  color: $inactiveColor
+  &::before
+    content: ''
+    position: absolute
+    left: 0
+    top: 0
+    width: 18px
+    height: 18px
+    border: 2px solid $inactiveColor
+    border-radius: 100%
+    background: #fff
+  input
+    position: absolute
+    left: -999px
+
+.radioChecked
+  &::before
+    border-color: $activeColor
+  &::after
+    content: ''
+    width: 8px
+    height: 8px
+    background: $activeColor
+    position: absolute
+    top: 5px
+    left: 5px
+    border-radius: 100%
+    transition: all 0.2s ease
+    transform: scale(1)
+    opacity: 1
