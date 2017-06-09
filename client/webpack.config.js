@@ -117,11 +117,9 @@ const config = {
           use: [
             {
               loader: 'css-loader',
-              options: {
-                module: true,
-                importLoaders: 1,
-                localIdentName: '[folder]_[local]_[hash:base64:5]',
-              }
+            },
+            {
+              loader: 'sass-loader',
             },
           ]
         }),

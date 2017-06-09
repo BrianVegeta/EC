@@ -22,11 +22,15 @@ import {
   PUBLISH_CONTACT_PHONE_UPDATE,
   // STEP 4 PRICE
   PUBLISH_CHARGE_TYPE_UPDATE, // @@service
+  PUBLISH_START_DATE_UPDATE, // @@sercie
+  PUBLISH_END_DATE_UPDATE, // @@sercies
+  PUBLISH_DATES_RANGE_UPDATE, // @@ service
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_OVERDUE_POLICY_UPDATE,
   PUBLISH_MIN_LEASE_DAYS_UPDATE,
   PUBLISH_DISCOUNTS_UPDATE,
+  PUBLISH_SERVICE_DISCOUNT_UPDATE, // @@sercie
 
 
   PUBLISH_REGULATION_UPDATE,
@@ -139,6 +143,19 @@ export const updateChargeType = chargeType => ({
   type: PUBLISH_CHARGE_TYPE_UPDATE,
   chargeType,
 });
+export const updateStartDate = startDate => ({
+  type: PUBLISH_START_DATE_UPDATE,
+  startDate,
+});
+export const updateEndDate = endDate => ({
+  type: PUBLISH_END_DATE_UPDATE,
+  endDate,
+});
+export const updateDatesRange = (startDate, endDate) => ({
+  type: PUBLISH_DATES_RANGE_UPDATE,
+  startDate,
+  endDate,
+});
 export const updatePrice = price => ({
   type: PUBLISH_PRICE_UPDATE,
   price,
@@ -158,6 +175,10 @@ export const updateMinLeaseDays = minLeaseDays => ({
 export const updateDiscounts = discounts => ({
   type: PUBLISH_DISCOUNTS_UPDATE,
   discounts,
+});
+export const updateServiceDiscount = discount => ({
+  type: PUBLISH_SERVICE_DISCOUNT_UPDATE,
+  discount,
 });
 
 // 守則

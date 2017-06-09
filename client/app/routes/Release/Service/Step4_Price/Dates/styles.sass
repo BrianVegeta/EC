@@ -1,0 +1,18 @@
+$borderColor: #999
+.inputArrows
+  .dateInputArrow
+    cursor: pointer
+    position: absolute
+    margin-top: -9px
+    z-index: 3
+    top: 50%
+    svg
+      fill: $borderColor
+
+.dateinputStartArrow
+  composes: dateInputArrow
+  right: 52%
+
+.dateinputEndArrow
+  composes: dateInputArrow
+  right: 2%

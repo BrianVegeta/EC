@@ -4,6 +4,9 @@ import constraints from './constraints';
 import Assignment from './Assignment';
 import ChargeType from './ChargeType';
 import Payment from './Payment';
+import DatesRange from './DatesRange';
+import Amount from './Amount';
+import ServiceDiscount from './ServiceDiscount';
 
 // 服務獨有
 class AppointmentPrior {
@@ -35,8 +38,12 @@ class ServiceModel {
       props.assignAddress,
       dispatch,
     );
+    // @@ service
     this.chargeType = new ChargeType(props.chargeType, dispatch);
+    this.datesRange = new DatesRange(props.startDate, props.endDate, dispatch);
     this.payment = new Payment(props.price, props.deposit, dispatch);
+    this.amount = new Amount(props.amount, dispatch);
+    this.serviceDiscount = new ServiceDiscount(props.serviceDiscount, props.price, dispatch);
   }
   validator(name, isDeepValue = false) {
     const valueToValid = isDeepValue ? this.props[name].value : this.props[name];

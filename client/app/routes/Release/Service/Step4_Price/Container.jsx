@@ -1,45 +1,28 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import validate from 'validate.js';
+import CSS from 'react-css-modules';
 import numeral from 'numeral';
 import _ from 'lodash';
 import {
   TitleWrapper,
   FormGroup,
-  BlockFormGroup,
   InputCounterWithError,
   InputCurrencyWithError,
   DiscountGroup,
   AlertPanel,
   NextStep,
 } from '../../components';
-import InputRadio from '../../components/InputRadio';
-import TooltipHelp from '../../components/TooltipHelp';
-import Tooltip from '../../components/Tooltip';
-import OverduePolicy from '../../components/OverduePolicy';
 import {
   updateChargeType,
-  updateDeposit,
   updateOverduePolicy,
   updateDiscounts,
 } from '../../../../actions/publishActions';
 import { PATH, TITLE } from '../constants';
-import * as DIMESIONS from '../../../../constants/dimesions';
 import Model from '../Model';
 import ChargeType from './ChargeType';
 import Dates from './Dates';
-
-
-const PRICE_LABEL = '租金';
-const PRICE_HELPER = '如需要運費，請記得加上！';
-const DEPOSIT_LABEL = '押金';
-const DEPOSIT_HELPER = `${DEPOSIT_LABEL}至少需要 NT$ 100 喔！`;
-const TOTLE_PRICE_LIMIT = 99999;
-const TOTAL_ERROR_MSG = `${PRICE_LABEL} + ${DEPOSIT_LABEL}不得超過 ${numeral(TOTLE_PRICE_LIMIT).format('$0,000')}`;
-const MIN_LEASE_DAYS_LABEL = '至少租借天數';
-const DISCOUNTS_LABEL = '設定優惠價';
-const DISCOUNTS_HELPER = '優惠價能吸引更多人前來預訂喔';
+import styles from './styles.sass';
 
 class PriceContainer extends React.Component {
   static saveAndNext() {
@@ -120,25 +103,14 @@ class PriceContainer extends React.Component {
     this.props.dispatch(updateChargeType(type));
   }
   render() {
-    const { publish } = this.props;
-    const { totalError } = this.state;
-    const overdueProps = {
-      deposit: _.isEmpty(publish.deposit) ? 0 : _.parseInt(publish.deposit),
-      onChange: this.onOverdueChange,
-    };
-    const nextStepProps = {
-      onNext: this.constructor.saveAndNext,
-      onValid: this.validateAll,
-      isDisabled: !this.isAllValid(),
-    };
-    const discountsProps = {
-      discounts: publish.discounts,
-      onChange: this.onDiscountsChange,
-      price: _.parseInt(publish.price),
-      ref: dis => (this.discounts = dis),
-    };
-    const { dispatch } = this.props;
-    const { chargeType, payment } = new Model(publish, dispatch);
+    const { publish, dispatch } = this.props;
+    const {
+      chargeType,
+      payment,
+      datesRange,
+      amount,
+      serviceDiscount,
+    } = new Model(publish, dispatch);
     return (
       <div>
         <TitleWrapper>{TITLE.PRICE}</TitleWrapper>
@@ -170,9 +142,64 @@ class PriceContainer extends React.Component {
             }}
           />
         </FormGroup>
-        <FormGroup headerText="活動日期">
-          <Dates />
+        <FormGroup headerText="">
+          {!payment.isTotalPayValid &&
+            <AlertPanel message={payment.totalPayValidator()[0]} />
+          }
         </FormGroup>
+        <div className="clear">
+          <div styleName="datesRange">
+            <FormGroup headerText="活動日期">
+              <Dates
+                startDate={datesRange.startDate}
+                endDate={datesRange.endDate}
+                onDatesChange={datesRange.updateDatesRange}
+              />
+            </FormGroup>
+          </div>
+          <div styleName="amountLimit">
+            <FormGroup headerText="設定人數上限">
+              <InputCounterWithError
+                {...{
+                  ref: input => (this.amountInput = input),
+                  value: amount.value,
+                  suffix: '人',
+                  placeholder: '請輸入',
+                  width: amount.inputWidth,
+                  min: amount.inputMin,
+                  max: amount.inputMax,
+                  onChange: amount.updateAmount,
+                  validator: amount.amountValidator,
+                }}
+              />
+            </FormGroup>
+          </div>
+        </div>
+        <FormGroup
+          headerText={'設定優惠價'}
+          helperText={'優惠價能吸引更多人前來預訂'}
+          large
+          optional
+          topLine
+        >
+          <div styleName="discount">
+            <InputCurrencyWithError
+              {...{
+                ref: input => (this.discount = input),
+                value: serviceDiscount.value,
+                onChange: serviceDiscount.update,
+                validator: serviceDiscount.validator,
+              }}
+            />
+          </div>
+        </FormGroup>
+        <NextStep
+          {...{
+            onNext: this.constructor.saveAndNext,
+            onValid: this.validateAll,
+            isDisabled: !this.isAllValid(),
+          }}
+        />
       </div>
     );
   }
@@ -182,4 +209,4 @@ const mapStateToProps = (state) => {
   const { environment, routesHelper, publish } = state;
   return ({ environment, routesHelper, publish });
 };
-export default connect(mapStateToProps)(PriceContainer);
+export default connect(mapStateToProps)(CSS(PriceContainer, styles));

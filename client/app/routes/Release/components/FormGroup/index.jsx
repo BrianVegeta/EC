@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import IntervalLine from '../IntervalLine';
 
 const cx = classnames.bind(styles);
 const defaultProps = {
@@ -13,6 +14,7 @@ const defaultProps = {
   large: false,
   groupStyle: {},
   headerTextStyle: {},
+  topLine: false,
 };
 const propTypes = {
   large: PropTypes.bool,
@@ -25,9 +27,11 @@ const propTypes = {
   children: PropTypes.node.isRequired,
   groupStyle: PropTypes.object.isRequired,
   headerTextStyle: PropTypes.object.isRequired,
+  topLine: PropTypes.bool,
 };
 const InputField = props => (
   <div styleName="inputGroup" style={props.groupStyle}>
+    { props.topLine && <IntervalLine marginBottom={10} /> }
     <div className={cx('inputHeader', { inputHeaderLarge: props.large })}>
       <div style={props.headerTextStyle}>
         {props.headerText}

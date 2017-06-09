@@ -12,8 +12,7 @@ export const numberNotInRage = (value, options) => {
   }
   return null;
 };
-
-export default {
+export const constrainter = (price = PRICE_MAX) => ({
   title: {
     presence: {
       message: '^此欄位必填',
@@ -82,6 +81,14 @@ export default {
       notLessThanOrEqualTo: `^請小於 ${numeral(PRICE_MAX).format('$0,000')}`,
     },
   },
+  totalPay: {
+    numericality: {
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      lessThanOrEqualTo: PRICE_MAX,
+      notLessThanOrEqualTo: `總額不得超過 ${numeral(PRICE_MAX).format('$0,000')}`,
+    },
+  },
   minLeaseDays: {
     presence: {
       message: '^此欄位必填',
@@ -95,4 +102,15 @@ export default {
       notGreaterThanOrEqualTo: '^最少1天',
     },
   },
-};
+  serviceDiscount: {
+    numericality: {
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      lessThanOrEqualTo: _.parseInt(price),
+      notLessThanOrEqualTo: '^不能超過',
+      greaterThanOrEqualTo: 1,
+      notGreaterThanOrEqualTo: '^最低1元或不填',
+    },
+  },
+});
+export default constrainter();

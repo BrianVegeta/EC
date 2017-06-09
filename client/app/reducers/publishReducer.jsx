@@ -23,6 +23,7 @@ import {
   PUBLISH_ASSIGNMENT_OPTIONS_UPDATE, // @@service
   PUBLISH_ASSIGN_CITYAREA_UPDATE, // @@service
   PUBLISH_ASSIGN_ADDRESS_UPDATE, // @@service
+  PUBLISH_DATES_RANGE_UPDATE, // @@ service
   PUBLISH_SHIP_DAYS_UPDATE,
   PUBLISH_SEND_OPTIONS_UPDATE,
   PUBLISH_RETURN_OPTIONS_UPDATE,
@@ -30,8 +31,11 @@ import {
   PUBLISH_RETURN_ADDRESS_UPDATE_DETAIL,
   PUBLISH_CONTACT_NAME_UPDATE,
   PUBLISH_CONTACT_PHONE_UPDATE,
-
+  PUBLISH_SERVICE_DISCOUNT_UPDATE, // @@ service
+  // STEP4 PRICE
   PUBLISH_CHARGE_TYPE_UPDATE, // @@service
+  PUBLISH_START_DATE_UPDATE,
+  PUBLISH_END_DATE_UPDATE,
   PUBLISH_PRICE_UPDATE,
   PUBLISH_DEPOSIT_UPDATE,
   PUBLISH_OVERDUE_POLICY_UPDATE,
@@ -65,6 +69,8 @@ const initialState = {
   assignAddress: '', // @@service
   // STEP 4 PRICE
   chargeType: '', // @@service
+  startDate: null, // momentObj @@service
+  endDate: null, // momentObj @@service
   shipBeforeStartDays: 1,
   sendOptions: '',
   returnOptions: '',
@@ -79,6 +85,7 @@ const initialState = {
   overduePercentagePerDay: 0, // %
   minLeaseDays: null,
   discounts: [], // { offer, days }
+  serviceDiscount: null,
 
   // regulation
   regulation: '',
@@ -215,6 +222,17 @@ export default (state = initialState, action) => {
     case PUBLISH_CHARGE_TYPE_UPDATE:
       return updateState(state, 'chargeType', action.chargeType);
 
+    case PUBLISH_START_DATE_UPDATE:
+      return updateState(state, 'startDate', action.startDate);
+
+    case PUBLISH_END_DATE_UPDATE:
+      return updateState(state, 'endDate', action.endDate);
+
+    case PUBLISH_DATES_RANGE_UPDATE: {
+      const { startDate, endDate } = action;
+      return Object.assign({}, state, { startDate, endDate });
+    }
+
     case PUBLISH_PRICE_UPDATE:
       return Object.assign({}, state, { price: action.price });
 
@@ -229,6 +247,9 @@ export default (state = initialState, action) => {
 
     case PUBLISH_DISCOUNTS_UPDATE:
       return Object.assign({}, state, { discounts: action.discounts });
+
+    case PUBLISH_SERVICE_DISCOUNT_UPDATE:
+      return updateState(state, 'serviceDiscount', action.discount);
 
     case PUBLISH_REGULATION_UPDATE:
       return Object.assign({}, state, { regulation: action.regulation });
