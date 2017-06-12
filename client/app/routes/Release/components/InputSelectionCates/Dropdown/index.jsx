@@ -8,10 +8,12 @@ import styles from './styles.sass';
 class Dropdown extends React.Component {
   static defaultProps = {
     categories: null,
+    singleLevel: false,
   };
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
     onSelect: PropTypes.func.isRequired,
+    singleLevel: PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -33,7 +35,22 @@ class Dropdown extends React.Component {
     const find = _.find(this.props.categories, { text });
     return (find ? find.subcates : []);
   }
-  render() {
+  renderSingleLevel() {
+    const { categories } = this.props;
+    return (
+      <div styleName="dropdown">
+        <div styleName="dropdownInner">
+          <Panel
+            {...{
+              categories,
+              onSelect: this.onRightPanelSelect,
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+  renderTwoLevel() {
     const { tracks } = this.state;
     const { categories } = this.props;
     const panelLeftProps = {
@@ -62,6 +79,10 @@ class Dropdown extends React.Component {
         </div>
       </div>
     );
+  }
+  render() {
+    const { singleLevel } = this.props;
+    return singleLevel ? this.renderSingleLevel() : this.renderTwoLevel();
   }
 }
 
