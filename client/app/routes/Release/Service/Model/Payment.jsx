@@ -12,7 +12,6 @@ class Payment {
     this.price = price;
     this.deposit = deposit;
     this.totalPay = this.calTotalPay();
-    console.log(this.totalPay);
     this.priceValidator = this.priceValidator.bind(this);
     this.updatePrice = this.updatePrice.bind(this);
     this.depositValidator = this.depositValidator.bind(this);

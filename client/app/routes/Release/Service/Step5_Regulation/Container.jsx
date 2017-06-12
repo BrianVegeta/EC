@@ -8,10 +8,8 @@ import {
   InputTextareaWithError,
   NextStep,
 } from '../../components';
-import {
-  updateRegulation,
-} from '../../../../actions/publishActions';
-import { PATH, TITLE } from '../../constants';
+import { PATH, TITLE } from '../constants';
+import Model from '../Model';
 
 class RegulationContainer extends React.Component {
   static propTypes = {
@@ -30,45 +28,38 @@ class RegulationContainer extends React.Component {
   }
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
-
-    this.validateAll = this.validateAll.bind(this);
-    this.regulationValidator = this.regulationValidator.bind(this);
+    this.validate = this.validate.bind(this);
   }
-  validateAll() {
+  validate() {
     this.regulationInput.valid();
   }
-  hasErrors() {
-    return false;
-  }
-  regulationValidator() {
-    return [];
-  }
-  onChange(value) {
-    this.props.dispatch(
-      updateRegulation(value),
-    );
+  isValid() {
+    const { publish, dispatch } = this.props;
+    const { regulation } = new Model(publish, dispatch);
+    return regulation.isValid();
   }
   render() {
-    const { publish } = this.props;
-    const inputProps = {
-      ref: input => (this.regulationInput = input),
-      value: publish.regulation,
-      placeholder: '清楚敘述您希望享用人能遵守的內容，以確保交易順利',
-      onChange: this.onChange,
-      minHeight: 250,
-      validator: this.regulationValidator,
-    };
+    const { publish, dispatch } = this.props;
+    const { regulation } = new Model(publish, dispatch);
     return (
       <div styleName="container">
         <TitleWrapper optional>{TITLE.REGULATION}</TitleWrapper>
         <div styleName="formGroup">
-          <InputTextareaWithError {...inputProps} />
+          <InputTextareaWithError
+            {...{
+              ref: input => (this.regulationInput = input),
+              value: regulation.value,
+              placeholder: '清楚敘述您希望享用人能遵守的內容，以確保交易順利',
+              onChange: regulation.update,
+              minHeight: 250,
+              validator: regulation.validator,
+            }}
+          />
         </div>
         <NextStep
           onNext={this.constructor.saveAndNext}
-          onValid={this.validateAll}
-          isDisabled={!!this.hasErrors()}
+          onValid={this.validate}
+          isDisabled={!this.isValid()}
         />
       </div>
     );

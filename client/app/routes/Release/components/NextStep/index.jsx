@@ -36,6 +36,7 @@ class NextStep extends React.Component {
     }
   }
   onDisabledClick() {
+    console.log('disable click');
     this.props.onValid();
   }
   onReadyClick() {

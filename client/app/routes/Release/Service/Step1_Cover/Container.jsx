@@ -8,7 +8,7 @@ import styles from './styles.sass';
 import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
 import { checkThumbsAndUpload } from '../../../../actions/publishThumbsActions';
-import { TITLE, COVER, PATH } from '../../constants';
+import { TITLE, COVER, PATH } from '../constants';
 import {
   TitleWrapper,
   IntervalLine,

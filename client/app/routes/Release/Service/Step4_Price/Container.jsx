@@ -2,27 +2,19 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import CSS from 'react-css-modules';
-import numeral from 'numeral';
-import _ from 'lodash';
+import styles from './styles.sass';
 import {
   TitleWrapper,
   FormGroup,
   InputCounterWithError,
   InputCurrencyWithError,
-  DiscountGroup,
   AlertPanel,
   NextStep,
 } from '../../components';
-import {
-  updateChargeType,
-  updateOverduePolicy,
-  updateDiscounts,
-} from '../../../../actions/publishActions';
 import { PATH, TITLE } from '../constants';
 import Model from '../Model';
 import ChargeType from './ChargeType';
-import Dates from './Dates';
-import styles from './styles.sass';
+import DatesWithError from './DatesWithError';
 
 class PriceContainer extends React.Component {
   static saveAndNext() {
@@ -41,68 +33,20 @@ class PriceContainer extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.onDiscountsChange = this.onDiscountsChange.bind(this);
-    this.validateAll = this.validateAll.bind(this);
-    this.onActiveOverdue = this.onActiveOverdue.bind(this);
-    this.onOverdueChange = this.onOverdueChange.bind(this);
-    this.state = {
-      isOverdueActivating: false,
-      discounts: null,
-    };
-
-    this.changeChargeType = this.changeChargeType.bind(this);
+    this.valid = this.valid.bind(this);
   }
-  onOverdueChange(value) {
-    this.props.dispatch(updateOverduePolicy(value));
-  }
-  onActiveOverdue(checked) {
-    this.setState({ isOverdueActivating: checked });
-  }
-  onDiscountsChange(discounts) {
-    this.props.dispatch(
-      updateDiscounts(discounts),
-    );
-  }
-  validateAll() {
-    const isPriceValid = this.priceInput.valid();
-    const isDepositValid = this.depositInput.valid();
-    if (isPriceValid && isDepositValid) {
-      this.totalValid();
+  valid() {
+    this.priceInput.valid();
+    this.depositInput.valid();
+    const { publish, dispatch } = this.props;
+    const { chargeType } = new Model(publish, dispatch);
+    if (chargeType.is('fix')) {
+      this.datesRangeInput.valid();
+      this.amountInput.valid();
     }
-    this.discounts.valid();
+    this.discountInput.valid();
   }
-  isAllValid() {
-    const isPriceValid = false;
-    const isDepositValid = false;
-    const totalErrors = (isPriceValid && isDepositValid) ? this.totalValidator() : null;
-    const isDiscountsValid = this.isDiscountsValid();
-    return isPriceValid &&
-      isDepositValid &&
-      _.isEmpty(totalErrors) &&
-      isDiscountsValid;
-  }
-  totalValidator() {
-    const { price, deposit } = this.props.publish;
-    const numbericPrice = _.parseInt(price);
-    const numbericDeposit = _.parseInt(deposit);
-    return (numbericPrice + numbericDeposit) > TOTLE_PRICE_LIMIT ? [TOTAL_ERROR_MSG] : [];
-  }
-  totalValid() {
-    const errors = this.totalValidator();
-    this.setState({ totalError: (_.isEmpty(errors) ? null : errors[0]) });
-  }
-  isDiscountsValid() {
-    const { discounts } = this.props.publish;
-    const isDuplcateValid = !DiscountGroup.isDuplicate(discounts);
-    const isAllPresence = _.filter(discounts, discount =>
-      !discount.days || !discount.offer,
-    ).length <= 0;
-    return isDuplcateValid && isAllPresence;
-  }
-  changeChargeType(type) {
-    this.props.dispatch(updateChargeType(type));
-  }
-  render() {
+  isValid() {
     const { publish, dispatch } = this.props;
     const {
       chargeType,
@@ -111,17 +55,62 @@ class PriceContainer extends React.Component {
       amount,
       serviceDiscount,
     } = new Model(publish, dispatch);
+    const isChargeTypeValid = chargeType.isChoosed;
+    const isPriceValid = payment.isPriceValid();
+    const isDepositValid = payment.isDepositValid();
+    const isDatesValid = chargeType.is('fix') ? datesRange.isValid() : true;
+    const isAmountValid = chargeType.is('fix') ? amount.isValid() : true;
+    const isServiceDiscount = serviceDiscount.isValid();
+    return isChargeTypeValid &&
+      isPriceValid &&
+      isDepositValid &&
+      isDatesValid &&
+      isAmountValid &&
+      isServiceDiscount;
+  }
+  renderFixExtraInput(model) {
+    const { datesRange, amount } = model;
+    return (
+      <div className="clear">
+        <div styleName="datesRange">
+          <FormGroup headerText="活動日期">
+            <DatesWithError
+              ref={dates => (this.datesRangeInput = dates)}
+              startDate={datesRange.startDate}
+              endDate={datesRange.endDate}
+              onDatesChange={datesRange.updateDatesRange}
+              validator={datesRange.validator}
+            />
+          </FormGroup>
+        </div>
+        <div styleName="amountLimit">
+          <FormGroup headerText="設定人數上限">
+            <InputCounterWithError
+              {...{
+                ref: input => (this.amountInput = input),
+                value: amount.value,
+                suffix: '人',
+                placeholder: '請輸入',
+                width: amount.inputWidth,
+                min: amount.inputMin,
+                max: amount.inputMax,
+                onChange: amount.updateAmount,
+                validator: amount.amountValidator,
+              }}
+            />
+          </FormGroup>
+        </div>
+      </div>
+    );
+  }
+  renderAfterChoosed(model) {
+    const {
+      chargeType,
+      payment,
+      serviceDiscount,
+    } = model;
     return (
       <div>
-        <TitleWrapper>{TITLE.PRICE}</TitleWrapper>
-        <FormGroup headerText="計費方式" large>
-          <ChargeType
-            {...{
-              chargeType,
-              onChange: this.changeChargeType,
-            }}
-          />
-        </FormGroup>
         <FormGroup headerText="價格">
           <InputCurrencyWithError
             {...{
@@ -147,34 +136,7 @@ class PriceContainer extends React.Component {
             <AlertPanel message={payment.totalPayValidator()[0]} />
           }
         </FormGroup>
-        <div className="clear">
-          <div styleName="datesRange">
-            <FormGroup headerText="活動日期">
-              <Dates
-                startDate={datesRange.startDate}
-                endDate={datesRange.endDate}
-                onDatesChange={datesRange.updateDatesRange}
-              />
-            </FormGroup>
-          </div>
-          <div styleName="amountLimit">
-            <FormGroup headerText="設定人數上限">
-              <InputCounterWithError
-                {...{
-                  ref: input => (this.amountInput = input),
-                  value: amount.value,
-                  suffix: '人',
-                  placeholder: '請輸入',
-                  width: amount.inputWidth,
-                  min: amount.inputMin,
-                  max: amount.inputMax,
-                  onChange: amount.updateAmount,
-                  validator: amount.amountValidator,
-                }}
-              />
-            </FormGroup>
-          </div>
-        </div>
+        { chargeType.is('fix') && this.renderFixExtraInput(model) }
         <FormGroup
           headerText={'設定優惠價'}
           helperText={'優惠價能吸引更多人前來預訂'}
@@ -185,7 +147,7 @@ class PriceContainer extends React.Component {
           <div styleName="discount">
             <InputCurrencyWithError
               {...{
-                ref: input => (this.discount = input),
+                ref: input => (this.discountInput = input),
                 value: serviceDiscount.value,
                 onChange: serviceDiscount.update,
                 validator: serviceDiscount.validator,
@@ -196,10 +158,25 @@ class PriceContainer extends React.Component {
         <NextStep
           {...{
             onNext: this.constructor.saveAndNext,
-            onValid: this.validateAll,
-            isDisabled: !this.isAllValid(),
+            onValid: this.valid,
+            isDisabled: !this.isValid(),
           }}
         />
+      </div>
+    );
+  }
+
+  render() {
+    const { publish, dispatch } = this.props;
+    const model = new Model(publish, dispatch);
+    const { chargeType } = model;
+    return (
+      <div>
+        <TitleWrapper>{TITLE.PRICE}</TitleWrapper>
+        <FormGroup headerText="計費方式" large>
+          <ChargeType {...{ chargeType }} />
+        </FormGroup>
+        { chargeType.isChoosed && this.renderAfterChoosed(model) }
       </div>
     );
   }

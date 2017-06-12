@@ -30,7 +30,7 @@ class Amount {
     return validate.single(this.value, constraints.amount);
   }
   isValid() {
-    return _.isEmpty(this.valueValidator());
+    return _.isEmpty(this.amountValidator());
   }
 }
 export default Amount;

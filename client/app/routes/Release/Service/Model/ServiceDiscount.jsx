@@ -10,7 +10,7 @@ class ServiceDiscount {
     this.dispatch = dispatch;
     this.validator = this.validator.bind(this);
     this.update = this.update.bind(this);
-    this.isValid = this.isValid();
+    this.isSettedUp = !_.isEmpty(this.value);
   }
   update(value) {
     this.dispatch(

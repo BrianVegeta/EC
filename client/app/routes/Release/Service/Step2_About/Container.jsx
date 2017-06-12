@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import classnames from 'classnames/bind';
-import _ from 'lodash';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import FormGroup from '../../components/FormGroup';
 import InputTags from '../../components/InputTags';
-import { TITLE, ABOUT, PATH } from '../constants';
+import { TITLE, PATH } from '../constants';
 import {
+  FormGroup,
   TitleWrapper,
   InputTextWithError,
   InputTextareaWithError,
@@ -18,14 +17,6 @@ import {
   AlertPanel,
   NextStep,
 } from '../../components';
-import {
-  updateTitle,
-  updateDesc,
-  updateCityArea,
-  updateTags,
-  updateCategory,
-} from '../../../../actions/publishActions';
-import { fetchZones, fetchCities } from '../../../../actions/addressActions';
 import Model from '../Model';
 
 
@@ -51,53 +42,29 @@ class Container extends React.Component {
     }).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
-  static renderLimiter(limiter, limit) {
+  static renderLimiter(limiter) {
     return (
       <span>
         <span className={classbindings({ limitError: limiter.isOverLimit })}>
           {limiter.length}
-        </span>/{limit}
+        </span>/{limiter.limit}
       </span>
     );
   }
   constructor(props) {
     super(props);
-    this.onTitleChange = this.onTitleChange.bind(this);
-    this.onDescChange = this.onDescChange.bind(this);
-    this.onCitiesChange = this.onCitiesChange.bind(this);
-    this.onTagsChange = this.onTagsChange.bind(this);
-    this.onFetchZones = this.onFetchZones.bind(this);
-    this.onCategoryChange = this.onCategoryChange.bind(this);
     this.validateAll = this.validateAll.bind(this);
-    this.state = {
-      tagsError: null,
-    };
+    this.state = { tagsError: null };
   }
   componentDidMount() {
-    this.props.dispatch(fetchCities());
-  }
-  onDescChange(value) {
-    this.props.dispatch(updateDesc(value));
-  }
-  onFetchZones(cityName) {
-    this.props.dispatch(fetchZones(cityName));
-  }
-  onCitiesChange(cityName, areaName) {
-    this.props.dispatch(updateCityArea(cityName, areaName));
-  }
-  onTitleChange(value) {
-    this.props.dispatch(updateTitle(value));
-  }
-  onTagsChange(values) {
-    this.props.dispatch(updateTags(values));
-  }
-  onCategoryChange(category) {
-    this.props.dispatch(updateCategory(category.id));
+    const { publish, dispatch } = this.props;
+    const { cityarea } = new Model(publish, dispatch);
+    cityarea.fetchCities();
   }
   validTags() {
-    const { hashtags } = this.props.publish;
-    const tagsError = _.isEmpty(_.compact(hashtags)) ? '至少填一個標籤' : null;
-    this.setState({ tagsError });
+    const { tags } = new Model(this.props.publish, this.props.dispatch);
+    const errors = tags.validator();
+    this.setState({ tagsError: errors[0] });
   }
   validateAll() {
     this.titleInput.valid();
@@ -106,96 +73,102 @@ class Container extends React.Component {
     this.validTags();
     this.categoryInput.valid();
   }
-  render() {
-    const { categories } = this.props.items;
+  isValid() {
     const {
       title,
       descript,
-      city,
-      area,
-      hashtags,
-      categoryId,
-    } = this.props.publish;
+      cityarea,
+      category,
+      tags,
+    } = new Model(this.props.publish, this.props.dispatch);
+    return title.isValid() &&
+      descript.isValid() &&
+      cityarea.isValid() &&
+      category.isValid() &&
+      tags.isValid();
+  }
+  render() {
+    const { categories } = this.props.items;
     const { renderLimiter } = this.constructor;
-    const model = new Model(this.props.publish);
+    const { tagsError } = this.state;
+    const { publish, dispatch } = this.props;
+    const {
+      title,
+      descript,
+      cityarea,
+      category,
+      tags,
+    } = new Model(publish, dispatch);
     return (
       <div styleName="container">
         <TitleWrapper>{TITLE.ABOUT}</TitleWrapper>
-        <FormGroup
-          headerText={ABOUT.TITLE_LABEL}
-          limiter={renderLimiter(title, 30)}
-        >
+        <FormGroup headerText={'服務名稱'} limiter={renderLimiter(title)} >
           <InputTextWithError
             {...{
               ref: input => (this.titleInput = input),
-              placeholder: ABOUT.TITLE_PLACEHOLDER,
-              onChange: this.onTitleChange,
+              placeholder: '請輸入',
+              onChange: title.update,
               value: title.value,
-              validator: model.titleValidator,
+              validator: title.validator,
             }}
           />
         </FormGroup>
-        <FormGroup
-          headerText={ABOUT.DESC_LABEL}
-          limiter={renderLimiter(descript, 250)}
-        >
+        <FormGroup headerText={'服務描述'} limiter={renderLimiter(descript)} >
           <InputTextareaWithError
             {...{
               ref: input => (this.descInput = input),
-              placeholder: ABOUT.DESC_PLACEHOLDER,
-              onChange: this.onDescChange,
+              placeholder: '清楚介紹您的服務，敘述更多吸引人的細節',
+              onChange: descript.update,
               value: descript.value,
-              validator: model.descValidator,
+              validator: descript.validator,
             }}
           />
         </FormGroup>
         <div styleName="group">
           <div styleName="cities">
-            <FormGroup headerText={ABOUT.CITIES_LABEL}>
+            <FormGroup headerText={'服務地區'}>
               <InputSelectionCitiesWithError
                 {...{
                   ref: input => (this.citiesInput = input),
                   cities: this.props.cities,
-                  placeholder: ABOUT.CITIES_PLACEHOLDER,
-                  onSelect: this.onCitiesChange,
-                  onFetchZones: this.onFetchZones,
-                  cityName: city,
-                  areaName: area,
-                  validator: model.citiesValidator,
+                  placeholder: '城市/地區',
+                  onSelect: cityarea.update,
+                  onFetchZones: cityarea.fetchZones,
+                  cityName: cityarea.city,
+                  areaName: cityarea.area,
+                  validator: cityarea.validator,
                 }}
               />
             </FormGroup>
           </div>
         </div>
-        <FormGroup headerText={ABOUT.CATEGORY_LABEL}>
+        <FormGroup headerText={'分類'}>
           <InputSelectionCatesWithError
             {...{
               ref: input => (this.categoryInput = input),
-              categories: categories.goods,
-              categoryId,
-              placeholder: ABOUT.CATEGORY_PLACEHOLDER,
-              onChange: this.onCategoryChange,
-              validator: model.categoryValidator,
+              categories: categories.service,
+              categoryId: category.id,
+              placeholder: '請選擇分類',
+              onChange: category.update,
+              validator: category.validator,
             }}
           />
         </FormGroup>
-        <FormGroup headerText={ABOUT.TAG_LABEL}>
+        <FormGroup headerText={'加入 #標籤'}>
           <InputTags
             {...{
-              placeholder: ABOUT.TAG_PLACEHOLDER,
-              onChange: this.onTagsChange,
-              values: hashtags,
+              placeholder: '標籤',
+              onChange: tags.update,
+              values: tags.hashtags,
             }}
           />
-          {this.state.tagsError &&
-            <AlertPanel message={this.state.tagsError} />
-          }
+          {tagsError && <AlertPanel message={tagsError} />}
         </FormGroup>
         <NextStep
           {...{
             onNext: this.constructor.saveAndNext,
             onValid: this.validateAll,
-            isDisabled: !model.isAboutValid(),
+            isDisabled: !this.isValid(),
           }}
         />
       </div>

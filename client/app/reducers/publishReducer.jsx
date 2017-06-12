@@ -68,7 +68,7 @@ const initialState = {
   assignArea: '', // @@service
   assignAddress: '', // @@service
   // STEP 4 PRICE
-  chargeType: '', // @@service
+  chargeType: null, // @@service
   startDate: null, // momentObj @@service
   endDate: null, // momentObj @@service
   shipBeforeStartDays: 1,

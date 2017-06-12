@@ -19,6 +19,7 @@ class Assignment {
     this.address = address;
     this.isToHomeActive = this.constructor.isOptActive(this.options, DELIVERY_TO_HOME);
     this.isComeToActive = this.constructor.isOptActive(this.options, DELIVERIED);
+    this.optionsText = this.getOptionsText();
     this.fetchZones = this.fetchZones.bind(this);
     this.cityareaValidator = this.cityareaValidator.bind(this);
     this.addressValidator = this.addressValidator.bind(this);
@@ -57,6 +58,12 @@ class Assignment {
       this.isToHomeActive ? DELIVERY_TO_HOME : '',
       this.isComeToActive ? DELIVERIED : '',
     ].join('');
+  }
+  getOptionsText() {
+    return [
+      this.isToHomeActive ? '到府服務' : '',
+      this.isComeToActive ? '顧客親自前往' : '',
+    ].join('、');
   }
   validatorOptions() {
     return validate.single(this.options, constraints.assignmentOptions);

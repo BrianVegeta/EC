@@ -107,10 +107,11 @@ export const constrainter = (price = PRICE_MAX) => ({
       onlyInteger: true,
       notInteger: '^請填數字',
       lessThanOrEqualTo: _.parseInt(price),
-      notLessThanOrEqualTo: '^不能超過',
+      notLessThanOrEqualTo: '^不能超過價格',
       greaterThanOrEqualTo: 1,
       notGreaterThanOrEqualTo: '^最低1元或不填',
     },
   },
+  regulation: {},
 });
 export default constrainter();

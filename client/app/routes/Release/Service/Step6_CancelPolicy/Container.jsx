@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import _ from 'lodash';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
@@ -10,107 +9,46 @@ import {
   InputSelection,
   NextStep,
 } from '../../components';
-import { TITLE, PATH } from '../../constants';
-import {
-  purgeCancelPolicy,
-  updateCancelPolicy,
-} from '../../../../actions/publishActions';
+import { TITLE, PATH } from '../constants';
+import Model from '../Model';
 
-const ADVANCE_DAYS_VALUES = ['3', '5', '7'];
-const RATE_VALUES = ['30', '50', '70'];
-const INITIAL_POLICY = {
-  advanceDays: ADVANCE_DAYS_VALUES[0],
-  rate: RATE_VALUES[1],
-};
 class CancelPolicyContainer extends React.Component {
   static saveAndNext() {
     browserHistory.push(PATH.STEP_7_CONFIRM);
   }
-  static getOption(value, options) {
-    const index = _.findIndex(options, opt => opt.value === value);
-    return options[index];
-  }
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    ).isRequired,
   };
   constructor(props) {
     super(props);
     this.onChecked = this.onChecked.bind(this);
-    this.onAdvanceDaysSelect = this.onAdvanceDaysSelect.bind(this);
-    this.onRateSelect = this.onRateSelect.bind(this);
-    const { cancelPolicy } = props.publish;
-    if (cancelPolicy) {
-      const { advanceDays, rate } = cancelPolicy;
-      this.state = {
-        isActivating: true,
-        advanceDays,
-        rate,
-      };
-    } else {
-      const { advanceDays, rate } = INITIAL_POLICY;
-      this.state = {
-        isActivating: false,
-        advanceDays,
-        rate,
-      };
-    }
+    this.validate = this.validate.bind(this);
   }
-  validateAll() {
-    console.log('validate all');
+  validate() {
   }
-  hasErrors() {
-    return false;
+  isValid() {
+    return true;
   }
   onChecked(isChecked) {
-    const { dispatch } = this.props;
+    const { publish, dispatch } = this.props;
+    const { cancelPolicy } = new Model(publish, dispatch);
     if (isChecked) {
-      const { advanceDays, rate } = this.state;
-      dispatch(updateCancelPolicy({ advanceDays, rate }));
+      cancelPolicy.updateInitial();
     } else {
-      dispatch(purgeCancelPolicy());
+      cancelPolicy.updateToNull();
     }
-    this.setState({ isActivating: isChecked });
-  }
-  onAdvanceDaysSelect(option) {
-    const advanceDays = option.value;
-    const { rate } = this.state;
-    this.props.dispatch(
-      updateCancelPolicy({ advanceDays, rate }),
-    );
-    this.setState({ advanceDays });
-  }
-  onRateSelect(option) {
-    const rate = option.value;
-    const { advanceDays } = this.state;
-    this.props.dispatch(
-      updateCancelPolicy({ advanceDays, rate }),
-    );
-    this.setState({ rate });
   }
   render() {
-    const { isActivating, advanceDays, rate } = this.state;
-    const { getOption } = this.constructor;
-    const advanceDayOptions = ADVANCE_DAYS_VALUES.map(v =>
-      ({ value: `${v}`, text: `前${v}天` }),
-    );
-    const advanceDaysProps = {
-      options: advanceDayOptions,
-      choice: getOption(advanceDays, advanceDayOptions),
-      onSelect: this.onAdvanceDaysSelect,
-      disabled: !isActivating,
-      width: 150,
-    };
-    const rateOptions = RATE_VALUES.map(v =>
-      ({ value: `${v}`, text: `扣除${v}%租金` }),
-    );
-    const rateProps = {
-      options: rateOptions,
-      choice: getOption(rate, rateOptions),
-      onSelect: this.onRateSelect,
-      disabled: !isActivating,
-      width: 175,
-    };
+    const { publish, dispatch } = this.props;
+    const { cancelPolicy } = new Model(publish, dispatch);
     return (
       <div styleName="container">
         <TitleWrapper
@@ -121,25 +59,41 @@ class CancelPolicyContainer extends React.Component {
         </TitleWrapper>
         <div styleName="formGroup">
           <div styleName="isActive">
-            <InputCheckbox onChange={this.onChecked} checked={isActivating}>
+            <InputCheckbox onChange={this.onChecked} checked={cancelPolicy.isActivating}>
               <span styleName="activeText">啟用退訂政策</span>
             </InputCheckbox>
           </div>
           <div styleName="policy">
             <span styleName="text">開始租借</span>
             <span styleName="advanceDays">
-              <InputSelection {...advanceDaysProps} />
+              <InputSelection
+                {...{
+                  options: cancelPolicy.advanceDaysOptions,
+                  choice: cancelPolicy.advanceDaysChoice,
+                  onSelect: cancelPolicy.updateAdvanceDays,
+                  disabled: !cancelPolicy.isActivating,
+                  width: 150,
+                }}
+              />
             </span>
             <span styleName="text">如取消訂單將</span>
             <span styleName="rate">
-              <InputSelection {...rateProps} />
+              <InputSelection
+                {...{
+                  options: cancelPolicy.rateOptions,
+                  choice: cancelPolicy.rateChoice,
+                  onSelect: cancelPolicy.updateRate,
+                  disabled: !cancelPolicy.isActivating,
+                  width: 175,
+                }}
+              />
             </span>
           </div>
         </div>
         <NextStep
           onNext={this.constructor.saveAndNext}
-          onValid={this.validateAll}
-          isDisabled={!!this.hasErrors()}
+          onValid={this.validate}
+          isDisabled={!this.isValid()}
         />
       </div>
     );
