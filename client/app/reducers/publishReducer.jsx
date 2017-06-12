@@ -3,6 +3,7 @@ import coverThumbs from './publishThumbs';
 import titleHandler, { initialState as initialTitle } from './publishTitle';
 import descHandler, { initialState as initialDescript } from './publishDescript';
 import {
+  PUBLISH_PROGRESS_UPDATE,
   PUBLISH_OEPN_CROPPER,
   PUBLISH_CLOSE_CROPPER,
 
@@ -52,6 +53,7 @@ export const INDEX_RETURN_ADDRESSES_CITY = 0;
 export const INDEX_RETURN_ADDRESSES_AREA = 1;
 export const INDEX_RETURN_ADDRESSES_DETAIL = 2;
 const initialState = {
+  progress: {},
   coverThumbs: [],
   coverCropper: initialCoverCropper,
   title: initialTitle,
@@ -98,6 +100,11 @@ function updateState(state, name, value) {
 }
 export default (state = initialState, action) => {
   switch (action.type) {
+    case PUBLISH_PROGRESS_UPDATE: {
+      const progress = state.progress;
+      progress[action.step] = true;
+      return Object.assign({}, state, { progress });
+    }
     case PUBLISH_OEPN_CROPPER:
       return Object.assign({}, state, {
         coverCropper: coverCropper(state.coverCropper, action),

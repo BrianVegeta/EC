@@ -18,9 +18,7 @@ class Naver extends React.Component {
   render() {
     return (
       <div styleName="container">
-        <div styleName="icon">
-          <IconLock size="25" />
-        </div>
+        <div styleName="icon"><IconLock size="25" /></div>
         <div styleName="text">{this.props.text}</div>
       </div>
     );

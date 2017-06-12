@@ -9,6 +9,7 @@ import {
   NextStep,
 } from '../../components';
 import { PATH, TITLE } from '../constants';
+import { updateProgress } from '../../../../actions/publishActions';
 import Model from '../Model';
 
 class RegulationContainer extends React.Component {
@@ -29,6 +30,9 @@ class RegulationContainer extends React.Component {
   constructor(props) {
     super(props);
     this.validate = this.validate.bind(this);
+  }
+  componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_5_REGULATION'));
   }
   validate() {
     this.regulationInput.valid();

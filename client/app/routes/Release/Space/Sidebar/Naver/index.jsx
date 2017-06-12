@@ -1,27 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import IconLock from 'react-icons/lib/md/lock';
+import IconChecked from 'react-icons/lib/md/check-circle';
 import CSS from 'react-css-modules';
+import classnames from 'classnames/bind';
 import styles from './styles.sass';
 
+const cx = classnames.bind(styles);
 class Naver extends React.Component {
-  static defaultProps = {
-    isValid: true,
-    isTouched: true,
-  };
   static propTypes = {
-    isValid: PropTypes.bool,
-    isTouched: PropTypes.bool,
-    text: PropTypes.string.isRequired,
+    nav: PropTypes.object.isRequired,
   };
   render() {
+    const { nav } = this.props;
+    const { isTouched, isValid, link, text } = nav;
+    const renderedText = <div className={cx('text', { textActive: isTouched })}>{text}</div>;
     return (
       <div styleName="container">
         <div styleName="icon">
-          <IconLock size="25" />
+          {isValid && <IconChecked size={25} />}
         </div>
-        <div styleName="text">{this.props.text}</div>
+        {isTouched ?
+          <Link to={link} className="link">{renderedText}</Link> :
+          renderedText
+        }
       </div>
     );
   }

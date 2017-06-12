@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import _ from 'lodash';
 import {
+  PUBLISH_PROGRESS_UPDATE,
+
   PUBLISH_TITLE_UPDATE,
   PUBLISH_DESC_UPDATE,
   PUBLISH_CITY_AREA_UPDATE,
@@ -37,6 +39,11 @@ import {
   PUBLISH_CANCEL_POLICY_PURGE,
   PUBLISH_CANCEL_POLICY_UPDATE,
 } from '../constants/actionTypes';
+
+export const updateProgress = step => ({
+  type: PUBLISH_PROGRESS_UPDATE,
+  step,
+});
 
 export const updateTitle = title => ({
   type: PUBLISH_TITLE_UPDATE,

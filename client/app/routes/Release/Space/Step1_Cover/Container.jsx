@@ -8,6 +8,7 @@ import styles from './styles.sass';
 import ModalEditor from './ModalEditor';
 import SortableGallery from './SortableGallery';
 import { checkThumbsAndUpload } from '../../../../actions/publishThumbsActions';
+import { updateProgress } from '../../../../actions/publishActions';
 import { TITLE, COVER, PATH } from '../constants';
 import {
   TitleWrapper,
@@ -45,6 +46,9 @@ class CoverContainer extends React.Component {
     this.state = {
       atLeastOneCoverError: null,
     };
+  }
+  componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_1_COVER_INDEX'));
   }
   beforeNext() {
     this.props.dispatch(checkThumbsAndUpload());

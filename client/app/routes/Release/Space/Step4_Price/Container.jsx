@@ -12,6 +12,7 @@ import {
   DiscountGroup,
   NextStep,
 } from '../../components';
+import { updateProgress } from '../../../../actions/publishActions';
 import { PATH, TITLE } from '../constants';
 import Model from '../Model';
 import ChargeType from './ChargeType';
@@ -34,6 +35,9 @@ class PriceContainer extends React.Component {
   constructor(props) {
     super(props);
     this.valid = this.valid.bind(this);
+  }
+  componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_4_PRICE'));
   }
   valid() {
     this.chargeTypeInput.valid();

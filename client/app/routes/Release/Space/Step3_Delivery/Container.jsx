@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router';
 import styles from './styles.sass';
 import FormGroup from '../../components/FormGroup';
 import { fetchCities } from '../../../../actions/addressActions';
+import { updateProgress } from '../../../../actions/publishActions';
 import {
   TitleWrapper,
   IntervalLine,
@@ -41,6 +42,7 @@ class DeliveryContainer extends React.Component {
     };
   }
   componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_3_DELIVERY'));
     this.props.dispatch(fetchCities());
   }
   valid() {

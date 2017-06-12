@@ -8,6 +8,7 @@ import { TitleWrapper } from '../../components';
 import ConfirmGroup from '../../components/ConfirmGroup';
 import ConfirmRow from '../../components/ConfirmRow';
 import { fetchCities } from '../../../../actions/addressActions';
+import { updateProgress } from '../../../../actions/publishActions';
 import Model from '../Model';
 
 const cx = classnames.bind(styles);
@@ -23,6 +24,7 @@ class ConfirmContainer extends React.Component {
     dispatch: PropTypes.func.isRequired,
   };
   componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_7_CONFIRM'));
     this.props.dispatch(fetchCities());
   }
   render() {

@@ -17,6 +17,7 @@ import {
   NextStep,
 } from '../../components';
 import { fetchCities } from '../../../../actions/addressActions';
+import { updateProgress } from '../../../../actions/publishActions';
 import Model from '../Model';
 
 
@@ -54,6 +55,7 @@ class Container extends React.Component {
     this.state = { tagsError: null };
   }
   componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_2_ABOUT'));
     this.props.dispatch(fetchCities());
   }
   validTags() {
@@ -69,11 +71,8 @@ class Container extends React.Component {
   }
   isValid() {
     const { publish, dispatch } = this.props;
-    const { title, descript, category, tags } = new Model(publish, dispatch);
-    return title.isValid() &&
-      descript.isValid() &&
-      category.isValid() &&
-      tags.isValid();
+    const model = new Model(publish, dispatch);
+    return model.isStep2Valid;
   }
   render() {
     const { categories } = this.props.items;

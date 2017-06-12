@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
+
 export const CHANGE_RESOLUTION = 'CHANGE_RESOLUTION';
 // Auth
 export const AUTH_SET_LOGIN_STATUS = 'AUTH_SET_LOGIN_STATUS';
@@ -27,6 +28,7 @@ export const ITEM_RELEASE_FORM_SET_SHIPPING_DAYS = 'ITEM_RELEASE_FORM_SET_SHIPPI
 export const ADDRESS_SET_CITIES = 'ADDRESS_SET_CITIES';
 export const ADDRESS_SET_ZONES = 'ADDRESS_SET_ZONES';
 
+export const PUBLISH_PROGRESS_UPDATE = 'PUBLISH_PROGRESS_UPDATE';
 // new publish
 // CROPPER
 export const PUBLISH_OEPN_CROPPER = 'PUBLISH_OEPN_CROPPER';

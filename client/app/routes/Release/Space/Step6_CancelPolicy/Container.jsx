@@ -10,6 +10,7 @@ import {
   NextStep,
 } from '../../components';
 import { TITLE, PATH } from '../constants';
+import { updateProgress } from '../../../../actions/publishActions';
 import Model from '../Model';
 
 class CancelPolicyContainer extends React.Component {
@@ -31,6 +32,9 @@ class CancelPolicyContainer extends React.Component {
     super(props);
     this.onChecked = this.onChecked.bind(this);
     this.validate = this.validate.bind(this);
+  }
+  componentDidMount() {
+    this.props.dispatch(updateProgress('STEP_6_CANCEL_POLICY'));
   }
   validate() {
   }
