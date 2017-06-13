@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { setLoginStatus } from '../../../actions/authActions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.login = this.login.bind(this);
-    this.props.dispatch(setLoginStatus(true)); // remove
   }
 
   login() {

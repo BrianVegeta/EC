@@ -1,0 +1,25 @@
+@import "../color.sass"
+
+.container
+  width: 480px
+  margin: 50px auto
+
+
+.suffixContainer
+  height: 100%
+  display: table
+  .suffixInner
+    height: 100%
+    display: table-cell
+    vertical-align: middle
+
+.sendVerifyButton
+  border: 1px solid $global-primaryColor
+  color: $global-primaryColor
+  border-radius: 5px
+  padding: 10px
+  transition: all 300ms ease
+  &:hover
+    // background: $global-primaryColor
+    color: $global-hoverColor
+    border-color: $global-hoverColor
