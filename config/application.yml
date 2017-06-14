@@ -3,6 +3,8 @@ defaults: &defaults
     saweet: nested settings
   neat_setting: 24
   awesome_setting: <%= "Did you know 5 + 5 = #{5 + 5}?" %>
+  jwt_expiration: 6.hours
+  jwt_secret: 'jwt secret key'
 
 development:
   <<: *defaults
@@ -13,3 +15,4 @@ test:
 
 production:
   <<: *defaults
+  jwt_secret: 'jwt secret key'

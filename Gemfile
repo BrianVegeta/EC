@@ -45,6 +45,10 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem "paperclip", "~> 5.0.0"
 gem 'aws-sdk', '~> 2.3.0'
 gem 'autoprefixer-rails'
+gem 'warden'
+gem 'jwt'
+gem 'rack-parser', :require => 'rack/parser'
+gem 'browser'
 
 
 

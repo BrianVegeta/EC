@@ -3,6 +3,14 @@ Rails.application.routes.draw do
   get '/p/(*all)', to: 'index#pages', as: :pages
 
   namespace :ajax, format: true, constraints: { format: :json } do
+    post 'phone_register', to: 'registration#create_by_phone'
+    post 'email_register', to: 'registration#create_by_email'
+    post 'phone_verify', to: 'registration#verify_by_phone'
+    post 'email_verify', to: 'registration#verify_by_email'
+
+    get 'test', to: 'test#test'
+    get 'test2', to: 'test#test2'
+
     resources :banners, only: :index
     resources :items, only: :index
     resources :images, only: [] do
