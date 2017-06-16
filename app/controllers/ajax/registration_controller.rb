@@ -1,67 +1,46 @@
 class Ajax::RegistrationController < ApplicationController
   include WardenHelper
   prepend_before_action :prepare_browser_info, only: [:verify_by_email, :verify_by_phone]
-  protect_from_forgery
+  skip_before_action :verify_authenticity_token
 
-  # Email 註冊
+  # POST '/ajax/email_register'
   def create_by_email
-    user = User.new(email_regist_params)
-    response = user.register
-    error_code = response['error']['code']
-
-    case error_code
-    when ::Response::ErrorCode::NEW_EMAIL_ALREADY_EXIST
-      success = false
-    else
-      success = true
-    end
-    respond success, ::Response::ErrorCode.localize(error_code)
+    @user = User::RegistrationEmail.new(email_regist_params)
+    process_registration
   end
 
-  # Phone 註冊
+  # POST '/ajax/phone_register'
   def create_by_phone
-    user = User.new(phone_regist_params)
-    response = user.register
-    error_code = response['error']['code']
-
-    case error_code
-    when ::Response::ErrorCode::NEW_MOBILE_ALREADY_EXIST
-      success = false
-    else
-      success = true
-    end
-    respond success, ::Response::ErrorCode.localize(error_code)
+    @user = User::RegistrationMobile.new(phone_regist_params)
+    process_registration
   end
 
-  # 驗證 Email
+  # POST '/ajax/email_verify'
   def verify_by_email
-    @user = User.new(email_verify_params)
-    @user.os_type = @os_type
-    @user.device_type = @device_type
-
-    verify_gate
+    @user = User::VerificationEmail.new(email_verify_params, current_user)
+    process_verification
   end
 
-  # 驗證 Phone
+  # POST '/ajax/phone_verify'
   def verify_by_phone
-    browser = Browser.new(request.user_agent)
-    @user = User.new(phone_verify_params)
-    @user.os_type = @os_type
-    @user.device_type = @device_type
-
-    verify_gate
+    @user = User::VerificationMobile.new(phone_verify_params, current_user)
+    process_verification
   end
 
 
   protected
-  def respond success, message, status = :ok
-    render :json=>{ success: success, message: message }, status: status
+  def process_verification
+    @user.os_type = @os_type
+    @user.device_type = @device_type
+    success = @user.verify
+    warden_set_user @user.warden_session if success
+    respond success, @user.error_message
   end
 
-  def prepare_browser_info
-    browser = Browser.new(request.user_agent)
-    @os_type = "#{browser.platform.name}"
-    @device_type = "Web Browser: #{browser.name} #{browser.version}"
+  def process_registration
+    success = @user.register
+    warden_set_user @user.warden_session if success
+    respond success, @user.error_message
   end
 
   def email_regist_params
@@ -78,28 +57,5 @@ class Ajax::RegistrationController < ApplicationController
 
   def phone_verify_params
     params.permit(:phone, :sms)
-  end
-
-  def verify_gate
-    response = @user.verify
-    error_code = response['error']['code']
-    case error_code
-    when ::Response::ErrorCode::VERIFY_CODE_NOT_CORRECT
-      success = false
-    when ::Response::ErrorCode::USER_NOT_EXIST
-      success = false
-    when ::Response::ErrorCode::SUCCESS
-      user_profile = response['data']['user_profile']
-
-      apitoken = response.headers['apitoken']
-      uid = user_profile['uid']
-      name = user_profile['name']
-
-      warden_set(uid: uid, name: name, apitoken: apitoken)
-      success = true
-    else
-      success = false
-    end
-    respond success, ::Response::ErrorCode.localize(error_code)
   end
 end

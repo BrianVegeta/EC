@@ -1,40 +1,41 @@
 class Ajax::SessionsController < ApplicationController
   include WardenHelper
-  # prepend_before_action :require_no_authentication, only: [:new, :create]
-  # prepend_before_action :allow_params_authentication!, only: :create
-  # prepend_before_action :verify_signed_out_user, only: :destroy
-  # prepend_before_action only: [:create, :destroy] { request.env["devise.skip_timeout"] = true }
-  protect_from_forgery
+  prepend_before_action :prepare_browser_info
+  skip_before_action :verify_authenticity_token
 
-  def create
-    # self.resource = Warden.authenticate!(auth_options)
-    # raise request.params.inspect
-    request.env['CUS_HTTP_HEADER'] = request.headers
-    resource = env['warden'].authenticate!
+  # POST /ajax/email_login.json
+  def create_by_email
+    @user = User::SessionsEmail.new(params_email)
+    process_login
+  end
 
-    render json: current_user
-    return
-    set_flash_message!(:notice, :signed_in)
-    sign_in(resource_name, resource)
-    yield resource if block_given?
-    respond_with resource, location: after_sign_in_path_for(resource)
+  # POST /ajax/phone_login.json
+  def create_by_phone
+    @user = User::SessionsMobile.new(params_phone)
+    process_login
   end
 
   def destroy
-    sign_out(resource_name)
+    warden.logout(:user)
+    respond true, '已成功登出'
   end
 
   protected
-  def auth_options
-    { scope: :user }
-  end
-  def ensure_params_exist
-    return unless params[:user_login].blank?
-    render :json=>{:success=>false, :message=>"missing user_login parameter"}, :status=>422
+  def params_email
+    params.permit(:email, :password)
   end
 
-  def invalid_login_attempt
-    warden.custom_failure!
-    render :json=> {:success=>false, :message=>"Error with your login or password"}, :status=>401
+  def params_phone
+    params.permit(:phone, :password)
+  end
+
+  def process_login
+    @user.os_type = @os_type
+    @user.device_type = @device_type
+    success = @user.login
+    if success
+      warden.set_user(@user.warden_session, scope: :user)
+    end
+    respond success, @user.error_message
   end
 end

@@ -4,9 +4,18 @@ Rails.application.routes.draw do
 
   namespace :ajax, format: true, constraints: { format: :json } do
     post 'phone_register', to: 'registration#create_by_phone'
-    post 'email_register', to: 'registration#create_by_email'
     post 'phone_verify', to: 'registration#verify_by_phone'
+    post 'phone_login', to: 'sessions#create_by_phone'
+
+    post 'email_register', to: 'registration#create_by_email'
     post 'email_verify', to: 'registration#verify_by_email'
+    post 'email_login', to: 'sessions#create_by_email'
+
+    post 'logout', to: 'sessions#destroy'
+
+    namespace :user do
+      get 'profile/get', to: 'profile#get'
+    end
 
     get 'test', to: 'test#test'
     get 'test2', to: 'test#test2'

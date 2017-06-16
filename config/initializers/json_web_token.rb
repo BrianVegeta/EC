@@ -1,14 +1,11 @@
 class JsonWebToken < ::Warden::Strategies::Base
   def valid?
-    headers['Authorization'].present?
+    headers.present? && headers['Authorization'].present?
   end
 
   def authenticate!
-    # return fail! unless claims
-    # return fail! unless claims.has_key?('user_id')
+    return fail!
     return fail! unless claims
-    # remote auth
-    #
     success!({ test: params['user'], header: headers['Cookie'] })
   end
 
@@ -22,7 +19,6 @@ class JsonWebToken < ::Warden::Strategies::Base
   def claims
     strategy, token = headers['Authorization'].split(' ')
     return nil if (strategy || '').downcase != 'bearer'
-    true
-    # JWTWrapper.decode(token) rescue nil
+    JWTWrapper.decode(token) rescue nil
   end
 end
