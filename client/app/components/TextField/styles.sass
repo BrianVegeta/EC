@@ -4,10 +4,15 @@ $iconOuterSize: 34px
 $iconSize: 25px
 $fontWeight: 200
 $fontSize: 20px
+$errorTextColor: #ff9800
 
 .inputControl
   margin: 10px
   position: relative
+  .error
+    color: $errorTextColor
+    padding: 5px 0 0 10px
+    font-size: 14px
   .inputGroup
     padding: 10px 0
     .inputGroupInner
@@ -26,6 +31,7 @@ $fontSize: 20px
           height: $iconSize
           width: $iconSize
       .inputOuter
+        padding-left: 10px
         margin-left: 10px
         margin-right: 10px
         &.withIcon

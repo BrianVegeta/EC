@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, browserHistory } from 'react-router';
 import Header from '../components/Header';
 import { initEnvironment } from '../actions/environmentActions';
 import { confirmLeavePage } from '../funcs/confirm';
@@ -37,7 +37,11 @@ class LayoutContainer extends React.Component {
       return sureToLeave;
     });
   }
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.auth.isLogin === false && this.props.auth.isLogin) {
+      browserHistory.push('/');
+    }
+  }
   render() {
     const { mainComponent } = this.props;
     return (

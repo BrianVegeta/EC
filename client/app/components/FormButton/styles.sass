@@ -1,0 +1,52 @@
+$colorGreen: #31ABBA
+$colorGreenHover: #53BECE
+$colorGreenActive: #1991A0
+$colorOrange: #FF9442
+$colorOrangeHover: #FFB34F
+$colorOrangeActive: #F57C00
+
+
+.button
+  color: #fff
+  border-radius: 5px
+  font-size: 16px
+  font-weight: 300
+  line-height: 22px
+  text-align: center
+  &.lg
+    padding: 15px 60px
+  &.md
+    padding: 12px 34px
+  &.sm
+    padding: 7px 24px
+
+
+.buttonOrange
+  composes: button
+  background: #FF9442
+  &:hover
+    background: #FFB34F
+  &:active
+    background: #F57C00
+
+.buttonGreen
+  composes: button
+  background: $colorGreen
+  &:hover
+    background: $colorGreenHover
+  &:active
+    background: $colorGreenActive
+
+.buttonGreenBorder
+  composes: button
+  background: #fff
+  border-width: 1px
+  border-style: solid
+  border-color: $colorGreen
+  color: $colorGreen
+  &:hover
+    border-color: $colorGreenHover
+    color: $colorGreenHover
+  &:active
+    border-color: $colorGreenActive
+    color: $colorGreenActive

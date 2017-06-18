@@ -1,0 +1,24 @@
+$colorOrange: #FF9442
+$blackColor: #333
+
+.container
+  .identity, .notice, .button, .alert
+    margin: 10px
+  .identity
+    color: $colorOrange
+    font-size: 18px
+  .notice
+    margin-bottom: 50px
+    color: $blackColor
+  .button
+    &.bottom
+      margin-top: 10px
+      padding-top: 10px
+      position: relative
+      &::before
+        content: ""
+        border-top: 1px solid #dce0e0
+        position: absolute
+        left: 0
+        right: 0
+        top: 0

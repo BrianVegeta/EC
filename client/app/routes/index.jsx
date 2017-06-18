@@ -13,6 +13,7 @@ import ReleaseGoods from './Release/Goods';
 import ReleaseService from './Release/Service';
 import ReleaseSpace from './Release/Space';
 import AuthLogin from './AuthLogin';
+import Registration from './Auth/Registration';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -33,6 +34,7 @@ const routes = (routesHelper, dispatch) => ({
       component: LayoutPublish,
       childRoutes: [
         AuthLogin(routesHelper, dispatch),
+        Registration(routesHelper, dispatch),
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),
         ReleaseSpace(routesHelper, dispatch),
