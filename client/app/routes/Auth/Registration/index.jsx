@@ -5,6 +5,6 @@ export default (routesHelper, dispatch) => ({
       callback(null, {
         mainComponent: require('./Container').default,
       });
-    }, 'auth.login');
+    }, 'auth.registration');
   },
 });

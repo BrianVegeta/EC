@@ -11,6 +11,7 @@ const initialState = {
   registerState: REGISTER_REGISTERING,
   registerFailMessage: null,
   verifyFailMessage: null,
+  loginFailMessage: null,
   loginBy: AUTH_BY.EMAIL,
   email: '',
   phone: '',
@@ -35,6 +36,8 @@ export default (state = initialState, action) => {
       return updateState('registerFailMessage');
     case TYPES.AUTH_FAIL_AFTER_VERIFY:
       return updateState('verifyFailMessage');
+    case TYPES.AUTH_FAIL_AFTER_LOGIN:
+      return updateState('loginFailMessage');
     case TYPES.AUTH_UPDATE_LOGIN_BY:
       return updateState('loginBy');
     case TYPES.AUTH_UPDATE_EMAIL:

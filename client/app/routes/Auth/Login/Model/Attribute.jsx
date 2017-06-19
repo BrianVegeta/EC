@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import _ from 'lodash';
 import validate from 'validate.js';
+import _ from 'lodash';
 import constraints from '../../constraints';
 
 class Attribute {

@@ -4850,6 +4850,10 @@ react-dropzone@^3.13.1:
     attr-accept "^1.0.3"
     prop-types "^15.5.7"
 
+react-facebook-login@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-3.6.2.tgz#1965f6af54cc90341b788d0752185cfd25a14d30"
+
 react-icheck@^0.3.8:
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/react-icheck/-/react-icheck-0.3.8.tgz#b66fe95b3376b99490408052851414a60dcf52ff"

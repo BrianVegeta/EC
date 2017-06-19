@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import validate from 'validate.js';
 import { updatePasswordConfirmation } from '../../../../actions/authActions';
-import constraints from './constraints';
+import constraints from '../../constraints';
 
 class PasswordConfirmation {
   constructor(props, password, dispatch) {

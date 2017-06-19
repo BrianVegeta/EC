@@ -17,4 +17,5 @@ export const UPLOAD_PUT = {
 export const POST = {
   credentials: 'same-origin',
   method: 'POST',
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 };

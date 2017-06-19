@@ -3,7 +3,8 @@ class Ajax::TestController < ApplicationController
   before_action :authenticate_user
 
   def test
-    render json: Time.now.to_s
+    warden.logout(:user)
+    respond true, '已成功登出'
   end
 
   def test2

@@ -53,6 +53,7 @@
     "react-dnd": "^2.4.0",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.13.1",
+    "react-facebook-login": "^3.6.2",
     "react-icheck": "^0.3.8",
     "react-icons": "^2.2.5",
     "react-masonry-component": "^5.0.5",

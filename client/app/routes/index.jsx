@@ -12,7 +12,7 @@ import Tanzaku from './Tanzaku';
 import ReleaseGoods from './Release/Goods';
 import ReleaseService from './Release/Service';
 import ReleaseSpace from './Release/Space';
-import AuthLogin from './AuthLogin';
+import AuthLogin from './Auth/Login';
 import Registration from './Auth/Registration';
 
 const routes = (routesHelper, dispatch) => ({

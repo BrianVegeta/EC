@@ -7,11 +7,13 @@ class ApplicationController < ActionController::Base
     @device_type = "Web Browser: #{browser.name} #{browser.version}"
   end
 
-  def respond success, message, status = :ok
-    render :json=>{ success: success, message: message }, status: status
+  def respond success, message, data = nil, status = :ok,
+    response = { success: success, message: message }
+    response[:data] = data if data.present?
+    render json: response, status: status
   end
 
   def respond_not_found
-    render :json=>{ success: false, message: nil }, status: 404
+    render json: { success: false, message: nil }, status: 404
   end
 end

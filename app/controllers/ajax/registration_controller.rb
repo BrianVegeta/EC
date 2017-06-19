@@ -5,32 +5,24 @@ class Ajax::RegistrationController < ApplicationController
 
   # POST '/ajax/email_register'
   def create_by_email
-    respond true, '信箱已被註冊'
-    return
     @user = ::User::RegistrationEmail.new(email_regist_params)
     process_registration
   end
 
   # POST '/ajax/phone_register'
   def create_by_phone
-    respond true, '信箱已被註冊'
-    return
     @user = ::User::RegistrationMobile.new(phone_regist_params)
     process_registration
   end
 
   # POST '/ajax/email_verify'
   def verify_by_email
-    respond true, '驗證碼錯誤'
-    return
     @user = ::User::VerificationEmail.new(email_verify_params, current_user)
     process_verification
   end
 
   # POST '/ajax/phone_verify'
   def verify_by_phone
-    respond true, '信箱已被註冊'
-    return
     @user = ::User::VerificationMobile.new(phone_verify_params, current_user)
     process_verification
   end

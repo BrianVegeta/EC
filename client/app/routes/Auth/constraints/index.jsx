@@ -11,6 +11,10 @@ export const constrainter = () => ({
     presence: {
       message: '^請填寫電話號碼',
     },
+    format: {
+      pattern: /^([0-9]{10})$/,
+      message: '^請填寫正確的電話號碼',
+    },
   },
   password: {
     presence: {

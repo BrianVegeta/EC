@@ -20,6 +20,11 @@ const verifyFail = verifyFailMessage => ({
   verifyFailMessage,
 });
 
+const loginFail = loginFailMessage => ({
+  type: TYPES.AUTH_FAIL_AFTER_LOGIN,
+  loginFailMessage,
+});
+
 const registerToVerify = () => ({
   type: TYPES.AUTH_REGISTER_TO_VERIFY,
 });
@@ -111,6 +116,65 @@ export function verifyByPhone({ phone, sms }) {
     );
   };
 }
+const EMAIL_LOGIN_PATH = '/ajax/email_login.json';
+const PHONE_LOGIN_PATH = '/ajax/phone_login.json';
+export function loginByEmail({ email, password }) {
+  return (dispatch) => {
+    fetchRequest(
+      EMAIL_LOGIN_PATH, POST, JSON.stringify({ email, password }),
+      (data) => {
+        const { success, message } = data;
+        if (success) {
+          dispatch(setLoginStatus(true));
+          // TODO: change user profile after regisration
+        } else {
+          dispatch(loginFail(message));
+        }
+      },
+    );
+  };
+}
+export function loginByPhone({ phone, password }) {
+  return (dispatch) => {
+    fetchRequest(
+      PHONE_LOGIN_PATH,
+      POST,
+      JSON.stringify({ phone, password }),
+      (data) => {
+        const { success, message } = data;
+        if (success) {
+          dispatch(setLoginStatus(true));
+          // TODO: change user profile after regisration
+        } else {
+          dispatch(loginFail(message));
+        }
+      },
+    );
+  };
+}
+
+const FACEBOOK_PATH = '/ajax/facebook_login_callback.json';
+export function loginFacebook(callbackData) {
+  return (dispatch) => {
+    fetchRequest(
+      FACEBOOK_PATH,
+      POST,
+      JSON.stringify({
+        fb_id: callbackData.id,
+        access_token: callbackData.accessToken,
+      }),
+      (data) => {
+        const { success, message } = data;
+        if (success) {
+          dispatch(setLoginStatus(true));
+        } else {
+          dispatch(loginFail(message));
+        }
+      },
+    );
+  };
+}
+
 
 export const updateEmail = email => ({
   type: TYPES.AUTH_UPDATE_EMAIL,

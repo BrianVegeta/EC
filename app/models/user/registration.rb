@@ -19,6 +19,7 @@ class User::Registration < User
       raise 'NOT FOUND'
     else
       puts response.inspect
+      raise response.inspect
       raise "ZOMG ERROR #{response.code}"
     end
   end
