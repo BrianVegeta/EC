@@ -1,10 +1,15 @@
 import React, { PropTypes } from 'react';
-import CSS from 'react-css-modules';
 import { IndexLink } from 'react-router';
-import Navs from './Navs';
+import IconNotify from 'react-icons/lib/md/notifications-none';
+import IconPublish from 'react-icons/lib/fa/plus-square-o';
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+import Me from './Navs/Me';
+import Post from './Navs/Post';
 import Search from './Search';
 import ShortcutNavbar from './ShortcutNavbar';
-import styles from './styles.sass';
+import Logo from './Logo';
+import NavItem from './NavItem';
 
 const defaultProps = {
   hasShortcut: false,
@@ -28,7 +33,7 @@ class Header extends React.PureComponent {
           <div className="container clear">
             <div className="navbar-header">
               <IndexLink to={routesHelper.root}>
-                <div className="brand" />
+                <Logo />
               </IndexLink>
             </div>
             <div className="navbar">
@@ -38,27 +43,31 @@ class Header extends React.PureComponent {
               {
                 !auth.isLogin &&
                   <ul className="navs" styleName="navs-right">
-                    <li className="nav"><Navs.DownloadApp /></li>
-                    <li className="nav"><Navs.Help /></li>
-                    <li className="nav"><Navs.Register /></li>
-                    <li className="nav"><Navs.Login {...this.props} /></li>
+                    <NavItem className="nav" action="/">下載APP</NavItem>
+                    <NavItem className="nav" action="https://www.shareapp.com.tw/faq">幫助</NavItem>
+                    <NavItem className="nav" action="/p/registration">註冊</NavItem>
+                    <NavItem className="nav" action="/p/login">登入</NavItem>
                   </ul>
               }
               {
                 auth.isLogin &&
                   <ul className="navs" styleName="navs-right">
-                    <li className="nav"><Navs.DownloadApp /></li>
-                    <li className="nav"><Navs.Notify /></li>
-                    <li className="nav"><Navs.MyShop /></li>
-                    <li className="nav"><Navs.Help /></li>
-                    <li className="nav"><Navs.Me /></li>
-                    <li className="nav"><Navs.Post /></li>
+                    <NavItem className="nav" action="/">下載APP</NavItem>
+                    <NavItem className="nav" action="https://www.shareapp.com.tw/faq">幫助</NavItem>
+                    <NavItem className="nav" action="/">我的商店</NavItem>
+                    <NavItem className="nav" action={() => console.log(1)}>
+                      <IconNotify size={24} />
+                    </NavItem>
+                    <NavItem className="nav" action={() => console.log(1)}>
+                      <IconPublish size={24} />
+                    </NavItem>
+                    <li className="nav"><Me /></li>
                   </ul>
               }
             </div>
           </div>
         </div>
-        { this.props.hasShortcut && <div styleName="navbar-container">
+        { this.props.hasShortcut && <div styleName="navbar-container-shortcut">
           <div className="container clear">
             <ShortcutNavbar {...this.props} />
           </div>

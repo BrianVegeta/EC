@@ -6,7 +6,7 @@ import {
 } from '../constants/states';
 
 const initialState = {
-  isLogin: false,
+  isLogin: true,
   registerBy: AUTH_BY.EMAIL,
   registerState: REGISTER_REGISTERING,
   registerFailMessage: null,

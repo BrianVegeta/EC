@@ -1,8 +1,10 @@
+$hoverColor: #31ABBA
+
 .navbar
   width: 100%
   .navbar-header
     float: left
-    padding: 14px 0 13px 0
+    padding: 8.5px 0
     .brand
       width: 130px
       height: 43px
@@ -22,9 +24,15 @@
       li.nav
         display: block
         float: left
-        padding: 25px 0 25px 25px
+        padding: 25px 0 25px 42px
         line-height: 20px
-        font-size: 15px
+        font-size: 14px
+        .iconOuter
+          margin: -3px
+        button, a
+          color: #333
+          &:hover
+            color: $hoverColor
 
 
 .navbar.navbar-fixed-top
