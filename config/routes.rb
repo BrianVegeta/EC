@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       post 'user', to: 'search#user'
       post 'item', to: 'search#item'
       post 'wish', to: 'search#wish'
+      post 'multi', to: 'search#multi'
     end
 
     namespace :user do

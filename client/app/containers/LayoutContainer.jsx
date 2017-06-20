@@ -22,7 +22,10 @@ class LayoutContainer extends React.Component {
     const { main } = this.props;
     return (
       <div>
-        <Header {...this.props} hasShortcut />
+        <Header
+          {...this.props}
+          hasShortcut
+        />
         <div className="container clear" style={{ minHeight: '1000px' }} >
           <div className="main-container" style={{ paddingTop: 200 }}>
             { main }
@@ -37,10 +40,11 @@ LayoutContainer.propTypes = propTypes;
 LayoutContainer.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  const { environment, auth, routesHelper } = state;
+  const { environment, auth, routesHelper, search } = state;
   return ({
     environment,
     auth,
+    search,
     routesHelper,
   });
 };

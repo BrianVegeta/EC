@@ -13,6 +13,10 @@ class Ajax::SearchController < ApplicationController
     search ::Search::Wish.new(search_params)
   end
 
+  def multi
+    search ::Search::Multi.new(search_params)
+  end
+
   private
   def search_params
     params.permit(:name, :index, :size)

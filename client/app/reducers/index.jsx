@@ -10,6 +10,7 @@ import itemLayout from './itemLayoutReducer';
 import itemRelease from './itemReleaseReducer';
 import cities from './citiesReducer';
 import publish from './publishReducer';
+import search from './searchReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
   itemRelease,
   cities,
   publish,
+  search,
 });

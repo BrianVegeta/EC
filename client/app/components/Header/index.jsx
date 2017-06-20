@@ -38,7 +38,7 @@ class Header extends React.PureComponent {
             </div>
             <div className="navbar">
               <div styleName="navs-search">
-                <Search />
+                <Search {...this.props} />
               </div>
               {
                 !auth.isLogin &&
