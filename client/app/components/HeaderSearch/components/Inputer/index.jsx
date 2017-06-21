@@ -8,10 +8,12 @@ const cx = classnames.bind(styles);
 class Inputer extends React.Component {
   static defaultProps = {
     onChange: null,
+    style: null,
   };
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
     onChange: PropTypes.func,
+    setInputRect: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -21,6 +23,13 @@ class Inputer extends React.Component {
     this.state = {
       isFocusing: false,
     };
+  }
+  componentDidMount() {
+    const { setInputRect } = this.props;
+    window.addEventListener('resize', () => {
+      setInputRect(this.input.getBoundingClientRect());
+    });
+    setInputRect(this.input.getBoundingClientRect());
   }
   onFocus() {
     this.focusingState(true);
@@ -45,6 +54,7 @@ class Inputer extends React.Component {
         </button>
         <input
           {...{
+            ref: input => (this.input = input),
             type: 'search',
             autoComplete: 'off',
             spellCheck: false,

@@ -1,6 +1,7 @@
 import React from 'react';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import CollectionHeader from '..//CollectionHeader';
 
 
 class ResultCollection extends React.Component {
@@ -8,21 +9,13 @@ class ResultCollection extends React.Component {
     return (
       <div styleName="container">
         <div styleName="block">
-          <div styleName="header">
-            用戶
-            <button className="button" styleName="all">看全部&gt;</button>
-          </div>
-          <div>test</div>
+          <CollectionHeader headerText="用戶" />
         </div>
         <div styleName="block">
-          <div styleName="header">
-            許願紙條
-          </div>
+          <CollectionHeader headerText="許願紙條" />
         </div>
         <div styleName="block">
-          <div styleName="header">
-            物品
-          </div>
+          <CollectionHeader headerText="物品" />
         </div>
       </div>
     );

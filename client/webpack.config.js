@@ -23,6 +23,8 @@ const config = {
       'react',
       'redux',
       'lodash',
+      'react-css-modules',
+      'classnames/bind',
     ],
     app: [
       './app/startup/registration',

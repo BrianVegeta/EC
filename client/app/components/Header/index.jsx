@@ -6,7 +6,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Me from './Navs/Me';
 import Post from './Navs/Post';
-import Search from './Search';
+import HeaderSearch from '../HeaderSearch';
 import ShortcutNavbar from './ShortcutNavbar';
 import Logo from './Logo';
 import NavItem from './NavItem';
@@ -38,7 +38,7 @@ class Header extends React.PureComponent {
             </div>
             <div className="navbar">
               <div styleName="navs-search">
-                <Search {...this.props} />
+                <HeaderSearch {...this.props} />
               </div>
               {
                 !auth.isLogin &&

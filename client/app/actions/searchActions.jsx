@@ -54,7 +54,7 @@ const SEARCH_MULTI_PATH = '/ajax/search/multi.json';
 export function searchByName(name) {
   return (dispatch) => {
     const index = 0;
-    const size = 5;
+    const size = 3;
     const bodyJSON = JSON.stringify({ name, index, size });
     const callback = (response) => {
       const { data } = response;
@@ -66,7 +66,64 @@ export function searchByName(name) {
   };
 }
 
+function innerSearchByName(name, path, before, after) {
+  const index = 0;
+  const size = 20;
+  const bodyJSON = JSON.stringify({ name, index, size });
+  const callback = (response) => {
+    const { data } = response;
+    after(data);
+  };
+  before();
+  fetchPostRequest(path, bodyJSON, callback);
+}
+export function searchUserByName(name) {
+  return (dispatch) => {
+    innerSearchByName(
+      name,
+      SEARCH_USERS_PATH,
+      () => dispatch(beforeFetchUser()),
+      users => dispatch(afterFetchUser(users)),
+    );
+  };
+}
+export function searchItemByName(name) {
+  return (dispatch) => {
+    innerSearchByName(
+      name,
+      SEARCH_ITEMS_PATH,
+      () => dispatch(beforeFetchItem()),
+      items => dispatch(afterFetchItem(items)),
+    );
+  };
+}
+export function searchWishByName(name) {
+  return (dispatch) => {
+    innerSearchByName(
+      name,
+      SEARCH_WISHS_PATH,
+      () => dispatch(beforeFetchWish()),
+      wishs => dispatch(afterFetchWish(wishs)),
+    );
+  };
+}
+
+
+export const clearMulti = () => ({
+  type: TYPES.SEARCH_CLEAR_MULTI_RESULTS,
+});
+
 export const updateQuery = query => ({
   type: TYPES.SEARCH_UPDATE_QUERY,
   query,
+});
+
+export const setInputRect = ({ top, left, right, bottom, height, width }) => ({
+  type: TYPES.SEARCH_SET_INPUT_RECT,
+  top,
+  left,
+  right,
+  bottom,
+  height,
+  width,
 });

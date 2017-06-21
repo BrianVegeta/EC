@@ -1,6 +1,8 @@
 import * as TYPES from '../constants/actionTypes';
 
 const initialState = {
+  paginating: null, // users, items, wishs
+  shouldLoading: true,
   query: '',
   users: null,
   isUserFetching: false,
@@ -8,12 +10,24 @@ const initialState = {
   isItemFetching: false,
   wishs: null,
   isWishFetching: false,
+  isMultiFetching: false,
+  inputRect: {
+    top: null, left: null, right: null, bottom: null, height: null, width: null,
+  },
 };
 export default (state = initialState, action) => {
   const singleUpdate = name => Object.assign({}, state, { [name]: action[name] });
   const updateWithFetching = (name, fetchingName, status) => (
     Object.assign({}, state, { [name]: action[name], [fetchingName]: status })
   );
+  const updateAfterInnerFetch = (name) => {
+    const stateToUpdate = Object.assign(
+      {},
+      { users: null, items: null, wishs: null },
+      { [name]: action[name], paginating: name, isMultiFetching: false },
+    );
+    return Object.assign({}, state, stateToUpdate);
+  };
 
   switch (action.type) {
     case TYPES.SEARCH_UPDATE_QUERY:
@@ -38,30 +52,44 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { isWishFetching: true });
 
     case TYPES.SEARCH_BEFORE_FETCH_MULTI:
-      return Object.assign({}, state, {
-        isItemFetching: false,
-        isUserFetching: false,
-        isWishFetching: false,
-      });
+      return Object.assign({}, state, { isMultiFetching: true });
 
+    // after fetch
     case TYPES.SEARCH_AFTER_FETCH_ITEM:
-      return updateWithFetching('items', 'isItemFetching', true);
+      return updateAfterInnerFetch('items');
 
     case TYPES.SEARCH_AFTER_FETCH_USER:
-      return updateWithFetching('users', 'isUserFetching', true);
+      return updateAfterInnerFetch('users');
 
     case TYPES.SEARCH_AFTER_FETCH_WISH:
-      return updateWithFetching('wishs', 'isWishFetching', true);
+      return updateAfterInnerFetch('wishs');
 
     case TYPES.SEARCH_AFTER_FETCH_MULTI: {
       const { users, items, wishs } = action;
       return Object.assign({}, state, {
-        isItemFetching: false,
-        isUserFetching: false,
-        isWishFetching: false,
         users,
         items,
         wishs,
+        isMultiFetching: false,
+        shouldLoading: false,
+        paginating: null,
+      });
+    }
+
+    case TYPES.SEARCH_SET_INPUT_RECT: {
+      const { top, left, right, bottom, height, width } = action;
+      const inputRect = { top, left, right, bottom, height, width };
+      return Object.assign({}, state, { inputRect });
+    }
+
+    case TYPES.SEARCH_CLEAR_MULTI_RESULTS: {
+      const { users, items, wishs } = initialState;
+      return Object.assign({}, state, {
+        users,
+        items,
+        wishs,
+        shouldLoading: true,
+        paginating: null,
       });
     }
 
