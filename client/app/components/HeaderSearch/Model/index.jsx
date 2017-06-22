@@ -7,6 +7,7 @@ import {
   setInputRect,
   updateQuery,
   clearMulti,
+  closeResultPanel,
 } from '../../../actions/searchActions';
 
 class Search {
@@ -24,6 +25,7 @@ class Search {
       users, items, wishs,
       inputRect,
       isUserFetching, isItemFetching, isWishFetching, isMultiFetching,
+      isPanelOpen,
       shouldLoading,
       paginating,
     } = search;
@@ -40,7 +42,8 @@ class Search {
     this.isWishFetching = isWishFetching;
     this.isMultiFetching = isMultiFetching;
 
-    this.isPanelShow = this.isPanelShow();
+    this.isPanelOpen = isPanelOpen;
+    this.isPanelShow = !_.isEqual(this.query, '') && this.isPanelOpen;
     this.isShowingNoResult = this.isShowingNoResult();
 
     this.doSearch = this.doSearch.bind(this);
@@ -49,22 +52,14 @@ class Search {
     this.doSearchWish = this.doSearchWish.bind(this);
     this.prevSearch = this.prevSearch.bind(this);
     this.setInputRect = this.setInputRect.bind(this);
+    this.closeResultPanel = this.closeResultPanel.bind(this);
 
     this.isUsersPaginating = (paginating === 'users');
     this.isItemsPaginating = (paginating === 'items');
     this.isWishsPaginating = (paginating === 'wishs');
-
-    // this.users = false;
-    // this.items = false;
-    // this.wishs = false;
-    // this.shouldLoading = true;
-    // this.isShowingNoResult = true;
   }
   isShowingNoResult() {
     return !this.wishs && !this.users && !this.items && !this.shouldLoading;
-  }
-  isPanelShow() {
-    return !_.isEqual(this.query, '');
   }
   doSearch(name) {
     this.dispatch(updateQuery(name));
@@ -101,6 +96,9 @@ class Search {
   }
   setInputRect(rect) {
     this.dispatch(setInputRect(rect));
+  }
+  closeResultPanel() {
+    this.dispatch(closeResultPanel());
   }
 }
 export default Search;

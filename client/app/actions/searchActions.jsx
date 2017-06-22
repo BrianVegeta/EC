@@ -1,18 +1,9 @@
-import _ from 'lodash';
 import * as TYPES from '../constants/actionTypes';
 import { fetchPostRequest } from '../lib/xhr';
 
-const updateUsers = users => ({
-  type: TYPES.SEARCH_UPDATE_USERS,
-  users,
-});
-const updateItems = items => ({
-  type: TYPES.SEARCH_UPDATE_ITEMS,
-  items,
-});
-const updateWishs = wishs => ({
-  type: TYPES.SEARCH_UPDATE_WISHS,
-  wishs,
+
+export const closeResultPanel = () => ({
+  type: TYPES.SEARCH_CLOSE_RESULT_PANEL,
 });
 
 const beforeFetchUser = () => ({

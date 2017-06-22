@@ -11,15 +11,13 @@ const initialState = {
   wishs: null,
   isWishFetching: false,
   isMultiFetching: false,
+  isPanelOpen: false,
   inputRect: {
     top: null, left: null, right: null, bottom: null, height: null, width: null,
   },
 };
 export default (state = initialState, action) => {
   const singleUpdate = name => Object.assign({}, state, { [name]: action[name] });
-  const updateWithFetching = (name, fetchingName, status) => (
-    Object.assign({}, state, { [name]: action[name], [fetchingName]: status })
-  );
   const updateAfterInnerFetch = (name) => {
     const stateToUpdate = Object.assign(
       {},
@@ -52,7 +50,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { isWishFetching: true });
 
     case TYPES.SEARCH_BEFORE_FETCH_MULTI:
-      return Object.assign({}, state, { isMultiFetching: true });
+      return Object.assign({}, state, { isMultiFetching: true, isPanelOpen: true });
 
     // after fetch
     case TYPES.SEARCH_AFTER_FETCH_ITEM:
@@ -90,8 +88,12 @@ export default (state = initialState, action) => {
         wishs,
         shouldLoading: true,
         paginating: null,
+        isPanelOpen: false,
       });
     }
+
+    case TYPES.SEARCH_CLOSE_RESULT_PANEL:
+      return Object.assign({}, state, { isPanelOpen: false });
 
     default:
       return state;
