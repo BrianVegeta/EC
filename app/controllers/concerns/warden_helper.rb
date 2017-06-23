@@ -20,7 +20,7 @@ module WardenHelper
 
   def authenticate_user
     unless user_signed_in?
-      render(json: { success: false, message: '請登入' }, status: :ok) and return
+      respond false, '請先登入' and return
     end
   end
 

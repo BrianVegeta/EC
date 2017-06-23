@@ -6,7 +6,7 @@ class ApiBase
 
   attr_accessor :error_message, :error_code, :response_data
 
-  def initialize params = nil
+  def initialize params = nil, apitoken = nil
     self.request_params = params
   end
 
@@ -36,8 +36,8 @@ class ApiBase
 
   def request
     response = self.request_api
-    self.error_message = ::Response::ErrorCode.localize(error_code)
     self.error_code = response['error']['code']
+    self.error_message = ::Response::ErrorCode.localize(self.error_code)
     self.response_data = response['data'] if response['data'].present?
     handle_response_error
   end

@@ -17,6 +17,7 @@ const SETTINGS = {
 const setup = method => Object.assign({}, SETTINGS, { method });
 const SETTINGS_POST = setup('POST');
 const SETTINGS_GET = setup('GET');
+const SETTINGS_DELETE = setup('DELETE');
 
 export const fetchRequest = (path, settings, body, callback) => {
   fetch(path, { ...settings, body })
@@ -32,6 +33,12 @@ export const fetchPostRequest = (path, body, callback) => {
 };
 export const fetchGetRequest = (path, callback) => {
   fetch(path, { ...SETTINGS_GET })
+  .then(response => response.json())
+  .then(json => callback(json))
+  .catch((err) => { throw err; });
+};
+export const fetchDeleteRequest = (path, body, callback) => {
+  fetch(path, { ...SETTINGS_DELETE, body })
   .then(response => response.json())
   .then(json => callback(json))
   .catch((err) => { throw err; });
