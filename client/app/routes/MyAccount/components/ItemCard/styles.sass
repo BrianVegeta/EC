@@ -1,0 +1,33 @@
+@import "../../../../components/color.sass"
+
+.container
+  display: inline-block
+  margin-right: 26px
+  margin-bottom: 40px
+  vertical-align: top
+  position: relative
+  .picture
+    display: inline-block
+    width: 246px
+    height: 246px
+    margin-bottom: 8px
+    position: relative
+    .editOverlay
+      position: absolute
+      left: 0
+      right: 0
+      top: 0
+      bottom: 0
+      background: rgba(74, 74, 74, 0.8)
+      .editControl
+        position: absolute
+  .title
+    color: $global-blackColor
+    min-height: 44px
+    line-height: 22px
+    font-size: 16px
+  .price
+    color: $global-primaryColor
+    font-size: 16px
+    line-height: 18px
+    font-weight: 600

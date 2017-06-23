@@ -24,6 +24,7 @@ class LayoutContainer extends React.Component {
       <div>
         <Header
           {...this.props}
+          hasSearch
           hasShortcut
         />
         <div className="container clear" style={{ minHeight: '1000px' }} >

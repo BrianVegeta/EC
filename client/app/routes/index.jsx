@@ -1,6 +1,7 @@
 import Layout from '../containers/LayoutContainer';
 import LayoutPublish from '../containers/LayoutPublishContainer';
 import LayoutItem from '../containers/LayoutItemContainer';
+import LayoutMyAccount from '../containersLayout/MyAccount';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
 import ServiceRoute from './Items/Service';
@@ -14,6 +15,7 @@ import ReleaseService from './Release/Service';
 import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
 import Registration from './Auth/Registration';
+import MyAccount from './MyAccount';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -38,6 +40,12 @@ const routes = (routesHelper, dispatch) => ({
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),
         ReleaseSpace(routesHelper, dispatch),
+      ],
+    },
+    {
+      component: LayoutMyAccount,
+      childRoutes: [
+        MyAccount(),
       ],
     },
     {

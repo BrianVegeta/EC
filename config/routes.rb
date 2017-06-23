@@ -4,16 +4,17 @@ Rails.application.routes.draw do
 
   namespace :ajax, format: true, constraints: { format: :json } do
     post 'facebook_login_callback', to: 'sessions#create_by_facebook'
-
     post 'phone_register', to: 'registration#create_by_phone'
-    post 'phone_verify', to: 'registration#verify_by_phone'
-    post 'phone_login', to: 'sessions#create_by_phone'
-
     post 'email_register', to: 'registration#create_by_email'
+    post 'phone_verify', to: 'registration#verify_by_phone'
     post 'email_verify', to: 'registration#verify_by_email'
+    post 'phone_login', to: 'sessions#create_by_phone'
     post 'email_login', to: 'sessions#create_by_email'
-
     post 'logout', to: 'sessions#destroy'
+
+    scope :mine, as: :mine do
+      get 'items', to: 'mine#items'
+    end
 
     scope :search, as: :search do
       post 'user', to: 'search#user'

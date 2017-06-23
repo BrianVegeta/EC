@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token
 
   def prepare_browser_info
     browser = Browser.new(request.user_agent)

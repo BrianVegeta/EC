@@ -4,18 +4,35 @@ export const POST = {
   method: 'POST',
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 };
+export const GET = {
+  credentials: 'same-origin',
+  method: 'GET',
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+};
 
+const SETTINGS = {
+  credentials: 'same-origin',
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+};
+const setup = method => Object.assign({}, SETTINGS, { method });
+const SETTINGS_POST = setup('POST');
+const SETTINGS_GET = setup('GET');
 
 export const fetchRequest = (path, settings, body, callback) => {
   fetch(path, { ...settings, body })
   .then(response => response.json())
-  .then(data => callback(data))
+  .then(json => callback(json))
   .catch((err) => { throw err; });
 };
 export const fetchPostRequest = (path, body, callback) => {
-  const settings = POST;
-  fetch(path, { ...settings, body })
+  fetch(path, { ...SETTINGS_POST, body })
   .then(response => response.json())
-  .then(data => callback(data))
+  .then(json => callback(json))
+  .catch((err) => { throw err; });
+};
+export const fetchGetRequest = (path, callback) => {
+  fetch(path, { ...SETTINGS_GET })
+  .then(response => response.json())
+  .then(json => callback(json))
   .catch((err) => { throw err; });
 };

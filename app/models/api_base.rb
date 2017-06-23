@@ -6,7 +6,7 @@ class ApiBase
 
   attr_accessor :error_message, :error_code, :response_data
 
-  def initialize params
+  def initialize params = nil
     self.request_params = params
   end
 

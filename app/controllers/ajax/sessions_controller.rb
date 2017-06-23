@@ -1,7 +1,6 @@
 class Ajax::SessionsController < ApplicationController
   include WardenHelper
   prepend_before_action :prepare_browser_info
-  skip_before_action :verify_authenticity_token
 
   # POST /ajax/email_login.json
   def create_by_email

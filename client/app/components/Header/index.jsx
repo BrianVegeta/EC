@@ -13,17 +13,24 @@ import NavItem from './NavItem';
 
 const defaultProps = {
   hasShortcut: false,
+  hasSearch: false,
   positionStatic: false,
 };
 const propTypes = {
   auth: PropTypes.object.isRequired,
   routesHelper: PropTypes.object.isRequired,
   hasShortcut: PropTypes.bool,
+  hasSearch: PropTypes.bool,
   positionStatic: PropTypes.bool,
 };
 class Header extends React.PureComponent {
   render() {
-    const { auth, routesHelper, positionStatic } = this.props;
+    const {
+      auth,
+      routesHelper,
+      positionStatic,
+      hasSearch,
+    } = this.props;
     return (
       <header
         className={`navbar ${positionStatic ? 'navbar-static' : 'navbar-fixed-top'}`}
@@ -37,9 +44,11 @@ class Header extends React.PureComponent {
               </IndexLink>
             </div>
             <div className="navbar">
-              <div styleName="navs-search">
-                <HeaderSearch {...this.props} />
-              </div>
+              { hasSearch &&
+                <div styleName="navs-search">
+                  <HeaderSearch {...this.props} />
+                </div>
+              }
               {
                 !auth.isLogin &&
                   <ul className="navs" styleName="navs-right">
