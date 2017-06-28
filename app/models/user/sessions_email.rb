@@ -11,14 +11,4 @@ class User::SessionsEmail < User::Sessions
   def email
     @email
   end
-
-  def warden_session
-    {
-      uid: self.uid,
-      name: self.name,
-      apitoken: self.apitoken,
-      email: self.email,
-      password: self.password,
-    }
-  end
 end

@@ -43,7 +43,12 @@ class ApiBase
   end
 
   def handle_response_error
-    raise 'Need defind in subclass.'
+    case self.error_code
+    when ::Response::ErrorCode::SUCCESS
+      true
+    else
+      false
+    end
   end
 
   def request_params

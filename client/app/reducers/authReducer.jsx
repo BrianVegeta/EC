@@ -6,7 +6,8 @@ import {
 } from '../constants/states';
 
 const initialState = {
-  isLogin: true,
+  isLogin: false,
+  currentUser: {},
   registerBy: AUTH_BY.EMAIL,
   registerState: REGISTER_REGISTERING,
   registerFailMessage: null,
@@ -24,6 +25,10 @@ export default (state = initialState, action) => {
   const updateState = name => Object.assign({}, state, { [name]: action[name] });
 
   switch (action.type) {
+    case TYPES.AUTH_SET_CURRENT_USER: {
+      const { currentUser } = action;
+      return Object.assign({}, state, { isLogin: true, currentUser });
+    }
     case TYPES.AUTH_SET_LOGIN_STATUS:
       return updateState('isLogin');
     case TYPES.AUTH_UPDATE_REGISTER_BY:

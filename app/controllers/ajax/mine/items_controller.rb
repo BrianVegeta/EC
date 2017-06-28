@@ -3,7 +3,7 @@ class Ajax::Mine::ItemsController < ApplicationController
   prepend_before_action :authenticate_user
 
   def index
-    @items = UserItems.new(uid: 'SACBA0PB')
+    @items = UserItems.new(current_user.slice('uid'))
     # @items = UserItems.new(uid: 'SACCN033')
     # TODO: [#MY][1]
     success = @items.request

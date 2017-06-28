@@ -8,36 +8,37 @@ $hoverColor: #31ABBA
     .brand
       width: 130px
       height: 43px
-      background-image: image-url('logo_shareapp.png')
-      background-position: center
-      background-size: cover
   .navbar
     width: auto
     display: block
     height: auto
     padding-bottom: 0
     overflow: visible
-    ul.navs
+    & > ul.navs
       margin: 0
       padding: 0
       list-style: none
-      li.nav
+      &.navs-right
+        float: right
+      & > li.nav
         display: block
         float: left
-        padding: 25px 0 25px 42px
+        padding: 25px 0 25px 40px
         line-height: 20px
-        font-size: 14px
-        .iconOuter
-          margin: -3px
-        button, a
+        button, & > a
           color: #333
+          font-size: 14px
           &:hover
             color: $hoverColor
 
 
-.navbar.navbar-fixed-top
-  position: fixed
-  top: 0
-  z-index: 1000
-.navbar.navbar-static
-  position: static
+.navbar
+  &.navbar-fixed-top, &.navbar-static
+    background-color: #fff
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14)
+  &.navbar-fixed-top
+    position: fixed
+    top: 0
+    z-index: 1000
+  &.navbar-static
+    position: static

@@ -32,6 +32,13 @@ class User::Sessions < User
     @name
   end
 
+  def warden_session
+    self.user_profile.merge({
+      password: self.password,
+      apitoken: self.apitoken,
+    })
+  end
+
   def request_login
     response = self.class.post(@path, body: @params.to_json)
     case response.code
@@ -51,6 +58,7 @@ class User::Sessions < User
     error_code = response['error']['code']
 
     @error_message = ::Response::ErrorCode.localize(error_code)
+    self.response_data = response['data'] if response['data'].present?
     case error_code
     when ::Response::ErrorCode::SUCCESS
       set_user_profile(response)

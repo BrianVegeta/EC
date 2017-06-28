@@ -41,12 +41,13 @@ LayoutContainer.propTypes = propTypes;
 LayoutContainer.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  const { environment, auth, routesHelper, search } = state;
+  const { environment, auth, routesHelper, search, notification } = state;
   return ({
     environment,
     auth,
     search,
     routesHelper,
+    notification,
   });
 };
 export default connect(mapStateToProps)(LayoutContainer);

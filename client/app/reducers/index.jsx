@@ -12,6 +12,7 @@ import cities from './citiesReducer';
 import publish from './publishReducer';
 import search from './searchReducer';
 import mine from './mineReducer';
+import notification from './notificationReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -27,4 +28,5 @@ export default combineReducers({
   publish,
   search,
   mine,
+  notification,
 });

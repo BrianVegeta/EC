@@ -56,6 +56,6 @@ class Ajax::SessionsController < ApplicationController
     if success
       warden.set_user(@user.warden_session, scope: :user)
     end
-    respond success, @user.error_message
+    respond success, @user.error_message, current_user
   end
 end

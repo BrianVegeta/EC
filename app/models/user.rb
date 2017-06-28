@@ -1,4 +1,5 @@
 class User < ApiBase
+  attr_accessor :user_profile
   def initialize(params)
     @params = params
     @error_message = ''
@@ -8,13 +9,13 @@ class User < ApiBase
     @error_message
   end
 
-  
+
 
   def set_user_profile(response)
     @apitoken = response.headers['apitoken']
-    user_profile = response['data']['user_profile']
-    @uid = user_profile['uid']
-    @name = user_profile['name']
+    self.user_profile = response['data']['user_profile']
+    @uid = self.user_profile['uid']
+    @name = self.user_profile['name']
   end
 
   class << self

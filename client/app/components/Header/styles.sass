@@ -1,6 +1,4 @@
-.header
-  background-color: #fff
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14)
+@import "../../components/color.sass"
 
 .navs-search
   padding-left: 20px
@@ -8,10 +6,13 @@
   margin: 0
   list-style: none
 
-.navs-right
-  float: right
+.navbar-container, .navbar-container-shortcut
+  display: block
 
-.navbar-container
-  display: block
-.navbar-container-shortcut
-  display: block
+.publishBtn
+  color: $global-primaryColor
+  border: 1px solid $global-primaryColor
+  display: inline-block
+  padding: 9px 11px
+  margin: -10px 0
+  border-radius: 5px

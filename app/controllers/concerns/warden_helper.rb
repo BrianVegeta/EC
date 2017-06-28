@@ -3,7 +3,6 @@ module WardenHelper
 
   included do
     helper_method :warden, :current_user
-    # prepend_before_action :set_auth_token, :pass_header_to_warden
   end
 
   def current_user
@@ -32,12 +31,7 @@ module WardenHelper
     warden.set_user(user, scope: :user)
   end
 
-  def pass_header_to_warden
-    request.env['CUS_HTTP_HEADER'] = request.headers
-  end
-
-  def set_auth_token
-    return if current_user.nil?
-    response['Authorization'] = "Bearer #{JWTWrapper.encode current_user}"
+  def apitoken
+    current_user['apitoken']
   end
 end

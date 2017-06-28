@@ -1,9 +1,38 @@
 /* eslint-disable import/prefer-default-export */
+import { browserHistory } from 'react-router';
 import * as TYPES from '../constants/actionTypes';
 import * as AUTH_BY from '../constants/authBy';
-import { fetchRequest } from '../lib/xhr';
+import { fetchRequest, fetchGetRequest } from '../lib/xhr';
 import { POST } from './methods';
 
+const setCurrentUser = currentUser => ({
+  type: TYPES.AUTH_SET_CURRENT_USER,
+  currentUser,
+});
+function fetchCurrentUser(afterSuccess, afterFail) {
+  fetchGetRequest('/ajax/auth/get_current_user.json', (response) => {
+    const { success } = response;
+    if (success) {
+      afterSuccess(response);
+    } else {
+      afterFail(response);
+    }
+  });
+}
+export function checkCurrentUser() {
+  return (dispatch) => {
+    const afterSuccess = (response) => { dispatch(setCurrentUser(response.data)); };
+    const afterFail = () => { };
+    fetchCurrentUser(afterSuccess, afterFail);
+  };
+}
+export function requireLoginAndGetUser() {
+  return (dispatch) => {
+    const afterSuccess = (response) => { dispatch(setCurrentUser(response.data)); };
+    const afterFail = () => { browserHistory.push('/p/login'); };
+    fetchCurrentUser(afterSuccess, afterFail);
+  };
+}
 
 export const setLoginStatus = isLogin => ({
   type: TYPES.AUTH_SET_LOGIN_STATUS,

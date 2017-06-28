@@ -12,6 +12,19 @@ Rails.application.routes.draw do
     post 'email_login', to: 'sessions#create_by_email'
     post 'logout', to: 'sessions#destroy'
 
+    namespace :auth do
+      get 'get_current_user', to: 'index#get_current_user'
+      get 'get_user_info', to: 'index#get_user_info'
+      # get 'notifications/test', to: 'notifications#activities'
+      resources :notifications, only: :index do
+        collection do
+          get 'activities'
+          get 'contracts'
+          get 'systems'
+        end
+      end
+    end
+
     namespace :mine do
       get 'items', to: 'items#index'
       delete 'items_remove', to: 'items#multi_remove'

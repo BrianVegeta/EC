@@ -11,14 +11,4 @@ class User::SessionsMobile < User::Sessions
   def phone
     @phone
   end
-
-  def warden_session
-    {
-      uid: self.uid,
-      name: self.name,
-      apitoken: self.apitoken,
-      phone: self.phone,
-      password: self.password,
-    }
-  end
 end

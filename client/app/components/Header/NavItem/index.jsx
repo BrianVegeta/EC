@@ -2,36 +2,76 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import Dropdown from '../Dropdown';
 
+const RENDER_TYPE_BUTTON = 'button';
+const RENDER_TYPE_URL = 'externalLink';
+const RENDER_TYPE_HREF = 'reactRouter';
 class NavItem extends React.Component {
+
   static defaultProps = {
-    display: 'text',
     className: null,
+    children: null,
+    action: null,
   };
+
   static propTypes = {
-    display: PropTypes.oneOf(['text', 'icon', 'avatar']),
     className: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
+    content: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.string,
+    ]).isRequired,
     action: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string,
-    ]).isRequired,
+    ]),
   };
-  renderLinkContent(children) {
-    const { action } = this.props;
-    if (_.isFunction(action)) {
-      return <button className="button iconOuter">{children}</button>;
+
+  getRenderType() {
+    const { action, children } = this.props;
+    if (children) {
+      return RENDER_TYPE_BUTTON;
     }
     if (/^http[s]?:\/\//i.test(action)) {
-      return <a href={action}>{children}</a>;
+      return RENDER_TYPE_URL;
     }
-    return <Link to={action} >{children}</Link>;
+    return RENDER_TYPE_HREF;
   }
+
+  renderLinkContent(content) {
+    const { action, children } = this.props;
+    switch (this.getRenderType()) {
+      case RENDER_TYPE_BUTTON: {
+        const buttonTrigger = (
+          <button
+            className="button"
+            onClick={e => (this.dropdown.triggerClick(e))}
+          >
+            {content}
+          </button>
+        );
+        return (
+          <Dropdown
+            trigger={buttonTrigger}
+            ref={dropdown => (this.dropdown = dropdown)}
+          >
+            {children}
+          </Dropdown>
+        );
+      }
+      case RENDER_TYPE_URL:
+        return <a href={action}>{content}</a>;
+      default:
+        return <Link to={action} >{content}</Link>;
+    }
+  }
+
   render() {
-    const { display, className, children } = this.props;
+    const { className, content } = this.props;
     return (
-      <li className={className}>
-        { this.renderLinkContent(children) }
+      <li className="nav">
+        {this.renderLinkContent(content)}
       </li>
     );
   }

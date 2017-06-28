@@ -14,7 +14,7 @@ class MyAccountLayout extends React.Component {
     environment: null,
   };
   static propTypes = {
-    main: PropTypes.object,
+    main: myPropTypes.main,
     environment: myPropTypes.environment,
     dispatch: PropTypes.func.isRequired,
   };
@@ -23,7 +23,10 @@ class MyAccountLayout extends React.Component {
     dispatch(initEnvironment());
   }
   render() {
-    const { main, environment } = this.props;
+    const { main, environment, auth } = this.props;
+    if (!auth.isLogin) {
+      return null;
+    }
     return (
       <div>
         <Header {...this.props} />

@@ -21,7 +21,7 @@ const routes = (routesHelper, dispatch) => ({
   path: '/',
   childRoutes: [
     {
-      indexRoute: HomeRoute(),
+      indexRoute: HomeRoute(dispatch),
       component: Layout,
       childRoutes: [
         GoodsRoute(routesHelper, dispatch),
@@ -45,7 +45,7 @@ const routes = (routesHelper, dispatch) => ({
     {
       component: LayoutMyAccount,
       childRoutes: [
-        MyAccount(),
+        MyAccount(dispatch),
       ],
     },
     {

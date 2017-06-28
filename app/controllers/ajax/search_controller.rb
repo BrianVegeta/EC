@@ -1,5 +1,4 @@
 class Ajax::SearchController < ApplicationController
-  skip_before_action :verify_authenticity_token
 
   def user
     search ::Search::User.new(search_params)

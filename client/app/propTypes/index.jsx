@@ -14,4 +14,18 @@ export default {
   mine: PropTypes.shape({
     items: PropTypes.arrayOf(PropTypes.object),
   }),
+  main: PropTypes.object,
+  currentUser: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+  ),
+  navsDropdownList: PropTypes.arrayOf(
+    PropTypes.shape({
+      link: PropTypes.string,
+      text: PropTypes.string,
+    }),
+  ),
+  notification: PropTypes.object,
 };

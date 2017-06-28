@@ -25,12 +25,12 @@ class Avatar extends React.Component {
       borderRadius: round ? '50%' : null,
     };
     return (
-      <div
-        {...{
-          styleName: 'container',
-          style,
-        }}
-      />
+      <div styleName="placeholder" style={style}>
+        <div
+          styleName="container"
+          style={style}
+        />
+      </div>
     );
   }
 }
