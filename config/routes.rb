@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get '/p/(*all)', to: 'index#pages', as: :pages
 
   namespace :ajax, format: true, constraints: { format: :json } do
+    get :startup, to: 'startup#index'
+
     post 'facebook_login_callback', to: 'sessions#create_by_facebook'
     post 'phone_register', to: 'registration#create_by_phone'
     post 'email_register', to: 'registration#create_by_email'

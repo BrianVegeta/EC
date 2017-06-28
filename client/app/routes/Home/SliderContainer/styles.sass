@@ -1,0 +1,27 @@
+@import "../../../components/color.sass"
+
+.container
+  margin-bottom: 60px
+  .header
+    position: relative
+    margin-bottom: 30px
+    .head, .icon, .title, .seeAll, .linkContainer, .text
+      display: inline-block
+    .head
+      .icon, .title
+        color: $global-blackColor
+        vertical-align: middle
+      .title
+        font-size: 22px
+        font-weight: 600
+        margin-left: 10px
+    .seeAll
+      float: right
+      .linkContainer
+        color: $global-blackColor
+        & > .text, & > svg
+          vertical-align: middle
+        & > .text
+          line-height: 30px
+        & > svg
+          margin-top: 2px

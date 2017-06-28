@@ -21,13 +21,14 @@ class Picture extends React.Component {
       width,
       height: width,
     };
+    const placeholderStyle = {
+      width,
+      height: width,
+    };
     return (
-      <div
-        {...{
-          styleName: 'container',
-          style,
-        }}
-      />
+      <div {...{ styleName: 'placeholder', style: placeholderStyle }} >
+        <div {...{ styleName: 'container', style }} />
+      </div>
     );
   }
 }

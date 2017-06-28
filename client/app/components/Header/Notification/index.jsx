@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MDSpinner from 'react-md-spinner';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import myPropTypes from '../../../propTypes';
 import Model from './Model';
 import ModelRow from './ModelRow';
+import LoadingSpinner from '../../LoadingSpinner';
 
 class Notification extends React.Component {
   static propTypes = {
@@ -23,13 +23,7 @@ class Notification extends React.Component {
     return (
       <div styleName="container">
         <div styleName="inner">
-          {boxItems.length === 0 &&
-            <MDSpinner
-              style={{ width: 30 }}
-              color1="#31ABBA"
-              color2="#FF9442"
-            />
-          }
+          {boxItems.length === 0 && <LoadingSpinner /> }
           {boxItems.map((item) => {
             const itemModel = new ModelRow(item, dispatch);
             return (

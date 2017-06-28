@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
 import { IndexLink, Link } from 'react-router';
-import IconNotify from 'react-icons/lib/md/notifications-none';
-import IconPublish from 'react-icons/lib/fa/plus-square-o';
 import classnames from 'classnames/bind';
 import cn from 'classnames';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import myPropTypes from '../../propTypes';
 import Me from './Me';
 import Post from './Navs/Post';
 import HeaderSearch from '../HeaderSearch';
@@ -24,9 +23,7 @@ class Header extends React.Component {
     positionStatic: false,
   };
   static propTypes = {
-    notification: PropTypes.arrayOf(
-      PropTypes.object,
-    ).isRequired,
+    notification: myPropTypes.notification.isRequired,
     auth: PropTypes.object.isRequired,
     routesHelper: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,

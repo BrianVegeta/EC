@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MDSpinner from 'react-md-spinner';
 import SearchIcon from 'react-icons/lib/md/search';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -14,6 +13,7 @@ import Model from './Model';
 import ModelRowUser from './Model/RowUser';
 import ModelRowWish from './Model/RowWish';
 import ModelRowItem from './Model/RowItem';
+import LoadingSpinner from '../LoadingSpinner';
 
 const cx = classnames.bind(styles);
 class Search extends React.Component {
@@ -84,16 +84,12 @@ class Search extends React.Component {
               </Collection>
             }
             {model.shouldLoading &&
-              <div className={cx('loading')}>
-                <MDSpinner
-                  style={{ width: 30 }}
-                  color1="#31ABBA"
-                  color2="#FF9442"
-                />
+              <div styleName="loading">
+                <LoadingSpinner />
               </div>
             }
             {model.isShowingNoResult &&
-              <div className={cx('noResult')}>
+              <div styleName="noResult">
                 <SearchIcon size={40} />
                 <div className={cx('noResultText')} >搜尋沒有結果</div>
               </div>

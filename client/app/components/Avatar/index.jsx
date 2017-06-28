@@ -18,18 +18,15 @@ class Avatar extends React.Component {
   };
   render() {
     const { src, width, round } = this.props;
+    const square = { width, height: width };
     const style = {
+      ...square,
       backgroundImage: src,
-      width,
-      height: width,
       borderRadius: round ? '50%' : null,
     };
     return (
-      <div styleName="placeholder" style={style}>
-        <div
-          styleName="container"
-          style={style}
-        />
+      <div styleName="placeholder" style={square}>
+        <div styleName="container" style={style} />
       </div>
     );
   }

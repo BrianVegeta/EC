@@ -1,4 +1,5 @@
 import { checkCurrentUser } from '../../actions/authActions';
+import { startup } from '../../actions/homeActions';
 
 export default dispatch => ({
   getComponent(_nextState, callback) {
@@ -9,5 +10,6 @@ export default dispatch => ({
   },
   onEnter: () => {
     dispatch(checkCurrentUser());
+    dispatch(startup());
   },
 });

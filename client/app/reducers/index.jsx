@@ -13,6 +13,7 @@ import publish from './publishReducer';
 import search from './searchReducer';
 import mine from './mineReducer';
 import notification from './notificationReducer';
+import home from './homeReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   search,
   mine,
   notification,
+  home,
 });
