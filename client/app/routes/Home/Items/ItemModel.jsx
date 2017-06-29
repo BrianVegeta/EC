@@ -4,6 +4,7 @@ import numeral from 'numeral';
 export default class {
   constructor(props) {
     const {
+      pid,
       pname,
       currency,
       price,
@@ -11,7 +12,9 @@ export default class {
       favorite_count,
       owner_img,
       owner_name,
+      in_my_favorite,
     } = props;
+    this.pid = pid;
     this.pname = pname;
     this.currency = currency;
     this.price = price;
@@ -22,5 +25,6 @@ export default class {
     this.ownerImg = owner_img;
     this.avatarUrl = `url(${owner_img})`;
     this.ownerName = owner_name;
+    this.isMyFavorite = !!in_my_favorite;
   }
 }

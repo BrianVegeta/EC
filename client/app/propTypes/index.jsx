@@ -30,16 +30,25 @@ export default {
   notification: PropTypes.object,
   categories: PropTypes.arrayOf(PropTypes.object),
   category: PropTypes.shape({
+    id: PropTypes.number,
     name: PropTypes.string,
     img: PropTypes.string,
   }),
   itemCard: PropTypes.shape({
+    id: PropTypes.number,
     pname: PropTypes.string,
-    currency: PropTypes.string.isRequired,
-    priceDesc: PropTypes.number,
+    currency: PropTypes.string,
+    priceDesc: PropTypes.string,
     coverUrl: PropTypes.string,
     favoriteCount: PropTypes.number,
     avatarUrl: PropTypes.string,
     ownerName: PropTypes.string,
+  }),
+  vendorCard: PropTypes.shape({
+    uid: PropTypes.string,
+    name: PropTypes.string,
+    img: PropTypes.string,
+    autobiography: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.object),
   }),
 };

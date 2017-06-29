@@ -51,6 +51,7 @@ class Ajax::ItemsController < ApplicationController
   # GET /ajax/items/1
   # GET /ajax/items/1.json
   def show
+    
   end
 
   # GET /ajax/items/new

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import myPropTypes from '../../../../propTypes';
@@ -11,14 +12,16 @@ class Category extends React.Component {
   };
   render() {
     const { category } = this.props;
-    const { img, name } = category;
+    const { img, name, id } = category;
     return (
-      <div styleName="container">
-        <div styleName="cover" >
-          <Picture src={`url(${img})`} />
+      <Link to={`/p/i/${name}-c.${id}`}>
+        <div styleName="container">
+          <div styleName="cover" >
+            <Picture src={`url(${img})`} />
+          </div>
+          <div styleName="name">{name}</div>
         </div>
-        <div styleName="name">{name}</div>
-      </div>
+      </Link>
     );
   }
 }

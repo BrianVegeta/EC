@@ -1,4 +1,6 @@
 @import "../../../../components/color.sass"
+$favoriteColor: #999
+$favoritedColor: #FC5659
 
 .container
   position: relative
@@ -10,6 +12,7 @@
     min-height: 40px
     margin-bottom: 15px
     font-size: 16px
+    color: $global-blackColor
   .price
     font-size: 18px
     font-weight: 600
@@ -19,48 +22,29 @@
     display: table
     width: 100%
     margin-bottom: 15px
-
-
-
-
-.footer
-  display: table
-  width: 100%
-  margin-bottom: 15px
-
-.footer-row
-  display: table-row
-
-.owner
-  display: table-cell
-  vertical-align: middle
-  white-space: nowrap
-
-.user-avatar
-  width: 30px
-  height: 30px
-  display: inline-block
-  vertical-align: middle
-  margin-right: 5px
-  img
-    width: 100%
-    border-radius: 50%
-
-.username
-  height: 30px
-  vertical-align: middle
-
-.evaluation
-  display: table-cell
-  width: 70px
-  vertical-align: middle
-  text-align: right
-
-.score
-  padding: 0
-  vertical-align: middle
-
-.mark
-  display: inline-block
-  vertical-align: middle
-  font-size: 20px
+    .owner
+      float: left
+      .avatar, .username
+        display: inline-block
+        vertical-align: middle
+      .avatar
+        width: 30px
+        height: 30px
+      .username
+        color: $global-blackColor
+        margin-left: 8px
+        font-size: 14px
+    .favorite
+      float: right
+      .favoriteCount, .favoriteHeart
+        display: inline-block
+        vertical-align: middle
+        color: $favoriteColor
+      .favoriteCount
+        font-size: 14px
+        margin-right: 4px
+      button.favoriteHeart
+        padding-bottom: 2px
+        height: 30px
+        &.active
+          color: $favoritedColor

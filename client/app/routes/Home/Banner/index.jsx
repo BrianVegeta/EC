@@ -36,7 +36,7 @@ class Banner extends React.Component {
           mountChildren: true,
         }}
       >
-        <div style={{ border: '1px solid #DEDEDE' }}>
+        <div styleName="container">
           <Carousel
             {...{
               width: '100%',

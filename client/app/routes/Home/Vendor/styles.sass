@@ -1,0 +1,43 @@
+@import "../../../components/color.sass"
+$galleryItemMargin: 7px
+
+.container
+  margin-bottom: 10px
+  .card
+    display: inline-block
+    box-shadow: 0 2px 6px 0 #E2E2E2
+    border: 1px solid $global-lineColor
+    background-color: #FFF
+    width: 336px
+    height: 350px
+    padding: 20px
+    position: relative
+    .avatar
+      position: relative
+      width: 80px
+      height: 80px
+      margin: 20px auto
+    .script
+      text-align: center
+      .title
+        font-size: 20px
+        font-weight: 600
+        color: $global-blackColor
+      .biography
+        font-size: 15px
+        color: $global-placeholder
+        padding: 10px
+        .inner
+          line-height: 20px
+    .gallery
+      white-space: nowrap
+      position: absolute
+      bottom: 20px
+      .item
+        display: inline-block
+        vertical-align: middle
+        width: 93px
+        height: 93px
+        margin-right: $galleryItemMargin
+        &:last-child
+          margin-right: 0

@@ -10,6 +10,7 @@ class Categories extends React.Component {
   };
   render() {
     const { categories } = this.props;
+    if (categories.length <= 0) return null;
     const sliderSettings = {
       infinite: false,
       speed: 500,
