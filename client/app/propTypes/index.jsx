@@ -51,4 +51,11 @@ export default {
     autobiography: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.object),
   }),
+  search: PropTypes.shape({ query: PropTypes.string }),
+  authOnHeader: PropTypes.shape({
+    isLogin: PropTypes.bool,
+    currentUser: PropTypes.object,
+  }),
+  item: PropTypes.object,
+  orderBoard: PropTypes.object,
 };

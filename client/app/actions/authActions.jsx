@@ -2,9 +2,17 @@
 import { browserHistory } from 'react-router';
 import * as TYPES from '../constants/actionTypes';
 import * as AUTH_BY from '../constants/authBy';
-import { fetchRequest, fetchGetRequest } from '../lib/xhr';
+import { fetchRequest, fetchGetRequest, fetchPostRequest } from '../lib/xhr';
 import { POST } from './methods';
 
+export function logout() {
+  return (dispatch) => {
+    fetchPostRequest('/ajax/logout.json', {}, (response) => {
+      console.log(response);
+      // TODO: logut
+    });
+  };
+}
 const setCurrentUser = currentUser => ({
   type: TYPES.AUTH_SET_CURRENT_USER,
   currentUser,
@@ -19,10 +27,12 @@ function fetchCurrentUser(afterSuccess, afterFail) {
     }
   });
 }
-export function checkCurrentUser() {
+export function checkCurrentUser(redirectToLogin = null) {
   return (dispatch) => {
     const afterSuccess = (response) => { dispatch(setCurrentUser(response.data)); };
-    const afterFail = () => { };
+    const afterFail = () => {
+      if (redirectToLogin) redirectToLogin();
+    };
     fetchCurrentUser(afterSuccess, afterFail);
   };
 }

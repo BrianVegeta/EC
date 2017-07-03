@@ -1,38 +1,23 @@
 .container
   position: relative
   padding-bottom: 40px
-
-.container-fixed
-  composes: container
-  .header, .body
-    transform: translate3d(0,0,0)
-    position: fixed
+  &.fixed
+    .header, .body
+      transform: translate3d(0,0,0)
+      position: fixed
+      z-index: 1005
+      top: 0
+  .header
+    position: absolute
     top: 0
-
-.header
-  position: absolute
-  top: 0
-  width: 368px
-  height: 70px
-  background-color: #888
-  .header-price
-    position: relative
-    background-color: #333
-    color: #fff
-    padding: 10px 20px
-    line-height: 50px
-.body
-  position: absolute
-  top: 0
-  width: 368px
-  margin-top: 70px
-
-.body-bottom
-  position: absolute !important
-  composes: body
-
-.body
-  .share-board
-    margin-top: 30px
-  .report
-    margin-top: 30px
+    width: 368px
+    height: 70px
+  .body
+    position: absolute
+    top: 0
+    width: 368px
+    margin-top: 70px
+    .report
+      margin-top: 30px
+    &.bottom
+      position: absolute !important

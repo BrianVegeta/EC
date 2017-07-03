@@ -1,6 +1,4 @@
 class Ajax::ItemsController < ApplicationController
-  before_action :set_ajax_item, only: [:show, :edit, :update, :destroy]
-
   # GET /ajax/items
   # GET /ajax/items.json
   def index
@@ -51,7 +49,7 @@ class Ajax::ItemsController < ApplicationController
   # GET /ajax/items/1
   # GET /ajax/items/1.json
   def show
-    
+
   end
 
   # GET /ajax/items/new
@@ -61,6 +59,9 @@ class Ajax::ItemsController < ApplicationController
 
   # GET /ajax/items/1/edit
   def edit
+    @items = ::Items::Get.new(params.permit(:pid))
+    success = @items.request
+    respond success, @items.error_message, @items.response_data
   end
 
   # POST /ajax/items

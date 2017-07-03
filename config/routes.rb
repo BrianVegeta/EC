@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     get 'test2', to: 'test#test2'
 
     resources :banners, only: :index
-    resources :items, only: :index
+    resources :items, only: [:index, :edit], param: :pid
     resources :images, only: [] do
       collection do
         put 'item_cover'

@@ -1,19 +1,29 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
-import Navs from './Navs';
 import styles from './styles.sass';
+import Navs from './Navs';
 
-const propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-};
-const ItemNavigation = props => (
-  <div styleName={props.isVisible ? 'container-visible' : 'container-hide'}>
-    <div styleName="inner" className="container clear">
-      <div styleName="menu">
-        <Navs {...props} />
+const cx = classnames.bind(styles);
+class ItemNavigation extends React.Component {
+  static defaultProps = {
+    visible: false,
+  };
+  static propTypes = {
+    visible: PropTypes.bool,
+  };
+  render() {
+    const { visible } = this.props;
+    return (
+      <div className={cx('container', { visible })}>
+        <div styleName="inner" className="container clear">
+          <div styleName="menu">
+            <Navs {...this.props} />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
-ItemNavigation.propTypes = propTypes;
+    );
+  }
+}
 export default CSS(ItemNavigation, styles);

@@ -1,0 +1,25 @@
+@import "../../../../components/color.sass"
+
+$avatarWidth: 56px
+.container
+  padding: 8px 24px
+  cursor: pointer
+  &:hover
+    background: $header-search-result-hover
+  .body
+    margin-left: $avatarWidth
+    min-height: $avatarWidth
+    padding: 12px 16px
+    .name, .address
+      line-height: 14px
+      font-size: 14px
+    .name
+      color: #333
+      font-weight: 600
+      margin-bottom: 4px
+    .address
+      color: #999
+  .avatar
+    width: $avatarWidth
+    height: $avatarWidth
+    float: left

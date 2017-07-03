@@ -43,3 +43,16 @@ export const fetchDeleteRequest = (path, body, callback) => {
   .then(json => callback(json))
   .catch((err) => { throw err; });
 };
+export const fetchXhrGet = (path, successCallback, failCallback) => {
+  fetch(path, { ...SETTINGS_GET })
+  .then(response => response.json())
+  .then((json) => {
+    const { success } = json;
+    if (success) {
+      successCallback(json);
+    } else {
+      failCallback(json);
+    }
+  })
+  .catch((err) => { throw err; });
+};

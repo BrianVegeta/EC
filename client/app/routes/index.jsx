@@ -1,6 +1,6 @@
-import Layout from '../containers/LayoutContainer';
+import Layout from '../containersLayout/Home';
 import LayoutPublish from '../containers/LayoutPublishContainer';
-import LayoutItem from '../containers/LayoutItemContainer';
+import LayoutItemDetail from '../containersLayout/ItemDetail';
 import LayoutMyAccount from '../containersLayout/MyAccount';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
@@ -49,9 +49,9 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutItem,
+      component: LayoutItemDetail,
       childRoutes: [
-        ItemRoute(routesHelper),
+        ItemRoute(dispatch),
       ],
     },
   ],

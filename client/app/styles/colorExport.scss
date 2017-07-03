@@ -1,0 +1,14 @@
+@import "./color.sass";
+
+:export {
+  primaryColor: $global-primaryColor;
+  orangeColor: $global-orangeColor;
+  hoverColor: $global-hoverColor;
+  activeColor: $global-activeColor;
+  blackColor: $global-blackColor;
+  placeholder: $global-placeholder;
+  lineColor: $global-lineColor;
+  headerSearchResultHover: $header-search-result-hover;
+  colorDanger: $global-colorDanger;
+  colorHeart: $global-colorHeart;
+}

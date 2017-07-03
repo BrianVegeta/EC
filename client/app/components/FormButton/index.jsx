@@ -9,12 +9,14 @@ class FormButton extends React.Component {
   static defaultProps = {
     colorType: 'green',
     size: 'md',
-    style: null,
+    style: {},
+    width: '100%',
   };
   static propTypes = {
     colorType: PropTypes.oneOf(['green', 'orange', 'greenBorder']),
     size: PropTypes.oneOf(['lg', 'md', 'sm']),
     style: PropTypes.object,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
   };
@@ -31,7 +33,8 @@ class FormButton extends React.Component {
     }
   }
   render() {
-    const { content, size, style, onClick } = this.props;
+    const { content, size, style, onClick, width } = this.props;
+    style.width = width;
     return (
       <button
         {...{

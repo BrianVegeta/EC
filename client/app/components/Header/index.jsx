@@ -19,24 +19,23 @@ const cx = classnames.bind(styles);
 class Header extends React.Component {
   static defaultProps = {
     hasShortcut: false,
-    hasSearch: false,
     positionStatic: false,
+    search: null,
   };
   static propTypes = {
     notification: myPropTypes.notification.isRequired,
-    auth: PropTypes.object.isRequired,
-    routesHelper: PropTypes.object.isRequired,
+    auth: myPropTypes.authOnHeader.isRequired,
+    search: myPropTypes.search,
     dispatch: PropTypes.func.isRequired,
     hasShortcut: PropTypes.bool,
-    hasSearch: PropTypes.bool,
     positionStatic: PropTypes.bool,
   };
   render() {
     const {
+      dispatch,
+      search,
       auth,
-      routesHelper,
       positionStatic,
-      hasSearch,
       hasShortcut,
       notification,
     } = this.props;
@@ -52,14 +51,14 @@ class Header extends React.Component {
         <div className="navbar-container">
           <div className="container clear">
             <div className="navbar-header">
-              <IndexLink to={routesHelper.root}>
+              <IndexLink to={'/'}>
                 <Logo />
               </IndexLink>
             </div>
             <div className="navbar">
-              { hasSearch &&
+              {search &&
                 <div className={cx('navs-search')}>
-                  <HeaderSearch {...this.props} />
+                  <HeaderSearch {...{ dispatch, search }} />
                 </div>
               }
               <ul className="navs navs-right" >

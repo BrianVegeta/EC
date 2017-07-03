@@ -19,15 +19,11 @@ const cx = classnames.bind(styles);
 class Search extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    search: PropTypes.object.isRequired,
   };
-  // componentDidMount() {
-  //   const model = new Model(this.props);
-  //   const appNode = document.querySelectorAll('[id^="App-react-component-"]')[0];
-  //   appNode.addEventListener('click', model.closeResultPanel);
-  // }
   render() {
-    const { dispatch } = this.props;
-    const model = new Model(this.props);
+    const { search, dispatch } = this.props;
+    const model = new Model(search, dispatch);
     const { users, items, wishs } = model;
     return (
       <div styleName="container">

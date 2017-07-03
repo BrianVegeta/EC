@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
+import FavoriteHeart from 'components/FavoriteHeart';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Picture from '../../../../components/Picture';
 import Avatar from '../../../../components/Avatar';
 import myPropTypes from '../../../../propTypes';
-import IconFavoriteO from 'react-icons/lib/md/favorite-outline';
-import IconFavorite from 'react-icons/lib/md/favorite';
 
 class ItemCard extends React.Component {
   static propTypes = {
@@ -36,7 +35,7 @@ class ItemCard extends React.Component {
           <div styleName="favorite">
             <span styleName="favoriteCount">{item.favoriteCount}</span>
             <button className="button" styleName="favoriteHeart">
-              <IconFavoriteO size={20} />
+              <FavoriteHeart size={20} />
             </button>
           </div>
         </div>

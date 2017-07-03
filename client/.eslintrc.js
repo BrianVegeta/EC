@@ -15,4 +15,14 @@ module.exports = {
       { "ignorePureComponents": true },
     ],
   },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {}
+    }
+  }
 };

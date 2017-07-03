@@ -42,6 +42,12 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: ['node_modules', 'spritesmith-generated'],
+    alias: {
+      styles: path.join(__dirname, 'app/styles'),
+      components: path.join(__dirname, 'app/components'),
+      lib: path.join(__dirname, 'app/lib'),
+      propTypes: path.join(__dirname, 'app/propTypes'),
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
