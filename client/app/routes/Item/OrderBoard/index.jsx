@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import myPropTypes from 'propTypes';
 import styled from 'styled-components';
 import FormButton from 'components/FormButton';
@@ -48,8 +49,14 @@ class OrderBoard extends React.Component {
           <AmountWarning>{model.amountRemaining}</AmountWarning>}
         {model.deposit && <Term icon="time" content={model.deposit} />}
         {model.payment && <Term icon="bank" content={model.payment} />}
-        <SubmitButton >
-          <FormButton content="馬上預訂" colorType="orange" size="md" />
+        <SubmitButton>
+          <Link to={model.orderLink}>
+            <FormButton
+              content={model.isMine ? '編輯商品' : '馬上預訂'}
+              colorType={model.isMine ? 'greenBorder' : 'orange'}
+              size="md"
+            />
+          </Link>
         </SubmitButton>
         <Notice>
           <div>預訂後!</div>

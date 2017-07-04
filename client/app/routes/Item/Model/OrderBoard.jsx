@@ -28,8 +28,10 @@ export default class {
         return '月';
     }
   }
-  constructor(detail, dispatch) {
+  constructor(detail, dispatch, currentUser) {
     const {
+      uid,
+      pid,
       discounts,
       top_category,
       min_lease_days,
@@ -42,6 +44,7 @@ export default class {
       unit,
     } = detail;
     this.dispatch = dispatch;
+    this.isMine = (currentUser.uid === uid);
     this.topCategory = top_category;
     this.discounts = discounts && discounts.map(discount => this.formatDiscount(discount));
     this.deposit = `押金：${formatCurrency(deposit)}`;
@@ -49,7 +52,7 @@ export default class {
     switch (top_category) {
       case CATE_GOODS:
         this.minCostDesc = `最少租借${min_lease_days}天，共計${formatCurrency(min_lease_days * price)}`;
-
+        this.orderLink = (this.isMine ? '/' : `/p/reservation-goods/${pid}`);
         break;
       case CATE_SERVICE:
         switch (calculate_charge_type) {
@@ -61,9 +64,10 @@ export default class {
             this.dateRange = null;
         }
         this.serviceAssignWay = `服務方式：${this.constructor.serviceAssignWay(assign_address_type)}`;
-
+        this.orderLink = (this.isMine ? '/' : `/p/reservation-service/${pid}`);
         break;
       case CATE_SPACE:
+        this.orderLink = (this.isMine ? '/' : `/p/reservation-space/${pid}`);
         break;
       default:
         throw new Error('Invalid topCategory');

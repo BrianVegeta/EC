@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+const string = PropTypes.string;
+const number = PropTypes.number;
 export default {
   environment: PropTypes.shape({
     height: PropTypes.number,
@@ -58,4 +60,10 @@ export default {
   }),
   item: PropTypes.object,
   orderBoard: PropTypes.object,
+  style: PropTypes.object,
+  selectionChoice: PropTypes.shape({
+    value: PropTypes.oneOfType([string, number]).isRequired,
+    text: string,
+  }),
+  cities: PropTypes.array,
 };

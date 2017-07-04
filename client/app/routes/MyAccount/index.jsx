@@ -1,10 +1,6 @@
-import { requireLoginAndGetUser } from '../../actions/authActions';
-
-export default dispatch => ({
+export default onEnter => ({
   path: '/p/my_account',
-  onEnter: () => {
-    dispatch(requireLoginAndGetUser());
-  },
+  onEnter,
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, { main: require('./Container').default });

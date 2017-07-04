@@ -41,11 +41,12 @@ const ReportLink = styled.div`
 class ItemContainer extends React.Component {
   static propTypes = {
     item: myPropTypes.item.isRequired,
+    auth: myPropTypes.authOnHeader.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
   render() {
-    const { item, dispatch } = this.props;
-    const model = new Model(item, dispatch);
+    const { item, dispatch, auth } = this.props;
+    const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
     return (
       <Container className="clear">
@@ -70,7 +71,7 @@ class ItemContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, routesHelper, item } = state;
-  return ({ environment, routesHelper, item });
+  const { environment, routesHelper, item, auth } = state;
+  return ({ environment, routesHelper, item, auth });
 };
 export default connect(mapStateToProps)(ItemContainer);

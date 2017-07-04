@@ -1,7 +1,11 @@
+import { requireLoginAndGetUser } from 'actions/authActions';
+import { editItem } from 'actions/itemActions';
+import { confirmLeavePage } from 'lib/confirm';
 import Layout from '../containersLayout/Home';
 import LayoutPublish from '../containers/LayoutPublishContainer';
 import LayoutItemDetail from '../containersLayout/ItemDetail';
 import LayoutMyAccount from '../containersLayout/MyAccount';
+import LayoutFixed from '../containersLayout/Fixed';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
 import ServiceRoute from './Items/Service';
@@ -16,6 +20,7 @@ import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
 import Registration from './Auth/Registration';
 import MyAccount from './MyAccount';
+import ReservationGoods from './Reservation/Goods/route';
 
 const routes = (routesHelper, dispatch) => ({
   path: '/',
@@ -45,13 +50,25 @@ const routes = (routesHelper, dispatch) => ({
     {
       component: LayoutMyAccount,
       childRoutes: [
-        MyAccount(dispatch),
+        MyAccount(() => {
+          dispatch(requireLoginAndGetUser());
+        }),
       ],
     },
     {
       component: LayoutItemDetail,
       childRoutes: [
         ItemRoute(dispatch),
+      ],
+    },
+    {
+      component: LayoutFixed,
+      childRoutes: [
+        ReservationGoods((nextState) => {
+          window.addEventListener('beforeunload', confirmLeavePage);
+          dispatch(editItem(nextState.params.pid));
+          dispatch(requireLoginAndGetUser());
+        }),
       ],
     },
   ],

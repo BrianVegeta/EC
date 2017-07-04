@@ -47,6 +47,10 @@ const config = {
       components: path.join(__dirname, 'app/components'),
       lib: path.join(__dirname, 'app/lib'),
       propTypes: path.join(__dirname, 'app/propTypes'),
+      actions: path.join(__dirname, 'app/actions'),
+      containers: path.join(__dirname, 'app/containers'),
+      constants: path.join(__dirname, 'app/constants'),
+      models: path.join(__dirname, 'app/models'),
     },
   },
   plugins: [
