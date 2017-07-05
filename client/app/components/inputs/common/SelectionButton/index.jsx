@@ -13,15 +13,18 @@ class SelectionButton extends React.Component {
     width: '100%',
     dropdownWidth: '100%',
     disabled: false,
+    invalid: false,
     onBlur: null,
   };
   static propTypes = {
+    children: PropTypes.node.isRequired,
+
     value: PropTypes.string,
     placeholder: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     dropdownWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     disabled: PropTypes.bool,
-    children: PropTypes.node.isRequired,
+    invalid: PropTypes.bool,
     onBlur: PropTypes.func,
   };
   constructor(props) {
@@ -68,7 +71,7 @@ class SelectionButton extends React.Component {
   }
   render() {
     const { isFocusing, isDropdownOpen } = this.state;
-    const { children, width, dropdownWidth, disabled } = this.props;
+    const { children, width, dropdownWidth, disabled, invalid } = this.props;
 
     const arrow = (
       <span styleName="dropdownArrow">
@@ -79,7 +82,11 @@ class SelectionButton extends React.Component {
       <button
         {...{
           ref: btn => (this.button = btn),
-          className: `${cx('input', { focusing: isFocusing, disabled })} button`,
+          className: `${cx('input', {
+            focusing: isFocusing,
+            disabled,
+            invalid,
+          })} button`,
           onClick: this.onButtonPress,
           onFocus: this.onFocus,
           onBlur: this.onBlur,

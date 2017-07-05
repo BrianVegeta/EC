@@ -51,7 +51,8 @@ export default class {
     this.payment = '第三方安全支付 ，信用卡、ATM轉帳';
     switch (top_category) {
       case CATE_GOODS:
-        this.minCostDesc = `最少租借${min_lease_days}天，共計${formatCurrency(min_lease_days * price)}`;
+        this.minCostDesc = min_lease_days > 0 &&
+          `最少租借${min_lease_days}天，共計${formatCurrency(min_lease_days * price)}`;
         this.orderLink = (this.isMine ? '/' : `/p/reservation-goods/${pid}`);
         break;
       case CATE_SERVICE:

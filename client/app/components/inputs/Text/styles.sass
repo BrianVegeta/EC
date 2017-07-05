@@ -1,0 +1,17 @@
+@import "~styles/input.sass"
+
+.input
+  composes: inputer
+  margin: 0
+  outline: 0
+  padding: $inputPaddingTop $inputPaddingRight
+  &::placeholder
+    color: $placeholderColor
+  &:disabled
+    color: $disabledColor
+    background: $disabledBgColor
+  &.isFocusing
+    border-color: $inputFocusingBorderColor
+    box-shadow: $inputFocusingShadow
+    &::placeholder
+      color: $focusingPlaceholderColor

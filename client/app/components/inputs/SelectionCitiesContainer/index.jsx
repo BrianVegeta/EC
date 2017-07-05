@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import SelectionButton from 'components/inputs/SelectionButton';
+import SelectionButton from 'components/inputs/common/SelectionButton';
 import CitySelectionModel from 'models/CitySelection';
 import { fetchCities } from 'actions/addressActions';
 import CSS from 'react-css-modules';
@@ -11,17 +11,19 @@ import Dropdown from './Dropdown';
 
 class SelectionCities extends React.Component {
   static defaultProps = {
+    width: '100%',
     placeholder: '城市/地區',
     cityName: '',
     areaName: '',
     onBlur: null,
   };
   static propTypes = {
-    onSelect: PropTypes.func.isRequired,
+    width: myPropTypes.width,
     cityName: PropTypes.string,
     areaName: PropTypes.string,
     placeholder: PropTypes.string,
     onBlur: PropTypes.func,
+    onSelect: PropTypes.func.isRequired,
     // redux provide:
     dispatch: PropTypes.func.isRequired,
     cities: myPropTypes.cities.isRequired,
@@ -45,6 +47,7 @@ class SelectionCities extends React.Component {
       dispatch,
       cities,
       onSelect,
+      width,
     } = this.props;
     if (cities.length === 0) return null;
     const citySelectionModel = new CitySelectionModel(cities, dispatch, onSelect);
@@ -54,7 +57,7 @@ class SelectionCities extends React.Component {
           ref: sb => (this.selectBtn = sb),
           value: `${cityName}${areaName}`,
           dropdownWidth: 500,
-          width: 290,
+          width,
           placeholder,
           onBlur,
         }}

@@ -1,0 +1,29 @@
+$arrowSize: 8px
+$fillColor: #444
+.container
+  position: relative
+  .tooltip
+    position: absolute
+    text-align: center
+
+    bottom: $arrowSize
+    z-index: 999
+
+    font-size: 16px
+    color: #fff
+    background: $fillColor
+    line-height: 18px
+    padding: 10px 48px
+    border-radius: 4px
+    white-space: nowrap
+  .tooltip:after
+    content: ''
+    position: absolute
+    top: 100%
+    left: 50%
+    margin-left: -$arrowSize
+    width: 0
+    height: 0
+    border-top: $arrowSize solid $fillColor
+    border-right: $arrowSize solid transparent
+    border-left: $arrowSize solid transparent

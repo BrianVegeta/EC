@@ -10,12 +10,21 @@ export default class {
   static localize(code) {
     return locales[code];
   }
-  static decode(option) {
-    return option.split('').map(optCode => ({
-      value: optCode, text: this.localize(optCode),
-    }));
+  static option(value, text) {
+    return { value, text };
   }
-  static encode(options) {
-    return options;
+  constructor(option, dispatch) {
+    this.dispatch = dispatch;
+    this.option = option;
+    this.options = this.toOptions();
+    this.isOptionAlone = (this.options.length === 1);
+    this.singleOptionDesc = this.options[0].text;
+    this.needAddresses = this.option.includes(MAIL);
   }
+  toOptions() {
+    return this.option.split('').map(optCode => (
+      this.constructor.option(optCode, this.constructor.localize(optCode))
+    ));
+  }
+
 }

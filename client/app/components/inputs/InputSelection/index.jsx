@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import SelectionButton from 'components/inputs/SelectionButton';
+import SelectionButton from 'components/inputs/common/SelectionButton';
+import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import * as helpers from './helper';
@@ -14,14 +15,17 @@ class Selection extends React.Component {
     onSelect: null,
     width: null,
     disabled: false,
+    invalid: false,
   };
   static propTypes = {
+    options: PropTypes.arrayOf(myPropTypes.selectionChoice).isRequired,
+    onBlur: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    options: PropTypes.arrayOf(myPropTypes.selectionChoice).isRequired,
     onSelect: PropTypes.func,
     width: PropTypes.number,
     disabled: PropTypes.bool,
+    invalid: PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -38,7 +42,14 @@ class Selection extends React.Component {
     this.selectBtn.closeDropdown();
   }
   render() {
-    const { options, width, disabled, placeholder } = this.props;
+    const {
+      options,
+      width,
+      disabled,
+      placeholder,
+      onBlur,
+      invalid,
+    } = this.props;
     const { choice } = this.state;
     return (
       <SelectionButton
@@ -47,7 +58,9 @@ class Selection extends React.Component {
           placeholder,
           value: choice && choice.text,
           width,
+          invalid,
           disabled,
+          onBlur,
         }}
       >
         {options.map((option, i) =>
@@ -66,4 +79,4 @@ class Selection extends React.Component {
     );
   }
 }
-export default CSS(Selection, styles);
+export default hasError(CSS(Selection, styles));

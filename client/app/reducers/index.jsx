@@ -13,7 +13,8 @@ import search from './searchReducer';
 import mine from './mineReducer';
 import notification from './notificationReducer';
 import home from './homeReducer';
-import item from './itemReducer';
+import item from './item';
+import reservation from './reservationReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -31,4 +32,5 @@ export default combineReducers({
   notification,
   home,
   item,
+  reservation,
 });

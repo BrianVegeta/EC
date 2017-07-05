@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
 import PriceUnit from 'models/ItemPriceUnit';
-import DeliveryOptions from 'models/DeliveryOptions';
+// import DeliveryOptions from 'models/DeliveryOptions';
+import SendOptions from './SendOptions';
+import ReturnOptions from './ReturnOptions';
 
 export default class {
-  constructor(detail, dispatch) {
+  constructor(detail, reservation, dispatch) {
     this.dispatch = dispatch;
     this.coverUrl = `url(${detail.img1})`;
     this.pname = detail.pname;
@@ -11,12 +13,15 @@ export default class {
     this.priceDesc = PriceUnitInstance.price;
     this.priceUnit = PriceUnitInstance.unit;
 
-    this.sendOptions = DeliveryOptions.decode(detail.send_option);
-    this.sendOptionsIsAlone = (this.sendOptions.length === 1);
-    this.sendOptionsDesc = this.sendOptions[0].text;
-
-    this.returnOptions = DeliveryOptions.decode(detail.return_option);
-    this.returnOptionsIsAlone = (this.returnOptions.length === 1);
-    this.returnOptionsDesc = this.returnOptions[0].text;
+    this.sendOptions = new SendOptions(
+      detail.send_option,
+      reservation.sendOption,
+      dispatch,
+    );
+    this.returnOptions = new ReturnOptions(
+      detail.return_option,
+      reservation.returnOption,
+      dispatch,
+    );
   }
 }

@@ -66,4 +66,9 @@ export default {
     text: string,
   }),
   cities: PropTypes.array,
+  width: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.number,
+  ]),
+  deliverySelectionInstace: PropTypes.object.isRequired,
+  reservation: PropTypes.object.isRequired,
 };
