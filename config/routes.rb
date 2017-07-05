@@ -15,8 +15,36 @@ Rails.application.routes.draw do
     post 'logout', to: 'sessions#destroy'
     
     namespace :api do 
-      post 'get_my_contracts', to: 'contract#get_my_contract'
-      get 'get_report', to: 'contract#get_report'
+      post 'calendar', to: 'contract#calendar'
+      post 'cancel', to: 'contract#cancel'
+      post 'end_contract', to: 'contract#end_contract'
+      post 'find_can_report', to: 'contract#find_can_report'
+      post 'get_my_contract', to: 'contract#get_my_contract'
+      post 'get_our_contracts', to: 'contract#get_our_contracts'
+      post 'get_report', to: 'contract#get_report'
+      post 'get', to: 'contract#get'
+      post 'image_upload', to: 'contract#image_upload'
+      post 'item_create', to: 'contract#item_create'
+      post 'item_update', to: 'contract#item_update'
+      post 'logs', to: 'contract#logs'
+      post 'read', to: 'contract#read'
+      post 'receive_goods', to: 'contract#receive_goods'
+      post 'reject', to: 'contract#reject'
+      post 'report', to: 'contract#report'
+      post 'return_goods', to: 'contract#return_goods'
+      post 'score', to: 'contract#score'
+      post 'service_create', to: 'contract#service_create'
+      post 'service_end', to: 'contract#service_end'
+      post 'service_update', to: 'contract#service_update'
+      post 'ship_goods', to: 'contract#ship_goods'
+      post 'sign', to: 'contract#sign'
+      post 'space_create', to: 'contract#space_create'
+      post 'space_end', to: 'contract#space_update'
+      post 'space_update', to: 'contract#space_update'
+ 
+      
+      
+      
     end
     namespace :auth do
       get 'get_current_user', to: 'index#get_current_user'
