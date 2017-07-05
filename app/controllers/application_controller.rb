@@ -17,4 +17,30 @@ class ApplicationController < ActionController::Base
   def respond_not_found
     render json: { success: false, message: nil }, status: 404
   end
+  
+  protected
+  # common params for uid request 20170705 KUAN
+  def current_uid_params
+    current_user.slice('uid')
+  end
+  
+  # common params for uid request 20170705 KUAN
+  def current_apitoken
+    current_user['apitoken']
+  end
+  
+  # common params for page_index request 20170705 KUAN
+  def paging_params
+    params.permit(:index, :size)
+  end
+  
+  # common params for pid request 20170705 KUAN
+  def pid_params
+    params.permit(:pid)
+  end
+  
+  # common params for cid request 20170705 KUAN
+  def cid_params
+    params.permit(:cid).merge(current_uid_params)
+  end
 end

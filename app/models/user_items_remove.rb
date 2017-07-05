@@ -16,7 +16,7 @@ class UserItemsRemove < ApiBase
     response = self.class.post(
       self.path,
       body: self.request_params.to_json,
-      headers: HEADERS.merge!(self.apitoken),
+      headers: HEADERS.merge!(self.apitoken)
     )
     case response.code
     when 200

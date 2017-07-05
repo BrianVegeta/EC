@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     post 'phone_login', to: 'sessions#create_by_phone'
     post 'email_login', to: 'sessions#create_by_email'
     post 'logout', to: 'sessions#destroy'
-
+    
+    namespace :api do 
+      post 'get_my_contracts', to: 'contract#get_my_contract'
+    end
     namespace :auth do
       get 'get_current_user', to: 'index#get_current_user'
       get 'get_user_info', to: 'index#get_user_info'

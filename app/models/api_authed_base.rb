@@ -9,7 +9,7 @@ class ApiAuthedBase < ApiBase
     response = self.class.post(
       self.path,
       body: self.request_params.to_json,
-      headers: HEADERS.merge!({ apitoken: self.apitoken }),
+      headers: HEADERS.merge!({ apitoken: self.apitoken })
     )
     case response.code
     when 200

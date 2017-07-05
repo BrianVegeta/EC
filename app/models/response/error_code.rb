@@ -44,6 +44,8 @@ class Response::ErrorCode
   CATEGORY_MUST_BELONG_SPACE = 38
   LEASE_TERM_LESS_THAN_MIN_LEASE_DAYS = 39
 
+  COUPON_NO_EXIST = 40
+  
   MESSAGE_MAPPING = {
     SUCCESS => '成功',
     USER_NOT_EXIST => '帳號不存在',
@@ -80,14 +82,16 @@ class Response::ErrorCode
     PERMISSION_DENIED => '不可將自己的商品加入我的最愛',
 
     DB_EXCEPTION => '系統錯誤',
-    INTERNAL_EXCEPTION => '32',
-    JSON_PARSE_EXCEPTION => '33',
-    LOGISTICS_ORDER_STAGE_ERROR => '34',
-    LOGISTICS_ORDER_NOT_EXIST => '35',
-    CATEGORY_MUST_BELONG_ITEM => '36',
-    CATEGORY_MUST_BELONG_SERVICE => '37',
-    CATEGORY_MUST_BELONG_SPACE => '38',
+    INTERNAL_EXCEPTION => '系統錯誤',
+    JSON_PARSE_EXCEPTION => 'JSON格式錯誤',
+    LOGISTICS_ORDER_STAGE_ERROR => '物流訂單錯誤',
+    LOGISTICS_ORDER_NOT_EXIST => '物流訂單不存在',
+    CATEGORY_MUST_BELONG_ITEM => '類型不屬於商品',
+    CATEGORY_MUST_BELONG_SERVICE => '類型不屬於服務',
+    CATEGORY_MUST_BELONG_SPACE => '類型不屬於空間',
     LEASE_TERM_LESS_THAN_MIN_LEASE_DAYS => '租期小於最短租期',
+    
+    COUPON_NO_EXIST => '優惠卷不存在',
   }
 
   class << self
