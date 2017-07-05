@@ -1,4 +1,4 @@
-class Api::Contract::ApiItemCreate < ApiAuthedBase
+class Api::Contract::ItemCreate < ApiAuthedBase
   
   PATH = '/client/contract/item/create';
   

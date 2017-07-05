@@ -1,4 +1,4 @@
-class Api::Contract::ApiServiceCreate < ApiAuthedBase
+class Api::Contract::ServiceCreate < ApiAuthedBase
   
   PATH = '/client/contract//service/create';
   

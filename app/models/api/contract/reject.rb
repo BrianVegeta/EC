@@ -1,4 +1,4 @@
-class Api::Contract::ApiReject < ApiAuthedBase
+class Api::Contract::Reject < ApiAuthedBase
   
   PATH = '/client/contract/reject';
   

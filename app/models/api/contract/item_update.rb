@@ -1,4 +1,4 @@
-class Api::Contract::ApiItemUpdate < ApiAuthedBase
+class Api::Contract::ItemUpdate < ApiAuthedBase
   
   PATH = '/client/contract/item/update';
   

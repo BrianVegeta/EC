@@ -1,4 +1,4 @@
-class Api::Contract::ApiScore < ApiAuthedBase
+class Api::Contract::Score < ApiAuthedBase
   
   PATH = '/client/contract/score';
   

@@ -1,4 +1,4 @@
-class Api::Contract::ApiSpaceCreate < ApiAuthedBase
+class Api::Contract::SpaceCreate < ApiAuthedBase
   
   PATH = '/client/contract/space/create';
   

@@ -1,4 +1,4 @@
-class Api::Contract::ApiSpaceEnd < ApiAuthedBase
+class Api::Contract::SpaceEnd < ApiAuthedBase
   
   PATH = '/client/contract/space/end';
   

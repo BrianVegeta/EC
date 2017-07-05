@@ -1,4 +1,4 @@
-class Api::Contract::ApiGetContractsBetweenUs < ApiAuthedBase
+class Api::Contract::GetContractsBetweenUs < ApiAuthedBase
   
   PATH = '/client/contract/get_contracts_between_us';
   

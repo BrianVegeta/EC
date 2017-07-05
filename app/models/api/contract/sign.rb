@@ -1,4 +1,4 @@
-class Api::Contract::ApiSign < ApiAuthedBase
+class Api::Contract::Sign < ApiAuthedBase
   
   PATH = '/client/contract/sign';
   

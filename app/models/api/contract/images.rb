@@ -1,4 +1,4 @@
-class Api::Contract::ApiImages < ApiAuthedBase
+class Api::Contract::Images < ApiAuthedBase
   
   PATH = '/client/contract/images';
   

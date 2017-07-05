@@ -1,4 +1,4 @@
-class Api::Contract::ApiLogs < ApiAuthedBase
+class Api::Contract::Logs < ApiAuthedBase
   
   PATH = '/client/contract/logs';
   

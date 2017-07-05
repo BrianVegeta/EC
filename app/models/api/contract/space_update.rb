@@ -1,4 +1,4 @@
-class Api::Contract::ApiSpaceUpdate < ApiAuthedBase
+class Api::Contract::SpaceUpdate < ApiAuthedBase
   
   PATH = '/client/contract/space/update';
   

@@ -1,4 +1,4 @@
-class Api::Contract::ApiEndContract < ApiAuthedBase
+class Api::Contract::EndContract < ApiAuthedBase
   
   PATH = '/client/contract/end_contract';
   

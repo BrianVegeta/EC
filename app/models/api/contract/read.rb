@@ -1,4 +1,4 @@
-class Api::Contract::ApiRead < ApiAuthedBase
+class Api::Contract::Read < ApiAuthedBase
   
   PATH = '/client/contract/read';
   

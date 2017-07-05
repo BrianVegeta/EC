@@ -1,4 +1,4 @@
-class Api::Contract::ApiFindCanReport < ApiAuthedBase
+class Api::Contract::FindCanReport < ApiAuthedBase
   
   PATH = '/client/contract/findCanReport';
   

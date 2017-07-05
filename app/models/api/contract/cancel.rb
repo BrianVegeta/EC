@@ -1,4 +1,4 @@
-class Api::Contract::ApiCancel < ApiAuthedBase
+class Api::Contract::Cancel < ApiAuthedBase
   
   PATH = '/client/contract/cancel';
   

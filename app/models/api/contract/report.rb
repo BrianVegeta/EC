@@ -1,4 +1,4 @@
-class Api::Contract::ApiReport < ApiAuthedBase
+class Api::Contract::Report < ApiAuthedBase
   
   PATH = '/client/contract/report';
   

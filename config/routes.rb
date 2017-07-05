@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     
     namespace :api do 
       post 'get_my_contracts', to: 'contract#get_my_contract'
+      get 'get_report', to: 'contract#get_report'
     end
     namespace :auth do
       get 'get_current_user', to: 'index#get_current_user'

@@ -1,4 +1,4 @@
-class Api::Contract::ApiCalendar < ApiAuthedBase
+class Api::Contract::Calendar < ApiAuthedBase
   
   PATH = '/client/contract/calendar';
   

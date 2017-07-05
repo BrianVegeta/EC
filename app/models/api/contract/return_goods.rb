@@ -1,4 +1,4 @@
-class Api::Contract::ApiReturnGoods < ApiAuthedBase
+class Api::Contract::ReturnGoods < ApiAuthedBase
   
   PATH = '/client/contract/return_goods';
   
