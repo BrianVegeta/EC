@@ -1,6 +1,6 @@
-class Api::Contract::Add < ApiAuthedBase
+class Api::Wishlist::Save < ApiAuthedBase
   
-  PATH = '/client/favorite/add';
+  PATH = '/client/wish_list/save';
   
   def path
     PATH
