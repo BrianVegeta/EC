@@ -4,7 +4,11 @@ class ApiAuthedBase < ApiBase
     super
     self.apitoken = apitoken
   end
-
+  
+  def request_method
+    :post_token
+  end
+  
   def request_api
     case self.request_method.to_sym 
     when :post

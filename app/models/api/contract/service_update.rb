@@ -5,5 +5,9 @@ class Api::Contract::ServiceUpdate< ApiAuthedBase
   def path
     PATH
   end
+  
+  def request_method
+     :post_token
+  end
 
 end

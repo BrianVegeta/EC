@@ -1,6 +1,6 @@
-class Api::Contract::Score < ApiAuthedBase
+class Api::Item::Report < ApiAuthedBase
   
-  PATH = '/client/contract/score';
+  PATH = '/client/item/report';
   
   def path
     PATH

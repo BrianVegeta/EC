@@ -1,4 +1,4 @@
-class Ajax::Api::ItemController < ApplicationController
+class Ajax::Api::LogisticsController < ApplicationController
   include WardenHelper
   
   ###################### ACTION ##################################

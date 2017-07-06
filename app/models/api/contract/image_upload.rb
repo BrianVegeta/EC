@@ -5,4 +5,8 @@ class Api::Contract::ImageUpload  < ApiAuthedBase
     PATH
   end
 
+  def request_method
+     :post_token
+  end
+  
 end

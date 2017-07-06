@@ -1,18 +1,14 @@
-class Ajax::Api::SearchController < ApplicationController
+class Ajax::Api::MarketingController < ApplicationController
   include WardenHelper
   
   ###################### ACTION ##################################
   # 搜尋
-   def multi_search
-     obj = ::Api::Search::MultiSearch.new multi_search_params
+   def coupon_list
+     obj = ::Api::Marketing::CouponList.new current_uid_params, current_apitoken
      success = obj.request
      respond success, obj.error_message, obj.response_data
    end
   
   ###################### PARAMS ##################################
-  protected
- 
-  def multi_search_params
-    params.permit(:name).merge(paging_params)
-  end
+
 end

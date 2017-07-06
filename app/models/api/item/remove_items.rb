@@ -1,6 +1,6 @@
-class Api::Contract::Score < ApiAuthedBase
+class Api::Item::RemoveItems < ApiAuthedBase
   
-  PATH = '/client/contract/score';
+  PATH = '/client/item/remove_items';
   
   def path
     PATH

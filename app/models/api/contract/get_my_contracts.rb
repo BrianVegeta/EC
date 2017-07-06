@@ -6,4 +6,8 @@ class Api::Contract::GetMyContracts < ApiAuthedBase
     PATH
   end
 
+  def request_method
+     :post_token
+  end
+  
 end

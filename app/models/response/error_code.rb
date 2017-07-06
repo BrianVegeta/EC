@@ -78,7 +78,7 @@ class Response::ErrorCode
     VERIFY_CODE_EXPIRED => '驗證碼過期',
     ITEM_IS_DISABLED => '商品已下架',
     NOT_STOCK => '商品已無庫存',
-    USER_REPORT_NOT_EXIST => '',
+    USER_REPORT_NOT_EXIST => '申訴紀錄不存在',
     PERMISSION_DENIED => '不可將自己的商品加入我的最愛',
 
     DB_EXCEPTION => '系統錯誤',

@@ -10,7 +10,7 @@ class Api::Contract::GetReport < ApiAuthedBase
 
 
   def request_method
-    :post_api
+    :get_token
   end
   
 end
