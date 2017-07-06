@@ -48,7 +48,80 @@ Rails.application.routes.draw do
       post 'favorite/my_favorite', to: 'favorite#my_favorite'
       post 'favorite/remove', to: 'favorite#remove'
       
+      #FORGETPASSWORD
+      post 'forgetpassword/', to: 'forgetpassword#'
+      post 'forgetpassword/', to: 'forgetpassword#'
+      post 'forgetpassword/', to: 'forgetpassword#'
+      post 'forgetpassword/', to: 'forgetpassword#'
+      post 'forgetpassword/', to: 'forgetpassword#'
+      post 'forgetpassword/', to: 'forgetpassword#'
       
+      #ITEM
+      post 'item/item_add', to: 'item#item_add'
+      post 'item/item_update', to: 'item#item_update'
+      post 'item/service_add', to: 'item#service_add'
+      post 'item/service_update', to: 'item#service_update'
+      post 'item/space_add', to: 'item#space_add'
+      post 'item/space_update', to: 'item#space_update'
+      post 'item/get_item', to: 'item#get_item'
+      post 'item/get_item_by_user', to: 'item#get_item_by_user'
+      post 'item/get_item_by_name', to: 'item#get_item_by_name'
+      post 'item/search_item_list', to: 'item#search_item_list'
+      post 'item/view_item', to: 'item#view_item'
+      post 'item/remove_items', to: 'item#remove_items'
+      post 'item/relative_item', to: 'item#relative_item'
+      post 'item/report', to: 'item#report'
+      post 'item/category_list', to: 'item#category_list'
+      post 'item/message', to: 'item#message'
+      post 'item/message_add', to: 'item#message_add'
+      
+      #MARKETING
+      post 'marketing/coupon_list', to: 'marketing#coupon_list'
+      
+      #SEARCH
+      post 'search/multi_search', to: 'search#multi_search'
+      
+      #SYNC
+      post 'sync/notification', to: 'sync#notification'
+      post 'sync/notification_unread', to: 'sync#notification_unread'
+      post 'sync/notification_unread_count', to: 'sync#notification_unread_count'
+      post 'sync/notification_read', to: 'sync#notification_read'
+      post 'sync/chat_rooms', to: 'sync#chat_rooms'
+      post 'sync/chat_logs', to: 'sync#chat_logs'
+      
+      
+      #USERPROFILE
+      post 'userprofile/save', to: 'userprofile#save'
+      post 'userprofile/get', to: 'userprofile#get'
+      post 'userprofile/search', to: 'userprofile#search'
+      post 'userprofile/user_general_info', to: 'userprofile#user_general_info'
+      post 'userprofile/update_phone', to: 'userprofile#update_phone'
+      post 'userprofile/get_phone_verify_code', to: 'userprofile#get_phone_verify_code'
+      post 'userprofile/update_email', to: 'userprofile#update_email'
+      post 'userprofile/get_email_verify_code', to: 'userprofile#get_email_verify_code'
+      post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
+      post 'userprofile/facebook_unbind', to: 'userprofile#facebook_unbind'
+      post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
+      post 'userprofile/is_pwd_exist', to: 'userprofile#is_pwd_exist'
+      post 'userprofile/checkpwd', to: 'userprofile#checkpwd'
+      post 'userprofile/update_password', to: 'userprofile#update_password'
+      post 'userprofile/create_password', to: 'userprofile#create_password'
+      post 'userprofile/track', to: 'userprofile#track'
+      post 'userprofile/untrack', to: 'userprofile#untrack'
+      post 'userprofile/is_tracked', to: 'userprofile#is_tracked'
+      post 'userprofile/track_count', to: 'userprofile#track_count'
+      post 'userprofile/owner_comments', to: 'userprofile#owner_comments'
+      post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments'
+      post 'userprofile/bank_info', to: 'userprofile#bank_info'
+      post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
+      post 'userprofile/bank_info_ready', to: 'userprofile#bank_info_ready'
+      post 'userprofile/bank_info_wire_out', to: 'userprofile#bank_info_wire_out'
+      post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out'
+              
+      #WISHLIST
+      post 'wishlist/save', to: 'wishlist#save'
+      post 'wishlist/search', to: 'wishlist#search'
+      post 'wishlist/remove', to: 'wishlist#remove'
       
     end
     namespace :auth do
