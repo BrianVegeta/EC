@@ -34,8 +34,4 @@ class ApplicationController < ActionController::Base
     params.permit(:index, :size)
   end
   
-  # common params for cid request 20170705 KUAN
-  def cid_params
-    params.permit(:cid).merge(current_uid_params)
-  end
 end
