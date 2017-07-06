@@ -3,40 +3,68 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+
 import TitleWrapper from 'components/reservation/wrapper/Title';
 import ItemCard from 'components/reservation/wrapper/ItemCard';
 import FormBlock from 'components/reservation/wrapper/FormBlock';
 import FormControl from 'components/reservation/wrapper/FormControl';
+
 import FormButton from 'components/FormButton';
-import ExtraAddresses from './ExtraAddresses';
 import DeliverySelection from './DeliverySelection';
+import ExtraAddresses from './ExtraAddresses';
+import RentDatesRange from './RentDatesRange';
 import Model from './Model';
 
 const Container = styled.div`
   margin-bottom: 50px;
 `;
+
+const AmountContainer = styled.div`
+  display: inline-block;
+  width: 152px;
+`;
+
 class Form extends React.PureComponent {
+
   static propTypes = {
     item: myPropTypes.item.isRequired,
     reservation: myPropTypes.reservation.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
+
   render() {
     const { item, reservation, dispatch } = this.props;
     const itemInstance = new Model(item.detail, reservation, dispatch);
     const { coverUrl, pname, priceDesc, priceUnit } = itemInstance;
-    const { sendOptions, returnOptions } = itemInstance;
+    const { sendOptions, sendAddresses, returnOptions } = itemInstance;
+    const { datesRange } = itemInstance;
+
     return (
       <Container >
         <TitleWrapper text="填寫預訂資訊" />
         <ItemCard {...{ coverUrl, pname, priceDesc, priceUnit }} />
         <FormBlock title="物流方式">
-          <DeliverySelection label="到貨方式" instance={sendOptions} />
-          {sendOptions.needAddresses && <ExtraAddresses />}
-          <DeliverySelection label="寄還方式" instance={returnOptions} />
+          <DeliverySelection
+            label="到貨方式"
+            model={sendOptions}
+          />
+          {sendOptions.needAddresses &&
+            <ExtraAddresses model={sendAddresses} />}
+          <DeliverySelection
+            label="寄還方式"
+            helper="當您提交預訂單後，分享人會提供給您寄還的地點"
+            model={returnOptions}
+          />
         </FormBlock>
         <FormBlock title="交易明細">
-          1
+          <div>
+            <RentDatesRange label="使用時間" model={datesRange} />
+            <AmountContainer>
+              <FormControl label={<span>數量 ／ 目前X件</span>}>
+                input
+              </FormControl>
+            </AmountContainer>
+          </div>
         </FormBlock>
         <FormBlock
           title="聯絡資訊"

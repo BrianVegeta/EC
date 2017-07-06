@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 
 const string = PropTypes.string;
 const number = PropTypes.number;
+const node = PropTypes.node;
+
 export default {
   environment: PropTypes.shape({
     height: PropTypes.number,
@@ -62,13 +64,19 @@ export default {
   orderBoard: PropTypes.object,
   style: PropTypes.object,
   selectionChoice: PropTypes.shape({
-    value: PropTypes.oneOfType([string, number]).isRequired,
+    value: PropTypes.oneOfType([string, number]),
     text: string,
   }),
   cities: PropTypes.array,
   width: PropTypes.oneOfType([
     PropTypes.string, PropTypes.number,
   ]),
-  deliverySelectionInstace: PropTypes.object.isRequired,
-  reservation: PropTypes.object.isRequired,
+  deliverySelectionInstace: PropTypes.object,
+  reservation: PropTypes.object,
+  addresses: PropTypes.object,
+  reserve: { // 提出預訂 PAGE
+    datesModel: PropTypes.object,
+    amountModel: PropTypes.object,
+  },
+  label: PropTypes.oneOfType([string, node]),
 };

@@ -1,3 +1,7 @@
+// <InputSelection
+//   placeholder={`選擇${label}`}
+//   {...{ value, options, onSelect, validator }}
+// />
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
@@ -23,7 +27,7 @@ class Selection extends React.Component {
     placeholder: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onSelect: PropTypes.func,
-    width: PropTypes.number,
+    width: myPropTypes.width,
     disabled: PropTypes.bool,
     invalid: PropTypes.bool,
   };

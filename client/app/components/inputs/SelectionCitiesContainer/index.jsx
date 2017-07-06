@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import SelectionButton from 'components/inputs/common/SelectionButton';
+import hasError from 'components/inputs/hoc/hasError';
 import CitySelectionModel from 'models/CitySelection';
 import { fetchCities } from 'actions/addressActions';
 import CSS from 'react-css-modules';
@@ -11,22 +12,22 @@ import Dropdown from './Dropdown';
 
 class SelectionCities extends React.Component {
   static defaultProps = {
-    width: '100%',
     placeholder: '城市/地區',
+    width: '100%',
     cityName: '',
     areaName: '',
     onBlur: null,
   };
   static propTypes = {
+    placeholder: PropTypes.string,
     width: myPropTypes.width,
     cityName: PropTypes.string,
     areaName: PropTypes.string,
-    placeholder: PropTypes.string,
     onBlur: PropTypes.func,
     onSelect: PropTypes.func.isRequired,
     // redux provide:
-    dispatch: PropTypes.func.isRequired,
     cities: myPropTypes.cities.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -76,4 +77,6 @@ const mapStateToProps = (state) => {
   const { cities } = state;
   return { cities };
 };
-export default connect(mapStateToProps)(CSS(SelectionCities, styles));
+export default connect(mapStateToProps, null, null, { withRef: true })(
+  hasError(CSS(SelectionCities, styles)),
+);

@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import PriceUnit from 'models/ItemPriceUnit';
-// import DeliveryOptions from 'models/DeliveryOptions';
 import SendOptions from './SendOptions';
+import SendAddresses from './SendAddresses';
 import ReturnOptions from './ReturnOptions';
+import DatesRange from './DatesRange';
 
 export default class {
   constructor(detail, reservation, dispatch) {
@@ -18,9 +19,19 @@ export default class {
       reservation.sendOption,
       dispatch,
     );
+    this.sendAddresses = new SendAddresses(
+      reservation,
+      dispatch,
+    );
     this.returnOptions = new ReturnOptions(
       detail.return_option,
       reservation.returnOption,
+      dispatch,
+    );
+
+    this.datesRange = new DatesRange(
+      detail,
+      reservation,
       dispatch,
     );
   }

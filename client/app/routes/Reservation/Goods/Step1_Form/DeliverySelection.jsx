@@ -6,42 +6,51 @@ import FormControl from 'components/reservation/wrapper/FormControl';
 import DeliverySingle from 'components/reservation/wrapper/DeliverySingle';
 import InputSelection from 'components/inputs/InputSelection';
 
-const Selection = styled.div`
+const DeliveryContainer = styled.div`
   width: 300px;
 `;
-class DeliverySelection extends React.Component {
+class Deliverydelivery extends React.Component {
+  static defaultProps = {
+    helper: null,
+  };
   static propTypes = {
     label: PropTypes.string.isRequired,
-    instance: myPropTypes.deliverySelectionInstace.isRequired,
+    model: myPropTypes.deliverySelectionInstace.isRequired,
+    helper: PropTypes.string,
   };
   render() {
-    const { label, instance } = this.props;
+    const { label, model, helper } = this.props;
     const {
+      value,
       options,
       onSelect,
       isOptionAlone,
       singleOptionDesc,
+      singleOptionToUpdate,
       validator,
-    } = instance;
+    } = model;
 
     if (isOptionAlone) {
-      return <DeliverySingle label={`${label}：`} content={singleOptionDesc} />;
+      return (
+        <DeliverySingle
+          label={`${label}：`}
+          content={singleOptionDesc}
+          helper={helper}
+          singleOptionToUpdate={singleOptionToUpdate}
+        />
+      );
     }
     return (
-      <FormControl label={label}>
-        <Selection >
+      <FormControl {...{ label, helper }}>
+        <DeliveryContainer >
           <InputSelection
-            {...{
-              placeholder: `選擇${label}`,
-              options,
-              onSelect,
-              validator,
-            }}
+            placeholder={`選擇${label}`}
+            {...{ value, options, onSelect, validator }}
           />
-        </Selection>
+        </DeliveryContainer>
       </FormControl>
     );
   }
 }
 
-export default DeliverySelection;
+export default Deliverydelivery;

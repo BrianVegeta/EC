@@ -1,7 +1,13 @@
+// <InputText
+//   placeholder="詳細地址"
+//   value={address}
+//   onChange={model.onAddressChange}
+// />
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import classnames from 'classnames/bind';
+import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -12,16 +18,16 @@ class InputText extends React.Component {
     placeholder: null,
     value: null,
     width: '100%',
-    onBlur: null,
     onChange: null,
+    onBlur: null, // need for validator
   };
   static propTypes = {
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     value: PropTypes.string,
-    width: myPropTypes.width.isRequired,
-    onBlur: PropTypes.func,
+    width: myPropTypes.width,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func, // need for validator
   };
   constructor(props) {
     super(props);
@@ -61,4 +67,4 @@ class InputText extends React.Component {
     );
   }
 }
-export default CSS(InputText, styles);
+export default hasError(CSS(InputText, styles));
