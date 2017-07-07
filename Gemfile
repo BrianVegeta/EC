@@ -50,6 +50,7 @@ gem 'jwt'
 gem 'rack-parser', :require => 'rack/parser'
 gem 'browser'
 gem 'omniauth-facebook'
+gem 'aes'
 
 
 
