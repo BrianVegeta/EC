@@ -8,22 +8,21 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import ItemCard from 'components/reservation/wrapper/ItemCard';
 import FormBlock from 'components/reservation/wrapper/FormBlock';
 import FormControl from 'components/reservation/wrapper/FormControl';
-
 import FormButton from 'components/FormButton';
-import DeliverySelection from './DeliverySelection';
-import ExtraAddresses from './ExtraAddresses';
-import RentDatesRange from './RentDatesRange';
-import Amount from './Amount';
-import Coupons from './Coupons';
+
+import { fetchCoupons } from 'actions/myCouponsActions';
+
+import DeliverySelection from './wrappers/DeliverySelection';
+import ExtraAddresses from './wrappers/ExtraAddresses';
+import RentDatesRange from './wrappers/RentDatesRange';
+import Amount from './wrappers/Amount';
+import Coupons from './wrappers/Coupons';
+import CalculationPanel from './wrappers/CalculationPanel';
+
 import Model from './Model';
 
 const Container = styled.div`
   margin-bottom: 50px;
-`;
-
-const CouponsContainer = styled.div`
-  width: 380px;
-  margin: 20px 0;
 `;
 
 class Form extends React.PureComponent {
@@ -31,12 +30,17 @@ class Form extends React.PureComponent {
   static propTypes = {
     item: myPropTypes.item.isRequired,
     reservation: myPropTypes.reservation.isRequired,
+    myCoupons: myPropTypes.myCoupons.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    this.props.dispatch(fetchCoupons());
+  }
+
   render() {
-    const { item, reservation, dispatch } = this.props;
-    const itemInstance = new Model(item.detail, reservation, dispatch);
+    const { item, reservation, myCoupons, dispatch } = this.props;
+    const itemInstance = new Model(item.detail, reservation, myCoupons, dispatch);
     const { coverUrl, pname, priceDesc, priceUnit } = itemInstance;
     // 物流方式
     const {
@@ -48,7 +52,8 @@ class Form extends React.PureComponent {
     const {
       datesRange,
       amountModel,
-      coupons,
+      couponsModel,
+      calculationModel,
     } = itemInstance;
 
     return (
@@ -73,7 +78,8 @@ class Form extends React.PureComponent {
             <RentDatesRange label="使用時間" model={datesRange} />
             <Amount model={amountModel} />
           </div>
-          <Coupons placeholder="選擇折價卷" model={} />
+          <Coupons placeholder="選擇折價券" model={couponsModel} />
+          <CalculationPanel model={calculationModel} />
         </FormBlock>
         <FormBlock
           title="聯絡資訊"
@@ -91,7 +97,7 @@ class Form extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, item, reservation } = state;
-  return ({ environment, item, reservation });
+  const { environment, item, reservation, myCoupons } = state;
+  return ({ environment, item, reservation, myCoupons });
 };
 export default connect(mapStateToProps)(Form);

@@ -75,9 +75,6 @@ Rails.application.routes.draw do
       post 'item/message', to: 'item#message'
       post 'item/message_add', to: 'item#message_add'
 
-      #MARKETING
-      post 'marketing/coupon_list', to: 'marketing#coupon_list'
-
       #SEARCH
       post 'search/multi_search', to: 'search#multi_search'
 
@@ -124,6 +121,12 @@ Rails.application.routes.draw do
       post 'wishlist/remove', to: 'wishlist#remove'
 
     end
+
+    scope module: :api do
+      #MARKETING
+      post 'my_coupons', to: 'marketing#coupon_list'
+    end
+
     namespace :auth do
       get 'get_current_user', to: 'index#get_current_user'
       get 'get_user_info', to: 'index#get_user_info'

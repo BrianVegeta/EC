@@ -80,4 +80,5 @@ export default {
     couponsModel: PropTypes.object,
   },
   label: PropTypes.oneOfType([string, node]),
+  myCoupons: PropTypes.object,
 };

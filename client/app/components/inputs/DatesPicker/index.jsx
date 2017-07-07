@@ -72,10 +72,12 @@ class Dates extends React.Component {
   }
 
   isDayBlocked(day) {
-    if (this.props.preparation === 0) return true;
+    const { preparation } = this.props;
+    if (preparation === null) return false;
+    if (preparation === 0) return false;
 
     const today = moment();
-    const daysLater = moment().add(this.props.preparation, 'days');
+    const daysLater = moment().add(preparation, 'days');
     return inDates(day, today, daysLater) || isToday(day);
   }
 

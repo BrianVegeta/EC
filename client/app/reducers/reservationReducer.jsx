@@ -9,7 +9,11 @@ const initialState = {
 
   startDate: null,
   endDate: null,
+
   amount: 1,
+
+  couponNo: null,
+  couponOffset: 0,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -43,6 +47,12 @@ export default (state = initialState, action) => {
     case TYPES.CHANGE_AMOUNT:
       return Object.assign({}, state, {
         amount: action.amount,
+      });
+
+    case TYPES.CHANGE_COUPON:
+      return Object.assign({}, state, {
+        couponNo: action.couponNo,
+        couponOffset: action.couponOffset,
       });
 
     default:

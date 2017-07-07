@@ -105,7 +105,8 @@ class SelectionButton extends React.Component {
             },
           }}
         >
-          {this.renderBtnValue()}{arrow}
+          {arrow}
+          <div styleName="innerText">{this.renderBtnValue()}</div>
         </div>
         {isDropdownOpen &&
           <div

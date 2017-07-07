@@ -20,6 +20,8 @@ class Selection extends React.Component {
     width: null,
     disabled: false,
     invalid: false,
+    renderChoice: null,
+    renderOption: null,
   };
   static propTypes = {
     options: PropTypes.arrayOf(myPropTypes.selectionChoice).isRequired,
@@ -30,6 +32,8 @@ class Selection extends React.Component {
     width: myPropTypes.width,
     disabled: PropTypes.bool,
     invalid: PropTypes.bool,
+    renderChoice: PropTypes.func,
+    renderOption: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -45,6 +49,24 @@ class Selection extends React.Component {
     if (onSelect) onSelect(option);
     this.selectBtn.closeDropdown();
   }
+
+  handleChoice() {
+    const { choice } = this.state;
+    if (!choice) return null;
+
+    const { renderChoice } = this.props;
+    if (!renderChoice) return choice.text;
+
+    return renderChoice(choice);
+  }
+
+  handleOption(option) {
+    const { renderOption } = this.props;
+    if (!renderOption) return option.text;
+
+    return renderOption(option);
+  }
+
   render() {
     const {
       options,
@@ -54,13 +76,13 @@ class Selection extends React.Component {
       onBlur,
       invalid,
     } = this.props;
-    const { choice } = this.state;
+
     return (
       <SelectionButton
         {...{
           ref: sb => (this.selectBtn = sb),
           placeholder,
-          value: choice && choice.text,
+          value: this.handleChoice(),
           width,
           invalid,
           disabled,
@@ -76,7 +98,7 @@ class Selection extends React.Component {
               role: 'button',
             }}
           >
-            {option.text}
+            {this.handleOption(option)}
           </div>,
         )}
       </SelectionButton>

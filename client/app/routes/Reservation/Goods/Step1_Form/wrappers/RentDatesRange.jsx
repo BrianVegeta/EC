@@ -20,12 +20,28 @@ class RentDatesRange extends React.Component {
 
   render() {
     const { label, model } = this.props;
-    const { startDate, endDate, onDatesChange, validator } = model;
+    const {
+      startDate,
+      endDate,
+      minPicks,
+      preparation,
+      onDatesChange,
+      validator,
+    } = model;
 
     return (
       <Container>
         <FormControl label={label} >
-          <DatesPicker {...{ startDate, endDate, onDatesChange, validator }} />
+          <DatesPicker
+            {...{
+              startDate,
+              endDate,
+              minPicks,
+              preparation,
+              onDatesChange,
+              validator,
+            }}
+          />
         </FormControl>
       </Container>
     );

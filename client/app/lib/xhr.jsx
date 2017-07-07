@@ -43,14 +43,29 @@ export const fetchDeleteRequest = (path, body, callback) => {
   .then(json => callback(json))
   .catch((err) => { throw err; });
 };
-export const fetchXhrGet = (path, successCallback, failCallback) => {
+export const fetchXhrGet = (path, successCallback, failCallback = null) => {
   fetch(path, { ...SETTINGS_GET })
   .then(response => response.json())
   .then((json) => {
     const { success } = json;
     if (success) {
       successCallback(json);
-    } else {
+    } else if (failCallback) {
+      failCallback(json);
+    }
+  })
+  .catch((err) => { throw err; });
+};
+
+export const fetchXhrPost = (path, body, successCallback, failCallback = null) => {
+  const jsonBody = JSON.stringify(body);
+  fetch(path, { ...SETTINGS_POST, body: jsonBody })
+  .then(response => response.json())
+  .then((json) => {
+    const { success } = json;
+    if (success) {
+      successCallback(json);
+    } else if (failCallback) {
       failCallback(json);
     }
   })

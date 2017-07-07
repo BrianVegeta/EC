@@ -17,3 +17,7 @@ export function inDates(theDate, startDate, endDate) {
   const range = momentRange.range(startDate, endDate);
   return range.contains(theDate);
 }
+export function calculateDatesBetween(startDate, endDate) {
+  const range = momentRange.range(startDate, endDate);
+  return range.diff('days');
+}

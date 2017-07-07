@@ -15,6 +15,7 @@ import notification from './notificationReducer';
 import home from './homeReducer';
 import item from './item';
 import reservation from './reservationReducer';
+import myCoupons from './myCouponsReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -33,4 +34,5 @@ export default combineReducers({
   home,
   item,
   reservation,
+  myCoupons,
 });

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // import validate from 'validate.js';
 import DatesPicker from 'models/DatesPicker';
 import { changeDates } from 'actions/reservationActions';
@@ -8,6 +9,13 @@ export default class extends DatesPicker {
     const { startDate, endDate } = reservation;
     super(startDate, endDate, dispatch);
 
+    const {
+      ship_before_start_days,
+      min_lease_days,
+    } = detail;
+
+    this.preparation = ship_before_start_days;
+    this.minPicks = min_lease_days;
     this.onDatesChange = this.onDatesChange.bind(this);
     this.validator = this.validator.bind(this);
   }

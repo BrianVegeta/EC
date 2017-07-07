@@ -24,6 +24,7 @@ const config = {
       'redux',
       'lodash',
       'react-css-modules',
+      'styled-components',
       'classnames/bind',
     ],
     app: [

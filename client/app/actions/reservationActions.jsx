@@ -32,3 +32,9 @@ export const changeAmount = amount => ({
   type: TYPES.CHANGE_AMOUNT,
   amount,
 });
+
+export const changeCoupon = (couponNo, couponOffset) => ({
+  type: TYPES.CHANGE_COUPON,
+  couponNo,
+  couponOffset,
+});

@@ -6,6 +6,7 @@ import ReturnOptions from './ReturnOptions';
 import DatesRange from './DatesRange';
 import Amount from './Amount';
 import Coupons from './Coupons';
+import Calculation from './Calculation';
 
 export default class {
   constructor(detail, reservation, myCoupons, dispatch) {
@@ -43,8 +44,15 @@ export default class {
       dispatch,
     );
 
-    this.coupons = new Coupons(
+    this.couponsModel = new Coupons(
       myCoupons,
+      reservation,
+      dispatch,
+    );
+
+    this.calculationModel = new Calculation(
+      detail,
+      reservation,
       dispatch,
     );
   }
