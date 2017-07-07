@@ -13,8 +13,8 @@ Rails.application.routes.draw do
     post 'phone_login', to: 'sessions#create_by_phone'
     post 'email_login', to: 'sessions#create_by_email'
     post 'logout', to: 'sessions#destroy'
-    
-    namespace :api do 
+
+    namespace :api do
       # CONTRACT
       post 'contract/calendar', to: 'contract#calendar'
       post 'contract/cancel', to: 'contract#cancel'
@@ -42,20 +42,20 @@ Rails.application.routes.draw do
       post 'contract/space_create', to: 'contract#space_create'
       post 'contract/space_end', to: 'contract#space_update'
       post 'contract/space_update', to: 'contract#space_update'
- 
+
       #FAVORITE
       post 'favorite/add', to: 'favorite#add'
       post 'favorite/my_favorite', to: 'favorite#my_favorite'
       post 'favorite/remove', to: 'favorite#remove'
-      
+
       #FORGETPASSWORD
-      post 'forgetpassword/', to: 'forgetpassword#'
-      post 'forgetpassword/', to: 'forgetpassword#'
-      post 'forgetpassword/', to: 'forgetpassword#'
-      post 'forgetpassword/', to: 'forgetpassword#'
-      post 'forgetpassword/', to: 'forgetpassword#'
-      post 'forgetpassword/', to: 'forgetpassword#'
-      
+      # post 'forgetpassword/', to: 'forgetpassword#'
+      # post 'forgetpassword/', to: 'forgetpassword#'
+      # post 'forgetpassword/', to: 'forgetpassword#'
+      # post 'forgetpassword/', to: 'forgetpassword#'
+      # post 'forgetpassword/', to: 'forgetpassword#'
+      # post 'forgetpassword/', to: 'forgetpassword#'
+
       #ITEM
       post 'item/item_add', to: 'item#item_add'
       post 'item/item_update', to: 'item#item_update'
@@ -74,13 +74,13 @@ Rails.application.routes.draw do
       post 'item/category_list', to: 'item#category_list'
       post 'item/message', to: 'item#message'
       post 'item/message_add', to: 'item#message_add'
-      
+
       #MARKETING
       post 'marketing/coupon_list', to: 'marketing#coupon_list'
-      
+
       #SEARCH
       post 'search/multi_search', to: 'search#multi_search'
-      
+
       #SYNC
       post 'sync/notification', to: 'sync#notification'
       post 'sync/notification_unread', to: 'sync#notification_unread'
@@ -88,8 +88,8 @@ Rails.application.routes.draw do
       post 'sync/notification_read', to: 'sync#notification_read'
       post 'sync/chat_rooms', to: 'sync#chat_rooms'
       post 'sync/chat_logs', to: 'sync#chat_logs'
-      
-      
+
+
       #USERPROFILE
       post 'userprofile/save', to: 'userprofile#save'
       post 'userprofile/get', to: 'userprofile#get'
@@ -117,12 +117,12 @@ Rails.application.routes.draw do
       post 'userprofile/bank_info_ready', to: 'userprofile#bank_info_ready'
       post 'userprofile/bank_info_wire_out', to: 'userprofile#bank_info_wire_out'
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out'
-              
+
       #WISHLIST
       post 'wishlist/save', to: 'wishlist#save'
       post 'wishlist/search', to: 'wishlist#search'
       post 'wishlist/remove', to: 'wishlist#remove'
-      
+
     end
     namespace :auth do
       get 'get_current_user', to: 'index#get_current_user'
