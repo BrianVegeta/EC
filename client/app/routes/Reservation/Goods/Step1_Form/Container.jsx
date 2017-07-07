@@ -13,15 +13,17 @@ import FormButton from 'components/FormButton';
 import DeliverySelection from './DeliverySelection';
 import ExtraAddresses from './ExtraAddresses';
 import RentDatesRange from './RentDatesRange';
+import Amount from './Amount';
+import Coupons from './Coupons';
 import Model from './Model';
 
 const Container = styled.div`
   margin-bottom: 50px;
 `;
 
-const AmountContainer = styled.div`
-  display: inline-block;
-  width: 152px;
+const CouponsContainer = styled.div`
+  width: 380px;
+  margin: 20px 0;
 `;
 
 class Form extends React.PureComponent {
@@ -36,8 +38,18 @@ class Form extends React.PureComponent {
     const { item, reservation, dispatch } = this.props;
     const itemInstance = new Model(item.detail, reservation, dispatch);
     const { coverUrl, pname, priceDesc, priceUnit } = itemInstance;
-    const { sendOptions, sendAddresses, returnOptions } = itemInstance;
-    const { datesRange } = itemInstance;
+    // 物流方式
+    const {
+      sendOptions,
+      sendAddresses,
+      returnOptions,
+    } = itemInstance;
+    // 交易明細
+    const {
+      datesRange,
+      amountModel,
+      coupons,
+    } = itemInstance;
 
     return (
       <Container >
@@ -59,12 +71,9 @@ class Form extends React.PureComponent {
         <FormBlock title="交易明細">
           <div>
             <RentDatesRange label="使用時間" model={datesRange} />
-            <AmountContainer>
-              <FormControl label={<span>數量 ／ 目前X件</span>}>
-                input
-              </FormControl>
-            </AmountContainer>
+            <Amount model={amountModel} />
           </div>
+          <Coupons placeholder="選擇折價卷" model={} />
         </FormBlock>
         <FormBlock
           title="聯絡資訊"

@@ -9,6 +9,7 @@ const initialState = {
 
   startDate: null,
   endDate: null,
+  amount: 1,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -37,6 +38,11 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         startDate: action.startDate,
         endDate: action.endDate,
+      });
+
+    case TYPES.CHANGE_AMOUNT:
+      return Object.assign({}, state, {
+        amount: action.amount,
       });
 
     default:

@@ -27,3 +27,8 @@ export const changeDates = ({ startDate, endDate }) => ({
   startDate,
   endDate,
 });
+
+export const changeAmount = amount => ({
+  type: TYPES.CHANGE_AMOUNT,
+  amount,
+});

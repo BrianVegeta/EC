@@ -1,0 +1,35 @@
+@import "~styles/input.sass"
+@import "~styles/color.sass"
+
+$arrowBgColor: $global-primaryColor
+$arrowHoverBgColor: $global-hoverColor
+$arrowActiveBgColor: $global-activeColor
+$arrowDisableBgColor: #B8B8B8
+
+.container
+  position: relative
+  width: 100%
+  height: 50%
+  display: block
+  background: $arrowBgColor
+  text-align: center
+  transition: all 0.1s
+  cursor: pointer
+  .arrowIcon
+    color: #fff
+  &:hover
+    background: $arrowHoverBgColor
+  &:active
+    background: $arrowActiveBgColor
+  &:disabled
+    background: $arrowDisableBgColor
+    cursor: default
+  &.petrified
+    cursor: default
+    &:hover
+      background: $arrowBgColor
+
+  &.up
+    border-top-right-radius: $inputRadius - $inputBorderWidth
+  &.down
+    border-bottom-right-radius: $inputRadius - $inputBorderWidth

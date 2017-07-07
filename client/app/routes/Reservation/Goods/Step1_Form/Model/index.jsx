@@ -4,9 +4,11 @@ import SendOptions from './SendOptions';
 import SendAddresses from './SendAddresses';
 import ReturnOptions from './ReturnOptions';
 import DatesRange from './DatesRange';
+import Amount from './Amount';
+import Coupons from './Coupons';
 
 export default class {
-  constructor(detail, reservation, dispatch) {
+  constructor(detail, reservation, myCoupons, dispatch) {
     this.dispatch = dispatch;
     this.coverUrl = `url(${detail.img1})`;
     this.pname = detail.pname;
@@ -32,6 +34,17 @@ export default class {
     this.datesRange = new DatesRange(
       detail,
       reservation,
+      dispatch,
+    );
+
+    this.amountModel = new Amount(
+      detail,
+      reservation,
+      dispatch,
+    );
+
+    this.coupons = new Coupons(
+      myCoupons,
       dispatch,
     );
   }

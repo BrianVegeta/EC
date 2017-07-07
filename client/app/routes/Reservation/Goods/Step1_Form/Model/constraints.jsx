@@ -25,4 +25,9 @@ export default {
   //     message: '^請填完整時間',
   //   },
   // },
+  amount: {
+    presence: {
+      message: '^此欄位必填',
+    },
+  },
 };

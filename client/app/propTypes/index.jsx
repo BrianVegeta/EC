@@ -77,6 +77,7 @@ export default {
   reserve: { // 提出預訂 PAGE
     datesModel: PropTypes.object,
     amountModel: PropTypes.object,
+    couponsModel: PropTypes.object,
   },
   label: PropTypes.oneOfType([string, node]),
 };
