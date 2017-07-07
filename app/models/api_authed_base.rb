@@ -4,13 +4,29 @@ class ApiAuthedBase < ApiBase
     super
     self.apitoken = apitoken
   end
-
+  
+  def request_method
+    :post_token
+  end
+  
   def request_api
-    response = self.class.post(
-      self.path,
-      body: self.request_params.to_json,
-      headers: HEADERS.merge!({ apitoken: self.apitoken }),
-    )
+    case self.request_method.to_sym 
+    when :post
+      response = self.class.post(self.path, body: self.request_params.to_json)
+    when :post_token
+      response = self.class.post(
+        self.path, 
+        body: self.request_params.to_json,
+        headers: HEADERS.merge!({ apitoken: self.apitoken })
+      )
+    when :get
+      reponset = self.class.get(self.path)
+    when :get_token
+      response = self.class.get(self.path, headers: HEADERS.merge!({ apitoken: self.apitoken }))
+    else
+      raise 'Need request method'
+    end
+    
     case response.code
     when 200
       response
