@@ -3,7 +3,7 @@ class Ajax::Api::ContractController < ApplicationController
   
   ###################### ACTION ##################################
   
-  # 取回行事曆範圍內的合約
+  # 取回行事曆範圍內的合約 
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken
     success = obj.request
@@ -40,7 +40,7 @@ class Ajax::Api::ContractController < ApplicationController
   
   # 聊天室取回雙方的合約
   def get_our_contracts
-    obj = ::Api::Contract::GetOurContract.new target_params, current_apitoken
+    obj = ::Api::Contract::GetOurContracts.new target_params, current_apitoken
     success = obj.request
     respond success, obj.error_message, obj.response_data
   end
@@ -187,6 +187,11 @@ class Ajax::Api::ContractController < ApplicationController
   
   ###################### PARAMS ##################################
   protected
+  def cid_params
+    #cid : Long => cid　代號
+    params.permit(:cid).merge(current_uid_params);
+  end
+  
   def calendar_params
     #start_date : Long => 搜尋開始時間
     #end_date : Long => 搜尋結束時間

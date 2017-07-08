@@ -58,7 +58,7 @@ class Ajax::Api::SyncController < ApplicationController
   end
   
   def notification_read_params
-    # type : String =>  NOTIFY_PROPANGANDA, NOTIFY_CONTRACT, NOTIFY_XMPP, REPORT, NOTIFY_ITEM, NOTIFY_LOGISTICS, SYSTE
+    # type : String =>  NOTIFY_PROPANGANDA, NOTIFY_CONTRACT, NOTIFY_XMPP, REPORT, NOTIFY_ITEM, NOTIFY_LOGISTICS, SYSTEM
     params.permit(:type).merge(paging_params).merge(current_uid_params)
   end
   
