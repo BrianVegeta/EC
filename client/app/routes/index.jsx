@@ -66,8 +66,8 @@ const routes = (routesHelper, dispatch) => ({
       childRoutes: [
         ReservationGoods((nextState) => {
           window.addEventListener('beforeunload', confirmLeavePage);
+          // dispatch(requireLoginAndGetUser());
           dispatch(editItem(nextState.params.pid));
-          dispatch(requireLoginAndGetUser());
         }),
       ],
     },

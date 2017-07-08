@@ -23,6 +23,15 @@ class ReservationGoods extends React.PureComponent {
     formComponent: PropTypes.node.isRequired,
   };
   render() {
+    // return (
+    //   <Redirect
+    //     to={{
+    //       pathname: '/login',
+    //       state: { from: this.props.location },
+    //     }}
+    //   />
+    // );
+
     return (
       <Container className="clear">
         <MainContainer>{this.props.formComponent}</MainContainer>

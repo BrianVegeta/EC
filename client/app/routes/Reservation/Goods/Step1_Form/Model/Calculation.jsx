@@ -31,6 +31,8 @@ export default class {
   }
 
   calcDiscount(discounts, startDate, endDate) {
-    console.log(calculateDatesBetween(startDate, endDate));
+    if (startDate && endDate) {
+      console.log(calculateDatesBetween(startDate, endDate));
+    }
   }
 }

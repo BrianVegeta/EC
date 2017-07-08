@@ -55,7 +55,6 @@ class Form extends React.PureComponent {
       couponsModel,
       calculationModel,
     } = itemInstance;
-
     return (
       <Container >
         <TitleWrapper text="填寫預訂資訊" />

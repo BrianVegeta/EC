@@ -34,4 +34,4 @@ const mapStateToProps = (state) => {
   const { environment, auth } = state;
   return { environment, auth };
 };
-export default connect(mapStateToProps)(fixedLayoutHoc(LayoutContainer));
+export default connect(mapStateToProps)(fixedLayoutHoc(LayoutContainer, true));
