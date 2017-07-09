@@ -1,4 +1,4 @@
-class Api::Item::MessageAdd < ApiBase
+class Api::Item::Message < ApiBase
   
   PATH = '/client/item/message';
   

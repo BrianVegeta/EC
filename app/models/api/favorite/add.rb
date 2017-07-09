@@ -1,4 +1,4 @@
-class Api::Contract::Add < ApiAuthedBase
+class Api::Favorite::Add < ApiAuthedBase
   
   PATH = '/client/favorite/add';
   

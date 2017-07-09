@@ -52,8 +52,8 @@ class Ajax::Api::ItemController < ApplicationController
   end
   
   # 取回使用者的商品列表
-  def get_item_by_user
-    obj = ::Api::Item::GetItemByUser.new space_update_params
+  def get_item_by_user 
+    obj = ::Api::Item::GetItemByUser.new get_item_by_user_params
     success = obj.request
     respond success, obj.error_message, obj.response_data
   end
@@ -160,7 +160,7 @@ class Ajax::Api::ItemController < ApplicationController
       :return_option, :return_city, :return_area, :return_address, 
       :overdue_rate, :deposit, :ship_before_start_days, :min_lease_days, 
       :tag1, :tag2, :tag3, 
-      rules : [], discounts : []).merge(current_uid_params)
+      rules: [], discounts: []).merge(current_uid_params)
     
   end
   
@@ -212,7 +212,7 @@ class Ajax::Api::ItemController < ApplicationController
       :tag1, :tag2, :tag3, 
       :assign_address_type, :assign_city, :assign_area, :assign_address,
       :calculate_charge_type, :start_date, :end_date,
-      rules : [], discounts : []).merge(current_uid_params)
+      rules: [], discounts: []).merge(current_uid_params)
     
   end
   
@@ -255,7 +255,7 @@ class Ajax::Api::ItemController < ApplicationController
        :cat_id, :city, :area, :unit, :price,
        :currency, :deposit, :advance_reservation_days, :min_lease_days,
        :tag1, :tag2, :tag3, :assign_address, :calculate_charge_type,
-       rules : [], discounts : []).merge(current_uid_params)
+       rules: [], discounts: []).merge(current_uid_params)
      
    end
    
@@ -286,9 +286,15 @@ class Ajax::Api::ItemController < ApplicationController
      # name : String 收尋類似商品名字
      params.permit(:name).merge(paging_params)
    end
+   
+   def get_item_by_user_params
+     # uid : 對方UID
+     params.permit(:uid)
+   end
+   
    def remove_params 
      # pid : List<long> => 要移除的商品
-     params.permit(pid : []).merge(current_uid_params)
+     params.permit(pid: []).merge(current_uid_params)
    end
    
    def relative_item_params

@@ -150,7 +150,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
   
   # 取回銀行資料
-  def bank_info
+  def bank_info 
+    # 請使用cipher decrypt data
     obj = ::Api::Userprofile::BankInfo.new current_uid_params, current_apitoken
     success = obj.request
     respond success, obj.error_message, obj.response_data
@@ -158,6 +159,7 @@ class Ajax::Api::UserprofileController < ApplicationController
   
   # 更新銀行資料
   def bank_info_update
+    # 請使用cipher encript
     obj = ::Api::Userprofile::BankInfoUpdate.new bank_info_update_params, current_apitoken
     success = obj.request
     respond success, obj.error_message, obj.response_data
@@ -171,8 +173,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   # 設定自動出款
-  def bank_info_wire_out
-    obj = ::Api::Userprofile::BankInfoWireOut.new set_params, current_apitoken
+  def bank_info_auto_wire
+    obj = ::Api::Userprofile::BankInfoAutoWire.new set_params, current_apitoken
     success = obj.request
     respond success, obj.error_message, obj.response_data
   end
@@ -202,7 +204,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   
   def show_item_params
     # isShowItem : bool => true 帶回商品列表  false 不取商品列表
-    params.permit(:isShowItem).merge(current_uid_params)
+    # uid : String => 對方UID
+    params.permit(:isShowItem, :uid)
   end
   
   def search_params

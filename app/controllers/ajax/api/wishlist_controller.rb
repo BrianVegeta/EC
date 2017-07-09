@@ -11,7 +11,7 @@ class Ajax::Api::WishlistController < ApplicationController
    
    # 搜尋許願紙條
    def search
-     obj = ::Api::Wishlist::Search.new current_uid_params
+     obj = ::Api::Wishlist::Search.new search_params
      success = obj.request
      respond success, obj.error_message, obj.response_data    
    end
@@ -42,11 +42,11 @@ class Ajax::Api::WishlistController < ApplicationController
        :expprice, :expcurrency, :expday, :picture, :cat_id).merge(current_uid_params);
    end
    def search_params
-     # last_id : Long => 上次搜尋結果ID / paging使用，避免重複;
-     # name : String => 搜尋標題
-     # cat_id : String => 類型Id
-     # locations : List<Object> => 地區列表
-     params.permit(:id, :name, :cat_id, locations : []).merge(current_uid_params).merge(paging_params)
+     # last_id : Long => 上次搜尋結果ID / paging使用，避免重複; [option]
+     # name : String => 搜尋標題 [option]
+     # cat_id : String => 類型Id [option]
+     # locations : List<Object> => 地區列表 [option]
+     params.permit(:id, :name, :cat_id, locations: []).merge(paging_params)
    end
    def remove_params
      params.permit(:id).merge(current_uid_params).merge(current_uid_params)

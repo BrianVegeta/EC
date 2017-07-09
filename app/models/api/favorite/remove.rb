@@ -1,4 +1,4 @@
-class Api::Contract::Remove < ApiAuthedBase
+class Api::Favorite::Remove < ApiAuthedBase
   
   PATH = '/client/favorite/remove';
   
