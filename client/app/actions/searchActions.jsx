@@ -1,5 +1,5 @@
 import * as TYPES from '../constants/actionTypes';
-import { fetchPostRequest } from '../lib/xhr';
+import { fetchXhrPost } from '../lib/xhr';
 
 
 export const closeResultPanel = () => ({
@@ -38,41 +38,55 @@ const afterFetchMulti = (users, items, wishs) => ({
   wishs,
 });
 
-const SEARCH_USERS_PATH = '/ajax/search/user.json';
-const SEARCH_ITEMS_PATH = '/ajax/search/item.json';
-const SEARCH_WISHS_PATH = '/ajax/search/wish.json';
-const SEARCH_MULTI_PATH = '/ajax/search/multi.json';
 export function searchByName(name) {
   return (dispatch) => {
     const index = 0;
     const size = 3;
-    const bodyJSON = JSON.stringify({ name, index, size });
-    const callback = (response) => {
-      const { data } = response;
-      const { users, items, wishs } = data;
-      dispatch(afterFetchMulti(users, items, wishs));
-    };
+
     dispatch(beforeFetchMulti());
-    fetchPostRequest(SEARCH_MULTI_PATH, bodyJSON, callback);
+
+    fetchXhrPost(
+      '/ajax/search/user.json',
+      { name, index, size },
+      (response) => {
+        const {
+          users,
+          items,
+          wishs,
+        } = response.data;
+
+        dispatch(
+          afterFetchMulti(
+            users,
+            items,
+            wishs,
+          ),
+        );
+      },
+    );
   };
 }
 
 function innerSearchByName(name, path, before, after) {
   const index = 0;
   const size = 20;
-  const bodyJSON = JSON.stringify({ name, index, size });
-  const callback = (response) => {
-    const { data } = response;
-    after(data);
-  };
+
   before();
-  fetchPostRequest(path, bodyJSON, callback);
+
+  fetchXhrPost(
+    path,
+    { name, index, size },
+    (response) => {
+      after(response.data);
+    },
+  );
 }
+
 export function searchUserByName(name) {
   return (dispatch) => {
     innerSearchByName(
       name,
-      SEARCH_USERS_PATH,
+      '/ajax/search/user.json',
       () => dispatch(beforeFetchUser()),
       users => dispatch(afterFetchUser(users)),
     );
@@ -82,7 +96,7 @@ export function searchItemByName(name) {
   return (dispatch) => {
     innerSearchByName(
       name,
-      SEARCH_ITEMS_PATH,
+      '/ajax/search/item.json',
       () => dispatch(beforeFetchItem()),
       items => dispatch(afterFetchItem(items)),
     );
@@ -92,7 +106,7 @@ export function searchWishByName(name) {
   return (dispatch) => {
     innerSearchByName(
       name,
-      SEARCH_WISHS_PATH,
+      '/ajax/search/wish.json',
       () => dispatch(beforeFetchWish()),
       wishs => dispatch(afterFetchWish(wishs)),
     );

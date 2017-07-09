@@ -1,5 +1,6 @@
 class Ajax::SessionsController < ApplicationController
   include WardenHelper
+  include RespondHelper
   prepend_before_action :prepare_browser_info
 
   # POST /ajax/email_login.json
@@ -56,6 +57,6 @@ class Ajax::SessionsController < ApplicationController
     if success
       warden.set_user(@user.warden_session, scope: :user)
     end
-    respond success, @user.error_message, current_user
+    respond success, @user
   end
 end

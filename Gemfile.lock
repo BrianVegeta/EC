@@ -40,7 +40,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
-    aes (0.5.0)
     arel (7.1.4)
     autoprefixer-rails (7.0.1)
       execjs
@@ -240,7 +239,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aes
   autoprefixer-rails
   aws-sdk (~> 2.3.0)
   bootstrap-sass (~> 3.3.6)

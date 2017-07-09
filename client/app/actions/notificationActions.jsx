@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import * as TYPES from '../constants/actionTypes/notification';
-import { fetchGetRequest } from '../lib/xhr';
+import { fetchXhrAuthedGet } from '../lib/xhr';
 
 export const setBoxItems = boxItems => ({
   type: TYPES.SET_NOTIFICATIONS,
@@ -8,12 +8,13 @@ export const setBoxItems = boxItems => ({
 });
 
 export function getNotitications() {
-  return (dispatch) => {
-    fetchGetRequest('/ajax/auth/notifications.json', (response) => {
-      const { success, data } = response;
-      if (success) {
-        dispatch(setBoxItems(data));
-      }
-    });
+  return (dispatch, getState) => {
+    fetchXhrAuthedGet(
+      '/ajax/auth/notifications.json',
+      getState(),
+      (response) => {
+        dispatch(setBoxItems(response.data));
+      },
+    );
   };
 }

@@ -9,6 +9,7 @@ class IndexController < ApplicationController
     @props = {
       auth: {
         isLogin: user_signed_in?,
+        currentUser: current_user.except('password', 'apitoken'),
       },
       routesHelper: {
         root: root_path,

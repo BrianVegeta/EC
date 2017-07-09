@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     post 'email_verify', to: 'registration#verify_by_email'
     post 'phone_login', to: 'sessions#create_by_phone'
     post 'email_login', to: 'sessions#create_by_email'
-    post 'logout', to: 'sessions#destroy'
+    delete 'logout', to: 'sessions#destroy'
 
     namespace :api do
       # CONTRACT
@@ -130,6 +130,7 @@ Rails.application.routes.draw do
     end
 
     namespace :auth do
+      get 'sync', to: 'index#sync'
       get 'get_current_user', to: 'index#get_current_user'
       get 'get_user_info', to: 'index#get_user_info'
       # get 'notifications/test', to: 'notifications#activities'

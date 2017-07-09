@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { fetchGetRequest, fetchDeleteRequest } from '../lib/xhr';
+import { fetchXhrAuthedGet, fetchXhrDelete } from '../lib/xhr';
 import * as TYPES from '../constants/actionTypes/mine';
 
 const itemsFetched = items => ({
@@ -12,15 +12,15 @@ export const tabItemCate = itemsCateState => ({
   itemsCateState,
 });
 
-const PATH_FETCH_ITEMS = '/ajax/mine/items.json';
 export function fetchItems() {
-  return (dispatch) => {
-    const callback = (json) => {
-      const { data } = json;
-      const { items } = data;
-      dispatch(itemsFetched(items));
-    };
-    fetchGetRequest(PATH_FETCH_ITEMS, callback);
+  return (dispatch, getState) => {
+    fetchXhrAuthedGet(
+      '/ajax/mine/items.json',
+      getState(),
+      (response) => {
+        dispatch(itemsFetched(response.data.items));
+      },
+    );
   };
 }
 
@@ -38,16 +38,15 @@ const deleteFromItems = pids => ({
   type: TYPES.ITEMS_DELETE,
   pids,
 });
-const PATH_DELETE_ITEMS = '/ajax/mine/items_remove.json';
+
 export function deleteItems(pids) {
   return (dispatch) => {
-    const bodyJSON = JSON.stringify({ pids });
-    const callback = (json) => {
-      const { success } = json;
-      if (success) {
+    fetchXhrDelete(
+      '/ajax/mine/items_remove.json',
+      { pids },
+      () => {
         dispatch(deleteFromItems(pids));
-      }
-    };
-    fetchDeleteRequest(PATH_DELETE_ITEMS, bodyJSON, callback);
+      },
+    );
   };
 }

@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import * as types from 'constants/actionTypes/myCoupons';
-import { fetchXhrPost } from 'lib/xhr';
+import { fetchXhrAuthedGet } from 'lib/xhr';
 
 const requestCoupons = () => ({
   type: types.REQUEST_COUPONS,
@@ -16,14 +16,13 @@ export function fetchCoupons() {
   return (dispatch, getState) => {
     dispatch(requestCoupons());
 
-    fetchXhrPost(
+    fetchXhrAuthedGet(
       '/ajax/my_coupons.json',
-      {},
+      getState(),
       (json) => {
         const { data } = json;
         dispatch(receiveCoupons(data));
       },
-      getState(),
     );
   };
 }
