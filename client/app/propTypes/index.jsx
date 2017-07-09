@@ -81,4 +81,9 @@ export default {
   },
   label: PropTypes.oneOfType([string, node]),
   myCoupons: PropTypes.object,
+  routing: PropTypes.shape({
+    locationBeforeTransitions: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+  }),
 };

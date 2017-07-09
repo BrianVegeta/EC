@@ -1,10 +1,15 @@
 class IndexController < ApplicationController
+  include WardenHelper
+
   def index
 
   end
 
   def pages
     @props = {
+      auth: {
+        isLogin: user_signed_in?,
+      },
       routesHelper: {
         root: root_path,
         items: {

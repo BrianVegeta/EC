@@ -1,4 +1,8 @@
 /* eslint-disable import/prefer-default-export */
+
+import { browserHistory } from 'react-router';
+import * as paths from 'lib/paths';
+
 export const POST = {
   credentials: 'same-origin',
   method: 'POST',
@@ -43,11 +47,14 @@ export const fetchDeleteRequest = (path, body, callback) => {
   .then(json => callback(json))
   .catch((err) => { throw err; });
 };
+
+// FETCH GET 不需登入的
 export const fetchXhrGet = (path, successCallback, failCallback = null) => {
   fetch(path, { ...SETTINGS_GET })
   .then(response => response.json())
   .then((json) => {
     const { success } = json;
+
     if (success) {
       successCallback(json);
     } else if (failCallback) {
@@ -57,14 +64,59 @@ export const fetchXhrGet = (path, successCallback, failCallback = null) => {
   .catch((err) => { throw err; });
 };
 
+// FETCH GET 需要登入的
+export const fetchXhrAuthedGet = (path, state, successCallback, failCallback = null) => {
+  fetch(path, { ...SETTINGS_GET })
+  .then(response => response.json())
+  .then((json) => {
+    const { success, logouted } = json;
+
+    if (success) {
+      successCallback(json);
+    } else if (logouted) {
+      browserHistory.push({
+        pathname: paths.LOGIN,
+        referrer: state.routing.locationBeforeTransitions.pathname,
+      });
+    } else if (failCallback) {
+      failCallback(json);
+    }
+  })
+  .catch((err) => { throw err; });
+};
+
+// POST FETCH 不需登入的
 export const fetchXhrPost = (path, body, successCallback, failCallback = null) => {
   const jsonBody = JSON.stringify(body);
   fetch(path, { ...SETTINGS_POST, body: jsonBody })
   .then(response => response.json())
   .then((json) => {
     const { success } = json;
+
     if (success) {
       successCallback(json);
+    } else if (failCallback) {
+      failCallback(json);
+    }
+  })
+  .catch((err) => { throw err; });
+};
+
+// POST FETCH 需登入的
+export const fetchXhrAuthedPost = (path, body, state, successCallback, failCallback = null) => {
+  const jsonBody = JSON.stringify(body);
+  fetch(path, { ...SETTINGS_POST, body: jsonBody })
+  .then(response => response.json())
+  .then((json) => {
+    const { success, logouted } = json;
+
+    if (success) {
+      successCallback(json);
+    } else if (logouted) {
+      browserHistory.push({
+        pathname: paths.LOGIN,
+        referrer: state.routing.locationBeforeTransitions.pathname,
+      });
     } else if (failCallback) {
       failCallback(json);
     }

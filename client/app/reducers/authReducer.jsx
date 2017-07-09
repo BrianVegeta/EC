@@ -57,6 +57,10 @@ export default (state = initialState, action) => {
       return updateState('nickname');
     case TYPES.AUTH_UPDATE_VERIFY_CODE:
       return updateState('verifyCode');
+
+    case '@@INIT':
+      return Object.assign(initialState, {}, state);
+
     default:
       return state;
   }

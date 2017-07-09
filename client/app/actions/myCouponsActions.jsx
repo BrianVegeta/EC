@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+
 import * as types from 'constants/actionTypes/myCoupons';
 import { fetchXhrPost } from 'lib/xhr';
 
@@ -12,12 +13,17 @@ const receiveCoupons = coupons => ({
 });
 
 export function fetchCoupons() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(requestCoupons());
 
-    fetchXhrPost('/ajax/my_coupons.json', {}, (json) => {
-      const { data } = json;
-      dispatch(receiveCoupons(data));
-    });
+    fetchXhrPost(
+      '/ajax/my_coupons.json',
+      {},
+      (json) => {
+        const { data } = json;
+        dispatch(receiveCoupons(data));
+      },
+      getState(),
+    );
   };
 }

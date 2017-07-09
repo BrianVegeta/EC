@@ -124,7 +124,7 @@ Rails.application.routes.draw do
 
     scope module: :api do
       #MARKETING
-      post 'my_coupons', to: 'marketing#coupon_list'
+      get 'my_coupons', to: 'marketing#coupon_list'
     end
 
     namespace :auth do

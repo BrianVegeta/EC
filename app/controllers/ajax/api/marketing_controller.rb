@@ -1,6 +1,6 @@
 class Ajax::Api::MarketingController < ApplicationController
   include WardenHelper
-  
+
   ###################### ACTION ##################################
   # 搜尋
    def coupon_list
@@ -8,7 +8,7 @@ class Ajax::Api::MarketingController < ApplicationController
      success = obj.request
      respond success, obj.error_message, obj.response_data
    end
-  
+
   ###################### PARAMS ##################################
 
 end

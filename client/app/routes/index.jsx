@@ -1,3 +1,5 @@
+import layoutHoc from 'containers/layoutHoc';
+
 import { requireLoginAndGetUser } from 'actions/authActions';
 import { editItem } from 'actions/itemActions';
 import { confirmLeavePage } from 'lib/confirm';
@@ -5,7 +7,8 @@ import Layout from '../containersLayout/Home';
 import LayoutPublish from '../containers/LayoutPublishContainer';
 import LayoutItemDetail from '../containersLayout/ItemDetail';
 import LayoutMyAccount from '../containersLayout/MyAccount';
-import LayoutFixed from '../containersLayout/Fixed';
+import Fixed from '../containersLayout/Fixed';
+
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
 import ServiceRoute from './Items/Service';
@@ -62,11 +65,10 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutFixed,
+      component: layoutHoc(Fixed, { requireAuth: true }),
       childRoutes: [
         ReservationGoods((nextState) => {
           window.addEventListener('beforeunload', confirmLeavePage);
-          // dispatch(requireLoginAndGetUser());
           dispatch(editItem(nextState.params.pid));
         }),
       ],
