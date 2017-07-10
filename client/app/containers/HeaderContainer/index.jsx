@@ -19,25 +19,29 @@ import { logout } from '../../actions/authActions';
 
 const cx = classnames.bind(styles);
 class Header extends React.Component {
+
   static defaultProps = {
+    fixed: false,
     hasShortcut: false,
-    positionStatic: false,
     searchable: false,
   };
+
   static propTypes = {
     notification: myPropTypes.notification.isRequired,
     auth: myPropTypes.authOnHeader.isRequired,
     dispatch: PropTypes.func.isRequired,
+
+    fixed: PropTypes.bool,
     hasShortcut: PropTypes.bool,
-    positionStatic: PropTypes.bool,
     searchable: PropTypes.bool,
   };
+
   render() {
     const {
       dispatch,
       searchable,
       auth,
-      positionStatic,
+      fixed,
       hasShortcut,
       notification,
     } = this.props;
@@ -46,8 +50,8 @@ class Header extends React.Component {
       <header
         className={
           cn('navbar', {
-            'navbar-static': positionStatic,
-            'navbar-fixed-top': !positionStatic,
+            'navbar-static': !fixed,
+            'navbar-fixed-top': fixed,
           })}
       >
         <div className="navbar-container">
@@ -121,6 +125,7 @@ class Header extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const { environment, auth, notification } = state;
   return ({ environment, auth, notification });

@@ -46,6 +46,7 @@ const config = {
     alias: {
       styles: path.join(__dirname, 'app/styles'),
       components: path.join(__dirname, 'app/components'),
+      layouts: path.join(__dirname, 'app/layouts'),
       lib: path.join(__dirname, 'app/lib'),
       propTypes: path.join(__dirname, 'app/propTypes'),
       actions: path.join(__dirname, 'app/actions'),

@@ -7,6 +7,10 @@ import DatesRange from './DatesRange';
 import Amount from './Amount';
 import Coupons from './Coupons';
 import Calculation from './Calculation';
+import ContactName from './ContactName';
+import ContactPhone from './ContactPhone';
+import Note from './Note';
+import PaymentType from './PaymentType';
 
 export default class {
   constructor(detail, reservation, myCoupons, dispatch) {
@@ -55,5 +59,13 @@ export default class {
       reservation,
       dispatch,
     );
+
+    this.contactModel = {
+      name: new ContactName(reservation, dispatch),
+      phone: new ContactPhone(reservation, dispatch),
+    };
+
+    this.noteModel = new Note(reservation, dispatch);
+    this.paymenttype = new PaymentType(reservation, dispatch);
   }
 }

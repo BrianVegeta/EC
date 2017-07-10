@@ -2,12 +2,12 @@ import layoutHoc from 'containers/layoutHoc';
 
 import { requireLoginAndGetUser } from 'actions/authActions';
 import { editItem } from 'actions/itemActions';
-import { confirmLeavePage } from 'lib/confirm';
-import Layout from '../containersLayout/Home';
-import LayoutPublish from '../containers/LayoutPublishContainer';
-import LayoutItemDetail from '../containersLayout/ItemDetail';
-import LayoutMyAccount from '../containersLayout/MyAccount';
-import Fixed from '../containersLayout/Fixed';
+
+import Fixed from 'layouts/Fixed';
+import Home from 'layouts/Home';
+import ItemDetail from 'layouts/ItemDetail';
+import Mine from 'layouts/MyAccount';
+import Publish from 'layouts/Publish';
 
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
@@ -25,12 +25,12 @@ import Registration from './Auth/Registration';
 import MyAccount from './MyAccount';
 import ReservationGoods from './Reservation/Goods/route';
 
-const routes = (routesHelper, dispatch) => ({
+export default (routesHelper, dispatch) => ({
   path: '/',
   childRoutes: [
     {
       indexRoute: HomeRoute(dispatch),
-      component: Layout,
+      component: layoutHoc(Home, {}),
       childRoutes: [
         GoodsRoute(routesHelper, dispatch),
         ServiceRoute(routesHelper, dispatch),
@@ -41,9 +41,14 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutPublish,
+      component: layoutHoc(Publish, {}),
       childRoutes: [
         AuthLogin(routesHelper, dispatch),
+      ],
+    },
+    {
+      component: layoutHoc(Publish, { requireAuth: true, confirmLeave: true }),
+      childRoutes: [
         Registration(routesHelper, dispatch),
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),
@@ -51,7 +56,7 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutMyAccount,
+      component: layoutHoc(Mine, {}),
       childRoutes: [
         MyAccount(() => {
           dispatch(requireLoginAndGetUser());
@@ -59,20 +64,18 @@ const routes = (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: LayoutItemDetail,
+      component: layoutHoc(ItemDetail, {}),
       childRoutes: [
         ItemRoute(dispatch),
       ],
     },
     {
-      component: layoutHoc(Fixed, { requireAuth: true }),
+      component: layoutHoc(Fixed, { requireAuth: true, confirmLeave: true }),
       childRoutes: [
         ReservationGoods((nextState) => {
-          window.addEventListener('beforeunload', confirmLeavePage);
           dispatch(editItem(nextState.params.pid));
         }),
       ],
     },
   ],
 });
-export default routes;

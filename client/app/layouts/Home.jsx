@@ -1,13 +1,10 @@
 import React, { PropTypes } from 'react';
-import HeaderContainer from 'containers/HeaderContainer';
-import Footer from 'components/Footer';
-import myPropTypes from 'propTypes';
-import MainWrapper from '../MainWrapper';
+import HeaderContainer from '../containers/HeaderContainer';
+import Footer from '../components/Footer';
+import myPropTypes from '../propTypes';
+import MainWrapper from './MainWrapper';
 
-export default class LayoutContainer extends React.Component {
-  static defaultProps = {
-    main: null,
-  };
+export default class extends React.Component {
 
   static propTypes = {
     main: PropTypes.node.isRequired,
@@ -17,10 +14,11 @@ export default class LayoutContainer extends React.Component {
   render() {
     const { main, environment } = this.props;
     return (
-      <div style={{ paddingTop: 70 }}>
-        <HeaderContainer />
+      <div>
+        <HeaderContainer searchable hasShortcut fixed />
         <MainWrapper
           minHeight={environment.height}
+          paddingTop={180}
         >
           {main}
         </MainWrapper>

@@ -23,8 +23,8 @@ class RentDatesRange extends React.Component {
     const {
       startDate,
       endDate,
-      minPicks,
-      preparation,
+      // minPicks,
+      // preparation,
       onDatesChange,
       validator,
     } = model;
@@ -36,8 +36,8 @@ class RentDatesRange extends React.Component {
             {...{
               startDate,
               endDate,
-              minPicks,
-              preparation,
+              minPicks: 0,
+              preparation: 0,
               onDatesChange,
               validator,
             }}

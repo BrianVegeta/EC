@@ -16,9 +16,10 @@ Rails.application.routes.draw do
 
     namespace :api do
       # CONTRACT
+      # /client/contract/getMyContractUnreadCount
       post 'contract/calendar', to: 'contract#calendar' #
       post 'contract/cancel', to: 'contract#cancel'
-      post 'contract/end_contract', to: 'contract#end_contract' 
+      post 'contract/end_contract', to: 'contract#end_contract'
       post 'contract/find_can_report', to: 'contract#find_can_report' #
       post 'contract/get_my_contract', to: 'contract#get_my_contract' #
       post 'contract/get_our_contracts', to: 'contract#get_our_contracts' #
@@ -91,7 +92,6 @@ Rails.application.routes.draw do
       post 'userprofile/save', to: 'userprofile#save'
       post 'userprofile/get', to: 'userprofile#get' #
       post 'userprofile/search', to: 'userprofile#search' #
-      post 'userprofile/user_general_info', to: 'userprofile#user_general_info' #
       post 'userprofile/update_phone', to: 'userprofile#update_phone'
       post 'userprofile/get_phone_verify_code', to: 'userprofile#get_phone_verify_code'
       post 'userprofile/update_email', to: 'userprofile#update_email'
@@ -110,7 +110,7 @@ Rails.application.routes.draw do
       post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
       post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments' #
       post 'userprofile/bank_info', to: 'userprofile#bank_info' #
-      post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update' 
+      post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
       post 'userprofile/bank_info_ready', to: 'userprofile#bank_info_ready' #
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out' #
@@ -119,14 +119,17 @@ Rails.application.routes.draw do
       post 'wishlist/save', to: 'wishlist#save' #
       post 'wishlist/search', to: 'wishlist#search' #
       post 'wishlist/remove', to: 'wishlist#remove' #
-      
+
       #MARKETING
       post 'marketing/coupon_list', to: 'marketing#coupon_list' #
     end
 
     scope module: :api do
-      #MARKETING
+      # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
+
+      # USERPROFILE
+      post 'user_info', to: 'userprofile#user_general_info' #拉別人
     end
 
     namespace :auth do

@@ -30,4 +30,7 @@ export default {
       message: '^此欄位必填',
     },
   },
+  contactName: {},
+  contactPhone: {},
+  note: {},
 };

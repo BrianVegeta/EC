@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 import TitleWrapper from 'components/reservation/wrapper/Title';
 import ItemCard from 'components/reservation/wrapper/ItemCard';
 import FormBlock from 'components/reservation/wrapper/FormBlock';
-import FormControl from 'components/reservation/wrapper/FormControl';
 import FormButton from 'components/FormButton';
 
 import { fetchCoupons } from 'actions/myCouponsActions';
@@ -18,8 +18,10 @@ import RentDatesRange from './wrappers/RentDatesRange';
 import Amount from './wrappers/Amount';
 import Coupons from './wrappers/Coupons';
 import CalculationPanel from './wrappers/CalculationPanel';
+import Contact from './wrappers/Contact';
+import Note from './wrappers/Note';
 
-import Model from './Model';
+import Model from '../Model';
 
 const Container = styled.div`
   margin-bottom: 50px;
@@ -40,6 +42,10 @@ class Form extends React.PureComponent {
 
   render() {
     const { item, reservation, myCoupons, dispatch } = this.props;
+    if (_.isEmpty(item.detail)) {
+      return null;
+    }
+
     const itemInstance = new Model(item.detail, reservation, myCoupons, dispatch);
     const { coverUrl, pname, priceDesc, priceUnit } = itemInstance;
     // 物流方式
@@ -54,6 +60,10 @@ class Form extends React.PureComponent {
       amountModel,
       couponsModel,
       calculationModel,
+    } = itemInstance;
+    const {
+      contactModel,
+      noteModel,
     } = itemInstance;
     return (
       <Container >
@@ -84,12 +94,17 @@ class Form extends React.PureComponent {
           title="聯絡資訊"
           tip="您與另一位用戶確認預訂後，才會顯示您的姓名與號碼，用以聯絡彼此。"
         >
-          1
+          <Contact model={contactModel} />
         </FormBlock>
         <FormBlock title="備註" hasMargin={false} hasBottomLine={false}>
-          1
+          <Note model={noteModel} />
         </FormBlock>
-        <FormButton colorType="orange" content="下一步" width={150} />
+        <FormButton
+          colorType="orange"
+          content="下一步"
+          width={150}
+          onClick={() => console.log('next')}
+        />
       </Container>
     );
   }

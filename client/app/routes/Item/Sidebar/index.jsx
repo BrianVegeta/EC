@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import classnames from 'classnames/bind';
+import _ from 'lodash';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import debounce from '../../../funcs/debounce';
 
 const cx = classnames.bind(styles);
 const BOTTOM_FIX_LIMIT = 2503;
@@ -18,20 +18,28 @@ class Sidebar extends React.Component {
     header: PropTypes.node.isRequired,
     children: myPropTypes.children.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.onScroll = this.onScroll.bind(this);
     this.state = initialState;
   }
+
   componentDidMount() {
     window.addEventListener('scroll', this.onScroll);
   }
+
   componentWillUnmount() {
     window.removeEventListener('scroll', this.onScroll);
   }
+
   onScroll() {
-    debounce(this.setState(this.checkFixingState()), 250);
+    _.debounce(
+      () => this.setState(this.checkFixingState()),
+      250,
+    );
   }
+
   checkFixingState() {
     const containerTop = this.container.getBoundingClientRect().top;
     if (containerTop > 0) {
@@ -41,6 +49,7 @@ class Sidebar extends React.Component {
     }
     return Object.assign({}, initialState, { isFixing: true, isBodyBottom: true });
   }
+
   render() {
     const { isFixing, isBodyBottom } = this.state;
     return (

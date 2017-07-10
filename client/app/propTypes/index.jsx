@@ -78,6 +78,7 @@ export default {
     datesModel: PropTypes.object,
     amountModel: PropTypes.object,
     couponsModel: PropTypes.object,
+    calculationModel: PropTypes.object,
   },
   label: PropTypes.oneOfType([string, node]),
   myCoupons: PropTypes.object,
@@ -85,5 +86,25 @@ export default {
     locationBeforeTransitions: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
+  }),
+  route: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.object,
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
+  ),
+  router: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.object,
+      PropTypes.array,
+    ]),
+  ),
+  model: PropTypes.shape({
+    validator: PropTypes.func,
+    onChange: PropTypes.func,
   }),
 };

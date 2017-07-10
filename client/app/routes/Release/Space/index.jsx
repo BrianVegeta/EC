@@ -9,7 +9,7 @@ export default (routesHelper, dispatch) => ({
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, {
-        mainComponent: require('./Container').default,
+        main: require('./Container').default,
       });
     }, 'release.space');
   },
