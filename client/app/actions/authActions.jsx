@@ -2,7 +2,7 @@
 
 import * as types from 'constants/actionTypes/auth';
 import * as AUTH_BY from '../constants/authBy';
-import { fetchXhrDelete, fetchXhrPost } from '../lib/xhr';
+import { fetchXhrDelete, fetchXhrPost, fetchXhrGet } from '../lib/xhr';
 
 const doLogout = () => ({
   type: types.LOGOUT,
@@ -39,8 +39,19 @@ const registerToVerify = () => ({
   type: types.CHANGE_REGISTER_STATE_VERIFING,
 });
 
+// 同步 USER 資料
 export function syncCurrentUser() {
-
+  return (dispatch) => {
+    fetchXhrGet(
+      '/ajax/auth/sync.json',
+      (response) => {
+        dispatch(doLogin(response.data));
+      },
+      () => {
+        dispatch(doLogout());
+      },
+    );
+  };
 }
 
 // EMAIL 註冊

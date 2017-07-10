@@ -6,11 +6,13 @@ class IndexController < ApplicationController
   end
 
   def pages
+    auth = { isLogin: user_signed_in? }
+    if user_signed_in?
+      auth.merge!(currentUser: current_user.except('password', 'apitoken'))
+    end
+
     @props = {
-      auth: {
-        isLogin: user_signed_in?,
-        currentUser: current_user.except('password', 'apitoken'),
-      },
+      auth: auth,
       routesHelper: {
         root: root_path,
         items: {

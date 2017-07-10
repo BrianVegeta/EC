@@ -1,4 +1,4 @@
-import { checkCurrentUser } from '../../actions/authActions';
+import { syncCurrentUser } from '../../actions/authActions';
 import { editItem } from '../../actions/itemActions';
 
 export default dispatch => ({
@@ -11,7 +11,7 @@ export default dispatch => ({
     }, 'item');
   },
   onEnter: (nextState) => {
-    dispatch(checkCurrentUser());
+    dispatch(syncCurrentUser());
     dispatch(editItem(nextState.params.id));
   },
 });

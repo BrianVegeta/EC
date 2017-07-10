@@ -33,8 +33,12 @@ class Ajax::SessionsController < ApplicationController
   end
 
   def destroy
+    resource = ::Session::Logout.new current_uid_params, current_apitoken
+    success = resource.request
+
     warden.logout(:user)
-    respond true, '已成功登出'
+
+    respond success, resource
   end
 
   protected

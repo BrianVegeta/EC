@@ -1,4 +1,4 @@
-import { checkCurrentUser } from '../../actions/authActions';
+import { syncCurrentUser } from '../../actions/authActions';
 import { startup } from '../../actions/homeActions';
 
 export default dispatch => ({
@@ -9,7 +9,7 @@ export default dispatch => ({
     }, 'home');
   },
   onEnter: () => {
-    dispatch(checkCurrentUser());
+    dispatch(syncCurrentUser());
     dispatch(startup());
   },
 });

@@ -17,9 +17,19 @@ class Ajax::Auth::IndexController < ApplicationController
   end
 
   def sync
-    @user = ::Api::Userprofile::Get.new current_uid_params, current_apitoken
-    success = @user.request
+    unless user_signed_in?
+      render json: {
+        success: false,
+      } and return
+    end
 
-    respond success, @user
+    resource = ::Api::Userprofile::Get.new current_uid_params, current_apitoken
+    success = resource.request
+
+    if success
+      warden_set_user current_user.merge(resource.response_data)
+    end
+
+    respond success, resource
   end
 end
