@@ -9,7 +9,9 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
+
 import Model from '../Model';
+import BankInfo from './wrappers/BankInfo';
 
 const Container = styled.div`
   margin-bottom: 50px;
@@ -62,8 +64,9 @@ class Form extends React.PureComponent {
     );
     const {
       paymenttype,
+      bankInfoModal,
     } = itemInstance;
-
+    console.log(this.props.modal);
     return (
       <Container>
         <TitleWrapper text="支付方式" />
@@ -86,6 +89,7 @@ class Form extends React.PureComponent {
             </InputRadio>
           </RadioContainer>
         </RadioGroup>
+        <BankInfo model={bankInfoModal} />
         <FormButton
           colorType="orange"
           content="下一步"
@@ -98,7 +102,7 @@ class Form extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, item, reservation, myCoupons } = state;
-  return ({ environment, item, reservation, myCoupons });
+  const { environment, item, reservation, myCoupons, modal } = state;
+  return ({ environment, item, reservation, myCoupons, modal });
 };
 export default connect(mapStateToProps)(Form);

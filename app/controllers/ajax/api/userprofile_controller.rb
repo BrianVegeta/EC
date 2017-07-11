@@ -34,6 +34,7 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 更新手機
   def update_phone
+    # required password
     respond success, obj.error_message, obj.response_data
   end
 

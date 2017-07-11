@@ -16,9 +16,11 @@ import home from './homeReducer';
 import item from './itemReducer';
 import reservation from './reservationReducer';
 import myCoupons from './myCouponsReducer';
+import modal from './modalReducer';
 
 export default combineReducers({
   routing: routerReducer,
+  modal,
   environment,
   auth,
   banners,
