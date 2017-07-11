@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import _ from 'lodash';
 import styled from 'styled-components';
 import colors from 'styles/colorExport.scss';
 
@@ -36,6 +35,8 @@ const Helper = styled.div`
   line-height: 1.4em;
 `;
 
+const ATM_PAYMENT_HELPER_TEXT = '您可以在實體ATM或網路銀行轉帳，使用ShareApp指定的銀行帳號（虛擬帳號）';
+
 class Form extends React.PureComponent {
 
   static propTypes = {
@@ -46,15 +47,22 @@ class Form extends React.PureComponent {
   };
 
   render() {
-    const { item, reservation, myCoupons, dispatch } = this.props;
-    if (_.isEmpty(item.detail)) {
-      return null;
-    }
+    const {
+      item,
+      reservation,
+      myCoupons,
+      dispatch,
+    } = this.props;
 
-    const itemInstance = new Model(item.detail, reservation, myCoupons, dispatch);
-    const { paymenttype } = itemInstance;
-
-    const atmHelperText = <Helper>您可以在實體ATM或網路銀行轉帳，使用ShareApp指定的銀行帳號（虛擬帳號）</Helper>;
+    const itemInstance = new Model(
+      item,
+      reservation,
+      myCoupons,
+      dispatch,
+    );
+    const {
+      paymenttype,
+    } = itemInstance;
 
     return (
       <Container>
@@ -62,7 +70,7 @@ class Form extends React.PureComponent {
         <RadioGroup>
           <RadioContainer>
             <InputRadio
-              helper={atmHelperText}
+              helper={<Helper>{ATM_PAYMENT_HELPER_TEXT}</Helper>}
               onChange={paymenttype.onAtmChange}
               checked={paymenttype.isAtm}
             >

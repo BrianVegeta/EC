@@ -23,7 +23,7 @@ export default class {
     this.coverUrl = `url(${img1})`;
     this.favoriteCount = favorite_count;
     this.ownerImg = owner_img;
-    this.avatarUrl = `url(${owner_img})`;
+    this.avatarUrl = owner_img;
     this.ownerName = owner_name;
     this.isMyFavorite = !!in_my_favorite;
   }

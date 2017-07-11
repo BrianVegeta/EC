@@ -25,24 +25,47 @@ const Helper = styled.div`
 class DeliverySingle extends React.Component {
 
   static defaultProps = {
+    type: null,
+    label: null,
     helper: null,
+    singleOptionToUpdate: null,
   };
 
   static propTypes = {
-    label: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['return', 'send']),
+    label: PropTypes.string,
     helper: PropTypes.string,
-    singleOptionToUpdate: PropTypes.func.isRequired,
+    singleOptionToUpdate: PropTypes.func,
   };
 
   componentDidMount() {
-    this.props.singleOptionToUpdate();
+    const { singleOptionToUpdate } = this.props;
+    if (singleOptionToUpdate) {
+      singleOptionToUpdate();
+    }
+  }
+
+  renderLabel() {
+    const { label, type } = this.props;
+    if (label) {
+      return `${label}：`;
+    }
+
+    switch (type) {
+      case 'send':
+        return '交貨方式：';
+      case 'return':
+        return '還貨方式：';
+      default:
+        return '還貨方式：';
+    }
   }
 
   render() {
     return (
       <Container >
-        <Label >{this.props.label}</Label>
+        <Label >{this.renderLabel()}</Label>
         <Content >{this.props.content}</Content>
         <Helper>{this.props.helper}</Helper>
       </Container>

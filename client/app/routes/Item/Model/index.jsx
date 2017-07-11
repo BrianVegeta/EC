@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import { isStateInitial } from 'reducers/itemReducer';
 import OrderBoard from './OrderBoard';
 
 export default class {
   constructor(item, dispatch, currentUser) {
-    const { detail } = item;
-    this.exist = !_.isEmpty(detail);
+    this.exist = !isStateInitial(item);
+
     if (!this.exist) return;
-    this.orderBoard = new OrderBoard(detail, dispatch, currentUser);
+    this.orderBoard = new OrderBoard(item, dispatch, currentUser);
   }
 }

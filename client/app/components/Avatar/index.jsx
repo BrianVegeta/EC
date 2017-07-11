@@ -17,11 +17,16 @@ class Avatar extends React.Component {
     round: PropTypes.bool,
   };
   render() {
-    const { src, width, round } = this.props;
+    const {
+      src,
+      width,
+      round,
+    } = this.props;
+
     const square = { width, height: width };
     const style = {
       ...square,
-      backgroundImage: src,
+      backgroundImage: src ? `url(${src})` : null,
       borderRadius: round ? '50%' : null,
     };
     return (

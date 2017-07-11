@@ -48,6 +48,7 @@ class ItemContainer extends React.Component {
     const { item, dispatch, auth } = this.props;
     const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
+
     return (
       <Container className="clear">
         <SidebarContainer>

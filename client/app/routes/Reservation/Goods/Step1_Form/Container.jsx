@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import _ from 'lodash';
 
 import TitleWrapper from 'components/reservation/wrapper/Title';
 import ItemCard from 'components/reservation/wrapper/ItemCard';
 import FormBlock from 'components/reservation/wrapper/FormBlock';
+import CalculationPanel from 'components/reservation/wrapper/CalculationPanel';
 import FormButton from 'components/FormButton';
 
 import { fetchCoupons } from 'actions/myCouponsActions';
@@ -17,7 +17,6 @@ import ExtraAddresses from './wrappers/ExtraAddresses';
 import RentDatesRange from './wrappers/RentDatesRange';
 import Amount from './wrappers/Amount';
 import Coupons from './wrappers/Coupons';
-import CalculationPanel from './wrappers/CalculationPanel';
 import Contact from './wrappers/Contact';
 import Note from './wrappers/Note';
 
@@ -41,13 +40,22 @@ class Form extends React.PureComponent {
   }
 
   render() {
-    const { item, reservation, myCoupons, dispatch } = this.props;
-    if (_.isEmpty(item.detail)) {
-      return null;
-    }
+    const {
+      item,
+      reservation,
+      myCoupons,
+      dispatch,
+    } = this.props;
 
-    const itemInstance = new Model(item.detail, reservation, myCoupons, dispatch);
-    const { coverUrl, pname, priceDesc, priceUnit } = itemInstance;
+    const itemInstance = new Model(
+      item,
+      reservation,
+      myCoupons,
+      dispatch,
+    );
+    const {
+      itemCardModel,
+    } = itemInstance;
     // 物流方式
     const {
       sendOptions,
@@ -68,7 +76,9 @@ class Form extends React.PureComponent {
     return (
       <Container >
         <TitleWrapper text="填寫預訂資訊" />
-        <ItemCard {...{ coverUrl, pname, priceDesc, priceUnit }} />
+        <ItemCard
+          model={itemCardModel}
+        />
         <FormBlock title="物流方式">
           <DeliverySelection
             label="到貨方式"

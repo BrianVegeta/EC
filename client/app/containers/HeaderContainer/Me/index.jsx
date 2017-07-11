@@ -14,7 +14,7 @@ class Me extends React.Component {
     const { currentUser } = this.props;
     return (
       <span className={cx('avatar')} >
-        <Avatar width={30} src={`url(${currentUser.picture})`} />
+        <Avatar width={30} src={currentUser.picture} />
       </span>
     );
   }

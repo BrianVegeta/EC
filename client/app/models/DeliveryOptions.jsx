@@ -1,6 +1,9 @@
+import _ from 'lodash';
+
 const PERSONAL = '0';
 const MAIL = '1';
 const SEVEN = '2';
+
 const LOCALES = {
   [PERSONAL]: '面交（自行協調取貨地點）',
   [MAIL]: '自行寄件',
@@ -25,6 +28,18 @@ export default class {
     return input.includes(MAIL);
   }
 
+  static choosingMail(input) {
+    return input.includes(MAIL);
+  }
+
+  static choosingPersonal(input) {
+    return input.includes(PERSONAL);
+  }
+
+  static choosingSeven(input) {
+    return input.includes(SEVEN);
+  }
+
   constructor(option, dispatch) {
     this.dispatch = dispatch;
     this.option = option;
@@ -38,5 +53,9 @@ export default class {
     return this.option.split('').map(optCode => (
       this.constructor.option(optCode, this.constructor.localize(optCode))
     ));
+  }
+
+  getOptionFromValue(value) {
+    return _.find(this.options, { value });
   }
 }

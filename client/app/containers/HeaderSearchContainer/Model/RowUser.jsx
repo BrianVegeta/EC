@@ -13,6 +13,6 @@ export default class {
     const { handleNullAtrr } = this.constructor;
     this.addresses = `${handleNullAtrr(user.city)}${handleNullAtrr(user.area)}`;
     this.avatar = handleNullAtrr(user.picture);
-    this.avatarBg = _.isEqual(this.avatar, '') ? null : `url(${this.avatar})`;
+    this.avatarBg = _.isEqual(this.avatar, '') ? null : this.avatar;
   }
 }

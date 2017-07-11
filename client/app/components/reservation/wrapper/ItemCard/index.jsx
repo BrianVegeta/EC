@@ -21,9 +21,11 @@ const Content = styled.div`
   color: ${colors.blackColor};
   padding: 15px;
 `;
+
 const Title = styled.div`
   font-size: 18px;
   line-height: 25px;
+  margin-top: 1px;
   min-height: 60px;
 `;
 const Price = styled.div`
@@ -35,14 +37,24 @@ const Unit = styled.span`
   font-size: 18px;
 `;
 class ItemCard extends React.Component {
+
   static propTypes = {
-    coverUrl: PropTypes.string.isRequired,
-    pname: PropTypes.string.isRequired,
-    priceDesc: PropTypes.string.isRequired,
-    priceUnit: PropTypes.string.isRequired,
+    model: PropTypes.shape({
+      coverUrl: PropTypes.string.isRequired,
+      pname: PropTypes.string.isRequired,
+      priceDesc: PropTypes.string.isRequired,
+      priceUnit: PropTypes.string.isRequired,
+    }).isRequired,
   };
+
   render() {
-    const { coverUrl, pname, priceDesc, priceUnit } = this.props;
+    const {
+      coverUrl,
+      pname,
+      priceDesc,
+      priceUnit,
+    } = this.props.model;
+
     return (
       <Container className="clear">
         <Cover>

@@ -12,7 +12,13 @@ export default class extends DeliveryOptions {
     this.validator = this.validator.bind(this);
     this.singleOptionToUpdate = this.singleOptionToUpdate.bind(this);
 
-    this.needAddresses = this.constructor.checkAddressesNecessary(input);
+    // this.needAddresses = this.constructor.checkAddressesNecessary(input);
+    this.needAddresses = super.constructor.choosingMail(input);
+
+    // reservation
+    this.choosedOption = super.getOptionFromValue(input);
+    this.choosedDesc = this.choosedOption.text;
+    this.choosedHelper = null;
   }
 
   onSelect(option) {

@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import PriceUnit from 'models/ItemPriceUnit';
 import SendOptions from './SendOptions';
 import SendAddresses from './SendAddresses';
 import ReturnOptions from './ReturnOptions';
@@ -11,15 +10,30 @@ import ContactName from './ContactName';
 import ContactPhone from './ContactPhone';
 import Note from './Note';
 import PaymentType from './PaymentType';
+import ItemCard from './ItemCard';
+import During from './During';
 
 export default class {
   constructor(detail, reservation, myCoupons, dispatch) {
     this.dispatch = dispatch;
-    this.coverUrl = `url(${detail.img1})`;
-    this.pname = detail.pname;
-    const PriceUnitInstance = new PriceUnit(detail.calculate_charge_type, detail.price);
-    this.priceDesc = PriceUnitInstance.price;
-    this.priceUnit = PriceUnitInstance.unit;
+
+    this.itemCardModel = new ItemCard(
+      detail,
+      reservation,
+      dispatch,
+    );
+
+    this.ownerModel = {
+      avatarSrc: detail.ownerProfile.picture,
+      username: detail.ownerProfile.name,
+      uid: detail.uid,
+    };
+
+    this.useDuringModel = new During(
+      detail,
+      reservation,
+      dispatch,
+    );
 
     this.sendOptions = new SendOptions(
       detail.send_option,

@@ -18,7 +18,7 @@ class Vendor extends React.Component {
       <div styleName="container">
         <div styleName="card">
           <div styleName="avatar">
-            <Avatar src={`url(${item.img})`} />
+            <Avatar src={item.img} />
           </div>
           <div styleName="script">
             <div styleName="title">

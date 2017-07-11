@@ -14,12 +14,13 @@ class MyAccountSidebar extends React.Component {
   };
   render() {
     const navs = _.map(myAccountNavs, nav => nav);
+    // TODO: USER AVATAR
     return (
       <div styleName="container" className="clear">
         <div styleName="sidebar">
           <div styleName="profile">
             <div styleName="avatar">
-              <Avatar width={100} src={`url(${tempUserAvatar})`} />
+              <Avatar width={100} src={tempUserAvatar} />
             </div>
             <div styleName="username">User name</div>
           </div>

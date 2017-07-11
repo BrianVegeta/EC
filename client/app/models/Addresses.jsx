@@ -5,5 +5,7 @@ export default class {
     this.cityName = cityName;
     this.areaName = areaName;
     this.address = address;
+
+    this.fullAddresses = `${cityName}${areaName} ${address}`;
   }
 }

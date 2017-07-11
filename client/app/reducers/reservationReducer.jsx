@@ -1,14 +1,19 @@
 import * as types from 'constants/actionTypes/reservation';
+import moment from 'moment';
 
 const initialState = {
   // FORM DATA BELOW
-  sendOption: '',
-  sendCity: '',
-  sendArea: '',
-  sendAddress: '',
-  returnOption: '',
-  startDate: null,
-  endDate: null,
+  cid: 1111,
+  // TODO: temp testing.
+  sendOption: '1',
+  sendCity: '台北市',
+  sendArea: '大安區',
+  sendAddress: '林森北路',
+  returnOption: '1',
+  // TODO: temp testing.
+  startDate: moment(),
+  // TODO: temp testing.
+  endDate: moment(),
   amount: 1,
   couponNo: null,
   couponOffset: 0,

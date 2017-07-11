@@ -160,6 +160,8 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 更新銀行資料
   def bank_info_update
+    # requier password
+
     # 請使用cipher encript
     obj = ::Api::Userprofile::BankInfoUpdate.new bank_info_update_params, current_apitoken
     success = obj.request

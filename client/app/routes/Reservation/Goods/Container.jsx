@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+import { isStateInitial as isItemInitial } from 'reducers/itemReducer';
 
 const Container = styled.div`
   position: relative;
@@ -19,18 +22,17 @@ const SidebarContainer = styled.div`
   z-index: 1000;
 `;
 class ReservationGoods extends React.PureComponent {
+
   static propTypes = {
     formComponent: PropTypes.node.isRequired,
+    item: myPropTypes.item.isRequired,
   };
+
   render() {
-    // return (
-    //   <Redirect
-    //     to={{
-    //       pathname: '/login',
-    //       state: { from: this.props.location },
-    //     }}
-    //   />
-    // );
+    const { item } = this.props;
+    if (isItemInitial(item)) {
+      return null;
+    }
 
     return (
       <Container className="clear">
@@ -44,7 +46,7 @@ class ReservationGoods extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  const { environment } = state;
-  return ({ environment });
+  const { environment, item } = state;
+  return ({ environment, item });
 };
 export default connect(mapStateToProps)(withRouter(ReservationGoods));

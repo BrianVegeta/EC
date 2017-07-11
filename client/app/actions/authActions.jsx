@@ -20,6 +20,11 @@ const doLogin = currentUser => ({
   currentUser,
 });
 
+const changeCurrentUser = currentUser => ({
+  type: types.CHANGE_CURRENT_USER,
+  currentUser,
+});
+
 const registerFail = message => ({
   type: types.REGISTER_FAILED,
   message,
@@ -45,7 +50,7 @@ export function syncCurrentUser() {
     fetchXhrGet(
       '/ajax/auth/sync.json',
       (response) => {
-        dispatch(doLogin(response.data));
+        dispatch(changeCurrentUser(response.data));
       },
       () => {
         dispatch(doLogout());

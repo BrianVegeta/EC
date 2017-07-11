@@ -9,7 +9,6 @@ export default class {
 
   constructor(itemDetail, reservation, dispatch) {
     this.dispatch = dispatch;
-    this.details = [];
 
     this.itemDetail = itemDetail;
     this.reservation = reservation;

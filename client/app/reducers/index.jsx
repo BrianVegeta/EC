@@ -13,7 +13,7 @@ import search from './searchReducer';
 import mine from './mineReducer';
 import notification from './notificationReducer';
 import home from './homeReducer';
-import item from './item';
+import item from './itemReducer';
 import reservation from './reservationReducer';
 import myCoupons from './myCouponsReducer';
 

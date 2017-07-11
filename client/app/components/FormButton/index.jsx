@@ -6,12 +6,14 @@ import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
 class FormButton extends React.Component {
+
   static defaultProps = {
     colorType: 'green',
     size: 'md',
     style: {},
     width: '100%',
   };
+
   static propTypes = {
     colorType: PropTypes.oneOf(['green', 'orange', 'greenBorder']),
     size: PropTypes.oneOf(['lg', 'md', 'sm']),
@@ -20,6 +22,7 @@ class FormButton extends React.Component {
     content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
   };
+
   renderClassName() {
     switch (this.props.colorType) {
       case 'orange':
