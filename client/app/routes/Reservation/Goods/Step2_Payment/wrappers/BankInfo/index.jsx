@@ -31,6 +31,7 @@ class BankInfo extends React.PureComponent {
 
   static propTypes = {
     model: PropTypes.object.isRequired,
+    onOpenSetup: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -40,6 +41,7 @@ class BankInfo extends React.PureComponent {
   render() {
     const {
       model,
+      onOpenSetup,
     } = this.props;
 
     return (
@@ -51,7 +53,7 @@ class BankInfo extends React.PureComponent {
             content="查看"
             size="sm"
             width={90}
-            onClick={model.setup}
+            onClick={onOpenSetup}
           />
         </Info>
         <Notice>當交易完成後，銀行會在每週一、三，將您的收入款項轉帳至您的銀行帳戶</Notice>

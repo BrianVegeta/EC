@@ -1,7 +1,7 @@
 import React from 'react';
 import myPropTypes from 'propTypes';
 import styled from 'styled-components';
-import InputText from 'components/inputs/Text';
+import InputText from 'components/Input/Text';
 import SelectionCities from 'components/inputs/SelectionCitiesContainer';
 
 const Container = styled.div`

@@ -14,6 +14,7 @@ export const UPLOAD_PUT = {
     'X-CSRF-Token': ReactOnRails.authenticityToken(),
   },
 };
+
 export const POST = {
   credentials: 'same-origin',
   method: 'POST',

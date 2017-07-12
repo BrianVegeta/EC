@@ -1,9 +1,9 @@
 import * as types from '../constants/actionTypes/modal';
 
 const initialState = {
-  component: null,
+  Component: null,
   data: {},
-  open: false,
+  isOpen: false,
 };
 
 export default (state = initialState, action) => {
@@ -11,9 +11,9 @@ export default (state = initialState, action) => {
 
     case types.OPEN:
       return Object.assign({}, state, {
-        component: action.component,
+        Component: action.component,
         data: action.data,
-        open: true,
+        isOpen: true,
       });
 
     default:

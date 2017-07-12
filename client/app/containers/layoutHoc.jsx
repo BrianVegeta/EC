@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { initEnvironment } from 'actions/environmentActions';
 import * as paths from 'lib/paths';
+import ModalContainer from 'containers/ModalContainer';
 
 import { confirmLeavePage } from '../funcs/confirm';
 
@@ -54,7 +55,12 @@ function hoc(Component, { requireAuth, confirmLeave }) {
     render() {
       const { auth } = this.props;
       if (requireAuth && !auth.isLogin) return null;
-      return <Component {...this.props} />;
+      return (
+        <div>
+          <Component {...this.props} />
+          <ModalContainer />
+        </div>
+      );
     }
   };
 }

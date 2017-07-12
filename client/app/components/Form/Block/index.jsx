@@ -24,7 +24,7 @@ const Tip = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  ${props => props.paddingTop && 'padding-top: 40px;'}
+  ${props => props.paddingTop && 'padding-top: 30px;'}
 `;
 
 class FormBlock extends React.Component {
@@ -45,13 +45,7 @@ class FormBlock extends React.Component {
   };
 
   render() {
-    const {
-      title,
-      tip,
-      children,
-      hasMargin,
-      hasBottomLine,
-    } = this.props;
+    const { title, tip, children, hasMargin, hasBottomLine } = this.props;
 
     return (
       <Container hasBottomLine={hasBottomLine}>

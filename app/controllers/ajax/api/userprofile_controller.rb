@@ -85,7 +85,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   def is_pwd_exist
     obj = ::Api::Userprofile::IsPwdExist.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    respond success, obj
   end
 
   #檢查密碼是否正確

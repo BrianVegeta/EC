@@ -9,6 +9,8 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
+import { openModal } from 'actions/modalActions';
+import BankSetupContainer from 'containers/BankSetupContainer';
 
 import Model from '../Model';
 import BankInfo from './wrappers/BankInfo';
@@ -48,6 +50,17 @@ class Form extends React.PureComponent {
     dispatch: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.onOpenSetup = this.onOpenSetup.bind(this);
+  }
+
+  onOpenSetup() {
+    this.props.dispatch(
+      openModal(BankSetupContainer, { type: 'default' }),
+    );
+  }
+
   render() {
     const {
       item,
@@ -66,7 +79,7 @@ class Form extends React.PureComponent {
       paymenttype,
       bankInfoModal,
     } = itemInstance;
-    console.log(this.props.modal);
+
     return (
       <Container>
         <TitleWrapper text="支付方式" />
@@ -89,7 +102,10 @@ class Form extends React.PureComponent {
             </InputRadio>
           </RadioContainer>
         </RadioGroup>
-        <BankInfo model={bankInfoModal} />
+        <BankInfo
+          model={bankInfoModal}
+          onOpenSetup={this.onOpenSetup}
+        />
         <FormButton
           colorType="orange"
           content="下一步"

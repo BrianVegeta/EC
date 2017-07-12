@@ -45,7 +45,7 @@ class Response::ErrorCode
   LEASE_TERM_LESS_THAN_MIN_LEASE_DAYS = 39
 
   COUPON_NO_EXIST = 40
-  
+
   MESSAGE_MAPPING = {
     SUCCESS => '成功',
     USER_NOT_EXIST => '帳號不存在',
@@ -63,7 +63,7 @@ class Response::ErrorCode
     ALL_CONFIRM => '合約簽署成功',
     USER_MOBILE_NOT_VERIFY => '手機號碼尚未驗證',
     NEW_MOBILE_ALREADY_EXIST => '手機號碼已被註冊過',
-    TOKEN_EXPIRED => '系統錯誤',
+    TOKEN_EXPIRED => '登入失效',
     TOKEN_NOT_EXIST => '帳號已登出',
     REPORT_EXIST => '申訴已提出',
     CONSTRACT_STAGE_ERROR => '合約狀態錯誤',
@@ -90,7 +90,7 @@ class Response::ErrorCode
     CATEGORY_MUST_BELONG_SERVICE => '類型不屬於服務',
     CATEGORY_MUST_BELONG_SPACE => '類型不屬於空間',
     LEASE_TERM_LESS_THAN_MIN_LEASE_DAYS => '租期小於最短租期',
-    
+
     COUPON_NO_EXIST => '優惠卷不存在',
   }
 

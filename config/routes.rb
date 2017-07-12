@@ -99,10 +99,11 @@ Rails.application.routes.draw do
       post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
       post 'userprofile/facebook_unbind', to: 'userprofile#facebook_unbind'
       post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
-      post 'userprofile/is_pwd_exist', to: 'userprofile#is_pwd_exist' #
+
       post 'userprofile/checkpwd', to: 'userprofile#checkpwd' #
       post 'userprofile/update_password', to: 'userprofile#update_password'
       post 'userprofile/create_password', to: 'userprofile#create_password'
+
       post 'userprofile/track', to: 'userprofile#track' #
       post 'userprofile/untrack', to: 'userprofile#untrack'
       post 'userprofile/is_tracked', to: 'userprofile#is_tracked' #
@@ -130,6 +131,7 @@ Rails.application.routes.draw do
 
       # USERPROFILE
       post 'user_info', to: 'userprofile#user_general_info' #拉別人
+      get 'user_has_password', to: 'userprofile#is_pwd_exist' #
     end
 
     namespace :auth do

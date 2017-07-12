@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import InputText from 'components/inputs/Text';
+import InputText from 'components/Input/Text';
 
 const NameContainer = styled.div`
   width: 210px;
