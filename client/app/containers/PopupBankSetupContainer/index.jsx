@@ -1,16 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import FormBlock from 'components/Form/Block';
 import InputText from 'components/Input/Text';
+import FormButton from 'components/FormButton';
 
-import classnames from 'classnames/bind';
+import { nextProcess } from 'actions/scheduleActions';
+// import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
-const cx = classnames.bind(styles);
+// const cx = classnames.bind(styles);
 
 class BankSetupContainer extends React.Component {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit() {
+    const { dispatch } = this.props;
+    dispatch(nextProcess());
+  }
+
   render() {
     return (
       <div styleName="container">
@@ -37,7 +55,12 @@ class BankSetupContainer extends React.Component {
           </FormBlock>
         </div>
         <div styleName="footer">
-          cancel/save
+          <FormButton
+            width={170}
+            colorType="orange"
+            content="完成"
+            onClick={this.onSubmit}
+          />
         </div>
       </div>
     );

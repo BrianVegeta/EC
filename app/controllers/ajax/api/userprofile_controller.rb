@@ -82,18 +82,19 @@ class Ajax::Api::UserprofileController < ApplicationController
 
 
   # 檢查密碼是否有設定
-  def is_pwd_exist
+  def is_pwd_exist #in use
     obj = ::Api::Userprofile::IsPwdExist.new current_uid_params, current_apitoken
     success = obj.request
 
     respond success, obj
   end
 
-  #檢查密碼是否正確
+  #檢查密碼是否正確 #in use
   def checkpwd
     obj = ::Api::Userprofile::CheckPwd.new password_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    respond success, obj
   end
 
   # 更新密碼
@@ -104,10 +105,11 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   # 建立密碼
-  def create_password
+  def create_password #in use
     obj = ::Api::Userprofile::CreatePassword.new password_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    respond success, obj
   end
 
   # 加入追中
@@ -157,7 +159,17 @@ class Ajax::Api::UserprofileController < ApplicationController
     # 請使用cipher decrypt data
     obj = ::Api::Userprofile::BankInfo.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    uid = current_uid_params['uid']
+
+    if obj.response_data.present?
+      decrypted = ::Cypher.new.decrypt(obj.response_data['key'], uid)
+      obj.response_data = JSON.parse(decrypted).map {|k, v| {
+        k => (v == 'NULL') ? '' : v
+      }}.reduce(:merge)
+    end
+
+    respond success, obj
   end
 
   # 更新銀行資料
@@ -170,11 +182,14 @@ class Ajax::Api::UserprofileController < ApplicationController
     respond success, obj.error_message, obj.response_data
   end
 
+
   # 銀行資料是否齊全
+  # GET /ajax/is_my_bank_info_ready.json
   def bank_info_ready
     obj = ::Api::Userprofile::BankInfoReady.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    respond success, obj
   end
 
   # 設定自動出款

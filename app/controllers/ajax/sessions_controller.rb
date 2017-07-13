@@ -29,7 +29,7 @@ class Ajax::SessionsController < ApplicationController
     if success
       warden_set_user(@user.warden_session)
     end
-    respond success, @user.error_message
+    respond success, @user
   end
 
   def destroy

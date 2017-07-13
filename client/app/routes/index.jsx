@@ -74,7 +74,7 @@ export default (routesHelper, dispatch) => ({
       childRoutes: [
         ReservationGoods((nextState) => {
           dispatch(editItem(nextState.params.pid));
-        }),
+        }, dispatch),
       ],
     },
   ],

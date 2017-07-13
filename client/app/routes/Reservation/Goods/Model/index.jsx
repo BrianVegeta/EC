@@ -11,7 +11,6 @@ import ContactPhone from './ContactPhone';
 import Note from './Note';
 
 import PaymentType from './PaymentType';
-import BankInfo from './BankInfo';
 
 import ItemCard from './ItemCard';
 import During from './During';
@@ -84,6 +83,5 @@ export default class {
 
     this.noteModel = new Note(reservation, dispatch);
     this.paymenttype = new PaymentType(reservation, dispatch);
-    this.bankInfoModal = new BankInfo(null, dispatch);
   }
 }

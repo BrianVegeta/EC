@@ -100,9 +100,8 @@ Rails.application.routes.draw do
       post 'userprofile/facebook_unbind', to: 'userprofile#facebook_unbind'
       post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
 
-      post 'userprofile/checkpwd', to: 'userprofile#checkpwd' #
       post 'userprofile/update_password', to: 'userprofile#update_password'
-      post 'userprofile/create_password', to: 'userprofile#create_password'
+
 
       post 'userprofile/track', to: 'userprofile#track' #
       post 'userprofile/untrack', to: 'userprofile#untrack'
@@ -110,9 +109,8 @@ Rails.application.routes.draw do
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
       post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments' #
-      post 'userprofile/bank_info', to: 'userprofile#bank_info' #
+
       post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
-      post 'userprofile/bank_info_ready', to: 'userprofile#bank_info_ready' #
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out' #
 
@@ -131,8 +129,15 @@ Rails.application.routes.draw do
 
       # USERPROFILE
       post 'user_info', to: 'userprofile#user_general_info' #拉別人
-      get 'user_has_password', to: 'userprofile#is_pwd_exist' #
+      get 'my_pwd_exist', to: 'userprofile#is_pwd_exist' #
+      post 'my_password_create', to: 'userprofile#create_password'
+      post 'my_bankacc', to: 'userprofile#bank_info' #
+      post 'secrecy_verify_password', to: 'userprofile#checkpwd' #
+      get 'is_my_bank_info_ready', to: 'userprofile#bank_info_ready' #
     end
+
+    get 'banks', to: 'options#banks'
+    get 'bank_branchs', to: 'options#bank_branchs'
 
     namespace :auth do
       get 'sync', to: 'index#sync'

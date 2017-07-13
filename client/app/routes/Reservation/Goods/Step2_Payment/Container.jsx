@@ -9,10 +9,10 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
-import { openModal } from 'actions/modalActions';
-import BankSetupContainer from 'containers/BankSetupContainer';
+import { modalBankSetup } from 'actions/scheduleActions';
 
 import Model from '../Model';
+import BankInfoModel from '../Model/BankInfo';
 import BankInfo from './wrappers/BankInfo';
 
 const Container = styled.div`
@@ -57,7 +57,7 @@ class Form extends React.PureComponent {
 
   onOpenSetup() {
     this.props.dispatch(
-      openModal(BankSetupContainer, { type: 'default' }),
+      modalBankSetup(),
     );
   }
 
@@ -66,6 +66,7 @@ class Form extends React.PureComponent {
       item,
       reservation,
       myCoupons,
+      secrecyVerification,
       dispatch,
     } = this.props;
 
@@ -77,7 +78,6 @@ class Form extends React.PureComponent {
     );
     const {
       paymenttype,
-      bankInfoModal,
     } = itemInstance;
 
     return (
@@ -103,7 +103,7 @@ class Form extends React.PureComponent {
           </RadioContainer>
         </RadioGroup>
         <BankInfo
-          model={bankInfoModal}
+          model={new BankInfoModel(secrecyVerification, dispatch)}
           onOpenSetup={this.onOpenSetup}
         />
         <FormButton
@@ -118,7 +118,7 @@ class Form extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, item, reservation, myCoupons, modal } = state;
-  return ({ environment, item, reservation, myCoupons, modal });
+  const { environment, item, reservation, myCoupons, modal, secrecyVerification } = state;
+  return ({ environment, item, reservation, myCoupons, modal, secrecyVerification });
 };
 export default connect(mapStateToProps)(Form);

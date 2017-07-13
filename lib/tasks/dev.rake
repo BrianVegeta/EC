@@ -11,7 +11,7 @@ namespace :dev do
 
   task :chick => :environment do
   	m_cypher = Cypher.new
- 	p m_cypher.encript('123124124', '1111')
+ 	  p m_cypher.encript('123124124', '1111')
 
   	#p m_cypher.encript('123bvadfs', '1111')
   	#p m_cypher.encript('adfdfadszxcvztg 12312', '1111')

@@ -52,6 +52,7 @@ const config = {
       actions: path.join(__dirname, 'app/actions'),
       reducers: path.join(__dirname, 'app/reducers'),
       containers: path.join(__dirname, 'app/containers'),
+      constraints: path.join(__dirname, 'app/constraints'),
       constants: path.join(__dirname, 'app/constants'),
       models: path.join(__dirname, 'app/models'),
     },

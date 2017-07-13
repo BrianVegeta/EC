@@ -14,6 +14,9 @@ import styles from './styles.sass';
 const cx = classnames.bind(styles);
 class InputText extends React.Component {
   static defaultProps = {
+    autoComplete: 'on',
+    align: 'left',
+    type: 'text',
     disabled: false,
     placeholder: null,
     value: null,
@@ -22,6 +25,9 @@ class InputText extends React.Component {
     onBlur: null, // need for validator
   };
   static propTypes = {
+    autoComplete: PropTypes.oneOf(['on', 'off']),
+    align: PropTypes.string,
+    type: PropTypes.string,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     value: PropTypes.string,
@@ -50,15 +56,26 @@ class InputText extends React.Component {
     this.props.onChange(e.target.value);
   }
   render() {
-    const { placeholder, value, width, disabled } = this.props;
+    const {
+      type,
+      autoComplete,
+      align,
+      placeholder,
+      value,
+      width,
+      disabled,
+    } = this.props;
+
     const { isFocusing } = this.state;
     const inputProps = {
+      type,
+      autoComplete,
       className: cx('input', { isFocusing }),
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
       placeholder,
-      style: { width },
+      style: { width, textAlign: align },
       value,
       disabled,
     };

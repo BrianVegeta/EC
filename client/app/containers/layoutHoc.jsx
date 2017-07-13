@@ -7,6 +7,8 @@ import myPropTypes from 'propTypes';
 import { initEnvironment } from 'actions/environmentActions';
 import * as paths from 'lib/paths';
 import ModalContainer from 'containers/ModalContainer';
+import PopupContainer from 'containers/PopupContainer';
+import ScheduleContainer from 'containers/ScheduleContainer';
 
 import { confirmLeavePage } from '../funcs/confirm';
 
@@ -59,6 +61,8 @@ function hoc(Component, { requireAuth, confirmLeave }) {
         <div>
           <Component {...this.props} />
           <ModalContainer />
+          <PopupContainer />
+          <ScheduleContainer />
         </div>
       );
     }

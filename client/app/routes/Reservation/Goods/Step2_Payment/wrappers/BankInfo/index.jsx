@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import myPropTypes from 'propTypes';
 import styled from 'styled-components';
 import colors from 'styles/colorExport.scss';
 
@@ -27,16 +26,18 @@ const Bank = styled.span`
   margin-right: 20px;
 `;
 
+const BankNameDesc = styled.span`
+  color: ${colors.colorDanger};
+`;
+
 class BankInfo extends React.PureComponent {
 
   static propTypes = {
-    model: PropTypes.object.isRequired,
+    model: PropTypes.shape({
+      bankNameDesc: PropTypes.string,
+    }).isRequired,
     onOpenSetup: PropTypes.func.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const {
@@ -44,10 +45,18 @@ class BankInfo extends React.PureComponent {
       onOpenSetup,
     } = this.props;
 
+    const { bankNameDesc } = model;
+
     return (
       <Container>
         <Info>
-          <Bank>銀行帳戶：遠東國際商業銀行</Bank>
+          <Bank>
+            銀行帳戶：
+            {bankNameDesc ?
+              <span>{bankNameDesc}</span>
+              : <BankNameDesc>尚未設定</BankNameDesc>
+            }
+          </Bank>
           <FormButton
             colorType="greenBorder"
             content="查看"

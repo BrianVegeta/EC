@@ -1,8 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 
 import * as types from 'constants/actionTypes/auth';
-import * as AUTH_BY from '../constants/authBy';
-import { fetchXhrDelete, fetchXhrPost, fetchXhrGet } from '../lib/xhr';
+import * as AUTH_BY from 'constants/authBy';
+
+import {
+  fetchXhrDelete,
+  fetchXhrPost,
+  fetchXhrGet,
+} from 'lib/xhr';
 
 const doLogout = () => ({
   type: types.LOGOUT,

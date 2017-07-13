@@ -17,6 +17,9 @@ import item from './itemReducer';
 import reservation from './reservationReducer';
 import myCoupons from './myCouponsReducer';
 import modal from './modalReducer';
+import popup from './popupReducer';
+import secrecyVerification from './secrecyVerificationReducer';
+import schedule from './scheduleReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -37,4 +40,7 @@ export default combineReducers({
   item,
   reservation,
   myCoupons,
+  secrecyVerification,
+  popup,
+  schedule,
 });

@@ -1,29 +1,36 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import classnames from 'classnames/bind';
+// import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
-const classbinding = classnames.bind(styles);
+const cx = classnames.bind(styles);
 class InputText extends React.Component {
+
   static defaultProps = {
-    type: 'text',
+    autoComplete: 'on',
+    align: 'left',
     disabled: false,
     placeholder: null,
     value: null,
     width: '100%',
-    onBlur: null,
+    onChange: null,
+    onBlur: null, // need for validator
   };
+
   static propTypes = {
-    type: PropTypes.string,
+    autoComplete: PropTypes.oneOf(['on', 'off']),
+    align: PropTypes.string,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func,
     value: PropTypes.string,
-    width: PropTypes.oneOfType([
-      PropTypes.string, PropTypes.number,
-    ]).isRequired,
+    width: myPropTypes.width,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func, // need for validator
   };
+
   constructor(props) {
     super(props);
     this.onBlur = this.onBlur.bind(this);
@@ -33,38 +40,49 @@ class InputText extends React.Component {
       isFocusing: false,
     };
   }
+
   onBlur() {
     const { onBlur } = this.props;
     if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
+
   onFocus() {
+    if (this.props.autoComplete === 'off') {
+      this.input.setAttribute('type', 'password');
+    }
     this.setState({ isFocusing: true });
   }
+
   onChange(e) {
     this.props.onChange(e.target.value);
   }
+
   render() {
     const {
-      type,
+      autoComplete,
+      align,
       placeholder,
       value,
       width,
       disabled,
     } = this.props;
-    const { isFocusing } = this.state;
 
+    const { isFocusing } = this.state;
     const inputProps = {
-      type,
-      className: classbinding({ inputFocusing: isFocusing, input: !isFocusing }),
-      style: { width },
-      value,
-      placeholder,
+      ref: input => (this.input = input),
+      type: autoComplete === 'off' ? 'text' : 'password',
+      autoComplete,
+      className: cx('input', { isFocusing }),
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
+      placeholder,
+      style: { width, textAlign: align },
+      value,
       disabled,
     };
+
     return (
       <input {...inputProps} />
     );
