@@ -1,0 +1,11 @@
+@import "~styles/input.sass"
+$selectionHoverColor: #F6F6F6
+
+.option
+  padding: $inputPaddingTop $inputPaddingRight
+  cursor: pointer
+  &:hover
+    background: $selectionHoverColor
+  &:last-child
+    border-bottom-left-radius: $inputRadius
+    border-bottom-right-radius: $inputRadius

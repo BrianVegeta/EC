@@ -33,3 +33,8 @@ body, button, input, optgroup, select, textarea {
   outline: 0;
   text-transform: none;
 }
+
+// TODO: scroll hidden
+.ReactModal__Body--open {
+  overflow-y: hidden !important;
+}

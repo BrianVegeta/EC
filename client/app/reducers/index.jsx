@@ -20,6 +20,9 @@ import modal from './modalReducer';
 import popup from './popupReducer';
 import secrecyVerification from './secrecyVerificationReducer';
 import schedule from './scheduleReducer';
+import options from './optionsReducer';
+import popupBankSetup from './popupBankSetupReducer';
+import verifyProfileChange from './verifyProfileChangeReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -43,4 +46,7 @@ export default combineReducers({
   secrecyVerification,
   popup,
   schedule,
+  options,
+  popupBankSetup,
+  verifyProfileChange,
 });

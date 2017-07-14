@@ -7,7 +7,9 @@ import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
 class SelectionButton extends React.Component {
+
   static defaultProps = {
+    maxHeight: null,
     value: null,
     placeholder: null,
     width: '100%',
@@ -16,9 +18,11 @@ class SelectionButton extends React.Component {
     invalid: false,
     onBlur: null,
   };
+
   static propTypes = {
     children: PropTypes.node.isRequired,
 
+    maxHeight: PropTypes.number,
     value: PropTypes.string,
     placeholder: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -71,7 +75,26 @@ class SelectionButton extends React.Component {
   }
   render() {
     const { isFocusing, isDropdownOpen } = this.state;
-    const { children, width, dropdownWidth, disabled, invalid } = this.props;
+    const {
+      children,
+      width,
+      maxHeight,
+      dropdownWidth,
+      disabled,
+      invalid,
+    } = this.props;
+
+    const dropdownStyle = {
+      width: dropdownWidth,
+      maxHeight,
+      overflowY: 'auto',
+    };
+    if (maxHeight) {
+      Object.assign({}, dropdownStyle, {
+        maxHeight,
+        overflowY: 'auto',
+      });
+    }
 
     const arrow = (
       <span styleName="dropdownArrow">
@@ -111,7 +134,7 @@ class SelectionButton extends React.Component {
         {isDropdownOpen &&
           <div
             styleName="dropdown"
-            style={{ width: dropdownWidth }}
+            style={dropdownStyle}
           >
             {children}
           </div>

@@ -93,7 +93,7 @@ Rails.application.routes.draw do
       post 'userprofile/get', to: 'userprofile#get' #
       post 'userprofile/search', to: 'userprofile#search' #
       post 'userprofile/update_phone', to: 'userprofile#update_phone'
-      post 'userprofile/get_phone_verify_code', to: 'userprofile#get_phone_verify_code'
+
       post 'userprofile/update_email', to: 'userprofile#update_email'
       post 'userprofile/get_email_verify_code', to: 'userprofile#get_email_verify_code'
       post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
@@ -128,16 +128,22 @@ Rails.application.routes.draw do
       get 'my_coupons', to: 'marketing#coupon_list'
 
       # USERPROFILE
-      post 'user_info', to: 'userprofile#user_general_info' #拉別人
-      get 'my_pwd_exist', to: 'userprofile#is_pwd_exist' #
+      ## FROM OTHER USER
+      post 'user_info', to: 'userprofile#user_general_info'
+      ## BANK INFO
+      get 'my_pwd_exist', to: 'userprofile#is_pwd_exist'
       post 'my_password_create', to: 'userprofile#create_password'
-      post 'my_bankacc', to: 'userprofile#bank_info' #
-      post 'secrecy_verify_password', to: 'userprofile#checkpwd' #
-      get 'is_my_bank_info_ready', to: 'userprofile#bank_info_ready' #
+      post 'my_bankacc', to: 'userprofile#bank_info'
+      get 'is_my_bank_info_ready', to: 'userprofile#bank_info_ready'
+      post 'secrecy_verify_password', to: 'userprofile#checkpwd'
+      post 'new_phone_to_verify', to: 'userprofile#get_phone_verify_code'
     end
 
-    get 'banks', to: 'options#banks'
-    get 'bank_branchs', to: 'options#bank_branchs'
+    scope module: :options do
+      # OTHERS
+      get 'banks', to: 'banks#index'
+      post 'bank_branchs', to: 'banks#branchs'
+    end
 
     namespace :auth do
       get 'sync', to: 'index#sync'

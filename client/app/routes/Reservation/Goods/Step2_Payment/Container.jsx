@@ -10,10 +10,13 @@ import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
 import { modalBankSetup } from 'actions/scheduleActions';
+import { popupBankInfoSetup } from 'actions/popupActions';
+
 
 import Model from '../Model';
 import BankInfoModel from '../Model/BankInfo';
 import BankInfo from './wrappers/BankInfo';
+
 
 const Container = styled.div`
   margin-bottom: 50px;
@@ -47,12 +50,21 @@ class Form extends React.PureComponent {
     item: myPropTypes.item.isRequired,
     reservation: myPropTypes.reservation.isRequired,
     myCoupons: myPropTypes.myCoupons.isRequired,
+    secrecyVerification: PropTypes.shape({
+      bankName: PropTypes.string,
+    }).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.onOpenSetup = this.onOpenSetup.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(
+      popupBankInfoSetup({}, 600),
+    );
   }
 
   onOpenSetup() {

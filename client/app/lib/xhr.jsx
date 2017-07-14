@@ -105,3 +105,32 @@ export const fetchXhrDelete = (path, successCallback, failCallback = null) => {
   })
   .catch((err) => { throw err; });
 };
+
+
+export const asyncXhrGet = path =>
+  new Promise((resolve, reject) => {
+    fetch(path, { ...SETTINGS_GET })
+    .then(response => response.json())
+    .then((json) => {
+      if (json.success) {
+        resolve(json.data);
+      } else {
+        reject();
+      }
+    })
+    .catch((err) => { throw err; });
+  });
+
+export const asyncXhrPost = (path, params) =>
+  new Promise((resolve, reject) => {
+    fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
+    .then(response => response.json())
+    .then((json) => {
+      if (json.success) {
+        resolve(json.data);
+      } else {
+        reject();
+      }
+    })
+    .catch((err) => { throw err; });
+  });

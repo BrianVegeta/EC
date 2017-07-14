@@ -1,15 +1,17 @@
-class Ajax::OptionsController < ApplicationController
+class Ajax::Options::BanksController < ApplicationController
   include WardenHelper
   include RespondHelper
 
-  def banks
+  # GET /ajax/banks.json
+  def index
     obj = ::Options::Banks.new
 
     success = obj.request
     respond success, obj
   end
 
-  def bank_branchs
+  # GET /ajax/bank_branchs.json
+  def branchs
     obj = ::Options::BankBranchs.new bank_branchs_params
 
     success = obj.request

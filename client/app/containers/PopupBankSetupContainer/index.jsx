@@ -4,14 +4,17 @@ import { connect } from 'react-redux';
 
 import FormBlock from 'components/Form/Block';
 import InputText from 'components/Input/Text';
+import InputSelection from 'components/Input/Selection';
+import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 
 import { nextProcess } from 'actions/scheduleActions';
-// import classnames from 'classnames/bind';
+import { prepareBanks } from 'actions/optionsActions';
+
+import ModelPopupBankSetup from 'models/PopupBankSetup';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
-// const cx = classnames.bind(styles);
 
 class BankSetupContainer extends React.Component {
 
@@ -24,12 +27,28 @@ class BankSetupContainer extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(
+      prepareBanks(),
+    );
+  }
+
   onSubmit() {
     const { dispatch } = this.props;
     dispatch(nextProcess());
   }
 
   render() {
+    const {
+      realName,
+      identityNo,
+      bank,
+      bankBranch,
+      accName,
+      accNo,
+      pwdCheck,
+    } = new ModelPopupBankSetup(this.props);
+
     return (
       <div styleName="container">
         <div styleName="header">設定銀行帳戶</div>
@@ -38,29 +57,85 @@ class BankSetupContainer extends React.Component {
           <FormBlock title="基本資料" hasBottomLine={false}>
             <div styleName="nameFormControl">
               <InputText
-                value=""
                 placeholder="真實姓名"
-                validator={() => console.log('validate')}
-                onChange={() => console.log('onChange')}
+                value={realName.value}
+                validator={realName.validator}
+                onChange={realName.onChange}
               />
             </div>
             <div styleName="idFormControl">
               <InputText
-                value=""
                 placeholder="身分證字號/統編"
-                validator={() => console.log('validate')}
-                onChange={() => console.log('onChange')}
+                value={identityNo.value}
+                validator={identityNo.validator}
+                onChange={identityNo.onChange}
               />
             </div>
           </FormBlock>
+          <FormBlock title="銀行帳戶資訊" hasBottomLine={false}>
+            <div styleName="formControl">
+              <InputSelection
+                {...{
+                  placeholder: '選擇銀行',
+                  dropdownMaxHeight: 250,
+                  value: bank.value,
+                  options: bank.options,
+                  onSelect: bank.onSelect,
+                  validator: bank.validator,
+                }}
+              />
+            </div>
+            <div styleName="formControl">
+              <InputSelection
+                {...{
+                  placeholder: '選擇分行',
+                  dropdownMaxHeight: 250,
+                  value: bankBranch.value,
+                  options: bankBranch.options,
+                  onSelect: bankBranch.onSelect,
+                  validator: bankBranch.validator,
+                  disabled: bankBranch.disabled,
+                }}
+              />
+            </div>
+            <div styleName="formControl">
+              <InputText
+                placeholder="戶名/公司名稱"
+                value={accName.value}
+                validator={accName.validator}
+                onChange={accName.onChange}
+              />
+            </div>
+            <div styleName="formControl">
+              <InputText
+                placeholder="銀行帳號"
+                value={accNo.value}
+                validator={accNo.validator}
+                onChange={accNo.onChange}
+              />
+            </div>
+          </FormBlock>
+          <FormBlock title="設定密碼" hasBottomLine={false}>
+            <InputPassword
+              placeholder="請輸入8個以上英數字"
+              autoComplete="off"
+              value={pwdCheck.value}
+              onChange={pwdCheck.onChange}
+            />
+            <div styleName="passwordCheckHelper">
+              為了您的帳戶安全，請設定密碼以協助我們確認您的身份
+            </div>
+          </FormBlock>
         </div>
-        <div styleName="footer">
-          <FormButton
-            width={170}
-            colorType="orange"
-            content="完成"
-            onClick={this.onSubmit}
-          />
+        <div styleName="footer" className="clear">
+          <span styleName="right">
+            <FormButton
+              width={170}
+              colorType="orange"
+              content="完成"
+              onClick={this.onSubmit}
+            />
+          </span>
         </div>
       </div>
     );
@@ -68,7 +143,24 @@ class BankSetupContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, item, reservation, myCoupons, modal } = state;
-  return ({ environment, item, reservation, myCoupons, modal });
+  const {
+    environment,
+    item,
+    reservation,
+    myCoupons,
+    modal,
+    options,
+    popupBankSetup,
+  } = state;
+
+  return ({
+    environment,
+    item,
+    reservation,
+    myCoupons,
+    modal,
+    options,
+    popupBankSetup,
+  });
 };
 export default connect(mapStateToProps)(CSS(BankSetupContainer, styles));
