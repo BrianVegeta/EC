@@ -136,6 +136,7 @@ Rails.application.routes.draw do
       post 'my_bankacc', to: 'userprofile#bank_info'
       get 'is_my_bank_info_ready', to: 'userprofile#bank_info_ready'
       post 'secrecy_verify_password', to: 'userprofile#checkpwd'
+      ## UPDATE AND VERIFY - PHONE
       post 'new_phone_to_verify', to: 'userprofile#get_phone_verify_code'
     end
 
