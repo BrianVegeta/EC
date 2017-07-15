@@ -31,11 +31,22 @@ class VerifiedChange extends React.Component {
     };
 
     this.nextToEditing = this.nextToEditing.bind(this);
+    this.nextToVerifying = this.nextToVerifying.bind(this);
+    this.completeToInit = this.completeToInit.bind(this);
+
     this.changeData = this.changeData.bind(this);
   }
 
   nextToEditing() {
     this.setState({ flow: flowStates.EDITING });
+  }
+
+  nextToVerifying() {
+    this.setState({ flow: flowStates.VERIFYING });
+  }
+
+  completeToInit() {
+    this.setState({ flow: flowStates.INIT });
   }
 
   saveToVerify() {
@@ -54,11 +65,19 @@ class VerifiedChange extends React.Component {
   }
 
   rendererEditing() {
+    // type, save, cancel
     return this.props.rendererEditing(
       this.state.actionType,
-      this.
+      this.nextToVerifying,
       this.changeData,
+    );
+  }
 
+  rendererVerifying() {
+    // type, complete, resend, cancel
+    return this.props.rendererVerifying(
+      this.state.actionType,
+      this.completeToInit,
     );
   }
 
