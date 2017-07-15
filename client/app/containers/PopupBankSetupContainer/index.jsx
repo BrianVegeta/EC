@@ -13,6 +13,8 @@ import { prepareBanks } from 'actions/optionsActions';
 
 import ModelPopupBankSetup from 'models/PopupBankSetup';
 
+import ImageContainer from 'containers/ImageContainer';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
