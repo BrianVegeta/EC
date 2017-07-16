@@ -97,7 +97,12 @@ const config = {
       },
       {
         test: /\.jsx?$/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+          }
+        },
         exclude: /node_modules/,
       },
       {

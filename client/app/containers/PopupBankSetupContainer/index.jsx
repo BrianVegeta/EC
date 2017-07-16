@@ -12,8 +12,7 @@ import { nextProcess } from 'actions/scheduleActions';
 import { prepareBanks } from 'actions/optionsActions';
 
 import ModelPopupBankSetup from 'models/PopupBankSetup';
-
-import ImageContainer from 'containers/ImageContainer';
+import VerifiedChangePhone from 'components/VerifiedChange/Phone';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -74,6 +73,7 @@ class BankSetupContainer extends React.Component {
               />
             </div>
           </FormBlock>
+          <VerifiedChangePhone value="" />
           <FormBlock title="銀行帳戶資訊" hasBottomLine={false}>
             <div styleName="formControl">
               <InputSelection
