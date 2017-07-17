@@ -7,12 +7,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import classnames from 'classnames/bind';
-import hasError from 'components/inputs/hoc/hasError';
+import hasError from 'components/Input/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
 class InputText extends React.Component {
+
   static defaultProps = {
     autoComplete: 'on',
     align: 'left',
@@ -24,6 +25,7 @@ class InputText extends React.Component {
     onChange: null,
     onBlur: null, // need for validator
   };
+
   static propTypes = {
     autoComplete: PropTypes.oneOf(['on', 'off']),
     align: PropTypes.string,
@@ -35,6 +37,7 @@ class InputText extends React.Component {
     onChange: PropTypes.func,
     onBlur: PropTypes.func, // need for validator
   };
+
   constructor(props) {
     super(props);
     this.onBlur = this.onBlur.bind(this);
@@ -44,17 +47,21 @@ class InputText extends React.Component {
       isFocusing: false,
     };
   }
+
   onBlur() {
     const { onBlur } = this.props;
     if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
+
   onFocus() {
     this.setState({ isFocusing: true });
   }
+
   onChange(e) {
     this.props.onChange(e.target.value);
   }
+
   render() {
     const {
       type,
@@ -84,4 +91,8 @@ class InputText extends React.Component {
     );
   }
 }
-export default hasError(CSS(InputText, styles));
+const constraint = {
+  presence: true,
+  message: '此欄位必填',
+};
+export default hasError(CSS(InputText, styles), constraint);

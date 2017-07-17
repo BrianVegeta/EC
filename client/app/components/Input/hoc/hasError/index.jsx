@@ -2,24 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import _ from 'lodash';
+import validate from 'validate.js';
 import styled from 'styled-components';
 import ErrorTooltip from 'components/ErrorTooltip';
 
-export default function inputWithError(InputComponent) {
+export default function inputWithError(InputComponent, defaultContraints) {
   const Container = styled.div`
     display: inline-block;
   `;
   return class extends React.Component {
+
     static defaultProps = {
+      value: null,
       onBlur: null,
-      validator: null,
+      constraints: null,
       width: '100%',
+      disableValidator: false,
     };
+
     static propTypes = {
+      value: PropTypes.string,
       onBlur: PropTypes.func,
-      validator: PropTypes.func,
+      constraints: PropTypes.objectOf([
+        PropTypes.number,
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.object,
+      ]),
       width: myPropTypes.width,
+      disableValidator: PropTypes.bool,
     };
+
     constructor(props) {
       super(props);
       this.onBlur = this.onBlur.bind(this);
@@ -27,24 +40,29 @@ export default function inputWithError(InputComponent) {
         error: null,
       };
     }
+
     onBlur() {
       const { onBlur } = this.props;
-      if (onBlur) {
-        onBlur();
-      }
+      if (onBlur) onBlur();
+
       this.valid();
     }
+
     clearError() {
       this.setState({ error: null });
     }
+
+    validator() {
+      const { value, constraints } = this.props;
+      return validate.single(value, constraints || defaultContraints);
+    }
+
     valid() {
-      const { validator } = this.props;
-      if (!validator) {
+      if (this.props.disableValidator) {
         this.clearError();
         return true;
       }
-
-      const errors = validator();
+      const errors = this.validator();
       if (!_.isArray(errors)) {
         this.clearError();
         return true;
@@ -59,25 +77,28 @@ export default function inputWithError(InputComponent) {
       this.setState({ error });
       return false;
     }
+
     render() {
       const { error } = this.state;
       const {
         onBlur,
-        validator,
+        constraints,
+        disableValidator,
         width,
         ...otherProps
       } = this.props;
 
-      const inputProps = {
-        ...otherProps,
-        width,
-        onBlur: this.onBlur,
-        invalid: !!error,
-      };
       return (
         <Container style={{ width }}>
           {error && <ErrorTooltip message={error} />}
-          <InputComponent {...inputProps} />
+          <InputComponent
+            {...{
+              ...otherProps,
+              onBlur: this.onBlur,
+              width,
+              invalid: !!error,
+            }}
+          />
         </Container>
       );
     }

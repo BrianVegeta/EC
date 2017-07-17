@@ -16,7 +16,6 @@ class VerifiedChangePhone extends React.Component {
 
   render() {
     const { value } = this.props;
-    const { renderInit, renderEditing, renderVerifying } = this;
     return (
       <FlowController
         {...{

@@ -42,10 +42,14 @@ export default class {
       reservation.sendOption,
       dispatch,
     );
-    this.sendAddresses = new SendAddresses(
-      reservation,
-      dispatch,
-    );
+
+    const { sendCity, sendArea, sendAddress } = reservation;
+    this.sendAddresses = new SendAddresses({
+      sendCity,
+      sendArea,
+      sendAddress,
+    }, dispatch);
+
     this.returnOptions = new ReturnOptions(
       detail.return_option,
       reservation.returnOption,

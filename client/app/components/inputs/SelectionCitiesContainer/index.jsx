@@ -18,6 +18,7 @@ class SelectionCities extends React.Component {
     areaName: '',
     onBlur: null,
   };
+
   static propTypes = {
     placeholder: PropTypes.string,
     width: myPropTypes.width,

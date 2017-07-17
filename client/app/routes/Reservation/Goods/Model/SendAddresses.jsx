@@ -5,8 +5,7 @@ import constraints from './constraints';
 
 export default class extends Addresses {
 
-  constructor(inputProps, dispatch) {
-    const { sendCity, sendArea, sendAddress } = inputProps;
+  constructor({ sendCity, sendArea, sendAddress }, dispatch) {
     super(
       sendCity,
       sendArea,

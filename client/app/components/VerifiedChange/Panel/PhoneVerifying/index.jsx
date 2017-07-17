@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconClose from 'react-icons/lib/md/clear';
-
 import FormBlock from 'components/FormButton';
 import InputText from 'components/Input/Text';
 import constraints from 'constraints';
@@ -38,16 +36,10 @@ class PhoneInit extends React.Component {
 
   render() {
     const { value } = this.state;
-    const { type, cancel } = this.props;
+    const { type } = this.props;
 
     return (
       <div styleName="container">
-        <div styleName="close">
-          <IconClose
-            size={25}
-            onClick={cancel}
-          />
-        </div>
         <InputText
           ref={input => (this.input = input)}
           value={value}
