@@ -104,10 +104,7 @@ export default (state = initialState, action) => {
         verifyCode: action.verifyCode,
       });
 
-    case '@@INIT':
-      return Object.assign({}, initialState, state);
-
     default:
-      return state;
+      return Object.assign({}, initialState, state);
   }
 };

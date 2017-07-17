@@ -2,6 +2,7 @@
 
 import * as types from 'constants/actionTypes/auth';
 import * as AUTH_BY from 'constants/authBy';
+import { browserHistory } from 'react-router';
 
 import {
   fetchXhrDelete,
@@ -141,6 +142,8 @@ export function loginByEmail({ email, password }) {
       { email, password },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        // REDIRECT
+        browserHistory.push('/');
       },
       (response) => {
         dispatch(loginFail(response.message));
