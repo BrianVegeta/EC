@@ -1,7 +1,7 @@
-class Api::Userprofile::IsPwdExist < ApiAuthedBase
-  
-  PATH = '/client/user/is_pwd_exist';
-  
+class Api::Userprofile::GetPhoneVerifyCode < ApiAuthedBase
+
+  PATH = '/client/user/update_phone/get_verify_code';
+
   def path
     PATH
   end
@@ -9,5 +9,5 @@ class Api::Userprofile::IsPwdExist < ApiAuthedBase
   def request_method
      :post_token
   end
-  
+
 end

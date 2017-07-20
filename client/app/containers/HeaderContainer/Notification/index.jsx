@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LoadingSpinner from 'components/Loading/MDSpinner';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import myPropTypes from '../../../propTypes';
 import Model from './Model';
 import ModelRow from './ModelRow';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 
 class Notification extends React.Component {
   static propTypes = {

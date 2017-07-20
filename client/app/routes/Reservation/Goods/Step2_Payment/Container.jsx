@@ -9,8 +9,9 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
-import { modalBankSetup } from 'actions/scheduleActions';
+// import { modalBankSetup } from 'actions/scheduleActions';
 import { popupBankInfoSetup } from 'actions/popupActions';
+import { requestAccessCheck } from 'actions/accessCheckActions';
 
 
 import Model from '../Model';
@@ -62,15 +63,20 @@ class Form extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.dispatch(
-      popupBankInfoSetup({}, 600),
+    const { dispatch } = this.props;
+    dispatch(
+      requestAccessCheck((password) => {
+        dispatch(
+          popupBankInfoSetup({ password }, 600),
+        );
+      }),
     );
   }
 
   onOpenSetup() {
-    this.props.dispatch(
-      modalBankSetup(),
-    );
+    // this.props.dispatch(
+    //   modalBankSetup(),
+    // );
   }
 
   render() {

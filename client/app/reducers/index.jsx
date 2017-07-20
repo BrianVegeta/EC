@@ -22,7 +22,7 @@ import secrecyVerification from './secrecyVerificationReducer';
 import schedule from './scheduleReducer';
 import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
-import verifyProfileChange from './verifyProfileChangeReducer';
+import accessCheck from './accessCheckReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -48,5 +48,5 @@ export default combineReducers({
   schedule,
   options,
   popupBankSetup,
-  verifyProfileChange,
+  accessCheck,
 });

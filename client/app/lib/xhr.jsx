@@ -107,6 +107,8 @@ export const fetchXhrDelete = (path, successCallback, failCallback = null) => {
 };
 
 
+// ASYNC
+// ASYNC GET
 export const asyncXhrGet = path =>
   new Promise((resolve, reject) => {
     fetch(path, { ...SETTINGS_GET })
@@ -120,7 +122,26 @@ export const asyncXhrGet = path =>
     })
     .catch((err) => { throw err; });
   });
+export const asyncXhrAuthedGet = (path, state) =>
+  new Promise((resolve, reject) => {
+    fetch(path, { ...SETTINGS_GET })
+    .then(response => response.json())
+    .then((json) => {
+      if (json.success) {
+        resolve(json.data);
+      } else if (json.logouted) {
+        browserHistory.push({
+          pathname: paths.LOGIN,
+          referrer: state.routing.locationBeforeTransitions.pathname,
+        });
+      } else {
+        reject(json);
+      }
+    })
+    .catch((err) => { throw err; });
+  });
 
+// ASYNC POST
 export const asyncXhrPost = (path, params) =>
   new Promise((resolve, reject) => {
     fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
@@ -130,6 +151,28 @@ export const asyncXhrPost = (path, params) =>
         resolve(json.data);
       } else {
         reject();
+      }
+    })
+    .catch((err) => { throw err; });
+  });
+
+// ASYNC POST
+export const asyncXhrAuthedPost = (path, params, state) =>
+  new Promise((resolve, reject) => {
+    fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
+    .then(response => response.json())
+    .then((json) => {
+      const { success, logouted } = json;
+
+      if (success) {
+        resolve(json.data);
+      } else if (logouted) {
+        browserHistory.push({
+          pathname: paths.LOGIN,
+          referrer: state.routing.locationBeforeTransitions.pathname,
+        });
+      } else {
+        reject(json);
       }
     })
     .catch((err) => { throw err; });

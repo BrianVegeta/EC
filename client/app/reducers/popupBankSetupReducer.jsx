@@ -3,7 +3,10 @@ import * as types from 'constants/actionTypes/popupBankSetup';
 const initialState = {
   realName: '',
   identityNo: '',
-  // phone, email
+
+  phone: '',
+  email: '',
+
   accBankId: '',
   accBankBranchId: '',
   accName: '',

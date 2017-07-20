@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SearchIcon from 'react-icons/lib/md/search';
 import classnames from 'classnames/bind';
 import { connect } from 'react-redux';
+import LoadingSpinner from 'components/Loading/MDSpinner';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import SearchPanel from './components/SearchPanel';
@@ -14,7 +15,6 @@ import Model from './Model';
 import ModelRowUser from './Model/RowUser';
 import ModelRowWish from './Model/RowWish';
 import ModelRowItem from './Model/RowItem';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import myPropTypes from '../../propTypes';
 
 const cx = classnames.bind(styles);

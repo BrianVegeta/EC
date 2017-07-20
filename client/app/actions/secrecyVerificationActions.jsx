@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 import * as types from 'constants/actionTypes/secrecyVerification';
-import { popupCreatePassword } from 'actions/alertPopupActions';
 import { nextProcess } from 'actions/scheduleActions';
 
 import {
@@ -35,23 +34,6 @@ export function createPassword(password, success, fail) {
       getState(),
       () => success(),
       () => fail(),
-    );
-  };
-}
-
-export function verify(afterVerifiedCallback) {
-  return (dispatch) => {
-    dispatch(
-      checkHasPassword({
-        noPasswordCb() {
-          dispatch(
-            popupCreatePassword({ afterVerifiedCallback }, 500),
-          );
-        },
-        hasPasswordCb() {
-          console.log('has password');
-        },
-      }),
     );
   };
 }

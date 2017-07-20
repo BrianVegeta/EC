@@ -1,10 +1,15 @@
+@import "~styles/color.sass"
+
 $colorGreen: #31ABBA
 $colorGreenHover: #53BECE
 $colorGreenActive: #1991A0
 $colorOrange: #FF9442
 $colorOrangeHover: #FFB34F
 $colorOrangeActive: #F57C00
+$colorDanger: $global-colorDanger
+$colorDangerHover: $global-colorHeart
 // TODO: need global color
+
 
 .button
   color: #fff
@@ -20,33 +25,41 @@ $colorOrangeActive: #F57C00
   &.sm
     padding: 7px 24px
 
+  &.orange
+    background: #FF9442
+    &:hover
+      background: #FFB34F
+    &:active
+      background: #F57C00
 
-.buttonOrange
-  composes: button
-  background: #FF9442
-  &:hover
-    background: #FFB34F
-  &:active
-    background: #F57C00
+  &.green
+    background: $colorGreen
+    &:hover
+      background: $colorGreenHover
+    &:active
+      background: $colorGreenActive
 
-.buttonGreen
-  composes: button
-  background: $colorGreen
-  &:hover
-    background: $colorGreenHover
-  &:active
-    background: $colorGreenActive
+  &.greenBorder
+    background: #fff
+    border-width: 1px
+    border-style: solid
+    border-color: $colorGreen
+    color: $colorGreen
+    &:hover
+      border-color: $colorGreenHover
+      color: $colorGreenHover
+    &:active
+      border-color: $colorGreenActive
+      color: $colorGreenActive
 
-.buttonGreenBorder
-  composes: button
-  background: #fff
-  border-width: 1px
-  border-style: solid
-  border-color: $colorGreen
-  color: $colorGreen
-  &:hover
-    border-color: $colorGreenHover
-    color: $colorGreenHover
-  &:active
-    border-color: $colorGreenActive
-    color: $colorGreenActive
+  &.dangerBlank
+    color: $global-colorDanger
+    &:hover
+      color: $colorDangerHover
+    &:active
+      color: $colorDangerHover
+
+
+  &.disabled
+    background: #E9E9E9
+    color: #B9B9B9

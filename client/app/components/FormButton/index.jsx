@@ -12,39 +12,33 @@ class FormButton extends React.Component {
     size: 'md',
     style: {},
     width: '100%',
+    disabled: false,
   };
 
   static propTypes = {
-    colorType: PropTypes.oneOf(['green', 'orange', 'greenBorder']),
+    colorType: PropTypes.oneOf(['green', 'orange', 'greenBorder', 'dangerBlank']),
     size: PropTypes.oneOf(['lg', 'md', 'sm']),
     style: PropTypes.object,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   };
 
-  renderClassName() {
-    switch (this.props.colorType) {
-      case 'orange':
-        return 'buttonOrange';
-      case 'green':
-        return 'buttonGreen';
-      case 'greenBorder':
-        return 'buttonGreenBorder';
-      default:
-        return 'buttonGreen';
+  btnClassName() {
+    if (this.props.disabled) {
+      return 'disabled';
     }
+    return this.props.colorType;
   }
+
   render() {
-    const { content, size, style, onClick, width } = this.props;
-    style.width = width;
+    const { content, size, style, onClick, width, disabled } = this.props;
     return (
       <button
-        {...{
-          className: `${cx(this.renderClassName(), size)} button`,
-          style,
-          onClick,
-        }}
+        className={`${cx('button', this.btnClassName(), size)} button`}
+        style={{ ...style, width }}
+        onClick={disabled ? null : onClick}
       >
         {content}
       </button>

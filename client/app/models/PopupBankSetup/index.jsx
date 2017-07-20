@@ -13,6 +13,9 @@ export default class {
     this.realName = new RealName(props);
     this.identityNo = new IdentityNo(props);
 
+    this.phone = props.popupBankSetup.phone;
+    this.email = props.popupBankSetup.email;
+
     this.bank = new Bank(props);
     this.bankBranch = new BankBranch(props);
     this.accName = new AccName(props);

@@ -33,30 +33,43 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   # 更新手機
+  # post /ajax/user/update/phone/confirm
   def update_phone
-    # required password
-    respond success, obj.error_message, obj.response_data
+    sleep(1)
+    respond true, OpenStruct.new({ response_data: nil })
+    return
+
+    obj = ::Api::Userprofile::UpdatePhone.new verify_phone_params, current_apitoken
+    respond success, obj
   end
 
   # 取得更新手機驗證碼
+  # post /ajax/user/update/phone
   def get_phone_verify_code
+    sleep(1)
+    respond true, OpenStruct.new({ response_data: nil })
+    return
+
     obj = ::Api::Userprofile::GetPhoneVerifyCode.new update_phone_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+
+    respond success, obj
   end
 
   # 更新信箱
+  # post /ajax/user/update/email/confirm
   def update_email
     obj = ::Api::Userprofile::UpdateEmail.new verify_email_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 取得更新信箱驗證碼
+  # post /ajax/user/update/email
   def get_email_verify_code
     obj = ::Api::Userprofile::GetEmailVerifyCode.new update_email_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 綁定FACEBOOK
@@ -82,7 +95,10 @@ class Ajax::Api::UserprofileController < ApplicationController
 
 
   # 檢查密碼是否有設定
-  def is_pwd_exist #in use
+  # get '/ajax/password/exist'
+  def is_pwd_exist
+    sleep(1)
+
     obj = ::Api::Userprofile::IsPwdExist.new current_uid_params, current_apitoken
     success = obj.request
 
@@ -90,7 +106,10 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   #檢查密碼是否正確 #in use
+  # post '/ajax/password/check'
   def checkpwd
+    sleep(1)
+
     obj = ::Api::Userprofile::CheckPwd.new password_params, current_apitoken
     success = obj.request
 
@@ -105,7 +124,10 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   # 建立密碼
-  def create_password #in use
+  # post '/ajax/password/create'
+  def create_password
+    sleep(1)
+
     obj = ::Api::Userprofile::CreatePassword.new password_params, current_apitoken
     success = obj.request
 
@@ -155,6 +177,7 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   # 取回銀行資料
+  # POST /ajax/bank/bankacc
   def bank_info
     # 請使用cipher decrypt data
     obj = ::Api::Userprofile::BankInfo.new current_uid_params, current_apitoken
@@ -184,7 +207,7 @@ class Ajax::Api::UserprofileController < ApplicationController
 
 
   # 銀行資料是否齊全
-  # GET /ajax/is_my_bank_info_ready.json
+  # GET /ajax/bank/bankacc/ready.json
   def bank_info_ready
     obj = ::Api::Userprofile::BankInfoReady.new current_uid_params, current_apitoken
     success = obj.request

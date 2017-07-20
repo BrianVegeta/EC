@@ -2,6 +2,7 @@ import validate from 'validate.js';
 import Selection from 'models/Selection';
 import { changeData } from 'actions/popupBankSetupActions';
 import { prepareBankBranchs } from 'actions/optionsActions';
+import constraints from 'constraints';
 
 export default class extends Selection {
   constructor(props) {
@@ -23,14 +24,13 @@ export default class extends Selection {
     this.props.dispatch(
       changeData({ accBankId }),
     );
-    console.log(accBankId);
+
     this.props.dispatch(
       prepareBankBranchs(accBankId),
     );
   }
 
   validator() {
-    console.log('bank');
-    return validate.single()
+    return validate.single(this.value, constraints.accBankId);
   }
 }

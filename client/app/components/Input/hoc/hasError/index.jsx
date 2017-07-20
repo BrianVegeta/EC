@@ -18,19 +18,25 @@ export default function inputWithError(InputComponent, defaultContraints) {
       constraints: null,
       width: '100%',
       disableValidator: false,
+      disableBlurValid: false,
+      disableErrorTooltip: false,
     };
 
     static propTypes = {
       value: PropTypes.string,
       onBlur: PropTypes.func,
-      constraints: PropTypes.objectOf([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.object,
-      ]),
+      constraints: PropTypes.objectOf(
+        PropTypes.oneOfType([
+          PropTypes.number,
+          PropTypes.string,
+          PropTypes.bool,
+          PropTypes.object,
+        ]),
+      ),
       width: myPropTypes.width,
       disableValidator: PropTypes.bool,
+      disableBlurValid: PropTypes.bool,
+      disableErrorTooltip: PropTypes.bool,
     };
 
     constructor(props) {
@@ -42,10 +48,11 @@ export default function inputWithError(InputComponent, defaultContraints) {
     }
 
     onBlur() {
-      const { onBlur } = this.props;
+      const { onBlur, disableBlurValid } = this.props;
       if (onBlur) onBlur();
-
-      this.valid();
+      if (!disableBlurValid) {
+        this.valid();
+      }
     }
 
     clearError() {
@@ -84,13 +91,17 @@ export default function inputWithError(InputComponent, defaultContraints) {
         onBlur,
         constraints,
         disableValidator,
+        disableBlurValid,
+        disableErrorTooltip,
         width,
         ...otherProps
       } = this.props;
 
       return (
         <Container style={{ width }}>
-          {error && <ErrorTooltip message={error} />}
+          { !disableErrorTooltip &&
+            error &&
+            <ErrorTooltip message={error} />}
           <InputComponent
             {...{
               ...otherProps,

@@ -92,10 +92,7 @@ Rails.application.routes.draw do
       post 'userprofile/save', to: 'userprofile#save'
       post 'userprofile/get', to: 'userprofile#get' #
       post 'userprofile/search', to: 'userprofile#search' #
-      post 'userprofile/update_phone', to: 'userprofile#update_phone'
 
-      post 'userprofile/update_email', to: 'userprofile#update_email'
-      post 'userprofile/get_email_verify_code', to: 'userprofile#get_email_verify_code'
       post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
       post 'userprofile/facebook_unbind', to: 'userprofile#facebook_unbind'
       post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
@@ -130,14 +127,26 @@ Rails.application.routes.draw do
       # USERPROFILE
       ## FROM OTHER USER
       post 'user_info', to: 'userprofile#user_general_info'
-      ## BANK INFO
-      get 'my_pwd_exist', to: 'userprofile#is_pwd_exist'
-      post 'my_password_create', to: 'userprofile#create_password'
-      post 'my_bankacc', to: 'userprofile#bank_info'
-      get 'is_my_bank_info_ready', to: 'userprofile#bank_info_ready'
-      post 'secrecy_verify_password', to: 'userprofile#checkpwd'
-      ## UPDATE AND VERIFY - PHONE
-      post 'new_phone_to_verify', to: 'userprofile#get_phone_verify_code'
+      ## BANK INFO (AUTHED)
+      scope :bank do
+        post 'bankacc', to: 'userprofile#bank_info'
+        get 'bankacc/ready', to: 'userprofile#bank_info_ready'
+      end
+
+      ## PASSWORD CHECK (AUTHED)
+      scope :password do
+        get 'exist', to: 'userprofile#is_pwd_exist'
+        post 'create', to: 'userprofile#create_password'
+        post 'check', to: 'userprofile#checkpwd'
+      end
+      ## VERIFY PHONE AND EMAIL UPDATE (AUTHED)
+      scope :user do
+        post 'update/phone', to: 'userprofile#get_phone_verify_code'
+        post 'update/phone/confirm', to: 'userprofile#update_phone'
+
+        post 'update/email', to: 'userprofile#get_email_verify_code'
+        post 'update/email/confirm', to: 'userprofile#update_email'
+      end
     end
 
     scope module: :options do

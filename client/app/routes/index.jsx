@@ -24,6 +24,8 @@ import AuthLogin from './Auth/Login';
 import Registration from './Auth/Registration';
 import MyAccount from './MyAccount';
 import ReservationGoods from './Reservation/Goods/route';
+import TestLayout from './Test/Container';
+
 
 export default (routesHelper, dispatch) => ({
   path: '/',
@@ -75,6 +77,21 @@ export default (routesHelper, dispatch) => ({
         ReservationGoods((nextState) => {
           dispatch(editItem(nextState.params.pid));
         }, dispatch),
+      ],
+    },
+    {
+      component: TestLayout,
+      childRoutes: [
+        {
+          path: '/p/test',
+          getComponent(_nextState, callback) {
+            require.ensure([], (require) => {
+              callback(null, {
+                main: require('./Test/Container').default,
+              });
+            }, 'test');
+          },
+        },
       ],
     },
   ],

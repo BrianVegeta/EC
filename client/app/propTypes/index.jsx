@@ -107,4 +107,9 @@ export default {
     validator: PropTypes.func,
     onChange: PropTypes.func,
   }),
+  accessCheck: PropTypes.shape({
+    isChecking: PropTypes.bool,
+    renderType: PropTypes.string,
+    password: PropTypes.string,
+  }),
 };
