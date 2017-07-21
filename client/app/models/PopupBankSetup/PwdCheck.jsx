@@ -1,14 +1,10 @@
-import validate from 'validate.js';
-import constraints from 'constraints';
-
-import Text from 'models/Text';
 import { changeData } from 'actions/popupBankSetupActions';
 
 const COLUMN_NAME = 'pwdCheck';
-export default class extends Text {
-  constructor(props) {
-    super(props);
-    const { popupBankSetup } = this.props;
+export default class {
+  constructor({ popupBankSetup, dispatch }) {
+    this.props = { popupBankSetup, dispatch };
+
     this.value = popupBankSetup[COLUMN_NAME];
   }
 
@@ -16,9 +12,5 @@ export default class extends Text {
     this.props.dispatch(
       changeData({ [COLUMN_NAME]: value }),
     );
-  }
-
-  validator() {
-    return validate.single(this.value, constraints[COLUMN_NAME]);
   }
 }

@@ -20,7 +20,6 @@ export default class {
     this.price = price;
     this.priceDesc = `${currency}${numeral(price).format('$0,000')}`;
     this.img1 = img1;
-    this.coverUrl = `url(${img1})`;
     this.favoriteCount = favorite_count;
     this.ownerImg = owner_img;
     this.avatarUrl = owner_img;

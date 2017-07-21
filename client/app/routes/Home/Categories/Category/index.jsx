@@ -17,7 +17,7 @@ class Category extends React.Component {
       <Link to={`/p/i/${name}-c.${id}`}>
         <div styleName="container">
           <div styleName="cover" >
-            <Picture src={`url(${img})`} />
+            <Picture src={img} />
           </div>
           <div styleName="name">{name}</div>
         </div>

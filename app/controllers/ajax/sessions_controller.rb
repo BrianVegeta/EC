@@ -16,20 +16,39 @@ class Ajax::SessionsController < ApplicationController
   end
 
   def create_by_facebook
-    @user = ::User::FacebookSession.new(params_facebook)
-    @user.os_type = @os_type
-    @user.device_type = @device_type
+    @user = ::Session::LoginFacebook.new(params_facebook, browser_info)
     success = @user.request
-    unless success
-      @user = ::User::FacebookRegistration.new(params_facebook)
-      @user.os_type = @os_type
-      @user.device_type = @device_type
-      success = @user.request
-    end
+
+    # render json: @user.response_data and return
     if success
       warden_set_user(@user.warden_session)
+      respond success, @user and return
     end
-    respond success, @user
+
+    @new_user = ::Registration::Facebook.new(params_facebook, browser_info)
+    new_user_success = @new_user.request
+
+    if new_user_success
+      begin
+        uid = @new_user.warden_session['uid']
+        apitoken = @new_user.warden_session['apitoken']
+
+        @avatar = Images::Avatar.new(uid: uid, image_from_url: params[:avatar_url])
+        @avatar.save
+
+        @new_user.picture = @avatar.photo.url
+        @userprofile = ::Api::Userprofile::Save.new({ uid: uid, picture: @new_user.picture }, apitoken)
+        @userprofile.request
+
+        @new_user.response_data['user_profile'].merge!({ picture: @new_user.picture })
+
+        warden_set_user(@new_user.warden_session)
+      rescue
+
+      end
+    end
+
+    respond new_user_success, @new_user
   end
 
   def destroy

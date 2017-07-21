@@ -12,6 +12,10 @@ export default class extends DeliveryOptions {
     this.validator = this.validator.bind(this);
     this.singleOptionToUpdate = this.singleOptionToUpdate.bind(this);
 
+    if (input === null) {
+      return;
+    }
+
     // reservation
     this.choosedOption = super.getOptionFromValue(input);
     this.choosedDesc = this.choosedOption.text;

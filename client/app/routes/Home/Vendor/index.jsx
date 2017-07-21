@@ -41,7 +41,7 @@ class Vendor extends React.Component {
           <div styleName="gallery">
             {items.map((ownItem, index) =>
               <div styleName="item" key={`${index + 1}`}>
-                <Picture src={`url(${ownItem.img1})`} />
+                <Picture src={ownItem.img1} />
               </div>,
             )}
           </div>

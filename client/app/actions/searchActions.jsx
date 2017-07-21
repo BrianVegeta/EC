@@ -46,7 +46,7 @@ export function searchByName(name) {
     dispatch(beforeFetchMulti());
 
     fetchXhrPost(
-      '/ajax/search/user.json',
+      '/ajax/search/multi.json',
       { name, index, size },
       (response) => {
         const {

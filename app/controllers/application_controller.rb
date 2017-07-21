@@ -8,6 +8,14 @@ class ApplicationController < ActionController::Base
     @device_type = "Web Browser: #{browser.name} #{browser.version}"
   end
 
+  def browser_info
+    browser = Browser.new(request.user_agent)
+    {
+      os_type: "#{browser.platform.name}",
+      device_type: "Web Browser: #{browser.name} #{browser.version}"
+    }
+  end
+
   def respond success, message, data = nil, status = :ok,
     response = { success: success, message: message }
     response[:data] = data if data.present?

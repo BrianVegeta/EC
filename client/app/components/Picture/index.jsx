@@ -25,7 +25,7 @@ class Picture extends React.Component {
       ...style,
     };
     const innerStyle = {
-      backgroundImage: src,
+      backgroundImage: src ? `url(${src})` : null,
       ...placeholderStyle,
       ...style,
     };

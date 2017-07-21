@@ -1,4 +1,5 @@
 class Ajax::SearchController < ApplicationController
+  include RespondHelper
 
   def user
     search ::Search::User.new(search_params)
@@ -24,6 +25,6 @@ class Ajax::SearchController < ApplicationController
   def search search_resource
     @search = search_resource
     @search.request
-    respond true, @search.error_message, @search.response_data
+    respond true, @search
   end
 end

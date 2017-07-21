@@ -16,6 +16,8 @@ import ModelPopupBankSetup from 'models/PopupBankSetup';
 import ConfirmUpdatePhoneContainer from 'containers/ConfirmUpdate/PhoneContainer';
 import ConfirmUpdateEmailContainer from 'containers/ConfirmUpdate/EmailContainer';
 
+import constraints from 'constraints';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -23,6 +25,8 @@ class BankSetupContainer extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    popupBankSetup: PropTypes.object.isRequired,
+    options: PropTypes.shape({ banks: PropTypes.array }).isRequired,
   };
 
   constructor(props) {
@@ -44,17 +48,14 @@ class BankSetupContainer extends React.Component {
   }
 
   render() {
+    const { options, popupBankSetup, dispatch } = this.props;
+
     const {
-      realName,
-      identityNo,
-      phone,
-      email,
-      bank,
-      bankBranch,
-      accName,
-      accNo,
+      realNameModel, identityNoModel,
+      phoneModel, emailModel,
+      bankModel, bankBranchModel, accNameModel, accNoModel,
       pwdCheck,
-    } = new ModelPopupBankSetup(this.props);
+    } = new ModelPopupBankSetup({ options, popupBankSetup, dispatch });
 
     return (
       <div styleName="container">
@@ -65,68 +66,64 @@ class BankSetupContainer extends React.Component {
             <div styleName="nameFormControl">
               <InputText
                 placeholder="真實姓名"
-                value={realName.value}
-                validator={realName.validator}
-                onChange={realName.onChange}
+                value={realNameModel.value}
+                onChange={realNameModel.onChange}
+                constraints={constraints.realName}
               />
             </div>
             <div styleName="idFormControl">
               <InputText
                 placeholder="身分證字號/統編"
-                value={identityNo.value}
-                validator={identityNo.validator}
-                onChange={identityNo.onChange}
+                value={identityNoModel.value}
+                onChange={identityNoModel.onChange}
+                constraints={constraints.identityNo}
               />
             </div>
           </FormBlock>
           <ConfirmUpdatePhoneContainer
-            value={phone}
-            onChange={() => console.log('confirm updatge phone')}
+            value={phoneModel.value}
+            onChange={phoneModel.onChange}
           />
           <ConfirmUpdateEmailContainer
-            value={email}
-            onChange={() => console.log('confirm updatge phone')}
+            value={emailModel.value}
+            onChange={emailModel.onChange}
           />
           <FormBlock title="銀行帳戶資訊" hasBottomLine={false}>
             <div styleName="formControl">
               <InputSelection
-                {...{
-                  placeholder: '選擇銀行',
-                  dropdownMaxHeight: 250,
-                  value: bank.value,
-                  options: bank.options,
-                  onSelect: bank.onSelect,
-                  validator: bank.validator,
-                }}
+                placeholder="選擇銀行"
+                dropdownMaxHeight={250}
+                value={bankModel.value}
+                options={bankModel.options}
+                onSelect={bankModel.onSelect}
+                containers={constraints.accBankId}
               />
             </div>
             <div styleName="formControl">
               <InputSelection
-                {...{
-                  placeholder: '選擇分行',
-                  dropdownMaxHeight: 250,
-                  value: bankBranch.value,
-                  options: bankBranch.options,
-                  onSelect: bankBranch.onSelect,
-                  validator: bankBranch.validator,
-                  disabled: bankBranch.disabled,
-                }}
+                placeholder="選擇分行"
+                dropdownMaxHeight={250}
+                options={bankBranchModel.options}
+                onSelect={bankBranchModel.onSelect}
+                constraints={constraints.accBankBranchId}
+                disabled={bankBranchModel.disabled}
               />
             </div>
             <div styleName="formControl">
               <InputText
                 placeholder="戶名/公司名稱"
-                value={accName.value}
-                validator={accName.validator}
-                onChange={accName.onChange}
+                value={accNameModel.value}
+                validator={accNameModel.validator}
+                onChange={accNameModel.onChange}
+                constraints={constraints.accName}
               />
             </div>
             <div styleName="formControl">
               <InputText
                 placeholder="銀行帳號"
-                value={accNo.value}
-                validator={accNo.validator}
-                onChange={accNo.onChange}
+                value={accNoModel.value}
+                onChange={accNoModel.onChange}
+                constraints={constraints.accNo}
               />
             </div>
           </FormBlock>
@@ -134,6 +131,7 @@ class BankSetupContainer extends React.Component {
             <InputPassword
               placeholder="請輸入8個以上英數字"
               autoComplete="off"
+
               value={pwdCheck.value}
               onChange={pwdCheck.onChange}
             />

@@ -1,15 +1,14 @@
-import validate from 'validate.js';
-import Selection from 'models/Selection';
 import { changeData } from 'actions/popupBankSetupActions';
 import { prepareBankBranchs } from 'actions/optionsActions';
-import constraints from 'constraints';
 
-export default class extends Selection {
-  constructor(props) {
-    super(props);
-    const { popupBankSetup } = this.props;
+export default class {
+  constructor({ options, popupBankSetup, dispatch }) {
+    this.props = { options, popupBankSetup, dispatch };
 
-    this.value = popupBankSetup.accBankId;
+    const { accBankId } = popupBankSetup;
+    this.options = this.initOptions();
+    this.value = accBankId;
+    this.onSelect = this.onSelect.bind(this);
   }
 
   initOptions() {
@@ -28,9 +27,5 @@ export default class extends Selection {
     this.props.dispatch(
       prepareBankBranchs(accBankId),
     );
-  }
-
-  validator() {
-    return validate.single(this.value, constraints.accBankId);
   }
 }

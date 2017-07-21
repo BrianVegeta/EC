@@ -76,9 +76,6 @@ Rails.application.routes.draw do
       post 'item/message', to: 'item#message' #
       post 'item/message_add', to: 'item#message_add' #
 
-      #SEARCH
-      post 'search/multi_search', to: 'search#multi_search'
-
       #SYNC
       post 'sync/notification', to: 'sync#notification' #
       post 'sync/notification_unread', to: 'sync#notification_unread' #
@@ -149,6 +146,14 @@ Rails.application.routes.draw do
       end
     end
 
+    #SEARCH
+    scope :search do
+      post 'user', to: 'search#user'
+      post 'item', to: 'search#item'
+      post 'wish', to: 'search#wish'
+      post 'multi', to: 'search#multi'
+    end
+
     scope module: :options do
       # OTHERS
       get 'banks', to: 'banks#index'
@@ -173,13 +178,6 @@ Rails.application.routes.draw do
       get 'items', to: 'items#index'
       delete 'items_remove', to: 'items#multi_remove'
       get 'coupons', to: 'coupons#index'
-    end
-
-    scope :search, as: :search do
-      post 'user', to: 'search#user'
-      post 'item', to: 'search#item'
-      post 'wish', to: 'search#wish'
-      post 'multi', to: 'search#multi'
     end
 
     namespace :user do

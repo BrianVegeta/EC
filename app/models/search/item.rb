@@ -3,7 +3,7 @@ class Search::Item < Search::Base
 
   def path
     params = self.request_params
-    
+
     "/client/item/get_item_by_name/#{URI.escape(params[:name])}/#{params[:index]}/#{params[:size]}"
   end
 

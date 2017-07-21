@@ -1,9 +1,8 @@
 import { changeData } from 'actions/popupBankSetupActions';
 
-const COLUMN_NAME = 'accName';
+const COLUMN_NAME = 'phone';
 export default class {
-  constructor(props) {
-    const { popupBankSetup, dispatch } = props;
+  constructor({ popupBankSetup, dispatch }) {
     this.props = { popupBankSetup, dispatch };
 
     this.value = popupBankSetup[COLUMN_NAME];

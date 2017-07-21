@@ -7,3 +7,11 @@ export const getChoiceFromValue = (options, value) => {
 
   return result;
 };
+
+const formatOption = (value, text) => ({ value, text });
+
+export const generateOptions = optionsArray =>
+  optionsArray.map((option) => {
+    const [value, text] = option;
+    return formatOption(value, text);
+  });

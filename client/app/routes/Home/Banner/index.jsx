@@ -26,11 +26,12 @@ class Banner extends React.Component {
     if (banners.length <= 0) {
       return <Spinner height={this.carouselHeight} />;
     }
+
     return (
       <Preload
         {...{
           loadingIndicator: <Spinner height={this.carouselHeight} />,
-          images: [banners[0].imageSrc, banners[1].imageSrc],
+          images: banners.map(banner => banner.imageSrc).slice(0, 2),
           autoResolveDelay: 3000,
           resolveOnError: true,
           mountChildren: true,

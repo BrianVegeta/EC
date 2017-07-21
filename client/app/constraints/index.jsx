@@ -14,6 +14,9 @@ export default {
       tooShort: '^請長於%{count}個英數字',
     },
   },
+  identityNo: {
+    
+  },
   verifyCode: {
     length: {
       is: 4,

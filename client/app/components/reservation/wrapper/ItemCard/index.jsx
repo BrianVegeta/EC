@@ -40,7 +40,7 @@ class ItemCard extends React.Component {
 
   static propTypes = {
     model: PropTypes.shape({
-      coverUrl: PropTypes.string.isRequired,
+      cover: PropTypes.string.isRequired,
       pname: PropTypes.string.isRequired,
       priceDesc: PropTypes.string.isRequired,
       priceUnit: PropTypes.string.isRequired,
@@ -49,7 +49,7 @@ class ItemCard extends React.Component {
 
   render() {
     const {
-      coverUrl,
+      cover,
       pname,
       priceDesc,
       priceUnit,
@@ -59,7 +59,7 @@ class ItemCard extends React.Component {
       <Container className="clear">
         <Cover>
           <Picture
-            src={coverUrl}
+            src={cover}
             style={{
               borderBottomLeftRadius: 4,
               borderTopLeftRadius: 4,

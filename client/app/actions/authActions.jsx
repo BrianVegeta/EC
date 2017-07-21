@@ -167,13 +167,14 @@ export function loginByPhone({ phone, password }) {
   };
 }
 // FACEBOOK 登入
-export function loginFacebook(callbackData) {
+export function loginFacebook({ userID, accessToken, picture: { data: { url } } }) {
   return (dispatch) => {
     fetchXhrPost(
       '/ajax/facebook_login_callback.json',
       {
-        fb_id: callbackData.id,
-        access_token: callbackData.accessToken,
+        fb_id: userID,
+        access_token: accessToken,
+        avatar_url: url,
       },
       (response) => {
         dispatch(doLogin(response.data.user_profile));

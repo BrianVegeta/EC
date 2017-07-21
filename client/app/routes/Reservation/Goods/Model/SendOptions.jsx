@@ -12,6 +12,9 @@ export default class extends DeliveryOptions {
     this.validator = this.validator.bind(this);
     this.singleOptionToUpdate = this.singleOptionToUpdate.bind(this);
 
+    if (input === null) {
+      return;
+    }
     // this.needAddresses = this.constructor.checkAddressesNecessary(input);
     this.needAddresses = super.constructor.choosingMail(input);
 

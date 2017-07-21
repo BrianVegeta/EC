@@ -1,16 +1,15 @@
-import validate from 'validate.js';
 import _ from 'lodash';
-
-import Selection from 'models/Selection';
 import { changeData } from 'actions/popupBankSetupActions';
 
-export default class extends Selection {
-  constructor(props) {
-    super(props);
-    const { popupBankSetup } = this.props;
+export default class {
+  constructor({ options, popupBankSetup, dispatch }) {
+    this.props = { options, popupBankSetup, dispatch };
 
-    this.value = popupBankSetup.accBankBranchId;
-    this.disabled = _.isEmpty(popupBankSetup.accBankId);
+    const { accBankId, accBankBranchId } = popupBankSetup;
+    this.options = this.initOptions();
+    this.disabled = _.isEmpty(accBankId);
+    this.value = accBankBranchId;
+    this.onSelect = this.onSelect.bind(this);
   }
 
   initOptions() {
@@ -19,9 +18,7 @@ export default class extends Selection {
 
     const bank = _.find(banks, { id: popupBankSetup.accBankId });
     if (bank && bank.branchs && bank.branchs.length > 0) {
-      return bank.branchs.map(branch =>
-        [branch.branchid, branch.branchname],
-      );
+      return bank.branchs.map(branch => [branch.branchid, branch.branchname]);
     }
     return [];
   }
@@ -30,10 +27,5 @@ export default class extends Selection {
     this.props.dispatch(
       changeData({ accBankBranchId: option.value }),
     );
-  }
-
-  validator() {
-    console.log('bank');
-    return validate.single()
   }
 }

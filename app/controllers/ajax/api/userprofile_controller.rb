@@ -35,7 +35,6 @@ class Ajax::Api::UserprofileController < ApplicationController
   # 更新手機
   # post /ajax/user/update/phone/confirm
   def update_phone
-    sleep(1)
     respond true, OpenStruct.new({ response_data: nil })
     return
 
@@ -46,7 +45,6 @@ class Ajax::Api::UserprofileController < ApplicationController
   # 取得更新手機驗證碼
   # post /ajax/user/update/phone
   def get_phone_verify_code
-    sleep(1)
     respond true, OpenStruct.new({ response_data: nil })
     return
 
@@ -97,7 +95,6 @@ class Ajax::Api::UserprofileController < ApplicationController
   # 檢查密碼是否有設定
   # get '/ajax/password/exist'
   def is_pwd_exist
-    sleep(1)
 
     obj = ::Api::Userprofile::IsPwdExist.new current_uid_params, current_apitoken
     success = obj.request
@@ -108,7 +105,6 @@ class Ajax::Api::UserprofileController < ApplicationController
   #檢查密碼是否正確 #in use
   # post '/ajax/password/check'
   def checkpwd
-    sleep(1)
 
     obj = ::Api::Userprofile::CheckPwd.new password_params, current_apitoken
     success = obj.request
@@ -126,7 +122,6 @@ class Ajax::Api::UserprofileController < ApplicationController
   # 建立密碼
   # post '/ajax/password/create'
   def create_password
-    sleep(1)
 
     obj = ::Api::Userprofile::CreatePassword.new password_params, current_apitoken
     success = obj.request

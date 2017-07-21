@@ -4,7 +4,7 @@ class ApiBase
   HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
   headers HEADERS
 
-  attr_accessor :error_message, :error_code, :response_data
+  attr_accessor :error_message, :error_code, :response_data, :response_headers
 
   def initialize params = nil, apitoken = nil
     self.request_params = params
@@ -39,6 +39,7 @@ class ApiBase
     self.error_code = response['error']['code']
     self.error_message = ::Response::ErrorCode.localize(self.error_code)
     self.response_data = response['data'] if response.has_key?('data')
+    self.response_headers = response.headers
 
     handle_response_error
   end

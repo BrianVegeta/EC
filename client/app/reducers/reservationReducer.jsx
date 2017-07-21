@@ -5,11 +5,11 @@ const initialState = {
   // FORM DATA BELOW
   cid: 1111,
   // TODO: temp testing.
-  sendOption: '1',
+  sendOption: null,
   sendCity: '台北市',
   sendArea: '大安區',
   sendAddress: '林森北路',
-  returnOption: '1',
+  returnOption: null,
   // TODO: temp testing.
   startDate: moment(),
   // TODO: temp testing.

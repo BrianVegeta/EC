@@ -6,7 +6,7 @@ export default class {
     this.dispatch = dispatch;
 
     this.serialNumber = reservation.cid;
-    this.coverUrl = `url(${detail.img1})`;
+    this.cover = detail.img1;
     this.pname = detail.pname;
     const PriceUnitInstance = new PriceUnit(
       detail.calculate_charge_type,

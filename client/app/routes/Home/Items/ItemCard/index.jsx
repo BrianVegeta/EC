@@ -18,7 +18,7 @@ class ItemCard extends React.Component {
       <div styleName="container">
         <Link to={path} >
           <div styleName="cover">
-            <Picture src={item.coverUrl} />
+            <Picture src={item.img1} />
           </div>
         </Link>
         <Link to={path} >
