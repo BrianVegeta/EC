@@ -5,7 +5,6 @@ import {
 } from 'constants/states';
 import {
   EMAIL_AUTH,
-  PHONE_AUTH,
 } from 'constants/authBy';
 
 const initialState = {

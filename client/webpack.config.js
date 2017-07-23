@@ -6,6 +6,8 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpritesmithPlugin = require('webpack-spritesmith');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
@@ -21,8 +23,12 @@ const config = {
       'sticky-position',
       'whatwg-fetch',
       'react',
+      'react-dom',
+      'react-router',
+      'immutable',
+      'moment',
       'redux',
-      'lodash',
+      // 'lodash',
       'react-css-modules',
       'styled-components',
       'classnames/bind',
@@ -58,12 +64,13 @@ const config = {
     },
   },
   plugins: [
+    // new BundleAnalyzerPlugin(),
+    new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en|zh-tw)$/),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(nodeEnv),
       },
     }),
-    // new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new ExtractTextPlugin({ filename: '[name]-bundle.css', allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -101,6 +108,7 @@ const config = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
+            plugins: ['lodash'],
           }
         },
         exclude: /node_modules/,

@@ -6,7 +6,10 @@ import { DateRangePicker } from 'react-dates';
 import ArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
 import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down';
 import ArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+
 import moment from 'moment';
+import 'moment/locale/zh-tw';
+
 import { isToday, inDates } from 'lib/time';
 import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
@@ -39,6 +42,11 @@ class Dates extends React.Component {
 
   static renderDay(momentObj) {
     return momentObj.format('D');
+  }
+
+  static renderMonth(momentObj) {
+    momentObj.locale('zh-tw');
+    return momentObj.format('MMMM YYYY');
   }
 
   constructor(props) {
@@ -119,6 +127,7 @@ class Dates extends React.Component {
         startDatePlaceholderText="開始日"
         endDatePlaceholderText="結束日"
         renderDay={this.constructor.renderDay}
+        renderMonth={this.constructor.renderMonth}
         hideKeyboardShortcutsPanel
         keepOpenOnDateSelect
         navPrev={<ArrowLeft />}

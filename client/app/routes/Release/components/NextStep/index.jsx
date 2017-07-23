@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { ThreeBounce } from 'better-react-spinkit';
+import ThreeBounce from 'components/Loading/ThreeBounce';
 import classnames from 'classnames/bind';
 import _ from 'lodash';
 import CSS from 'react-css-modules';
@@ -75,7 +75,7 @@ class NextStep extends React.Component {
     };
     return (
       <button {...buttonProps}>
-        { isLoading ? <ThreeBounce color="#666" /> : '下一步' }
+        { isLoading ? <ThreeBounce bounceSize={20} color="#666" /> : '下一步' }
       </button>
     );
   }
