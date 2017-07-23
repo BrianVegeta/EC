@@ -6,7 +6,7 @@ import Nickname from './Nickname';
 import VerifyCode from './VerifyCode';
 import { EMAIL, PHONE } from '../../../../constants/authBy';
 import {
-  updateRegisterBy,
+  changeRegisterBy,
   registerByEmail,
   registerByPhone,
   verifyByEmail,
@@ -59,7 +59,7 @@ class RegistrationModel {
 
   switchRegisterBy() {
     const authBy = this.isRegisterByEmail ? PHONE : EMAIL;
-    this.dispatch(updateRegisterBy(authBy));
+    this.dispatch(changeRegisterBy(authBy));
   }
 
   isValid() {

@@ -13,7 +13,7 @@ export default function inputWithError(InputComponent, defaultContraints) {
   return class extends React.Component {
 
     static defaultProps = {
-      value: null,
+      value: '',
       onBlur: null,
       constraints: null,
       width: '100%',

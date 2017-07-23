@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import * as authBy from 'constants/authBy';
 
 const string = PropTypes.string;
 const number = PropTypes.number;
@@ -56,10 +57,21 @@ export default {
     items: PropTypes.arrayOf(PropTypes.object),
   }),
   search: PropTypes.shape({ query: PropTypes.string }),
+  // AUTH REDUCER
+  loginAuth: PropTypes.shape({
+    loginBy: PropTypes.oneOf([
+      authBy.EMAIL,
+      authBy.PHONE,
+    ]),
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    password: PropTypes.string,
+  }),
   authOnHeader: PropTypes.shape({
     isLogin: PropTypes.bool,
     currentUser: PropTypes.object,
   }),
+
   item: PropTypes.object,
   orderBoard: PropTypes.object,
   style: PropTypes.object,

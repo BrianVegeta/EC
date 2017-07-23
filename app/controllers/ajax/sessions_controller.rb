@@ -5,21 +5,28 @@ class Ajax::SessionsController < ApplicationController
 
   # POST /ajax/email_login.json
   def create_by_email
-    @user = ::User::SessionsEmail.new(params_email)
-    process_login
+    @user = ::Session::LoginEmail.new(params_email, browser_info)
+
+    success = @user.request
+    warden_set_user(@user.warden_session) if success
+
+    respond success, @user
   end
 
   # POST /ajax/phone_login.json
   def create_by_phone
-    @user = ::User::SessionsMobile.new(params_phone)
-    process_login
+    @user = ::Session::LoginMobile.new(params_phone, browser_info)
+
+    success = @user.request
+    warden_set_user(@user.warden_session) if success
+    respond success, @user
   end
 
+  # POST /ajax/facebook_login_callback.json
   def create_by_facebook
     @user = ::Session::LoginFacebook.new(params_facebook, browser_info)
     success = @user.request
 
-    # render json: @user.response_data and return
     if success
       warden_set_user(@user.warden_session)
       respond success, @user and return
@@ -33,7 +40,9 @@ class Ajax::SessionsController < ApplicationController
         uid = @new_user.warden_session['uid']
         apitoken = @new_user.warden_session['apitoken']
 
-        @avatar = Images::Avatar.new(uid: uid, image_from_url: params[:avatar_url])
+        fb_avatar_url = "https://graph.facebook.com/#{params_facebook[:fb_id]}/picture?type=large"
+        # params[:avatar_url]
+        @avatar = Images::Avatar.new(uid: uid, image_from_url: fb_avatar_url)
         @avatar.save
 
         @new_user.picture = @avatar.photo.url
@@ -56,7 +65,6 @@ class Ajax::SessionsController < ApplicationController
     success = resource.request
 
     warden.logout(:user)
-
     respond success, resource
   end
 
@@ -71,15 +79,5 @@ class Ajax::SessionsController < ApplicationController
 
   def params_facebook
     params.permit(:access_token, :fb_id)
-  end
-
-  def process_login
-    @user.os_type = @os_type
-    @user.device_type = @device_type
-    success = @user.login
-    if success
-      warden.set_user(@user.warden_session, scope: :user)
-    end
-    respond success, @user
   end
 end

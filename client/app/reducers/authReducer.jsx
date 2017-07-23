@@ -3,14 +3,17 @@ import {
   REGISTER_REGISTERING,
   REGISTER_VERIFING,
 } from 'constants/states';
-import * as AUTH_BY from 'constants/authBy';
+import {
+  EMAIL_AUTH,
+  PHONE_AUTH,
+} from 'constants/authBy';
 
 const initialState = {
   isLogin: false,
   currentUser: {},
 
-  registerBy: AUTH_BY.EMAIL,
-  loginBy: AUTH_BY.EMAIL,
+  registerBy: EMAIL_AUTH,
+  loginBy: EMAIL_AUTH,
 
   registerState: REGISTER_REGISTERING,
   registerFailMessage: null,
@@ -74,35 +77,8 @@ export default (state = initialState, action) => {
         loginFailMessage: action.message,
       });
 
-    case types.CHANGE_EMAIL:
-      return Object.assign({}, state, {
-        email: action.email,
-      });
-
-    case types.CHANGE_PHONE:
-      return Object.assign({}, state, {
-        phone: action.phone,
-      });
-
-    case types.CHANGE_PASSWORD:
-      return Object.assign({}, state, {
-        password: action.password,
-      });
-
-    case types.CHANGE_PASSWORD_CONFIRMATION:
-      return Object.assign({}, state, {
-        passwordConfirmation: action.passwordConfirmation,
-      });
-
-    case types.CHANGE_NICKNAME:
-      return Object.assign({}, state, {
-        nickname: action.nickname,
-      });
-
-    case types.CHANGE_VERIFY_CODE:
-      return Object.assign({}, state, {
-        verifyCode: action.verifyCode,
-      });
+    case types.CHANGE_FORM:
+      return Object.assign({}, state, action.dataChange);
 
     default:
       return Object.assign({}, initialState, state);

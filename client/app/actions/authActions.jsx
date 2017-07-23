@@ -135,7 +135,7 @@ export function verifyByPhone({ phone, sms }) {
   };
 }
 // EMAIL 登入
-export function loginByEmail({ email, password }) {
+export function loginEmail({ email, password }) {
   return (dispatch) => {
     fetchXhrPost(
       '/ajax/email_login.json',
@@ -152,13 +152,14 @@ export function loginByEmail({ email, password }) {
   };
 }
 // PHONE 登入
-export function loginByPhone({ phone, password }) {
+export function loginPhone({ phone, password }) {
   return (dispatch) => {
     fetchXhrPost(
       '/ajax/phone_login.json',
       { phone, password },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        browserHistory.push('/');
       },
       (response) => {
         dispatch(loginFail(response.message));
@@ -167,17 +168,14 @@ export function loginByPhone({ phone, password }) {
   };
 }
 // FACEBOOK 登入
-export function loginFacebook({ userID, accessToken, picture: { data: { url } } }) {
+export function loginFacebook({ userID, accessToken }) {
   return (dispatch) => {
     fetchXhrPost(
       '/ajax/facebook_login_callback.json',
-      {
-        fb_id: userID,
-        access_token: accessToken,
-        avatar_url: url,
-      },
+      { fb_id: userID, access_token: accessToken },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        browserHistory.push('/');
       },
       (response) => {
         dispatch(loginFail(response.message));
@@ -187,34 +185,9 @@ export function loginFacebook({ userID, accessToken, picture: { data: { url } } 
 }
 
 // COLUMN CHANGE
-export const updateEmail = email => ({
-  type: types.CHANGE_EMAIL,
-  email,
-});
-
-export const updatePhone = phone => ({
-  type: types.CHANGE_PHONE,
-  phone,
-});
-
-export const updatePassword = password => ({
-  type: types.CHANGE_PASSWORD,
-  password,
-});
-
-export const updatePasswordConfirmation = passwordConfirmation => ({
-  type: types.CHANGE_PASSWORD_CONFIRMATION,
-  passwordConfirmation,
-});
-
-export const updateNickname = nickname => ({
-  type: types.CHANGE_NICKNAME,
-  nickname,
-});
-
-export const updateVerifyCode = verifyCode => ({
-  type: types.CHANGE_VERIFY_CODE,
-  verifyCode,
+export const changeForm = dataChange => ({
+  type: types.CHANGE_FORM,
+  dataChange,
 });
 
 // REGISTER BY
@@ -226,9 +199,7 @@ export const switchEmailRegistration = () => changeRegisterBy(AUTH_BY.EMAIL);
 export const switchPhoneRegistration = () => changeRegisterBy(AUTH_BY.PHONE);
 
 // LOGIN BY
-const changeLoginBy = loginBy => ({
+export const changeLoginBy = loginBy => ({
   type: types.CHANGE_LOGIN_BY,
   loginBy,
 });
-export const switchEmailLogin = () => changeLoginBy(AUTH_BY.EMAIL);
-export const switchPhoneLogin = () => changeLoginBy(AUTH_BY.PHONE);

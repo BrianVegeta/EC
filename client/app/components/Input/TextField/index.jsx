@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
+
+import IconPhone from 'react-icons/lib/md/phone-iphone';
+import IconLock from 'react-icons/lib/md/lock-outline';
+import IconMail from 'react-icons/lib/md/mail-outline';
+
+import bindingErrors from 'components/Input/hoc/hasError';
+
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import bindingErrors from '../../hoc/bindingErrors';
 
 const cx = classnames.bind(styles);
 class TextField extends React.Component {
+
   static defaultProps = {
     icon: null,
     suffix: null,
@@ -14,27 +22,67 @@ class TextField extends React.Component {
     placeholder: null,
     type: 'text',
     errorMessage: null,
+    value: '',
+    onChange: null,
   };
+
   static propTypes = {
-    icon: PropTypes.func,
+    icon: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.oneOf(['phone', 'email', 'password']),
+    ]),
     suffix: PropTypes.node,
     suffixWidth: PropTypes.number,
     placeholder: PropTypes.string,
     type: PropTypes.string,
     errorMessage: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    // onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
   };
+
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
+
     this.state = {
       isFocusing: false,
     };
+
+    this.onChange = this.onChange.bind(this);
   }
+
   onChange(e) {
-    this.props.resource.update(e.target.value);
+    const { onChange } = this.props;
+    if (onChange === null) return;
+
+    onChange(e.target.value);
   }
+
+  switchIcon() {
+    const { icon } = this.props;
+    switch (icon) {
+      case 'phone':
+        return <IconPhone />;
+
+      case 'email':
+        return <IconMail />;
+
+      case 'password':
+        return <IconLock />;
+
+      default:
+        return null;
+    }
+  }
+
+  renderIcon() {
+    const { icon } = this.props;
+    if (_.isString(icon)) {
+      return this.switchIcon();
+    }
+
+    return icon();
+  }
+
   render() {
     const {
       icon,
@@ -42,10 +90,11 @@ class TextField extends React.Component {
       suffix,
       suffixWidth,
       type,
+      value,
       errorMessage,
     } = this.props;
     const { isFocusing } = this.state;
-    const { resource } = this.props;
+
     return (
       <div styleName="inputControl">
         { errorMessage && <div styleName="error">{errorMessage}</div> }
@@ -55,7 +104,7 @@ class TextField extends React.Component {
               <input
                 styleName="input"
                 type={type}
-                value={resource.value}
+                value={value}
                 spellCheck={false}
                 placeholder={placeholder}
                 style={{ marginRight: suffix ? suffixWidth : null }}
@@ -64,8 +113,16 @@ class TextField extends React.Component {
                 onChange={this.onChange}
               />
             </div>
-            {icon && <div className={cx('icon', { focusing: isFocusing })}>{icon()}</div>}
-            {suffix && <div styleName="suffix">{suffix}</div>}
+            {this.props.icon &&
+              <div className={cx('icon', { focusing: isFocusing })}>
+                {this.renderIcon()}
+              </div>
+            }
+            {suffix &&
+              <div styleName="suffix">
+                {suffix}
+              </div>
+            }
           </div>
         </div>
         <div className={cx('bottomLine', { focusing: isFocusing })} />
