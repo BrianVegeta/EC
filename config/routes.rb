@@ -5,14 +5,19 @@ Rails.application.routes.draw do
   namespace :ajax, format: true, constraints: { format: :json } do
     get :startup, to: 'startup#index'
 
-    post 'facebook_login_callback', to: 'sessions#create_by_facebook'
-    post 'phone_register', to: 'registration#create_by_phone'
-    post 'email_register', to: 'registration#create_by_email'
-    post 'phone_verify', to: 'registration#verify_by_phone'
-    post 'email_verify', to: 'registration#verify_by_email'
-    post 'phone_login', to: 'sessions#create_by_phone'
-    post 'email_login', to: 'sessions#create_by_email'
-    delete 'logout', to: 'sessions#destroy'
+    scope module: :auth do
+      # registeration
+      post 'phone_register', to: 'registration#create_by_phone'
+      post 'email_register', to: 'registration#create_by_email'
+      # verification
+      post 'phone_verify', to: 'registration#phone'
+      post 'email_verify', to: 'registration#email'
+      # sessions
+      post 'facebook_login_callback', to: 'sessions#facebook'
+      post 'phone_login', to: 'sessions#phone'
+      post 'email_login', to: 'sessions#email'
+      delete 'logout', to: 'sessions#destroy'
+    end
 
     namespace :api do
       # CONTRACT

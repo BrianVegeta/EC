@@ -1,10 +1,9 @@
-class Ajax::SessionsController < ApplicationController
+class Ajax::Auth::SessionsController < ApplicationController
   include WardenHelper
   include RespondHelper
-  prepend_before_action :prepare_browser_info
 
   # POST /ajax/email_login.json
-  def create_by_email
+  def email
     @user = ::Session::LoginEmail.new(params_email, browser_info)
 
     success = @user.request
@@ -14,7 +13,7 @@ class Ajax::SessionsController < ApplicationController
   end
 
   # POST /ajax/phone_login.json
-  def create_by_phone
+  def phone
     @user = ::Session::LoginMobile.new(params_phone, browser_info)
 
     success = @user.request
@@ -23,7 +22,7 @@ class Ajax::SessionsController < ApplicationController
   end
 
   # POST /ajax/facebook_login_callback.json
-  def create_by_facebook
+  def facebook
     @user = ::Session::LoginFacebook.new(params_facebook, browser_info)
     success = @user.request
 

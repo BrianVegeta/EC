@@ -6,24 +6,27 @@ import validate from 'validate.js';
 import styled from 'styled-components';
 import ErrorTooltip from 'components/ErrorTooltip';
 
-export default function inputWithError(InputComponent, defaultContraints) {
+export default function inputWithError(InputComponent, defaultProps) {
   const Container = styled.div`
     display: inline-block;
   `;
+
   return class extends React.Component {
 
     static defaultProps = {
       value: '',
+      valuesToEqual: null,
       onBlur: null,
       constraints: null,
       width: '100%',
-      disableValidator: false,
-      disableBlurValid: false,
-      disableErrorTooltip: false,
+      skipValidation: defaultProps.skipValidation || false,
+      validateOnBlur: defaultProps.validateOnBlur && true,
+      errorType: defaultProps.errorType || 'tooltip',
     };
 
     static propTypes = {
       value: PropTypes.string,
+      valuesToEqual: PropTypes.objectOf(PropTypes.string),
       onBlur: PropTypes.func,
       constraints: PropTypes.objectOf(
         PropTypes.oneOfType([
@@ -34,9 +37,9 @@ export default function inputWithError(InputComponent, defaultContraints) {
         ]),
       ),
       width: myPropTypes.width,
-      disableValidator: PropTypes.bool,
-      disableBlurValid: PropTypes.bool,
-      disableErrorTooltip: PropTypes.bool,
+      skipValidation: PropTypes.bool,
+      validateOnBlur: PropTypes.bool,
+      errorType: PropTypes.oneOf(['none', 'tooltip', 'inline']),
     };
 
     constructor(props) {
@@ -48,11 +51,9 @@ export default function inputWithError(InputComponent, defaultContraints) {
     }
 
     onBlur() {
-      const { onBlur, disableBlurValid } = this.props;
+      const { onBlur, validateOnBlur } = this.props;
       if (onBlur) onBlur();
-      if (!disableBlurValid) {
-        this.valid();
-      }
+      if (validateOnBlur) this.valid();
     }
 
     clearError() {
@@ -60,12 +61,15 @@ export default function inputWithError(InputComponent, defaultContraints) {
     }
 
     validator() {
-      const { value, constraints } = this.props;
-      return validate.single(value, constraints || defaultContraints);
+      const { value, constraints, valuesToEqual } = this.props;
+      if (valuesToEqual) {
+        return validate(valuesToEqual, constraints);
+      }
+      return validate.single(value, constraints);
     }
 
     valid() {
-      if (this.props.disableValidator) {
+      if (this.props.skipValidation) {
         this.clearError();
         return true;
       }
@@ -85,30 +89,29 @@ export default function inputWithError(InputComponent, defaultContraints) {
       return false;
     }
 
+    handle
+
     render() {
       const { error } = this.state;
       const {
         onBlur,
         constraints,
-        disableValidator,
-        disableBlurValid,
-        disableErrorTooltip,
+        skipValidation,
+        validateOnBlur,
+        errorType,
         width,
         ...otherProps
       } = this.props;
 
       return (
         <Container style={{ width }}>
-          { !disableErrorTooltip &&
-            error &&
-            <ErrorTooltip message={error} />}
+          {error && errorType === 'tooltip' && <ErrorTooltip message={error} />}
           <InputComponent
-            {...{
-              ...otherProps,
-              onBlur: this.onBlur,
-              width,
-              invalid: !!error,
-            }}
+            errorMessage={(error && errorType === 'inline') ? error : null}
+            {...otherProps}
+            onBlur={this.onBlur}
+            width={width}
+            invalid={!!error}
           />
         </Container>
       );

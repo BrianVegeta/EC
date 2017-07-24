@@ -1,7 +1,7 @@
-class Registration::Base < ApiBase
+class Verification::Phone < ApiBase
 
   def path
-    raise 'UNDEFINED PATH'
+    '/client/register/mobile/verify'
   end
 
   def initialize params, browser_info
@@ -9,7 +9,10 @@ class Registration::Base < ApiBase
   end
 
   def private_session_data
-    raise 'UNDEFINED PRIVATE SESSION DATA'
+    data = Hash.new
+    data['apitoken'] = response_headers['apitoken']
+    data['password'] = request_params['password']
+    data
   end
 
   def warden_session

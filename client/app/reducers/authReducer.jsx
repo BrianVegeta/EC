@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes/auth';
 import {
   REGISTER_REGISTERING,
   REGISTER_VERIFING,
-} from 'constants/states';
+} from 'constants/stateTypes/auth';
 import {
   EMAIL_AUTH,
 } from 'constants/authBy';
@@ -15,9 +15,9 @@ const initialState = {
   loginBy: EMAIL_AUTH,
 
   registerState: REGISTER_REGISTERING,
-  registerFailMessage: null,
-  verifyFailMessage: null,
-  loginFailMessage: null,
+  registerError: null,
+  verifyError: null,
+  loginError: null,
 
   email: '',
   phone: '',
@@ -63,17 +63,17 @@ export default (state = initialState, action) => {
 
     case types.REGISTER_FAILED:
       return Object.assign({}, state, {
-        registerFailMessage: action.message,
+        registerError: action.message,
       });
 
     case types.VERIFY_FAILED:
       return Object.assign({}, state, {
-        verifyFailMessage: action.message,
+        verifyError: action.message,
       });
 
     case types.LOGIN_FAILED:
       return Object.assign({}, state, {
-        loginFailMessage: action.message,
+        loginError: action.message,
       });
 
     case types.CHANGE_FORM:

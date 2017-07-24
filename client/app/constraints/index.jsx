@@ -1,22 +1,23 @@
 import bankSetup from './bankSetup';
+import auth from './auth';
+
+const {
+  realName,
+  identityNo,
+  accBankId,
+  accBankBranchId,
+  accName,
+  accNo,
+} = bankSetup;
+const {
+  email,
+  phone,
+  password,
+  passwordConfirmation,
+  nickname,
+} = auth;
 
 export default {
-  email: {
-    email: {
-      message: '^請填正確的 Email',
-    },
-  },
-  password: {
-    length: {
-      maximum: 12,
-      tooLong: '^請短於%{count}個英數字',
-      minimum: 8,
-      tooShort: '^請長於%{count}個英數字',
-    },
-  },
-  identityNo: {
-    
-  },
   verifyCode: {
     length: {
       is: 4,
@@ -28,12 +29,17 @@ export default {
       notValid: '^請輸入正確的驗證碼（4位數）',
     },
   },
-  phone: {
-    format: {
-      pattern: '^09[0-9]{8}$',
-      flags: 'i',
-      message: '^請輸入手機號碼',
-    },
-  },
-  ...bankSetup,
+  /* AUTH */
+  email,
+  password,
+  passwordConfirmation,
+  nickname,
+  phone,
+  /* BANK */
+  realName,
+  identityNo,
+  accBankId,
+  accBankBranchId,
+  accName,
+  accNo,
 };

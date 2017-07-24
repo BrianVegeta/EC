@@ -5,8 +5,9 @@ import _ from 'lodash';
 import IconPhone from 'react-icons/lib/md/phone-iphone';
 import IconLock from 'react-icons/lib/md/lock-outline';
 import IconMail from 'react-icons/lib/md/mail-outline';
+import IconVerified from 'react-icons/lib/md/verified-user';
 
-import bindingErrors from 'components/Input/hoc/hasError';
+import hasError from 'components/Input/hoc/hasError';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -28,8 +29,10 @@ class TextField extends React.Component {
 
   static propTypes = {
     icon: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.oneOf(['phone', 'email', 'password']),
+      PropTypes.func.isRequired,
+      PropTypes.oneOf([
+        'phone', 'email', 'password', 'verification',
+      ]).isRequired,
     ]),
     suffix: PropTypes.node,
     suffixWidth: PropTypes.number,
@@ -68,6 +71,9 @@ class TextField extends React.Component {
 
       case 'password':
         return <IconLock />;
+
+      case 'verification':
+        return <IconVerified />;
 
       default:
         return null;
@@ -131,4 +137,8 @@ class TextField extends React.Component {
   }
 }
 
-export default bindingErrors(CSS(TextField, styles));
+const errorDefaultProps = {
+  validateOnBlur: false,
+  errorType: 'inline',
+};
+export default hasError(CSS(TextField, styles), errorDefaultProps);

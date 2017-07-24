@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as authBy from 'constants/authBy';
+import { EMAIL_AUTH, PHONE_AUTH } from 'constants/authBy';
 
 const string = PropTypes.string;
 const number = PropTypes.number;
@@ -57,21 +57,38 @@ export default {
     items: PropTypes.arrayOf(PropTypes.object),
   }),
   search: PropTypes.shape({ query: PropTypes.string }),
-  // AUTH REDUCER
-  loginAuth: PropTypes.shape({
-    loginBy: PropTypes.oneOf([
-      authBy.EMAIL,
-      authBy.PHONE,
-    ]),
+  /* ----------- AUTH ----------- */
+  /* 登入 */
+  loginAuthShape: PropTypes.shape({
+    loginBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]),
     email: PropTypes.string,
     phone: PropTypes.string,
     password: PropTypes.string,
   }),
+  /* 註冊 */
+  signupAuthShape: {
+    registerError: PropTypes.string,
+    registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    passwordConfirmation: PropTypes.string.isRequired,
+    nickname: PropTypes.string.isRequired,
+  },
+  /* 驗證 */
+  verificationAuthShape: {
+    verifyError: PropTypes.string,
+    registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    verifyCode: PropTypes.string.isRequired,
+  },
+  /* LAYOUT NAVBAR */
   authOnHeader: PropTypes.shape({
     isLogin: PropTypes.bool,
     currentUser: PropTypes.object,
   }),
-
+  /* ----------- AUTH END ----------- */
   item: PropTypes.object,
   orderBoard: PropTypes.object,
   style: PropTypes.object,

@@ -100,7 +100,7 @@ export function registerByPhone({ phone, password }) {
   };
 }
 // EMAIL 驗證
-export function verifyByEmail({ email, verifycode }) {
+export function verifyEmail({ email, verifycode }) {
   return (dispatch) => {
     dispatch(verifyFail(null));
     // TODO: FLASH MESSAGE
@@ -118,7 +118,7 @@ export function verifyByEmail({ email, verifycode }) {
   };
 }
 // PHONE 驗證
-export function verifyByPhone({ phone, sms }) {
+export function verifyPhone({ phone, sms }) {
   return (dispatch) => {
     dispatch(verifyFail(null));
     // TODO: FLASH MESSAGE
@@ -191,12 +191,10 @@ export const changeForm = dataChange => ({
 });
 
 // REGISTER BY
-const changeRegisterBy = registerBy => ({
+export const changeRegisterBy = registerBy => ({
   type: types.CHANGE_REGISTER_BY,
   registerBy,
 });
-export const switchEmailRegistration = () => changeRegisterBy(AUTH_BY.EMAIL);
-export const switchPhoneRegistration = () => changeRegisterBy(AUTH_BY.PHONE);
 
 // LOGIN BY
 export const changeLoginBy = loginBy => ({

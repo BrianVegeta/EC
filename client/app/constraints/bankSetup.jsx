@@ -1,4 +1,13 @@
-
+/**
+ *
+ * @realName
+ * @identityNo
+ * @accBankId
+ * @accBankBranchId
+ * @accName
+ * @accNo
+ *
+ */
 export default {
   // 真實姓名
   realName: {

@@ -100,8 +100,8 @@ class Confirm extends React.Component {
               value={this.state.verifyCode}
               onChange={this.onVerifyCodeChange}
               constraints={constraints.verifyCode}
-              disableBlurValid
-              disableErrorTooltip
+              validateOnBlur={false}
+              errorType="none"
             />
           </div>
         </div>

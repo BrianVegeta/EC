@@ -23,10 +23,10 @@ class RegistrationModel {
     this.phoneModel = new SimpleInputModel('phone');
     this.passwordModel = new SimpleInputModel('password');
 
+    /* BINDS */
     this.onEmailLogin = this.onEmailLogin.bind(this);
     this.onPhoneLogin = this.onPhoneLogin.bind(this);
     this.onFacebookLogin = this.onFacebookLogin.bind(this);
-
     this.switchEmailLogin = this.switchEmailLogin.bind(this);
     this.switchPhoneLogin = this.switchPhoneLogin.bind(this);
   }

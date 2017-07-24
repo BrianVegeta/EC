@@ -46,12 +46,12 @@ export default (routesHelper, dispatch) => ({
       component: layoutHoc(Publish, {}),
       childRoutes: [
         AuthLogin(routesHelper, dispatch),
+        Registration(routesHelper, dispatch),
       ],
     },
     {
       component: layoutHoc(Publish, { requireAuth: true, confirmLeave: true }),
       childRoutes: [
-        Registration(routesHelper, dispatch),
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),
         ReleaseSpace(routesHelper, dispatch),

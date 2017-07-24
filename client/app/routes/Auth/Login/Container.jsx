@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 import TextField from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
-import AlertPanel from 'components/AlertPanel';
+import AlertPanel from 'components/Alert/Panel';
 
 import { FACEBOOK_APP_ID } from 'constants/config';
+import constraints from 'constraints';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -19,24 +20,23 @@ const cx = classnames.bind(styles);
 class LoginContainer extends React.Component {
 
   static propTypes = {
-    auth: myPropTypes.loginAuth.isRequired,
+    auth: PropTypes.shape(
+      myPropTypes.loginAuthShape,
+    ).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
-  renderAlertMsg() {
-    const { loginFailMessage } = this.props.auth;
-    if (!loginFailMessage) return null;
-
-    return (
-      <div styleName="alert">
-        <AlertPanel message={loginFailMessage} />
-      </div>
-    );
+  login({ onLogin }) {
+    const isLoginValid = this.loginInput.valid();
+    const isPasswordValid = this.passwordInput.valid();
+    if (isLoginValid && isPasswordValid) {
+      onLogin();
+    }
   }
 
   render() {
     const { auth, dispatch } = this.props;
-    const { loginBy, email, phone, password } = auth;
+    const { loginBy, email, phone, password, loginError } = auth;
     const loginAuth = { loginBy, email, phone, password };
 
     const loginModel = new LoginModel({ ...loginAuth, dispatch });
@@ -48,46 +48,51 @@ class LoginContainer extends React.Component {
       PHONE_AUTH,
     } = loginModel;
 
+    const onLogin = {
+      [EMAIL_AUTH]: loginModel.onEmailLogin,
+      [PHONE_AUTH]: loginModel.onPhoneLogin,
+    }[loginBy];
+
     return (
       <div styleName="container">
-        {this.renderAlertMsg()}
+        <AlertPanel text={loginError} />
         {{
           [EMAIL_AUTH]: (
             <TextField
-              ref={loginInput => (this.login = loginInput)}
+              ref={loginInput => (this.loginInput = loginInput)}
               icon="email"
               placeholder="Email"
               onChange={emailModel.onChange}
               value={emailModel.value}
+              constraints={constraints.email}
             />
           ),
           [PHONE_AUTH]: (
             <TextField
-              ref={loginInput => (this.login = loginInput)}
+              ref={loginInput => (this.loginInput = loginInput)}
               icon="phone"
               placeholder="手機號碼"
               onChange={phoneModel.onChange}
               value={phoneModel.value}
+              constraints={constraints.phone}
             />
           ),
         }[loginBy]}
         <TextField
-          ref={input => (this.password = input)}
+          ref={input => (this.passwordInput = input)}
           icon="password"
           placeholder="密碼"
           type="password"
           onChange={passwordModel.onChange}
           value={passwordModel.value}
+          constraints={constraints.password}
         />
         <div className={cx('button')}>
           <FormButton
             content="登入"
             size="lg"
             style={{ width: '100%' }}
-            onClick={{
-              [EMAIL_AUTH]: loginModel.onEmailLogin,
-              [PHONE_AUTH]: loginModel.onPhoneLogin,
-            }[loginBy]}
+            onClick={() => this.login({ onLogin })}
           />
         </div>
         <div className={cx('button', 'bottom')}>
