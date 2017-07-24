@@ -8,7 +8,6 @@ class Ajax::Auth::SessionsController < ApplicationController
 
     success = @user.request
     warden_set_user(@user.warden_session) if success
-
     respond success, @user
   end
 
