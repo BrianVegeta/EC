@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
     render json: { success: false, message: nil }, status: 404
   end
 
+  def reverse_merge data, format
+    data.merge(format) { |key, v1, v2| v1 }
+  end
+
   protected
   # common params for uid request 20170705 KUAN
   def current_uid_params
