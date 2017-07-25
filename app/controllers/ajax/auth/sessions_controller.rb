@@ -4,7 +4,7 @@ class Ajax::Auth::SessionsController < ApplicationController
 
   # POST /ajax/email_login.json
   def email
-    @user = ::Session::LoginEmail.new(params_email, browser_info)
+    @user = ::Auth::Session::LoginEmail.new(params_email, browser_info)
 
     success = @user.request
     warden_set_user(@user.warden_session) if success
@@ -13,7 +13,7 @@ class Ajax::Auth::SessionsController < ApplicationController
 
   # POST /ajax/phone_login.json
   def phone
-    @user = ::Session::LoginMobile.new(params_phone, browser_info)
+    @user = ::Auth::Session::LoginMobile.new(params_phone, browser_info)
 
     success = @user.request
     warden_set_user(@user.warden_session) if success
@@ -22,7 +22,7 @@ class Ajax::Auth::SessionsController < ApplicationController
 
   # POST /ajax/facebook_login_callback.json
   def facebook
-    @user = ::Session::LoginFacebook.new(params_facebook, browser_info)
+    @user = ::Auth::Session::LoginFacebook.new(params_facebook, browser_info)
     success = @user.request
 
     if success
@@ -30,7 +30,7 @@ class Ajax::Auth::SessionsController < ApplicationController
       respond success, @user and return
     end
 
-    @new_user = ::Registration::Facebook.new(params_facebook, browser_info)
+    @new_user = ::Auth::Registration::Facebook.new(params_facebook, browser_info)
     new_user_success = @new_user.request
 
     if new_user_success
@@ -59,7 +59,7 @@ class Ajax::Auth::SessionsController < ApplicationController
   end
 
   def destroy
-    resource = ::Session::Logout.new current_uid_params, current_apitoken
+    resource = ::Auth::Session::Logout.new current_uid_params, current_apitoken
     success = resource.request
 
     warden.logout(:user)

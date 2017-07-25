@@ -1,4 +1,4 @@
-class Session::Logout < ApiAuthedBase
+class Auth::Session::Logout < ApiAuthedBase
   PATH = '/client/contract/calendar';
 
   def path

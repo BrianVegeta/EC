@@ -8,6 +8,7 @@ import Home from 'layouts/Home';
 import ItemDetail from 'layouts/ItemDetail';
 import Mine from 'layouts/MyAccount';
 import Publish from 'layouts/Publish';
+import Signinup from 'layouts/Signinup';
 
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
@@ -43,7 +44,7 @@ export default (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: layoutHoc(Publish, {}),
+      component: layoutHoc(Signinup, {}),
       childRoutes: [
         AuthLogin(routesHelper, dispatch),
         Registration(routesHelper, dispatch),

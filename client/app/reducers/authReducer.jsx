@@ -11,6 +11,7 @@ const initialState = {
   isLogin: false,
   currentUser: {},
 
+  isLoading: false,
   registerBy: EMAIL_AUTH,
   loginBy: EMAIL_AUTH,
 
@@ -25,6 +26,20 @@ const initialState = {
   passwordConfirmation: '',
   nickname: '',
   verifyCode: '',
+  // registerBy: EMAIL_AUTH,
+  // loginBy: EMAIL_AUTH,
+  //
+  // registerState: REGISTER_VERIFING,
+  // registerError: null,
+  // verifyError: null,
+  // loginError: null,
+  //
+  // email: 'phyala9@mailnesia.com',
+  // phone: '',
+  // password: 'password',
+  // passwordConfirmation: 'password',
+  // nickname: 'nick',
+  // verifyCode: '1989',
 };
 
 export default (state = initialState, action) => {
@@ -40,6 +55,12 @@ export default (state = initialState, action) => {
         isLogin: true,
         currentUser: action.currentUser,
       });
+
+    case types.LOADING:
+      return Object.assign({}, state, { isLoading: true });
+
+    case types.LOADED:
+      return Object.assign({}, state, { isLoading: false });
 
     case types.CHANGE_CURRENT_USER:
       return Object.assign({}, state, {

@@ -1,7 +1,7 @@
-class Session::LoginEmail < Session::Login
+class Auth::Session::LoginMobile < Auth::Session::Login
 
   def path
-    '/client/session/email/login'
+    '/client/session/mobile/login'
   end
 
   def private_session_data

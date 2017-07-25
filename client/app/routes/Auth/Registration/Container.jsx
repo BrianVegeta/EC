@@ -17,8 +17,7 @@ class RegistrationController extends React.Component {
 
   static propTypes = {
     auth: PropTypes.shape(
-      Object.assign(
-        {},
+      Object.assign({},
         myPropTypes.signupAuthShape,
         myPropTypes.verificationAuthShape,
       ),

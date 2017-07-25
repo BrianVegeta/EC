@@ -3,15 +3,19 @@ import {
   changeForm,
   verifyEmail,
   verifyPhone,
+  resendEmailVerification,
+  resendPhoneVerification,
 } from 'actions/authActions';
 import SimpleInputHocModel from './SimpleInputHocModel';
 
 export default class {
-  constructor({ email, phone, verifyCode, dispatch }) {
+  constructor({ email, phone, verifyCode, password, nickname, dispatch }) {
     this.props = {
       email,
       phone,
       verifyCode,
+      password,
+      nickname,
       dispatch,
     };
 
@@ -26,19 +30,45 @@ export default class {
     /* BINDS */
     this.onEmailVerify = this.onEmailVerify.bind(this);
     this.onPhoneVerify = this.onPhoneVerify.bind(this);
+    this.onResendEmail = this.onResendEmail.bind(this);
+    this.onResendPhone = this.onResendPhone.bind(this);
   }
 
   onEmailVerify() {
-    const { email, verifyCode } = this.props;
+    const { email, verifyCode, password, nickname } = this.props;
     this.props.dispatch(
-      verifyEmail({ email, verifycode: verifyCode }),
+      verifyEmail({
+        email,
+        verifycode: verifyCode,
+        password,
+        name: nickname,
+      }),
+    );
+  }
+
+  onResendEmail() {
+    const { email } = this.props;
+    this.props.dispatch(
+      resendEmailVerification({ email }),
     );
   }
 
   onPhoneVerify() {
-    const { phone, verifyCode } = this.props;
+    const { phone, verifyCode, password, nickname } = this.props;
     this.props.dispatch(
-      verifyPhone({ phone, sms: verifyCode }),
+      verifyPhone({
+        phone,
+        sms: verifyCode,
+        password,
+        name: nickname,
+      }),
+    );
+  }
+
+  onResendPhone() {
+    const { phone } = this.props;
+    this.props.dispatch(
+      resendPhoneVerification({ phone }),
     );
   }
 }

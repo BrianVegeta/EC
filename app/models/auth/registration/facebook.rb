@@ -1,7 +1,9 @@
-class Verification::Email < ApiBase
+class Auth::Registration::Facebook < ApiBase
+
+  attr_accessor :picture
 
   def path
-    '/client/register/mobile/verify'
+    '/client/register/fb/regist'
   end
 
   def initialize params, browser_info
@@ -11,7 +13,8 @@ class Verification::Email < ApiBase
   def private_session_data
     data = Hash.new
     data['apitoken'] = response_headers['apitoken']
-    data['password'] = request_params['password']
+    data['access_token'] = request_params['access_token']
+    data['picture'] = self.picture
     data
   end
 

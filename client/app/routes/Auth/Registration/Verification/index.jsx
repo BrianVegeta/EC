@@ -5,6 +5,9 @@ import myPropTypes from 'propTypes';
 import TextField from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
 import AlertPanel from 'components/Alert/Panel';
+import LoadingOverlay from 'components/Loading/Overlay';
+
+import constraints from 'constraints';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -32,12 +35,15 @@ class Verification extends React.Component {
   render() {
     const { verificationAuth, dispatch } = this.props;
     const {
+      isLoading,
       verifyError,
       registerBy,
       ...{
         email,
         phone,
         verifyCode,
+        password,
+        nickname,
       }
     } = verificationAuth;
     const verificationModel = new VerificationModel({
@@ -45,6 +51,8 @@ class Verification extends React.Component {
         email,
         phone,
         verifyCode,
+        password,
+        nickname,
       },
       dispatch,
     });
@@ -67,6 +75,7 @@ class Verification extends React.Component {
 
     return (
       <div styleName="container">
+        {isLoading && <LoadingOverlay />}
         <AlertPanel text={verifyError} />
         <TextField
           ref={input => (this.verifyInput = input)}
@@ -74,6 +83,7 @@ class Verification extends React.Component {
           placeholder="請輸入驗證碼"
           value={verifyCodeModel.value}
           onChange={verifyCodeModel.onChange}
+          constraints={constraints.verifyCode}
         />
         <div styleName="identity">
           {{
@@ -91,7 +101,10 @@ class Verification extends React.Component {
             colorType="greenBorder"
             size="lg"
             style={{ width: '100%' }}
-            onClick={() => this.verify(onVerify)}
+            onClick={{
+              [EMAIL_AUTH]: verificationModel.onResendEmail,
+              [PHONE_AUTH]: verificationModel.onResendPhone,
+            }[registerBy]}
           />
         </div>
         <div className={cx('button', 'bottom')}>

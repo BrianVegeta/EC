@@ -1,4 +1,4 @@
-class Session::LoginFacebook < Session::Login
+class Auth::Session::LoginFacebook < Auth::Session::Login
 
   def path
     '/client/session/fb/login'

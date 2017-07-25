@@ -1,4 +1,4 @@
-class Session::Login < ApiBase
+class Auth::Session::Login < ApiBase
 
   def path
     raise 'UNDEFINED PATH'

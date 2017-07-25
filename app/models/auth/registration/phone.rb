@@ -1,4 +1,4 @@
-class Registration::Phone < ApiBase
+class Auth::Registration::Phone < ApiBase
 
   def path
     '/client/register/mobile/regist'

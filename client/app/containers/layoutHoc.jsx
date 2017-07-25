@@ -10,7 +10,7 @@ import ModalContainer from 'containers/ModalContainer';
 import PopupContainer from 'containers/Popup/Container';
 import ScheduleContainer from 'containers/ScheduleContainer';
 
-import { confirmLeavePage } from '../funcs/confirm';
+import { confirmLeavePage } from 'lib/confirm';
 
 function hoc(Component, { requireAuth, confirmLeave }) {
   return class extends React.Component {

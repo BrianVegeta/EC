@@ -4,14 +4,14 @@ class Ajax::Auth::RegistrationController < ApplicationController
 
   # POST /ajax/email_register
   def email
-    @user = ::Registration::Email.new(email_params)
+    @user = ::Auth::Registration::Email.new(email_params)
     success = @user.request
     respond success, @user
   end
 
   # POST /ajax/phone_register
   def phone
-    @user = ::Registration::Phone..new(phone_params)
+    @user = ::Auth::Registration::Phone..new(phone_params)
     success = @user.request
     respond success, @user
   end

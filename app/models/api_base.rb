@@ -29,7 +29,7 @@ class ApiBase
     when 404
       raise 'NOT FOUND'
     else
-      raise response.inspect
+      raise "#{self.path}#{response.inspect}"
       raise "ZOMG ERROR #{response.code}"
     end
   end

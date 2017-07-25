@@ -1,7 +1,7 @@
-class Verification::Phone < ApiBase
+class Auth::Verification::Email < ApiBase
 
   def path
-    '/client/register/mobile/verify'
+    '/client/register/email/verify'
   end
 
   def initialize params, browser_info

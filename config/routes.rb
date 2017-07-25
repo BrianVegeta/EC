@@ -7,11 +7,14 @@ Rails.application.routes.draw do
 
     scope module: :auth do
       # registeration
-      post 'phone_register', to: 'registration#create_by_phone'
-      post 'email_register', to: 'registration#create_by_email'
+      post 'phone_register', to: 'registration#phone'
+      post 'email_register', to: 'registration#email'
       # verification
-      post 'phone_verify', to: 'registration#phone'
-      post 'email_verify', to: 'registration#email'
+      post 'phone_verify', to: 'verification#phone'
+      post 'email_verify', to: 'verification#email'
+      # resend
+      post 'phone_verify_resend', to: 'verification#phone_resend'
+      post 'email_verify_resend', to: 'verification#email_resend'
       # sessions
       post 'facebook_login_callback', to: 'sessions#facebook'
       post 'phone_login', to: 'sessions#phone'

@@ -7,6 +7,7 @@ import FacebookLogin from 'react-facebook-login';
 import TextField from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
 import AlertPanel from 'components/Alert/Panel';
+import LoadingOverlay from 'components/Loading/Overlay';
 
 import { FACEBOOK_APP_ID } from 'constants/config';
 import constraints from 'constraints';
@@ -20,9 +21,7 @@ const cx = classnames.bind(styles);
 class LoginContainer extends React.Component {
 
   static propTypes = {
-    auth: PropTypes.shape(
-      myPropTypes.loginAuthShape,
-    ).isRequired,
+    auth: PropTypes.shape(myPropTypes.loginAuthShape).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -36,10 +35,27 @@ class LoginContainer extends React.Component {
 
   render() {
     const { auth, dispatch } = this.props;
-    const { loginBy, email, phone, password, loginError } = auth;
-    const loginAuth = { loginBy, email, phone, password };
+    const {
+      isLoading,
+      loginError,
+      ...{
+        loginBy,
+        email,
+        phone,
+        password,
+      }
+    } = auth;
 
-    const loginModel = new LoginModel({ ...loginAuth, dispatch });
+    const loginModel = new LoginModel({
+      ...{
+        loginBy,
+        email,
+        phone,
+        password,
+      },
+      dispatch,
+    });
+
     const {
       emailModel,
       phoneModel,
@@ -55,6 +71,7 @@ class LoginContainer extends React.Component {
 
     return (
       <div styleName="container">
+        {isLoading && <LoadingOverlay />}
         <AlertPanel text={loginError} />
         {{
           [EMAIL_AUTH]: (

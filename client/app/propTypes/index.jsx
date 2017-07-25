@@ -59,14 +59,16 @@ export default {
   search: PropTypes.shape({ query: PropTypes.string }),
   /* ----------- AUTH ----------- */
   /* 登入 */
-  loginAuthShape: PropTypes.shape({
-    loginBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]),
-    email: PropTypes.string,
-    phone: PropTypes.string,
-    password: PropTypes.string,
-  }),
+  loginAuthShape: {
+    isLoading: PropTypes.bool.isRequired,
+    loginBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  },
   /* 註冊 */
   signupAuthShape: {
+    isLoading: PropTypes.bool.isRequired,
     registerError: PropTypes.string,
     registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
     email: PropTypes.string.isRequired,
@@ -77,6 +79,7 @@ export default {
   },
   /* 驗證 */
   verificationAuthShape: {
+    isLoading: PropTypes.bool.isRequired,
     verifyError: PropTypes.string,
     registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
     email: PropTypes.string.isRequired,

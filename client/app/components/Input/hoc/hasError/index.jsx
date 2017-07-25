@@ -5,6 +5,7 @@ import _ from 'lodash';
 import validate from 'validate.js';
 import styled from 'styled-components';
 import ErrorTooltip from 'components/ErrorTooltip';
+import { randomKey } from 'lib/generator';
 
 export default function inputWithError(InputComponent, defaultProps) {
   const Container = styled.div`
@@ -15,7 +16,7 @@ export default function inputWithError(InputComponent, defaultProps) {
 
     static defaultProps = {
       value: '',
-      valuesToEqual: null,
+      equalityTarget: null,
       onBlur: null,
       constraints: null,
       width: '100%',
@@ -26,7 +27,7 @@ export default function inputWithError(InputComponent, defaultProps) {
 
     static propTypes = {
       value: PropTypes.string,
-      valuesToEqual: PropTypes.objectOf(PropTypes.string),
+      equalityTarget: PropTypes.objectOf(PropTypes.string),
       onBlur: PropTypes.func,
       constraints: PropTypes.objectOf(
         PropTypes.oneOfType([
@@ -61,10 +62,18 @@ export default function inputWithError(InputComponent, defaultProps) {
     }
 
     validator() {
-      const { value, constraints, valuesToEqual } = this.props;
-      if (valuesToEqual) {
-        return validate(valuesToEqual, constraints);
+      const tempKey = randomKey();
+      const { value, constraints, equalityTarget } = this.props;
+
+      /* password confirmation */
+      if (equalityTarget) {
+        const errors = validate(
+          Object.assign({}, equalityTarget, { [tempKey]: value }),
+          { [tempKey]: constraints },
+        );
+        return (errors && errors[tempKey]) || undefined;
       }
+
       return validate.single(value, constraints);
     }
 

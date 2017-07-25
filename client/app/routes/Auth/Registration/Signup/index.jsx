@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import { pick } from 'lodash';
 
 import TextField from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
 import AlertPanel from 'components/Alert/Panel';
+import LoadingOverlay from 'components/Loading/Overlay';
 import constraints from 'constraints';
 
 import classnames from 'classnames/bind';
@@ -43,6 +43,7 @@ class Signup extends React.Component {
   render() {
     const { signupAuth, dispatch } = this.props;
     const {
+      isLoading,
       registerError,
       registerBy,
       ...{
@@ -83,6 +84,7 @@ class Signup extends React.Component {
 
     return (
       <div styleName="container">
+        {isLoading && <LoadingOverlay />}
         <AlertPanel text={registerError} />
         {{
           [EMAIL_AUTH]: (
@@ -122,11 +124,8 @@ class Signup extends React.Component {
           type="password"
           value={passwordConfirmationModel.value}
           onChange={passwordConfirmationModel.onChange}
-          valuesToEqual={{
-            password: passwordModel.value,
-            passwordConfirmation: passwordConfirmationModel.value,
-          }}
-          constraints={pick(constraints, ['password', 'passwordConfirmation'])}
+          equalityTarget={{ password: passwordModel.value }}
+          constraints={constraints.passwordConfirmation}
         />
         <TextField
           ref={input => (this.nicknameInput = input)}
