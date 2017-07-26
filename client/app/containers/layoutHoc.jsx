@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, browserHistory } from 'react-router';
-
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
+
 import { initEnvironment } from 'actions/environmentActions';
+import { redirectTo } from 'actions/module/routingActions';
+
 import * as paths from 'lib/paths';
 import ModalContainer from 'containers/ModalContainer';
 import PopupContainer from 'containers/Popup/Container';
@@ -18,22 +20,28 @@ function hoc(Component, { requireAuth, confirmLeave }) {
     static propTypes = {
       dispatch: PropTypes.func.isRequired,
       auth: myPropTypes.authOnHeader.isRequired,
-      routing: myPropTypes.routing.isRequired,
       router: myPropTypes.router.isRequired,
       route: myPropTypes.route.isRequired,
     };
 
     componentDidMount() {
-      if (requireAuth) this.authHandler();
-      if (confirmLeave) this.hookConfirmLeave();
-
-      const { dispatch } = this.props;
-      dispatch(initEnvironment());
+      this.props.dispatch(initEnvironment());
+      this.handleRequireAuth();
+      this.handleConfirmLeave();
     }
 
-    hookConfirmLeave() {
-      const { router, route } = this.props;
+    componentWillUnmount() {
+      window.removeEventListener('beforeunload', confirmLeavePage);
+    }
 
+    /**
+     * setRouteLeaveHook will removed on componentWillMount
+     * but beforeunload will not
+     */
+    handleConfirmLeave() {
+      if (!confirmLeave) return;
+
+      const { router, route } = this.props;
       window.addEventListener('beforeunload', confirmLeavePage);
       router.setRouteLeaveHook(route, () => {
         const sureToLeave = confirm('確定離開？您的變更將不會儲存');
@@ -44,14 +52,13 @@ function hoc(Component, { requireAuth, confirmLeave }) {
       });
     }
 
-    authHandler() {
+    handleRequireAuth() {
+      if (!requireAuth) return;
       if (this.props.auth.isLogin) return;
 
-      const { locationBeforeTransitions } = this.props.routing;
-      browserHistory.push({
-        pathname: paths.LOGIN,
-        referrer: locationBeforeTransitions.pathname,
-      });
+      this.props.dispatch(
+        redirectTo(paths.LOGIN),
+      );
     }
 
     render() {

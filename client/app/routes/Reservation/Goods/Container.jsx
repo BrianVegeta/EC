@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { checkBankaccReady, unzipBankInfo } from 'actions/module/bankaccActions';
 import { isStateInitial as isItemInitial } from 'reducers/itemReducer';
 
 const Container = styled.div`
@@ -26,7 +27,15 @@ class ReservationGoods extends React.PureComponent {
   static propTypes = {
     formComponent: PropTypes.node.isRequired,
     item: myPropTypes.item.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    this.props.dispatch(checkBankaccReady({
+      success: data => console.log(data),
+      error: () => console.log('error'),
+    }));
+  }
 
   render() {
     const { item } = this.props;

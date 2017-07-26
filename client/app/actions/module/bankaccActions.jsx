@@ -2,7 +2,7 @@
 
 // BANK INFO, NO REDUCER
 
-import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrAuthedPost, asyncXhrAuthedGet } from 'lib/xhr';
 
 export const unzipBankInfo = ({ BKN, BKBR, BRN, PH, EM, BN, BA, RN, CID }) => ({
   bankName: BKN, // 銀行名稱
@@ -19,6 +19,14 @@ export const unzipBankInfo = ({ BKN, BKBR, BRN, PH, EM, BN, BA, RN, CID }) => ({
 export function getBankacc({ success, error }) {
   return (dispatch, getState) => (
     asyncXhrAuthedPost('/ajax/bank/bankacc.json', getState())
+    .then(success)
+    .catch(error)
+  );
+}
+
+export function checkBankaccReady({ success, error }) {
+  return (dispatch, getState) => (
+    asyncXhrAuthedGet('/ajax/bank/bankacc/ready.json', getState())
     .then(success)
     .catch(error)
   );
