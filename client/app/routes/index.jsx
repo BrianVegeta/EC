@@ -2,6 +2,7 @@ import layoutHoc from 'containers/layoutHoc';
 
 import { requireLoginAndGetUser } from 'actions/authActions';
 import { editItem } from 'actions/itemActions';
+import { fetchItems } from 'actions/itemsActions';
 
 import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
@@ -13,7 +14,7 @@ import Signinup from 'layouts/Signinup';
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
 import ServiceRoute from './Items/Service';
-import SpaceRoute from './Items/Space';
+import itemSpaceRoute from './Items/Space/route';
 import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
@@ -28,16 +29,25 @@ import ReservationGoods from './Reservation/Goods/route';
 import TestLayout from './Test/Container';
 
 
+const requireCates = true;
+const requireAuth = true;
+const confirmLeave = true;
+
 export default (routesHelper, dispatch) => ({
   path: '/',
   childRoutes: [
     {
       indexRoute: HomeRoute(dispatch),
-      component: layoutHoc(Home, {}),
+      component: layoutHoc(Home, { requireCates }),
       childRoutes: [
         GoodsRoute(routesHelper, dispatch),
         ServiceRoute(routesHelper, dispatch),
-        SpaceRoute(routesHelper, dispatch),
+        itemSpaceRoute({
+          onEnter: (nextState) => {
+            console.log(nextState);
+            dispatch(fetchItems());
+          },
+        }),
         CategoriedRoute(routesHelper, dispatch),
         Categories(routesHelper, dispatch),
         Tanzaku(routesHelper, dispatch),
@@ -51,7 +61,7 @@ export default (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: layoutHoc(Publish, { requireAuth: true, confirmLeave: true }),
+      component: layoutHoc(Publish, { requireAuth, confirmLeave }),
       childRoutes: [
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),
@@ -73,7 +83,7 @@ export default (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: layoutHoc(Fixed, { requireAuth: true, confirmLeave: true }),
+      component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
       childRoutes: [
         ReservationGoods((nextState) => {
           dispatch(editItem(nextState.params.pid));

@@ -1,21 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink } from 'react-router';
+
+import { SHAREAPP_HELP_URL } from 'constants/urls';
+import HeaderSearchContainer from 'containers/HeaderSearchContainer';
+
+import { logout } from 'actions/authActions';
+
 import classnames from 'classnames/bind';
 import cn from 'classnames';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import myPropTypes from '../../propTypes';
+
 import Me from './Me';
 import ShortcutNavbar from './ShortcutNavbar';
 import DropdownNavs from './DropdownNavs';
 import Logo from './Logo';
 import NavItem from './NavItem';
 import Notification from './Notification';
-import { SHAREAPP_HELP_URL } from '../../constants/urls';
-import HeaderSearchContainer from '../../containers/HeaderSearchContainer';
-import { logout } from '../../actions/authActions';
 
 const cx = classnames.bind(styles);
 class Header extends React.Component {
@@ -94,7 +98,7 @@ class Header extends React.Component {
                   </NavItem>
                 }
                 {isLogin &&
-                  <NavItem content={<div className={cx('publishBtn')}>發佈</div>} >
+                  <NavItem content={<div className={cx('publish-btn')}>發佈</div>} >
                     <div>test</div>
                   </NavItem>
                 }

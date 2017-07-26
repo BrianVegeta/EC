@@ -6,6 +6,7 @@ import myPropTypes from 'propTypes';
 
 import { initEnvironment } from 'actions/environmentActions';
 import { redirectTo } from 'actions/module/routingActions';
+import { fetchCategories } from 'actions/itemsActions';
 
 import * as paths from 'lib/paths';
 import ModalContainer from 'containers/ModalContainer';
@@ -14,7 +15,7 @@ import ScheduleContainer from 'containers/ScheduleContainer';
 
 import { confirmLeavePage } from 'lib/confirm';
 
-function hoc(Component, { requireAuth, confirmLeave }) {
+function layout(Component, { requireAuth, requireCates, confirmLeave }) {
   return class extends React.Component {
 
     static propTypes = {
@@ -22,12 +23,14 @@ function hoc(Component, { requireAuth, confirmLeave }) {
       auth: myPropTypes.authOnHeader.isRequired,
       router: myPropTypes.router.isRequired,
       route: myPropTypes.route.isRequired,
+      items: myPropTypes.items.isRequired,
     };
 
     componentDidMount() {
       this.props.dispatch(initEnvironment());
       this.handleRequireAuth();
       this.handleConfirmLeave();
+      this.handleRequireCates();
     }
 
     componentWillUnmount() {
@@ -61,9 +64,19 @@ function hoc(Component, { requireAuth, confirmLeave }) {
       );
     }
 
+    handleRequireCates() {
+      if (!requireCates) return;
+      if (this.props.items.categories) return;
+
+      this.props.dispatch(
+        fetchCategories(),
+      );
+    }
+
     render() {
-      const { auth } = this.props;
+      const { auth, items } = this.props;
       if (requireAuth && !auth.isLogin) return null;
+      if (requireCates && !items.categories) return null;
       return (
         <div>
           <Component {...this.props} />
@@ -76,16 +89,18 @@ function hoc(Component, { requireAuth, confirmLeave }) {
   };
 }
 
-export default function (Component, { requireAuth, confirmLeave }) {
+export default function (Component, { requireAuth, requireCates, confirmLeave }) {
+  const layoutOptions = { requireAuth, confirmLeave, requireCates };
   const mapStateToProps = (state) => {
-    const { environment, auth, routing } = state;
-    return { environment, auth, routing };
+    const { environment, auth, items, routing } = state;
+    return { environment, auth, items, routing };
   };
   return (
     connect(mapStateToProps)(
-      hoc(
+      layout(
         withRouter(Component),
-        { requireAuth, confirmLeave },
-      ))
+        layoutOptions,
+      ),
+    )
   );
 }

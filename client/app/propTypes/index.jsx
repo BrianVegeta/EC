@@ -57,6 +57,8 @@ export default {
     items: PropTypes.arrayOf(PropTypes.object),
   }),
   search: PropTypes.shape({ query: PropTypes.string }),
+  /* ----------- ITEMS ---------- */
+  items: PropTypes.object,
   /* ----------- AUTH ----------- */
   /* 登入 */
   loginAuthShape: {

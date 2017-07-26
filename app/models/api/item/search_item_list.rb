@@ -1,7 +1,7 @@
 class Api::Item::SearchItemList < ApiBase
-  
-  PATH = '/client/item/get_item/condition_search/page_list';
-  
+
+  PATH = '/client/item/search';
+
   def path
     PATH
   end
@@ -9,6 +9,6 @@ class Api::Item::SearchItemList < ApiBase
   def request_method
      :post
   end
-  
-  
+
+
 end

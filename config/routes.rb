@@ -75,7 +75,6 @@ Rails.application.routes.draw do
       post 'item/get_item', to: 'item#get_item' #
       post 'item/get_item_by_user', to: 'item#get_item_by_user' #
       post 'item/get_item_by_name', to: 'item#get_item_by_name' #
-      post 'item/search_item_list', to: 'item#search_item_list'
       post 'item/view_item', to: 'item#view_item' #
       post 'item/remove_items', to: 'item#remove_items' #
       post 'item/relative_item', to: 'item#relative_item' #
@@ -128,23 +127,26 @@ Rails.application.routes.draw do
     scope module: :api do
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
+      # ITEMS
+      scope :item do
+        post 'list', to: 'item#search_item_list'
+      end
 
       # USERPROFILE
-      ## FROM OTHER USER
+      ###### FROM OTHER USER
       post 'user_info', to: 'userprofile#user_general_info'
-      ## BANK INFO (AUTHED)
+      ###### BANK INFO (AUTHED)
       scope :bank do
         post 'bankacc', to: 'userprofile#bank_info'
         get 'bankacc/ready', to: 'userprofile#bank_info_ready'
       end
-
-      ## PASSWORD CHECK (AUTHED)
+      ###### PASSWORD CHECK (AUTHED)
       scope :password do
         get 'exist', to: 'userprofile#is_pwd_exist'
         post 'create', to: 'userprofile#create_password'
         post 'check', to: 'userprofile#checkpwd'
       end
-      ## VERIFY PHONE AND EMAIL UPDATE (AUTHED)
+      ###### VERIFY PHONE AND EMAIL UPDATE (AUTHED)
       scope :user do
         post 'update/phone', to: 'userprofile#get_phone_verify_code'
         post 'update/phone/confirm', to: 'userprofile#update_phone'
