@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import {
+  isUndefined,
+  filter,
+  isNull,
+  isEmpty,
+} from 'lodash';
 import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -89,7 +94,7 @@ class ConfirmContainer extends React.Component {
         ],
         ['標籤', (
           <div>
-            {_.chain(hashtags).filter(tag => !_.isNull(tag)).map((tag, i) =>
+            {filter(hashtags, tag => !isNull(tag)).map((tag, i) =>
               <div key={`${i + 1}`}>＃{tag}</div>,
             )}
           </div>
@@ -106,22 +111,22 @@ class ConfirmContainer extends React.Component {
         ['寄件日期', `使用的前${2}天內到貨`],
         ['可寄件方式', (
           <div>
-            {!_.isUndefined(sendOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
-            {!_.isUndefined(sendOptKeys[OPTION_MAIL]) && <div>自行寄件</div>}
-            {!_.isUndefined(sendOptKeys[OPTION_IN_PERSON]) && <div>面交（自行協調取貨地點）</div>}
+            {!isUndefined(sendOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
+            {!isUndefined(sendOptKeys[OPTION_MAIL]) && <div>自行寄件</div>}
+            {!isUndefined(sendOptKeys[OPTION_IN_PERSON]) && <div>面交（自行協調取貨地點）</div>}
           </div>
         )],
         ['可寄還方式', (
           <div>
             <div>
-              {!_.isUndefined(returnOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
-              {!_.isUndefined(returnOptKeys[OPTION_MAIL]) &&
+              {!isUndefined(returnOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
+              {!isUndefined(returnOptKeys[OPTION_MAIL]) &&
                 <div>
                   自行寄件：
                   <span className={cx('hightlight')}>{returnAddresses.join('')}</span>
                 </div>
               }
-              {!_.isUndefined(returnOptKeys[OPTION_IN_PERSON]) && <div>面交（自行協調取貨地點）</div>}
+              {!isUndefined(returnOptKeys[OPTION_IN_PERSON]) && <div>面交（自行協調取貨地點）</div>}
             </div>
           </div>
         )],
@@ -164,7 +169,7 @@ class ConfirmContainer extends React.Component {
         <Block {...deliveryProps} />
         <Block {...priceSettingProps} />
         {
-          !_.isEmpty(regulation) &&
+          !isEmpty(regulation) &&
           <Block
             {...{
               title: '分享人守則',
@@ -174,7 +179,7 @@ class ConfirmContainer extends React.Component {
           />
         }
         {
-          !_.isEmpty(cancelPolicy) &&
+          !isEmpty(cancelPolicy) &&
           <Block
             {...{
               title: '退訂政策',

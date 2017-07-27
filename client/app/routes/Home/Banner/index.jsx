@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Carousel from 'nuka-carousel';
+import Carousel from 'rmc-nuka-carousel';
 import { Preload } from 'react-preload';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';

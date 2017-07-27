@@ -21,7 +21,7 @@ class Tags {
     return _.isEmpty(this.validator());
   }
   existHashtags() {
-    return _.chain(this.hashtags).filter(tag => !_.isNull(tag)).value();
+    return _.filter(this.hashtags, tag => !_.isNull(tag)).value();
   }
 }
 export default Tags;
