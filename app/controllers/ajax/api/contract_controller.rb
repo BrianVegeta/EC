@@ -1,5 +1,6 @@
 class Ajax::Api::ContractController < ApplicationController
   include WardenHelper
+  include RespondHelper  
 
   ###################### ACTION ##################################
 
@@ -7,186 +8,223 @@ class Ajax::Api::ContractController < ApplicationController
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken
     success = obj.request
-    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
+    end
+    respond success, obj
   end
 
   # 取消合約
   def cancel
     obj = ::Api::Contract::Cancel.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 取回已完成合約
   def end_contract
     obj = ::Api::Contract::EndContract.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleContract.structure) }
+    end
+    
+    respond success, obj
   end
 
   # 取回可申訴的合約
   def find_can_report
     obj = ::Api::Contract::FindCanReport.new target_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
+    end
+    respond success, obj
   end
 
   # 取回自己的合約
   def get_my_contract
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
-    
-    obj.response_data.map { |item, index| reverse_merge(item, json) }
-    
+    if obj.response_data.nil?
+        obj.response_data = []
+    else
+         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::MyContract.structure) }
+    end
+    respond success, obj
   end
 
   # 聊天室取回雙方的合約
   def get_our_contracts
     obj = ::Api::Contract::GetOurContracts.new target_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+         obj.response_data = []
+     else
+          obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::OurContract.structure) }
+     end
+    respond success, obj
   end
 
   # 取回申訴列表
   def get_report
     obj = ::Api::Contract::GetReport.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = nil
+    else
+       obj.response_data.reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
+    end
+    respond success, obj
   end
 
   # 取回單筆合約
   def get
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Contract.structure)
+    end
+    respond success, obj
   end
 
   # 上傳合約出貨或還貨照片
   def image_upload
     obj = ::Api::Contract::ImageUpload.new upload_image_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立物品合約
   def item_create
     obj = ::Api::Contract::ItemCreate.new create_item_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新商品類型合約
   def item_update
     obj = ::Api::Contract::ItemUpdate.new update_item_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 問API設計師
   def logs
     obj = ::Api::Contract::Logs.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+         obj.response_data = []
+     else
+          obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
+     end
+    respond success, obj
   end
 
   # 設定合約以讀未讀
   def read
     obj = ::Api::Contract::Read.new read_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 收到還貨商品
   def receive_goods
     obj = ::Api::Contract::ReceiveGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 要求合約修改
   def reject
     obj = ::Api::Contract::Reject.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 申訴合約
   def report
     obj = ::Api::Contract::Report.new report_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 還貨商品
   def return_goods
     obj = ::Api::Contract::returnGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 評分合約
   def score
     obj = ::Api::Contract::Score.new score_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立服務合約
   def service_create
     obj = ::Api::Contract::ServiceCreate.new create_service_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 結束服務合約
   def service_end
     obj = ::Api::Contract::ServiceEnd.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新服務類型合約
   def service_update
     obj = ::Api::Contract::ServiceUpdate.new update_service_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 出貨商品
   def ship_goods
     obj = ::Api::Contract::ShipGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 同意合約
   def sign
     obj = ::Api::Contract::Sign.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立空間合約
   def space_create
     obj = ::Api::Contract::SpaceCreate.new create_space_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 結束空間合約
   def space_end
     obj = ::Api::Contract::SpaceEnd.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新空間型合約
   def space_update
     obj = ::Api::Contract::SpaceUpdate.new update_space_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   ###################### PARAMS ##################################
