@@ -11,7 +11,14 @@ const routes = require('../routes');
 const propTypes = {
   routesHelper: PropTypes.object.isRequired,
 };
-const App = (props, railsContext) => {
+
+/**
+ *
+ * @props
+ * @railsContext
+ *
+ */
+const App = (props) => {
   const store = configureStore(props);
   const history = syncHistoryWithStore(
     browserHistory,
