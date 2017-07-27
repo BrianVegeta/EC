@@ -6,13 +6,35 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class Test extends React.Component {
-  componentDidMount() {
-    // this.setState({ transForm: '' })
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isHover: false,
+    };
+
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
+
+  onMouseEnter() {
+    this.setState({ isHover: true });
+  }
+
+  onMouseLeave() {
+    this.setState({ isHover: false });
+  }
+
   render() {
     return (
       <div styleName="container">
-        <IconPostGoods />
+        <div
+          style={{ marginLeft: 100, marginTop: 100 }}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+        >
+          <IconPostGoods isHover={this.state.isHover} />
+        </div>
       </div>
     );
   }

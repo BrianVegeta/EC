@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-
 import { browserHistory } from 'react-router';
 import * as paths from 'lib/paths';
 

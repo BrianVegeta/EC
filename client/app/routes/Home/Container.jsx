@@ -12,6 +12,9 @@ import Items from './Items';
 import Vendor from './Vendor';
 import SliderContainer from './SliderContainer';
 
+/* requestAnimationFrame polyfill */
+require('raf');
+
 class HomeContainer extends React.Component {
   render() {
     const { dispatch, home } = this.props;

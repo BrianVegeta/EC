@@ -6,7 +6,9 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpritesmithPlugin = require('webpack-spritesmith');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const Webpack2Polyfill = require('webpack2-polyfill-plugin');
+// const PolyfillsPlugin = require('./lib/webpack-polyfills-plugin');
 
 
 const devBuild = process.env.NODE_ENV !== 'production';
@@ -18,6 +20,7 @@ const config = {
     vendor: [
       'babel-polyfill',
       'es6-shim',
+      // 'es6-promise/auto',
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'sticky-position',
@@ -65,6 +68,7 @@ const config = {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
+    new Webpack2Polyfill(),
     new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en|zh-tw)$/),
     new webpack.DefinePlugin({
       'process.env': {

@@ -534,6 +534,13 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
+babel-plugin-es6-promise@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-es6-promise/-/babel-plugin-es6-promise-1.1.1.tgz#0202f0929705f2fdcdda8ffd1222246c2cb9d6ae"
+  dependencies:
+    babel-template "^6.7.0"
+    babel-types "^6.7.2"
+
 babel-plugin-lodash@^3.2.11:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/babel-plugin-lodash/-/babel-plugin-lodash-3.2.11.tgz#21c8fdec9fe1835efaa737873e3902bdd66d5701"
@@ -957,7 +964,7 @@ babel-runtime@^5.8.38:
   dependencies:
     core-js "^1.0.0"
 
-babel-template@^6.24.1:
+babel-template@^6.24.1, babel-template@^6.7.0:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.24.1.tgz#04ae514f1f93b3a2537f2a0f60a5a45fb8308333"
   dependencies:
@@ -981,7 +988,7 @@ babel-traverse@^6.23.1, babel-traverse@^6.24.1:
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1:
+babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.7.2:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.24.1.tgz#a136879dc15b3606bda0d90c1fc74304c2ff0975"
   dependencies:
@@ -2093,6 +2100,10 @@ es6-map@^0.1.3:
 es6-promise@^3.1.2:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
+
+es6-promise@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"
 
 es6-set@~0.1.5:
   version "0.1.5"
@@ -4468,6 +4479,12 @@ pngjs@^2.0.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-2.3.1.tgz#11d1e12b9cb64d63e30c143a330f4c1f567da85f"
 
+polyfills-service-webpack-plugin@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/polyfills-service-webpack-plugin/-/polyfills-service-webpack-plugin-0.1.3.tgz#c8b1a00eb4c3e93d54a172c7346bc2c53561cdd6"
+  dependencies:
+    webpack-core "^0.6.6"
+
 postcss-advanced-variables@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/postcss-advanced-variables/-/postcss-advanced-variables-1.2.2.tgz#90a6213262e66a050a368b4a9c5d4778d72dbd74"
@@ -4956,6 +4973,10 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
+promise-polyfill@6.0.2, promise-polyfill@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.0.2.tgz#d9c86d3dc4dc2df9016e88946defd69b49b41162"
+
 promise@^7.0.3, promise@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
@@ -5038,7 +5059,7 @@ quote-stream@~0.0.0:
     minimist "0.0.8"
     through2 "~0.4.1"
 
-raf@^3.1.0:
+raf@^3.1.0, raf@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.3.2.tgz#0c13be0b5b49b46f76d6669248d527cf2b02fe27"
   dependencies:
@@ -6150,7 +6171,7 @@ source-map@0.1.x, source-map@~0.1.33:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
-source-map@^0.4.2, source-map@^0.4.4:
+source-map@^0.4.2, source-map@^0.4.4, source-map@~0.4.1:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.4.4.tgz#eba4f5da9c0dc999de68032d8b4f76173652036b"
   dependencies:
@@ -6341,7 +6362,7 @@ strip-indent@^1.0.1:
   dependencies:
     get-stdin "^4.0.1"
 
-strip-json-comments@~2.0.1:
+strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
@@ -6808,7 +6829,20 @@ webpack-bundle-analyzer@^2.8.3:
     opener "^1.4.3"
     ws "^2.3.1"
 
-webpack-sources@^0.1.0:
+webpack-core@^0.6.6:
+  version "0.6.9"
+  resolved "https://registry.yarnpkg.com/webpack-core/-/webpack-core-0.6.9.tgz#fc571588c8558da77be9efb6debdc5a3b172bdc2"
+  dependencies:
+    source-list-map "~0.1.7"
+    source-map "~0.4.1"
+
+webpack-polyfills-plugin@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/webpack-polyfills-plugin/-/webpack-polyfills-plugin-0.0.9.tgz#2e3d60a635372155c28ab1190632ab383305e765"
+  dependencies:
+    webpack-core "^0.6.6"
+
+webpack-sources@^0.1.0, webpack-sources@^0.1.2:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-0.1.5.tgz#aa1f3abf0f0d74db7111c40e500b84f966640750"
   dependencies:
@@ -6834,6 +6868,15 @@ webpack-spritesmith@^0.3.3:
     mkdirp "^0.5.1"
     spritesheet-templates "^10.2.1"
     spritesmith "^3.1.0"
+
+webpack2-polyfill-plugin@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/webpack2-polyfill-plugin/-/webpack2-polyfill-plugin-0.0.2.tgz#0716bfecdc2e8adc6c580bf4e3017effcc775768"
+  dependencies:
+    object-assign "^4.1.0"
+    promise-polyfill "6.0.2"
+    strip-json-comments "^2.0.1"
+    webpack-sources "^0.1.2"
 
 webpack@^2.3.1:
   version "2.6.0"
