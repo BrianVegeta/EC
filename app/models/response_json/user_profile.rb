@@ -24,10 +24,10 @@ class ResponseJson::UserProfile
         # -string
         credit: nil,
         # -double
-        owner_credit: nil
+        owner_credit: nil,
         #  -double
         #  -desc : 身為分享人所得到的評價
-        lessee_credit: nil
+        lessee_credit: nil,
         #  -double
         #  -desc : 身為享用人所得到的評價
         occupation: nil,

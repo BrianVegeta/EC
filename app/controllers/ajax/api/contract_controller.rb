@@ -7,6 +7,7 @@ class Ajax::Api::ContractController < ApplicationController
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken
     success = obj.request
+    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
     respond success, obj.error_message, obj.response_data
   end
 
@@ -36,6 +37,9 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
     respond success, obj.error_message, obj.response_data
+    
+    obj.response_data.map { |item, index| reverse_merge(item, json) }
+    
   end
 
   # 聊天室取回雙方的合約

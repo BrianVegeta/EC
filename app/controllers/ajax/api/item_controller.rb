@@ -48,6 +48,15 @@ class Ajax::Api::ItemController < ApplicationController
   def get_item 
     obj = ::Api::Item::GetItem.new pid_params
     success = obj.request
+   
+   
+    obj.response_data = reverse_merge obj.response_data, json
+    if not obj.response_data['comments'].empty?
+      obj.response_data['comments'].map! |comment|
+        reverse_merge(comment, jsop)
+      end
+    end
+ 
     respond success, obj.error_message, obj.response_data
   end
   
