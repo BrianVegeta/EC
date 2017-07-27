@@ -4199,7 +4199,7 @@ object.entries@^1.0.4:
     function-bind "^1.1.0"
     has "^1.0.1"
 
-object.omit@^2.0.0:
+object.omit@^2.0.0, object.omit@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/object.omit/-/object.omit-2.0.1.tgz#1a9c744829f39dbb858c76ca3579ae2a54ebd1fa"
   dependencies:
@@ -5276,6 +5276,14 @@ react-dropzone@^3.13.1:
 react-facebook-login@^3.6.2:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-3.6.2.tgz#1965f6af54cc90341b788d0752185cfd25a14d30"
+
+react-hover-observer@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-hover-observer/-/react-hover-observer-2.0.1.tgz#fece9fd0dd0fdb9b7b853d385e05db762a4e2931"
+  dependencies:
+    object-assign "^4.1.1"
+    object.omit "^2.0.1"
+    prop-types "^15.5.10"
 
 react-icheck@^0.3.8:
   version "0.3.8"

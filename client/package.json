@@ -62,6 +62,7 @@
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.13.1",
     "react-facebook-login": "^3.6.2",
+    "react-hover-observer": "^2.0.1",
     "react-icheck": "^0.3.8",
     "react-icons": "^2.2.5",
     "react-input-password": "^1.0.21",
