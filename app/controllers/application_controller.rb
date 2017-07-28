@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def reverse_merge data, format
+    #raise "#{data.inspect} #{format.inspect}"
     data.merge(format) { |key, v1, v2| v1 }
   end
 

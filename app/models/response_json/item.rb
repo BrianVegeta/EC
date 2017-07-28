@@ -1,4 +1,4 @@
-class ResponseJson::Sample
+class ResponseJson::Item
   class << self
     def structure
       {

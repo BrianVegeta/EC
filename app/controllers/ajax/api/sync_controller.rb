@@ -33,10 +33,8 @@ class Ajax::Api::SyncController < ApplicationController
   def notification_read
     obj = ::Api::Sync::NotificationRead.new notification_read_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::ReadNotification.structure)
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ReadNotification.structure)
     end
     respond success, obj
   end

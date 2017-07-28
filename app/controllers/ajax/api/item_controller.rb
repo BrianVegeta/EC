@@ -7,10 +7,8 @@ class Ajax::Api::ItemController < ApplicationController
   def item_add
     obj = ::Api::Item::ItemAdd.new item_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
     end
     respond success, obj
   end
@@ -26,10 +24,8 @@ class Ajax::Api::ItemController < ApplicationController
   def service_add
     obj = ::Api::Item::ServiceAdd.new service_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    if successa
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
     end
     respond success, obj
   end
@@ -45,10 +41,8 @@ class Ajax::Api::ItemController < ApplicationController
   def space_add
     obj = ::Api::Item::SpaceAdd.new space_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
     end
     respond success, obj
   end
@@ -65,15 +59,13 @@ class Ajax::Api::ItemController < ApplicationController
     obj = ::Api::Item::GetItem.new pid_params
     success = obj.request
     obj.response_data = reverse_merge obj.response_data, json
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
+    if success
       #if not obj.response_data['comments'].empty?
       #     obj.response_data['comments'].map! |comment|
       #       reverse_merge(comment, jsop)
       #end
       
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Item.structure)
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Item.structure)
     end
    
  
@@ -120,10 +112,8 @@ class Ajax::Api::ItemController < ApplicationController
   def view_item
     obj = ::Api::Item::ViewItem.new pid_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = nil
-    else
-       obj.response_data.reverse_merge(obj.response_data, ResponseJson::Item.structure)
+    if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::Item.structure)
     end
     respond success, obj
   end

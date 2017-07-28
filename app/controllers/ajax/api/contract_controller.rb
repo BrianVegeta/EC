@@ -75,10 +75,8 @@ class Ajax::Api::ContractController < ApplicationController
   def get_report
     obj = ::Api::Contract::GetReport.new current_uid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = nil
-    else
-       obj.response_data.reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
+    if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
     end
     respond success, obj
   end
@@ -87,10 +85,8 @@ class Ajax::Api::ContractController < ApplicationController
   def get
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = nil
-    else
-      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Contract.structure)
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Contract.structure)
     end
     respond success, obj
   end

@@ -15,10 +15,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   def get
     obj = ::Api::Userprofile::Get.new current_uid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = nil
-    else
-       obj.response_data.reverse_merge(obj.response_data, ResponseJson::UserProfile.structure)
+    if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserProfile.structure)
     end
     respond success, obj
   end
@@ -40,10 +38,14 @@ class Ajax::Api::UserprofileController < ApplicationController
     obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
     success = obj.request
 
+    
     if success
-      @user.response_data['user_profile'] = reverse_merge(
-        @user.response_data['user_profile'], ResponseJson::UserProfile.structure
-      )
+      obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
+      if (obj.response_data['items'].nil?) 
+        obj.response_data['items'] = [];
+      else 
+        obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+      end
     end
     respond success, obj
   end
@@ -168,12 +170,12 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 取得追蹤人
   def get_track_user
-    obj = ::Api::Userprofile::IsTracked.new track_user_params, current_apitoken
+    obj = ::Api::Userprofile::GetTrackUser.new track_user_params, current_apitoken
     success = obj.request
     if obj.response_data.nil?
         obj.response_data = []
     else
-         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::TrackUser.structure) }
+        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::TrackUser.structure) }
     end
     respond success, obj
   end
@@ -182,10 +184,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   def track_count
     obj = ::Api::Userprofile::TrackCount.new current_uid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-        obj.response_data = nil
-    else
-         obj.response_data.reverse_merge(obj.response_data, ResponseJson::TrackUserCount.structure)
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::TrackUserCount.structure)
     end
     respond success, obj
   end
@@ -207,9 +207,9 @@ class Ajax::Api::UserprofileController < ApplicationController
     obj = ::Api::Userprofile::LesseeComments.new comments_params, current_apitoken
     success = obj.request
     if obj.response_data.nil?
-        obj.response_data = []
+      obj.response_data = []
     else
-         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
+      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
     end
     respond success, obj
   end
@@ -361,7 +361,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   
   def track_user_params
     #type : String => me_track track_me
-    params.permit(:type).merge(current_uid_params)
+    #target_uid : String => uid
+    params.permit(:type, :target_uid).merge(current_uid_params).merge(paging_params)
   end
 
 end
