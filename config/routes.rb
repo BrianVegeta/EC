@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       post 'userprofile/untrack', to: 'userprofile#untrack'
       post 'userprofile/is_tracked', to: 'userprofile#is_tracked' #
       post 'userprofile/track_count', to: 'userprofile#track_count' #
+      post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
       post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
       post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments' #
 

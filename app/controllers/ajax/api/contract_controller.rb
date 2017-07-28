@@ -32,7 +32,6 @@ class Ajax::Api::ContractController < ApplicationController
     else
         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleContract.structure) }
     end
-    
     respond success, obj
   end
 
@@ -122,10 +121,10 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::Logs.new cid_params, current_apitoken
     success = obj.request
     if obj.response_data.nil?
-         obj.response_data = []
-     else
-          obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
-     end
+      obj.response_data = []
+    else
+      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
+    end
     respond success, obj
   end
 

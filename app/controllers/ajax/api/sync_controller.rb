@@ -1,47 +1,68 @@
 class Ajax::Api::SyncController < ApplicationController
   include WardenHelper
-
+  include RespondHelper
+  
   ###################### ACTION ##################################
   # 取得通知訊息
   def notification
     obj = ::Api::Sync::Notification.new notification_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Notify.structure) }
+    end
+    respond success, obj
   end
 
   # 取得未讀通知
   def notification_unread
     obj = ::Api::Sync::NotificationUnread.new notification_unread_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 未讀數量
   def notification_unread_count
     obj = ::Api::Sync::NotificationUnreadCount.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 已讀通知書量
   def notification_read
     obj = ::Api::Sync::NotificationRead.new notification_read_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::ReadNotification.structure)
+    end
+    respond success, obj
   end
 
   # 取回聊天室
   def chat_rooms
     obj = ::Api::Sync::ChatRooms.new chat_rooms_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatRoom.structure) }
+    end
+    respond success, obj
   end
 
   # 取回聊天內容
   def chat_logs
     obj = ::Api::Sync::ChatLogs.new chat_logs_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatLog.structure) }
+    end
+    respond success, obj
   end
 
   ###################### PARAMS ##################################

@@ -1,131 +1,181 @@
 class Ajax::Api::ItemController < ApplicationController
   include WardenHelper
+  include RespondHelper 
   
   ###################### ACTION ##################################
   # 新增物品
   def item_add
     obj = ::Api::Item::ItemAdd.new item_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    end
+    respond success, obj
   end
   
   # 更新物品
   def item_update
     obj = ::Api::Item::ItemUpdate.new item_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 新增服務
   def service_add
     obj = ::Api::Item::ServiceAdd.new service_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    end
+    respond success, obj
   end
   
   # 更新服務
   def service_update
     obj = ::Api::Item::ServiceUpdate.new service_update_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 新增空間
   def space_add
     obj = ::Api::Item::SpaceAdd.new space_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    end
+    respond success, obj
   end
   
   # 更新空間
   def space_update
     obj = ::Api::Item::SpaceUpdate.new space_update_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # ID取回商品資料
   def get_item 
     obj = ::Api::Item::GetItem.new pid_params
     success = obj.request
-   
-   
     obj.response_data = reverse_merge obj.response_data, json
-    if not obj.response_data['comments'].empty?
-      obj.response_data['comments'].map! |comment|
-        reverse_merge(comment, jsop)
-      end
+    if obj.response_data.nil?
+      obj.response_data = nil
+    else
+      #if not obj.response_data['comments'].empty?
+      #     obj.response_data['comments'].map! |comment|
+      #       reverse_merge(comment, jsop)
+      #end
+      
+      obj.response_data.reverse_merge(obj.response_data, ResponseJson::Item.structure)
     end
+   
  
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 取回使用者的商品列表
   def get_item_by_user 
     obj = ::Api::Item::GetItemByUser.new get_item_by_user_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    end
+    respond success, obj
   end
   
   # 商品名稱取回商品列表
   def get_item_by_name
     obj = ::Api::Item::GetItemByName.new get_item_by_name_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    end
+    respond success, obj
   end
   
   # 篩選商品列表
   def search_item_list
     obj = ::Api::Item::SearchItemList.new search_item_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    end
+    respond success, obj
   end
   
   # 紀錄已讀商品
   def view_item
     obj = ::Api::Item::ViewItem.new pid_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = nil
+    else
+       obj.response_data.reverse_merge(obj.response_data, ResponseJson::Item.structure)
+    end
+    respond success, obj
   end
   
   # 移除商品
   def remove_items
     obj = ::Api::Item::RemoveItems.new remove_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 相關商品
   def relative_item
     obj = ::Api::Item::RelativeItem.new relative_item_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::RelativeItem.structure) }
+    end
+    respond success, obj
   end
   
   # 投訴商品
   def report
     obj = ::Api::Item::Report.new report_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 取回商品類型
   def category_list
     obj = ::Api::Item::CategoryList.new
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   def message
     obj = ::Api::Item::Message.new get_message_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+       obj.response_data = []
+    else
+       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ItemMessage.structure) }
+    end
+    respond success, obj
   end
   
   def message_add
     obj = ::Api::Item::MessageAdd.new add_message_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   ###################### PARAMS ##################################
