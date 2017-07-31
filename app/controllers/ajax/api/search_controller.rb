@@ -1,6 +1,6 @@
 class Ajax::Api::SearchController < ApplicationController
   include WardenHelper
-  
+  include RespondHelper 
   ###################### ACTION ##################################
   # 搜尋
    def multi_search

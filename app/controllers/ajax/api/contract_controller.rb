@@ -11,7 +11,7 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
+       obj.response_data.map { |item, index| parse_contract_rsp(item) }
     end
     respond success, obj
   end
@@ -27,11 +27,12 @@ class Ajax::Api::ContractController < ApplicationController
   def end_contract
     obj = ::Api::Contract::EndContract.new current_uid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleContract.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleContract.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleContract.structure) }
+    #end
     respond success, obj
   end
 
@@ -42,7 +43,7 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Contract.structure) }
+       obj.response_data.map { |item, index| parse_contract_rsp(item) }
     end
     respond success, obj
   end
@@ -51,11 +52,12 @@ class Ajax::Api::ContractController < ApplicationController
   def get_my_contract
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-        obj.response_data = []
-    else
-         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::MyContract.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
+    #if obj.response_data.nil?
+    #    obj.response_data = []
+    #else
+    #     obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::MyContract.structure) }
+    #end
     respond success, obj
   end
 
@@ -63,11 +65,12 @@ class Ajax::Api::ContractController < ApplicationController
   def get_our_contracts
     obj = ::Api::Contract::GetOurContracts.new target_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-         obj.response_data = []
-     else
-          obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::OurContract.structure) }
-     end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::OurContract.structure
+    #if obj.response_data.nil?
+    #     obj.response_data = []
+    # else
+    #      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::OurContract.structure) }
+    # end
     respond success, obj
   end
 
@@ -86,7 +89,8 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
     if success
-      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Contract.structure)
+      obj.response_data = parse_contract_rsp(item) 
+      #obj.response_data = reverse_merge(obj.response_data, ResponseJson::Contract.structure)
     end
     respond success, obj
   end
@@ -116,11 +120,12 @@ class Ajax::Api::ContractController < ApplicationController
   def logs
     obj = ::Api::Contract::Logs.new cid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = []
-    else
-      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractLog.structure
+    #if obj.response_data.nil?
+    #  obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
+    #end
     respond success, obj
   end
 
@@ -222,6 +227,15 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  ###################### FUNCTION ################################
+  private
+  def parse_contract_rsp(response_data)
+     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure 
+     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure 
+     response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
+     return response_data
+  end
+  
   ###################### PARAMS ##################################
   protected
   def cid_params

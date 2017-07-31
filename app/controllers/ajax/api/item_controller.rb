@@ -24,7 +24,7 @@ class Ajax::Api::ItemController < ApplicationController
   def service_add
     obj = ::Api::Item::ServiceAdd.new service_params, current_apitoken
     success = obj.request
-    if successa
+    if success
       obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
     end
     respond success, obj
@@ -58,17 +58,9 @@ class Ajax::Api::ItemController < ApplicationController
   def get_item 
     obj = ::Api::Item::GetItem.new pid_params
     success = obj.request
-    obj.response_data = reverse_merge obj.response_data, json
     if success
-      #if not obj.response_data['comments'].empty?
-      #     obj.response_data['comments'].map! |comment|
-      #       reverse_merge(comment, jsop)
-      #end
-      
-      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Item.structure)
+      obj.response_data = parse_item_rsp(obj.response_data)
     end
-   
- 
     respond success, obj
   end
   
@@ -76,11 +68,12 @@ class Ajax::Api::ItemController < ApplicationController
   def get_item_by_user 
     obj = ::Api::Item::GetItemByUser.new get_item_by_user_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    #end
     respond success, obj
   end
   
@@ -88,11 +81,12 @@ class Ajax::Api::ItemController < ApplicationController
   def get_item_by_name
     obj = ::Api::Item::GetItemByName.new get_item_by_name_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    #end
     respond success, obj
   end
   
@@ -100,11 +94,12 @@ class Ajax::Api::ItemController < ApplicationController
   def search_item_list
     obj = ::Api::Item::SearchItemList.new search_item_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    #end
     respond success, obj
   end
   
@@ -113,7 +108,7 @@ class Ajax::Api::ItemController < ApplicationController
     obj = ::Api::Item::ViewItem.new pid_params
     success = obj.request
     if success
-       obj.response_data = reverse_merge(obj.response_data, ResponseJson::Item.structure)
+       obj.response_data = parse_item_rsp(obj.response_data)
     end
     respond success, obj
   end
@@ -129,11 +124,12 @@ class Ajax::Api::ItemController < ApplicationController
   def relative_item
     obj = ::Api::Item::RelativeItem.new relative_item_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::RelativeItem.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::RelativeItem.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::RelativeItem.structure) }
+    #end
     respond success, obj
   end
   
@@ -154,11 +150,12 @@ class Ajax::Api::ItemController < ApplicationController
   def message
     obj = ::Api::Item::Message.new get_message_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ItemMessage.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ItemMessage.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ItemMessage.structure) }
+    #end
     respond success, obj
   end
   
@@ -166,6 +163,17 @@ class Ajax::Api::ItemController < ApplicationController
     obj = ::Api::Item::MessageAdd.new add_message_params, current_apitoken
     success = obj.request
     respond success, obj
+  end
+  
+  ###################### FUNCTION ################################
+  private
+  
+  def parse_item_rsp(response_data)
+     response_data['comments'] = map_json_array response_data['comments'], ResponseJson::ContractComment.structure
+     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure 
+     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure 
+     response_data = reverse_merge(response_data, ResponseJson::Item.structure)
+     return response_data
   end
   
   ###################### PARAMS ##################################

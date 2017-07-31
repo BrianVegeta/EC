@@ -25,11 +25,12 @@ class Ajax::Api::UserprofileController < ApplicationController
   def search
     obj = ::Api::Userprofile::Search.new search_params
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::UserProfile.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::UserProfile.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::UserProfile.structure) }
+    #end
     respond success, obj
   end
 
@@ -41,11 +42,12 @@ class Ajax::Api::UserprofileController < ApplicationController
     
     if success
       obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
-      if (obj.response_data['items'].nil?) 
-        obj.response_data['items'] = [];
-      else 
-        obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
-      end
+      obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure
+      #if (obj.response_data['items'].nil?) 
+      #  obj.response_data['items'] = [];
+      #else 
+      #  obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+      #end
     end
     respond success, obj
   end
@@ -172,11 +174,12 @@ class Ajax::Api::UserprofileController < ApplicationController
   def get_track_user
     obj = ::Api::Userprofile::GetTrackUser.new track_user_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-        obj.response_data = []
-    else
-        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::TrackUser.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::TrackUser.structure
+    #if obj.response_data.nil?
+    #    obj.response_data = []
+    #else
+    #    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::TrackUser.structure) }
+    #end
     respond success, obj
   end
   
@@ -194,11 +197,12 @@ class Ajax::Api::UserprofileController < ApplicationController
   def owner_comments
     obj = ::Api::Userprofile::OwnerComments.new comments_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-        obj.response_data = []
-    else
-         obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
+    #if obj.response_data.nil?
+    #    obj.response_data = []
+    #else
+    #     obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
+    #end
     respond success, obj
   end
 
@@ -206,11 +210,12 @@ class Ajax::Api::UserprofileController < ApplicationController
   def lessee_comments
     obj = ::Api::Userprofile::LesseeComments.new comments_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-      obj.response_data = []
-    else
-      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
+    #if obj.response_data.nil?
+    #  obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
+    #end
     respond success, obj
   end
 

@@ -14,11 +14,12 @@ class Ajax::Api::WishlistController < ApplicationController
    def search
      obj = ::Api::Wishlist::Search.new search_params
      success = obj.request
-     if obj.response_data.nil?
-        obj.response_data = []
-     else
-        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::WishList.structure) }
-     end
+     obj.response_data = map_json_array obj.response_data, ResponseJson::WishList.structure
+     #if obj.response_data.nil?
+     #   obj.response_data = []
+     #else
+     #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::WishList.structure) }
+     #end
      respond success, obj    
    end
    

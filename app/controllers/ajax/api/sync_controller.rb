@@ -7,11 +7,12 @@ class Ajax::Api::SyncController < ApplicationController
   def notification
     obj = ::Api::Sync::Notification.new notification_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Notify.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::Notify.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::Notify.structure) }
+    #end
     respond success, obj
   end
 
@@ -43,11 +44,12 @@ class Ajax::Api::SyncController < ApplicationController
   def chat_rooms
     obj = ::Api::Sync::ChatRooms.new chat_rooms_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatRoom.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ChatRoom.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatRoom.structure) }
+    #end
     respond success, obj
   end
 
@@ -55,11 +57,12 @@ class Ajax::Api::SyncController < ApplicationController
   def chat_logs
     obj = ::Api::Sync::ChatLogs.new chat_logs_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-       obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatLog.structure) }
-    end
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ChatLog.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ChatLog.structure) }
+    #end
     respond success, obj
   end
 

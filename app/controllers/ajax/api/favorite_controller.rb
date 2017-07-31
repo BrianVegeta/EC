@@ -15,11 +15,12 @@ class Ajax::Api::FavoriteController < ApplicationController
   def my_favorite
     obj = ::Api::Favorite::MyFavorite.new current_uid_params, current_apitoken
     success = obj.request
-    if obj.response_data.nil?
-       obj.response_data = []
-    else
-        obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
-    end
+    map_json_array obj.response_data, ResponseJson::SimpleItem.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+    #end
     respond success, obj    
   end
   
