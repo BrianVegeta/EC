@@ -11,7 +11,9 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       obj.response_data.map { |item, index| parse_contract_rsp(item) }
+       current_uid = current_uid_params['uid']
+         
+       obj.response_data.map { |item, index| parse_display_contract_rsp(item, current_uid) }
     end
     respond success, obj
   end
@@ -89,8 +91,7 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
     if success
-      obj.response_data = parse_contract_rsp(item) 
-      #obj.response_data = reverse_merge(obj.response_data, ResponseJson::Contract.structure)
+      obj.response_data = parse_contract_rsp(obj.response_data) 
     end
     respond success, obj
   end
@@ -234,6 +235,30 @@ class Ajax::Api::ContractController < ApplicationController
      response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure 
      response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
      return response_data
+  end
+ 
+  #add display params to contract response
+  def parse_display_contract_rsp(response_data, uid)
+    
+    response_data = parse_contract_rsp(response_data)
+    
+    case response_data['type']
+    when 'ITEM'
+      item_stage = ::ItemStage.new(response_data, uid)
+      item_stage.process
+      response_data['display'] = item_stage.display
+    when 'SERVICE'
+      item_stage = ::ItemStage.new(response_data, uid)
+      item_stage.process
+      response_data['display'] = item_stage.display
+    when 'SPACE'
+      item_stage = ::ItemStage.new(response_data, uid)
+      item_stage.process
+      response_data['display'] = item_stage.display
+    else
+      raise 'invalid contract type'
+    end
+    
   end
   
   ###################### PARAMS ##################################
