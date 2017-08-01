@@ -15,39 +15,41 @@ class ListItem extends React.Component {
 
   static defaultProps = {
     isHovering: false,
+    isExpanding: false,
+    onSubCategoriesExpand: null,
   };
 
   static propTypes = {
-    isHovering: PropTypes.bool,
-    isSubCategoryOpen: PropTypes.bool.isRequired,
+    isHovering: PropTypes.bool, // ReactHoverObserver
+    isExpanding: PropTypes.bool,
     category: PropTypes.shape({
       name: PropTypes.string,
       id: PropTypes.number,
     }).isRequired,
-    onSubCatesToggleOpen: PropTypes.func.isRequired,
+    onSubCategoriesExpand: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
-    this.onSubCatesToggleOpen = this.onSubCatesToggleOpen.bind(this);
+    this.onSubCategoriesExpand = this.onSubCategoriesExpand.bind(this);
   }
 
-  onSubCatesToggleOpen(e) {
+  onSubCategoriesExpand(e) {
     e.preventDefault();
-    this.props.onSubCatesToggleOpen();
+    this.props.onSubCategoriesExpand();
   }
 
   render() {
     const {
       category,
-      isSubCategoryOpen,
+      isExpanding,
       isHovering,
     } = this.props;
 
     const iconProps = {
       size: 50,
       viewBox: '-30 -25 100 100',
-      onClick: this.onSubCatesToggleOpen,
+      onClick: this.onSubCategoriesExpand,
     };
 
     return (
@@ -57,8 +59,8 @@ class ListItem extends React.Component {
         onlyActiveOnIndex
       >
         <div styleName="container" className="clear">
-          {isSubCategoryOpen && <IconUp {...iconProps} />}
-          {isHovering && !isSubCategoryOpen && <IconDown {...iconProps} />}
+          {isExpanding && <IconUp {...iconProps} />}
+          {isHovering && !isExpanding && <IconDown {...iconProps} />}
           <div styleName="text">{category.name}</div>
         </div>
       </Link>
