@@ -1,4 +1,3 @@
-import { fetchCategories } from '../../../actions/itemsActions';
 import { confirmLeavePage } from '../../../funcs/confirm';
 import { checkStepRestart } from '../../../actions/routerAction';
 import { PATH } from '../../Release/constants';
@@ -32,7 +31,6 @@ export default (routesHelper, dispatch) => ({
           callback(null, { formComponent: require('./Step2_About/Container').default });
         }, 'r-g-2');
       },
-      onEnter: () => dispatch(fetchCategories()),
     },
     {
       path: 's3_d',

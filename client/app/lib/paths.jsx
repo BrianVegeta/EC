@@ -8,3 +8,6 @@ const escapeAlias = alias =>
 
 export const itemPath = (name, id) =>
   `/p/${escapeAlias(name)}-i.${id}`;
+
+export const categoriedItemPath = (categoryName, cid) =>
+  `/p/i/${escapeAlias(categoryName)}-c.${cid}`;

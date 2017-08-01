@@ -1,4 +1,4 @@
-import { fetchCategories, fetchItems } from '../../../actions/itemsActions';
+import { fetchItems } from 'actions/itemsActions';
 
 export default (routesHelper, dispatch) => ({
   path: `${routesHelper.items.root}/goods`,
@@ -10,6 +10,5 @@ export default (routesHelper, dispatch) => ({
   },
   onEnter: () => {
     dispatch(fetchItems());
-    dispatch(fetchCategories());
   },
 });

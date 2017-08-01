@@ -2,7 +2,6 @@ import layoutHoc from 'containers/layoutHoc';
 
 import { requireLoginAndGetUser } from 'actions/authActions';
 import { editItem } from 'actions/itemActions';
-import { fetchItems } from 'actions/itemsActions';
 
 import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
@@ -13,8 +12,9 @@ import Signinup from 'layouts/Signinup';
 
 import HomeRoute from './Home';
 import GoodsRoute from './Items/Goods';
-import ServiceRoute from './Items/Service';
-import itemSpaceRoute from './Items/Space/route';
+import itemsSpaceRoute from './Items/Space/route';
+import itemsServiceRoute from './Items/Service/route';
+
 import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
@@ -41,13 +41,8 @@ export default (routesHelper, dispatch) => ({
       component: layoutHoc(Home, { requireCates }),
       childRoutes: [
         GoodsRoute(routesHelper, dispatch),
-        ServiceRoute(routesHelper, dispatch),
-        itemSpaceRoute({
-          onEnter: (nextState) => {
-            console.log(nextState);
-            dispatch(fetchItems());
-          },
-        }),
+        itemsServiceRoute({ dispatch }),
+        itemsSpaceRoute({ dispatch }),
         CategoriedRoute(routesHelper, dispatch),
         Categories(routesHelper, dispatch),
         Tanzaku(routesHelper, dispatch),
@@ -61,7 +56,7 @@ export default (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: layoutHoc(Publish, { requireAuth, confirmLeave }),
+      component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
         ReleaseGoods(routesHelper, dispatch),
         ReleaseService(routesHelper, dispatch),

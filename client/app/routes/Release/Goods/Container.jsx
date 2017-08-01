@@ -1,9 +1,6 @@
 import React, { PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import {
-  fetchCategories,
-} from '../../../actions/itemsActions';
 
 class ReleaseGoods extends React.PureComponent {
   static propTypes = {
@@ -13,11 +10,8 @@ class ReleaseGoods extends React.PureComponent {
         PropTypes.number, PropTypes.bool,
       ]),
     ).isRequired,
-    dispatch: PropTypes.func.isRequired,
   };
-  componentDidMount() {
-    this.props.dispatch(fetchCategories());
-  }
+
   render() {
     const FIXED_HEADER_HEIGHT = 70;
     const PADDING_TOP = 100;

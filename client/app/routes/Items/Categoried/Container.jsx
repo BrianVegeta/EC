@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { ItemsPage, FeatureHeader } from '../components/Items';
 
 const propTypes = {
-  items: PropTypes.object.isRequired,
+  options: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
 };
 class CategoriedContainer extends React.Component {
 
   getCurrentType() {
-    const { items, params } = this.props;
-    const { categories } = items;
+    const { options, params } = this.props;
+    const { categories } = options;
 
     const flatten = {};
     Object.keys(categories).forEach((type) => {
@@ -31,8 +31,8 @@ class CategoriedContainer extends React.Component {
   }
 
   currentTypeContent() {
-    const { items, params } = this.props;
-    const { categories } = items;
+    const { options, params } = this.props;
+    const { categories } = options;
 
     const flatten = {};
     Object.keys(categories).forEach((type) => {
@@ -88,13 +88,13 @@ CategoriedContainer.propTypes = propTypes;
 const mapStateToProps = (state) => {
   const {
     environment,
-    items,
+    options,
     routesHelper,
   } = state;
 
   return ({
     environment,
-    items,
+    options,
     routesHelper,
   });
 };

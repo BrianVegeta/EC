@@ -1,59 +1,43 @@
 /* eslint-disable import/prefer-default-export */
-import * as TYPES from '../constants/actionTypes';
+import { asyncXhrPost } from 'lib/xhr';
+import * as types from 'constants/actionTypes/items';
 
-const fetchingItems = () => ({
-  type: TYPES.ITEMS_FETCHING,
+const fetching = () => ({
+  type: types.FETCHING,
 });
 
-const fetchedItems = items => ({
-  type: TYPES.ITEMS_FETCHED,
+const fetched = (items, categoryID) => ({
+  type: types.FETCHED,
+  categoryID,
   items,
 });
 
-const fetchingCategories = () => ({
-  type: TYPES.ITEMS_CATEGORIES_FETCHING,
-});
+/**
+ *
+ * @index
+ * @size
+ *
+ */
+export function fetchItems(categoryID) {
+  return (dispatch) => {
+    dispatch(fetching());
 
-const fetchedCategories = categories => ({
-  type: TYPES.ITEMS_CATEGORIES_FETCHED,
-  categories,
-});
-
-export function fetchItems() {
-  return (dispatch, getState) => {
-    dispatch(fetchingItems());
-
-    const { routesHelper } = getState();
-    fetch(routesHelper.ajax.items, {
-      credentials: 'same-origin',
-      method: 'GET',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    })
-    .then(response => response.json())
-    .then((items) => {
-      dispatch(fetchedItems(items));
-    })
-    .catch((err) => { throw err; });
-  };
-}
-
-export function fetchCategories() {
-  return (dispatch, getState) => {
-    const { items } = getState();
-    const { categories } = items;
-    if (categories) {
-      return;
-    }
-    dispatch(fetchingCategories());
-
-    const { routesHelper } = getState();
-    fetch(routesHelper.ajax.categories, {
-      credentials: 'same-origin',
-      method: 'GET',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    })
-    .then(response => response.json())
-    .then(json => dispatch(fetchedCategories(json)))
-    .catch((err) => { throw err; });
+    asyncXhrPost(
+      '/ajax/item/list.json',
+      {
+        index: 0,
+        size: 21,
+        category_id: categoryID,
+        sort: {
+          column: 'time',
+          type: 'desc',
+        },
+      },
+    )
+    .then(data =>
+      dispatch(
+        fetched(data, categoryID),
+      ),
+    );
   };
 }

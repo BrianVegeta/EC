@@ -33,12 +33,22 @@ export default {
     }),
   ),
   notification: PropTypes.object,
-  categories: PropTypes.arrayOf(PropTypes.object),
+  /* --------------- options --------------- */
+  options: PropTypes.shape({
+    categories: PropTypes.object,
+    banks: PropTypes.array,
+  }),
+  categories: PropTypes.shape({
+    goods: PropTypes.array,
+    service: PropTypes.array,
+    space: PropTypes.array,
+  }),
   category: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
     img: PropTypes.string,
   }),
+  /* --------------- options END --------------- */
   itemCard: PropTypes.shape({
     id: PropTypes.number,
     pname: PropTypes.string,
@@ -59,6 +69,16 @@ export default {
   search: PropTypes.shape({ query: PropTypes.string }),
   /* ----------- ITEMS ---------- */
   items: PropTypes.object,
+  /* ----------- ITEM ----------- */
+  itemBoard: PropTypes.shape({
+    pname: PropTypes.string.isRequired,
+    pid: PropTypes.number.isRequired,
+    img1: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    owner_name: PropTypes.string.isRequired,
+    owner_img: PropTypes.string,
+    favorite_count: PropTypes.number.isRequired,
+  }),
   /* ----------- AUTH ----------- */
   /* 登入 */
   loginAuthShape: {

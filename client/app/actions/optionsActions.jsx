@@ -14,6 +14,11 @@ const changeBankBranchs = (id, branchs) => ({
   id,
 });
 
+const setCategories = categories => ({
+  type: types.SET_CATEGORIES,
+  categories,
+});
+
 export function prepareBanks() {
   return (dispatch) => {
     asyncXhrGet('/ajax/banks.json')
@@ -36,6 +41,18 @@ export function prepareBankBranchs(bankId) {
     .then((data) => {
       dispatch(
         changeBankBranchs(bankId, data),
+      );
+    })
+    .catch(() => {});
+  };
+}
+
+export function prepareCategories() {
+  return (dispatch) => {
+    asyncXhrGet('/ajax/categories.json')
+    .then((data) => {
+      dispatch(
+        setCategories(data),
       );
     })
     .catch(() => {});

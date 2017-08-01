@@ -6,3 +6,5 @@ const prefix = action => (
 
 export const SET_BANKS = prefix('SET_BANKS');
 export const CHANGE_BANK_BRANCHS = prefix('CHANGE_BANK_BRANCHS');
+
+export const SET_CATEGORIES = prefix('SET_CATEGORIES');

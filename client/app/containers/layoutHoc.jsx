@@ -6,9 +6,10 @@ import myPropTypes from 'propTypes';
 
 import { initEnvironment } from 'actions/environmentActions';
 import { redirectTo } from 'actions/module/routingActions';
-import { fetchCategories } from 'actions/itemsActions';
+import { prepareCategories } from 'actions/optionsActions';
 
 import * as paths from 'lib/paths';
+import { isCategoriesReady } from 'lib/reducerHelpers';
 import ModalContainer from 'containers/ModalContainer';
 import PopupContainer from 'containers/Popup/Container';
 import ScheduleContainer from 'containers/ScheduleContainer';
@@ -23,7 +24,7 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
       auth: myPropTypes.authOnHeader.isRequired,
       router: myPropTypes.router.isRequired,
       route: myPropTypes.route.isRequired,
-      items: myPropTypes.items.isRequired,
+      options: myPropTypes.options.isRequired,
     };
 
     componentDidMount() {
@@ -66,17 +67,17 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
 
     handleRequireCates() {
       if (!requireCates) return;
-      if (this.props.items.categories) return;
+      if (isCategoriesReady(this.props.options.categories)) return;
 
       this.props.dispatch(
-        fetchCategories(),
+        prepareCategories(),
       );
     }
 
     render() {
-      const { auth, items } = this.props;
+      const { auth, options } = this.props;
       if (requireAuth && !auth.isLogin) return null;
-      if (requireCates && !items.categories) return null;
+      if (requireCates && !isCategoriesReady(options.categories)) return null;
       return (
         <div>
           <Component {...this.props} />
@@ -92,8 +93,8 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
 export default function (Component, { requireAuth, requireCates, confirmLeave }) {
   const layoutOptions = { requireAuth, confirmLeave, requireCates };
   const mapStateToProps = (state) => {
-    const { environment, auth, items, routing } = state;
-    return { environment, auth, items, routing };
+    const { environment, auth, options, routing } = state;
+    return { environment, auth, options, routing };
   };
   return (
     connect(mapStateToProps)(

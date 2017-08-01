@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import * as types from 'constants/actionTypes/options';
 
 // {
@@ -15,16 +15,29 @@ import * as types from 'constants/actionTypes/options';
 
 const initialState = {
   banks: [],
+  categories: {
+    goods: [],
+    service: [],
+    space: [],
+  },
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    /* 分類 */
+    case types.SET_CATEGORIES:
+      return fromJS(state).mergeIn(
+        ['categories'],
+        action.categories,
+      ).toJS();
 
+    /* 銀行 */
     case types.SET_BANKS:
       return Object.assign({}, state, {
         banks: action.banks,
       });
 
+    /* 分行 */
     case types.CHANGE_BANK_BRANCHS:
       return fromJS(state).updateIn(
         ['banks'],

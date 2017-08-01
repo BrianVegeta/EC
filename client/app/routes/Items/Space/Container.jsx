@@ -1,9 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ItemsPage, FeatureHeader } from '../components/Items';
 
-const ITEM_TYPE = 'space';
-const FEATURE_HEADER_TEXT = '全部空間';
+import IconPublishSpace from 'components/Icons/Publish/Space';
+import PageHeader from 'components/PageHeader';
+import PageTitle from 'components/PageTitle';
+import PageFilterBar from 'components/PageFilterBar';
+
+import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
+import CategoriedItemListContainer from 'containers/CategoriedItemList';
+import {
+  CATEGORY_SPACE,
+  CATEGORY_SPACE_ID,
+} from 'constants/enums';
+import { mapCategoryNameByID } from 'lib/category';
+
 class ItemsSpaceContainer extends React.Component {
 
   componentWillReceiveProps() {
@@ -11,18 +21,33 @@ class ItemsSpaceContainer extends React.Component {
   }
 
   render() {
+    const { items } = this.props;
+    const { categoryID } = items;
+
     return (
-      <ItemsPage
-        currentType={ITEM_TYPE}
-        featureHeader={<FeatureHeader text={FEATURE_HEADER_TEXT} hasIcon />}
-        {...this.props}
-      />
+      <div>
+        <PageHeader >
+          <PageTitle
+            title={mapCategoryNameByID(categoryID)}
+            renderIcon={() => <IconPublishSpace />}
+          />
+          <PageFilterBar />
+        </PageHeader>
+        <div className="clear">
+          <SidebarCategoriesContainer
+            topCategory={CATEGORY_SPACE}
+          />
+          <CategoriedItemListContainer
+            categoryID={CATEGORY_SPACE_ID}
+          />
+        </div>
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { environment, items, routesHelper } = state;
-  return { environment, items, routesHelper };
+  const { environment, items, options, routesHelper } = state;
+  return { environment, items, options, routesHelper };
 };
 export default connect(mapStateToProps)(ItemsSpaceContainer);

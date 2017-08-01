@@ -168,6 +168,8 @@ Rails.application.routes.draw do
       # OTHERS
       get 'banks', to: 'banks#index'
       post 'bank_branchs', to: 'banks#branchs'
+      # ITEM
+      get 'categories', to: 'categories#index'
     end
 
     namespace :auth do
@@ -204,7 +206,7 @@ Rails.application.routes.draw do
         put 'item_cover'
       end
     end
-    resources :categories, only: :index
+
     resources :addresses, only: [] do
       collection do
         get 'cities'

@@ -1,24 +1,26 @@
-import * as TYPES from '../constants/actionTypes';
+import * as TYPES from 'constants/actionTypes/items';
 
 const initialState = {
-  fetchingState: 'init',
-  categories: false,
+  categoryID: null,
+  isFetching: true,
   records: [],
 };
+
 export default (state = initialState, action) => {
   switch (action.type) {
-    case TYPES.ITEMS_FETCHING:
-      return Object.assign({}, state, { fetchingState: 'fetching', records: [] });
-    case TYPES.ITEMS_FETCHED: {
-      const { items } = action;
-      return Object.assign({}, state, { fetchingState: 'fetched', records: items });
-    }
-    case TYPES.ITEMS_CATEGORIES_FETCHING:
-      return Object.assign({}, state, { categories: false });
-    case TYPES.ITEMS_CATEGORIES_FETCHED: {
-      const { categories } = action;
-      return Object.assign({}, state, { categories });
-    }
+
+    case TYPES.FETCHING:
+      return Object.assign({}, state, {
+        isFetching: true,
+      });
+
+    case TYPES.FETCHED:
+      return Object.assign({}, state, {
+        isFetching: false,
+        records: action.items,
+        categoryID: action.categoryID,
+      });
+
     default:
       return state;
   }

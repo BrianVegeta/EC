@@ -1,31 +1,41 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
-import Firelane from '../../components/Firelane';
+import { isEmpty } from 'lodash';
+
+import Firelane from 'components/Firelane';
 import List from './List';
 import Splitline from './List/Splitline';
 
-const propTypes = {
-  items: PropTypes.object.isRequired,
-};
-const CategoriesContainer = (props) => {
-  const { items: { categories } } = props;
-  if (!categories) {
-    return null;
-  }
+class CategoriesContainer extends React.Component {
 
-  return (
-    <div>
-      <List type="goods" {...props} />
-      <Splitline />
-      <Firelane distance={80} />
-      <List type="service" {...props} />
-      <Splitline />
-      <Firelane distance={80} />
-      <List type="space" {...props} />
-    </div>
-  );
-};
-CategoriesContainer.propTypes = propTypes;
+  static propTypes = {
+    options: PropTypes.shape({
+      categories: myPropTypes.categories.isRequired,
+    }).isRequired,
+  };
+
+  render() {
+    const { options: { categories } } = this.props;
+    if (isEmpty(categories)) {
+      return null;
+    }
+
+    return (
+      <div>
+        <List type="goods" {...this.props} />
+        <Splitline />
+        <Firelane distance={80} />
+        <List type="service" {...this.props} />
+        <Splitline />
+        <Firelane distance={80} />
+        <List type="space" {...this.props} />
+      </div>
+    );
+  }
+}
+
 const mapStateToProps = (state) => {
   const { environment, items, routesHelper } = state;
   return { environment, items, routesHelper };

@@ -1,12 +1,12 @@
 import { fetchItems } from 'actions/itemsActions';
 import {
-  CATEGORY_SPACE,
-  CATEGORY_SPACE_ID,
+  CATEGORY_SERVICE,
+  CATEGORY_SERVICE_ID,
 } from 'constants/enums';
 
 
 export default ({ dispatch }) => ({
-  path: `/p/i/${CATEGORY_SPACE}`,
+  path: `/p/i/${CATEGORY_SERVICE}`,
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       const component = require('./Container').default;
@@ -15,7 +15,7 @@ export default ({ dispatch }) => ({
   },
   onEnter: () => {
     dispatch(
-      fetchItems(CATEGORY_SPACE_ID),
+      fetchItems(CATEGORY_SERVICE_ID),
     );
   },
 });
