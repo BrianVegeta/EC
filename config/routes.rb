@@ -125,6 +125,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      # WISHLIST
+      post 'wish/save', to: 'wishlist#save' #
+      post 'wish/search', to: 'wishlist#search' #
+      post 'wish/remove', to: 'wishlist#remove' #
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
       # ITEMS

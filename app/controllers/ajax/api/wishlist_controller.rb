@@ -1,31 +1,32 @@
 class Ajax::Api::WishlistController < ApplicationController
   include WardenHelper
-  
+  include RespondHelper
+
   ###################### ACTION ##################################
   # 上傳或更新許願紙條
    def save
      obj = ::Api::Wishlist::Save.new save_wish_params, current_apitoken
      success = obj.request
-     respond success, obj.error_message, obj.response_data
+     respond success, obj
    end
-   
+
    # 搜尋許願紙條
    def search
      obj = ::Api::Wishlist::Search.new search_params
      success = obj.request
-     respond success, obj.error_message, obj.response_data    
+     respond success, obj
    end
-   
+
    # 移除許願紙條
    def remove
      obj = ::Api::Wishlist::Remove.new remove_params, current_apitoken
      success = obj.request
-     respond success, obj.error_message, obj.response_data
+     respond success, obj
    end
-   
+
    ###################### PARAMS ##################################
    protected
-  
+
    def save_wish_params
      # id : Long => 許願紙條ID，建立新的時候不需要填寫
      # pname : String => 標題
