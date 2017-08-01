@@ -16,7 +16,9 @@ class FormButton extends React.Component {
   };
 
   static propTypes = {
-    colorType: PropTypes.oneOf(['green', 'orange', 'greenBorder', 'dangerBlank']),
+    colorType: PropTypes.oneOf([
+      'green', 'orange', 'greenBorder', 'dangerBlank',
+    ]),
     size: PropTypes.oneOf(['lg', 'md', 'sm']),
     style: PropTypes.object,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
 
-import Pictrue from 'components/Picture';
 import ItemBoard from 'components/ItemBoard';
+import ButtonLoadMore from 'components/Button/LoadMore';
+import { fetchItems } from 'actions/itemsActions';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -16,11 +17,21 @@ class CategoriedItemListContainer extends React.Component {
     categoryID: PropTypes.number.isRequired,
     /* redux provide */
     items: myPropTypes.items.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.onLoadMore = this.onLoadMore.bind(this);
+  }
+
+  onLoadMore() {
+    this.props.dispatch(fetchItems(this.props.categoryID));
+  }
 
   render() {
     const { props: { items } } = this;
-    const { records } = items;
+    const { records, isFetching } = items;
 
     return (
       <div styleName="container">
@@ -30,6 +41,12 @@ class CategoriedItemListContainer extends React.Component {
               <ItemBoard item={item} />
             </div>
           ))}
+        </div>
+        <div styleName="load-more-container">
+          <ButtonLoadMore
+            isLoading={isFetching}
+            onClick={this.onLoadMore}
+          />
         </div>
       </div>
     );

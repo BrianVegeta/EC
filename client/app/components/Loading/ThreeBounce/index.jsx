@@ -6,6 +6,7 @@ import styled, { keyframes } from 'styled-components';
 
 const Container = styled.div`
   display: inline-block;
+  height: ${props => props.size}px;
 `;
 
 const animation = keyframes`
@@ -26,10 +27,12 @@ const Bounce = styled.div`
 
 const Bounce2 = Bounce.extend`
   animation-delay: 1.32s;
+  margin-left: 4px;
 `;
 
 const Bounce3 = Bounce.extend`
   animation-delay: 1.4s;
+  margin-left: 4px;
 `;
 
 class ThreeBounce extends React.Component {
@@ -50,7 +53,7 @@ class ThreeBounce extends React.Component {
       color: this.props.color,
     };
     return (
-      <Container>
+      <Container size={this.props.bounceSize}>
         <Bounce />
         <Bounce2 />
         <Bounce3 />

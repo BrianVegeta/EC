@@ -2,8 +2,9 @@
 import { asyncXhrPost } from 'lib/xhr';
 import * as types from 'constants/actionTypes/items';
 
-const fetching = () => ({
+const fetching = categoryID => ({
   type: types.FETCHING,
+  categoryID,
 });
 
 const fetched = (items, categoryID) => ({
@@ -19,14 +20,15 @@ const fetched = (items, categoryID) => ({
  *
  */
 export function fetchItems(categoryID) {
-  return (dispatch) => {
-    dispatch(fetching());
+  return (dispatch, getState) => {
+    const { items: { size, index } } = getState();
 
+    dispatch(fetching(categoryID));
     asyncXhrPost(
       '/ajax/item/list.json',
       {
-        index: 0,
-        size: 21,
+        index,
+        size,
         category_id: categoryID,
         sort: {
           column: 'time',

@@ -7,8 +7,10 @@ import PageTitle from 'components/PageTitle';
 import PageFilterBar from 'components/PageFilterBar';
 
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
+import CategoriedItemListContainer from 'containers/CategoriedItemList';
 import {
   CATEGORY_SERVICE,
+  CATEGORY_SERVICE_ID,
 } from 'constants/enums';
 import { mapCategoryNameByID } from 'lib/category';
 
@@ -31,9 +33,10 @@ class ItemsServiceContainer extends React.Component {
           />
           <PageFilterBar />
         </PageHeader>
-        <SidebarCategoriesContainer
-          topCategory={CATEGORY_SERVICE}
-        />
+        <div className="clear">
+          <SidebarCategoriesContainer topCategory={CATEGORY_SERVICE} />
+          <CategoriedItemListContainer categoryID={CATEGORY_SERVICE_ID} />
+        </div>
       </div>
     );
   }

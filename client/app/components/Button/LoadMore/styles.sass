@@ -1,0 +1,38 @@
+@import "~styles/color.sass"
+$content-height: 18px
+
+._load-more
+  border-radius: 5px
+  text-align: center
+  width: 246px
+  font-size: 16px
+  font-weight: 600
+  color: $global-placeholder
+
+.load-more-button
+  composes: _load-more
+  background: #fff
+  border: 1px solid $global-lineColor
+  padding: 9px 0
+  transition: 0.3s all
+  .content
+    display: inline-block
+    height: $content-height
+  &:hover
+    border: 1px solid $global-blackColor
+  &:active
+    background: #f0f0f0
+
+.disable-button
+  composes: _load-more
+  padding: 10px 0
+  transition: none
+  cursor: default
+  border: 0
+  background: #E9E9E9
+  .loading
+    display: inline-block
+    height: $content-height
+    .loading-text
+      display: inline-block
+      margin-left: 15px
