@@ -5,18 +5,23 @@ import { connect } from 'react-redux';
 
 import ItemBoard from 'components/ItemBoard';
 import ButtonLoadMore from 'components/Button/LoadMore';
+import LoadingOverlay from 'components/Loading/Overlay';
 import { fetchItems } from 'actions/itemsActions';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import { Container } from './styles';
 
 
+const cx = classnames.bind(styles);
 class CategoriedItemListContainer extends React.Component {
 
   static propTypes = {
     categoryID: PropTypes.number.isRequired,
     /* redux provide */
     items: myPropTypes.items.isRequired,
+    environment: myPropTypes.environment.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -30,25 +35,37 @@ class CategoriedItemListContainer extends React.Component {
   }
 
   render() {
-    const { props: { items } } = this;
-    const { records, isFetching } = items;
+    const { items, environment } = this.props;
+    const { records, isFetching, isPaginable } = items;
 
     return (
-      <div styleName="container">
-        <div styleName="items-container">
-          {records.map(item => (
-            <div key={item.pid} styleName="item-card">
+      <Container
+        styleName="container"
+        isLoading={records.length === 0 && isFetching}
+        height={(environment.height - 113 - 180)}
+      >
+        {
+          records.length === 0 &&
+          isFetching &&
+          <LoadingOverlay />
+        }
+        <div styleName="items-container" className="clear">
+          {records.map((item, index) => (
+            <div key={`${index + 1}`} styleName="item-card">
               <ItemBoard item={item} />
             </div>
           ))}
         </div>
         <div styleName="load-more-container">
-          <ButtonLoadMore
-            isLoading={isFetching}
-            onClick={this.onLoadMore}
-          />
+          {
+            isPaginable &&
+            <ButtonLoadMore
+              isLoading={isFetching}
+              onClick={this.onLoadMore}
+            />
+          }
         </div>
-      </div>
+      </Container>
     );
   }
 }

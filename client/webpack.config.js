@@ -53,6 +53,7 @@ const config = {
     extensions: ['.js', '.jsx'],
     modules: ['node_modules', 'spritesmith-generated'],
     alias: {
+      externalLib: path.join(__dirname, 'lib'),
       styles: path.join(__dirname, 'app/styles'),
       components: path.join(__dirname, 'app/components'),
       layouts: path.join(__dirname, 'app/layouts'),

@@ -11,7 +11,7 @@ export default ({ dispatch }) => ({
     require.ensure([], (require) => {
       const component = require('./Container').default;
       callback(null, { main: component });
-    });
+    }, 'items-service');
   },
   onEnter: () => {
     dispatch(

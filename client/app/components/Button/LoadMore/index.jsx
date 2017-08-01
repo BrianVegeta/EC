@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ThreeBounce } from 'better-react-spinkit'
+import ThreeBounce from 'components/Loading/ThreeBounce';
 
 import classnames from 'classnames/bind';
 import styles from './styles.sass';
@@ -37,7 +37,7 @@ class ButtonLoadMore extends React.Component {
 
     return (
       <button className={`button ${cx('load-more-button')}`} onClick={onClick} >
-        <div styleName="content">載入更多</div>
+        <div className={cx('content')}>載入更多</div>
       </button>
     );
   }

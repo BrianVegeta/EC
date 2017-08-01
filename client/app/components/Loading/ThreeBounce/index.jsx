@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
 
-const Container = styled.div`
-  display: inline-block;
-  height: ${props => props.size}px;
+const Container = styled.span`
 `;
 
 const animation = keyframes`
@@ -21,39 +19,38 @@ const Bounce = styled.div`
 
   border-radius: 100%;
   display: inline-block;
-  vertical-align: top;
-  animation: ${animation} 1.16s 1s infinite ease-in-out;
+  animation: ${animation} -1.16s 1s infinite ease-in-out;
 `;
 
 const Bounce2 = Bounce.extend`
-  animation-delay: 1.32s;
+  animation-delay: -1.32s;
   margin-left: 4px;
 `;
 
 const Bounce3 = Bounce.extend`
-  animation-delay: 1.4s;
+  animation-delay: -1.4s;
   margin-left: 4px;
 `;
 
 class ThreeBounce extends React.Component {
 
   static defaultProps = {
-    bounceSize: 25,
+    size: 25,
     color: '#333',
   };
 
   static propTypes = {
-    bounceSize: PropTypes.number,
+    size: PropTypes.number,
     color: PropTypes.string,
   };
 
   render() {
     Bounce.defaultProps = {
-      size: this.props.bounceSize,
+      size: this.props.size,
       color: this.props.color,
     };
     return (
-      <Container size={this.props.bounceSize}>
+      <Container>
         <Bounce />
         <Bounce2 />
         <Bounce3 />
