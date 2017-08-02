@@ -35,7 +35,8 @@ class ApplicationController < ActionController::Base
     if target.nil?
       return default
     else
-      return target.map { |item, index| reverse_merge(item, source) }
+      return target.each_with_index.map { |item, index| 
+        target[index] = reverse_merge(item, source) }
     end
   end
  
