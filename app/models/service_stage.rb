@@ -3,10 +3,6 @@ class ServiceStage < StageBase
   #CONSTANT VALUE
   KEY_OWNER_END = 'can_owner_end'
   KEY_LESSEE_END = 'can_lessee_end'
-  KEY_OWNER_SCORE = 'can_owner_score'
-  KEY_LESSEE_SCORE = 'can_lessee_score'
-  KEY_OWNER_VISIT_SCORE = 'owner_visit_score'
-  KEY_LESSEE_VISIT_SCORE = 'lessee_visit_score'
   
   def initialize(contract, uid)
     super(contract, uid)
@@ -26,7 +22,18 @@ class ServiceStage < StageBase
   end
   
   def prepare_normal_tab
-     
+    case self.screen_type
+    when STAGE_WAITING_CONFIRM, STAGE_LAST_CHECK, STAGE_NEGOTIATING
+      modify_display_param(KEY_TAB, TAB_REQUEST)
+    when STAGE_LESSEE_PAY
+      modify_display_param(KEY_TAB, TAB_PAY)
+    when STAGE_SHIPPING, STAGE_SHIP_CONFIRM, STAGE_CONTRACT_ONGOING
+      modify_display_param(KEY_TAB, TAB_WAITING_TO_GO)
+    when STAGE_CONTRACT_START, STAGE_CONTRACT_END, STAGE_RETURN_CONFIRM
+      modify_display_param(KEY_TAB, TAB_ONGOING)
+    when STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
+      modify_display_param(KEY_TAB, TAB_COMPLETE)
+    end 
   end
  
   protected
@@ -35,7 +42,7 @@ class ServiceStage < StageBase
 
   def check_contract_end
         
-    if not (self.screen_type >= CONTRACT_START || self.screen_type <= RETURN_CONFIRM)
+    if not (self.screen_type >= STAGE_CONTRACT_START || self.screen_type <= STAGE_RETURN_CONFIRM)
       return
     end
     

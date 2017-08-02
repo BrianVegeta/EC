@@ -8,6 +8,7 @@ class SpaceStage < StageBase
     super(contract, uid)
     modify_display_param(KEY_OWNER_END, false)     #賣家可以結束 (true = show, false = hidden)
     modify_display_param(KEY_LESSEE_END, false)    #買家可以結束 (true = show, false = hidden)
+    
   end  
 
   ####################### ABSTRACT FUNCTION #######################################
@@ -22,7 +23,18 @@ class SpaceStage < StageBase
   end
   
   def prepare_normal_tab
-    
+    case self.screen_type
+    when STAGE_WAITING_CONFIRM, STAGE_LAST_CHECK, STAGE_NEGOTIATING
+      modify_display_param(KEY_TAB, TAB_REQUEST)
+    when STAGE_LESSEE_PAY
+      modify_display_param(KEY_TAB, TAB_PAY)
+    when STAGE_SHIPPING, STAGE_SHIP_CONFIRM, STAGE_CONTRACT_ONGOING
+      modify_display_param(KEY_TAB, TAB_WAITING_TO_GO)
+    when STAGE_CONTRACT_START, STAGE_CONTRACT_END, STAGE_RETURN_CONFIRM
+      modify_display_param(KEY_TAB, TAB_ONGOING)
+    when STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
+      modify_display_param(KEY_TAB, TAB_COMPLETE)
+    end 
   end
   
   protected
@@ -31,7 +43,7 @@ class SpaceStage < StageBase
   
   def check_contract_end
 
-    if not (self.screen_type >= CONTRACT_START || self.screen_type <= RETURN_CONFIRM)
+    if not (self.screen_type >= STAGE_CONTRACT_START || self.screen_type <= STAGE_RETURN_CONFIRM)
       return
     end
     

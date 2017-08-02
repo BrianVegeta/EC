@@ -1,7 +1,7 @@
 class Ajax::Api::ContractController < ApplicationController
   include WardenHelper
   include RespondHelper  
-
+  
   ###################### ACTION ##################################
 
   # 取回行事曆範圍內的合約
@@ -11,9 +11,8 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       current_uid = current_uid_params['uid']
-         
-       obj.response_data.map { |item, index| parse_display_contract_rsp(item, current_uid) }
+      obj.response_data.each_with_index.map { |item, index| 
+        obj.response_data[index] = parse_contract_rsp(item) }
     end
     respond success, obj
   end
@@ -45,7 +44,8 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       obj.response_data.map { |item, index| parse_contract_rsp(item) }
+       obj.response_data.each_with_index.map { |item, index| 
+         obj.response_data[index] = parse_contract_rsp(item) }
     end
     respond success, obj
   end
@@ -54,12 +54,15 @@ class Ajax::Api::ContractController < ApplicationController
   def get_my_contract
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
-    obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
-    #if obj.response_data.nil?
-    #    obj.response_data = []
-    #else
-    #     obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::MyContract.structure) }
-    #end
+    #obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
+    
+    if obj.response_data.nil?
+        obj.response_data = []
+    else
+        obj.response_data.each_with_index.map { |item, index| 
+          obj.response_data[index] = parse_display_contract_rsp(item, current_user['uid'])
+        }
+    end
     respond success, obj
   end
 
@@ -239,26 +242,29 @@ class Ajax::Api::ContractController < ApplicationController
  
   #add display params to contract response
   def parse_display_contract_rsp(response_data, uid)
+
+    if (response_data['contractstage'].nil?)
+      raise 'error'
+    end
     
     response_data = parse_contract_rsp(response_data)
-    
     case response_data['type']
     when 'ITEM'
       item_stage = ::ItemStage.new(response_data, uid)
       item_stage.process
       response_data['display'] = item_stage.display
     when 'SERVICE'
-      item_stage = ::ItemStage.new(response_data, uid)
-      item_stage.process
-      response_data['display'] = item_stage.display
+      service_stage = ::ServiceStage.new(response_data, uid)
+      service_stage.process
+      response_data['display'] = service_stage.display
     when 'SPACE'
-      item_stage = ::ItemStage.new(response_data, uid)
-      item_stage.process
-      response_data['display'] = item_stage.display
+      space_stage = ::SpaceStage.new(response_data, uid)
+      space_stage.process
+      response_data['display'] = space_stage.display
     else
       raise 'invalid contract type'
     end
-    
+    return response_data
   end
   
   ###################### PARAMS ##################################
