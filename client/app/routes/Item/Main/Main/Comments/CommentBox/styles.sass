@@ -1,0 +1,77 @@
+.container
+  margin-top: 20px
+  .title
+    line-height: 20px
+    font-size: 18px
+    margin-bottom: 15px
+
+.tb-container
+  border: 1px solid #979797
+  border-radius: 4px
+  margin-bottom: 15px
+  .textbox
+    position: relative
+    z-index: 1
+    padding: 19px
+    font-size: 20px
+    line-height: 20px
+    .placeholder
+      position: absolute
+      top: 19px
+      left: 19px
+      font-size: 20px
+      line-height: 20px
+      color: #999
+
+.editable
+  position: relative
+  z-index: 100
+  outline: 0
+  div, p
+    margin: 0
+    padding: 0
+.editable-placeholding
+  composes: editable
+  color: #999
+
+.tb-container-focusing
+  composes: tb-container
+  border: 2px solid #444
+  .textbox
+    padding: 18px
+    .placeholder
+      top: 18px
+      left: 18px
+
+
+.controller
+  min-height: 70px
+  // TODO: flex display research
+  display: -webkit-box
+  display: -moz-box
+  display: -ms-flexbox
+  display: -webkit-flex
+  display: flex
+  .buttons
+    margin: 0
+    margin-left: auto
+
+.button
+  margin: 0
+  border: 0
+  outline: 0
+  cursor: pointer
+  padding: 16px 27px
+  font-size: 18px
+  line-height: 20px
+  border: 1px solid #979797
+  border-radius: 5px
+
+.cancel
+  composes: button
+  background-color: #fff
+  margin-right: 10px
+.comment
+  composes: button
+  background-color: #222
+  color: #fff
