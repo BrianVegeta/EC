@@ -93,6 +93,7 @@ class Ajax::Api::ItemController < ApplicationController
   # 篩選商品列表
   def search_item_list
     sleep(2)
+
     obj = ::Api::Item::SearchItemList.new search_item_params
     success = obj.request
     obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
@@ -170,10 +171,10 @@ class Ajax::Api::ItemController < ApplicationController
   private
 
   def parse_item_rsp(response_data)
+     response_data = reverse_merge(response_data, ResponseJson::Item.structure)
      response_data['comments'] = map_json_array response_data['comments'], ResponseJson::ContractComment.structure
      response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure
      response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure
-     response_data = reverse_merge(response_data, ResponseJson::Item.structure)
      return response_data
   end
 

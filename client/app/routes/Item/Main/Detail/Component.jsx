@@ -5,7 +5,7 @@ class Detail extends React.Component {
 
   static propTypes = {
       city: PropTypes.string.isRequired,
-      area: Proptypes.string.isRequired,
+      area: PropTypes.string.isRequired,
       unit: PropTypes.number.isRequired,
       calculate_charge_type: PropTypes.string.isRequired
   };

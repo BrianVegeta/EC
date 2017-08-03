@@ -27,7 +27,9 @@ class ApplicationController < ActionController::Base
   end
 
   def reverse_merge data, format
-    data.merge(format.stringify_keys) { |key, v1, v2| v1 }
+    data.stringify_keys.merge(format.stringify_keys) do |key, v1, v2|
+      v1.nil? ? v2 : v1
+    end
   end
 
   #auto mapping to arry 

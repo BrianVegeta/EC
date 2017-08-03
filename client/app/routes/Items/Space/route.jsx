@@ -1,4 +1,4 @@
-import { fetchItems } from 'actions/itemsActions';
+import { fetchItems, reset } from 'actions/itemsActions';
 import {
   CATEGORY_SPACE,
   CATEGORY_SPACE_ID,
@@ -14,6 +14,7 @@ export default ({ dispatch }) => ({
     }, 'items-space');
   },
   onEnter: () => {
+    dispatch(reset());
     dispatch(
       fetchItems(CATEGORY_SPACE_ID),
     );

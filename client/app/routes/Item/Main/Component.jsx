@@ -67,6 +67,7 @@ class Main extends React.Component {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
     const {pname, pdes, unit, city, area, tags, calculate_charge_type} = item;
+    console.log(tags);
 
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
@@ -76,7 +77,11 @@ class Main extends React.Component {
         </div>
             <Description description={pdes} />
             <Tags tags={tags} />
-        <Detail unit={unit} calculate_charge_type={calculate_charge_type} />
+        <Detail 
+            city={city} 
+            area={area} 
+            unit={unit} 
+            calculate_charge_type={calculate_charge_type} />
       </div>
     );
   }

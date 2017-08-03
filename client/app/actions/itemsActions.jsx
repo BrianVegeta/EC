@@ -6,6 +6,10 @@ import {
   filter,
 } from 'lodash';
 
+export const reset = () => ({
+    type: types.RESET
+});
+
 const fetching = categoryID => ({
   type: types.FETCHING,
   categoryID,
@@ -53,6 +57,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
       increasePagingRecursiveFrequency(),
     );
     /* LOADING FETCH */
+    console.log(categoryID)
     dispatch(
       fetching(categoryID),
     );

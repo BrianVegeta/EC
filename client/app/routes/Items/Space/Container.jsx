@@ -34,12 +34,8 @@ class ItemsSpaceContainer extends React.Component {
           <PageFilterBar />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer
-            topCategory={CATEGORY_SPACE}
-          />
-          <CategoriedItemListContainer
-            categoryID={CATEGORY_SPACE_ID}
-          />
+          <SidebarCategoriesContainer topCategory={CATEGORY_SPACE} />
+          <CategoriedItemListContainer categoryID={CATEGORY_SPACE_ID} />
         </div>
       </div>
     );

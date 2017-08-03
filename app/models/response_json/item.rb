@@ -65,7 +65,7 @@ class ResponseJson::Item
         #  -String
         discounts: [],
         #  -Object [ItemDiscountRsp]
-        rules: nil,
+        rules: [],
         #  -Object [String]
         cancel_policys: nil,
         #  -Object [ItemCancelPolicyRsp]

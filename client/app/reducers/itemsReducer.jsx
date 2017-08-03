@@ -28,7 +28,10 @@ export default (state = initialState, action) => {
         index: state.index + action.items.length,
         categoryID: action.categoryID,
       });
-
+      
+    case TYPES.RESET:
+       return initialState;
+       
     default:
       return state;
   }

@@ -4,6 +4,7 @@ const prefix = action => (
   `${TYPE}.${action}`
 );
 
+export const RESET = prefix('RESET');
 export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const INCREASE_PAGING_RECURSIVE_FREQUENCY = prefix('INCREASE_PAGING_RECURSIVE_FREQUENCY');
