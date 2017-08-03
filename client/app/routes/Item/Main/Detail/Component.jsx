@@ -1,7 +1,15 @@
 import React, { PropTypes } from 'react';
+import { calculateUnit } from 'lib/unitHelper';
 
 class Detail extends React.Component {
 
+  static propTypes = {
+      city: PropTypes.string.isRequired,
+      area: Proptypes.string.isRequired,
+      unit: PropTypes.number.isRequired,
+      calculate_charge_type: PropTypes.string.isRequired
+  };
+    
   renderIcon() {
     return (
       <div styleName="icon">
@@ -22,13 +30,14 @@ class Detail extends React.Component {
     );
   }
 
-  renderAmount() {
+  renderUnit(unit, calculate_charge_type) {
+     
     return (
       <div styleName="item-amount">
         {this.renderIcon()}
         <div styleName="content">
-          <div styleName="header">件數</div>
-          <div styleName="describe">2件</div>
+          <div styleName="header">數量</div>
+          <div styleName="describe">{`${unit}${calculateUnit(calculate_charge_type)}`}</div>
         </div>
       </div>
     );
@@ -48,14 +57,14 @@ class Detail extends React.Component {
     );
   }
 
-  renderLocation() {
+  renderLocation(city, area) {
     return (
       <div styleName="item-location">
         {this.renderIcon()}
         <div styleName="content">
           <div styleName="header">地區</div>
           <div styleName="describe">
-            台北市<span>&nbsp;&gt;&nbsp;</span>中正區
+              {`${city}${area}`}
           </div>
         </div>
       </div>
@@ -75,11 +84,13 @@ class Detail extends React.Component {
   }
 
   render() {
+    const { city, area, unit, calculate_charge_type } = this.props;
+    
     return (
       <div styleName="container">
         {this.renderCategory()}
-        {this.renderAmount()}
-        {this.renderLocation()}
+        {this.renderUnit(unit, calculate_charge_type)}
+        {this.renderLocation(city, area)}
         {this.renderDeliverMethod()}
         {this.renderDeliverTime()}
       </div>

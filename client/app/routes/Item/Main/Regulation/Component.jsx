@@ -7,7 +7,7 @@ const Regulation = props => (
     <ul styleName="rules">
       {props.rules.map((rule, i) =>
         <li key={`${rule.describe}_${i + 1}`} styleName="rule">
-          {rule.describe}
+          {rule}
         </li>,
       )}
     </ul>

@@ -14,29 +14,20 @@ import Sharer from './Sharer';
 import {
   ITEM_MAIN_INTRODUCTION,
   ITEM_MAIN_REGULATION,
+  ITEM_MAIN_CANCEL_POLICY,
   ITEM_MAIN_COMMENT,
   ITEM_MAIN_SHARER,
 } from '../../../constants/itemDetailScrollNavs';
-
-const title = '微型迷你投影機家庭劇院神器微型迷你投影機家庭劇院神器劇院神器';
-const description = '走到哪拍到哪，到處旅行收藏美麗的的畫面，這台復古相機，跟著我3年時間留下了很多回憶，走到哪拍到哪。面，這台復古相機，跟著我3年時間留下了很多回憶，這台復古相機到處旅行收藏美麗的的畫面，跟著我3年時間留下了很多回憶，走到哪拍到哪'
-const regulations = [
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-  { describe: '請勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。勿弄髒、重摔。' },
-];
 
 class Main extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   };
-  rComment() {
+  
+  rComment(comments) {
     const id = ITEM_MAIN_COMMENT;
     const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
+    console.warn('please finish this comments');
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Comments />
@@ -44,29 +35,48 @@ class Main extends React.Component {
     );
   }
 
-  rRegulation() {
+  rRegulation(rules) {
     const id = ITEM_MAIN_REGULATION;
     const ref = regulation => (this[ITEM_MAIN_REGULATION] = regulation);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
-        <Regulation rules={regulations} />
-        <CancelPolicy />
+            <Regulation rules={rules} />
       </div>
     );
   }
 
-  rIntroduction() {
+  rCancelPolicy(cancel_policys) {
+    
+    if (cancel_policys == null || cancel_policys.length == 0) {
+        return null;
+    }
+    
+    const id = ITEM_MAIN_CANCEL_POLICY;
+    const ref = cancel_policy => (this[ITEM_MAIN_CANCEL_POLICY]) = cancel_policy;
+    return (
+            <div styleName="nav-anchor" {...{ id, ref }} >
+                <CancelPolicy 
+                    advance_day= {cancel_policys[0].advance_day} 
+                    rate= {cancel_policys[0].rate}
+                />
+            </div>   
+    );
+  }
+  
+  rIntroduction(item) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
+    const {pname, pdes, unit, city, area, tags, calculate_charge_type} = item;
+
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
-        <Title title={title} />
+        <Title title={pname} />
         <div styleName="title-footer">
-          <TitleFooter location="台北市中正區" orderedCount={8} />
+          <TitleFooter location={`${city}${area}`}/>
         </div>
-        <Description description={description} />
-        <Tags />
-        <Detail />
+            <Description description={pdes} />
+            <Tags tags={tags} />
+        <Detail unit={unit} calculate_charge_type={calculate_charge_type} />
       </div>
     );
   }
@@ -80,17 +90,22 @@ class Main extends React.Component {
       </div>
     );
   }
+  
+
+  
   render() {
+    const { item } = this.props
     return (
       <div styleName="container">
         <div styleName="cover">
           <Cover />
         </div>
         <Breadcrumbs />
-        {this.rIntroduction()}
-        {this.rRegulation()}
+        {this.rIntroduction(item)}
+        {this.rRegulation(item.rules)}
+        {this.rCancelPolicy(item.cancel_policys)}
         {this.rSharer()}
-        {this.rComment()}
+        {this.rComment(item.comments)}
       </div>
     );
   }
