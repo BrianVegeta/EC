@@ -6,15 +6,14 @@ import { connect } from 'react-redux';
 import ItemBoard from 'components/ItemBoard';
 import ButtonLoadMore from 'components/Button/LoadMore';
 import LoadingOverlay from 'components/Loading/Overlay';
+import TransitionFade from 'components/Transition/Fade';
 import { fetchItems } from 'actions/itemsActions';
 
-import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import { Container } from './styles';
 
 
-const cx = classnames.bind(styles);
 class CategoriedItemListContainer extends React.Component {
 
   static propTypes = {

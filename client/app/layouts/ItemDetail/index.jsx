@@ -44,9 +44,9 @@ export default class extends React.Component {
   onScroll() {
     const top = this.layout.getBoundingClientRect().top;
     if (top < -800) {
-      _.debounce(this.showNavs.bind(this), 250);
+      _.debounce(this.showNavs.bind(this), 250)();
     } else if (top > -700) {
-      _.debounce(this.hideNavs.bind(this), 250);
+      _.debounce(this.hideNavs.bind(this), 250)();
     }
   }
 

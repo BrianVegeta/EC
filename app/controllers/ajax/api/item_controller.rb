@@ -68,7 +68,7 @@ class Ajax::Api::ItemController < ApplicationController
 
   # 篩選商品列表
   def search_item_list
-    sleep(5)
+    sleep(2)
     obj = ::Api::Item::SearchItemList.new search_item_params
     success = obj.request
     respond success, obj

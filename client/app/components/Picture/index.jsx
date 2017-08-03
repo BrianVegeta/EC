@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
+
+import Preload from 'react-preload';
+import TransitionFade from 'components/Transition/Fade';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import { Placehoder, Container } from './styles';
 
 class Picture extends React.Component {
   static defaultProps = {
@@ -10,6 +15,7 @@ class Picture extends React.Component {
     src: null,
     style: null,
   };
+
   static propTypes = {
     src: PropTypes.string,
     width: PropTypes.oneOfType([
@@ -17,22 +23,51 @@ class Picture extends React.Component {
     ]),
     style: myPropTypes.style,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPreloadSuccessful: false,
+    };
+  }
+
   render() {
     const { src, width, style } = this.props;
-    const placeholderStyle = {
-      width,
-      height: width,
-      ...style,
-    };
-    const innerStyle = {
-      backgroundImage: src ? `url(${src})` : null,
-      ...placeholderStyle,
-      ...style,
-    };
+    const { isPreloadSuccessful } = this.state;
+    const size = typeof width === 'number' ? `${width}px` : width;
+
     return (
-      <div {...{ styleName: 'placeholder', style: placeholderStyle }} >
-        <div {...{ styleName: 'container', style: innerStyle }} />
-      </div>
+      <Placehoder
+        styleName="placeholder"
+        size={size}
+        style={style}
+        hasImage={isPreloadSuccessful}
+      >
+        <Preload
+          loadingIndicator={
+            <Container
+              styleName="container"
+              size={size}
+              style={style}
+              bg={null}
+            />
+          }
+          images={[src]}
+          resolveOnError
+          onSuccess={() => { console.log('success'); }}
+          onError={() => { console.log('error'); }}
+          mountChildren
+        >
+          <TransitionFade>
+            <Container
+              styleName="container"
+              size={size}
+              style={style}
+              bg={null}
+            />
+          </TransitionFade>
+        </Preload>
+      </Placehoder>
     );
   }
 }
