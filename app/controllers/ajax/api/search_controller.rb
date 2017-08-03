@@ -1,12 +1,15 @@
 class Ajax::Api::SearchController < ApplicationController
   include WardenHelper
-  
+  include RespondHelper 
   ###################### ACTION ##################################
   # 搜尋
    def multi_search
      obj = ::Api::Search::MultiSearch.new multi_search_params
      success = obj.request
-     respond success, obj.error_message, obj.response_data
+     if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::MultiSearch.structure)
+     end
+     respond success, obj
    end
   
   ###################### PARAMS ##################################

@@ -1,5 +1,6 @@
 class Ajax::Api::ForgetpasswordController < ApplicationController
   include WardenHelper
+  include RespondHelper 
   
   ###################### ACTION ##################################
   
@@ -7,42 +8,42 @@ class Ajax::Api::ForgetpasswordController < ApplicationController
   def email_resend_verify
     obj = ::Api::Forgetpassword::EmailResendVerify.new email_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 回傳驗證碼給SERVER
   def mail_get_token
     obj = ::Api::Forgetpassword::MailGetToken.new email_token_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 設定新密碼
   def mail_reset
     obj = ::Api::Forgetpassword::MailReset.new email_reset_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
   
   # 重發驗證碼
   def mobile_resend_verify
     obj = ::Api::Forgetpassword::MobileResendVerify.new mobile_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 回傳驗證碼給SERVER  
   def mobile_get_token
     obj = ::Api::Forgetpassword::MobileGetToken.new mobile_token_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
  
   # 設定新密碼
   def mobile_reset
     obj = ::Api::Forgetpassword::MobileReset.new mobile_reset_params
     success = obj.request
-    respond success, obj.error_message, obj.response_datas
+    respond success, obj
   end
   
   ###################### PARAMS ##################################

@@ -1,190 +1,272 @@
 class Ajax::Api::ContractController < ApplicationController
   include WardenHelper
-
+  include RespondHelper  
+  
   ###################### ACTION ##################################
 
   # 取回行事曆範圍內的合約
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = []
+    else
+      obj.response_data.each_with_index.map { |item, index| 
+        obj.response_data[index] = parse_contract_rsp(item) }
+    end
+    respond success, obj
   end
 
   # 取消合約
   def cancel
     obj = ::Api::Contract::Cancel.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 取回已完成合約
   def end_contract
     obj = ::Api::Contract::EndContract.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleContract.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::SimpleContract.structure) }
+    #end
+    respond success, obj
   end
 
   # 取回可申訴的合約
   def find_can_report
     obj = ::Api::Contract::FindCanReport.new target_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if obj.response_data.nil?
+      obj.response_data = []
+    else
+       obj.response_data.each_with_index.map { |item, index| 
+         obj.response_data[index] = parse_contract_rsp(item) }
+    end
+    respond success, obj
   end
 
   # 取回自己的合約
   def get_my_contract
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    #obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
+    
+    if obj.response_data.nil?
+        obj.response_data = []
+    else
+        obj.response_data.each_with_index.map { |item, index| 
+          obj.response_data[index] = parse_display_contract_rsp(item, current_user['uid'])
+        }
+    end
+    respond success, obj
   end
 
   # 聊天室取回雙方的合約
   def get_our_contracts
     obj = ::Api::Contract::GetOurContracts.new target_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::OurContract.structure
+    #if obj.response_data.nil?
+    #     obj.response_data = []
+    # else
+    #      obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::OurContract.structure) }
+    # end
+    respond success, obj
   end
 
   # 取回申訴列表
   def get_report
     obj = ::Api::Contract::GetReport.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
+    end
+    respond success, obj
   end
 
   # 取回單筆合約
   def get
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if success
+      obj.response_data = parse_contract_rsp(obj.response_data) 
+    end
+    respond success, obj
   end
 
   # 上傳合約出貨或還貨照片
   def image_upload
     obj = ::Api::Contract::ImageUpload.new upload_image_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立物品合約
   def item_create
     obj = ::Api::Contract::ItemCreate.new create_item_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新商品類型合約
   def item_update
     obj = ::Api::Contract::ItemUpdate.new update_item_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 問API設計師
   def logs
     obj = ::Api::Contract::Logs.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractLog.structure
+    #if obj.response_data.nil?
+    #  obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractLog.structure) }
+    #end
+    respond success, obj
   end
 
   # 設定合約以讀未讀
   def read
     obj = ::Api::Contract::Read.new read_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 收到還貨商品
   def receive_goods
     obj = ::Api::Contract::ReceiveGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 要求合約修改
   def reject
     obj = ::Api::Contract::Reject.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 申訴合約
   def report
     obj = ::Api::Contract::Report.new report_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 還貨商品
   def return_goods
     obj = ::Api::Contract::returnGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 評分合約
   def score
     obj = ::Api::Contract::Score.new score_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立服務合約
   def service_create
     obj = ::Api::Contract::ServiceCreate.new create_service_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 結束服務合約
   def service_end
     obj = ::Api::Contract::ServiceEnd.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新服務類型合約
   def service_update
     obj = ::Api::Contract::ServiceUpdate.new update_service_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 出貨商品
   def ship_goods
     obj = ::Api::Contract::ShipGoods.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 同意合約
   def sign
     obj = ::Api::Contract::Sign.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立空間合約
   def space_create
     obj = ::Api::Contract::SpaceCreate.new create_space_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 結束空間合約
   def space_end
     obj = ::Api::Contract::SpaceEnd.new cid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 更新空間型合約
   def space_update
     obj = ::Api::Contract::SpaceUpdate.new update_space_contract_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
+  ###################### FUNCTION ################################
+  private
+  def parse_contract_rsp(response_data)
+     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure 
+     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure 
+     response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
+     return response_data
+  end
+ 
+  #add display params to contract response
+  def parse_display_contract_rsp(response_data, uid)
+
+    if (response_data['contractstage'].nil?)
+      raise 'error'
+    end
+    
+    response_data = parse_contract_rsp(response_data)
+    case response_data['type']
+    when 'ITEM'
+      item_stage = ::ItemStage.new(response_data, uid)
+      item_stage.process
+      response_data['display'] = item_stage.display
+    when 'SERVICE'
+      service_stage = ::ServiceStage.new(response_data, uid)
+      service_stage.process
+      response_data['display'] = service_stage.display
+    when 'SPACE'
+      space_stage = ::SpaceStage.new(response_data, uid)
+      space_stage.process
+      response_data['display'] = space_stage.display
+    else
+      raise 'invalid contract type'
+    end
+    return response_data
+  end
+  
   ###################### PARAMS ##################################
   protected
   def cid_params

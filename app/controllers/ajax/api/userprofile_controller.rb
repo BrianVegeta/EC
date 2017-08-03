@@ -8,27 +8,47 @@ class Ajax::Api::UserprofileController < ApplicationController
   def save
     obj = ::Api::Userprofile::Save.new user_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   #取回個人資訊
   def get
     obj = ::Api::Userprofile::Get.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserProfile.structure)
+    end
+    respond success, obj
   end
 
   # 搜尋個人帳戶
   def search
     obj = ::Api::Userprofile::Search.new search_params
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::UserProfile.structure
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::UserProfile.structure) }
+    #end
+    respond success, obj
   end
 
   # 取回使用者公開資訊
   def user_general_info
     obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
     success = obj.request
+
+    
+    if success
+      obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
+      obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure
+      #if (obj.response_data['items'].nil?) 
+      #  obj.response_data['items'] = [];
+      #else 
+      #  obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+      #end
+    end
     respond success, obj
   end
 
@@ -74,21 +94,21 @@ class Ajax::Api::UserprofileController < ApplicationController
   def set_facebook
     obj = ::Api::Userprofile::SetFacebook.new facebook_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 解除FACEBOOK綁定
   def facebook_unbind
     obj = ::Api::Userprofile::Get.FacebookUnbind.new facebook_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 同步FACEBOOK名稱
   def fb_user_update_name
     obj = ::Api::Userprofile::FbUserUpdateName.new fb_user_update_name_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
 
@@ -116,7 +136,7 @@ class Ajax::Api::UserprofileController < ApplicationController
   def update_password
     obj = ::Api::Userprofile::UpdatePassword.new update_password_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 建立密碼
@@ -133,42 +153,70 @@ class Ajax::Api::UserprofileController < ApplicationController
   def track
     obj = ::Api::Userprofile::Track.new track_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 取消追中
   def untrack
     obj = ::Api::Userprofile::Untrack.new track_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 是否已追中
   def is_tracked
     obj = ::Api::Userprofile::IsTracked.new track_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
+  # 取得追蹤人
+  def get_track_user
+    obj = ::Api::Userprofile::GetTrackUser.new track_user_params, current_apitoken
+    success = obj.request
+    obj.response_data = map_json_array obj.response_data, ResponseJson::TrackUser.structure
+    #if obj.response_data.nil?
+    #    obj.response_data = []
+    #else
+    #    obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::TrackUser.structure) }
+    #end
+    respond success, obj
+  end
+  
   # 取回追中數量
   def track_count
     obj = ::Api::Userprofile::TrackCount.new current_uid_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::TrackUserCount.structure)
+    end
+    respond success, obj
   end
 
   # 分享人(賣家)的評價留言
   def owner_comments
     obj = ::Api::Userprofile::OwnerComments.new comments_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
+    #if obj.response_data.nil?
+    #    obj.response_data = []
+    #else
+    #     obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
+    #end
+    respond success, obj
   end
 
   # 享用人(買家)的評價留言
   def lessee_comments
     obj = ::Api::Userprofile::LesseeComments.new comments_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
+    #if obj.response_data.nil?
+    #  obj.response_data = []
+    #else
+    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
+    #end
+    respond success, obj
   end
 
   # 取回銀行資料
@@ -197,7 +245,7 @@ class Ajax::Api::UserprofileController < ApplicationController
     # 請使用cipher encript
     obj = ::Api::Userprofile::BankInfoUpdate.new bank_info_update_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
 
@@ -214,14 +262,14 @@ class Ajax::Api::UserprofileController < ApplicationController
   def bank_info_auto_wire
     obj = ::Api::Userprofile::BankInfoAutoWire.new set_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   # 要求出款
   def bank_info_request_out
     obj = ::Api::Userprofile::BankInfoRequestOut.new set_params, current_apitoken
     success = obj.request
-    respond success, obj.error_message, obj.response_data
+    respond success, obj
   end
 
   ###################### PARAMS ##################################
@@ -314,6 +362,12 @@ class Ajax::Api::UserprofileController < ApplicationController
   def set_params
     #isEnable : bool => true or false
     params.permit(:isEnable).merge(current_uid_params)
+  end
+  
+  def track_user_params
+    #type : String => me_track track_me
+    #target_uid : String => uid
+    params.permit(:type, :target_uid).merge(current_uid_params).merge(paging_params)
   end
 
 end

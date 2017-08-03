@@ -26,6 +26,21 @@ class ApplicationController < ActionController::Base
     render json: { success: false, message: nil }, status: 404
   end
 
+  def reverse_merge data, format
+    data.merge(format.stringify_keys) { |key, v1, v2| v1 }
+  end
+
+  #auto mapping to arry 
+  def map_json_array target, source, default = []
+    if target.nil?
+      return default
+    else
+      return target.each_with_index.map { |item, index| 
+        target[index] = reverse_merge(item, source) }
+    end
+  end
+ 
+  
   protected
   # common params for uid request 20170705 KUAN
   def current_uid_params
@@ -42,4 +57,5 @@ class ApplicationController < ActionController::Base
     params.permit(:index, :size)
   end
 
+  
 end
