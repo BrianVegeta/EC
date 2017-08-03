@@ -1,18 +1,13 @@
 import React, { PropTypes } from 'react';
 
 const propTypes = {
-  location: PropTypes.string.isRequired,
-  orderedCount: PropTypes.number.isRequired,
+  location: PropTypes.string.isRequired
 };
 const TitleFooter = props => (
   <div styleName="container">
     <div styleName="location">
       <span styleName="icon" />
       <div styleName="text">{props.location}</div>
-    </div>
-    <div styleName="ordered">
-      <span styleName="icon" />
-      <div styleName="text">{props.orderedCount}人下單過</div>
     </div>
   </div>
 );
