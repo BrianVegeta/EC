@@ -16,7 +16,7 @@ const changeOwner = userProfile => ({
 export function editItem(pid) {
   return (dispatch) => {
     fetchXhrPost(
-      `/ajax/api/item/detail.json`,
+      `/ajax/item_detail.json`,
       { pid: pid },
       (response) => {
         dispatch(setEdit(response.data));

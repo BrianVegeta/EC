@@ -75,7 +75,6 @@ Rails.application.routes.draw do
       post 'item/get_item', to: 'item#get_item' #
       post 'item/get_item_by_user', to: 'item#get_item_by_user' #
       post 'item/get_item_by_name', to: 'item#get_item_by_name' #
-      post 'item/detail', to: 'item#view_item' #
       post 'item/remove_items', to: 'item#remove_items' #
       post 'item/relative_item', to: 'item#relative_item' #
       post 'item/report', to: 'item#report' #
@@ -126,6 +125,7 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      post 'item_detail', to: 'item#view_item' #
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #
       post 'wish/search', to: 'wishlist#search' #

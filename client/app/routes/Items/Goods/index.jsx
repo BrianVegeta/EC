@@ -1,4 +1,9 @@
-import { fetchItems } from 'actions/itemsActions';
+import { fetchItems, reset } from 'actions/itemsActions';
+import {
+  CATEGORY_GOODS,
+  CATEGORY_GOODS_ID,
+} from 'constants/enums';
+
 
 export default (routesHelper, dispatch) => ({
   path: `${routesHelper.items.root}/goods`,
@@ -9,6 +14,7 @@ export default (routesHelper, dispatch) => ({
     });
   },
   onEnter: () => {
-    dispatch(fetchItems());
+    dispatch(reset());
+    dispatch(fetchItems(CATEGORY_GOODS_ID));
   },
 });

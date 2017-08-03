@@ -1,5 +1,4 @@
 export function calculateUnit(unitType) {
-    console.log(unitType);
     switch (unitType) {
         case 'fix':
             return '人名額';
