@@ -14,7 +14,7 @@ export const Placehoder = Sized.extend`
 `;
 
 export const Coaster = styled.div`
-  backgroundColor: #fff;
+  background-color: #fff;
   width: 100%;
   height: 100%;
 `;

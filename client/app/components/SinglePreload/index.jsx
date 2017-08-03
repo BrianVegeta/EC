@@ -6,8 +6,12 @@ const IMAGE_LOADED_STATUS = 'IMAGE_LOADED_STATUS';
 const IMAGE_FAILED_STATUS = 'IMAGE_FAILED_STATUS';
 class Preload extends React.Component {
 
+  static defaultProps = {
+    imageSrc: null,
+  };
+
   static propTypes = {
-    imageSrc: PropTypes.string.isRequired,
+    imageSrc: PropTypes.string,
     renderLoading: PropTypes.func.isRequired,
     renderLoaded: PropTypes.func.isRequired,
     renderFailed: PropTypes.func.isRequired,

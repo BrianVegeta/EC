@@ -20,10 +20,11 @@ import {
 } from '../../../constants/itemDetailScrollNavs';
 
 class Main extends React.Component {
+
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   };
-  
+
   rComment(comments) {
     const id = ITEM_MAIN_COMMENT;
     const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
@@ -46,23 +47,23 @@ class Main extends React.Component {
   }
 
   rCancelPolicy(cancel_policys) {
-    
+
     if (cancel_policys == null || cancel_policys.length == 0) {
         return null;
     }
-    
+
     const id = ITEM_MAIN_CANCEL_POLICY;
     const ref = cancel_policy => (this[ITEM_MAIN_CANCEL_POLICY]) = cancel_policy;
     return (
             <div styleName="nav-anchor" {...{ id, ref }} >
-                <CancelPolicy 
-                    advance_day= {cancel_policys[0].advance_day} 
+                <CancelPolicy
+                    advance_day= {cancel_policys[0].advance_day}
                     rate= {cancel_policys[0].rate}
                 />
-            </div>   
+            </div>
     );
   }
-  
+
   rIntroduction(item) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
@@ -90,9 +91,9 @@ class Main extends React.Component {
       </div>
     );
   }
-  
 
-  
+
+
   render() {
     const { item } = this.props
     return (

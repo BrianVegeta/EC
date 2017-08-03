@@ -5,11 +5,11 @@ class Detail extends React.Component {
 
   static propTypes = {
       city: PropTypes.string.isRequired,
-      area: Proptypes.string.isRequired,
+      area: PropTypes.string.isRequired,
       unit: PropTypes.number.isRequired,
       calculate_charge_type: PropTypes.string.isRequired
   };
-    
+
   renderIcon() {
     return (
       <div styleName="icon">
@@ -31,7 +31,7 @@ class Detail extends React.Component {
   }
 
   renderUnit(unit, calculate_charge_type) {
-     
+
     return (
       <div styleName="item-amount">
         {this.renderIcon()}
@@ -85,7 +85,7 @@ class Detail extends React.Component {
 
   render() {
     const { city, area, unit, calculate_charge_type } = this.props;
-    
+
     return (
       <div styleName="container">
         {this.renderCategory()}
