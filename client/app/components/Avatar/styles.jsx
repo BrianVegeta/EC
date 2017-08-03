@@ -4,6 +4,9 @@ import styled from 'styled-components';
 export const Sized = styled.div`
   height: ${props => props.size};
   width: ${props => props.size};
+  ${props => props.round && `
+    border-radius: 50%;
+  `}
 `;
 
 export const Placehoder = Sized.extend`
@@ -17,6 +20,9 @@ export const Coaster = styled.div`
   backgroundColor: #fff;
   width: 100%;
   height: 100%;
+  ${props => props.round && `
+    border-radius: 50%;
+  `}
 `;
 
 export const Container = Sized.extend`

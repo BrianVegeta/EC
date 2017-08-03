@@ -16,7 +16,7 @@ class TransitionFade extends React.Component {
       <CSSTransition
         in
         appear
-        timeout={500}
+        timeout={5000}
         classNames={{
           appear: cx('appear'),
           appearActive: cx('active'),

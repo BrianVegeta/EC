@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
-import Preload from 'react-preload';
+import SinglePreload from 'components/SinglePreload';
 import TransitionFade from 'components/Transition/Fade';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import { Placehoder, Container } from './styles';
+import { Placehoder, Container, Coaster } from './styles';
 
+const cx = classnames.bind(styles);
 class Picture extends React.Component {
+
   static defaultProps = {
     width: '100%',
     src: null,
@@ -24,49 +27,33 @@ class Picture extends React.Component {
     style: myPropTypes.style,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isPreloadSuccessful: false,
-    };
-  }
-
   render() {
     const { src, width, style } = this.props;
-    const { isPreloadSuccessful } = this.state;
     const size = typeof width === 'number' ? `${width}px` : width;
 
     return (
       <Placehoder
-        styleName="placeholder"
+        className={cx('placeholder')}
         size={size}
         style={style}
-        hasImage={isPreloadSuccessful}
       >
-        <Preload
-          loadingIndicator={
-            <Container
-              styleName="container"
-              size={size}
-              style={style}
-              bg={null}
-            />
-          }
-          images={[src]}
-          resolveOnError
-          onSuccess={() => { console.log('success'); }}
-          onError={() => { console.log('error'); }}
-          mountChildren
-        >
-          <TransitionFade>
-            <Container
-              styleName="container"
-              size={size}
-              style={style}
-              bg={null}
-            />
-          </TransitionFade>
-        </Preload>
+        <SinglePreload
+          imageSrc={src}
+          renderLoading={() => (null)}
+          renderLoaded={imageSrc => (
+            <Coaster>
+              <TransitionFade>
+                <Container
+                  className={cx('container')}
+                  size={size}
+                  style={style}
+                  bg={imageSrc}
+                />
+              </TransitionFade>
+            </Coaster>
+          )}
+          renderFailed={() => (null)}
+        />
       </Placehoder>
     );
   }

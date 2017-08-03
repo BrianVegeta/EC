@@ -17,10 +17,12 @@ export default class extends React.Component {
 
   render() {
     const { main, environment } = this.props;
+    const minHeight = environment.height - 70;
+
     return (
       <div>
         <HeaderContainer />
-        <MainWrapper minHeight={environment.height - 70}>
+        <MainWrapper minHeight={minHeight < 500 ? 500 : minHeight}>
           <AlignCenter>{main}</AlignCenter>
         </MainWrapper>
         <Footer />
