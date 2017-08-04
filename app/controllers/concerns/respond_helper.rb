@@ -13,7 +13,6 @@ module RespondHelper
     # 變更資料
     response.merge!(mobileTaken: true) if resource.error_code === Response::ErrorCode::NEW_MOBILE_ALREADY_EXIST
     response.merge!(emailTaken: true) if resource.error_code === Response::ErrorCode::NEW_EMAIL_ALREADY_EXIST
-
     render json: response, status: status
   end
 end

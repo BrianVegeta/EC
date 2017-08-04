@@ -1,4 +1,6 @@
-export default () => ({
+import { fetchCollections } from 'connector/myCollections/actions';
+
+export default (dispatch) => ({
   path: '/p/my_account',
   onEnter: () => {
 
@@ -38,6 +40,9 @@ export default () => ({
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Collections/Container').default });
         }, 'my.acc.collections');
+      },    
+      onEnter: (nextState) => {
+          dispatch(fetchCollections());
       },
     },
   ],

@@ -23,6 +23,7 @@ import schedule from './scheduleReducer';
 import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
 import accessCheck from './accessCheckReducer';
+import myCollection from 'connector/myCollections/reducer'
 
 export default combineReducers({
   routing: routerReducer,
@@ -49,4 +50,5 @@ export default combineReducers({
   options,
   popupBankSetup,
   accessCheck,
+  myCollection,
 });

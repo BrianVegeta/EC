@@ -5,8 +5,12 @@ import styles from './styles.sass';
 import myPropTypes from '../../../../propTypes';
 
 class Container extends React.Component {
+  static defaultProps = {
+      icon: null,
+  }
+  
   static propTypes = {
-    icon: PropTypes.func.isRequired,
+    icon: PropTypes.func,
     titleText: PropTypes.string.isRequired,
     children: myPropTypes.children.isRequired,
   };
@@ -16,7 +20,7 @@ class Container extends React.Component {
       <div styleName="container">
         <div styleName="header">
           <h1 styleName="title">
-            {icon({ size: 48, style: { verticalAlign: 'top' } })}
+            {icon && icon({ size: 48, style: { verticalAlign: 'top' } })}
             <span styleName="text">{titleText}</span>
           </h1>
         </div>

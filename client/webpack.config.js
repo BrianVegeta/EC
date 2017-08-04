@@ -65,6 +65,7 @@ const config = {
       constraints: path.join(__dirname, 'app/constraints'),
       constants: path.join(__dirname, 'app/constants'),
       models: path.join(__dirname, 'app/models'),
+      connector: path.join(__dirname, 'app/connector'),
     },
   },
   plugins: [

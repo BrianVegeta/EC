@@ -15,7 +15,7 @@ class Ajax::Api::FavoriteController < ApplicationController
   def my_favorite
     obj = ::Api::Favorite::MyFavorite.new current_uid_params, current_apitoken
     success = obj.request
-    map_json_array obj.response_data, ResponseJson::SimpleItem.structure
+    obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
     #if obj.response_data.nil?
     #   obj.response_data = []
     #else
