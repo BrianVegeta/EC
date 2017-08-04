@@ -52,10 +52,7 @@ Rails.application.routes.draw do
       post 'contract/space_end', to: 'contract#space_update'
       post 'contract/space_update', to: 'contract#space_update'
 
-      #FAVORITE
-      post 'favorite/add', to: 'favorite#add' #
-      post 'favorite/my_favorite', to: 'favorite#my_favorite' #
-      post 'favorite/remove', to: 'favorite#remove' #
+
 
       #FORGETPASSWORD
       post 'forgetpassword/email_resend_verify', to: 'forgetpassword#email_resend_verify'
@@ -103,9 +100,7 @@ Rails.application.routes.draw do
       post 'userprofile/update_password', to: 'userprofile#update_password'
 
 
-      post 'userprofile/track', to: 'userprofile#track' #
-      post 'userprofile/untrack', to: 'userprofile#untrack'
-      post 'userprofile/is_tracked', to: 'userprofile#is_tracked' #
+ 
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
       post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
@@ -125,7 +120,20 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      
+      #FOLLOW
+      post 'add_follow', to: 'userprofile#track' #
+      post 'remove_follow', to: 'userprofile#untrack'
+      post 'check_follow', to: 'userprofile#is_tracked' #
+       
+      #FAVORITE
+      post 'add_fav', to: 'favorite#add' #
+      post 'get_fav', to: 'favorite#my_favorite' #
+      post 'remove_fav', to: 'favorite#remove' #
+      
+      # ITEM
       post 'item_detail', to: 'item#view_item' #
+      
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #
       post 'wish/search', to: 'wishlist#search' #

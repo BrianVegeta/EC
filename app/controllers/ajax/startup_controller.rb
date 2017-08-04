@@ -1,4 +1,5 @@
 class Ajax::StartupController < ApplicationController
+  
   def index
     # useless location params
     @startup = Startup.new({ city: '台北市', area: '中正區'})

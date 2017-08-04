@@ -11,7 +11,7 @@ class Items extends React.Component {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
   render() {
-    const { items } = this.props;
+    const { items, dispatch } = this.props;
     if (items.length <= 0) return null;
     const sliderSettings = {
       infinite: false,
@@ -29,7 +29,7 @@ class Items extends React.Component {
         <Slider {...sliderSettings}>
           {items.map((item, index) =>
             <div key={`${index + 1}`} style={{ padding: '0 15px' }}>
-              <ItemCard item={new ItemModel(item)} />
+              <ItemCard item={new ItemModel(item)} dispatch={dispatch} />
             </div>,
           )}
         </Slider>

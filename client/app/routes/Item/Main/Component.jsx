@@ -68,8 +68,6 @@ class Main extends React.Component {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
     const {pname, pdes, unit, city, area, tags, calculate_charge_type} = item;
-    console.log(tags);
-
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={pname} />
@@ -86,21 +84,51 @@ class Main extends React.Component {
       </div>
     );
   }
-
-  rSharer() {
+  rSharer(item, dispatch) {
     const id = ITEM_MAIN_SHARER;
     const ref = sharer => (this[ITEM_MAIN_SHARER] = sharer);
-    return (
-      <div styleName="nav-anchor" {...{ id, ref }} >
-        <Sharer />
-      </div>
-    );
+    const { ownerProfile } = item
+    
+    if (ownerProfile == null || ownerProfile['uid'] == null) {
+        return (
+                <div styleName="nav-anchor" {...{ id, ref }} >
+                  <Sharer 
+                      name={""}
+                      picture={""}
+                      city={""}
+                      area={""}
+                      autobiography={""}
+                      owner_credit={0.0}
+                      create_time={0}
+                      target_uid={""} 
+                      is_follow={false} 
+                      dispatch={dispatch} />
+                </div>
+        );
+    } else {
+        return (
+                <div styleName="nav-anchor" {...{ id, ref }} >
+                  <Sharer 
+                      name={ownerProfile.name}
+                      picture={ownerProfile.picture}
+                      city={ownerProfile.city}
+                      area={ownerProfile.area}
+                      autobiography={ownerProfile.autobiography}
+                      owner_credit={ownerProfile.owner_credit}
+                      create_time={ownerProfile.create_time}
+                      target_uid={ownerProfile.uid} 
+                      is_follow={false} 
+                      dispatch={dispatch} />
+                </div>
+        );
+    }
   }
 
 
 
   render() {
-    const { item } = this.props
+    const { item , dispatch} = this.props
+    console.log(this.props);
     return (
       <div styleName="container">
         <div styleName="cover">
@@ -110,7 +138,7 @@ class Main extends React.Component {
         {this.rIntroduction(item)}
         {this.rRegulation(item.rules)}
         {this.rCancelPolicy(item.cancel_policys)}
-        {this.rSharer()}
+        {this.rSharer(item, dispatch)}
         {this.rComment(item.comments)}
       </div>
     );

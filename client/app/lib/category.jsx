@@ -26,14 +26,14 @@ export const mapCategoryNameByID = (id, categories) => {
       let result = null;
       forEach(categories, (middleCategories) => {
         forEach(middleCategories, (middleCategory) => {
-          if (middleCategory.id === id) {
+          if (middleCategory.id.toString() === id) {
             result = middleCategory.name;
             return false;
           }
 
           if (!middleCategory.children) return true;
           forEach(middleCategory.children, (subCategory) => {
-            if (subCategory.id === id) {
+            if (subCategory.id.toString() === id) {
               result = subCategory.name;
               return false;
             }
@@ -70,16 +70,17 @@ export const findTopCategory = (id, categories) => {
 
     default: {
       let result = null;
+
       forEach(categories, (middleCategories, topCategory) => {
         forEach(middleCategories, (middleCategory) => {
-          if (middleCategory.id === id) {
+          if (middleCategory.id.toString() === id) {
             result = topCategory;
             return false;
           }
 
           if (!middleCategory.children) return true;
           forEach(middleCategory.children, (subCategory) => {
-            if (subCategory.id === id) {
+            if (subCategory.id.toString() === id) {
               result = topCategory;
               return false;
             }

@@ -1,101 +1,44 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { ItemsPage, FeatureHeader } from '../components/Items';
 
-const propTypes = {
-  options: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
-};
+import IconPublishService from 'components/Icons/Publish/Service';
+import PageHeader from 'components/PageHeader';
+import PageTitle from 'components/PageTitle';
+import PageFilterBar from 'components/PageFilterBar';
+
+import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
+import CategoriedItemListContainer from 'containers/CategoriedItemList';
+
+import { mapCategoryNameByID, findTopCategory } from 'lib/category';
+
 class CategoriedContainer extends React.Component {
 
-  getCurrentType() {
-    const { options, params } = this.props;
-    const { categories } = options;
-
-    const flatten = {};
-    Object.keys(categories).forEach((type) => {
-      const mainCates = categories[type];
-      // 第一層分類
-      mainCates.forEach((mainCate) => {
-        flatten[mainCate.id] = type;
-
-        // 子分類
-        if (mainCate.subcates) {
-          mainCate.subcates.forEach((subcate) => {
-            flatten[subcate.id] = type;
-          });
-        }
-      });
-    });
-    return flatten[params.id];
-  }
-
-  currentTypeContent() {
-    const { options, params } = this.props;
-    const { categories } = options;
-
-    const flatten = {};
-    Object.keys(categories).forEach((type) => {
-      const mainCates = categories[type];
-      // 第一層分類
-      mainCates.forEach((mainCate) => {
-        flatten[mainCate.id] = {
-          id: mainCate.id,
-          link: mainCate.link,
-          text: mainCate.text,
-          hasIcon: true,
-        };
-
-        // 子分類
-        if (mainCate.subcates) {
-          mainCate.subcates.forEach((subcate) => {
-            flatten[subcate.id] = {
-              id: subcate.id,
-              link: subcate.link,
-              text: subcate.text,
-              hasIcon: false,
-            };
-          });
-        }
-      });
-    });
-    return flatten[params.id];
-  }
 
   render() {
-    const { items } = this.props;
-    if (items.categories) {
-      const currentTypeContent = this.currentTypeContent();
-      const featureHeader = (
-        <FeatureHeader
-          text={currentTypeContent.text}
-          hasIcon={currentTypeContent.hasIcon}
-        />
-      );
-      const currentType = this.getCurrentType();
+
+      const { items, options } = this.props;
+
+      console.log(findTopCategory(items.categoryID, options.categories));
       return (
-        <ItemsPage
-          featureHeader={featureHeader}
-          currentType={currentType}
-          {...this.props}
-        />
+        <div>
+          <PageHeader >
+            <PageTitle
+              title={ mapCategoryNameByID(items.categoryID, options.categories)}
+              renderIcon={() => <IconPublishService />}
+            />
+            <PageFilterBar />
+          </PageHeader>
+          <div className="clear">
+            <SidebarCategoriesContainer topCategory={findTopCategory(items.categoryID, options.categories)} />
+            <CategoriedItemListContainer categoryID={items.categoryID} />
+          </div>
+        </div>
       );
     }
-    return null;
-  }
 }
-CategoriedContainer.propTypes = propTypes;
-const mapStateToProps = (state) => {
-  const {
-    environment,
-    options,
-    routesHelper,
-  } = state;
 
-  return ({
-    environment,
-    options,
-    routesHelper,
-  });
+const mapStateToProps = (state) => {
+    const { environment, items, options, routesHelper } = state;
+    return { environment, items, options, routesHelper };
 };
 export default connect(mapStateToProps)(CategoriedContainer);

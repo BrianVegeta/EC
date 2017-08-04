@@ -2,7 +2,7 @@ import React from 'react';
 import myPropTypes from 'propTypes';
 
 import { Link } from 'react-router';
-import FavoriteHeart from 'components/FavoriteHeart';
+import FavoriteHeart from 'components/Button/FavoriteHeart';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 
@@ -17,8 +17,9 @@ class ItemCard extends React.Component {
     item: myPropTypes.itemCard.isRequired,
   };
   render() {
-    const { item } = this.props;
+    const { item, dispatch } = this.props;
     const {
+      isMyFavorite,
       pname,
       pid,
       img1,
@@ -27,7 +28,7 @@ class ItemCard extends React.Component {
       ownerName,
       favoriteCount,
     } = item;
-
+    
     return (
       <div styleName="container">
         <Link to={itemPath(pname, pid)} >
@@ -46,12 +47,12 @@ class ItemCard extends React.Component {
             </div>
             <span styleName="username">{ownerName}</span>
           </div>
-          <div styleName="favorite">
-            <span styleName="favoriteCount">{favoriteCount}</span>
-            <button className="button" styleName="favoriteHeart">
-              <FavoriteHeart size={20} />
-            </button>
-          </div>
+          <FavoriteHeart 
+            pid={pid} 
+            isActive={isMyFavorite} 
+            count={favoriteCount} 
+            dispatch={dispatch} 
+          />
         </div>
       </div>
     );

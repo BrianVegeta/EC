@@ -2,7 +2,7 @@ class ResponseJson::SimpleItem
   class << self
     def structure
       {
-        in_my_favorite: nil,
+        in_my_favorite: false,
         #  -Boolean
         pid: nil,
         #  -Long
