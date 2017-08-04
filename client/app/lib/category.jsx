@@ -56,3 +56,39 @@ export function flattenCategories(categories) {
     )),
   );
 }
+
+export const findTopCategory = (id, categories) => {
+  switch (id) {
+    case CATEGORY_GOODS_ID:
+      return CATEGORY_GOODS_ID;
+
+    case CATEGORY_SERVICE_ID:
+      return CATEGORY_SERVICE_ID;
+
+    case CATEGORY_SPACE_ID:
+      return CATEGORY_SPACE_ID;
+
+    default: {
+      let result = null;
+      forEach(categories, (middleCategories, topCategory) => {
+        forEach(middleCategories, (middleCategory) => {
+          if (middleCategory.id === id) {
+            result = topCategory;
+            return false;
+          }
+
+          if (!middleCategory.children) return true;
+          forEach(middleCategory.children, (subCategory) => {
+            if (subCategory.id === id) {
+              result = topCategory;
+              return false;
+            }
+            return true;
+          });
+          return true;
+        });
+      });
+      return result;
+    }
+  }
+};

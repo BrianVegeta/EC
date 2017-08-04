@@ -41,7 +41,9 @@ class Picture extends React.Component {
           imageSrc={src}
           renderLoading={() => (null)}
           renderLoaded={imageSrc => (
-            <Coaster>
+            <Coaster
+              style={style}
+            >
               <TransitionFade>
                 <Container
                   className={cx('container')}

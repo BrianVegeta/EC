@@ -52,6 +52,7 @@ class Avatar extends React.Component {
           renderLoaded={imageSrc => (
             <Coaster
               round={round}
+              style={style}
             >
               <TransitionFade>
                 <Container
