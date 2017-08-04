@@ -1,4 +1,4 @@
-import { fetchItems } from 'actions/itemsActions';
+import { fetchItems, reset } from 'actions/itemsActions';
 
 export default (routesHelper, dispatch) => ({
   path: `${routesHelper.items.root}/:name-c.:id`,
@@ -9,7 +9,8 @@ export default (routesHelper, dispatch) => ({
       });
     });
   },
-  onEnter: () => {
-    dispatch(fetchItems());
+  onEnter: (nextState) => {
+    dispatch(reset());
+    dispatch(fetchItems(nextState.params.id));
   },
 });

@@ -4,7 +4,7 @@ const propTypes = { tags: PropTypes.arrayOf(PropTypes.string).isRequired };
 const Tags = props => (
         <div styleName="container">
         {props.tags.map((tag, i) =>
-            <div styleName="label-block">
+            <div key="{i}" styleName="label-block">
               <div styleName="label">
                   <div styleName="text">{tag}</div>
               </div>

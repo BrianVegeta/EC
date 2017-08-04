@@ -57,7 +57,6 @@ export function fetchItems(categoryID, recursiveRecords = []) {
       increasePagingRecursiveFrequency(),
     );
     /* LOADING FETCH */
-    console.log(categoryID)
     dispatch(
       fetching(categoryID),
     );

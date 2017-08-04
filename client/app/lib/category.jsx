@@ -3,6 +3,7 @@ import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
   CATEGORY_SPACE_ID,
+  mappingIDFromCategory,
 } from 'constants/enums';
 import {
   flatMapDeep,
@@ -26,14 +27,14 @@ export const mapCategoryNameByID = (id, categories) => {
       let result = null;
       forEach(categories, (middleCategories) => {
         forEach(middleCategories, (middleCategory) => {
-          if (middleCategory.id === id) {
+          if (middleCategory.id.toString() === id) {
             result = middleCategory.name;
             return false;
           }
 
           if (!middleCategory.children) return true;
           forEach(middleCategory.children, (subCategory) => {
-            if (subCategory.id === id) {
+            if (subCategory.id.toString() === id) {
               result = subCategory.name;
               return false;
             }
@@ -56,3 +57,43 @@ export function flattenCategories(categories) {
     )),
   );
 }
+
+export const findTopCategory = (id, categories) => {
+  switch (id) {
+    case CATEGORY_GOODS_ID:
+      return CATEGORY_GOODS_ID;
+
+    case CATEGORY_SERVICE_ID:
+      return CATEGORY_SERVICE_ID;
+
+    case CATEGORY_SPACE_ID:
+      return CATEGORY_SPACE_ID;
+
+    default: {
+      let result = null;
+    
+      forEach(categories, (middleCategories, topCategory) => {
+
+        forEach(middleCategories, (middleCategory) => {     
+         
+          if (middleCategory.id.toString() === id) {
+            result = topCategory;
+            return false;
+          }
+
+          if (!middleCategory.children) return true;
+          forEach(middleCategory.children, (subCategory) => {
+            if (subCategory.id.toString() === id) {
+                console.log('hit')
+              result = topCategory;
+              return false;
+            }
+            return true;
+          });
+          return true;
+        });
+      });
+      return result;
+    }
+  }
+};
