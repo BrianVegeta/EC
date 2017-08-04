@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import myCollection from 'connector/myCollections/reducer';
+import ownerProfile from 'connector/Ownerprofile/reducer';
 import environment from './environmentReducer';
 import auth from './authReducer';
 import banners from './bannersReducer';
@@ -23,7 +25,7 @@ import schedule from './scheduleReducer';
 import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
 import accessCheck from './accessCheckReducer';
-import myCollection from 'connector/myCollections/reducer'
+
 
 export default combineReducers({
   routing: routerReducer,
@@ -51,4 +53,5 @@ export default combineReducers({
   popupBankSetup,
   accessCheck,
   myCollection,
+  ownerProfile,
 });

@@ -35,14 +35,33 @@ export default (dispatch) => ({
       },
     },
     {
+      path: 'wallet',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Wallet/Container').default });
+        }, 'my.acc.wallet');
+      },
+    },
+    {
       path: 'collections',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Collections/Container').default });
         }, 'my.acc.collections');
-      },    
-      onEnter: (nextState) => {
-          dispatch(fetchCollections());
+      },
+      onEnter: () => {
+        dispatch(fetchCollections());
+      },
+    },
+    {
+      path: 'coupons',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Coupons/Container').default });
+        }, 'my.acc.coupons');
+      },
+      onEnter: () => {
+
       },
     },
   ],
