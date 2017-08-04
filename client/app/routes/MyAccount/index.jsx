@@ -1,6 +1,8 @@
-export default onEnter => ({
+export default () => ({
   path: '/p/my_account',
-  onEnter,
+  onEnter: () => {
+
+  },
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, { main: require('./Container').default });
@@ -28,6 +30,14 @@ export default onEnter => ({
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Wishs/Container').default });
         }, 'my.acc.wishs');
+      },
+    },
+    {
+      path: 'collections',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Collections/Container').default });
+        }, 'my.acc.collections');
       },
     },
   ],

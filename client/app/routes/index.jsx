@@ -1,6 +1,5 @@
 import layoutHoc from 'containers/layoutHoc';
 
-import { requireLoginAndGetUser } from 'actions/authActions';
 import { editItem } from 'actions/itemActions';
 
 import Fixed from 'layouts/Fixed';
@@ -64,11 +63,9 @@ export default (routesHelper, dispatch) => ({
       ],
     },
     {
-      component: layoutHoc(Mine, {}),
+      component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
-        MyAccount(() => {
-          dispatch(requireLoginAndGetUser());
-        }),
+        MyAccount(dispatch),
       ],
     },
     {
