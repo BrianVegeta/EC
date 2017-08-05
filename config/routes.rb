@@ -103,8 +103,7 @@ Rails.application.routes.draw do
 
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
-      post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
-      post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments' #
+
 
       post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
@@ -114,12 +113,15 @@ Rails.application.routes.draw do
       #post 'wishlist/save', to: 'wishlist#save' #
       #post 'wishlist/search', to: 'wishlist#search' #
       #post 'wishlist/remove', to: 'wishlist#remove' #
-
-      #MARKETING
-      post 'marketing/coupon_list', to: 'marketing#coupon_list' #
     end
 
     scope module: :api do
+      #COMMENTS
+      post 'get_owner_comments', to: 'userprofile#owner_comments' #
+      post 'get_lessee_comments', to: 'userprofile#lessee_comments' #
+
+      #MARKETING
+      post 'get_coupon', to: 'marketing#coupon_list' #
 
       #FOLLOW
       post 'add_follow', to: 'userprofile#track' #

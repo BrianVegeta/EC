@@ -21,7 +21,6 @@ const fetchingWishList = () => ({
 });
 
 export function fetchUser(uid) {
-  console.log('call api');
   return (dispatch, getState) => {
     dispatch(fetchingUser());
     asyncXhrAuthedPost(
@@ -36,7 +35,6 @@ export function fetchUser(uid) {
 }
 
 export function fetchWishList(uid) {
-  console.log('call api');
   return (dispatch, getState) => {
     dispatch(fetchingWishList());
     asyncXhrAuthedPost(

@@ -1,4 +1,6 @@
 import { fetchCollections } from 'connector/myCollections/actions';
+import { fetchCoupon } from 'connector/Coupon/actions';
+import { fetchComments, TYPE_OWNER } from 'connector/Comment/actions';
 
 export default (dispatch) => ({
   path: '/p/my_account',
@@ -61,7 +63,18 @@ export default (dispatch) => ({
         }, 'my.acc.coupons');
       },
       onEnter: () => {
-
+        dispatch(fetchCoupon());
+      },
+    },
+    {
+      path: 'comments',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Comments/Container').default });
+        }, 'my.acc.comments');
+      },
+      onEnter: () => {
+        fetchComments(TYPE_OWNER)
       },
     },
   ],

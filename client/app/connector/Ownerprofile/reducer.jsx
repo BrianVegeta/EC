@@ -9,7 +9,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     case types.FETCHING_USER:
       return Object.assign({}, state, { isFetchingUser: true });

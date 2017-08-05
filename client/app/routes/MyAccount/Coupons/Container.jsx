@@ -1,32 +1,40 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import CouponCard from './CouponCard';
+import Container from '../components/Container';
 
 class CouponsContainer extends React.Component {
+  static propTypes = {
+    coupon: PropTypes.shape({
+      records: PropTypes.array.isRequired,
+    }).isRequired,
+  };
+
   render() {
+    const { coupon } = this.props;
     return (
-      <div>
-        <CouponCard
-          title="母親節好禮！滿額＄399 即可使用！"
-          discount={50}
-          expireAt={1318781876406}
-        />
-        <CouponCard
-          title="不理養口同如紙麼破給，四發倒出道冷也物氣家心過怎來年，人學們會部子故，知年神！"
-          discount={50000}
-          expireAt={1318781876406}
-        />
-      </div>
+      <Container titleText={'優惠卷'}>
+        {coupon.records.map(couponItem => (
+          <CouponCard
+            key={couponItem.coupon_no}
+            couponNo={couponItem.coupon_id}
+            title={couponItem.name}
+            discount={couponItem.amount}
+            expireAt={couponItem.expiration_time}
+          />
+        ))}
+      </Container>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { environment } = state;
-  return ({ environment });
+  const { environment, coupon } = state;
+  return ({ environment, coupon });
 };
 export default connect(mapStateToProps)(CSS(CouponsContainer, styles));
