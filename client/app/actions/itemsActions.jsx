@@ -7,7 +7,7 @@ import {
 } from 'lodash';
 
 export const reset = () => ({
-    type: types.RESET
+  type: types.RESET,
 });
 
 const fetching = categoryID => ({

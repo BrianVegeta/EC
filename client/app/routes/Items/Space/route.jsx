@@ -11,12 +11,12 @@ export default ({ dispatch }) => ({
     require.ensure([], (require) => {
       const component = require('./Container').default;
       callback(null, { main: component });
-    }, 'items-space');
+    });
   },
   onEnter: () => {
+    dispatch(fetchItems(CATEGORY_SPACE_ID));
+  },
+  onLeave: () => {
     dispatch(reset());
-    dispatch(
-      fetchItems(CATEGORY_SPACE_ID),
-    );
   },
 });

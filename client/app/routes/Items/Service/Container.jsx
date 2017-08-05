@@ -8,33 +8,22 @@ import PageFilterBar from 'components/PageFilterBar';
 
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
 import CategoriedItemListContainer from 'containers/CategoriedItemList';
-import {
-  CATEGORY_SERVICE,
-  CATEGORY_SERVICE_ID,
-} from 'constants/enums';
+import { CATEGORY_SERVICE_ID } from 'constants/enums';
 import { mapCategoryNameByID } from 'lib/category';
 
 class ItemsServiceContainer extends React.Component {
-
-  componentWillReceiveProps() {
-    console.log('will receive props');
-  }
-
   render() {
-    const { items } = this.props;
-    const { categoryID } = items;
-
     return (
       <div>
         <PageHeader >
           <PageTitle
-            title={mapCategoryNameByID(categoryID)}
+            title={mapCategoryNameByID(CATEGORY_SERVICE_ID)}
             renderIcon={() => <IconPublishService />}
           />
           <PageFilterBar />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer topCategory={CATEGORY_SERVICE} />
+          <SidebarCategoriesContainer categoryID={CATEGORY_SERVICE_ID} />
           <CategoriedItemListContainer categoryID={CATEGORY_SERVICE_ID} />
         </div>
       </div>
@@ -43,7 +32,7 @@ class ItemsServiceContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, items, options, routesHelper } = state;
-  return { environment, items, options, routesHelper };
+  const { environment } = state;
+  return { environment };
 };
 export default connect(mapStateToProps)(ItemsServiceContainer);

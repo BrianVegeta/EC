@@ -5,10 +5,16 @@
   margin: 0
   padding: 0
   .list-item
-    padding: 17px 30px 17px 46px
+    padding: 13px 30px 13px 55px
     cursor: pointer
     color: $global-blackColor
     line-height: 16px
-    font-size: 16px
+    font-size: 15px
+
     &:hover
-      color: $global-primaryColor
+      background: $global-primaryColor
+      transition: background-color .5s ease-out
+      color: #fff
+    &.active
+      background: $global-primaryColor
+      color: #fff

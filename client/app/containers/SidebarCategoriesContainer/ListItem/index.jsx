@@ -14,12 +14,14 @@ const cx = classnames.bind(styles);
 class ListItem extends React.Component {
 
   static defaultProps = {
+    isActive: false,
     isHovering: false,
     isExpanding: false,
     onSubCategoriesExpand: null,
   };
 
   static propTypes = {
+    isActive: PropTypes.bool,
     isHovering: PropTypes.bool, // ReactHoverObserver
     isExpanding: PropTypes.bool,
     category: PropTypes.shape({
@@ -44,11 +46,12 @@ class ListItem extends React.Component {
       category,
       isExpanding,
       isHovering,
+      isActive,
     } = this.props;
 
     const iconProps = {
       size: 50,
-      viewBox: '-30 -25 100 100',
+      viewBox: '-20 -17 80 80',
       onClick: this.onSubCategoriesExpand,
     };
 
@@ -58,7 +61,7 @@ class ListItem extends React.Component {
         activeClassName={cx('active')}
         onlyActiveOnIndex
       >
-        <div styleName="container" className="clear">
+        <div className={`clear ${cx('container', { active: isActive })}`} >
           {isExpanding && <IconUp {...iconProps} />}
           {isHovering && !isExpanding && <IconDown {...iconProps} />}
           <div styleName="text">{category.name}</div>

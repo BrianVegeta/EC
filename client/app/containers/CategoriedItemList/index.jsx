@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import ItemBoard from 'components/ItemBoard';
 import ButtonLoadMore from 'components/Button/LoadMore';
 import LoadingOverlay from 'components/Loading/Overlay';
-import TransitionFade from 'components/Transition/Fade';
 import { fetchItems } from 'actions/itemsActions';
 
 import CSS from 'react-css-modules';
@@ -17,7 +16,7 @@ import { Container } from './styles';
 class CategoriedItemListContainer extends React.Component {
 
   static propTypes = {
-    categoryID: PropTypes.number.isRequired,
+    categoryID: PropTypes.string.isRequired,
     /* redux provide */
     items: myPropTypes.items.isRequired,
     environment: myPropTypes.environment.isRequired,

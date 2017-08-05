@@ -8,33 +8,23 @@ import PageFilterBar from 'components/PageFilterBar';
 
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
 import CategoriedItemListContainer from 'containers/CategoriedItemList';
-import {
-  CATEGORY_SPACE,
-  CATEGORY_SPACE_ID,
-} from 'constants/enums';
+import { CATEGORY_SPACE_ID } from 'constants/enums';
 import { mapCategoryNameByID } from 'lib/category';
 
 class ItemsSpaceContainer extends React.Component {
 
-  componentWillReceiveProps() {
-    console.log('will receive props');
-  }
-
   render() {
-    const { items } = this.props;
-    const { categoryID } = items;
-
     return (
       <div>
         <PageHeader >
           <PageTitle
-            title={mapCategoryNameByID(categoryID)}
+            title={mapCategoryNameByID(CATEGORY_SPACE_ID)}
             renderIcon={() => <IconPublishSpace />}
           />
           <PageFilterBar />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer topCategory={CATEGORY_SPACE} />
+          <SidebarCategoriesContainer categoryID={CATEGORY_SPACE_ID} />
           <CategoriedItemListContainer categoryID={CATEGORY_SPACE_ID} />
         </div>
       </div>
@@ -43,7 +33,7 @@ class ItemsSpaceContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { environment, items, options, routesHelper } = state;
-  return { environment, items, options, routesHelper };
+  const { environment } = state;
+  return { environment };
 };
 export default connect(mapStateToProps)(ItemsSpaceContainer);

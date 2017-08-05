@@ -11,12 +11,12 @@ export default ({ dispatch }) => ({
     require.ensure([], (require) => {
       const component = require('./Container').default;
       callback(null, { main: component });
-    }, 'items-service');
+    });
   },
   onEnter: () => {
-     dispatch(reset());
-    dispatch(
-      fetchItems(CATEGORY_SERVICE_ID),
-    );
+    dispatch(fetchItems(CATEGORY_SERVICE_ID));
+  },
+  onLeave: () => {
+    dispatch(reset());
   },
 });

@@ -5,8 +5,8 @@ import {
 } from 'constants/enums';
 
 
-export default (routesHelper, dispatch) => ({
-  path: `${routesHelper.items.root}/goods`,
+export default ({ dispatch }) => ({
+  path: `/p/i/${CATEGORY_GOODS}`,
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       const component = require('./Container').default;
@@ -14,7 +14,9 @@ export default (routesHelper, dispatch) => ({
     });
   },
   onEnter: () => {
-    dispatch(reset());
     dispatch(fetchItems(CATEGORY_GOODS_ID));
+  },
+  onLeave: () => {
+    dispatch(reset());
   },
 });

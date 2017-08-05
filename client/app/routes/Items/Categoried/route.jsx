@@ -1,7 +1,7 @@
 import { fetchItems, reset } from 'actions/itemsActions';
 
-export default (routesHelper, dispatch) => ({
-  path: `${routesHelper.items.root}/:name-c.:id`,
+export default ({ dispatch }) => ({
+  path: '/p/i/:name-c.:id',
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, {
@@ -10,7 +10,9 @@ export default (routesHelper, dispatch) => ({
     });
   },
   onEnter: (nextState) => {
-    dispatch(reset());
     dispatch(fetchItems(nextState.params.id));
+  },
+  onLeave: () => {
+    dispatch(reset());
   },
 });

@@ -4,19 +4,22 @@ import { Link } from 'react-router';
 
 import { categoriedItemPath } from 'lib/paths';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const cx = classnames.bind(styles);
 class SubCategories extends React.Component {
 
   static propTypes = {
+    categoryID: PropTypes.string.isRequired,
     subCategories: PropTypes.arrayOf(
       PropTypes.object,
     ).isRequired,
   };
 
   render() {
-    const { props: { subCategories } } = this;
+    const { props: { subCategories, categoryID } } = this;
     return (
       <ul styleName="container">
         {subCategories.map(subcategory => (
@@ -25,7 +28,9 @@ class SubCategories extends React.Component {
             to={categoriedItemPath(subcategory.name, subcategory.id)}
             onlyActiveOnIndex
           >
-            <li styleName="list-item">{subcategory.name}</li>
+            <li className={cx('list-item', { active: categoryID === subcategory.id.toString() })}>
+              {subcategory.name}
+            </li>
           </Link>
         ))}
       </ul>

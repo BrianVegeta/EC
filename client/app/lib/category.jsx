@@ -1,8 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import {
   CATEGORY_GOODS_ID,
+  CATEGORY_GOODS,
   CATEGORY_SERVICE_ID,
+  CATEGORY_SERVICE,
   CATEGORY_SPACE_ID,
+  CATEGORY_SPACE,
 } from 'constants/enums';
 import {
   flatMapDeep,
@@ -60,13 +63,13 @@ export function flattenCategories(categories) {
 export const findTopCategory = (id, categories) => {
   switch (id) {
     case CATEGORY_GOODS_ID:
-      return CATEGORY_GOODS_ID;
+      return CATEGORY_GOODS;
 
     case CATEGORY_SERVICE_ID:
-      return CATEGORY_SERVICE_ID;
+      return CATEGORY_SERVICE;
 
     case CATEGORY_SPACE_ID:
-      return CATEGORY_SPACE_ID;
+      return CATEGORY_SPACE;
 
     default: {
       let result = null;

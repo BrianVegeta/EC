@@ -1,17 +1,18 @@
 @import "~styles/color.sass"
 
-.active
-  .text
-    color: $global-primaryColor
-
 .container
   cursor: pointer
   color: $global-blackColor
+  padding: 0 6px
+  &.active
+    background: $global-primaryColor
+    .text
+      color: #fff
   &:hover
-    background: $global-orangeColor
+    background: $global-primaryColor
     transition: background-color .5s ease-out
     .text
-      color: $global-primaryColor
+      color: #fff
   .text
     padding: 17px 30px
     margin-right: 50px
@@ -21,5 +22,6 @@
     font-size: 16px
   svg
     float: right
+    color: #005661
     &:hover
-      color: $global-placeholder
+      color: #fff

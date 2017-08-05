@@ -10,11 +10,11 @@ import Publish from 'layouts/Publish';
 import Signinup from 'layouts/Signinup';
 
 import HomeRoute from './Home';
-import GoodsRoute from './Items/Goods';
 import itemsSpaceRoute from './Items/Space/route';
 import itemsServiceRoute from './Items/Service/route';
+import itemsGoodsRoute from './Items/Goods/route';
+import itemsCategoriedRoute from './Items/Categoried/route';
 
-import CategoriedRoute from './Items/Categoried';
 import Categories from './Categories';
 import ItemRoute from './Item';
 import Tanzaku from './Tanzaku';
@@ -39,10 +39,11 @@ export default (routesHelper, dispatch) => ({
       indexRoute: HomeRoute(dispatch),
       component: layoutHoc(Home, { requireCates }),
       childRoutes: [
-        GoodsRoute(routesHelper, dispatch),
+        itemsGoodsRoute({ dispatch }),
         itemsServiceRoute({ dispatch }),
         itemsSpaceRoute({ dispatch }),
-        CategoriedRoute(routesHelper, dispatch),
+        itemsCategoriedRoute({ dispatch }),
+
         Categories(routesHelper, dispatch),
         Tanzaku(routesHelper, dispatch),
       ],

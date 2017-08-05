@@ -73,7 +73,7 @@ export default {
   itemBoard: PropTypes.shape({
     pname: PropTypes.string.isRequired,
     pid: PropTypes.number.isRequired,
-    img1: PropTypes.string.isRequired,
+    img1: PropTypes.string, // nullable for test data
     price: PropTypes.number.isRequired,
     owner_name: PropTypes.string.isRequired,
     owner_img: PropTypes.string,
