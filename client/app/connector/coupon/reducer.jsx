@@ -3,7 +3,7 @@ import * as types from './actionTypes';
 
 const initialState = {
   isFetching: false,
-  collections: [],
+  records: [],
 };
 
 export default (state = initialState, action) => {
@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
     case types.FETCHED:
       return Object.assign({}, state, {
         isFetching: false,
-        collections: action.collections
+        records: action.records
       });
 
     default:

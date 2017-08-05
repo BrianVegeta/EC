@@ -100,43 +100,45 @@ Rails.application.routes.draw do
       post 'userprofile/update_password', to: 'userprofile#update_password'
 
 
- 
+
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
-      post 'userprofile/owner_comments', to: 'userprofile#owner_comments' #
-      post 'userprofile/lessee_comments', to: 'userprofile#lessee_comments' #
+
 
       post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out' #
 
       #WISHLIST
-      post 'wishlist/save', to: 'wishlist#save' #
-      post 'wishlist/search', to: 'wishlist#search' #
-      post 'wishlist/remove', to: 'wishlist#remove' #
-
-      #MARKETING
-      post 'marketing/coupon_list', to: 'marketing#coupon_list' #
+      #post 'wishlist/save', to: 'wishlist#save' #
+      #post 'wishlist/search', to: 'wishlist#search' #
+      #post 'wishlist/remove', to: 'wishlist#remove' #
     end
 
     scope module: :api do
-      
+      #COMMENTS
+      post 'get_owner_comments', to: 'userprofile#owner_comments' #
+      post 'get_lessee_comments', to: 'userprofile#lessee_comments' #
+
+      #MARKETING
+      post 'get_coupon', to: 'marketing#coupon_list' #
+
       #FOLLOW
       post 'add_follow', to: 'userprofile#track' #
       post 'remove_follow', to: 'userprofile#untrack'
       post 'check_follow', to: 'userprofile#is_tracked' #
-       
+
       #FAVORITE
       post 'add_fav', to: 'favorite#add' #
       post 'get_fav', to: 'favorite#my_favorite' #
       post 'remove_fav', to: 'favorite#remove' #
-      
+
       # ITEM
       post 'item_detail', to: 'item#view_item' #
-      
+
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #
-      post 'wish/search', to: 'wishlist#search' #
+      post 'get_wish', to: 'wishlist#search' #
       post 'wish/remove', to: 'wishlist#remove' #
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'

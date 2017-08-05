@@ -12,6 +12,10 @@ export function isToday(momentObj) {
   return momentObj.isSame(moment(), 'd');
 }
 
+export function today() {
+  return moment();
+}
+
 const momentRange = extendMoment(moment);
 export function inDates(theDate, startDate, endDate) {
   const range = momentRange.range(startDate, endDate);
@@ -27,3 +31,5 @@ export function rangeDiff(startDate, endDate, included) {
   }
   return diff;
 }
+
+export function 

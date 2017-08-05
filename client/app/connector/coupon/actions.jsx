@@ -2,20 +2,20 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import * as types from './actionTypes';
 
-const fetched = collections => ({
+const fetched = records => ({
   type: types.FETCHED,
-  collections,
+  records,
 });
 
 const fetching = () => ({
   type: types.FETCHING,
 });
 
-export function fetchCollections() {
+export function fetchCoupon() {
   return (dispatch, getState) => {
     dispatch(fetching());
     asyncXhrAuthedPost(
-            '/ajax/get_fav.json',
+            '/ajax/get_coupon.json',
             {},
             getState(),
     )

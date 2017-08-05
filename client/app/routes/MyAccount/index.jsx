@@ -1,4 +1,6 @@
 import { fetchCollections } from 'connector/myCollections/actions';
+import { fetchCoupon } from 'connector/Coupon/actions';
+import { fetchComments, TYPE_OWNER } from 'connector/Comment/actions';
 
 export default (dispatch) => ({
   path: '/p/my_account',
@@ -35,14 +37,44 @@ export default (dispatch) => ({
       },
     },
     {
+      path: 'wallet',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Wallet/Container').default });
+        }, 'my.acc.wallet');
+      },
+    },
+    {
       path: 'collections',
       getComponent(_nextState, callback) {
         require.ensure([], (require) => {
           callback(null, { formComponent: require('./Collections/Container').default });
         }, 'my.acc.collections');
-      },    
-      onEnter: (nextState) => {
-          dispatch(fetchCollections());
+      },
+      onEnter: () => {
+        dispatch(fetchCollections());
+      },
+    },
+    {
+      path: 'coupons',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Coupons/Container').default });
+        }, 'my.acc.coupons');
+      },
+      onEnter: () => {
+        dispatch(fetchCoupon());
+      },
+    },
+    {
+      path: 'comments',
+      getComponent(_nextState, callback) {
+        require.ensure([], (require) => {
+          callback(null, { formComponent: require('./Comments/Container').default });
+        }, 'my.acc.comments');
+      },
+      onEnter: () => {
+        fetchComments(TYPE_OWNER)
       },
     },
   ],

@@ -8,6 +8,7 @@ import ItemDetail from 'layouts/ItemDetail';
 import Mine from 'layouts/MyAccount';
 import Publish from 'layouts/Publish';
 import Signinup from 'layouts/Signinup';
+import Ownerprofile from 'layouts/Ownerprofile';
 
 import HomeRoute from './Home';
 import itemsSpaceRoute from './Items/Space/route';
@@ -25,6 +26,7 @@ import AuthLogin from './Auth/Login';
 import Registration from './Auth/Registration';
 import MyAccount from './MyAccount';
 import ReservationGoods from './Reservation/Goods/route';
+import OwnerprofileRoute from './Ownerprofile/route';
 import TestLayout from './Test/Container';
 
 
@@ -81,6 +83,12 @@ export default (routesHelper, dispatch) => ({
         ReservationGoods((nextState) => {
           dispatch(editItem(nextState.params.pid));
         }, dispatch),
+      ],
+    },
+    {
+      component: layoutHoc(Ownerprofile, { }),
+      childRoutes: [
+        OwnerprofileRoute({ dispatch }),
       ],
     },
     {
