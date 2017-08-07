@@ -1,13 +1,14 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { calculateUnit } from 'lib/unitHelper';
 
 class Detail extends React.Component {
 
   static propTypes = {
-      city: PropTypes.string.isRequired,
-      area: PropTypes.string.isRequired,
-      unit: PropTypes.number.isRequired,
-      calculate_charge_type: PropTypes.string.isRequired
+    city: PropTypes.string.isRequired,
+    area: PropTypes.string.isRequired,
+    unit: PropTypes.number.isRequired,
+    calculate_charge_type: PropTypes.string.isRequired
   };
 
   renderIcon() {

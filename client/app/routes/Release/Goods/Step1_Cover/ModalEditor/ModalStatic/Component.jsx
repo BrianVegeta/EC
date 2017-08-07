@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-overlays';
 import IconClose from 'react-icons/lib/md/close';
 import styles from './styles.sass';

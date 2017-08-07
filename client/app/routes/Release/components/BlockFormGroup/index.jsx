@@ -3,7 +3,8 @@
 // </BlockFormGroup>
 
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 

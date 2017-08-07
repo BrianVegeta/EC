@@ -14,10 +14,12 @@ import layoutUserprofile from 'layouts/Userprofile';
 
 import HomeRoute from './Home';
 // items route
-// import routeItemsSpace from './Items/Space/route';
-// import routeItemsService from './Items/Service/route';
-// import routeItemsGoods from './Items/Goods/route';
-// import routeItemsCategoried from './Items/Categoried/route';
+import routeItemsSpace from './ItemListSpace/route';
+import routeItemsService from './ItemListService/route';
+import routeItemsGoods from './ItemListGoods/route';
+
+//import routeItemsCategory from './ItemListCategory/route';
+
 import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
 
@@ -45,15 +47,15 @@ export default store => ({
     {
       indexRoute: HomeRoute(store.dispatch),
       component: layoutHoc(Home, { requireCates }),
-      // childRoutes: [
-      //   routeItemsGoods({ dispatch }),
-      //   routeItemsService({ dispatch }),
-      //   routeItemsSpace({ dispatch }),
-      //   routeItemsCategoried({ dispatch }),
-      //
-      //   Categories(routesHelper, dispatch),
-      //   // Tanzaku(routesHelper, dispatch),
-      // ],
+      childRoutes: [
+        routeItemsGoods(store),
+        routeItemsService(store),
+        routeItemsSpace(store),
+        //routeItemsCategoried({ dispatch }),
+
+        // Categories(routesHelper, dispatch),
+        // // Tanzaku(routesHelper, dispatch),
+      ],
     },
     /* User profile */
     {

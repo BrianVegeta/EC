@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 // import TextTruncate from 'react-text-truncate';
 // import Truncate from 'react-truncate';
 import { gBackgroundImage } from '../../../../../funcs/styles';

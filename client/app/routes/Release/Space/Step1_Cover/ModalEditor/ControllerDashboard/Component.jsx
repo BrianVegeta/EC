@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RotateRightIcon from 'react-icons/lib/md/rotate-right';
 import RotateLeftIcon from 'react-icons/lib/md/rotate-left';
 import CropIcon from 'react-icons/lib/md/crop-free';

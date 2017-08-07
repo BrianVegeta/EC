@@ -10,7 +10,8 @@
 // ps. need allow null
 
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
 import IconDown from 'react-icons/lib/md/keyboard-arrow-down';

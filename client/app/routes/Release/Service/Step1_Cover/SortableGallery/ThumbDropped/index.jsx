@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import EditIcon from 'react-icons/lib/md/edit';
 import RemoveIcon from 'react-icons/lib/go/trashcan';

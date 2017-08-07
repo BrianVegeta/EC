@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CropperJS from 'react-cropper';
 import {
   CROP_BOX,

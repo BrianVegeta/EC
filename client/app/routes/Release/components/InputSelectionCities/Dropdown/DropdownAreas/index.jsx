@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import BackIcon from 'react-icons/lib/md/arrow-back';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';

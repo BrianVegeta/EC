@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import _ from 'lodash';
 import DropdownCities from './DropdownCities';
@@ -22,7 +23,7 @@ class Dropdown extends React.Component {
       }),
     ).isRequired,
     closeDropdown: PropTypes.func.isRequired,
-  };
+  }
   constructor(props) {
     super(props);
     this.onAreaSelect = this.onAreaSelect.bind(this);
