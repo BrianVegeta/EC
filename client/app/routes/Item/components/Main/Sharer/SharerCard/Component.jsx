@@ -4,7 +4,7 @@ import FollowButton from 'components/Button/Follow';
 import { formatDate } from 'lib/time';
 
 const FAKER_IAMGE = 'http://r.fod4.com/c=sq/s=w1000,pd1/o=80/http://p.fod4.com/p/channels/qpztk/profile/ToJNnsiRhmm405cz7CPX_charlize-theron-head-shot.jpg';
-const propTypes = { 
+const propTypes = {
   name: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
@@ -28,8 +28,8 @@ const SharerCard = props => (
       </div>
       <div styleName="marks">
         <div styleName="rating">
-          {[1, 2, 3, 4, 5].map(() =>
-            <span className="fa fa-star" styleName="star" />,
+          {[1, 2, 3, 4, 5].map((v, index) =>
+            <span key={`${index + 1}`} className="fa fa-star" styleName="star" />,
           )}
           <span styleName="star-text">{props.owner_credit.toFixed(1)}</span>
         </div>

@@ -54,6 +54,7 @@ class OrderBoard extends React.Component {
             <FormButton
               content={model.isMine ? '編輯商品' : '馬上預訂'}
               colorType={model.isMine ? 'greenBorder' : 'orange'}
+              onClick={() => console.warn('馬上預訂 need fixed')}
               size="md"
             />
           </Link>
