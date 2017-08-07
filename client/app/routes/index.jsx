@@ -7,8 +7,9 @@ import Home from 'layouts/Home';
 // import ItemDetail from 'layouts/ItemDetail';
 // import Mine from 'layouts/MyAccount';
 // import Publish from 'layouts/Publish';
-// import Signinup from 'layouts/Signinup';
+import Signinup from 'layouts/Signinup';
 // import Ownerprofile from 'layouts/Ownerprofile';
+import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
 
 import HomeRoute from './Home';
@@ -17,7 +18,7 @@ import HomeRoute from './Home';
 // import routeItemsService from './Items/Service/route';
 // import routeItemsGoods from './Items/Goods/route';
 // import routeItemsCategoried from './Items/Categoried/route';
-
+import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
 
 // import routeMyAccount from './MyAccount/route';
@@ -27,7 +28,7 @@ import routeUserprofile from './Userprofile/route';
 // import ReleaseGoods from './Release/Goods';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
-// import AuthLogin from './Auth/Login';
+import AuthLogin from './Auth/Login';
 // import Registration from './Auth/Registration';
 // import ReservationGoods from './Reservation/Goods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
@@ -61,13 +62,20 @@ export default store => ({
         routeUserprofile(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Signinup, {}),
-    //   childRoutes: [
-    //     AuthLogin(routesHelper, dispatch),
-    //     Registration(routesHelper, dispatch),
-    //   ],
-    // },
+    {
+      component: layoutHoc(Signinup, {}),
+      childRoutes: [
+        AuthLogin(store.routesHelper, store.dispatch),
+        // Registration(routesHelper, dispatch),
+      ],
+    },
+    /* Order detail*/
+    {
+      component: layoutHoc(layoutOrderdetail, {}),
+      childRoutes: [
+        routeOrderdetail(store),
+      ],
+    },
     // {
     //   component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
     //   childRoutes: [

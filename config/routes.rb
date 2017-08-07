@@ -116,6 +116,9 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #OREDERDETAIL
+      post 'get_order', to: 'contract#get' #
+
       #COMMENTS
       post 'get_owner_comments', to: 'userprofile#owner_comments' #
       post 'get_lessee_comments', to: 'userprofile#lessee_comments' #

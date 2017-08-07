@@ -1,7 +1,7 @@
 class Ajax::Api::ContractController < ApplicationController
   include WardenHelper
-  include RespondHelper  
-  
+  include RespondHelper
+
   ###################### ACTION ##################################
 
   # 取回行事曆範圍內的合約
@@ -11,7 +11,7 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-      obj.response_data.each_with_index.map { |item, index| 
+      obj.response_data.each_with_index.map { |item, index|
         obj.response_data[index] = parse_contract_rsp(item) }
     end
     respond success, obj
@@ -44,7 +44,7 @@ class Ajax::Api::ContractController < ApplicationController
     if obj.response_data.nil?
       obj.response_data = []
     else
-       obj.response_data.each_with_index.map { |item, index| 
+       obj.response_data.each_with_index.map { |item, index|
          obj.response_data[index] = parse_contract_rsp(item) }
     end
     respond success, obj
@@ -55,11 +55,11 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
     #obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
-    
+
     if obj.response_data.nil?
         obj.response_data = []
     else
-        obj.response_data.each_with_index.map { |item, index| 
+        obj.response_data.each_with_index.map { |item, index|
           obj.response_data[index] = parse_display_contract_rsp(item, current_user['uid'])
         }
     end
@@ -94,7 +94,7 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
     if success
-      obj.response_data = parse_contract_rsp(obj.response_data) 
+      obj.response_data = parse_contract_rsp(obj.response_data)
     end
     respond success, obj
   end
@@ -234,19 +234,19 @@ class Ajax::Api::ContractController < ApplicationController
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)
-     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure 
-     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure 
+     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure
+     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure
      response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
      return response_data
   end
- 
+
   #add display params to contract response
   def parse_display_contract_rsp(response_data, uid)
 
     if (response_data['contractstage'].nil?)
       raise 'error'
     end
-    
+
     response_data = parse_contract_rsp(response_data)
     case response_data['type']
     when 'ITEM'
@@ -266,7 +266,7 @@ class Ajax::Api::ContractController < ApplicationController
     end
     return response_data
   end
-  
+
   ###################### PARAMS ##################################
   protected
   def cid_params
