@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import myCollection from 'connector/myCollections/reducer';
-import ownerProfile from 'connector/Ownerprofile/reducer';
-import coupon from 'connector/coupon/reducer'
-import comment from 'connector/comment/reducer'
+// import myCollection from 'connector/myCollections/reducer';
+// import ownerProfile from 'connector/Ownerprofile/reducer';
+import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
 import auth from './authReducer';
 import banners from './bannersReducer';
@@ -19,7 +18,6 @@ import notification from './notificationReducer';
 import home from './homeReducer';
 import item from './itemReducer';
 import reservation from './reservationReducer';
-import myCoupons from './myCouponsReducer';
 import modal from './modalReducer';
 import popup from './popupReducer';
 import secrecyVerification from './secrecyVerificationReducer';
@@ -28,33 +26,45 @@ import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
 import accessCheck from './accessCheckReducer';
 
-export default combineReducers({
-  routing: routerReducer,
-  modal,
-  environment,
-  auth,
-  banners,
-  items,
-  routesHelper,
-  recommends,
-  itemRelease,
-  cities,
-  publish,
-  search,
-  mine,
-  notification,
-  home,
-  item,
-  reservation,
-  myCoupons,
-  secrecyVerification,
-  popup,
-  schedule,
-  options,
-  popupBankSetup,
-  accessCheck,
-  myCollection,
-  ownerProfile,
-  coupon,
-  comment,
-});
+
+const makeRootReducer = asyncReducers =>
+  combineReducers({
+    ...asyncReducers,
+    routing: routerReducer,
+    modal,
+    environment,
+    auth,
+    banners,
+    items,
+    routesHelper,
+    recommends,
+    itemRelease,
+    cities,
+    publish,
+    search,
+    mine,
+    notification,
+    home,
+    item,
+    reservation,
+    secrecyVerification,
+    popup,
+    schedule,
+    options,
+    popupBankSetup,
+    accessCheck,
+    // myCollection,
+    // ownerProfile,
+    // coupon,
+    myCoupon,
+  });
+
+export const injectReducer = (store, { key, reducer }) => {
+  if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
+
+  store.replaceReducer(makeRootReducer(
+    Object.assign({}, store.asyncReducers, { [key]: reducer })),
+  );
+};
+
+export default makeRootReducer;

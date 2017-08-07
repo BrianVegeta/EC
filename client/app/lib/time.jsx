@@ -31,5 +31,3 @@ export function rangeDiff(startDate, endDate, included) {
   }
   return diff;
 }
-
-export function 

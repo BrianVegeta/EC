@@ -1,12 +1,9 @@
-import { fetchCollections } from 'connector/myCollections/actions';
-import { fetchCoupon } from 'connector/Coupon/actions';
-import { fetchComments, TYPE_OWNER } from 'connector/Comment/actions';
+// import { fetchCollections } from 'connector/myCollections/actions';
+import { fetchCoupons } from 'connector/myCoupon/actions';
+// import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 
-export default (dispatch) => ({
+export default ({ dispatch }) => ({
   path: '/p/my_account',
-  onEnter: () => {
-
-  },
   getComponent(_nextState, callback) {
     require.ensure([], (require) => {
       callback(null, { main: require('./Container').default });
@@ -52,7 +49,7 @@ export default (dispatch) => ({
         }, 'my.acc.collections');
       },
       onEnter: () => {
-        dispatch(fetchCollections());
+        // dispatch(fetchCollections());
       },
     },
     {
@@ -63,7 +60,7 @@ export default (dispatch) => ({
         }, 'my.acc.coupons');
       },
       onEnter: () => {
-        dispatch(fetchCoupon());
+        // dispatch(fetchCoupons());
       },
     },
     {
@@ -74,7 +71,7 @@ export default (dispatch) => ({
         }, 'my.acc.comments');
       },
       onEnter: () => {
-        fetchComments(TYPE_OWNER)
+        // dispatch(fetchComments(TYPE_OWNER));
       },
     },
   ],

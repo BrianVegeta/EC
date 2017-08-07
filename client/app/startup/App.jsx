@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
-import configureStore from '../store/homeStore';
+import configureStore from '../store/configureStore';
 import customUseScroll from './scroll';
 
 const routes = require('../routes');
@@ -24,13 +24,13 @@ const App = (props) => {
     browserHistory,
     store,
   );
-  const { routesHelper } = props;
+  // const { routesHelper } = props;
 
   return (
     <Provider store={store}>
       <Router
         history={history}
-        routes={routes.default(routesHelper, store.dispatch)}
+        routes={routes.default(store)}
         render={applyRouterMiddleware(useScroll(customUseScroll))}
       />
     </Provider>
