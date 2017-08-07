@@ -1,10 +1,8 @@
 import layoutHoc from 'containers/layoutHoc';
 
-import { editItem } from 'actions/itemActions';
-
 // import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
-// import ItemDetail from 'layouts/ItemDetail';
+import layoutItemDetail from 'layouts/ItemDetail';
 // import Mine from 'layouts/MyAccount';
 // import Publish from 'layouts/Publish';
 import Signinup from 'layouts/Signinup';
@@ -23,7 +21,7 @@ import routeUserprofile from './Userprofile/route';
 
 // import routeMyAccount from './MyAccount/route';
 // import Categories from './Categories';
-// import ItemRoute from './Item';
+import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
 // import ReleaseGoods from './Release/Goods';
 // import ReleaseService from './Release/Service';
@@ -90,12 +88,12 @@ export default store => ({
     //     routeMyAccount({ dispatch }),
     //   ],
     // },
-    // {
-    //   component: layoutHoc(ItemDetail, {}),
-    //   childRoutes: [
-    //     ItemRoute(dispatch),
-    //   ],
-    // },
+    {
+      component: layoutHoc(layoutItemDetail, {}),
+      childRoutes: [
+        routeItem(store),
+      ],
+    },
     // {
     //   component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
     //   childRoutes: [

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import {
   ITEM_DETAIL_COVER_RESOLUTION,
   ITEM_DETAIL_COVER_THUMB_RESOLUTION,
-} from '../../../../constants/style';
+} from 'constants/style';
 import covers from './mock';
 
 class Cover extends React.Component {

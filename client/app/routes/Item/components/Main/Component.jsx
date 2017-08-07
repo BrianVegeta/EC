@@ -1,4 +1,11 @@
 import React, { PropTypes } from 'react';
+import {
+  ITEM_MAIN_INTRODUCTION,
+  ITEM_MAIN_REGULATION,
+  ITEM_MAIN_CANCEL_POLICY,
+  ITEM_MAIN_COMMENT,
+  ITEM_MAIN_SHARER,
+} from 'constants/itemDetailScrollNavs';
 import Cover from './Cover';
 import Breadcrumbs from './Breadcrumbs';
 import Title from './Title';
@@ -11,13 +18,6 @@ import CancelPolicy from './CancelPolicy';
 // import PublicComment from './PublicComment';
 import Comments from './Comments';
 import Sharer from './Sharer';
-import {
-  ITEM_MAIN_INTRODUCTION,
-  ITEM_MAIN_REGULATION,
-  ITEM_MAIN_CANCEL_POLICY,
-  ITEM_MAIN_COMMENT,
-  ITEM_MAIN_SHARER,
-} from '../../../constants/itemDetailScrollNavs';
 
 class Main extends React.Component {
 
@@ -76,10 +76,10 @@ class Main extends React.Component {
         </div>
             <Description description={pdes} />
             <Tags tags={tags} />
-        <Detail 
-            city={city} 
-            area={area} 
-            unit={unit} 
+        <Detail
+            city={city}
+            area={area}
+            unit={unit}
             calculate_charge_type={calculate_charge_type} />
       </div>
     );
@@ -88,11 +88,11 @@ class Main extends React.Component {
     const id = ITEM_MAIN_SHARER;
     const ref = sharer => (this[ITEM_MAIN_SHARER] = sharer);
     const { ownerProfile } = item
-    
+
     if (ownerProfile == null || ownerProfile['uid'] == null) {
         return (
                 <div styleName="nav-anchor" {...{ id, ref }} >
-                  <Sharer 
+                  <Sharer
                       name={""}
                       picture={""}
                       city={""}
@@ -100,15 +100,15 @@ class Main extends React.Component {
                       autobiography={""}
                       owner_credit={0.0}
                       create_time={0}
-                      target_uid={""} 
-                      is_follow={false} 
+                      target_uid={""}
+                      is_follow={false}
                       dispatch={dispatch} />
                 </div>
         );
     } else {
         return (
                 <div styleName="nav-anchor" {...{ id, ref }} >
-                  <Sharer 
+                  <Sharer
                       name={ownerProfile.name}
                       picture={ownerProfile.picture}
                       city={ownerProfile.city}
@@ -116,8 +116,8 @@ class Main extends React.Component {
                       autobiography={ownerProfile.autobiography}
                       owner_credit={ownerProfile.owner_credit}
                       create_time={ownerProfile.create_time}
-                      target_uid={ownerProfile.uid} 
-                      is_follow={false} 
+                      target_uid={ownerProfile.uid}
+                      is_follow={false}
                       dispatch={dispatch} />
                 </div>
         );

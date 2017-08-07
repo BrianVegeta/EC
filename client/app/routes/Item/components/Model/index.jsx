@@ -1,4 +1,4 @@
-import { isStateInitial } from 'reducers/itemReducer';
+import { isStateInitial } from '../../modules/item';
 import OrderBoard from './OrderBoard';
 
 export default class {

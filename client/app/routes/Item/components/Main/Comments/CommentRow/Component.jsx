@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 // import TextTruncate from 'react-text-truncate';
 // import Truncate from 'react-truncate';
-import { gBackgroundImage } from '../../../../../funcs/styles';
 import styles from './styles.sass';
 
 const propTypes = {
@@ -74,7 +73,7 @@ class Comment extends React.Component {
       <div styleName="container">
         <div
           styleName="avatar"
-          style={gBackgroundImage(this.props.avatarSrc)}
+          style={{ backgroundImage: `url(${this.props.avatarSrc})` }}
         />
         <div styleName="content-wrapper">
           {this.rContentHeader()}

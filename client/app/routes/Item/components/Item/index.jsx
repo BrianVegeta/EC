@@ -1,16 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
 import IconFlag from 'react-icons/lib/fa/flag';
-import Sidebar from './Sidebar';
-import Main from './Main';
-import PriceHeader from './PriceHeader';
-import OrderBoard from './OrderBoard';
-import InteractiveBoard from './InteractiveBoard';
-import Model from './Model';
+
+import Sidebar from '../Sidebar';
+import Main from '../Main';
+import PriceHeader from '../PriceHeader';
+import OrderBoard from '../OrderBoard';
+import InteractiveBoard from '../InteractiveBoard';
+import Model from '../Model';
 import {
   Container,
   SidebarContainer,
@@ -19,7 +19,7 @@ import {
 } from './styles';
 
 
-class ItemContainer extends React.Component {
+class Item extends React.Component {
   static propTypes = {
     item: myPropTypes.item.isRequired,
     auth: myPropTypes.authOnHeader.isRequired,
@@ -28,9 +28,7 @@ class ItemContainer extends React.Component {
   render() {
     const { item, dispatch, auth } = this.props;
     const model = new Model(item, dispatch, auth.currentUser);
-
     if (!model.exist) return null;
-    console.log(model)
     return (
       <Container className="clear">
         <SidebarContainer>
@@ -53,8 +51,4 @@ class ItemContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { environment, routesHelper, item, auth } = state;
-  return ({ environment, routesHelper, item, auth });
-};
-export default connect(mapStateToProps)(ItemContainer);
+export default Item;
