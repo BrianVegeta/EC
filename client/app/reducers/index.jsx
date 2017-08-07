@@ -62,9 +62,14 @@ const makeRootReducer = asyncReducers =>
 export const injectReducer = (store, { key, reducer }) => {
   if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
 
-  store.replaceReducer(makeRootReducer(
-    Object.assign({}, store.asyncReducers, { [key]: reducer })),
-  );
+  store.asyncReducers[key] = reducer;
+  store.replaceReducer(makeRootReducer(store.asyncReducers));
+};
+
+export const removeReducer = (store, { key }) => {
+  delete store.asyncReducers[key];
+
+  store.replaceReducer(makeRootReducer(store.asyncReducers));
 };
 
 export default makeRootReducer;

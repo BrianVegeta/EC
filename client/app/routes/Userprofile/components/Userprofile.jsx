@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 class Userprofile extends React.Component {
   render() {
     return (
-      <div>userprofile</div>
+      <div>
+        <div>userprofile</div>
+        <div>{this.props.children}</div>
+      </div>
     );
   }
 }
