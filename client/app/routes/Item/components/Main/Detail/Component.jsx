@@ -1,13 +1,17 @@
 import React, { PropTypes } from 'react';
 import { calculateUnit } from 'lib/unitHelper';
+import Stuff from 'components/Icons/Stuff';
+import TransportLeft from 'components/Icons/TransportLeft';
+import TransportRight from 'components/Icons/TransportRight';
+import Time from 'components/Icons/Time';
 
 class Detail extends React.Component {
 
   static propTypes = {
-      city: PropTypes.string.isRequired,
-      area: PropTypes.string.isRequired,
-      unit: PropTypes.number.isRequired,
-      calculate_charge_type: PropTypes.string.isRequired
+    city: PropTypes.string.isRequired,
+    area: PropTypes.string.isRequired,
+    unit: PropTypes.number.isRequired,
+    calculate_charge_type: PropTypes.string.isRequired,
   };
 
   renderIcon() {
@@ -21,9 +25,9 @@ class Detail extends React.Component {
   renderDeliverMethod() {
     return (
       <div styleName="item-deliver-method">
-        {this.renderIcon()}
+        <Time size={28} />
         <div styleName="content">
-          <div styleName="header">寄件方式</div>
+          <div styleName="header">物流時間</div>
           <div styleName="describe">7-11交貨便</div>
         </div>
       </div>
@@ -31,27 +35,12 @@ class Detail extends React.Component {
   }
 
   renderUnit(unit, calculate_charge_type) {
-
     return (
       <div styleName="item-amount">
-        {this.renderIcon()}
+        <Stuff size={28} />
         <div styleName="content">
-          <div styleName="header">數量</div>
+          <div styleName="header">件數</div>
           <div styleName="describe">{`${unit}${calculateUnit(calculate_charge_type)}`}</div>
-        </div>
-      </div>
-    );
-  }
-
-  renderCategory() {
-    return (
-      <div styleName="item-category">
-        {this.renderIcon()}
-        <div styleName="content">
-          <div styleName="header">分類</div>
-          <div styleName="describe">
-            相機攝影<span>&nbsp;&gt;&nbsp;</span>單眼相機
-          </div>
         </div>
       </div>
     );
@@ -60,9 +49,9 @@ class Detail extends React.Component {
   renderLocation(city, area) {
     return (
       <div styleName="item-location">
-        {this.renderIcon()}
+        <TransportRight size={28} />
         <div styleName="content">
-          <div styleName="header">地區</div>
+          <div styleName="header">到貨方式</div>
           <div styleName="describe">
               {`${city}${area}`}
           </div>
@@ -74,9 +63,9 @@ class Detail extends React.Component {
   renderDeliverTime() {
     return (
       <div styleName="item-deliver-at">
-        {this.renderIcon()}
+        <TransportLeft size={28} />
         <div styleName="content">
-          <div styleName="header">寄件時間</div>
+          <div styleName="header">寄還方式</div>
           <div styleName="describe">合約開始的三天前</div>
         </div>
       </div>
@@ -88,7 +77,7 @@ class Detail extends React.Component {
 
     return (
       <div styleName="container">
-        {this.renderCategory()}
+        <div styleName="title">租借資訊</div>
         {this.renderUnit(unit, calculate_charge_type)}
         {this.renderLocation(city, area)}
         {this.renderDeliverMethod()}

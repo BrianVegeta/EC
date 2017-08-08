@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CommentRow from './CommentRow';
 import CommentBox from './CommentBox';
 
@@ -9,19 +10,24 @@ const fakerComment = {
   text: '有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？\n有沒有更清楚的規格可以看？\n有沒有更清楚的規格可以看？有沒有更清楚的規格可以看？\n有沒有更',
 };
 class Comments extends React.Component {
+  static defaultProps = {
+    comments: PropTypes.array,
+  }
 
   constructor(props) {
     super(props);
+    const { comments } = this.props;
     this.loadMore = this.loadMore.bind(this);
     this.state = {
-      comments: [1, 2, 3, 4].map(() => fakerComment),
+      comments: comments.map(comment => comment),
     };
+    this.loadMore = this.loadMore.bind(this);
   }
 
-  loadMore() {
+  loadMore(lastIndex = 0) {
     const { comments } = this.state;
     this.setState({
-      comments: comments.concat([1, 2, 3, 4].map(() => fakerComment)),
+      comments: comments.concat(comments.slice(lastIndex)),
     });
   }
 
@@ -29,6 +35,7 @@ class Comments extends React.Component {
     return (
       <button
         styleName="morebtn"
+        className="button"
         onClick={this.loadMore}
       >
         查看更多留言
@@ -40,14 +47,19 @@ class Comments extends React.Component {
     const { comments } = this.state;
     return (
       <div styleName="container">
-        <h2 styleName="title">公開留言 | 86則</h2>
+        <h2 styleName="title">公開留言</h2>
         <div styleName="comments">
           {comments.map((comment, i) => {
-            const { avatarSrc, name, createdAt, text } = comment;
+            const props = {
+              avatarSrc: comment.user_img,
+              name: comment.user_name,
+              createdAt: comment.create_time,
+              text: comment.comment,
+            };
             return (
               <CommentRow
-                key={`${comment.name}_${i + 1}`}
-                {...{ avatarSrc, name, createdAt, text }}
+                key={`${comment.user_name}_${i + 1}`}
+                {...props}
               />
             );
           })}

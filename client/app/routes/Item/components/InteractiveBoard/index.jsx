@@ -1,8 +1,10 @@
+// 0author: vincent
 import React from 'react';
 import styled from 'styled-components';
 import IconFacebook from 'react-icons/lib/fa/facebook-square';
 import IconLink from 'react-icons/lib/md/insert-link';
 import FavoriteHeart from 'components/FavoriteHeart';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
@@ -37,7 +39,7 @@ const ShareGroup = styled.div`
     cursor: pointer;
   }
   & > svg:not(:first-child) {
-    margin-left: 10px;
+    margin-left: 30px;
   }
   & > svg:hover {
     color: #999;
@@ -48,7 +50,14 @@ const ShareGroup = styled.div`
 
 `;
 class InteractiveBoard extends React.Component {
+  static propTypes = {
+    favorite: PropTypes.oneOfType([PropTypes.strging, PropTypes.number]).isRequired,
+  }
+  static defaultProps = {
+    favorite: 0,
+  }
   render() {
+    const { favorite } = this.props;
     return (
       <Container >
         <CollectButton className="button">
@@ -56,7 +65,7 @@ class InteractiveBoard extends React.Component {
           <ButtonInnerText >收藏</ButtonInnerText>
         </CollectButton>
         <BeenCollected >
-          <span>23</span>人已收藏
+          <span>{favorite}</span>人已收藏
         </BeenCollected>
         <ShareGroup >
           <IconFacebook size={30} />

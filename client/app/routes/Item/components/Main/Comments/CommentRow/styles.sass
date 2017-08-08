@@ -1,31 +1,31 @@
+// @author: vincent
+@import "~styles/color.sass"
 .container
   padding: 20px 0
-  border-bottom: 1px solid #999
+  border-bottom: 1px solid $global-lineColor
   position: relative
-  .avatar
-    position: absolute
-    top: 20px
-    left: 0
-    width: 60px
-    height: 60px
-    border-radius: 50%
-    background-color: #888
-    background-size: cover
-    background-position: center
+  .profile
+    margin-bottom: 20px
+    .image
+      display: inline-block
+      vertical-align: middle
   .content-wrapper
-    margin-left: 80px
     font-size: 16px
 
 .content-header
-  margin-bottom: 20px
+  display: inline-block
+  vertical-align: middle
+  margin-left: 20px
   .name
     font-weight: 600
-    margin-right: 10px
+    font-size: 17px
+    margin-bottom: 10px
   .relative-time
-    color: #999
+    color: $global-placeholder
+    font-size: 15px
 
 .content-textarea
-  color: #444
+  color: $global-middleBlack
   font-size: 16px
   .displayMore
     border: 0

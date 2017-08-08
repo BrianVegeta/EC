@@ -1,15 +1,23 @@
+//@ author: vincent
+
 import React from 'react';
 import { Link } from 'react-router';
 import myPropTypes from 'propTypes';
 import styled from 'styled-components';
 import FormButton from 'components/FormButton';
+
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+
 import Discounter from './Discounter';
 import Term from './Term';
 
 const Container = styled.div`
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
-  padding: 20px;
-  border: 1px solid #CECECE;
+  padding: 0px 20px 40px 20px;
+  border-left: 1px solid #CECECE;
+  border-right: 1px solid #CECECE;
+  border-bottom: 1px solid #CECECE;
 `;
 const AmountWarning = styled.div`
   color: #F26363;
@@ -19,7 +27,7 @@ const AmountWarning = styled.div`
 `;
 const SubmitButton = styled.div`
   width: 100%;
-  margin-top: 40px;
+  margin-top: 10px;
   margin-bottom: 10px;
 `;
 const Notice = styled.div`
@@ -42,13 +50,15 @@ class OrderBoard extends React.Component {
             price={discount.price}
           />,
         )}
-        {model.minCostDesc && <Term icon="date" content={model.minCostDesc} />}
-        {model.dateRange && <Term icon="date" content={model.dateRange} />}
-        {model.serviceAssignWay && <Term icon="person" content={model.serviceAssignWay} />}
-        {model.amountRemaining &&
-          <AmountWarning>{model.amountRemaining}</AmountWarning>}
-        {model.deposit && <Term icon="time" content={model.deposit} />}
-        {model.payment && <Term icon="bank" content={model.payment} />}
+        <div styleName="term">
+          {model.minCostDesc && <Term icon="date" content={model.minCostDesc} />}
+          {model.dateRange && <Term icon="date" content={model.dateRange} />}
+          {model.serviceAssignWay && <Term icon="person" content={model.serviceAssignWay} />}
+          {model.amountRemaining &&
+            <AmountWarning>{model.amountRemaining}</AmountWarning>}
+          {model.deposit && <Term icon="time" content={model.deposit} />}
+          {model.payment && <Term icon="bank" content={model.payment} />}
+        </div>
         <SubmitButton>
           <Link to={model.orderLink}>
             <FormButton
@@ -68,4 +78,4 @@ class OrderBoard extends React.Component {
   }
 }
 
-export default OrderBoard;
+export default CSS(OrderBoard, styles);
