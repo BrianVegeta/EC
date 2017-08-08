@@ -1,3 +1,4 @@
+//@ author: vincnet
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
@@ -27,14 +28,18 @@ class Item extends React.Component {
   };
   render() {
     const { item, dispatch, auth } = this.props;
+    console.log('item');
+    console.log(item);
+    console.log('author');
+    console.log(auth);
     const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
     return (
       <Container className="clear">
         <SidebarContainer>
-          <Sidebar header={<PriceHeader />}>
+          <Sidebar header={<PriceHeader price={item.price} />}>
             <OrderBoard model={model.orderBoard} />
-            <InteractiveBoard />
+            <InteractiveBoard favorite={item.favorite_count} />
             <ReportLink >
               <Link to="/" >
                 <IconFlag size={18} />

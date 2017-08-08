@@ -1,3 +1,4 @@
+//@author: vincent
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -21,6 +22,9 @@ export const ReportLink = styled.div`
   margin-top: 20px;
   & > a {
     color: #666;
+  }
+  & > a > svg {
+    margin-right: 12px;
   }
   & > a > span {
     vertical-align: middle;

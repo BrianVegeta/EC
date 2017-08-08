@@ -1,3 +1,5 @@
+// @author: vincent
+@import "~styles/color.sass"
 .container
   margin-top: 20px
   .title
@@ -6,22 +8,20 @@
     margin-bottom: 15px
 
 .tb-container
-  border: 1px solid #979797
+  border: 1px solid $global-placeholder
   border-radius: 4px
   margin-bottom: 15px
   .textbox
-    position: relative
     z-index: 1
-    padding: 19px
-    font-size: 20px
-    line-height: 20px
+    padding: 14px 15px
+    font-size: 17px
     .placeholder
       position: absolute
       top: 19px
       left: 19px
       font-size: 20px
       line-height: 20px
-      color: #999
+      color: $global-placeholder
 
 .editable
   position: relative
@@ -32,11 +32,11 @@
     padding: 0
 .editable-placeholding
   composes: editable
-  color: #999
+  color: $global-placeholder
 
 .tb-container-focusing
   composes: tb-container
-  border: 2px solid #444
+  border: 2px solid $global-blackColor
   .textbox
     padding: 18px
     .placeholder
@@ -64,14 +64,14 @@
   padding: 16px 27px
   font-size: 18px
   line-height: 20px
-  border: 1px solid #979797
+  border: 1px solid $global-placeholder
   border-radius: 5px
 
 .cancel
   composes: button
   background-color: #fff
-  margin-right: 10px
+  margin-right: 20px
 .comment
   composes: button
-  background-color: #222
+  background-color: $global-primaryColor
   color: #fff

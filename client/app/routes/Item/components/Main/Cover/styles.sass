@@ -1,3 +1,6 @@
+//@author: vincent
+@import "~styles/color.sass"
+
 .container
   position: relative
 
@@ -26,15 +29,13 @@
   position: relative
   background-position: center
   background-size: cover
-  border-radius: 6px
 
 .thumb-active
   composes: thumb
   .thumb-inner
-    border: 3px solid #999
+    border: 1px solid $global-placeholder
 
 .thumb-inner
-  border-radius: 6px
   width: 100%
   height: 100%
   &:hover
