@@ -7,7 +7,7 @@ export default store => ({
 
   onEnter: (nextState) => {
     const { cid } = nextState.params;
-    store.dispatch(fetchOrder(cid));
+    //store.dispatch(fetchOrder(cid));
   },
 
   onLeave: () => {
