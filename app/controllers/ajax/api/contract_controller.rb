@@ -231,6 +231,13 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  # 取回合約上傳照片
+  def images
+    obj = ::Api::Contract::Images.new cid_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)

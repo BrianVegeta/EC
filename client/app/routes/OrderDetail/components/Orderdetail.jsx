@@ -5,7 +5,8 @@ class Orderdetail extends React.Component {
 
   static propTypes = {
     orderdetail: PropTypes.shape({
-      order: PropTypes.Object.isRequired,
+      order: PropTypes.Object,
+      userprofile: PropTypes.Object,
     }).isRequired,
   };
 
