@@ -42,7 +42,7 @@ class CommentNote extends React.Component {
             <div styleName="name">{user_name}</div>
             <div styleName="time">{relativeTime(create_time)}</div>
             <div styleName="stars">
-              <Stars score={score} />
+              <Stars score={score} size={22} />
             </div>
           </div>
           <div styleName="text">{comment}</div>
