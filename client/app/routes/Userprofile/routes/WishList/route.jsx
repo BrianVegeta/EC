@@ -1,13 +1,17 @@
+import { injectReducer } from 'reducers';
+
+const key = 'userprofileWishList';
 export default store => ({
-  path: 'items-goods',
+  path: 'wish-list',
+
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const Userprofile = require('./containers/UserprofileContainer').default;
-      const reducer = require('./modules/userprofile').default;
+      const Container = require('../../containers/WishListContainer').default;
+      const reducer = require('../../modules/userprofileWishList').default;
 
-      injectReducer(store, { key: 'userprofile', reducer });
+      injectReducer(store, { key, reducer });
 
-      cb(null, Userprofile);
-    }, 'userprofile');
+      cb(null, Container);
+    }, 'userprofile.wish-list');
   },
 });

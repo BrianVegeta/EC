@@ -1,8 +1,18 @@
 import { connect } from 'react-redux';
-import ItemsGoods from '../components/ItemsGoods';
+import { CATEGORY_GOODS_ID, CATEGORY_GOODS } from 'constants/enums';
 
-const mapStateToProps = ({ environment }) => ({
-  environment,
+import Items from '../components/Items';
+import { fetchItems, reset } from '../modules/userprofileItems';
+
+/* pick props */
+const mapStateToProps = ({ environment, userprofileItems }) => ({
+  environment, userprofileItems, category: CATEGORY_GOODS,
 });
 
-export default connect(mapStateToProps)(ItemsGoods);
+/* pick dispatch */
+const mapDispatchToProps = (dispatch, { params }) => ({
+  dispatchFetchItems: () => dispatch(fetchItems(CATEGORY_GOODS_ID, params.uid)),
+  dispatchReset: () => dispatch(reset()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

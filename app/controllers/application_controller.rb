@@ -32,17 +32,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #auto mapping to arry 
+  #auto mapping to arry
   def map_json_array target, source, default = []
     if target.nil?
       return default
     else
-      return target.each_with_index.map { |item, index| 
+      return target.each_with_index.map { |item, index|
         target[index] = reverse_merge(item, source) }
     end
   end
- 
-  
+
+
   protected
   # common params for uid request 20170705 KUAN
   def current_uid_params
@@ -59,5 +59,5 @@ class ApplicationController < ActionController::Base
     params.permit(:index, :size)
   end
 
-  
+
 end

@@ -6,32 +6,22 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 // =============================================
 const prefix = action => (`USERPROFILE.${action}`);
 
-export const FETCHED_USER = prefix('FETCHED_USER');
-export const FETCHING_USER = prefix('FETCHING_USER');
-export const FETCHED_WISHLIST = prefix('FETCHED_WISHLIST');
-export const FETCHING_WISHLIST = prefix('FETCHING_WISHLIST');
+export const FETCHING = prefix('FETCHING');
+export const FETCHED = prefix('FETCHED');
 
 
 // =============================================
 // = actions =
 // =============================================
-const fetchedUser = userprofile => ({
-  type: FETCHED_USER,
-  userprofile,
-});
-
 const fetchingUser = () => ({
-  type: FETCHING_USER,
+  type: FETCHING,
 });
 
-const fetchedWishList = wishlist => ({
-  type: FETCHED_WISHLIST,
-  wishlist,
+const fetchedUser = detail => ({
+  type: FETCHED,
+  detail,
 });
 
-const fetchingWishList = () => ({
-  type: FETCHING_WISHLIST,
-});
 
 export function fetchUser(uid) {
   return (dispatch, getState) => {
@@ -42,69 +32,50 @@ export function fetchUser(uid) {
       getState(),
     )
     .then((responseData) => {
-      dispatch(fetchedUser(responseData));
+      const { user_profile } = responseData;
+      dispatch(fetchedUser(user_profile));
     });
   };
 }
 
-export function fetchWishList(uid) {
-  return (dispatch, getState) => {
-    dispatch(fetchingWishList());
-    asyncXhrAuthedPost(
-      '/ajax/get_wish.json',
-      {
-        uid,
-        index: 0,
-        size: 3,
-      },
-      getState(),
-    )
-    .then((responseData) => {
-      dispatch(fetchedWishList(responseData));
-    });
-  };
-}
+// export function fetchWishList(uid) {
+//   return (dispatch, getState) => {
+//     dispatch(fetchingWishList());
+//     asyncXhrAuthedPost(
+//       '/ajax/get_wish.json',
+//       {
+//         uid,
+//         index: 0,
+//         size: 3,
+//       },
+//       getState(),
+//     )
+//     .then((responseData) => {
+//       dispatch(fetchedWishList(responseData));
+//     });
+//   };
+// }
 
 
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
-  isFetchingUser: false,
-  isFetchingWishList: false,
-  items: [],
-  wishlist: [],
-  goodsItems: [],
-  serviceItems: [],
-  spaceItems: [],
-  ownerComments: [],
-  lesseeComments: [],
-  user_profile: null,
+  isFetching: false,
+  detail: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_USER:
+    case FETCHING:
       return Object.assign({}, state, {
-        isFetchingUser: true,
+        isFetching: true,
       });
 
-    case FETCHED_USER:
+    case FETCHED:
       return Object.assign({}, state, {
-        isFetchingUser: false,
-        user_profile: action.userprofile.user_profile,
-        items: action.userprofile.items,
-      });
-
-    case FETCHING_WISHLIST:
-      return Object.assign({}, state, {
-        isFetchingWishList: true,
-      });
-
-    case FETCHED_WISHLIST:
-      return Object.assign({}, state, {
-        isFetchingWishList: false,
-        wishlist: action.wishlist,
+        isFetching: false,
+        detail: action.detail,
       });
 
     default:

@@ -39,13 +39,13 @@ class Ajax::Api::UserprofileController < ApplicationController
     obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
     success = obj.request
 
-    
+
     if success
       obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
       obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure
-      #if (obj.response_data['items'].nil?) 
+      #if (obj.response_data['items'].nil?)
       #  obj.response_data['items'] = [];
-      #else 
+      #else
       #  obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
       #end
     end
@@ -182,7 +182,7 @@ class Ajax::Api::UserprofileController < ApplicationController
     #end
     respond success, obj
   end
-  
+
   # 取回追中數量
   def track_count
     obj = ::Api::Userprofile::TrackCount.new current_uid_params, current_apitoken
@@ -195,27 +195,19 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 分享人(賣家)的評價留言
   def owner_comments
-    obj = ::Api::Userprofile::OwnerComments.new comments_params, current_apitoken
+    obj = ::Api::Userprofile::OwnerComments.new comments_params
     success = obj.request
     obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
-    #if obj.response_data.nil?
-    #    obj.response_data = []
-    #else
-    #     obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
-    #end
+
     respond success, obj
   end
 
   # 享用人(買家)的評價留言
   def lessee_comments
-    obj = ::Api::Userprofile::LesseeComments.new comments_params, current_apitoken
+    obj = ::Api::Userprofile::LesseeComments.new comments_params
     success = obj.request
     obj.response_data = map_json_array obj.response_data, ResponseJson::ContractComment.structure
-    #if obj.response_data.nil?
-    #  obj.response_data = []
-    #else
-    #  obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::ContractComment.structure) }
-    #end
+
     respond success, obj
   end
 
@@ -350,7 +342,7 @@ class Ajax::Api::UserprofileController < ApplicationController
   end
 
   def comments_params
-    params.merge(current_uid_params).merge(paging_params)
+    params.permit(:uid).merge(paging_params)
   end
 
   def bank_info_update_params
@@ -363,7 +355,7 @@ class Ajax::Api::UserprofileController < ApplicationController
     #isEnable : bool => true or false
     params.permit(:isEnable).merge(current_uid_params)
   end
-  
+
   def track_user_params
     #type : String => me_track track_me
     #target_uid : String => uid

@@ -10,9 +10,9 @@ html, body, body > div[id^='App-react-component-'], .app
   content: " "
 
 .clear:after
-  clear: both
   display: table
   content: " "
+  clear: both
 
 .row
   margin-left: -30px
@@ -21,13 +21,21 @@ html, body, body > div[id^='App-react-component-'], .app
 *, :after, :before
   box-sizing: border-box
 
+.container-gray-bg
+  background: #f1f1f1
+
 .container
   // padding-right: 30px
   // padding-left: 30px
   margin-right: auto
   margin-left: auto
-  width: 1100px
-  padding: 0 15px
+  width: 1110px
+  padding: 0 20px
+  background: #fff
+  &.main-wrapper
+    margin-bottom: 30px
+    padding-top: 20px
+
 
 .main-container
   margin-top: 0

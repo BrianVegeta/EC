@@ -17,6 +17,7 @@ class Picture extends React.Component {
     width: '100%',
     src: null,
     style: null,
+    hasShadow: true,
   };
 
   static propTypes = {
@@ -25,15 +26,16 @@ class Picture extends React.Component {
       PropTypes.string, PropTypes.number,
     ]),
     style: myPropTypes.style,
+    hasShadow: PropTypes.bool,
   };
 
   render() {
-    const { src, width, style } = this.props;
+    const { src, width, style, hasShadow } = this.props;
     const size = typeof width === 'number' ? `${width}px` : width;
 
     return (
       <Placehoder
-        className={cx('placeholder')}
+        className={cx('placeholder', { 'box-shadow': hasShadow })}
         size={size}
         style={style}
       >

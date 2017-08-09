@@ -92,8 +92,6 @@ class Ajax::Api::ItemController < ApplicationController
 
   # 篩選商品列表
   def search_item_list
-    sleep(2)
-
     obj = ::Api::Item::SearchItemList.new search_item_params
     success = obj.request
     obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure

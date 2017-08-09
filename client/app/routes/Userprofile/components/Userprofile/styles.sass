@@ -1,0 +1,86 @@
+@import "~styles/color.sass"
+
+.container
+  color: $global-blackColor
+  .sidebar
+    width: 226px
+    float: left
+    .about-me
+      padding: 16px 0
+      svg
+        color: #82B1FF
+      span
+        color: $global-blackColor
+        font-weight: 100
+        font-size: 18px
+        vertical-align: middle
+    .detail-term
+      padding: 16px 0
+      color: $global-blackColor
+      font-size: 16px
+      word-wrap: break-word
+  .main-wrapper
+    margin-left: 275px
+    padding-bottom: 50px
+    .profile-header
+      position: relative
+      margin-bottom: 55px
+      .avatar
+        display: inline-block
+        width: 110px
+        height: 110px
+        float: left
+      .detail
+        margin-left: 134px
+        .detail-header
+          font-size: 40px
+          font-weight: 600
+          color: $global-blackColor
+          margin-bottom: 20px
+        .subscribe
+          position: relative
+          color: $global-blackColor
+          font-weight: 100
+          font-size: 20px
+          line-height: 28px
+          height: 50px
+          .subscribe-count
+            float: left
+            line-height: 46px
+            .count
+              font-weight: 300
+              color: $global-primaryColor
+          .subscribe-btn
+            float: right
+            display: inline-block
+            width: 105px
+    .score-container
+      color: #FF9442
+      margin-bottom: 60px
+      .score
+        display: inline-block
+        width: 93px
+        line-height: 64px
+        font-size: 64px
+        font-weight: 100
+        float: left
+      .stars-container
+        margin-left: 110px
+        position: relative
+        // display: inline-block
+        height: 64px
+        padding-top: 15px
+        .comment-count
+          position: absolute
+          bottom: 0
+          font-weight: 600
+          font-size: 14px
+          line-height: 20px
+          color: $global-placeholder
+    .website-container
+      color: $global-primaryColor
+      line-height: 25px
+      font-size: 18px
+      margin-bottom: 30px
+    .biography-container
+      margin-bottom: 60px

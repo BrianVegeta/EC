@@ -58,6 +58,7 @@ const config = {
       components: path.join(__dirname, 'app/components'),
       layouts: path.join(__dirname, 'app/layouts'),
       lib: path.join(__dirname, 'app/lib'),
+      routes: path.join(__dirname, 'app/routes'),
       propTypes: path.join(__dirname, 'app/propTypes'),
       actions: path.join(__dirname, 'app/actions'),
       reducers: path.join(__dirname, 'app/reducers'),

@@ -2,6 +2,7 @@
 import moment from 'moment';
 import { extendMoment } from 'moment-range';
 
+moment.locale('zh-tw');
 const DATE_FORMAT = 'YYYY/MM/DD';
 
 export function formatDate(number) {
@@ -14,6 +15,22 @@ export function isToday(momentObj) {
 
 export function today() {
   return moment();
+}
+
+/* xxx days(hours, minuts) ago */
+export function fromNow(time) {
+  return moment(time).fromNow();
+}
+
+export function relativeTime(time) {
+  const now = moment().unix();
+  const timeAt = moment(parseInt(time, 10)).unix();
+  const hours36 = 36 * 24 * 3600;
+  if ((now - timeAt) > hours36) {
+    return formatDate(time);
+  }
+
+  return moment(parseInt(time, 10)).fromNow();
 }
 
 const momentRange = extendMoment(moment);

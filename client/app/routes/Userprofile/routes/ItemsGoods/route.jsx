@@ -1,16 +1,17 @@
 import { injectReducer } from 'reducers';
 
+const key = 'userprofileItems';
 export default store => ({
   path: 'items-goods',
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const ItemsGoods = require('../../containers/ItemsGoodsContainer').default;
-      const reducer = require('../../modules/itemsGoods').default;
+      const Container = require('../../containers/ItemsGoodsContainer').default;
+      const reducer = require('../../modules/userprofileItems').default;
 
-      injectReducer(store, { key: 'itemsGoods', reducer });
+      injectReducer(store, { key, reducer });
 
-      cb(null, ItemsGoods);
-    }, 'items-goods');
+      cb(null, Container);
+    }, 'userprofile.items.goods');
   },
 });

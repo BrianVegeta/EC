@@ -1,19 +1,15 @@
-import { injectReducer, removeReducer } from 'reducers';
-import { fetchUser } from './modules/userprofile';
+import { injectReducer } from 'reducers';
+import { omit } from 'lodash';
 import routeItemsGoods from './routes/ItemsGoods/route';
+import routeItemsService from './routes/ItemsService/route';
+import routeItemsSpace from './routes/ItemsSpace/route';
+import routeCommentsLessee from './routes/CommentsLessee/route';
+import routeCommentsOwner from './routes/CommentsOwner/route';
+import routeWishList from './routes/WishList/route';
 
 const key = 'userprofile';
 export default store => ({
   path: '/p/userprofile/:uid',
-
-  onEnter: (nextState) => {
-    const { uid } = nextState.params;
-    store.dispatch(fetchUser(uid));
-  },
-
-  onLeave: () => {
-    removeReducer(store, { key });
-  },
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
@@ -26,7 +22,14 @@ export default store => ({
     }, 'userprofile');
   },
 
+  indexRoute: omit(routeItemsGoods(store), ['path']),
+
   childRoutes: [
     routeItemsGoods(store),
+    routeItemsService(store),
+    routeItemsSpace(store),
+    routeCommentsLessee(store),
+    routeCommentsOwner(store),
+    routeWishList(store),
   ],
 });

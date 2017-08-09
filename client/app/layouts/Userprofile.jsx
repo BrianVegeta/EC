@@ -16,9 +16,9 @@ class Userprofile extends React.Component {
   render() {
     const { environment, children } = this.props;
     return (
-      <div>
-        <HeaderContainer />
-        <MainWrapper minHeight={environment.height} >
+      <div className="container-gray-bg" style={{ paddingTop: 100 }}>
+        <HeaderContainer fixed />
+        <MainWrapper minHeight={environment.height}>
           {children}
         </MainWrapper>
         <Footer />

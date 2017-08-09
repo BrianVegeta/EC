@@ -8,7 +8,7 @@ import auth from './authReducer';
 import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
-import items from './itemsReducer';
+// import items from './itemsReducer';
 import itemRelease from './itemReleaseReducer';
 import cities from './citiesReducer';
 import publish from './publishReducer';
@@ -27,37 +27,50 @@ import popupBankSetup from './popupBankSetupReducer';
 import accessCheck from './accessCheckReducer';
 
 
+const reducers = {
+  routing: routerReducer,
+  modal,
+  environment,
+  auth,
+  banners,
+  routesHelper,
+  recommends,
+  itemRelease,
+  cities,
+  publish,
+  search,
+  mine,
+  notification,
+  home,
+  item,
+  reservation,
+  secrecyVerification,
+  popup,
+  schedule,
+  options,
+  popupBankSetup,
+  accessCheck,
+  // myCollection,
+  // ownerProfile,
+  // coupon,
+  myCoupon,
+};
+const RESET_ONE = 'RESET_ONE';
+const handleState = (state, action) => {
+  if (action.type === RESET_ONE) {
+    return Object.assign({}, state, { [action.key]: undefined });
+  }
+  return state;
+};
+
 const makeRootReducer = asyncReducers =>
-  combineReducers({
-    ...asyncReducers,
-    routing: routerReducer,
-    modal,
-    environment,
-    auth,
-    banners,
-    items,
-    routesHelper,
-    recommends,
-    itemRelease,
-    cities,
-    publish,
-    search,
-    mine,
-    notification,
-    home,
-    item,
-    reservation,
-    secrecyVerification,
-    popup,
-    schedule,
-    options,
-    popupBankSetup,
-    accessCheck,
-    // myCollection,
-    // ownerProfile,
-    // coupon,
-    myCoupon,
-  });
+  (state, action) => {
+    const newState = handleState(state, action);
+    return combineReducers({
+      ...asyncReducers,
+      ...reducers,
+    })(newState, action);
+  };
 
 export const injectReducer = (store, { key, reducer }) => {
   if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
@@ -68,8 +81,14 @@ export const injectReducer = (store, { key, reducer }) => {
 
 export const removeReducer = (store, { key }) => {
   delete store.asyncReducers[key];
+  // Reflect.deleteProperty(store.asyncReducers, key);
 
   store.replaceReducer(makeRootReducer(store.asyncReducers));
+};
+
+export const resetReducer = (store, { key }) => {
+  store.dispatch({ type: RESET_ONE, key });
+  // Reflect.deleteProperty(store.asyncReducers, key);
 };
 
 export default makeRootReducer;

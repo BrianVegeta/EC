@@ -14,11 +14,10 @@ export default class extends React.Component {
   render() {
     const { main, environment } = this.props;
     return (
-      <div>
+      <div className="container-gray-bg" style={{ paddingTop: 140 }}>
         <HeaderContainer searchable hasShortcut fixed />
         <MainWrapper
           minHeight={environment.height}
-          paddingTop={180}
         >
           {main}
         </MainWrapper>

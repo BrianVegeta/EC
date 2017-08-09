@@ -19,13 +19,8 @@ class MainWrapper extends React.Component {
     const style = { paddingTop, minHeight };
 
     return (
-      <div className="container clear" >
-        <div
-          {...{
-            className: 'main-container',
-            style,
-          }}
-        >
+      <div className="container main-wrapper clear" >
+        <div className="main-container" style={style} >
           {children}
         </div>
       </div>
