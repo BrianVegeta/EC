@@ -1,4 +1,4 @@
-import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrAuthedPost, asyncXhrAuthedGet } from 'lib/xhr';
 
 
 // =============================================
@@ -9,6 +9,7 @@ const prefix = action => (`ORDERDETAIL.${action}`);
 export const FETCHING = prefix('FETCHING');
 export const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
 export const FETCHED_ORDER = prefix('FETCHED_ORDER');
+export const FETCHED_BANKACC = prefix('FETCHED_BANKACC');
 export const FETCHED_OWNER = prefix('FETCHED_OWNER');
 export const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
 export const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
@@ -29,6 +30,12 @@ const fetchedOrder = order => ({
   type: FETCHED_ORDER,
   order,
 });
+
+const fetchedBankAcc = result => ({
+  type: FETCHED_BANKACC,
+  result,
+});
+
 
 const fetchedOwner = userprofile => ({
   type: FETCHED_OWNER,
@@ -60,8 +67,8 @@ export function fetchOrder(cid) {
     )
     .then((responseData) => {
       dispatch(fetchedOrder(responseData));
-      const { type, owneruid, lesseeuid } = responseData;
-      console.log(responseData);
+      const { type, owneruid, lesseeuid, contractstage } = responseData;
+
       asyncXhrAuthedPost(
         '/ajax/user_info.json',
         { isShowItem: false, uid: owneruid },
@@ -79,16 +86,24 @@ export function fetchOrder(cid) {
       .then((responseUserData) => {
         dispatch(fetchedLessee(responseUserData));
       });
-
-      asyncXhrAuthedPost(
-        '/ajax/get_order_logs.json',
-        { cid },
-        getState(),
-      )
-      .then((responseLogData) => {
-        console.log(responseLogData);
-        dispatch(fetchedLogs(responseLogData));
-      });
+      if (contractstage < 4) {
+        asyncXhrAuthedGet(
+          '/ajax/bank/bankacc/ready.json',
+          { },
+          getState(),
+        ).then((responseBankData) => {
+          dispatch(fetchedBankAcc(responseBankData));
+        });
+      } else {
+        asyncXhrAuthedPost(
+          '/ajax/get_order_logs.json',
+          { cid },
+          getState(),
+        )
+        .then((responseLogData) => {
+          dispatch(fetchedLogs(responseLogData));
+        });
+      }
 
       // 只有物品及二手有圖片
       if (type === 'ITEM') {
@@ -99,7 +114,6 @@ export function fetchOrder(cid) {
           getState(),
         )
         .then((responseImageData) => {
-          console.log(responseImageData);
           dispatch(fetchedImages(responseImageData));
         });
       }
@@ -116,8 +130,10 @@ const initialState = {
   isFetchingOrder: false,
   isFetchingImages: false,
   isFetchingLog: false,
+  isFetchingBank: false,
   ownerProfile: null,
   lesseeProfile: null,
+  bankReady: 0,
   order: null,
   logs: null,
   images: null,
@@ -128,6 +144,7 @@ export default (state = initialState, action) => {
     case FETCHING:
       return Object.assign({}, state, {
         isFetchingOrder: true,
+        isFetchingBank: true,
         isFetchingOwner: true,
         isFetchingLessee: true,
       });
@@ -135,7 +152,14 @@ export default (state = initialState, action) => {
     case FETCHED_ORDER:
       return Object.assign({}, state, {
         isFetchingOrder: false,
+        isFetchingOwner: true,
+        isFetchingLessee: true,
         order: action.order,
+      });
+    case FETCHED_BANKACC:
+      return Object.assign({}, state, {
+        isFetchingOrder: false,
+        bankReady: action.result,
       });
 
     case FETCHED_OWNER:

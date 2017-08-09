@@ -1,26 +1,27 @@
 class ItemStage < StageBase
- 
+
   #CONSTANT VALUE
   KEY_SHIP = 'can_ship'
   KEY_SHIP_CONFIRM = 'can_ship_confirm'
   KEY_RETURN = 'can_return'
   KEY_RETURN_CONFIRM = 'can_return_confirm'
   KEY_CAMERA = 'can_camera'
-  
-  
+
+
   def initialize(contract, uid)
     super(contract, uid)
+    modify_display_param(KEY_CANCEL, false)          #可以取消訂單 (true = show, false = hidden)
     modify_display_param(KEY_SHIP, false)            #可以出貨 (true = show, false = hidden)
-    modify_display_param(KEY_SHIP_CONFIRM, false)         #可以確認取貨 (true = show, false = hidden)
+    modify_display_param(KEY_SHIP_CONFIRM, false)    #可以確認取貨 (true = show, false = hidden)
     modify_display_param(KEY_RETURN, false)          #可以還貨 (true = show, false = hidden)
     modify_display_param(KEY_RETURN_CONFIRM, false)  #可以確認還貨 (true = show, false = hidden)
     modify_display_param(KEY_CAMERA, false)          #可以拍照 (true = show, false = hidden)
-  end  
+  end
 
   ####################### ABSTRACT FUNCTION #######################################
   def process
     super
-    
+
     #ADDITIONAL PROCESS
     if self.stage_type == NORMAL_CONTRACT
       check_can_ship
@@ -30,7 +31,7 @@ class ItemStage < StageBase
     end
 
   end
- 
+
   def prepare_normal_tab
     case self.screen_type
     when STAGE_WAITING_CONFIRM, STAGE_LAST_CHECK, STAGE_NEGOTIATING
@@ -47,32 +48,32 @@ class ItemStage < StageBase
       modify_display_param(KEY_TAB, TAB_COMPLETE)
     else
       raise 'Exception : screen_type error'
-    end 
+    end
   end
-   
+
   protected
    ####################### BASE STAGE FUNCTION #####################################
-  def check_can_ship  
+  def check_can_ship
     check_stage = self.screen_type == STAGE_SHIPPING
     check_condition = (self.is_owner == true)
     modify_display_param(KEY_SHIP, check_stage && check_condition)
     modify_display_param(KEY_CAMERA, check_stage && check_condition)
   end
-  
+
   def check_can_ship_confirm
     check_stage = self.screen_type == STAGE_SHIP_CONFIRM || self.screen_type == STAGE_CONTRACT_ONGOING
     check_condition = (self.is_owner == false) && (not self.contract['lessee_receive'].nil?) && (self.contract['lessee_receive'] == false)
     modify_display_param(KEY_RETURN, check_stage && check_condition)
     modify_display_param(KEY_CAMERA, check_stage && check_condition)
   end
-  
+
   def check_return_ship
     check_stage = self.screen_type == STAGE_CONTRACT_END
     check_condition = (self.is_owner == false)
     modify_display_param(KEY_RETURN, check_stage && check_condition)
     modify_display_param(KEY_CAMERA, check_stage && check_condition)
   end
-  
+
   def check_return_confirm
     check_stage = self.screen_type == STAGE_RETURN_CONFIRM
     check_condition = (self.is_owner == true) && (not self.contract['owner_receive'].nil?) && (self.contract['owner_receive'] == false)
