@@ -3,7 +3,8 @@
 //   placeholder={}
 //   onChange={}
 // />
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import TextareaAutosize from 'react-autosize-textarea';
 import styles from './styles.sass';

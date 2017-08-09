@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ItemsFilter from './ItemsFilter';
 import SidebarCategories from './SidebarCategories';
 import ItemsList from './ItemsList';

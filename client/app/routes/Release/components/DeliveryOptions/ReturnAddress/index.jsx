@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import CSS from 'react-css-modules';
 import InputTextWithError from '../../InputTextWithError';

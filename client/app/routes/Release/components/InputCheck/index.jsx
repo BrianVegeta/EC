@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import 'icheck/skins/all.css';
 import { Checkbox } from 'react-icheck';

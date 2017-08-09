@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Carousel from 'rmc-nuka-carousel';
 import { Preload } from 'react-preload';
 import CSS from 'react-css-modules';

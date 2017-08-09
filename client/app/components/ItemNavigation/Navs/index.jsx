@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Scrollchor from 'react-scrollchor';
 import Scrollspy from 'react-scrollspy';
 import classnames from 'classnames/bind';

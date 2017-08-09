@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FollowButton from 'components/Button/Follow';
 
 import { formatDate } from 'lib/time';
 
 const FAKER_IAMGE = 'http://r.fod4.com/c=sq/s=w1000,pd1/o=80/http://p.fod4.com/p/channels/qpztk/profile/ToJNnsiRhmm405cz7CPX_charlize-theron-head-shot.jpg';
-const propTypes = { 
+const propTypes = {
   name: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,

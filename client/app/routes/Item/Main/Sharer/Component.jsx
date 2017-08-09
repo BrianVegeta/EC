@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SharerCard from './SharerCard';
 
-
-const propTypes = { 
+const propTypes = {
   name: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
@@ -24,8 +24,8 @@ const Sharer = props => (
         area={props.area}
         owner_credit={props.owner_credit}
         create_time={props.create_time}
-        target_uid={props.target_uid} 
-        is_follow={props.is_follow} 
+        target_uid={props.target_uid}
+        is_follow={props.is_follow}
         dispatch={props.dispatch} />
     <div styleName="description">{props.autobiography}
     </div>

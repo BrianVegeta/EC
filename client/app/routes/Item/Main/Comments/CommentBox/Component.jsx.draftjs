@@ -1,7 +1,8 @@
 import 'babel-polyfill';
 import 'es5-shim';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Editor, EditorState } from 'draft-js';
 
 class Comment extends React.Component {

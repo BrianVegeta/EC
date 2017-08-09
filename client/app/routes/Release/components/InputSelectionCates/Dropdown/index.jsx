@@ -1,5 +1,6 @@
 // TODO: category motion expand
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import _ from 'lodash';
 import Panel from '../Panel';
