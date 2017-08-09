@@ -1,7 +1,5 @@
 import layoutHoc from 'containers/layoutHoc';
 
-import { editItem } from 'actions/itemActions';
-
 // import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
 // import ItemDetail from 'layouts/ItemDetail';
@@ -14,9 +12,9 @@ import layoutUserprofile from 'layouts/Userprofile';
 
 import HomeRoute from './Home';
 // items route
-import routeItemsSpace from './ItemListSpace/route';
-import routeItemsService from './ItemListService/route';
-import routeItemsGoods from './ItemListGoods/route';
+// import routeItemsSpace from './ItemListSpace/route';
+// import routeItemsService from './ItemListService/route';
+import routeItemsGoods from './Items/routeGoods';
 
 //import routeItemsCategory from './ItemListCategory/route';
 
@@ -49,8 +47,8 @@ export default store => ({
       component: layoutHoc(Home, { requireCates }),
       childRoutes: [
         routeItemsGoods(store),
-        routeItemsService(store),
-        routeItemsSpace(store),
+        // routeItemsService(store),
+        // routeItemsSpace(store),
         //routeItemsCategoried({ dispatch }),
 
         // Categories(routesHelper, dispatch),

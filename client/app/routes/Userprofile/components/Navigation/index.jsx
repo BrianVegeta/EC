@@ -11,7 +11,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const {
-  itemsGoodsPath,
+  indexPath,
   itemsServiePath,
   itemsSpacePath,
   wishListPath,
@@ -29,7 +29,7 @@ class Navigation extends React.Component {
   render() {
     const { uid } = this.props;
     const navs = [
-      { name: '物品', href: itemsGoodsPath(uid) },
+      { name: '物品', href: indexPath(uid) },
       { name: '服務', href: itemsServiePath(uid) },
       { name: '空間', href: itemsSpacePath(uid) },
       { name: '許願紙條', href: wishListPath(uid) },

@@ -2,11 +2,12 @@ import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 
 /* =============================================>>>>>
-= userprofile =
+= settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'USERPROFILE.COMMENTS';
-const REDUCER_KEY = 'userprofileComments';
-const SIZE = 9;
+const ACTION_PREFIX = 'ITEMS';
+const REDUCER_KEY = 'items';
+const SIZE = 21;
+const DUPLICATE_KEY = 'pid';
 
 
 // =============================================
@@ -64,9 +65,7 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export const TARGET_OWNER = 'OWNER';
-export const TARGET_LESSEE = 'LESSEE';
-export function fetchRecords(uid, target, recursiveRecords = []) {
+export function fetchRecords(categoryID, recursiveRecords = []) {
   return (dispatch, getState) => {
     const {
       size,
@@ -78,7 +77,11 @@ export function fetchRecords(uid, target, recursiveRecords = []) {
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
-      uid,
+      category_id: categoryID,
+      sort: {
+        column: 'time',
+        type: 'desc',
+      },
     };
 
     /* 增加 RECURSIVE 次數 */
@@ -88,17 +91,14 @@ export function fetchRecords(uid, target, recursiveRecords = []) {
     dispatch(fetching(expireFlag));
     /* API REQUEST */
     asyncXhrPost(
-      {
-        [TARGET_OWNER]: '/ajax/get_owner_comments.json',
-        [TARGET_LESSEE]: '/ajax/get_lessee_comments.json',
-      }[target],
+      '/ajax/item/list.json',
       requestParams,
     )
     .then((data) => {
-      const reducedRecords = reduceDuplicateRecords(data, records, 'pid');
+      const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_KEY);
       if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(uid, target, reducedRecords));
+        dispatch(fetchRecords(categoryID, reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */

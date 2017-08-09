@@ -141,6 +141,16 @@ export default (state = initialState, action) => {
         index: state.index + action.records.length,
       });
 
+    case COUNT_RECURSIVE_TIMES:
+      return Object.assign({}, state, {
+        recursiveTimes: state.recursiveTimes + 1,
+      });
+
+    case RESET_RECURSIVE_TIMES:
+      return Object.assign({}, state, {
+        recursiveTimes: 0,
+      });
+
     case RESET:
       return initialState;
 

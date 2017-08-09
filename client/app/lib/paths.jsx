@@ -13,6 +13,7 @@ export const categoriedItemPath = (categoryName, cid) =>
   `/p/i/${escapeAlias(categoryName)}-c.${cid}`;
 
 export const userprofilePaths = {
+  indexPath: uid => `/p/userprofile/${uid}`,
   itemsGoodsPath: uid => `/p/userprofile/${uid}/items-goods`,
   itemsServiePath: uid => `/p/userprofile/${uid}/items-service`,
   itemsSpacePath: uid => `/p/userprofile/${uid}/items-space`,
