@@ -21,6 +21,7 @@ class WishListComponent extends React.Component {
   };
 
   componentDidMount() {
+    this.props.dispatchReset();
     this.props.dispatchFetchRecords();
   }
 

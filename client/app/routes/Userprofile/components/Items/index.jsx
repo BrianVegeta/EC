@@ -46,6 +46,10 @@ class Items extends React.Component {
     this.props.dispatchFetchItems();
   }
 
+  componentWillUnmount() {
+    this.props.dispatchReset();
+  }
+
   render() {
     const { userprofileItems, dispatchFetchItems, category, params } = this.props;
 

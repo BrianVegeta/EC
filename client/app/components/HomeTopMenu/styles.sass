@@ -1,0 +1,24 @@
+@import "~styles/color.sass"
+
+.container.navbar
+  text-align: center
+  height: 50px
+  ul.menu
+    display: inline-block
+    li.nav
+      padding: 0 25px
+      float: left
+      a.link
+        display: inline-block
+        min-width: 80px
+        font-size: 15px
+        height: 50px
+        line-height: 50px
+        color: $global-blackColor
+        text-align: center
+        font-weight: 500
+        &.active
+          border-bottom: $global-orangeColor 4px solid
+          color: $global-orangeColor
+        &:hover
+          color: $global-orangeColor

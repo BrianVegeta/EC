@@ -6,6 +6,7 @@ import { IndexLink } from 'react-router';
 
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
+import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 
 import { logout } from 'actions/authActions';
 
@@ -15,7 +16,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 import Me from './Me';
-import ShortcutNavbar from './ShortcutNavbar';
+// import ShortcutNavbar from './ShortcutNavbar';
 import DropdownNavs from './DropdownNavs';
 import Logo from './Logo';
 import NavItem from './NavItem';
@@ -118,13 +119,7 @@ class Header extends React.Component {
             </div>
           </div>
         </div>
-        {hasShortcut &&
-          <div className={cx('navbar-container-shortcut')}>
-            <div className="container clear">
-              <ShortcutNavbar {...this.props} />
-            </div>
-          </div>
-        }
+        {hasShortcut && <HomeTopMenuContainer {...this.props} />}
       </header>
     );
   }
