@@ -6,87 +6,84 @@ import {
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc';
-import ThumbDropzone from './ThumbDropzone';
-import ThumbDropped from './ThumbDropped';
-import {
-  thumbCreate,
-  thumbsUpdateOrders,
-  removeFromThumbs,
-} from '../../../../../actions/publishThumbsActions';
-import { openCropper } from '../../../../../actions/publishCropperActions';
+
+import ThumbDropzone from 'components/Publish/ThumbDropzone';
+import ThumbDropped from 'components/Publish/ThumbDropped';
 import styles from './styles.sass';
 
 
 const LEAST_COVER_SHOWN = 3;
 class SortableGallery extends React.Component {
+
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    createCover: PropTypes.func.isRequired,
+    deleteCover: PropTypes.func.isRequired,
+    changeOrders: PropTypes.func.isRequired,
+    openCropper: PropTypes.func.isRequired,
     covers: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
+
   static shouldCancelStart(e) {
     const tagName = e.target.tagName.toLowerCase();
     return ['svg', 'path', 'button'].indexOf(tagName) >= 0;
   }
+
   constructor(props) {
     super(props);
     this.onSortEnd = this.onSortEnd.bind(this);
   }
+
   onSortEnd({ oldIndex, newIndex }) {
-    this.props.dispatch(
-      thumbsUpdateOrders(
-        arrayMove(this.props.covers, oldIndex, newIndex),
-      ),
+    const { changeOrders, covers } = this.props;
+    changeOrders(
+      arrayMove(covers, oldIndex, newIndex),
     );
   }
-  createCover(blob) {
-    this.props.dispatch(
-      thumbCreate(blob),
-    );
+
+  openModal(key, blob) {
+    this.props.openCropper(key, blob);
   }
-  removeCover(key) {
-    this.props.dispatch(
-      removeFromThumbs(key),
-    );
-  }
-  openModal(key, blobUrl) {
-    this.props.dispatch(
-      openCropper(key, blobUrl),
-    );
-  }
+
   render() {
+    const {
+      covers,
+      createCover,
+      deleteCover,
+    } = this.props;
     const itemClass = styles.imageDropzone;
     const galleryClass = styles.gallery;
     const coverLabel = <div className={styles.coverLabel}>封面</div>;
-    const SortableItem = SortableElement(({ value }) =>
+    const SortableItem = SortableElement(({ value }) => (
       <div className={itemClass} >
         {
           value.isEmpty ?
             <ThumbDropzone
-              onDrop={blob => this.createCover(blob)}
+              onDrop={createCover}
               coverLabel={value.isCover && coverLabel}
             /> :
             <ThumbDropped
               coverLabel={value.isCover && coverLabel}
-              coverUrl={value.blobUrl}
-              onEdit={() => this.openModal(value.key, value.blobUrl)}
-              onRemove={() => this.removeCover(value.key)}
+              coverUrl={value.blob}
+              onEdit={() => this.openModal(value.key, value.blob)}
+              onRemove={() => deleteCover(value.key)}
             />
         }
-      </div>,
-    );
-    const SortableList = SortableContainer(({ items }) =>
+      </div>
+    ));
+
+    const SortableList = SortableContainer(({ items }) => (
       <div className={`clear ${galleryClass}`}>
         {items.map((image, index) => (
           <SortableItem
             key={`item-${index + 1}`}
             index={index}
             value={image}
-            disabled={!image.blobUrl}
+            disabled={!image.blob}
           />
         ))}
-      </div>,
-    );
-    const { covers } = this.props;
+      </div>
+    ));
+
     // immutable
     const emptyCovers = Array((LEAST_COVER_SHOWN - covers.length)).fill(
       Object.assign({}, { isEmpty: true }),

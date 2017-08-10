@@ -21,3 +21,7 @@ export const userprofilePaths = {
   commentsOwnerPath: uid => `/p/userprofile/${uid}/comments-owner`,
   commentsLesseePath: uid => `/p/userprofile/${uid}/comments-lessee`,
 };
+
+export const publish = {
+  spaceIndexPath: '/p/publish-space',
+};

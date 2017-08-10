@@ -1,27 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
 import HeaderContainer from 'containers/HeaderContainer';
 import Footer from 'components/Footer';
 import myPropTypes from 'propTypes';
+
 import MainWrapper from './MainWrapper';
 
 export default class extends React.Component {
+
   static defaultProps = {
-    main: null,
+    children: null,
   };
 
   static propTypes = {
-    main: PropTypes.node.isRequired,
+    children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
   };
 
   render() {
-    const { main, environment } = this.props;
+    const { children, environment } = this.props;
     return (
-      <div>
+      <div className="container-gray-bg">
         <HeaderContainer />
         <MainWrapper minHeight={environment.height}>
-          {main}
+          {children}
         </MainWrapper>
         <Footer />
       </div>

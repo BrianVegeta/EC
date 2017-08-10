@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CSS from 'react-css-modules';
 import EditIcon from 'react-icons/lib/md/edit';
 import RemoveIcon from 'react-icons/lib/go/trashcan';
+
+import Picture from 'components/Picture';
+import { DROPBOX_SIZE } from 'constants/coverCropper';
+
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import { DROPBOX_SIZE } from '../../../../../../constants/coverCropper';
 
 class ThumbDropped extends React.Component {
   static defaultProps = {
@@ -22,12 +25,9 @@ class ThumbDropped extends React.Component {
     return (
       <div
         styleName="imageDropped"
-        style={{
-          backgroundImage: `url(${coverUrl})`,
-          width: DROPBOX_SIZE,
-          height: DROPBOX_SIZE,
-        }}
+        style={{ width: DROPBOX_SIZE, height: DROPBOX_SIZE }}
       >
+        <Picture src={coverUrl} />
         {this.props.coverLabel}
         <div styleName="ctrlGroups" >
           <button className="button" styleName="ctrlIcon" onClick={onEdit} >

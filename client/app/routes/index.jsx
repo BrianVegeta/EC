@@ -4,22 +4,19 @@ import layoutHoc from 'containers/layoutHoc';
 import Home from 'layouts/Home';
 import layoutItemDetail from 'layouts/ItemDetail';
 // import Mine from 'layouts/MyAccount';
-// import Publish from 'layouts/Publish';
+import Publish from 'layouts/Publish';
 import Signinup from 'layouts/Signinup';
 // import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
 
 import HomeRoute from './Home';
-// items route
-// import routeItemsSpace from './ItemListSpace/route';
-// import routeItemsService from './ItemListService/route';
 import routeItemsGoods from './Items/routeGoods';
 import routeItemsService from './Items/routeService';
 import routeItemsSpace from './Items/routeSpace';
 import routeItemsCategory from './Items/routeCategory';
 
-//import routeItemsCategory from './ItemListCategory/route';
+// import routeItemsCategory from './ItemListCategory/route';
 
 import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
@@ -28,7 +25,7 @@ import routeUserprofile from './Userprofile/route';
 // import Categories from './Categories';
 import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
-// import ReleaseGoods from './Release/Goods';
+import PublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
@@ -79,14 +76,14 @@ export default store => ({
         routeOrderdetail(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
-    //   childRoutes: [
-    //     ReleaseGoods(routesHelper, dispatch),
-    //     ReleaseService(routesHelper, dispatch),
-    //     ReleaseSpace(routesHelper, dispatch),
-    //   ],
-    // },
+    {
+      component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
+      childRoutes: [
+        PublishService(store),
+        // ReleaseService(store.routesHelper, store.dispatch),
+        // ReleaseSpace(routesHelper, dispatch),
+      ],
+    },
     // {
     //   component: layoutHoc(Mine, { requireAuth }),
     //   childRoutes: [

@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import CameraIcon from 'react-icons/lib/ti/camera-outline';
+import { DROPBOX_SIZE } from 'constants/coverCropper';
+
 import Dropper from './Dropper';
-import { DROPBOX_SIZE } from '../../../../../../constants/coverCropper';
 import styles from './styles.sass';
 
 
