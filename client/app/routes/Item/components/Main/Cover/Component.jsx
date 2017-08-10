@@ -1,36 +1,18 @@
-import React, { PropTypes } from 'react';
-import {
-  ITEM_DETAIL_COVER_RESOLUTION,
-  ITEM_DETAIL_COVER_THUMB_RESOLUTION,
-} from 'constants/style';
-import covers from './mock';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Picture from 'components/Picture';
+
 
 class Cover extends React.Component {
 
-  static thumbStyle(cover) {
-    const { thumb } = cover;
-    return {
-      thumb: {
-        width: ITEM_DETAIL_COVER_THUMB_RESOLUTION,
-        height: ITEM_DETAIL_COVER_THUMB_RESOLUTION,
-        backgroundImage: `url(${thumb})`,
-      },
-    };
-  }
+  static propTypes = {
+    images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  };
 
   constructor(props) {
     super(props);
     this.state = { currentCoverIndex: 0 };
     this.switchCover = this.switchCover.bind(this);
-  }
-
-  coverStyle() {
-    const { currentCoverIndex } = this.state;
-    return {
-      backgroundImage: `url(${covers[currentCoverIndex].large})`,
-      width: ITEM_DETAIL_COVER_RESOLUTION,
-      height: ITEM_DETAIL_COVER_RESOLUTION,
-    };
   }
 
   switchCover(index) {
@@ -39,18 +21,21 @@ class Cover extends React.Component {
 
   renderThumb(cover, index) {
     const { currentCoverIndex } = this.state;
-    const { thumbStyle } = this.constructor;
     const activeThumb = (
-      <button styleName="thumb-control" >
-        <div styleName="thumb-active" style={thumbStyle(cover).thumb}>
-          <div styleName="thumb-inner" />
+      <button className="button" >
+        <div styleName="thumb-active">
+          <div styleName="thumb-inner">
+            <Picture src={cover} />
+          </div>
         </div>
       </button>
     );
     const thumb = (
-      <button styleName="thumb-control" onClick={() => this.switchCover(index)} >
-        <div styleName="thumb" style={thumbStyle(cover).thumb} >
-          <div styleName="thumb-inner" />
+      <button className="button" onClick={() => this.switchCover(index)} >
+        <div styleName="thumb">
+          <div styleName="thumb-inner" >
+            <Picture src={cover} />
+          </div>
         </div>
       </button>
     );
@@ -59,15 +44,22 @@ class Cover extends React.Component {
   }
 
   render() {
+    const { currentCoverIndex } = this.state;
+    const { images } = this.props;
     return (
       <div styleName="container">
-        <div styleName="cover" style={this.coverStyle()} />
+        <div styleName="cover" >
+          <Picture src={images[currentCoverIndex]} />
+        </div>
         <div styleName="thumbs">
-          {covers.map((cover, index) =>
-            <div key={cover.large} styleName="thumb-container">
+          {images.map((cover, index) => (
+            <div
+              key={cover}
+              styleName="thumb-container"
+            >
               {this.renderThumb(cover, index)}
-            </div>,
-          )}
+            </div>
+          ))}
         </div>
       </div>
     );

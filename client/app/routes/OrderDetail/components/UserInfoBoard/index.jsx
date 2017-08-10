@@ -21,7 +21,6 @@ class UserInfoBoard extends React.Component {
       phone,
       imgUrl,
     } = this.props;
-    console.log(imgUrl);
     return (
       <div styleName="boundary">
         <div styleName="head-style">

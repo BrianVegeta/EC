@@ -26,12 +26,12 @@ class Orderdetail extends React.Component {
 
   render() {
     const { orderdetail } = this.props;
-    const { bankReady, order, ownerProfile, lesseeProfile } = orderdetail;
-    const { display } = order;
-    console.log(orderdetail);
+    const { order } = orderdetail;
     if (order == null) {
       return null;
     }
+    const { display } = order;
+    const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
 
     if (order.contractstage < 4) {
       this.show_bank = true;
@@ -112,7 +112,7 @@ class Orderdetail extends React.Component {
               <UserInfoBoard
                 realname={display.is_owner ? order.owner_real_name : order.lessee_real_name }
                 phone={display.is_owner ? order.ownerphone : order.lesseephone}
-                imgUrl={display.is_owner ? this.ownerPicture.picture : this.lesseePicture }
+                imgUrl={display.is_owner ? this.ownerPicture : this.lesseePicture }
               />
             </div>
           </div>

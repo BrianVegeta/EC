@@ -31,6 +31,13 @@ class Preload extends React.Component {
     this.bindLoader();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.imageSrc !== this.props.imageSrc) {
+      this.unbindLoader();
+      this.bindLoader();
+    }
+  }
+
   componentWillUnmount() {
     this.unbindLoader();
   }

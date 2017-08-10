@@ -8,6 +8,8 @@ import {
   ITEM_MAIN_COMMENT,
   ITEM_MAIN_SHARER,
 } from 'constants/itemDetailScrollNavs';
+
+import { without } from 'lodash';
 import Cover from './Cover';
 import Breadcrumbs from './Breadcrumbs';
 import Title from './Title';
@@ -47,19 +49,19 @@ class Main extends React.Component {
     );
   }
 
-  rCancelPolicy(cancel_policys) {
+  rCancelPolicy(cancelPolicys) {
 
-    if (cancel_policys == null || cancel_policys.length == 0) {
+    if (cancelPolicys == null || cancelPolicys.length === 0) {
       return null;
     }
 
     const id = ITEM_MAIN_CANCEL_POLICY;
-    const ref = cancel_policy => (this[ITEM_MAIN_CANCEL_POLICY]) = cancel_policy;
+    const ref = cancelPolicysRef => (this[ITEM_MAIN_CANCEL_POLICY] = cancelPolicysRef);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <CancelPolicy
-          advance_day= {cancel_policys[0].advance_day}
-          rate= {cancel_policys[0].rate}
+          advance_day={cancelPolicys[0].advance_day}
+          rate={cancelPolicys[0].rate}
         />
       </div>
     );
@@ -129,11 +131,13 @@ class Main extends React.Component {
 
   render() {
     const { item, dispatch } = this.props;
-    let itemImage = [item.img1, item.img2, item.img3];
+    const images = without([item.img1, item.img2, item.img3], null);
+
+    console.log(images);
     return (
       <div styleName="container">
         <div styleName="cover">
-          <Cover />
+          <Cover images={images} />
         </div>
         {this.rIntroduction(item)}
         {this.rRegulation(item.rules)}

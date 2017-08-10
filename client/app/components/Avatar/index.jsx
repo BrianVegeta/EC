@@ -38,7 +38,7 @@ class Avatar extends React.Component {
     } = this.props;
 
     const size = typeof width === 'number' ? `${width}px` : width;
-    console.log(src);
+
     return (
       <Placehoder
         className={cx('placeholder')}

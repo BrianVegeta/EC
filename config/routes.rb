@@ -99,8 +99,6 @@ Rails.application.routes.draw do
 
       post 'userprofile/update_password', to: 'userprofile#update_password'
 
-
-
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
 
