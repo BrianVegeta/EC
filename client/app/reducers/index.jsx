@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-// import myCollection from 'connector/myCollections/reducer';
-// import ownerProfile from 'connector/Ownerprofile/reducer';
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
 import auth from './authReducer';
@@ -16,7 +14,6 @@ import search from './searchReducer';
 import mine from './mineReducer';
 import notification from './notificationReducer';
 import home from './homeReducer';
-import item from './itemReducer';
 import reservation from './reservationReducer';
 import modal from './modalReducer';
 import popup from './popupReducer';
@@ -42,7 +39,6 @@ const reducers = {
   mine,
   notification,
   home,
-  item,
   reservation,
   secrecyVerification,
   popup,

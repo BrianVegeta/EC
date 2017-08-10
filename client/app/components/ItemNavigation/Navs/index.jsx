@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Scrollchor from 'react-scrollchor';
 import Scrollspy from 'react-scrollspy';
+
+import itemDetailScrollNavs from 'constants/itemDetailScrollNavs';
+
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import itemDetailScrollNavs from '../../../constants/itemDetailScrollNavs';
 
 const cx = classnames.bind(styles);
 const Navs = () => {

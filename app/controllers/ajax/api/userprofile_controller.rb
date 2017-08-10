@@ -39,7 +39,6 @@ class Ajax::Api::UserprofileController < ApplicationController
     obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
     success = obj.request
 
-
     if success
       obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
       obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure

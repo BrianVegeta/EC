@@ -162,7 +162,6 @@ export const asyncXhrAuthedPost = (path, params, state) =>
     .then(response => response.json())
     .then((json) => {
       const { success, logouted } = json;
-
       if (success) {
         resolve(json.data);
       } else if (logouted) {
@@ -171,7 +170,8 @@ export const asyncXhrAuthedPost = (path, params, state) =>
           referrer: state.routing.locationBeforeTransitions.pathname,
         });
       } else {
-        reject(json);
+        console.log(json);
+        // reject(json);
       }
     })
     .catch((err) => { throw err; });

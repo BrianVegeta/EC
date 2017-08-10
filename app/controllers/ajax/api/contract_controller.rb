@@ -94,7 +94,8 @@ class Ajax::Api::ContractController < ApplicationController
     obj = ::Api::Contract::Get.new cid_params, current_apitoken
     success = obj.request
     if success
-      obj.response_data = parse_contract_rsp(obj.response_data)
+      #obj.response_data = parse_contract_rsp(obj.response_data)
+      obj.response_data = parse_display_contract_rsp(obj.response_data, current_user['uid'])
     end
     respond success, obj
   end
@@ -231,18 +232,47 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  # 取回合約上傳照片
+  def images
+    obj = ::Api::Contract::Images.new cid_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)
-     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure
-     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure
-     response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
-     return response_data
+    response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure
+    response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure
+    response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
+    response_data = removePrivateData(response_data)
+    return response_data
+  end
+
+  def removePrivateData(response_data)
+    response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
+    if (response_data['contractstage'] < 4)
+      response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
+      response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);
+      response_data['lessee_real_name'] = replaceString(response_data['lessee_real_name'], 0, 2);
+      response_data['lesseephone'] = replaceString(response_data['lesseephone'], 3, 6);
+    end
+    return response_data
+  end
+
+  def replaceString(string, remainIndex, replaceNumber)
+    if string.nil?
+      return '未公開'
+    end
+    if (string.to_s.length > remainIndex)
+      string[0..remainIndex] + ('*' * replaceNumber)
+    else
+      string[0..string.to_s.length] + ('*' * replaceNumber)
+    end
   end
 
   #add display params to contract response
   def parse_display_contract_rsp(response_data, uid)
-
     if (response_data['contractstage'].nil?)
       raise 'error'
     end

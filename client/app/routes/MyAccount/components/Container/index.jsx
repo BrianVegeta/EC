@@ -8,7 +8,7 @@ class Container extends React.Component {
   static defaultProps = {
       icon: null,
   }
-  
+
   static propTypes = {
     icon: PropTypes.func,
     titleText: PropTypes.string.isRequired,

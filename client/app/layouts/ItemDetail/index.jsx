@@ -13,12 +13,8 @@ import ScrollNavigation from './ScrollNavigation';
 
 export default class extends React.Component {
 
-  static defaultProps = {
-    main: null,
-  };
-
   static propTypes = {
-    main: PropTypes.node.isRequired,
+    children: myPropTypes.children.isRequired,
     dispatch: PropTypes.func.isRequired,
     environment: myPropTypes.environment.isRequired,
   };
@@ -60,7 +56,7 @@ export default class extends React.Component {
 
   render() {
     const { isNavVisible } = this.state;
-    const { main, environment } = this.props;
+    const { children, environment } = this.props;
     return (
       <div ref={layout => (this.layout = layout)}>
         <HeaderContainer />
@@ -73,7 +69,7 @@ export default class extends React.Component {
           minHeight={environment.height}
           paddingTop={10}
         >
-          {main}
+          {children}
         </MainWrapper>
         <Footer />
       </div>

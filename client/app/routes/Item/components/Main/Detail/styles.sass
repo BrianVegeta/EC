@@ -1,0 +1,46 @@
+// @author: vincent
+@import "~styles/color.sass"
+
+.container
+  padding: 40px 0px
+  border-bottom: 1px solid $global-lineColor
+  .title
+    font-size: 24px
+    color: $global-blackColor
+    margin-bottom: 40px
+
+.item
+  position: relative
+  display: inline-block
+  width: 50%
+  margin-bottom: 30px
+  svg
+    display: inline-block
+    vertical-align: middle
+  .content
+    display: inline-block
+    vertical-align: middle
+    margin-left: 24px
+    font-weight: 400
+    .header
+      color: $global-middleBlack
+      font-size: 14px
+      line-height: 24px
+    .describe
+      font-size: 18px
+      line-height: 24px
+
+.item-category
+  composes: item
+
+.item-amount
+  composes: item
+
+.item-location
+  composes: item
+
+.item-deliver-method
+  composes: item
+
+.item-deliver-at
+  composes: item

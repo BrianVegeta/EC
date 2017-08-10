@@ -8,7 +8,7 @@ class ResponseJson::Contract
         #  -String
         pid: nil,
         #  -Long
-        type: nil, 
+        type: nil,
         #  -String
         #  ITEM SERVICE SPACE
         coupon: [],

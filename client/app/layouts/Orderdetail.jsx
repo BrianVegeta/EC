@@ -9,10 +9,7 @@ class OrderdetailLayout extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>layout</div>
-        <div>{this.props.children}</div>
-      </div>
+      <div>{this.props.children}</div>
     );
   }
 }
