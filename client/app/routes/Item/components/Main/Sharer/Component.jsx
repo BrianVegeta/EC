@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SharerCard from './SharerCard';
 import Chat from 'react-icons/lib/md/chat';
 import Store from 'react-icons/lib/md/store';
