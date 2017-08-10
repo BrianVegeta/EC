@@ -1,13 +1,13 @@
-import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 
 /* =============================================>>>>>
-= userprofile =
+= settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'ITEM.MESSAGEBOARD';
-const REDUCER_KEY = 'messageboard';
-const DUPLICATE_KEY = 'id';
-const SIZE = 10;
+const ACTION_PREFIX = 'MY.WISH';
+const REDUCER_KEY = 'myWish';
+const SIZE = 9;
+const DUPLICATE_ID = 'id';
 
 
 // =============================================
@@ -30,17 +30,18 @@ const fetching = expireFlag => ({
   expireFlag,
 });
 
-const fetched = records => ({
+const fetched = (records, lastId) => ({
   type: FETCHED,
   records,
+  lastId,
 });
 
-function checkExpire(records, expireFlag) {
+function checkExpire(records, expireFlag, lastId) {
   return (dispatch, getState) => {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    dispatch(fetched(records));
+    dispatch(fetched(records, lastId));
   };
 }
 
@@ -56,6 +57,7 @@ export const reset = () => ({
   type: RESET,
 });
 
+
 const RECURSIVE_LIMIT = 10;
 /**
  *
@@ -64,68 +66,45 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export const TARGET_OWNER = 'OWNER';
-export const TARGET_LESSEE = 'LESSEE';
-export function fetchRecords(pid, target = TARGET_OWNER, recursiveRecords = []) {
+export function fetchRecords(uid, recursiveRecords = []) {
   return (dispatch, getState) => {
+    const { currentUser } = getState().auth;
     const {
       size,
       index,
       records,
       recursiveTimes,
+      lastId,
     } = getState()[REDUCER_KEY];
 
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
-      pid,
+      uid: currentUser.uid,
+      // last_id: lastId,
     };
-    console.log('fetching fetchRecords');
-    const expireFlag = Date.now();
-    /* LOADING FETCH */
-    dispatch(fetching(expireFlag));
+
     /* 增加 RECURSIVE 次數 */
     dispatch(countRecursiveTimes());
+    /* LOADING FETCH */
+    const expireFlag = Date.now();
+    dispatch(fetching(expireFlag));
     /* API REQUEST */
     asyncXhrPost(
-      {
-        [TARGET_OWNER]: '/ajax/get_message_board.json',
-        [TARGET_LESSEE]: '/ajax/get_message_board.json',
-      }[target],
+      '/ajax/get_wish.json',
       requestParams,
     )
     .then((data) => {
-      const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_KEY);
-
+      const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_ID);
       if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(pid, target, reducedRecords));
+        dispatch(fetchRecords(uid, lastId, reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */
       dispatch(resetRecursiveTimes());
       /* CHANGE RECORDS IN REDUCER */
-      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag));
-    });
-  };
-}
-
-export function addMessage(pid, message) {
-  //console.log(targetUid);
-  return (dispatch, getState) => {
-    const expireFlag = Date.now();
-    dispatch(fetching(expireFlag));
-
-    let params = { pid, message };
-    asyncXhrAuthedPost(
-      '/ajax/add_message.json',
-      params,
-      getState(),
-    ).then(() => {
-      console.log('add success');
-      dispatch(reset());
-      dispatch(fetchRecords(pid));
-      console.log('add done');
+      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag, lastId));
     });
   };
 }
@@ -141,6 +120,7 @@ const initialState = {
   records: [],
   size: SIZE,
   index: 0,
+  lastId: null,
   recursiveTimes: 0,
 };
 
@@ -158,6 +138,7 @@ export default (state = initialState, action) => {
         isPaginable: action.records.length === state.size,
         records: state.records.concat(action.records),
         index: state.index + action.records.length,
+        lastId: action.lastId,
       });
 
     case COUNT_RECURSIVE_TIMES:

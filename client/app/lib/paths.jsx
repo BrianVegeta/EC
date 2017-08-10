@@ -21,3 +21,13 @@ export const userprofilePaths = {
   commentsOwnerPath: uid => `/p/userprofile/${uid}/comments-owner`,
   commentsLesseePath: uid => `/p/userprofile/${uid}/comments-lessee`,
 };
+
+export const my = {
+  indexPath: '/p/my',
+  itemPath: '/p/my/items',
+  wishPath: '/p/my/wishs',
+  walletPath: '/p/my/wallet',
+  collectionPath: '/p/my/collections',
+  couponPath: '/p/my/coupon',
+  commentPath: '/p/my/comment',
+};

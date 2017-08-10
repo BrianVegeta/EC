@@ -5,16 +5,15 @@ import myPropTypes from '../propTypes';
 import { initEnvironment } from '../actions/environmentActions';
 import Footer from '../components/Footer';
 import MainWrapper from './MainWrapper';
-import MyAccountSidebar from './MyAccountSidebar';
 import HeaderContainer from '../containers/HeaderContainer';
 
 class MyAccountLayout extends React.Component {
   static defaultProps = {
-    main: null,
+    children: null,
     environment: null,
   };
   static propTypes = {
-    main: myPropTypes.main,
+    children: myPropTypes.children,
     environment: myPropTypes.environment,
     dispatch: PropTypes.func.isRequired,
     auth: myPropTypes.authOnHeader.isRequired,
@@ -24,13 +23,14 @@ class MyAccountLayout extends React.Component {
     dispatch(initEnvironment());
   }
   render() {
-    const { main, environment, auth } = this.props;
+    const { children, environment, auth } = this.props;
     if (!auth.isLogin) return null;
+
     return (
-      <div>
+      <div className="container-gray-bg" >
         <HeaderContainer />
         <MainWrapper minHeight={environment.height} >
-          <MyAccountSidebar>{main}</MyAccountSidebar>
+          {children}
         </MainWrapper>
         <Footer />
       </div>

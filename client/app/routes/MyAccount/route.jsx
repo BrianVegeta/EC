@@ -1,14 +1,21 @@
 // import { fetchCollections } from 'connector/myCollections/actions';
-import { fetchCoupons } from 'connector/myCoupon/actions';
+// import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
+import routeMyCollection from './routes/Collections/route';
+import routeMyWishList from './routes/Wish/route';
 
-export default ({ dispatch }) => ({
-  path: '/p/my_account',
-  getComponent(_nextState, callback) {
+
+export default store => ({
+  path: '/p/my',
+
+  getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      callback(null, { main: require('./Container').default });
+      const MyAccount = require('./containers/MyAccountContainer').default;
+
+      cb(null, MyAccount);
     }, 'my.acc');
   },
+
   indexRoute: {
     getComponent(_nextState, callback) {
       require.ensure([], (require) => {
@@ -16,6 +23,12 @@ export default ({ dispatch }) => ({
       }, 'my.acc.items');
     },
   },
+
+  childRoutes: [
+    routeMyCollection(store),
+    routeMyWishList(store),
+  ],
+  /*
   childRoutes: [
     {
       path: 'items',
@@ -41,17 +54,7 @@ export default ({ dispatch }) => ({
         }, 'my.acc.wallet');
       },
     },
-    {
-      path: 'collections',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          callback(null, { formComponent: require('./Collections/Container').default });
-        }, 'my.acc.collections');
-      },
-      onEnter: () => {
-        // dispatch(fetchCollections());
-      },
-    },
+
     {
       path: 'coupons',
       getComponent(_nextState, callback) {
@@ -74,5 +77,5 @@ export default ({ dispatch }) => ({
         // dispatch(fetchComments(TYPE_OWNER));
       },
     },
-  ],
+  ],*/
 });

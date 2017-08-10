@@ -6,7 +6,7 @@ import myPropTypes from '../../../../propTypes';
 
 class Container extends React.Component {
   static defaultProps = {
-      icon: null,
+    icon: null,
   }
 
   static propTypes = {

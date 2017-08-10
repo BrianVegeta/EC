@@ -9,6 +9,7 @@ import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 
 import { logout } from 'actions/authActions';
+import { my } from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import cn from 'classnames';
@@ -108,7 +109,7 @@ class Header extends React.Component {
                     <DropdownNavs
                       list={[
                         { link: '/', text: '編輯個人資料' },
-                        { link: '/', text: '帳戶管理' },
+                        { link: my.indexPath, text: '帳戶管理' },
                         { link: '/', text: '設定' },
                         { action: () => dispatch(logout()), text: '登出' },
                       ]}
