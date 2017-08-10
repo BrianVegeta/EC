@@ -6,7 +6,6 @@ import auth from './authReducer';
 import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
-// import items from './itemsReducer';
 import itemRelease from './itemReleaseReducer';
 import cities from './citiesReducer';
 import publish from './publishReducer';

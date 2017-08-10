@@ -15,6 +15,9 @@ import HomeRoute from './Home';
 // import routeItemsSpace from './ItemListSpace/route';
 // import routeItemsService from './ItemListService/route';
 import routeItemsGoods from './Items/routeGoods';
+import routeItemsService from './Items/routeService';
+import routeItemsSpace from './Items/routeSpace';
+import routeItemsCategory from './Items/routeCategory';
 
 //import routeItemsCategory from './ItemListCategory/route';
 
@@ -47,9 +50,9 @@ export default store => ({
       component: layoutHoc(Home, { requireCates }),
       childRoutes: [
         routeItemsGoods(store),
-        // routeItemsService(store),
-        // routeItemsSpace(store),
-        //routeItemsCategoried({ dispatch }),
+        routeItemsService(store),
+        routeItemsSpace(store),
+        routeItemsCategory(store),
 
         // Categories(routesHelper, dispatch),
         // // Tanzaku(routesHelper, dispatch),

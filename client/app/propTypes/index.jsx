@@ -5,6 +5,22 @@ const string = PropTypes.string;
 const number = PropTypes.number;
 const node = PropTypes.node;
 
+/* =============================================>>>>>
+= OPTIONS =
+===============================================>>>>>*/
+const category = PropTypes.shape({
+  id: PropTypes.number,
+  name: PropTypes.string,
+  img: PropTypes.string,
+});
+const categories = PropTypes.shape({
+  goods: PropTypes.arrayOf(category),
+  service: PropTypes.arrayOf(category),
+  space: PropTypes.arrayOf(category),
+});
+const middleCategories = PropTypes.arrayOf(category);
+
+
 export default {
   environment: PropTypes.shape({
     height: PropTypes.number,
@@ -33,22 +49,18 @@ export default {
     }),
   ),
   notification: PropTypes.object,
-  /* --------------- options --------------- */
+  /* =============================================>>>>>
+  = OPTIONS =
+  ===============================================>>>>>*/
   options: PropTypes.shape({
-    categories: PropTypes.object,
+    categories,
     banks: PropTypes.array,
   }),
-  categories: PropTypes.shape({
-    goods: PropTypes.array,
-    service: PropTypes.array,
-    space: PropTypes.array,
-  }),
-  category: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    img: PropTypes.string,
-  }),
-  /* --------------- options END --------------- */
+  categories,
+  middleCategories,
+  category,
+  /* = End of OPTIONS =*/
+  /* =============================================<<<<<*/
   itemCard: PropTypes.shape({
     id: PropTypes.number,
     pname: PropTypes.string,

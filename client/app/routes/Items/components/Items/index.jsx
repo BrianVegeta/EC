@@ -87,7 +87,7 @@ class Items extends React.Component {
           <PageFilterBar />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer categoryID={CATEGORY_GOODS_ID} />
+          <SidebarCategoriesContainer categoryID={categoryID} />
           <div style={{ marginLeft: 279 }} styleName="items-container">
             <ListContainer
               minHeight={500}

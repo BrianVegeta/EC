@@ -4,7 +4,7 @@ import myPropTypes from 'propTypes';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 
-import { SHAREAPP_HELP_URL } from 'constants/urls';
+import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 
 import { logout } from 'actions/authActions';
