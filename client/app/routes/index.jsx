@@ -91,7 +91,7 @@ export default store => ({
     //   ],
     // },
     {
-      component: layoutHoc(layoutItemDetail, {}),
+      component: layoutHoc(layoutItemDetail, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
         routeItem(store),
       ],

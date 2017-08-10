@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import { Editor, EditorState } from 'draft-js';
-import Editable from 'react-plain-editable';
+// import Editable from 'react-plain-editable';
+import Textarea from 'components/inputs/Textarea';
 
 class Comment extends React.Component {
+
+  static propTypes = {
+    dispatchAddMessage: PropTypes.func.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -20,18 +25,15 @@ class Comment extends React.Component {
     };
   }
 
-  onChange(e, value) {
-    this.setState({
-      value,
-      html: this.textbox.innerHTML,
-    });
+  onChange(value) {
+    this.setState({ value });
   }
 
   onFocus() {
     this.setState({
       isFocusing: true,
       isControllerVisible: true,
-      html: this.textbox.innerHTML,
+      // html: this.textbox.innerHTML,
     });
   }
 
@@ -59,13 +61,17 @@ class Comment extends React.Component {
     return this.isValueEmpty() && !this.state.isFocusing;
   }
 
-  rController() {
+  rController(dispatchAddMessage) {
+    console.log('rController');
     return (
       <div styleName="buttons">
         <button styleName="cancel" onClick={this.onBtnCancel}>
           取消
         </button>
-        <button styleName="comment">
+        <button
+          styleName="comment"
+          onClick={() => dispatchAddMessage(this.state.value)}
+        >
           留言
         </button>
       </div>
@@ -74,23 +80,22 @@ class Comment extends React.Component {
 
   render() {
     // TODO: commentbox
-    const { isFocusing, isControllerVisible } = this.state;
+    const { isFocusing, isControllerVisible, dispatchAddMessage } = this.state;
     return (
       <div styleName="container">
         <div styleName="title">我要留言</div>
-        <div styleName={isFocusing ? 'tb-container-focusing' : 'tb-container'}>
-          <div styleName="textbox" ref={textbox => (this.textbox = textbox)}>
-            <Editable
-              value={this.isPlaceholding() ? this.placeholder : this.state.editorValue}
-              styleName={this.isPlaceholding() ? 'editable-placeholding' : 'editable'}
-              onChange={this.onChange}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-            />
-          </div>
+        <div>
+          <Textarea
+            {...{
+              value: this.state.value,
+              placeholder: '',
+              onChange: this.onChange,
+              minHeight: 100,
+            }}
+          />
         </div>
         <div styleName="controller">
-          { isControllerVisible && this.rController() }
+          { this.rController(this.props.dispatchAddMessage) }
         </div>
       </div>
     );

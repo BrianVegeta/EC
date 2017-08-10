@@ -1,5 +1,4 @@
-import { injectReducer, removeReducer } from 'reducers';
-import { editItem } from './modules/item';
+import { injectReducer } from 'reducers';
 
 // export default dispatch => ({
 //   path: '/p/:name-i.:id',
@@ -16,28 +15,26 @@ import { editItem } from './modules/item';
 //   },
 // });
 
-const key = 'item';
 export default store => ({
-  path: '/p/:name-i.:id',
+  path: '/p/:name-i.:pid',
 
+  /*
   onEnter: (nextState) => {
     const { dispatch } = store;
-    const { id } = nextState.params;
-
-    dispatch(editItem(id));
+    const { pid } = nextState.params;
+    dispatch(editItem(pid));
   },
-
   onLeave: () => {
     removeReducer(store, { key });
-  },
+  },*/
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
       const Container = require('./containers/Container').default;
-      const reducer = require('./modules/item').default;
-
-      injectReducer(store, { key, reducer });
-
+      const itemReducer = require('./modules/item').default;
+      const messageReducer = require('./modules/messageboard').default;
+      injectReducer(store, { key: 'item', reducer: itemReducer });
+      injectReducer(store, { key: 'messageboard', reducer: messageReducer });
       cb(null, Container);
     }, 'item');
   },

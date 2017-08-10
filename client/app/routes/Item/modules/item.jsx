@@ -8,7 +8,6 @@ const prefix = action => (`USERPROFILE.${action}`);
 const SET_EDIT = prefix('SET_EDIT');
 const CHANGE_OWNER = prefix('CHANGE_OWNER');
 
-
 /* =============================================>>>>>
 = actions =
 ===============================================>>>>>*/
@@ -22,6 +21,7 @@ const changeOwner = userProfile => ({
   type: CHANGE_OWNER,
   userProfile,
 });
+
 
 export function editItem(pid) {
   return (dispatch) => {

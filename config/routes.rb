@@ -114,6 +114,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #MESSAGEBOARD
+      post 'get_message_board', to: 'item#message' #
+      post 'add_message', to: 'item#message_add' #
+
       #OREDERDETAIL
       post 'get_order', to: 'contract#get' #
       post 'get_order_images', to: 'contract#images'

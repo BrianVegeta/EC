@@ -382,7 +382,7 @@ class Ajax::Api::ItemController < ApplicationController
 
    def get_message_params
      # pid : long => 商品ID
-     params.permit(:pid ).merge(paging_params)
+     params.permit(:pid).merge(paging_params)
    end
 
    def add_message_params
