@@ -73,7 +73,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
       records,
       recursiveTimes,
     } = getState()[REDUCER_KEY];
-    console.log(categoryID);
+
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),

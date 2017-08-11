@@ -17,7 +17,6 @@ class Collections extends React.Component {
   };
 
   componentDidMount() {
-    console.log('DID MOUNT');
     this.props.dispatchReset();
     this.props.dispatchFetchItem();
   }

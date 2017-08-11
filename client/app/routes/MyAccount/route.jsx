@@ -3,6 +3,7 @@
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 import routeMyItem from './routes/Item/route'
 import routeMyCollection from './routes/Collections/route';
+import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
 
 
@@ -27,6 +28,7 @@ export default store => ({
   childRoutes: [
     routeMyItem(store),
     routeMyCollection(store),
+    routeMyCoupon(store),
     routeMyWishList(store),
   ],
   /*
