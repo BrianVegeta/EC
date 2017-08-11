@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import WishList from 'components/WishList';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
+import Container from '../Container';
 
 class WishListComponent extends React.Component {
 
@@ -35,7 +36,7 @@ class WishListComponent extends React.Component {
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
 
     return (
-      <div>
+      <Container titleText="許願紙條">
         <ListContainer
           minHeight={500}
           noDataText={hasNoData ? '尚無任何許願紙條' : null}
@@ -49,7 +50,7 @@ class WishListComponent extends React.Component {
             <WishList records={records} />
           </PaginationContainer>
         </ListContainer>
-      </div>
+      </Container>
     );
   }
 }

@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import Container from '../Container';
-
 import ListContainer from 'components/ListContainer';
 import ItemList from 'components/ItemList';
+
+import Container from '../Container';
 
 class Collections extends React.Component {
 

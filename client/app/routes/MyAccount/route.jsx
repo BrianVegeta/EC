@@ -1,11 +1,13 @@
 // import { fetchCollections } from 'connector/myCollections/actions';
 // import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
+import { omit } from 'lodash';
 import routeMyItem from './routes/Item/route'
 import routeMyCollection from './routes/Collections/route';
 import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
-
+import routeMyOwnerComment from './routes/CommentOwner/route';
+import routeMyLesseeComment from './routes/CommentLessee/route';
 
 export default store => ({
   path: '/p/my',
@@ -17,18 +19,14 @@ export default store => ({
     }, 'my.acc');
   },
 
-  indexRoute: {
-    getComponent(_nextState, callback) {
-      require.ensure([], (require) => {
-        callback(null, { formComponent: require('./Items/Container').default });
-      }, 'my.acc.items');
-    },
-  },
+  indexRoute: omit(routeMyItem(store), ['path']),
 
   childRoutes: [
     routeMyItem(store),
     routeMyCollection(store),
     routeMyCoupon(store),
+    routeMyOwnerComment(store),
+    routeMyLesseeComment(store),
     routeMyWishList(store),
   ],
   /*

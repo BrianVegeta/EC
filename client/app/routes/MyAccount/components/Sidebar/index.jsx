@@ -12,16 +12,16 @@ import styles from './styles.sass';
 
 const myAccountNavs = {
   items: { text: '分享/發佈', path: my.itemPath },
-  orders: { text: '收到的預訂', path: '/' },
-  schedule: { text: '行事曆', path: '/' },
-  records: { text: '預訂記錄', path: '/' },
+  orders: { text: '收到的預訂', path: my.itemPath },
+  schedule: { text: '行事曆', path: my.itemPath },
+  records: { text: '預訂記錄', path: my.itemPath },
   wishs: { text: '許願紙條', path: my.wishPath },
   coupon: { text: '優惠卷', path: my.couponPath },
   favorite: { text: '收藏', path: my.collectionPath },
-  wallet: { text: '我的錢包', path: my.walletPath },
-  score: { text: '評價', path: my.commentPath },
-  profile: { text: '個人資料', path: '/' },
-  account: { text: '帳戶管理', path: '/' },
+  wallet: { text: '我的錢包', path: my.collectionPath },
+  score: { text: '評價', path: my.commentOwnerPath },
+  profile: { text: '個人資料', path: my.collectionPath },
+  account: { text: '帳戶管理', path: my.collectionPath },
 };
 
 
