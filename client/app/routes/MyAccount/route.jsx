@@ -8,6 +8,7 @@ import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
 import routeMyOwnerComment from './routes/CommentOwner/route';
 import routeMyLesseeComment from './routes/CommentLessee/route';
+import routeMyCalendar from './routes/Calendar/route';
 
 export default store => ({
   path: '/p/my',
@@ -28,6 +29,7 @@ export default store => ({
     routeMyOwnerComment(store),
     routeMyLesseeComment(store),
     routeMyWishList(store),
+    routeMyCalendar(store),
   ],
   /*
   childRoutes: [

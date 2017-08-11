@@ -5,7 +5,7 @@ import { TARGET_LESSEE, fetchRecords, reset } from '../modules/myComment';
 
 /* pick props */
 const mapStateToProps = ({ environment, myComment, auth }) => ({
-  environment, myComment, auth,
+  environment, myComment, auth, isOwner: false,
 });
 
 /* pick dispatch */
