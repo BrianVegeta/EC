@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Location from 'react-icons/lib/md/location-on';
 import LocalOffer from 'react-icons/lib/md/local-offer';
 

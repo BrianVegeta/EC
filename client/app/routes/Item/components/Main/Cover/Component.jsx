@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Picture from 'components/Picture';
 
-
 class Cover extends React.Component {
 
   static propTypes = {

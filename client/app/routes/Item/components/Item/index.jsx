@@ -25,13 +25,42 @@ class Item extends React.Component {
     item: myPropTypes.item.isRequired,
     auth: myPropTypes.authOnHeader.isRequired,
     dispatch: PropTypes.func.isRequired,
+    dispatchFetchItem: PropTypes.func.isRequired,
+    dispatchReset: PropTypes.func.isRequired,
+    dispatchRecords: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    console.log('did MOUNT');
+    this.props.dispatchFetchItem();
+    this.props.dispatchReset();
+    this.props.dispatchRecords();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    console.log('shouldUpdate');
+    console.log(nextProps);
+
+    if (nextProps.item.isFetching) {
+      console.log('no update');
+      return false;
+    } else if (nextProps.messageboard.isFetching === true) {
+      console.log('no update');
+      return false;
+    }
+
+    console.log('yes update');
+    return true;
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchReset();
+  }
+
   render() {
+    console.log('did render');
     const { item, dispatch, auth } = this.props;
-    console.log('item');
-    console.log(item);
-    console.log('author');
-    console.log(auth);
+    console.log(this.props);
     const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
     return (

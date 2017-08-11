@@ -1,6 +1,6 @@
 // @author: vincent
-
-import React, { PropTypes } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types';
 import {
   ITEM_MAIN_INTRODUCTION,
   ITEM_MAIN_REGULATION,
@@ -8,10 +8,11 @@ import {
   ITEM_MAIN_COMMENT,
   ITEM_MAIN_SHARER,
 } from 'constants/itemDetailScrollNavs';
-
+import colors from 'styles/colorExport.scss';
 import { without } from 'lodash';
 import Cover from './Cover';
-import Breadcrumbs from './Breadcrumbs';
+
+// import Breadcrumbs from './Breadcrumbs';
 import Title from './Title';
 import TitleFooter from './TitleFooter';
 import Description from './Description';
@@ -29,12 +30,18 @@ class Main extends React.Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  rComment(comments) {
-    // const id = ITEM_MAIN_COMMENT;
-    // const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
+  rComment(isPaginable, comments, dispatchRecords, dispatchAddMessage) {
+    console.log(dispatchAddMessage);
+    const id = ITEM_MAIN_COMMENT;
+    const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
     return (
-      <div styleName="nav-anchor">
-        <Comments comments={comments} />
+      <div styleName="nav-anchor" {...{ id, ref }}>
+        <Comments
+          isPaginable={isPaginable}
+          comments={comments}
+          dispatchRecords={dispatchRecords}
+          dispatchAddMessage={dispatchAddMessage}
+        />
       </div>
     );
   }
@@ -51,10 +58,6 @@ class Main extends React.Component {
 
   rCancelPolicy(cancelPolicys) {
 
-    if (cancelPolicys == null || cancelPolicys.length === 0) {
-      return null;
-    }
-
     const id = ITEM_MAIN_CANCEL_POLICY;
     const ref = cancelPolicysRef => (this[ITEM_MAIN_CANCEL_POLICY] = cancelPolicysRef);
     return (
@@ -70,7 +73,7 @@ class Main extends React.Component {
   rIntroduction(item) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
-    const { pname, pdes, unit, city, area, tags, calculate_charge_type, category } = item;
+    const { pname, pdes, unit, city, area, tags, category } = item;
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={pname} />
@@ -80,10 +83,13 @@ class Main extends React.Component {
         <Description description={pdes} />
         <Tags tags={tags} />
         <Detail
-          city={city}
-          area={area}
-          unit={unit}
-          calculate_charge_type={calculate_charge_type}
+          unit={item.unit}
+          calculate_charge_type={item.calculate_charge_type}
+          topCategory={item.top_category}
+          advanceDay={item.ship_before_start_days}
+          sendOption={item.send_option}
+          returnOption={item.return_option}
+          shipDay={item.ship_before_start_days}
         />
       </div>
     );
@@ -97,16 +103,17 @@ class Main extends React.Component {
       return (
         <div styleName="nav-anchor" {...{ id, ref }} >
           <Sharer
-            name={""}
-            picture={""}
-            city={""}
-            area={""}
-            autobiography={""}
+            name={''}
+            picture={''}
+            city={''}
+            area={''}
+            autobiography={''}
             owner_credit={0.0}
             create_time={0}
-            target_uid={""}
+            target_uid={''}
             is_follow={false}
-            dispatch={dispatch} />
+            dispatch={dispatch}
+          />
         </div>
       );
     } else {
@@ -129,21 +136,34 @@ class Main extends React.Component {
     }
   }
 
+  rOverdueRate(overdueRate, deposit) {
+    const overdueRatePerDay = ((deposit * overdueRate) / 100);
+    return (<div styleName="section-content">
+      <div style={{ lineHeight: '100px', fontWeight: 500, fontSize: 24 }}>逾期金政策</div>
+      <div>
+        <span>逾期1天，將從押金扣除</span>
+        <span style={{ color: colors.colorHeart }}>{`NTD$${overdueRatePerDay}`}</span>
+        <span>，扣除的總金額則取決於逾期的天數做累加計算</span>
+      </div>
+      <div style={{ paddingBottom: 40 }} />
+    </div>);
+  }
   render() {
-    const { item, dispatch } = this.props;
+    const { item, messageboard, dispatch, dispatchRecords, dispatchAddMessage } = this.props;
     const images = without([item.img1, item.img2, item.img3], null);
-
-    console.log(images);
+    console.log(messageboard);
     return (
       <div styleName="container">
         <div styleName="cover">
           <Cover images={images} />
         </div>
         {this.rIntroduction(item)}
-        {this.rRegulation(item.rules)}
-        {this.rCancelPolicy(item.cancel_policys)}
+        { (item.rules.length > 0) && this.rRegulation(item.rules)}
+        { (item.cancel_policys.length > 0) && this.rCancelPolicy(item.cancel_policys)}
+        { item.overdue_rate && this.rOverdueRate(item.overdue_rate, item.deposit)}
         {this.rSharer(item, dispatch)}
-        {this.rComment(item.comments)}
+        {this.rComment(messageboard.isPaginable, messageboard.records,
+          dispatchRecords, dispatchAddMessage)}
       </div>
     );
   }

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FollowButton from 'components/Button/Follow';
 
-import { formatDate } from 'lib/time';
 import Avatar from 'components/Avatar';
+import Stars from 'components/Stars';
 
 const FAKER_IAMGE = 'http://r.fod4.com/c=sq/s=w1000,pd1/o=80/http://p.fod4.com/p/channels/qpztk/profile/ToJNnsiRhmm405cz7CPX_charlize-theron-head-shot.jpg';
 const propTypes = {
@@ -32,11 +32,10 @@ const SharerCard = props => (
           <div styleName="sub-header">
             {`${props.city}${props.area}`}
           </div>
-          <div styleName="rating">
-            {[1, 2, 3, 4, 5].map((v, index) =>
-              <span key={`${index + 1}`} className="fa fa-star" styleName="star" />,
-            )}
-          </div>
+          <Stars
+            size={35}
+            score={props.owner_credit}
+          />
         </div>
       </div>
     </div>
