@@ -10,8 +10,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
-  dispatchFetchItem: () => dispatch(fetchCoupon),
-  dispatchReset: () => dispatch(reset),
+  dispatchFetchItem: () => dispatch(fetchCoupon()),
+  dispatchReset: () => dispatch(reset()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
