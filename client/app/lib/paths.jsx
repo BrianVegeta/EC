@@ -24,8 +24,8 @@ export const userprofilePaths = {
 
 export const my = {
   indexPath: '/p/my',
-  itemPath: '/p/my/items',
-  wishPath: '/p/my/wishs',
+  itemPath: '/p/my/item',
+  wishPath: '/p/my/wish',
   walletPath: '/p/my/wallet',
   collectionPath: '/p/my/collections',
   couponPath: '/p/my/coupon',

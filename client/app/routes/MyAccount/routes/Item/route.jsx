@@ -1,16 +1,15 @@
 import { injectReducer } from 'reducers';
 
-const key = 'myWish';
+const key = 'myItem';
 export default store => ({
-  path: 'wish',
+  path: 'item',
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const Container = require('../../containers/WishContainer').default;
-      const reducer = require('../../modules/myWish').default;
+      const Container = require('../../containers/ItemContainer').default;
+      const reducer = require('../../modules/myItem').default;
       injectReducer(store, { key, reducer });
-
       cb(null, Container);
-    }, 'my.wish');
+    }, 'my.item');
   },
 });

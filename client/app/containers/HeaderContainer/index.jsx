@@ -84,7 +84,7 @@ class Header extends React.Component {
                       list={[
                         { link: '/', text: '收到的預訂' },
                         { link: '/', text: '消費訂單' },
-                        { link: '/', text: '分享/發布' },
+                        { link: '/', text: '分享/發佈' },
                         { link: '/', text: '我的錢包' },
                         { link: '/', text: '評價' },
                       ]}

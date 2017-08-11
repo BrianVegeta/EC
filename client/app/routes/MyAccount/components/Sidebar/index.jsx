@@ -11,7 +11,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const myAccountNavs = {
-  items: { text: '分享/發布', path: my.itemPath },
+  items: { text: '分享/發佈', path: my.itemPath },
   orders: { text: '收到的預訂', path: '/' },
   schedule: { text: '行事曆', path: '/' },
   records: { text: '預訂記錄', path: '/' },

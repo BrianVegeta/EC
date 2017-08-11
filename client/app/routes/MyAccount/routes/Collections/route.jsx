@@ -6,8 +6,7 @@ export default store => ({
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      console.log('mycollections');
-      const Container = require('../../containers/CollectionsContainer').default;
+      const Container = require('../../containers/ItemContainer').default;
       const reducer = require('../../modules/myCollection').default;
       injectReducer(store, { key, reducer });
       cb(null, Container);

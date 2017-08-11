@@ -1,6 +1,7 @@
 // import { fetchCollections } from 'connector/myCollections/actions';
 // import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
+import routeMyItem from './routes/Item/route'
 import routeMyCollection from './routes/Collections/route';
 import routeMyWishList from './routes/Wish/route';
 
@@ -11,7 +12,6 @@ export default store => ({
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
       const MyAccount = require('./containers/MyAccountContainer').default;
-
       cb(null, MyAccount);
     }, 'my.acc');
   },
@@ -25,6 +25,7 @@ export default store => ({
   },
 
   childRoutes: [
+    routeMyItem(store),
     routeMyCollection(store),
     routeMyWishList(store),
   ],
