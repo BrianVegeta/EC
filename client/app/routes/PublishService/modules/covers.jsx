@@ -1,10 +1,17 @@
-import { asyncXhrPost } from 'lib/xhr';
 import { List } from 'immutable';
+import { asyncXhrPutImage } from 'lib/xhr';
+import {
+  base64ToBlobData,
+  asyncS3ToBlob,
+  asyncContainBlobTobase64,
+} from 'lib/utils';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.COVERS';
+const COVER_PARAM_KEY = 'croppedImage';
+const REDUCER_KEY = 'publishCovers';
 
 
 // =============================================
@@ -56,85 +63,67 @@ export const reset = () => ({
   type: RESET,
 });
 
-/* base64 trans to blob */
-function toBlob(dataBase64, type) {
-  const binStr = atob(dataBase64.split(',')[1]);
-  const len = binStr.length;
-  const arr = new Uint8Array(len);
-  for (let i = 0; i < len; i += 1) {
-    arr[i] = binStr.charCodeAt(i);
-  }
-  return new Blob([arr], { type: (type || 'image/jpg') });
-}
-
-/* s3 url to blob url */
-function s3ImageToBlob(s3Url, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', s3Url, true);
-  xhr.responseType = 'arraybuffer';
-  xhr.onload = () => {
-    const arrayBufferView = new Uint8Array(xhr.response);
-    const blob = new Blob([arrayBufferView], { type: 'image/jpg' });
-    const urlCreator = window.URL || window.webkitURL;
-    const blobUrl = urlCreator.createObjectURL(blob);
-    callback(blobUrl);
-  };
-
-  xhr.send();
-}
-
-/* Fill size */
-function containCropToCanvasDataURL(dataURL, callback) {
-  const img = new Image();
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = 650;
-  canvas.height = 650;
-  img.onload = () => {
-    const min = Math.min(img.width, img.height);
-    ctx.drawImage(img,
-      (img.width - min) / 2, (img.height - min) / 2, min, min,
-      0, 0, 650, 650,
-    );
-    callback(canvas.toDataURL());
-  };
-  img.src = dataURL;
-}
-
-export function uploadCover(key, dataBase64Url) {
+export function uploadCover(key, base64) {
   return (dispatch) => {
-    const blob = toBlob(dataBase64Url);
-    const blobUrl = URL.createObjectURL(blob);
-    dispatch(updatedCover(key, blobUrl));
+    const blob = base64ToBlobData(base64);
+    dispatch(updatedCover(key, URL.createObjectURL(blob)));
 
     const formData = new FormData();
-    formData.append('croppedImage', blob);
+    formData.append(COVER_PARAM_KEY, blob);
 
-    asyncXhrPost(
-      '/ajax/images/item_cover.json',
-      formData,
-    )
-    .then((json) => {
-      const { photoUrl } = json;
-      s3ImageToBlob(photoUrl, (responseBlobUrl) => {
-        dispatch(updatedCover(key, responseBlobUrl, photoUrl));
-      });
+    asyncXhrPutImage('/ajax/images/item_cover.json', formData)
+    .then((s3) => {
+      asyncS3ToBlob(s3)
+      .then(responseBlobUrl =>
+        dispatch(updatedCover(key, responseBlobUrl, s3)),
+      );
     });
   };
 }
 
-// export function checkThumbsAndUpload() {
-//   return (dispatch, getState) => {
-//     const { coverThumbs } = getState().publish;
-//     _.each(coverThumbs, (thumb) => {
-//       containCropToCanvasDataURL(thumb.blobUrl, (dataURL) => {
-//         dispatch(
-//           uploadCoverAndUpdateThumbs(thumb.key, dataURL),
-//         );
-//       });
-//     });
-//   };
-// }
+export const asyncUploadCover = (key, base64) =>
+  dispatch =>
+    new Promise((resolve, reject) => {
+      const blobData = base64ToBlobData(base64);
+
+      dispatch(updatedCover(key, URL.createObjectURL(blobData)));
+      const formData = new FormData();
+      formData.append(COVER_PARAM_KEY, blobData);
+
+      asyncXhrPutImage('/ajax/images/item_cover.json', formData)
+      .then((s3) => {
+        asyncS3ToBlob(s3)
+        .then((responseBlobUrl) => {
+          resolve(s3);
+          dispatch(updatedCover(key, responseBlobUrl, s3));
+        });
+      })
+      .catch(e => reject(e));
+    });
+
+export const asyncUploadBlobCover = (key, blob) =>
+  dispatch =>
+    new Promise((resolve) => {
+      asyncContainBlobTobase64(blob)
+      .then((base64) => {
+        dispatch(asyncUploadCover(key, base64))
+        .then(s3 => resolve(s3))
+        .catch(e => console.log(e));
+      });
+    });
+
+export const processRawCovers = () =>
+  (dispatch, getState) =>
+    new Promise((resolve) => {
+      const covers = getState()[REDUCER_KEY];
+      const rawCovers = covers.filter(cover => !cover.isStored);
+      const promises = rawCovers.map(cover =>
+        dispatch(asyncUploadBlobCover(cover.key, cover.blob)),
+      );
+      Promise.all(promises)
+      .then(results => resolve(results))
+      .catch(e => console.log(e));
+    });
 
 
 // =============================================

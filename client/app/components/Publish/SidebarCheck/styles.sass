@@ -1,0 +1,20 @@
+@import "~styles/color.sass"
+
+.container
+  margin-top: 12px
+  margin-bottom: 12px
+  padding: 6px 0
+  .text
+    margin-left: 28px
+    font-size: 18px
+    line-height: 1
+    color: $global-middleBlack
+  &.untouched
+    .text
+      color: $global-placeholder
+  &.checked
+    .icon
+      float: left
+      margin-right: 10px
+    .text
+      color: $global-primaryColor

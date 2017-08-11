@@ -5,23 +5,22 @@ import myPropTypes from 'propTypes';
 import FormContainer from 'components/Publish/FormContainer';
 import SortableGallery from 'components/Publish/SortableGallery';
 import CropperEditor from 'components/Publish/CropperEditor';
+import ButtonNextStep, {
+  STATUS_DISABLE,
+  STATUS_LOADING,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
+import AlertPanel from 'components/AlertPanel';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
-// <ButtonNextStep
-//   onNext: this.constructor.saveAndNext,
-//   onValid: this.validateAll,
-//   isDisabled: !this.isAllValid(),
-//   beforeNext: this.beforeNext,
-//   waitingCount: this.constructor.getUnStoredsCount(coverThumbs),
-// />
 class Step1Cover extends React.Component {
 
   static propTypes = {
-    covers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    publishCovers: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatchCreateCover: PropTypes.func.isRequired,
     dispatchDeleteCover: PropTypes.func.isRequired,
     dispatchChangeOrders: PropTypes.func.isRequired,
@@ -33,11 +32,57 @@ class Step1Cover extends React.Component {
     }).isRequired,
     dispatchUploadCover: PropTypes.func.isRequired,
     dispatchCloseCropper: PropTypes.func.isRequired,
+    dispatchProcessRawCovers: PropTypes.func.isRequired,
+    nextStep: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isUploading: false,
+      displayNoImageError: false,
+    };
+
+    this.onNextStep = this.onNextStep.bind(this);
+  }
+
+  onNextStep() {
+    const {
+      publishCovers,
+      dispatchProcessRawCovers,
+      nextStep,
+    } = this.props;
+
+    if (publishCovers.length === 0) {
+      this.setState({ displayNoImageError: true });
+      return;
+    }
+
+    this.setState({ isUploading: true, displayNoImageError: false });
+    dispatchProcessRawCovers()
+    .then(() => {
+      this.setState({ isUploading: false });
+      nextStep();
+    });
+  }
+
+  renderButtonStatus() {
+    const {
+      publishCovers,
+    } = this.props;
+
+    if (publishCovers.length === 0) {
+      return STATUS_DISABLE;
+    }
+    if (this.state.isUploading) {
+      return STATUS_LOADING;
+    }
+    return STATUS_VALID;
+  }
 
   render() {
     const {
-      covers,
+      publishCovers,
       dispatchCreateCover,
       dispatchDeleteCover,
       dispatchChangeOrders,
@@ -51,31 +96,7 @@ class Step1Cover extends React.Component {
       dispatchUploadCover,
     } = this.props;
 
-    // const p1 = () =>
-    //   new Promise((resolve, reject) =>
-    //     setTimeout(() => {
-    //       console.log(1);
-    //       return resolve(1);
-    //     }, 2000),
-    //   );
-    // const p2 = () =>
-    //   new Promise((resolve, reject) =>
-    //     setTimeout(() => {
-    //       console.log(2);
-    //       return resolve(2);
-    //     }, 3000),
-    //   );
-    // const p3 = () =>
-    //   new Promise((resolve, reject) =>
-    //     setTimeout(() => {
-    //       console.log(3);
-    //       return resolve(3);
-    //     }, 1000),
-    //   );
-    //
-    // Promise.all([p1(), p2(), p3()])
-    // .then(results => console.log(results))
-    // .catch(e => console.log(e));
+    const { displayNoImageError } = this.state;
 
     return (
       <FormContainer title="上傳照片" >
@@ -86,12 +107,21 @@ class Step1Cover extends React.Component {
           <li>尺寸建議為650x650px</li>
         </ul>
         <SortableGallery
-          covers={covers}
+          covers={publishCovers}
           createCover={dispatchCreateCover}
           deleteCover={dispatchDeleteCover}
           changeOrders={dispatchChangeOrders}
           openCropper={dispatchOpenCropper}
         />
+        {displayNoImageError &&
+          <AlertPanel message="至少上傳一張圖片" marginBottom={40} />
+        }
+        <div styleName="footer">
+          <ButtonNextStep
+            status={this.renderButtonStatus()}
+            onClick={this.onNextStep}
+          />
+        </div>
         {cropper.blob &&
           <CropperEditor
             cropper={cropper}

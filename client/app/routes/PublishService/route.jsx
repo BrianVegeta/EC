@@ -1,11 +1,17 @@
+import { publishService as router } from 'lib/paths';
 import { injectReducer } from 'reducers';
 import { omit } from 'lodash';
 
-import routeStep1Cover from './routes/routeStep1Cover';
+import routeStepCover from './routes/routeStepCover';
+import routeStepAbout from './routes/routeStepAbout';
+import routeStepDelivery from './routes/routeStepDelivery';
+import routeStepPrice from './routes/routeStepPrice';
+import routeStepRegulation from './routes/routeStepRegulation';
+import routeStepConfirm from './routes/routeStepConfirm';
 
 const key = 'publish';
 export default store => ({
-  path: '/p/publish-service',
+  path: router.indexPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
@@ -18,9 +24,14 @@ export default store => ({
     }, 'publish.service');
   },
 
-  indexRoute: omit(routeStep1Cover(store), ['path']),
+  indexRoute: omit(routeStepCover(store), ['path']),
 
   childRoutes: [
-    routeStep1Cover(store),
+    routeStepCover(store),
+    routeStepAbout(store),
+    routeStepDelivery(store),
+    routeStepPrice(store),
+    routeStepRegulation(store),
+    routeStepConfirm(store),
   ],
 });

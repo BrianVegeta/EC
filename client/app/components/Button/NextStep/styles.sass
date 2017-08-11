@@ -1,3 +1,6 @@
+@import "~styles/color.sass"
+// TODO: globle color
+
 .button
   font-size: 20px
   width: 200px
@@ -5,19 +8,18 @@
   height: 50px
   border-radius: 5px
   margin-bottom: 40px
-
-.activeButton
-  composes: button
-.activeButton
-  background-color: #666
-  color: #fff
-  &:active
-    background: #444
-  &:hover
-    background: #999
-
-.disableButton
-  composes: button
-  background: #EAEAEA
-  color: #B8B8B8
-  cursor: default
+  background: #E9E9E9
+  color: #B9B9B9
+  cursor: pointer
+  &.active
+    color: #fff
+    background: #FF9442
+    &:hover
+      background: #FFB34F
+    &:active
+      background: #F57C00
+  &.disabled
+    cursor: default
+  .loading-icon
+    margin-right: 10px
+    display: inline-block

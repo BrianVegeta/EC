@@ -25,3 +25,13 @@ export const userprofilePaths = {
 export const publish = {
   spaceIndexPath: '/p/publish-space',
 };
+
+export const publishService = {
+  indexPath: '/p/publish-service',
+  coverPath: '/p/publish-service/step1-cover',
+  aboutPath: '/p/publish-service/step2-about',
+  deliveryPath: '/p/publish-service/step3-delivery',
+  pricePath: '/p/publish-service/step4-price',
+  regulationPath: '/p/publish-service/step5-regulation',
+  confirmPath: '/p/publish-service/step6-confirm',
+};

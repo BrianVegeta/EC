@@ -19,7 +19,7 @@ const Bounce = styled.div`
 
   border-radius: 100%;
   display: inline-block;
-  animation: ${animation} -1.16s 1s infinite ease-in-out;
+  animation: ${animation} -1.4s 1s infinite ease-in-out;
 `;
 
 const Bounce2 = Bounce.extend`
@@ -28,7 +28,7 @@ const Bounce2 = Bounce.extend`
 `;
 
 const Bounce3 = Bounce.extend`
-  animation-delay: -1.4s;
+  animation-delay: -1.16s;
   margin-left: 4px;
 `;
 

@@ -3,13 +3,8 @@ import { connect } from 'react-redux';
 import PublishService from '../components/PublishService';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish }) => ({
-  environment, publish,
+const mapStateToProps = ({ environment, publish }, { location }) => ({
+  environment, publish, currentPath: location.pathname,
 });
-
-/* pick dispatch */
-// const mapDispatchToProps = (dispatch, { params }) => ({
-//   dispatchFetchUser: () => dispatch(fetchUser(params.uid)),
-// });
 
 export default connect(mapStateToProps)(PublishService);

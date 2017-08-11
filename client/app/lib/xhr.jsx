@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import ReactOnRails from 'react-on-rails';
 import { browserHistory } from 'react-router';
 import * as paths from 'lib/paths';
 
@@ -13,6 +14,13 @@ const setup = method => Object.assign({}, SETTINGS, { method });
 const SETTINGS_POST = setup('POST');
 const SETTINGS_GET = setup('GET');
 const SETTINGS_DELETE = setup('DELETE');
+const SETTINGS_PUT_IMAGE = {
+  credentials: 'same-origin',
+  method: 'PUT',
+  headers: {
+    'X-CSRF-Token': ReactOnRails.authenticityToken(),
+  },
+};
 
 // FETCH GET 不需登入的
 export const fetchXhrGet = (path, successCallback, failCallback = null) => {
@@ -155,9 +163,9 @@ export const asyncXhrPost = (path, params) =>
     .catch((err) => { throw err; });
   });
 
-// ASYNC POST
+// ASYNC AUTH POST
 export const asyncXhrAuthedPost = (path, params, state) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
     .then(response => response.json())
     .then((json) => {
@@ -175,4 +183,15 @@ export const asyncXhrAuthedPost = (path, params, state) =>
       }
     })
     .catch((err) => { throw err; });
+  });
+
+// ASYNC PUT
+export const asyncXhrPutImage = (path, formData) =>
+  new Promise((resolve, reject) => {
+    fetch(path, { ...SETTINGS_PUT_IMAGE, body: formData })
+    .then(response => response.json())
+    .then((json) => {
+      resolve(json.photoUrl);
+    })
+    .catch(err => reject(err));
   });

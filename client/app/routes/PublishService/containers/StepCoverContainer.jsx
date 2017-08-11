@@ -1,12 +1,19 @@
 import { connect } from 'react-redux';
-
-import Step1Cover from '../components/Step1Cover';
-import { createCover, deleteCover, changeOrders, uploadCover } from '../modules/covers';
+import { browserHistory } from 'react-router';
+import { publishService as router } from 'lib/paths';
+import Step1Cover from '../components/StepCover';
+import {
+  createCover,
+  deleteCover,
+  changeOrders,
+  uploadCover,
+  processRawCovers,
+} from '../modules/covers';
 import { openCropper, closeCropper } from '../modules/cropper';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
-  environment, publish, covers, cropper,
+const mapStateToProps = ({ environment, publish, publishCovers, cropper }) => ({
+  environment, publish, publishCovers, cropper,
 });
 
 /* pick dispatch */
@@ -17,6 +24,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchOpenCropper: (key, blob) => dispatch(openCropper(key, blob)),
   dispatchCloseCropper: () => dispatch(closeCropper()),
   dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
+  dispatchProcessRawCovers: () => dispatch(processRawCovers()),
+  nextStep: () => browserHistory.push(router.aboutPath),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Step1Cover);
