@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import ErrorTooltip from 'components/ErrorTooltip';
 import { randomKey } from 'lib/generator';
 
-export default function inputWithError(InputComponent, defaultProps) {
+export default function inputWithError(InputComponent, defaultProps = {}) {
   const Container = styled.div`
     display: inline-block;
   `;
@@ -97,8 +97,6 @@ export default function inputWithError(InputComponent, defaultProps) {
       this.setState({ error });
       return false;
     }
-
-    handle
 
     render() {
       const { error } = this.state;

@@ -191,6 +191,8 @@ Rails.application.routes.draw do
       # OTHERS
       get 'banks', to: 'banks#index'
       post 'bank_branchs', to: 'banks#branchs'
+      get 'cities', to: 'cities#index'
+      post 'city_areas', to: 'cities#areas'
       # ITEM
       get 'categories', to: 'categories#index'
     end

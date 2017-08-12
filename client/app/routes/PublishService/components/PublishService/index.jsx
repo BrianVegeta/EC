@@ -46,12 +46,12 @@ class PublishService extends React.Component {
         status: STATUS_CHECKED,
       },
       {
-        text: '關於物品',
+        text: '關於服務',
         path: publishService.aboutPath,
         status: STATUS_CHECKED,
       },
       {
-        text: '寄件資訊',
+        text: '服務資訊',
         path: publishService.coverPath,
         status: STATUS_UNCHECK,
       },
@@ -63,6 +63,11 @@ class PublishService extends React.Component {
       {
         text: '建立分享人守則',
         path: publishService.regulationPath,
+        status: STATUS_UNCHECK,
+      },
+      {
+        text: '建立退訂政策',
+        path: publishService.cancelPolicyPath,
         status: STATUS_UNCHECK,
       },
       {

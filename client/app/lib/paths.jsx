@@ -33,5 +33,6 @@ export const publishService = {
   deliveryPath: '/p/publish-service/step3-delivery',
   pricePath: '/p/publish-service/step4-price',
   regulationPath: '/p/publish-service/step5-regulation',
-  confirmPath: '/p/publish-service/step6-confirm',
+  cancelPolicyPath: '/p/publish-service/step6-cancel-policy',
+  confirmPath: '/p/publish-service/step7-confirm',
 };

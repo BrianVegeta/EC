@@ -7,6 +7,7 @@ import routeStepAbout from './routes/routeStepAbout';
 import routeStepDelivery from './routes/routeStepDelivery';
 import routeStepPrice from './routes/routeStepPrice';
 import routeStepRegulation from './routes/routeStepRegulation';
+import routeStepCancelPolicy from './routes/routeStepCancelPolicy';
 import routeStepConfirm from './routes/routeStepConfirm';
 
 const key = 'publish';
@@ -33,5 +34,6 @@ export default store => ({
     routeStepPrice(store),
     routeStepRegulation(store),
     routeStepConfirm(store),
+    routeStepCancelPolicy(store),
   ],
 });

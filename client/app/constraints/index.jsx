@@ -1,5 +1,6 @@
 import bankSetup from './bankSetup';
 import auth from './auth';
+import publish from './publish';
 
 const {
   realName,
@@ -9,6 +10,7 @@ const {
   accName,
   accNo,
 } = bankSetup;
+
 const {
   email,
   phone,
@@ -16,6 +18,12 @@ const {
   passwordConfirmation,
   nickname,
 } = auth;
+
+const {
+  title,
+  descript,
+  cityArea,
+} = publish;
 
 export default {
   verifyCode: {
@@ -42,4 +50,8 @@ export default {
   accBankBranchId,
   accName,
   accNo,
+  /* publish */
+  title,
+  descript,
+  cityArea,
 };

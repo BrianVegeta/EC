@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+
+import cities from 'modules/cities';
+
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
 import auth from './authReducer';
@@ -7,7 +10,6 @@ import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';
 import itemRelease from './itemReleaseReducer';
-import cities from './citiesReducer';
 import publish from './publishReducer';
 import search from './searchReducer';
 import mine from './mineReducer';
@@ -33,7 +35,6 @@ const reducers = {
   recommends,
   itemRelease,
   cities,
-  publish,
   search,
   mine,
   notification,

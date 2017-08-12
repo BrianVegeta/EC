@@ -1,0 +1,69 @@
+@import "~styles/input.sass"
+
+$arrowSize: 30px
+$buttonZindex: 1001
+$dropdownZindex: 1000
+
+$disableBgColor: #E9E9E9
+$disableBorderColor: #B8B8B8
+
+.input
+  font-weight: 200
+  width: 100%
+  height: $inputHeight
+  line-height: $inputLineHeight
+  font-size: $inputTextSize
+  position: relative
+  border-radius: $inputRadius
+  .innerWrapper
+    padding: $inputPaddingTop $inputPaddingRight
+    text-align: left
+    border: 1px solid $inputBorderColor
+    border-radius: $inputRadius
+    color: $inputTextColor
+    position: relative
+    z-index: 1
+    height: 100%
+    background-color: #fff
+    .innerText
+      max-height: $inputLineHeight
+      overflow: hidden
+      margin-right: 30px
+      .placeholder
+        color: $placeholderColor
+    .dropdownArrow
+      color: $inputBorderColor
+      float: right
+      margin: (($inputHeight - ($inputPaddingTop * 2)) - $arrowSize) / 2
+  &.focusing
+    border-bottom: 0
+    box-shadow: $inputFocusingShadow
+    .innerWrapper
+      border-color: $inputFocusingBorderColor
+      z-index: $buttonZindex
+      .dropdownArrow
+        color: $inputFocusingBorderColor
+  &.disabled
+    .innerWrapper
+      border-color: $disableBorderColor
+      color: $disableBorderColor
+      background: $disableBgColor
+  &.invalid
+    .innerWrapper
+      border-color: $hasErrorBorderColor
+
+.dropdown
+  padding: 10px 0
+  background-color: #fff
+  position: absolute
+  z-index: $dropdownZindex
+  left: 0
+  top: 100%
+  margin-top: -1px
+  margin-bottom: 20px
+  border: 1px solid $inputFocusingBorderColor
+  text-align: left
+  cursor: default
+  border-bottom-left-radius: $inputRadius
+  border-bottom-right-radius: $inputRadius
+  box-shadow: $inputFocusingShadow

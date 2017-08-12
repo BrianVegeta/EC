@@ -36,8 +36,8 @@ export const reset = () => ({
 const initialState = {
   title: '',
   descript: '',
-  cityzone: '',
-  shippingDays: null,
+  cityName: '',
+  areaName: '',
 };
 
 export default (state = initialState, action) => {

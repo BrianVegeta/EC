@@ -129,6 +129,7 @@ export const asyncXhrGet = path =>
     })
     .catch((err) => { throw err; });
   });
+
 export const asyncXhrAuthedGet = (path, state) =>
   new Promise((resolve, reject) => {
     fetch(path, { ...SETTINGS_GET })
