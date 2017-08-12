@@ -34,12 +34,20 @@ export const reset = () => ({
   type: RESET,
 });
 
-export function fetchCollections() {
+export function fetchCalendar(startDate, endDate) {
   return (dispatch, getState) => {
+    const { auth } = getState();
+    const { currentUser } = auth;
+    console.log(startDate);
+    console.log(endDate);
     dispatch(fetching());
     asyncXhrAuthedPost(
-      '/ajax/get_fav.json',
-      {},
+      '/ajax/get_calendar.json',
+      {
+        start_date: startDate,
+        end_date: endDate,
+        uid: currentUser.uid
+      },
       getState(),
     )
     .then((responseData) => {
@@ -61,7 +69,10 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCHING:
-      return Object.assign({}, state, { isFetching: true });
+      return Object.assign({}, state, {
+        records: [],
+        isFetching: true,
+      });
 
     case FETCHED:
       return Object.assign({}, state, {

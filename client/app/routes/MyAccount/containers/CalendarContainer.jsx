@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Container from '../components/Calendar';
-import { } from '../modules/myCalendar';
+import { fetchCalendar, reset } from '../modules/myCalendar';
 
 const mapStateToProps = (state) => {
   const { environment, myCalendar } = state;
@@ -9,7 +9,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatch
+  dispatch,
+  dispatchCalendar: (startDate, endDate) => dispatch(fetchCalendar(startDate, endDate)),
+  dispatchReset: () => dispatch(reset()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

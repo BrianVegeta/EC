@@ -4,9 +4,17 @@ import { extendMoment } from 'moment-range';
 
 moment.locale('zh-tw');
 const DATE_FORMAT = 'YYYY/MM/DD';
+const DATE_FORMAT_FOR_ORDER = 'MM/DD(dddd)'
+export function getMoment(number) {
+  return moment(number);
+}
 
 export function formatDate(number) {
   return moment(number).format(DATE_FORMAT);
+}
+
+export function formatDateForOrder(number) {
+  return moment(number).format(DATE_FORMAT_FOR_ORDER);
 }
 
 export function isToday(momentObj) {
