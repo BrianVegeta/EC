@@ -21,12 +21,11 @@ export default class extends React.Component {
   render() {
     const { children, environment } = this.props;
     return (
-      <div className="container-gray-bg">
+      <div className="container-gray-bg" style={{ paddingBottom: 20 }}>
         <HeaderContainer />
         <MainWrapper minHeight={environment.height}>
           {children}
         </MainWrapper>
-        <Footer />
       </div>
     );
   }

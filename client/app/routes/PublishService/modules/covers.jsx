@@ -11,7 +11,7 @@ import {
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.COVERS';
 const COVER_PARAM_KEY = 'croppedImage';
-const REDUCER_KEY = 'publishCovers';
+export const REDUCER_KEY = 'covers';
 
 
 // =============================================

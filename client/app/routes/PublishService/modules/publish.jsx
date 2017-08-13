@@ -4,8 +4,11 @@
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH';
-// const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publish';
 
+/* enums */
+export const ASSIGN_ADDRESS_BY_CUSTOMER = '0';
+export const ASSIGN_ADDRESS_BY_OWNER = '1';
 
 // =============================================
 // = action type =
@@ -34,10 +37,22 @@ export const reset = () => ({
 // = reducer =
 // =============================================
 const initialState = {
+  /* ABOUT */
   title: '',
   descript: '',
   cityName: '',
   areaName: '',
+  categoryID: null,
+  tag1: '',
+  tag2: '',
+  tag3: '',
+  /* DELIVERY */
+  assignAddressByCustomer: false,
+  assignAddressByOwner: false,
+  assignCity: '',
+  assignArea: '',
+  assignAddress: '',
+  /* PRICE */
 };
 
 export default (state = initialState, action) => {

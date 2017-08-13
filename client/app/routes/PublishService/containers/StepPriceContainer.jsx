@@ -11,8 +11,8 @@ import StepPrice from '../components/StepPrice';
 // import { openCropper, closeCropper } from '../modules/cropper';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish, publishCovers, cropper }) => ({
-  environment, publish, publishCovers, cropper,
+const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
+  environment, publish, covers, cropper,
 });
 
 /* pick dispatch */

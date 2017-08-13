@@ -19,7 +19,23 @@ export default {
   },
   cityArea: {
     presence: {
-      message: '請選擇',
+      message: '請選擇地區',
+    },
+  },
+  address: {
+    presence: {
+      message: '^請輸入詳細地址',
+    },
+  },
+  category: {
+    presence: {
+      message: '請選擇分類',
+    },
+  },
+  tag: {
+    length: {
+      maximum: 15,
+      tooLong: '^請短於%{count}個字',
     },
   },
 };

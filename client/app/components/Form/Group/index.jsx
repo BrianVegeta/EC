@@ -39,7 +39,7 @@ const InputField = props => (
       <div style={props.headerTextStyle}>
         {props.headerText}
         {props.optional && <span styleName="optional">（非必填）</span>}
-        {props.multiple && <span styleName="multiple">（可多選）</span>}
+        {props.multiple && <span styleName="multiple">（可複選）</span>}
         {props.limiter && <span styleName="inputLimiter">{props.limiter}</span>}
       </div>
       {props.helperText && <div styleName="helper">{props.helperText}</div>}

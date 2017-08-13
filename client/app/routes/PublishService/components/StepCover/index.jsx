@@ -20,7 +20,7 @@ const cx = classnames.bind(styles);
 class Step1Cover extends React.Component {
 
   static propTypes = {
-    publishCovers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    covers: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatchCreateCover: PropTypes.func.isRequired,
     dispatchDeleteCover: PropTypes.func.isRequired,
     dispatchChangeOrders: PropTypes.func.isRequired,
@@ -48,12 +48,12 @@ class Step1Cover extends React.Component {
 
   onNextStep() {
     const {
-      publishCovers,
+      covers,
       dispatchProcessRawCovers,
       nextStep,
     } = this.props;
 
-    if (publishCovers.length === 0) {
+    if (covers.length === 0) {
       this.setState({ displayNoImageError: true });
       return;
     }
@@ -68,10 +68,10 @@ class Step1Cover extends React.Component {
 
   renderButtonStatus() {
     const {
-      publishCovers,
+      covers,
     } = this.props;
 
-    if (publishCovers.length === 0) {
+    if (covers.length === 0) {
       return STATUS_DISABLE;
     }
     if (this.state.isUploading) {
@@ -82,7 +82,7 @@ class Step1Cover extends React.Component {
 
   render() {
     const {
-      publishCovers,
+      covers,
       dispatchCreateCover,
       dispatchDeleteCover,
       dispatchChangeOrders,
@@ -107,7 +107,7 @@ class Step1Cover extends React.Component {
           <li>尺寸建議為650x650px</li>
         </ul>
         <SortableGallery
-          covers={publishCovers}
+          covers={covers}
           createCover={dispatchCreateCover}
           deleteCover={dispatchDeleteCover}
           changeOrders={dispatchChangeOrders}

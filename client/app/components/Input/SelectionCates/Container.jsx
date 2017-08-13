@@ -1,17 +1,16 @@
 import { connect } from 'react-redux';
-import { fetchCities, fetchAreas } from 'modules/cities';
+import { fetchCategories } from 'modules/categories';
 
 import Compnent from './index';
 
 /* pick props */
-const mapStateToProps = ({ environment, cities }) => ({
-  environment, cities,
+const mapStateToProps = ({ environment, categories }, { topCategory }) => ({
+  environment, categories: categories[topCategory],
 });
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
-  dispatchFetchCities: () => dispatch(fetchCities()),
-  dispatchFetchAreas: cityName => dispatch(fetchAreas(cityName)),
+  dispatchFetchCategories: () => dispatch(fetchCategories()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Compnent);

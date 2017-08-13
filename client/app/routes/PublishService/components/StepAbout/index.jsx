@@ -6,47 +6,78 @@ import FormContainer from 'components/Publish/FormContainer';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
+import InputSelectionCatesContainer from 'components/Input/SelectionCates/Container';
+import InputTextTag from 'components/Input/TextTag';
 import FormGroup from 'components/Form/Group';
 import FormTitleLimiter from 'components/Form/TitleLimiter';
 import constraints from 'constraints';
-// import {
-//   InputTextareaWithError,
-//   InputSelectionCitiesWithError,
-//   InputSelectionCatesWithError,
-//   AlertPanel,
-//   NextStep,
-// } from '../../components';
+import {
+  CATEGORY_GOODS,
+} from 'constants/enums';
+import ButtonNextStep, {
+  STATUS_DISABLE,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
 
-// import ButtonNextStep, {
-//   STATUS_DISABLE,
-//   STATUS_LOADING,
-//   STATUS_VALID,
-// } from 'components/Button/NextStep';
-
-// import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
-// const cx = classnames.bind(styles);
 class StepAbout extends React.Component {
 
   static propTypes = {
     dispatchChangeData: PropTypes.func.isRequired,
+    dispatchValidate: PropTypes.func.isRequired,
     publish: PropTypes.shape({
       title: PropTypes.string.isRequired,
     }).isRequired,
+    isValid: PropTypes.bool.isRequired,
+    nextStep: PropTypes.func.isRequired,
   };
+
+  static renderButtonStatus(isValid) {
+    return isValid ? STATUS_VALID : STATUS_DISABLE;
+  }
+
+  constructor(props) {
+    super(props);
+    this.onNextStepClick = this.onNextStepClick.bind(this);
+  }
+
+  onNextStepClick() {
+    const {
+      dispatchValidate,
+      nextStep,
+    } = this.props;
+    dispatchValidate()
+    .then(() => {
+      nextStep();
+    })
+    .catch(() => {
+      this.titleInput.valid();
+      this.descriptInput.valid();
+      this.cityAreaInput.valid();
+      this.categoryInput.valid();
+      this.tag1Input.valid();
+      this.tag2Input.valid();
+      this.tag3Input.valid();
+    });
+  }
 
   render() {
     const {
       publish,
       dispatchChangeData,
+      isValid,
     } = this.props;
 
     const {
       title,
       descript,
       cityName, areaName,
+      categoryID,
+      tag1,
+      tag2,
+      tag3,
     } = publish;
 
     return (
@@ -56,6 +87,7 @@ class StepAbout extends React.Component {
           limiter={<FormTitleLimiter limit={30} length={title.length} />}
         >
           <InputText
+            ref={titleInput => (this.titleInput = titleInput)}
             placeholder="請輸入服務標題"
             onChange={value => dispatchChangeData({ title: value })}
             value={title}
@@ -68,6 +100,7 @@ class StepAbout extends React.Component {
           limiter={<FormTitleLimiter limit={250} length={descript.length} />}
         >
           <InputTextArea
+            ref={descriptInput => (this.descriptInput = descriptInput)}
             placeholder="清楚介紹您的服務，敘述更多吸引人的細節"
             onChange={value => dispatchChangeData({ descript: value })}
             value={descript}
@@ -77,6 +110,9 @@ class StepAbout extends React.Component {
         </FormGroup>
         <FormGroup headerText="服務地區">
           <InputSelectionCitiesContainer
+            ref={cityAreaInput => (
+              this.cityAreaInput = (cityAreaInput && cityAreaInput.getWrappedInstance())
+            )}
             cityName={cityName}
             areaName={areaName}
             value={`${cityName}${areaName}`}
@@ -88,6 +124,56 @@ class StepAbout extends React.Component {
             validateOnBlur
           />
         </FormGroup>
+        <FormGroup headerText={'分類'}>
+          <InputSelectionCatesContainer
+            ref={categoryInput => (
+              this.categoryInput = (categoryInput && categoryInput.getWrappedInstance())
+            )}
+            topCategory={CATEGORY_GOODS}
+            categoryId={categoryID}
+            placeholder="請選擇分類"
+            onSelect={category => dispatchChangeData({ categoryID: category.categoryID })}
+            value={categoryID ? String(categoryID) : ''}
+            constraints={constraints.category}
+            validateOnBlur
+          />
+        </FormGroup>
+        <FormGroup headerText={'加入 #標籤'}>
+          <div styleName="tag-block">
+            <InputTextTag
+              ref={tag1Input => (this.tag1Input = tag1Input)}
+              placeholder="標籤"
+              onChange={value => dispatchChangeData({ tag1: value })}
+              value={tag1}
+              constraints={constraints.tag}
+              validateOnBlur
+            />
+          </div>
+          <div styleName="tag-block">
+            <InputTextTag
+              ref={tag2Input => (this.tag2Input = tag2Input)}
+              placeholder="標籤"
+              onChange={value => dispatchChangeData({ tag2: value })}
+              value={tag2}
+              constraints={constraints.tag}
+              validateOnBlur
+            />
+          </div>
+          <div styleName="tag-block">
+            <InputTextTag
+              ref={tag3Input => (this.tag3Input = tag3Input)}
+              placeholder="標籤"
+              onChange={value => dispatchChangeData({ tag3: value })}
+              value={tag3}
+              constraints={constraints.tag}
+              validateOnBlur
+            />
+          </div>
+        </FormGroup>
+        <ButtonNextStep
+          status={isValid ? STATUS_VALID : STATUS_DISABLE}
+          onClick={this.onNextStepClick}
+        />
       </FormContainer>
     );
   }

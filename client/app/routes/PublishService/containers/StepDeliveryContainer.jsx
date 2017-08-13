@@ -1,29 +1,26 @@
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+
+import { publishService as publishServiceRouter } from 'lib/paths';
 
 import StepDelivery from '../components/StepDelivery';
-// import {
-//   createCover,
-//   deleteCover,
-//   changeOrders,
-//   uploadCover,
-//   processRawCovers,
-// } from '../modules/covers';
-// import { openCropper, closeCropper } from '../modules/cropper';
+import {
+  changeData,
+} from '../modules/publish';
+import { validateDelivery, validateDeliveryBy } from '../modules/validation';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish, publishCovers, cropper }) => ({
-  environment, publish, publishCovers, cropper,
+const mapStateToProps = ({ environment, publish }) => ({
+  environment,
+  publish,
+  isValid: validateDeliveryBy(publish).isValid,
 });
 
 /* pick dispatch */
-// const mapDispatchToProps = dispatch => ({
-//   dispatchCreateCover: blob => dispatch(createCover(blob)),
-//   dispatchDeleteCover: key => dispatch(deleteCover(key)),
-//   dispatchChangeOrders: covers => dispatch(changeOrders(covers)),
-//   dispatchOpenCropper: (key, blob) => dispatch(openCropper(key, blob)),
-//   dispatchCloseCropper: () => dispatch(closeCropper()),
-//   dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
-//   dispatchProcessRawCovers: () => dispatch(processRawCovers()),
-// });
+const mapDispatchToProps = dispatch => ({
+  dispatchChangeData: data => dispatch(changeData(data)),
+  dispatchValidate: () => dispatch(validateDelivery()),
+  nextStep: () => browserHistory.push(publishServiceRouter.pricePath),
+});
 
-export default connect(mapStateToProps)(StepDelivery);
+export default connect(mapStateToProps, mapDispatchToProps)(StepDelivery);

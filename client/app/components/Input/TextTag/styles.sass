@@ -1,0 +1,42 @@
+@import "~styles/input.sass"
+
+$unitWidth: 40px
+
+.input-outer
+  composes: inputer
+  position: relative
+  &.focusing
+    border-color: $inputFocusingBorderColor
+    box-shadow: $inputFocusingShadow
+    .unit
+      color: $inputTextColor
+    .input::placeholder
+      color: $focusingPlaceholderColor
+
+.input
+  composes: inputer
+  border: 0
+  padding: 0
+  margin: 0
+  outline: 0
+  width: 100%
+  height: $inputHeight - ($inputBorderWidth * 2)
+  border-radius: $inputRadius - $inputBorderWidth
+  padding: $inputPaddingTop $inputPaddingRight $inputPaddingTop $unitWidth
+  &::placeholder
+    color: $placeholderColor
+  &:disabled
+    color: $disabledColor
+    background: $disabledBgColor
+
+
+.unit
+  user-select: none
+  display: inline-block
+  position: absolute
+  top: $inputPaddingTop
+  left: $inputPaddingRight
+  color: $inputPlaceholderColor
+  width: $unitWidth
+  height: ($inputHeight - ($inputBorderWidth * 2)) - ($inputPaddingTop * 2)
+  border: $inputBorderWidth solid transparent

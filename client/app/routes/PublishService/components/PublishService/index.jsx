@@ -22,14 +22,14 @@ class PublishService extends React.Component {
     currentPath: PropTypes.string.isRequired,
     children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
+    isCoversValid: PropTypes.bool.isRequired,
+    isAboutValid: PropTypes.bool.isRequired,
+    isDeliveryValid: PropTypes.bool.isRequired,
   };
 
   static mapPathsTouched(paths, currentPath) {
     const index = findIndex(paths, { path: currentPath });
-    return paths.map((path, i) => ({
-      isTouched: (i <= index),
-      ...path,
-    }));
+    return paths.map((path, i) => ({ isTouched: (i <= index), ...path }));
   }
 
   render() {
@@ -37,23 +37,26 @@ class PublishService extends React.Component {
       children,
       environment,
       currentPath,
+      isCoversValid,
+      isAboutValid,
+      isDeliveryValid,
     } = this.props;
 
     const stepPaths = [
       {
         text: '上傳照片',
         path: publishService.indexPath,
-        status: STATUS_CHECKED,
+        status: isCoversValid ? STATUS_CHECKED : STATUS_UNCHECK,
       },
       {
         text: '關於服務',
         path: publishService.aboutPath,
-        status: STATUS_CHECKED,
+        status: isAboutValid ? STATUS_CHECKED : STATUS_UNCHECK,
       },
       {
         text: '服務資訊',
         path: publishService.coverPath,
-        status: STATUS_UNCHECK,
+        status: isDeliveryValid ? STATUS_CHECKED : STATUS_UNCHECK,
       },
       {
         text: '設定價格',

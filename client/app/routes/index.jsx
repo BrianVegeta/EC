@@ -1,6 +1,6 @@
 import layoutHoc from 'containers/layoutHoc';
 
-// import Fixed from 'layouts/Fixed';
+import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
 import layoutItemDetail from 'layouts/ItemDetail';
 // import Mine from 'layouts/MyAccount';
@@ -30,7 +30,7 @@ import PublishService from './PublishService/route';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
 // import Registration from './Auth/Registration';
-// import ReservationGoods from './Reservation/Goods/route';
+import ReservationGoods from './Reservation/Goods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 
@@ -96,14 +96,14 @@ export default store => ({
         routeItem(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
-    //   childRoutes: [
-    //     ReservationGoods((nextState) => {
-    //       dispatch(editItem(nextState.params.pid));
-    //     }, dispatch),
-    //   ],
-    // },
+    {
+      component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
+      childRoutes: [
+        ReservationGoods(() => {
+          // dispatch(editItem(nextState.params.pid));
+        }, store.dispatch),
+      ],
+    },
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [

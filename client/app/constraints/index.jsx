@@ -23,6 +23,9 @@ const {
   title,
   descript,
   cityArea,
+  address,
+  category,
+  tag,
 } = publish;
 
 export default {
@@ -54,4 +57,7 @@ export default {
   title,
   descript,
   cityArea,
+  address,
+  category,
+  tag,
 };
