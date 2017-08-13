@@ -26,7 +26,7 @@ export const my = {
   indexPath: '/p/my',
   itemPath: '/p/my/item',
   wishPath: '/p/my/wish',
-  walletPath: '/p/my/wallet',
+  walletPath: '/p/my/wallet-all',
   collectionPath: '/p/my/collections',
   calendarPath: '/p/my/calendar',
   couponPath: '/p/my/coupon',

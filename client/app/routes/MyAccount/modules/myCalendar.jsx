@@ -38,8 +38,6 @@ export function fetchCalendar(startDate, endDate) {
   return (dispatch, getState) => {
     const { auth } = getState();
     const { currentUser } = auth;
-    console.log(startDate);
-    console.log(endDate);
     dispatch(fetching());
     asyncXhrAuthedPost(
       '/ajax/get_calendar.json',

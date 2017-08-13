@@ -56,7 +56,8 @@ const propTypes = forbidExtraProps({
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
-
+  byPassPrevMonthEvent: PropTypes.bool,
+  byPassNextMonthEvent: PropTypes.bool,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   onOutsideClick: PropTypes.func,
@@ -99,7 +100,6 @@ const defaultProps = {
   initialVisibleMonth: null,
   firstDayOfWeek: null,
   daySize: DAY_SIZE,
-
   navPrev: null,
   navNext: null,
 

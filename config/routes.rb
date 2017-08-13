@@ -114,6 +114,8 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #PAYMENT
+      post 'get_balance_list', to: 'payment#search'
 
       #CALENDAR
       post 'get_calendar', to: 'contract#calendar' #

@@ -1,0 +1,145 @@
+$dayBorderColor: #f1f1f1;
+$borderColor: #999;
+$primaryColor: #31ABBA;
+$hoverColor: #53BECE;
+$activeColor: #1991A0;
+$lineColor: #333;
+$inputBgColor: #EDF6F6;
+$radius: 5px;
+
+
+$react-dates-width-input: 145px !default;
+$react-dates-width-arrow: 24px !default;
+$react-dates-width-tooltip-arrow: 20px !default;
+$react-dates-spacing-vertical-picker: 72px !default;
+
+$react-dates-color-primary: $primaryColor !default;
+$react-dates-color-secondary: $hoverColor !default;
+
+$react-dates-color-primary-shade-1: #33dacd !default;
+$react-dates-color-primary-shade-2: #53BECE !default;
+$react-dates-color-primary-shade-3: #80e8e0 !default;
+$react-dates-color-primary-shade-4: $hoverColor !default;
+$react-dates-color-white: #fff !default;
+$react-dates-color-gray: #565a5c !default;
+$react-dates-color-gray-dark: darken($react-dates-color-gray, 10.5%) !default;
+$react-dates-color-gray-light: lighten($react-dates-color-gray, 17.8%) !default;   // #82888a
+$react-dates-color-gray-lighter: lighten($react-dates-color-gray, 45%) !default;     // #cacccd
+$react-dates-color-gray-lightest: lighten($react-dates-color-gray, 60%) !default;
+$react-dates-color-highlighted: #ffe8bc !default;
+
+$react-dates-color-border: #dbdbdb !default;
+$react-dates-color-border-light: #dce0e0 !default;
+$react-dates-color-border-medium: #c4c4c4 !default;
+$react-dates-color-placeholder-text: #757575 !default;
+$react-dates-color-text: #484848 !default;
+$react-dates-color-text-focus: $hoverColor !default;
+$react-dates-color-focus: #99ede6 !default;
+
+$react-dates-z-index: 0 !default;
+
+@import "~react-dates/css/variables.scss";
+@import "~react-dates/css/styles.scss";
+.CalendarDay--hovered-span, .CalendarDay--after-hovered-start {
+  color: $react-dates-color-white;
+}
+.CalendarDay--selected-span {
+  background: $react-dates-color-primary-shade-2;
+  border: 1px double $dayBorderColor;
+  color: $react-dates-color-white;
+
+  &.CalendarDay--hovered,
+  &:active {
+    background: $activeColor;
+    border: 1px double $dayBorderColor;
+  }
+
+  &.CalendarDay--last-in-range {
+    border-right: $dayBorderColor;
+  }
+}
+
+
+.CalendarDay {
+  border: 1px solid $dayBorderColor;
+}
+.CalendarDay--hovered {
+  border: 1px double $dayBorderColor;
+}
+.CalendarDay--blocked-minimum-nights {
+  border: 1px solid $dayBorderColor;
+}
+.CalendarDay--blocked-calendar, .CalendarDay--blocked-calendar:active  {
+  background: #FFF
+}
+.CalendarDay--blocked-calendar.CalendarDay--blocked.CalendarDay--highlighted-calendar {
+  background: #ffe8bc;
+  color: #565a5c;
+  cursor: default;
+}
+.CalendarDay--selected-span {
+  border: 1px double $dayBorderColor;
+  &.CalendarDay--hovered,
+  &:active {
+    border: 1px double $dayBorderColor;
+  }
+
+  &.CalendarDay--last-in-range {
+    border-right: $dayBorderColor;
+  }
+}
+
+.CalendarDay--hovered-span,
+.CalendarDay--after-hovered-start {
+  border: 1px double $dayBorderColor;
+}
+
+.CalendarDay--selected-start,
+.CalendarDay--selected-end,
+.CalendarDay--selected {
+  border: 1px double $dayBorderColor;
+}
+
+.CalendarDay--blocked-out-of-range {
+  border: 1px solid $dayBorderColor;
+}
+.DayPickerNavigation.DayPickerNavigation--horizontal {
+  .DayPickerNavigation__prev,
+  .DayPickerNavigation__next {
+    top: 14px;
+    border: 0;
+    background: #fff;
+  }
+}
+.CalendarMonth--horizontal .CalendarMonth__caption,
+.CalendarMonth--vertical .CalendarMonth__caption {
+  padding: 15px 0 55px;
+}
+
+.DateInput__display-text--focused {
+  background: $inputBgColor;
+  border-color: $inputBgColor;
+  color: $borderColor;
+}
+.DateInput__display-text--has-input {
+  color: $lineColor;
+}
+
+.DateRangePickerInput {
+  border-radius: $radius;
+  border: 1px solid $borderColor;
+}
+.DateInput {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 6px;
+  &:first-child {
+    border-right: 1px solid $borderColor;
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+  }
+  &:last-child {
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+}

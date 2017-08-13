@@ -9,6 +9,9 @@ import routeMyWishList from './routes/Wish/route';
 import routeMyOwnerComment from './routes/CommentOwner/route';
 import routeMyLesseeComment from './routes/CommentLessee/route';
 import routeMyCalendar from './routes/Calendar/route';
+import routeWalletAll from './routes/Wallet/All/route';
+import routeWalletIn from './routes/Wallet/In/route';
+import routeWalletOut from './routes/Wallet/Out/route';
 
 export default store => ({
   path: '/p/my',
@@ -30,6 +33,9 @@ export default store => ({
     routeMyLesseeComment(store),
     routeMyWishList(store),
     routeMyCalendar(store),
+    routeWalletAll(store),
+    routeWalletIn(store),
+    routeWalletOut(store),
   ],
   /*
   childRoutes: [

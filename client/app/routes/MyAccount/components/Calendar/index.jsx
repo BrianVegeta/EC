@@ -4,12 +4,14 @@ import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { forEach } from 'lodash';
 import moment from 'moment';
+import 'moment/locale/zh-tw';
 import OrderNote from 'components/OrderNote';
-
-import DayPickerRangeController from '../CustomCalendar/anbnbCal/src/components/DayPickerRangeController';
+// import { DayPickerRangeController } from 'react-dates';
+import 'styles/react-dates-override.scss';
+import { DayPickerRangeController } from '../CustomCalendar/anbnbCal';
 
 import Container from '../Container';
-import './override.scss';
+
 
 class Calendar extends React.Component {
 
@@ -17,30 +19,6 @@ class Calendar extends React.Component {
     dispatchCalendar: null,
     dispatchReset: null,
     bCode: 0,
-    // example props for the demo
-    // autoFocusEndDate: false,
-    // initialStartDate: moment().startOf('month'),
-    // initialEndDate: moment().endOf('month'),
-
-    // day presentation and interaction related props
-    // renderDay: null,
-    // minimumNights: 1,
-    // isDayBlocked: () => true,
-    // isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
-    // isDayHighlighted: () => false,
-    // enableOutsideDays: false,
-
-    // calendar presentation and interaction related props
-    // orientation: HORIZONTAL_ORIENTATION,
-    // withPortal: false,
-    // initialVisibleMonth: null,
-    // numberOfMonths: 2,
-    // onOutsideClick() {},
-    // keepOpenOnDateSelect: false,
-    // renderCalendarInfo: null,
-    // isRTL: false,
-
-    // navigation related props
     navPrev: null,
     navNext: null,
     onPrevMonthClick() {},
@@ -54,32 +32,12 @@ class Calendar extends React.Component {
     dispatchCalendar: PropTypes.func,
     dispatchReset: PropTypes.func,
     bCode: PropTypes.number,
-    // example props for the demo
-    // autoFocusEndDate: PropTypes.bool,
-    // initialStartDate: momentPropTypes.momentObj,
-    // initialEndDate: momentPropTypes.momentObj,
-
-    // keepOpenOnDateSelect: PropTypes.bool,
-    // minimumNights: PropTypes.number,
-    // isOutsideRange: PropTypes.func,
-    // isDayBlocked: PropTypes.func,
-    // isDayHighlighted: PropTypes.func,
-
-    // DayPicker props
-    // enableOutsideDays: PropTypes.bool,
-    // numberOfMonths: PropTypes.number,
-    // orientation: ScrollableOrientationShape,
-    // withPortal: PropTypes.bool,
-    // initialVisibleMonth: PropTypes.func,
-    // renderCalendarInfo: PropTypes.func,
 
     navPrev: PropTypes.node,
     navNext: PropTypes.node,
 
     onPrevMonthClick: PropTypes.func,
     onNextMonthClick: PropTypes.func,
-    // onOutsideClick: PropTypes.func,
-    // renderDay: PropTypes.func,
 
     // i18n
     monthFormat: PropTypes.string,
@@ -89,12 +47,15 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.bCode = 0x00000000;
+    moment.locale('zh-tw');
+    this.startDate = moment().startOf('month');
+    this.endDate = moment().endOf('month');
+    this.currentMonth = this.startDate.month();
   }
 
   componentDidMount() {
     console.log('DID MOUNT');
-    this.props.dispatchCalendar(moment().startOf('month').valueOf(),
-     moment().endOf('month').valueOf());
+    this.props.dispatchCalendar(this.startDate.valueOf(), this.endDate.valueOf());
   }
 
   componentWillUnmount() {
@@ -102,80 +63,75 @@ class Calendar extends React.Component {
     this.props.dispatchReset();
   }
 
+  changeMonth(number) {
+    this.startDate.add(number, 'month');
+    this.endDate.add(number, 'month');
+    this.currentMonth = this.startDate.month();
+    this.props.dispatchCalendar(this.startDate.valueOf(), this.endDate.valueOf());
+  }
+
+  renderNavigation() {
+    return (
+      <div style={{ height: 80 }}>
+        <button
+          className="button"
+          style={{ width: '200px', float: 'left' }}
+          onClick={() => { this.changeMonth(-1); }}
+        >
+          上一個月
+        </button>
+        <button
+          className="button"
+          style={{ width: '200px', float: 'right' }}
+          onClick={() => { this.changeMonth(1); }}
+        >
+          下一個月
+        </button>
+      </div>
+    );
+  }
   render() {
     const { myCalendar } = this.props;
     const { records, isFetching } = myCalendar;
-    console.log(this.props);
-    if (myCalendar == null || isFetching) {
-      return null;
+    // console.log(this.props);
+    if (records.length === 0 && isFetching) {
+      return (
+        <Container titleText={'行事曆'}>
+          { this.renderNavigation()}
+        </Container>
+      )
     }
 
     if (isFetching === false) {
       // start encode calibration
       this.bCode = 0x00000000;
       forEach(records, (order) => {
-        console.log(order.cid_no);
-        let startDate = moment(order.leasestart);
-        let endDate = moment(order.leaseend);
-        let startMonth = startDate.month();
-        let endMonth = endDate.month();
-        let startDay = (startMonth < 8) ? 1 : startDate.date();
-        let endDay = (endMonth > 8) ? moment().endOf('month').date() : endDate.date();
-        console.log(startDay);
-        console.log(endDay);
-        let lowMask = ~((2 ** startDay) - 1);
-        let upperMask = ((2 * (2 ** endDay)) - 1);
-        console.log(lowMask);
-        console.log(upperMask);
-        let result = upperMask & lowMask;
-        console.log(result);
+        // console.log(order.cid_no);
+        const startDate = moment(order.leasestart);
+        const endDate = moment(order.leaseend);
+        const startMonth = startDate.month();
+        const endMonth = endDate.month();
+        const startDay = (startMonth < this.currentMonth) ? 1 : startDate.date();
+        const endDay = (endMonth > this.currentMonth) ? moment().endOf('month').date() : endDate.date();
+        const lowMask = ~((2 ** startDay) - 1);
+        const upperMask = ((2 * (2 ** endDay)) - 1);
+        const result = upperMask & lowMask;
         this.bCode = (this.bCode | result);
       });
-      console.log(this.bCode);
     }
-   // const { focusedInput, startDate, endDate } = this.state;
-   /*
-   const props = omit(this.props, [
-     'autoFocus',
-     'autoFocusEndDate',
-     'initialStartDate',
-     'initialEndDate',
-   ]);*/
-   /*
-   let startDate = 2;
-   let lowMask = ~((2 ** startDate) - 1);
-   let endDate = 10;
-   let upperMask = ((2 * (2 ** endDate)) - 1);
-   let result = upperMask & lowMask;
-   */
-   // const startDateString = startDate && startDate.format('YYYY-MM-DD');
-   // const endDateString = endDate && endDate.format('YYYY-MM-DD');
-    console.log(this.state);
-    console.log('calendar render');
-    console.log(records.length);
-    const startDate = moment().startOf('month').add(-2, 'month');
-    const endDate = moment().endOf('month').add(-2, 'month');
-    console.log(startDate);
-    console.log(endDate);
+
     return (
       <Container titleText={'行事曆'}>
-        <div>
+        { this.renderNavigation() }
+        <div className="clear">
           <DayPickerRangeController
-            navPrev={<span />}
-            navNext={<span />}
-            startDate={startDate}
-            endDate={endDate}
-            onPrevMonthClick={() => {}}
-            onNextMonthClick={() => {}}
+            disableFocusedInput
+            hiddenChangeMonthButton
+            language={'zh-tw'}
+            initialVisibleMonth={() => this.startDate }
             isDayBlocked={() => true }
-            disabled
             isDayHighlighted={(momentObj) => {
-              //console.log('calculation');
-              //console.log(2 ** momentObj.date());
-              //console.log(this.state.bCode);
-              //console.log('calculation end');
-              return (this.bCode & (2 ** momentObj.date())  );
-
+              return (this.bCode & (2 ** momentObj.date()));
             }}
           />
         </div>

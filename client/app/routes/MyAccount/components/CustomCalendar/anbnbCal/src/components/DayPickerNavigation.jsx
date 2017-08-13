@@ -6,10 +6,10 @@ import cx from 'classnames';
 import { DayPickerNavigationPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 
-import LeftArrow from '../svg/arrow-left.svg';
-import RightArrow from '../svg/arrow-right.svg';
-import ChevronUp from '../svg/chevron-up.svg';
-import ChevronDown from '../svg/chevron-down.svg';
+// import LeftArrow from '../svg/arrow-left.svg';
+// import RightArrow from '../svg/arrow-right.svg';
+// import ChevronUp from '../svg/chevron-up.svg';
+// import ChevronDown from '../svg/chevron-down.svg';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 
 import {
@@ -20,6 +20,7 @@ import {
 const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  hiddenChangeMonthButton: PropTypes.bool,
   orientation: ScrollableOrientationShape,
 
   onPrevMonthClick: PropTypes.func,
@@ -34,6 +35,7 @@ const propTypes = forbidExtraProps({
 const defaultProps = {
   navPrev: null,
   navNext: null,
+  hiddenChangeMonthButton: false,
   orientation: HORIZONTAL_ORIENTATION,
 
   onPrevMonthClick() {},
@@ -46,36 +48,37 @@ const defaultProps = {
 
 export default function DayPickerNavigation(props) {
   const {
-    navPrev,
-    navNext,
+    hiddenChangeMonthButton,
+    // navPrev,
+    // navNext,
     onPrevMonthClick,
     onNextMonthClick,
     orientation,
     phrases,
     isRTL,
   } = props;
-
+  console.log(hiddenChangeMonthButton);
   const isVertical = orientation !== HORIZONTAL_ORIENTATION;
   const isVerticalScrollable = orientation === VERTICAL_SCROLLABLE;
 
-  let navPrevIcon = navPrev;
-  let navNextIcon = navNext;
+  // let navPrevIcon = navPrev;
+  // let navNextIcon = navNext;
   let isDefaultNavPrev = false;
   let isDefaultNavNext = false;
-  if (!navPrevIcon) {
-    isDefaultNavPrev = true;
-    navPrevIcon = isVertical ? <ChevronUp /> : <LeftArrow />;
-    if (isRTL && !isVertical) {
-      navPrevIcon = <RightArrow />;
-    }
-  }
-  if (!navNextIcon) {
-    isDefaultNavNext = true;
-    navNextIcon = isVertical ? <ChevronDown /> : <RightArrow />;
-    if (isRTL && !isVertical) {
-      navNextIcon = <LeftArrow />;
-    }
-  }
+  // if (!navPrevIcon) {
+  //   isDefaultNavPrev = true;
+  //   navPrevIcon = isVertical ? <ChevronUp /> : <LeftArrow />;
+  //   if (isRTL && !isVertical) {
+  //     navPrevIcon = <RightArrow />;
+  //   }
+  // }
+  // if (!navNextIcon) {
+  //   isDefaultNavNext = true;
+  //   navNextIcon = isVertical ? <ChevronDown /> : <RightArrow />;
+  //   if (isRTL && !isVertical) {
+  //     navNextIcon = <LeftArrow />;
+  //   }
+  // }
 
   const navClassNames = cx('DayPickerNavigation', {
     'DayPickerNavigation--horizontal': !isVertical,
@@ -93,7 +96,7 @@ export default function DayPickerNavigation(props) {
 
   return (
     <div className={navClassNames}>
-      {!isVerticalScrollable && (
+      {!hiddenChangeMonthButton && !isVerticalScrollable && (
         <button
           type="button"
           aria-label={phrases.jumpToPrevMonth}
@@ -103,21 +106,23 @@ export default function DayPickerNavigation(props) {
             e.currentTarget.blur();
           }}
         >
-          {navPrevIcon}
+          &lt;
         </button>
       )}
+      {!hiddenChangeMonthButton &&
+        <button
+          type="button"
+          aria-label={phrases.jumpToNextMonth}
+          className={nextClassNames}
+          onClick={onNextMonthClick}
+          onMouseUp={(e) => {
+            e.currentTarget.blur();
+          }}
+        >
+          &gt;
+        </button>
+      }
 
-      <button
-        type="button"
-        aria-label={phrases.jumpToNextMonth}
-        className={nextClassNames}
-        onClick={onNextMonthClick}
-        onMouseUp={(e) => {
-          e.currentTarget.blur();
-        }}
-      >
-        {navNextIcon}
-      </button>
     </div>
   );
 }

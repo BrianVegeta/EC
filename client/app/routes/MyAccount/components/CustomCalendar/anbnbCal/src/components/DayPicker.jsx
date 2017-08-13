@@ -56,6 +56,7 @@ const propTypes = forbidExtraProps({
   isRTL: PropTypes.bool,
 
   // navigation props
+  hiddenChangeMonthButton: PropTypes.bool,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   onPrevMonthClick: PropTypes.func,
@@ -81,6 +82,9 @@ const propTypes = forbidExtraProps({
   // internationalization
   monthFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
+
+  // language
+  language: PropTypes.string,
 });
 
 export const defaultProps = {
@@ -99,6 +103,7 @@ export const defaultProps = {
   isRTL: false,
 
   // navigation props
+  hiddenChangeMonthButton: false,
   navPrev: null,
   navNext: null,
   onPrevMonthClick() {},
@@ -124,6 +129,7 @@ export const defaultProps = {
   // internationalization
   monthFormat: 'MMMM YYYY',
   phrases: DayPickerPhrases,
+  language: null,
 };
 
 function applyTransformStyles(el, transform, opacity = '') {
@@ -185,7 +191,9 @@ export default class DayPicker extends React.Component {
     super(props);
 
     const currentMonth = props.hidden ? moment() : props.initialVisibleMonth();
-
+    console.log('constructor');
+    console.log(props.hidden);
+    console.log(currentMonth);
     let focusedDate = currentMonth.clone().startOf('month');
     if (props.getFirstFocusableDay) {
       focusedDate = props.getFirstFocusableDay(currentMonth);
@@ -640,6 +648,7 @@ export default class DayPicker extends React.Component {
 
   renderNavigation() {
     const {
+      hiddenChangeMonthButton,
       navPrev,
       navNext,
       orientation,
@@ -656,6 +665,7 @@ export default class DayPicker extends React.Component {
 
     return (
       <DayPickerNavigation
+        hiddenChangeMonthButton={hiddenChangeMonthButton}
         onPrevMonthClick={(e) => { this.onPrevMonthClick(null, e); }}
         onNextMonthClick={onNextMonthClick}
         navPrev={navPrev}
@@ -667,7 +677,7 @@ export default class DayPicker extends React.Component {
     );
   }
 
-  renderWeekHeader(index) {
+  renderWeekHeader(index, language) {
     const { daySize, orientation } = this.props;
     const { calendarMonthWidth } = this.state;
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
@@ -688,6 +698,10 @@ export default class DayPicker extends React.Component {
     let { firstDayOfWeek } = this.props;
     if (firstDayOfWeek == null) {
       firstDayOfWeek = moment.localeData().firstDayOfWeek();
+    }
+
+    if (language != null) {
+      moment.locale(language);
     }
 
     const header = [];
@@ -743,12 +757,13 @@ export default class DayPicker extends React.Component {
       daySize,
       isFocused,
       phrases,
+      language,
     } = this.props;
 
     const numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
     const weekHeaders = [];
     for (let i = 0; i < numOfWeekHeaders; i += 1) {
-      weekHeaders.push(this.renderWeekHeader(i));
+      weekHeaders.push(this.renderWeekHeader(i, language));
     }
 
     let firstVisibleMonthIndex = 1;

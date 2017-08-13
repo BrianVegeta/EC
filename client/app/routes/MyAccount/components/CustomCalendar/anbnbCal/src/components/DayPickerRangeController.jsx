@@ -40,6 +40,7 @@ const propTypes = forbidExtraProps({
   endDate: momentPropTypes.momentObj,
   onDatesChange: PropTypes.func,
 
+  disableFocusedInput: PropTypes.bool,
   focusedInput: FocusedInputShape,
   onFocusChange: PropTypes.func,
   onClose: PropTypes.func,
@@ -60,6 +61,7 @@ const propTypes = forbidExtraProps({
   hideKeyboardShortcutsPanel: PropTypes.bool,
   daySize: nonNegativeInteger,
 
+  hiddenChangeMonthButton: PropTypes.bool,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
 
@@ -80,13 +82,16 @@ const propTypes = forbidExtraProps({
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
 
   isRTL: PropTypes.bool,
+
+  // language
+  language: PropTypes.string,
 });
 
 const defaultProps = {
   startDate: undefined, // TODO: use null
   endDate: undefined, // TODO: use null
   onDatesChange() {},
-
+  disableFocusedInput: false,
   focusedInput: null,
   onFocusChange() {},
   onClose() {},
@@ -107,6 +112,7 @@ const defaultProps = {
   initialVisibleMonth: null,
   daySize: DAY_SIZE,
 
+  hiddenChangeMonthButton: false,
   navPrev: null,
   navNext: null,
 
@@ -128,6 +134,8 @@ const defaultProps = {
   phrases: DayPickerPhrases,
 
   isRTL: false,
+
+  language: null,
 };
 
 export default class DayPickerRangeController extends React.Component {
@@ -822,6 +830,7 @@ export default class DayPickerRangeController extends React.Component {
       orientation,
       monthFormat,
       renderMonth,
+      hiddenChangeMonthButton,
       navPrev,
       navNext,
       onOutsideClick,
@@ -830,6 +839,7 @@ export default class DayPickerRangeController extends React.Component {
       firstDayOfWeek,
       hideKeyboardShortcutsPanel,
       daySize,
+      disableFocusedInput,
       focusedInput,
       renderDay,
       renderCalendarInfo,
@@ -837,10 +847,13 @@ export default class DayPickerRangeController extends React.Component {
       isFocused,
       showKeyboardShortcuts,
       isRTL,
+      language,
     } = this.props;
 
     const { currentMonth, phrases, visibleDays } = this.state;
-
+    console.log('currentmonth = ');
+    console.log(disableFocusedInput);
+    console.log(currentMonth);
     return (
       <DayPicker
         ref={(ref) => { this.dayPicker = ref; }}
@@ -857,10 +870,11 @@ export default class DayPickerRangeController extends React.Component {
         monthFormat={monthFormat}
         renderMonth={renderMonth}
         withPortal={withPortal}
-        hidden={!focusedInput}
+        hidden={!disableFocusedInput && !focusedInput}
         initialVisibleMonth={() => currentMonth}
         daySize={daySize}
         onOutsideClick={onOutsideClick}
+        hiddenChangeMonthButton={hiddenChangeMonthButton}
         navPrev={navPrev}
         navNext={navNext}
         renderDay={renderDay}
@@ -873,6 +887,7 @@ export default class DayPickerRangeController extends React.Component {
         showKeyboardShortcuts={showKeyboardShortcuts}
         phrases={phrases}
         isRTL={isRTL}
+        language={language}
       />
     );
   }
