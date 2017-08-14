@@ -1,0 +1,40 @@
+@import "~styles/color.sass"
+
+.container
+  padding: 46px 0 60px 0
+  .sidebar
+    width: 228px
+    float: left
+    border: 1px solid $global-lineColor
+    background: #fff
+    padding: 0 25px
+    .profile
+      border-bottom: 1px solid $global-lineColor
+      padding-top: 48px
+      padding-bottom: 40px
+      .avatar
+        width: 100px
+        margin: 0 auto
+        margin-bottom: 20px
+      .username
+        font-size: 18px
+        font-weight: 600
+        line-height: 25px
+        text-align: center
+        color: $global-blackColor
+    .navsList
+      padding: 15px 0
+      .listItem
+        padding: 15px 0
+        a.itemLink
+          color: $global-blackColor
+          padding: 2px 4px
+          font-size: 16px
+          line-height: 16px
+          font-weight: 600
+          &:hover
+            color: $global-primaryColor
+  .contentWrapper
+    width: 790px
+    margin-left: 20px
+    float: left

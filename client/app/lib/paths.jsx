@@ -36,3 +36,23 @@ export const publishService = {
   cancelPolicyPath: '/p/publish-service/step6-cancel-policy',
   confirmPath: '/p/publish-service/step7-confirm',
 };
+export const my = {
+  indexPath: '/p/my',
+  itemPath: '/p/my/item',
+  wishPath: '/p/my/wish',
+  OwnerOrderItem: '/p/my/oo-it:tabName',
+  OwnerOrderService: '/p/my/oo-se:tabName',
+  OwnerOrderSpace: '/p/my/oo-sp:tabName',
+  LesseeOrderItem: '/p/my/lo-it:tabName',
+  LesseeOrderService: '/p/my/lo-se:tabName',
+  LesseeOrderSpace: '/p/my/lo-sp:tabName',
+  walletPath: '/p/my/wallet-all',
+  walletPathIn: '/p/my/wallet-in',
+  walletPathOut: '/p/my/wallet-out',
+  collectionPath: '/p/my/collections',
+  calendarPath: '/p/my/calendar',
+  couponPath: '/p/my/coupon',
+  commentPath: '/p/my/comment',
+  commentOwnerPath: '/p/my/comment-owner',
+  commentLesseePath: '/p/my/comment-lessee',
+};

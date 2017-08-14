@@ -3,8 +3,8 @@ import layoutHoc from 'containers/layoutHoc';
 import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
 import layoutItemDetail from 'layouts/ItemDetail';
-// import Mine from 'layouts/MyAccount';
 import Publish from 'layouts/Publish';
+import Mine from 'layouts/MyAccount';
 import Signinup from 'layouts/Signinup';
 // import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
@@ -21,7 +21,7 @@ import routeItemsCategory from './Items/routeCategory';
 import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
 
-// import routeMyAccount from './MyAccount/route';
+import routeMyAccount from './MyAccount/route';
 // import Categories from './Categories';
 import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
@@ -50,7 +50,6 @@ export default store => ({
         routeItemsService(store),
         routeItemsSpace(store),
         routeItemsCategory(store),
-
         // Categories(routesHelper, dispatch),
         // // Tanzaku(routesHelper, dispatch),
       ],
@@ -84,12 +83,12 @@ export default store => ({
         // ReleaseSpace(routesHelper, dispatch),
       ],
     },
-    // {
-    //   component: layoutHoc(Mine, { requireAuth }),
-    //   childRoutes: [
-    //     routeMyAccount({ dispatch }),
-    //   ],
-    // },
+    {
+      component: layoutHoc(Mine, { requireAuth }),
+      childRoutes: [
+        routeMyAccount(store),
+      ],
+    },
     {
       component: layoutHoc(layoutItemDetail, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [

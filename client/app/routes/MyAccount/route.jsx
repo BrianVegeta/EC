@@ -1,21 +1,55 @@
 // import { fetchCollections } from 'connector/myCollections/actions';
-import { fetchCoupons } from 'connector/myCoupon/actions';
+// import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
+import { omit } from 'lodash';
+import routeMyItem from './routes/Item/route'
+import routeMyCollection from './routes/Collections/route';
+import routeMyCoupon from './routes/Coupon/route';
+import routeMyWishList from './routes/Wish/route';
+import routeMyOwnerComment from './routes/CommentOwner/route';
+import routeMyLesseeComment from './routes/CommentLessee/route';
+import routeMyCalendar from './routes/Calendar/route';
+import routeWalletAll from './routes/Wallet/All/route';
+import routeWalletIn from './routes/Wallet/In/route';
+import routeWalletOut from './routes/Wallet/Out/route';
+import routeOoIt from './routes/OwnerOrder/OoIt/route';
+import routeOoSe from './routes/OwnerOrder/OoSe/route';
+import routeOoSp from './routes/OwnerOrder/OoSp/route';
+import routeLoIt from './routes/LesseeOrder/LoIt/route';
+import routeLoSe from './routes/LesseeOrder/LoSe/route';
+import routeLoSp from './routes/LesseeOrder/LoSp/route';
 
-export default ({ dispatch }) => ({
-  path: '/p/my_account',
-  getComponent(_nextState, callback) {
+export default store => ({
+  path: '/p/my',
+
+  getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      callback(null, { main: require('./Container').default });
+      const MyAccount = require('./containers/MyAccountContainer').default;
+      cb(null, MyAccount);
     }, 'my.acc');
   },
-  indexRoute: {
-    getComponent(_nextState, callback) {
-      require.ensure([], (require) => {
-        callback(null, { formComponent: require('./Items/Container').default });
-      }, 'my.acc.items');
-    },
-  },
+
+  indexRoute: omit(routeMyItem(store), ['path']),
+
+  childRoutes: [
+    routeMyItem(store),
+    routeMyCollection(store),
+    routeMyCoupon(store),
+    routeMyOwnerComment(store),
+    routeMyLesseeComment(store),
+    routeMyWishList(store),
+    routeMyCalendar(store),
+    routeWalletAll(store),
+    routeWalletIn(store),
+    routeWalletOut(store),
+    routeOoIt(store),
+    routeOoSe(store),
+    routeOoSp(store),
+    routeLoIt(store),
+    routeLoSe(store),
+    routeLoSp(store),
+  ],
+  /*
   childRoutes: [
     {
       path: 'items',
@@ -41,17 +75,7 @@ export default ({ dispatch }) => ({
         }, 'my.acc.wallet');
       },
     },
-    {
-      path: 'collections',
-      getComponent(_nextState, callback) {
-        require.ensure([], (require) => {
-          callback(null, { formComponent: require('./Collections/Container').default });
-        }, 'my.acc.collections');
-      },
-      onEnter: () => {
-        // dispatch(fetchCollections());
-      },
-    },
+
     {
       path: 'coupons',
       getComponent(_nextState, callback) {
@@ -74,5 +98,5 @@ export default ({ dispatch }) => ({
         // dispatch(fetchComments(TYPE_OWNER));
       },
     },
-  ],
+  ],*/
 });
