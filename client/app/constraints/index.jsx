@@ -26,6 +26,8 @@ const {
   address,
   category,
   tag,
+  price,
+  deposit,
 } = publish;
 
 export default {
@@ -60,4 +62,6 @@ export default {
   address,
   category,
   tag,
+  price,
+  deposit,
 };

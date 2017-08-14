@@ -28,11 +28,10 @@ export const publish = {
 
 export const publishService = {
   indexPath: '/p/publish-service',
-  coverPath: '/p/publish-service/step1-cover',
+  coverPath: '/p/publish-service',
   aboutPath: '/p/publish-service/step2-about',
   deliveryPath: '/p/publish-service/step3-delivery',
   pricePath: '/p/publish-service/step4-price',
   regulationPath: '/p/publish-service/step5-regulation',
-  cancelPolicyPath: '/p/publish-service/step6-cancel-policy',
-  confirmPath: '/p/publish-service/step7-confirm',
+  confirmPath: '/p/publish-service/step6-confirm',
 };

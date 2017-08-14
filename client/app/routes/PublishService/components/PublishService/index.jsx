@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { findIndex } from 'lodash';
+import { findIndex, includes } from 'lodash';
 
 import myPropTypes from 'propTypes';
 import SidebarCheck, {
@@ -19,64 +19,65 @@ const cx = classnames.bind(styles);
 class PublishService extends React.Component {
 
   static propTypes = {
-    currentPath: PropTypes.string.isRequired,
+    touchedStepPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
     children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
     isCoversValid: PropTypes.bool.isRequired,
     isAboutValid: PropTypes.bool.isRequired,
     isDeliveryValid: PropTypes.bool.isRequired,
+    isPriceValid: PropTypes.bool.isRequired,
+    isRegulationValid: PropTypes.bool.isRequired,
   };
 
-  static mapPathsTouched(paths, currentPath) {
-    const index = findIndex(paths, { path: currentPath });
-    return paths.map((path, i) => ({ isTouched: (i <= index), ...path }));
+  static mapPathsTouched(paths, touchedStepPaths) {
+    return paths.map(path => ({
+      isTouched: includes(touchedStepPaths, path.path),
+      ...path,
+    }));
   }
 
   render() {
     const {
       children,
       environment,
-      currentPath,
+      touchedStepPaths,
       isCoversValid,
       isAboutValid,
       isDeliveryValid,
+      isPriceValid,
+      isRegulationValid,
     } = this.props;
 
     const stepPaths = [
       {
         text: '上傳照片',
         path: publishService.indexPath,
-        status: isCoversValid ? STATUS_CHECKED : STATUS_UNCHECK,
+        isValid: isCoversValid,
       },
       {
         text: '關於服務',
         path: publishService.aboutPath,
-        status: isAboutValid ? STATUS_CHECKED : STATUS_UNCHECK,
+        isValid: isAboutValid,
       },
       {
         text: '服務資訊',
-        path: publishService.coverPath,
-        status: isDeliveryValid ? STATUS_CHECKED : STATUS_UNCHECK,
+        path: publishService.deliveryPath,
+        isValid: isDeliveryValid,
       },
       {
         text: '設定價格',
         path: publishService.pricePath,
-        status: STATUS_UNCHECK,
+        isValid: isPriceValid,
       },
       {
         text: '建立分享人守則',
         path: publishService.regulationPath,
-        status: STATUS_UNCHECK,
-      },
-      {
-        text: '建立退訂政策',
-        path: publishService.cancelPolicyPath,
-        status: STATUS_UNCHECK,
+        isValid: isRegulationValid,
       },
       {
         text: '確認發佈',
         path: publishService.confirmPath,
-        status: STATUS_UNCHECK,
+        isValid: false,
       },
     ];
     const { mapPathsTouched } = this.constructor;
@@ -89,15 +90,21 @@ class PublishService extends React.Component {
           <Sticky>
             {({ style }) => (
               <div style={{ paddingBottom: 100, ...style }}>
-                {mapPathsTouched(stepPaths, currentPath).map((stepPath, index) => (
-                  <SidebarCheck
-                    key={`${index + 1}`}
-                    text={stepPath.text}
-                    status={stepPath.status}
-                    isTouched={stepPath.isTouched}
-                    path={stepPath.path}
-                  />
-                ))}
+                {mapPathsTouched(stepPaths, touchedStepPaths).map((stepPath, index) => {
+                  const { text, isValid, isTouched, path } = stepPath;
+                  return (
+                    <SidebarCheck
+                      key={`${index + 1}`}
+                      text={text}
+                      status={
+                        (isValid && isTouched) ?
+                          STATUS_CHECKED : STATUS_UNCHECK
+                      }
+                      isTouched={isTouched}
+                      path={path}
+                    />
+                  );
+                })}
               </div>
             )}
           </Sticky>

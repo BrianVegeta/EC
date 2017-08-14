@@ -6,6 +6,7 @@ import { publishService as publishServiceRouter } from 'lib/paths';
 import StepDelivery from '../components/StepDelivery';
 import {
   changeData,
+  touchPath,
 } from '../modules/publish';
 import { validateDelivery, validateDeliveryBy } from '../modules/validation';
 
@@ -20,6 +21,7 @@ const mapStateToProps = ({ environment, publish }) => ({
 const mapDispatchToProps = dispatch => ({
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchValidate: () => dispatch(validateDelivery()),
+  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.deliveryPath)),
   nextStep: () => browserHistory.push(publishServiceRouter.pricePath),
 });
 

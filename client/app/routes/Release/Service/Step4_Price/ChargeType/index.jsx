@@ -6,12 +6,15 @@ import InputRadio from '../../../components/InputRadio';
 
 
 class ChargeType extends React.Component {
+
   static propTypes = {
     chargeType: PropTypes.object.isRequired,
   };
+
   changeChargeType(type) {
     this.props.chargeType.update(type);
   }
+
   render() {
     const { chargeType } = this.props;
     return (

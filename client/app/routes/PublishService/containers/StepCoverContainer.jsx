@@ -9,6 +9,9 @@ import {
   uploadCover,
   processRawCovers,
 } from '../modules/covers';
+import {
+  touchPath,
+} from '../modules/publish';
 import { openCropper, closeCropper } from '../modules/cropper';
 
 /* pick props */
@@ -25,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchCloseCropper: () => dispatch(closeCropper()),
   dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
   dispatchProcessRawCovers: () => dispatch(processRawCovers()),
+
+  dispatchTouchPath: () => dispatch(touchPath(router.coverPath)),
   nextStep: () => browserHistory.push(router.aboutPath),
 });
 

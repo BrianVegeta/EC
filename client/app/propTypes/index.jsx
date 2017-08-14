@@ -48,6 +48,10 @@ export default {
       text: PropTypes.string,
     }),
   ),
+  /* PUBLISH */
+  publish: PropTypes.object,
+  /* PUBLISH END */
+  /* =============================================<<<<<*/
   notification: PropTypes.object,
   /* =============================================>>>>>
   = OPTIONS =

@@ -25,6 +25,7 @@ class StepDelivery extends React.Component {
     publish: PropTypes.object.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
+    dispatchTouchPath: PropTypes.func.isRequired,
     isValid: PropTypes.bool.isRequired,
     nextStep: PropTypes.func.isRequired,
   };
@@ -35,6 +36,10 @@ class StepDelivery extends React.Component {
     this.state = {
       optionError: '',
     };
+  }
+
+  componentDidMount() {
+    this.props.dispatchTouchPath();
   }
 
   onNextStepClick() {

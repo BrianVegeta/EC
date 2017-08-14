@@ -21,6 +21,7 @@ class Step1Cover extends React.Component {
 
   static propTypes = {
     covers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    dispatchTouchPath: PropTypes.func.isRequired,
     dispatchCreateCover: PropTypes.func.isRequired,
     dispatchDeleteCover: PropTypes.func.isRequired,
     dispatchChangeOrders: PropTypes.func.isRequired,
@@ -44,6 +45,10 @@ class Step1Cover extends React.Component {
     };
 
     this.onNextStep = this.onNextStep.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatchTouchPath();
   }
 
   onNextStep() {

@@ -27,6 +27,7 @@ class StepAbout extends React.Component {
   static propTypes = {
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
+    dispatchTouchPath: PropTypes.func.isRequired,
     publish: PropTypes.shape({
       title: PropTypes.string.isRequired,
     }).isRequired,
@@ -41,6 +42,10 @@ class StepAbout extends React.Component {
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatchTouchPath();
   }
 
   onNextStepClick() {

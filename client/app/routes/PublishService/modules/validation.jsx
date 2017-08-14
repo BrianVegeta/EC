@@ -6,9 +6,15 @@ import {
   filter,
 } from 'lodash';
 
-import constraints from 'constraints';
+import { formatCurrency } from 'lib/currency';
+import constraints, {
+  PRICE_MAX,
+} from 'constraints/publish';
 
-import { REDUCER_KEY as PUBLISH_REDUCER_KEY } from './publish';
+import {
+  REDUCER_KEY as PUBLISH_REDUCER_KEY,
+  CHARGE_TYPE_FIX,
+} from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 
 /* =============================================>>>>>
@@ -143,6 +149,103 @@ export const validateDelivery = () =>
     new Promise((resolve, reject) => {
       const publish = getState()[PUBLISH_REDUCER_KEY];
       const { isValid, errors } = validateDeliveryBy(publish);
+
+      if (isValid) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+
+/* PRICE */
+export const validatePriceBy = ({
+  chargeType,
+  price,
+  deposit,
+  startDate, endDate,
+  unit,
+  reservationDays,
+  discount,
+}) => {
+  if (!chargeType) {
+    return {
+      isValid: false,
+      errors: { chargeTypeError: '請選擇一種計費方式' },
+    };
+  }
+
+  const priceNumber = parseInt(price, 10) || 0;
+  const depositNumber = parseInt(deposit, 10) || 0;
+  if ((priceNumber + depositNumber) > PRICE_MAX) {
+    return {
+      isValid: false,
+      errors: { totalError: `總計不得超過 ${formatCurrency(PRICE_MAX)}` },
+    };
+  }
+
+  const serviceDatesValidation = chargeType === CHARGE_TYPE_FIX ?
+    constraints.serviceDates : null;
+
+  const serviceUnitValidation = chargeType === CHARGE_TYPE_FIX ?
+    constraints.serviceUnit : null;
+
+  const serviceReservationDaysValidation = chargeType === CHARGE_TYPE_FIX ?
+    null : constraints.serviceReservationDays;
+
+  const errors = validate({
+    price,
+    deposit,
+    serviceDates: startDate && endDate && 'date',
+    unit,
+    reservationDays,
+    discount,
+  }, {
+    price: constraints.price,
+    deposit: constraints.deposit,
+    serviceDates: serviceDatesValidation,
+    unit: serviceUnitValidation,
+    reservationDays: serviceReservationDaysValidation,
+    discount: constraints.discount,
+  });
+
+  return {
+    isValid: isEmpty(errors),
+    errors,
+  };
+};
+
+export const validatePrice = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const publish = getState()[PUBLISH_REDUCER_KEY];
+      const { isValid, errors } = validatePriceBy(publish);
+
+      if (isValid) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+
+/* REGULATION */
+export const validateRegulationBy = ({ regulation }) => {
+  const errors = validate({
+    regulation,
+  }, {
+    regulation: constraints.regulation,
+  });
+
+  return {
+    isValid: isEmpty(errors),
+    errors,
+  };
+};
+
+export const validateRegulation = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const publish = getState()[PUBLISH_REDUCER_KEY];
+      const { isValid, errors } = validateRegulationBy(publish);
 
       if (isValid) {
         resolve();
