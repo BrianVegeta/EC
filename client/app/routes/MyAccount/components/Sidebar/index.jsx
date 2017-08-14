@@ -12,7 +12,7 @@ import styles from './styles.sass';
 
 const myAccountNavs = {
   items: { text: '分享/發佈', path: my.itemPath },
-  orders: { text: '收到的預訂', path: my.itemPath },
+  orders: { text: '收到的預訂', path: my.ownerOrderItem('TAB_REQUEST') },
   schedule: { text: '行事曆', path: my.calendarPath },
   records: { text: '預訂記錄', path: my.itemPath },
   wishs: { text: '許願紙條', path: my.wishPath },

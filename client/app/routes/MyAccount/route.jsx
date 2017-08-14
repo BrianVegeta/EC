@@ -42,7 +42,7 @@ export default store => ({
     routeWalletAll(store),
     routeWalletIn(store),
     routeWalletOut(store),
-    // routeOoIt(store),
+    routeOoIt(store),
     // routeOoSe(store),
     // routeOoSp(store),
     // routeLoIt(store),
