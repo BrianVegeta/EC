@@ -65,8 +65,6 @@ Rails.application.routes.draw do
       #ITEM
       post 'item/item_add', to: 'item#item_add'
       post 'item/item_update', to: 'item#item_update'
-      post 'item/service_add', to: 'item#service_add'
-      post 'item/service_update', to: 'item#service_update'
       post 'item/space_add', to: 'item#space_add'
       post 'item/space_update', to: 'item#space_update'
       post 'item/get_item', to: 'item#get_item' #
@@ -142,6 +140,8 @@ Rails.application.routes.draw do
 
       # ITEM
       post 'item_detail', to: 'item#view_item' #
+      post 'create_service_item', to: 'item#service_add'
+      post 'item/service_update', to: 'item#service_update'
 
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #

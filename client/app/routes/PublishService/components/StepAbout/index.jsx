@@ -12,7 +12,7 @@ import FormGroup from 'components/Form/Group';
 import FormTitleLimiter from 'components/Form/TitleLimiter';
 import constraints from 'constraints';
 import {
-  CATEGORY_GOODS,
+  CATEGORY_SERVICE,
 } from 'constants/enums';
 import ButtonNextStep, {
   STATUS_DISABLE,
@@ -134,7 +134,7 @@ class StepAbout extends React.Component {
             ref={categoryInput => (
               this.categoryInput = (categoryInput && categoryInput.getWrappedInstance())
             )}
-            topCategory={CATEGORY_GOODS}
+            topCategory={CATEGORY_SERVICE}
             categoryId={categoryID}
             placeholder="請選擇分類"
             onSelect={category => dispatchChangeData({ categoryID: category.categoryID })}

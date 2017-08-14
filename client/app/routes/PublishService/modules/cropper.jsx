@@ -13,6 +13,7 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const OPEN = prefix('OPEN');
 const CLOSE = prefix('CLOSE');
+const RESET = prefix('RESET');
 
 
 // =============================================
@@ -27,6 +28,10 @@ export const openCropper = (key, blob) => ({
 
 export const closeCropper = () => ({
   type: CLOSE,
+});
+
+export const reset = () => ({
+  type: RESET,
 });
 
 
@@ -45,6 +50,9 @@ export default (state = initialState, action) => {
       });
 
     case CLOSE:
+      return initialState;
+
+    case RESET:
       return initialState;
 
     default:

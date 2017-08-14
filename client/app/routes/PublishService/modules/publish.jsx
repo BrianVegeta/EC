@@ -1,4 +1,6 @@
-// import { asyncXhrPost } from 'lib/xhr';
+import { asyncXhrAuthedPost } from 'lib/xhr';
+// import moment from 'moment';
+import { REDUCER_KEY as COVER_REDUCER_KEY } from './covers';
 
 /* =============================================>>>>>
 = settings =
@@ -7,8 +9,8 @@ const ACTION_PREFIX = 'PUBLISH';
 export const REDUCER_KEY = 'publish';
 
 /* enums */
-export const ASSIGN_ADDRESS_BY_CUSTOMER = '0';
-export const ASSIGN_ADDRESS_BY_OWNER = '1';
+export const ASSIGN_ADDRESS_BY_OWNER = '0';
+export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
 export const CHARGE_TYPE_FIX = 'fix';
 export const CHARGE_TYPE_COUNT = 'count';
 export const CHARGE_TYPE_DAY = 'day';
@@ -41,6 +43,82 @@ export const reset = () => ({
   type: RESET,
 });
 
+export const savePublish = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const {
+        title,
+        descript,
+        categoryID,
+        city, area,
+        unit,
+        price,
+        deposit,
+        reservationDays,
+        tag1,
+        tag2,
+        tag3,
+        assignAddressByOwner,
+        assignAddressByCustomer,
+        assignCity,
+        assignArea,
+        assignAddress,
+        chargeType,
+        startDate,
+        endDate,
+        discount,
+        regulation,
+      } = getState()[REDUCER_KEY];
+      const covers = getState()[COVER_REDUCER_KEY];
+
+      const assignTypes = [];
+      if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
+      if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
+
+      const requestParams = {
+        pname: title,
+        img1: covers[0] && covers[0].s3,
+        img2: covers[1] && covers[1].s3,
+        img3: covers[2] && covers[2].s3,
+        pdes: descript,
+        cat_id: categoryID,
+        city,
+        area,
+        unit,
+        price,
+        deposit,
+        currency: 'NTD',
+        advance_reservation_days: reservationDays,
+        tag1: (tag1 || null),
+        tag2: (tag2 || null),
+        tag3: (tag3 || null),
+        assign_address_type: assignTypes.join(''),
+        assign_city: assignCity,
+        assign_area: assignArea,
+        assign_address: assignAddress,
+        calculate_charge_type: chargeType,
+        start_date: startDate.valueOf(),
+        end_date: endDate.valueOf(),
+        discounts: (chargeType === CHARGE_TYPE_FIX) ?
+          [{ type: 'FIX', param: 0, discount }] : [],
+        rules: regulation,
+        min_lease_days: 0,
+      };
+      // # min_lease_days : int => 最低租期時間 0~999
+      //
+      //
+      asyncXhrAuthedPost(
+        '/ajax/create_service_item.json',
+        requestParams,
+        getState(),
+      )
+      .then((data) => {
+        console.log(data);
+        resolve(data);
+      })
+      .catch(() => reject());
+    });
+
 
 // =============================================
 // = reducer =
@@ -72,6 +150,29 @@ const initialState = {
   reservationDays: 1,
   discount: '',
   regulation: '',
+  /* TEST DATA */
+  // title: 'title',
+  // descript: 'afafaf',
+  // cityName: '高雄市',
+  // areaName: '苓雅區',
+  // categoryID: 157,
+  // tag1: 'AA',
+  // tag2: '',
+  // tag3: '',
+  // assignAddressByCustomer: true,
+  // assignAddressByOwner: true,
+  // assignCity: '高雄市',
+  // assignArea: '苓雅區',
+  // assignAddress: '中正路一段',
+  // chargeType: CHARGE_TYPE_FIX,
+  // price: '3000',
+  // deposit: '100',
+  // startDate: moment(),
+  // endDate: moment(),
+  // unit: 2,
+  // reservationDays: 5,
+  // discount: '123',
+  // regulation: 'afafa',
 };
 
 export default (state = initialState, action) => {

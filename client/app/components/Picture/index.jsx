@@ -35,7 +35,7 @@ class Picture extends React.Component {
 
     return (
       <Placehoder
-        className={cx('placeholder', { 'box-shadow': hasShadow })}
+        className={cx('placeholder', { 'has-shadow': hasShadow })}
         size={size}
         style={style}
       >

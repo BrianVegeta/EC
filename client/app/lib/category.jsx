@@ -13,6 +13,29 @@ import {
   map,
 } from 'lodash';
 
+export const findCategoryNamesByID = (id, middleCategories) => {
+  let result = null;
+  forEach(middleCategories, (middleCategory) => {
+    if (middleCategory.id.toString() === String(id)) {
+      result = { middleName: middleCategory.name };
+      return false;
+    }
+
+    if (!middleCategory.children) return true;
+    forEach(middleCategory.children, (subCategory) => {
+      if (subCategory.id.toString() === String(id)) {
+        result = {
+          middleName: middleCategory.name,
+          name: subCategory.name,
+        };
+        return false;
+      }
+      return true;
+    });
+    return true;
+  });
+  return result;
+};
 
 export const mapCategoryNameByID = (id, categories) => {
   switch (id) {

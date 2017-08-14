@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { findIndex, includes } from 'lodash';
+import { includes } from 'lodash';
 
 import myPropTypes from 'propTypes';
 import SidebarCheck, {
@@ -27,6 +27,9 @@ class PublishService extends React.Component {
     isDeliveryValid: PropTypes.bool.isRequired,
     isPriceValid: PropTypes.bool.isRequired,
     isRegulationValid: PropTypes.bool.isRequired,
+    dispatchReset: PropTypes.func.isRequired,
+    dispatchFetchCities: PropTypes.func.isRequired,
+    dispatchFetchCategories: PropTypes.func.isRequired,
   };
 
   static mapPathsTouched(paths, touchedStepPaths) {
@@ -34,6 +37,15 @@ class PublishService extends React.Component {
       isTouched: includes(touchedStepPaths, path.path),
       ...path,
     }));
+  }
+
+  componentDidMount() {
+    this.props.dispatchFetchCities();
+    this.props.dispatchFetchCategories();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchReset();
   }
 
   render() {

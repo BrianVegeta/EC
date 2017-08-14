@@ -22,6 +22,10 @@ export const userprofilePaths = {
   commentsLesseePath: uid => `/p/userprofile/${uid}/comments-lessee`,
 };
 
+export const items = {
+  servicePath: '/p/i/service',
+};
+
 export const publish = {
   spaceIndexPath: '/p/publish-space',
 };

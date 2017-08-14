@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-// import { asyncXhrPost } from 'lib/xhr';
 import validate from 'validate.js';
 import {
   isEmpty,
@@ -17,23 +16,10 @@ import {
 } from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 
+
 /* =============================================>>>>>
-= settings =
+= Validate About =
 ===============================================>>>>>*/
-// const ACTION_PREFIX = 'PUBLISH.VALIDATION';
-
-
-// =============================================
-// = action type =
-// =============================================
-// const prefix = action => (`${ACTION_PREFIX}.${action}`);
-
-
-// =============================================
-// = actions =
-// =============================================
-
-/* COVERS */
 export const validateCoversBy = (covers) => {
   const storedCount = filter(covers, { isStored: true }).length;
   const isValid = storedCount > 0;
@@ -56,7 +42,9 @@ export const validateCovers = () =>
       }
     });
 
-/* ABOUT */
+/* =============================================>>>>>
+= Validate About =
+===============================================>>>>>*/
 export const validateAboutBy = ({
   title, descript,
   cityName, areaName,
@@ -115,7 +103,9 @@ export const validateAbout = () =>
       }
     });
 
-/* DELIVERY */
+/* =============================================>>>>>
+= Validate Delivery =
+===============================================>>>>>*/
 export const validateDeliveryBy = ({
   assignAddressByCustomer,
   assignAddressByOwner,
@@ -125,7 +115,7 @@ export const validateDeliveryBy = ({
 }) => {
   if (!assignAddressByOwner) {
     return {
-      isValid: assignAddressByCustomer,
+      isValid: !!assignAddressByCustomer,
       errors: { optionError: '至少選擇一個選項' },
     };
   }
@@ -157,7 +147,9 @@ export const validateDelivery = () =>
       }
     });
 
-/* PRICE */
+/* =============================================>>>>>
+= Price =
+===============================================>>>>>*/
 export const validatePriceBy = ({
   chargeType,
   price,
@@ -227,7 +219,9 @@ export const validatePrice = () =>
       }
     });
 
-/* REGULATION */
+/* =============================================>>>>>
+= Regulation =
+===============================================>>>>>*/
 export const validateRegulationBy = ({ regulation }) => {
   const errors = validate({
     regulation,
@@ -254,14 +248,34 @@ export const validateRegulation = () =>
       }
     });
 
-// =============================================
-// = reducer =
-// =============================================
-// export const initialState = {
-// };
-// export default (state = initialState, action) => {
-//   switch (action.type) {
-//     default:
-//       return state;
-//   }
-// };
+/* =============================================>>>>>
+= Validate all =
+===============================================>>>>>*/
+export const validateAllBy = (publish, covers) => {
+  const isCoversValid = validateCoversBy(covers).isValid;
+  const isAboutValid = validateAboutBy(publish).isValid;
+  const isDeliveryValid = validateDeliveryBy(publish).isValid;
+  const isPriceValid = validatePriceBy(publish).isValid;
+  const isRegulationValid = validateRegulationBy(publish).isValid;
+  return isCoversValid
+    && isAboutValid
+    && isDeliveryValid
+    && isPriceValid
+    && isRegulationValid;
+};
+
+export const validateAll = () =>
+  dispatch =>
+    new Promise((resolve, reject) => {
+      const promises = [
+        dispatch(validateCovers()),
+        dispatch(validateAbout()),
+        dispatch(validateDelivery()),
+        dispatch(validatePrice()),
+        dispatch(validateRegulation()),
+      ];
+
+      Promise.all(promises)
+      .then(results => resolve(results))
+      .catch(errors => reject(errors));
+    });

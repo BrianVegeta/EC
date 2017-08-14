@@ -1,29 +1,34 @@
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+
+import { CATEGORY_SERVICE } from 'constants/enums';
+import {
+  publishService as publishServiceRouter,
+  items as itemsRouter,
+} from 'lib/paths';
 
 import StepConfirm from '../components/StepConfirm';
-// import {
-//   createCover,
-//   deleteCover,
-//   changeOrders,
-//   uploadCover,
-//   processRawCovers,
-// } from '../modules/covers';
-// import { openCropper, closeCropper } from '../modules/cropper';
+import { savePublish, touchPath } from '../modules/publish';
+import {
+  validateAll,
+  validateAllBy,
+} from '../modules/validation';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
-  environment, publish, covers, cropper,
+const mapStateToProps = ({ environment, publish, covers, categories }) => ({
+  environment,
+  publish,
+  covers,
+  categories: categories[CATEGORY_SERVICE],
+  isValid: validateAllBy(publish, covers),
 });
 
 /* pick dispatch */
-// const mapDispatchToProps = dispatch => ({
-//   dispatchCreateCover: blob => dispatch(createCover(blob)),
-//   dispatchDeleteCover: key => dispatch(deleteCover(key)),
-//   dispatchChangeOrders: covers => dispatch(changeOrders(covers)),
-//   dispatchOpenCropper: (key, blob) => dispatch(openCropper(key, blob)),
-//   dispatchCloseCropper: () => dispatch(closeCropper()),
-//   dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
-//   dispatchProcessRawCovers: () => dispatch(processRawCovers()),
-// });
+const mapDispatchToProps = dispatch => ({
+  dispatchSavePublish: () => dispatch(savePublish()),
+  dispatchValidateAll: () => dispatch(validateAll()),
+  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.confirmPath)),
+  redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
+});
 
-export default connect(mapStateToProps)(StepConfirm);
+export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);
