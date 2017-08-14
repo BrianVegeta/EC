@@ -8,6 +8,7 @@ import PaginationContainer from 'components/PaginationContainer';
 
 import CSS from 'react-css-modules';
 
+import { my } from 'lib/paths';
 import { Link } from 'react-router';
 import classnames from 'classnames/bind';
 
@@ -22,6 +23,7 @@ class Wallet extends React.Component {
     }).isRequired,
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -31,6 +33,7 @@ class Wallet extends React.Component {
       endDate: null,
     };
     this.onDatesChange = this.onDatesChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +44,14 @@ class Wallet extends React.Component {
     this.props.dispatchReset;
   }
 
+  onSearch() {
+    if (this.state.startDate === null || this.state.endDate === null) {
+      return;
+    }
+    this.props.dispatchReset;
+    this.props.dispatchFetchRecords(this.state.startDate.valueOf(),
+     this.state.endDate.valueOf());
+  }
   onDatesChange({ startDate, endDate }) {
     console.log(startDate, endDate);
     this.setState({ startDate, endDate });
@@ -48,9 +59,9 @@ class Wallet extends React.Component {
 
   render() {
     const navs = [
-      { name: '所有交易', href: '' },
-      { name: '入帳', href: '' },
-      { name: '出帳', href: '' },
+      { name: '所有交易', href: my.walletPath },
+      { name: '入帳', href: my.walletPathIn },
+      { name: '出帳', href: my.walletPathOut },
     ];
     console.log(this.state);
 
@@ -80,7 +91,7 @@ class Wallet extends React.Component {
           <FormButton
             size={'sm'}
             width={'100px'}
-            onClick={() => {}}
+            onClick={this.onSearch}
             content={'搜尋'}
           />
         </div>
@@ -109,9 +120,13 @@ class Wallet extends React.Component {
             loadMore={dispatchFetchRecords}
           >
             {records.map((record, index) => (
-              <div key={`${index + 1}`}>
-                record
-              </div>
+              <WalletNote
+                key={`${index + 1}`}
+                transactionDate={record.transaction_time}
+                transactionPrice={record.price}
+                cidNo={record.args_no}
+                remark={record.remark}
+                />
             ))}
           </PaginationContainer>
         </ListContainer>

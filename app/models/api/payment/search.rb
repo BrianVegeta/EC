@@ -1,6 +1,6 @@
-class Api::Payment::Search < ApiBase
+class Api::Payment::Search < ApiAuthedBase
 
-  PATH = '/client/payment/account_balance/page_search';
+  PATH = '/payment/account_balance/page_search';
 
   def path
     PATH

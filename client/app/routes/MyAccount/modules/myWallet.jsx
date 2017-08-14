@@ -110,7 +110,7 @@ export function fetchRecords(type, startDate, endDate, recursiveRecords = []) {
       /* RESET RECURSIVE FREQUENCY */
       dispatch(resetRecursiveTimes());
       /* CHANGE RECORDS IN REDUCER */
-      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag, lastId));
+      dispatch(checkExpire(data.balanceList.concat(recursiveRecords), expireFlag, lastId));
     });
   };
 }
@@ -131,6 +131,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     case FETCHING:
       return Object.assign({}, state, {

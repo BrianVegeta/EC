@@ -1,18 +1,15 @@
 class Ajax::Api::PaymentController < ApplicationController
   include WardenHelper
   include RespondHelper
-  
+
   ###################### ACTION ##################################
   # 搜尋
    def search
      obj = ::Api::Payment::Search.new search_params, current_apitoken
      success = obj.request
-     if obj.response_data.nil?
-       obj.response_data = []
-     else
-        obj.response_data.each_with_index.map { |item, index|
-          obj.response_data[index] = parse_balance_rsp(item) }
-     end
+     # if success
+     #  obj.response_data = parse_balance_rsp(obj.response_data)
+     #end
      #if obj.response_data.nil?
      #   obj.response_data = []
      #else
@@ -24,8 +21,7 @@ class Ajax::Api::PaymentController < ApplicationController
   ###################### PARAMS ##################################
   protected
   def parse_balance_rsp(response_data)
-    response_data = reverse_merge(response_data, ResponseJson::AccountBalance.structure)
-    response_data = response_data.except('account_id')
+    response_data = response_data.reverse_merge(response_data, ResponseJson:AccountBalance.structure)
     return response_data
   end
 

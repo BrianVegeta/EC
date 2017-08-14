@@ -12,6 +12,12 @@ import routeMyCalendar from './routes/Calendar/route';
 import routeWalletAll from './routes/Wallet/All/route';
 import routeWalletIn from './routes/Wallet/In/route';
 import routeWalletOut from './routes/Wallet/Out/route';
+import routeOoIt from './routes/OwnerOrder/OoIt/route';
+import routeOoSe from './routes/OwnerOrder/OoSe/route';
+import routeOoSp from './routes/OwnerOrder/OoSp/route';
+import routeLoIt from './routes/LesseeOrder/LoIt/route';
+import routeLoSe from './routes/LesseeOrder/LoSe/route';
+import routeLoSp from './routes/LesseeOrder/LoSp/route';
 
 export default store => ({
   path: '/p/my',
@@ -36,6 +42,12 @@ export default store => ({
     routeWalletAll(store),
     routeWalletIn(store),
     routeWalletOut(store),
+    routeOoIt(store),
+    routeOoSe(store),
+    routeOoSp(store),
+    routeLoIt(store),
+    routeLoSe(store),
+    routeLoSp(store),
   ],
   /*
   childRoutes: [
