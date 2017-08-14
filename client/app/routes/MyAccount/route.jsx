@@ -42,12 +42,12 @@ export default store => ({
     routeWalletAll(store),
     routeWalletIn(store),
     routeWalletOut(store),
-    routeOoIt(store),
-    routeOoSe(store),
-    routeOoSp(store),
-    routeLoIt(store),
-    routeLoSe(store),
-    routeLoSp(store),
+    // routeOoIt(store),
+    // routeOoSe(store),
+    // routeOoSp(store),
+    // routeLoIt(store),
+    // routeLoSe(store),
+    // routeLoSp(store),
   ],
   /*
   childRoutes: [

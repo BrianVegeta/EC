@@ -25,12 +25,12 @@ import routeMyAccount from './MyAccount/route';
 // import Categories from './Categories';
 import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
-import PublishService from './PublishService/route';
+// import PublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
 // import Registration from './Auth/Registration';
-import ReservationGoods from './Reservation/Goods/route';
+// import ReservationGoods from './Reservation/Goods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 
@@ -75,14 +75,14 @@ export default store => ({
         routeOrderdetail(store),
       ],
     },
-    {
-      component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
-      childRoutes: [
-        PublishService(store),
-        // ReleaseService(store.routesHelper, store.dispatch),
-        // ReleaseSpace(routesHelper, dispatch),
-      ],
-    },
+    // {
+    //   component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
+    //   childRoutes: [
+    //     PublishService(store),
+    //     // ReleaseService(store.routesHelper, store.dispatch),
+    //     // ReleaseSpace(routesHelper, dispatch),
+    //   ],
+    // },
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
@@ -95,14 +95,14 @@ export default store => ({
         routeItem(store),
       ],
     },
-    {
-      component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
-      childRoutes: [
-        ReservationGoods(() => {
-          // dispatch(editItem(nextState.params.pid));
-        }, store.dispatch),
-      ],
-    },
+    // {
+    //   component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
+    //   childRoutes: [
+    //     ReservationGoods(() => {
+    //       // dispatch(editItem(nextState.params.pid));
+    //     }, store.dispatch),
+    //   ],
+    // },
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [
