@@ -111,8 +111,6 @@ export function fetchRecords(pid, target = TARGET_OWNER, recursiveRecords = []) 
 }
 
 export function addMessage(pid, message) {
-  console.log(message);
-  console.log(pid);
   //console.log(targetUid);
   return (dispatch, getState) => {
     const expireFlag = Date.now();

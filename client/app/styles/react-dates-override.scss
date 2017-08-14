@@ -69,7 +69,14 @@ $react-dates-z-index: 0 !default;
 .CalendarDay--blocked-minimum-nights {
   border: 1px solid $dayBorderColor;
 }
-
+.CalendarDay--blocked-calendar, .CalendarDay--blocked-calendar:active  {
+  background: #FFF
+}
+.CalendarDay--blocked-calendar.CalendarDay--blocked.CalendarDay--highlighted-calendar {
+  background: #ffe8bc;
+  color: #565a5c;
+  cursor: default;
+}
 .CalendarDay--selected-span {
   border: 1px double $dayBorderColor;
   &.CalendarDay--hovered,

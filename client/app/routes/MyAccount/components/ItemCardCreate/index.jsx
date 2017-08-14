@@ -16,7 +16,7 @@ class ItemCardCreate extends React.Component {
           <div styleName="picture">
             <div styleName="label">
               <PlusIcon size={50} />
-              <div styleName="text">發布</div>
+              <div styleName="text">發佈</div>
             </div>
           </div>
         </Link>

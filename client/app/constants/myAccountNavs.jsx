@@ -1,5 +1,5 @@
 export default {
-  items: { text: '分享/發布', path: '/p/my_account/items' },
+  items: { text: '分享/發佈', path: '/p/my_account/items' },
   orders: { text: '收到的預訂', path: '/' },
   schedule: { text: '行事曆', path: '/' },
   records: { text: '預訂記錄', path: '/' },

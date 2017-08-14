@@ -13,8 +13,8 @@ import 'moment/locale/zh-tw';
 import { isToday, inDates } from 'lib/time';
 import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
+import 'styles/react-dates-override.scss';
 import styles from './styles.sass';
-import './datesOverride.scss';
 
 const cx = classnames.bind(styles);
 class Dates extends React.Component {
@@ -106,7 +106,6 @@ class Dates extends React.Component {
   render() {
     moment.locale('zh-tw');
     const { startDate, endDate, onDatesChange } = this.props;
-
     return (
       <DateRangePicker
         ref={dp => (this.dp = dp)}
