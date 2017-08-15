@@ -102,6 +102,7 @@ class OrderList extends React.Component {
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
               unit={record.unit}
+              lesseeReceive={record.lessee_receive}
               display={record.display}
             />
           ))}

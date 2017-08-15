@@ -32,6 +32,7 @@ class OrderItemBoard extends React.Component {
     unit: PropTypes.number.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isRead: PropTypes.bool.isRequired,
+    lesseeReceive: PropTypes.bool.isRequired,
     display: PropTypes.shape(
       {
         show_detail: PropTypes.bool.isRequired,
@@ -53,197 +54,188 @@ class OrderItemBoard extends React.Component {
     );
   }
   renderHint() {
-      return this.props.isOwner === true ? this.renderOwnerHint() : this.renderLesseeHint();
+    return this.props.isOwner === true ? this.renderOwnerHint() : this.renderLesseeHint();
   }
-  
+
   renderOwnerHint() {
-      let str = '';
-      switch (this.props.stage) {
-        case 1:
-        case 2:
-            str = `請在{formatDateForOrder(this.props.startDate)}前同意預訂單，逾時將自動取消。`;
-            break;
-        case 3:
-            str = '在對方修改後，您才能進行同意。';
-            break;
-        case 4:
-            str = '完成付款後，您將會收到信箱以及推播通知。';
-            break;
-        case 5:
-            str = `請於{formatDateForOrder(this.props.startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`;
-            break;
-        case 6:
-        case 7:
-            str = ''; //對方已收到您的物品。 if lessee_receive
-            break;
-        case 8:
-            str = '';
-            break;
-        case 9:
-            str = '提醒您，當對方確認寄還後，您將會收到推播以及email通知。';
-            break;
-        case 10:
-            str = '對方已將物品寄還。';
-            break;
-        case 11:
-            str = '交易完成！請給對方評價吧！'
-            break;
-        case 12:
-        case 13:
-            str = '您已完成評價，謝謝您使用ShareApp！'
-            break;
-        default:
-          return null;
-      }
-      return (
-              <div styleName="oib-hint-section">
-              {str}
-            </div>
-                );
-      
-  }
-  
-  renderLesseeHint() {
-      let str = '';
-      switch (this.props.stage) {
+    let str = '';
+    switch (this.props.stage) {
       case 1:
       case 2:
-          str = '在對方同意您的預訂後您才能進行付款。'
-          break;
+        str = `請在${formatDateForOrder(this.props.startDate)}前同意預訂單，逾時將自動取消。`;
+        break;
       case 3:
-          str = '在您修改後，對方才可同意。';
-          break;
+        str = '在對方修改後，您才能進行同意。';
+        break;
       case 4:
-          str = `請在${formatDate(startDate)}前完成付款，逾時將自動取消。`;
-          break;
+        str = '完成付款後，您將會收到信箱以及推播通知。';
+        break;
       case 5:
-          str = '您已成功付款，我們會通知對方進行出貨。';
-          break;
+        str = `請於${formatDateForOrder(this.props.startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`;
+        break;
       case 6:
       case 7:
-          str = '提醒您，收到貨時建議將物品拍照，以避免交易糾紛。'; //請於使用日期結束的隔日" + fc_parse.getFormattedDateShiftDay(data.leaseend, 1) + "進行物品寄還。 if lessee_receive
-          break;
+        str = ''; // 對方已收到您的物品。 if lessee_receive
+        break;
       case 8:
-          str = '';
-          break;
+        str = '';
+        break;
       case 9:
-          str = '出貨時建議將物品拍照，拍照記錄能保障您的交易安全。';
-          break;
+        str = '提醒您，當對方確認寄還後，您將會收到推播以及email通知。';
+        break;
       case 10:
-          str = '';
-          break;
+        str = '對方已將物品寄還。';
+        break;
       case 11:
-          str = '交易完成！請給對方評價吧！'
-          break;
+        str = '交易完成！請給對方評價吧！'
+        break;
       case 12:
       case 13:
-          str = '您已完成評價，謝謝您使用ShareApp！'
-          break;
+        str = '您已完成評價，謝謝您使用ShareApp！'
+        break;
       default:
         return null;
     }
-      return (
-              <div styleName="oib-hint-section">
-              {str}
-            </div>
-                );
+    return (
+      <div styleName="oib-hint-section">{str}</div>
+    );
   }
-  
-  
+
+  renderLesseeHint() {
+    let str = '';
+    switch (this.props.stage) {
+      case 1:
+      case 2:
+        str = '在對方同意您的預訂後您才能進行付款。'
+        break;
+      case 3:
+        str = '在您修改後，對方才可同意。';
+        break;
+      case 4:
+        str = `請在${formatDate(this.props.startDate)}前完成付款，逾時將自動取消。`;
+        break;
+      case 5:
+        str = '您已成功付款，我們會通知對方進行出貨。';
+        break;
+      case 6:
+      case 7:
+        str = '提醒您，收到貨時建議將物品拍照，以避免交易糾紛。'; // 請於使用日期結束的隔日" + fc_parse.getFormattedDateShiftDay(data.leaseend, 1) + "進行物品寄還。 if lessee_receive
+        break;
+      case 8:
+        str = '';
+        break;
+      case 9:
+        str = '出貨時建議將物品拍照，拍照記錄能保障您的交易安全。';
+        break;
+      case 10:
+        str = '';
+        break;
+      case 11:
+        str = '交易完成！請給對方評價吧！'
+        break;
+      case 12:
+      case 13:
+        str = '您已完成評價，謝謝您使用ShareApp！'
+        break;
+      default:
+        return null;
+    }
+    return (
+      <div styleName="oib-hint-section">{str}</div>
+    );
+  }
+
+
   renderMiniNote() {
     return this.props.isOwner === true ? this.renderOwnerMiniNote() : this.renderLesseMiniNote();
   }
 
   renderOwnerMiniNote() {
-      let str = '';
+    let str = '';
     switch (this.props.stage) {
       case 1:
       case 2:
-          str = '收到預訂';
-          break;
+        str = '收到預訂';
+        break;
       case 3:
-          str = '待對方修改預訂單';
-          break;
+        str = '待對方修改預訂單';
+        break;
       case 4:
-          str = '待付款';
-          break;
+        str = '待付款';
+        break;
       case 5:
-          str = '待出貨';
-          break;
+        str = '待出貨';
+        break;
       case 6:
       case 7:
-          str = '等待對方收貨'; //已完成取件 if lessee_receive
-          break;
+        str = '等待對方收貨'; // 已完成取件 if lessee_receive
+        break;
       case 8:
-          str = '交易進行中';
-          break;
+        str = '交易進行中';
+        break;
       case 9:
-          str = '訂單已結束，等待對方寄還';
-          break;
+        str = '訂單已結束，等待對方寄還';
+        break;
       case 10:
-          str = '對方已寄還';
-          break;
+        str = '對方已寄還';
+        break;
       case 11:
-          str = '已完成'
-          break;
+        str = '已完成'
+        break;
       case 12:
       case 13:
-          str = '已評分'
-          break;
+        str = '已評分'
+        break;
       default:
         return null;
     }
     return (
-            <div styleName="oib-mini-note-section">
-              {str}
-            </div>
-              );
+      <div styleName="oib-mini-note-section">{str}</div>
+    );
   }
 
   renderLesseMiniNote() {
-      let str = '';
-      switch (this.props.stage) {
-        case 1:
-        case 2:
-            str = '等待對方同意';
-            break;
-        case 3:
-            str = '待您修改預訂單';
-            break;
-        case 4:
-            str = '尚未付款';
-            break;
-        case 5:
-            str = '待對方出貨';
-            break;
-        case 6:
-        case 7:
-            str = '對方已出貨'; //你已完成取貨 if lessee_receive
-            break;
-        case 8:
-            str = '交易進行中';
-            break;
-        case 9:
-            str = '待寄還';
-            break;
-        case 10:
-            str = '已寄還，待對方收件';
-            break;
-        case 11:
-            str = '已完成'
-            break;
-        case 12:
-        case 13:
-            str = '已評分'
-            break;
-        default:
-          return null;
-      }
-      return (
-              <div styleName="oib-mini-note-section">
-                {str}
-              </div>
-                );
+    let str = '';
+    switch (this.props.stage) {
+      case 1:
+      case 2:
+        str = '等待對方同意';
+        break;
+      case 3:
+        str = '待您修改預訂單';
+        break;
+      case 4:
+        str = '尚未付款';
+        break;
+      case 5:
+        str = '待對方出貨';
+        break;
+      case 6:
+      case 7:
+        str = '對方已出貨'; // 你已完成取貨 if lessee_receive
+        break;
+      case 8:
+        str = '交易進行中';
+        break;
+      case 9:
+        str = '待寄還';
+        break;
+      case 10:
+        str = '已寄還，待對方收件';
+        break;
+      case 11:
+        str = '已完成'
+        break;
+      case 12:
+      case 13:
+        str = '已評分'
+        break;
+      default:
+        return null;
+    }
+    return (
+      <div styleName="oib-mini-note-section">{str}</div>
+    );
   }
 
   renderAction() {

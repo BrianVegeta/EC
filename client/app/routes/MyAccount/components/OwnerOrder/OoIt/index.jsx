@@ -104,6 +104,7 @@ class OrderList extends React.Component {
               unit={record.unit}
               isOwner
               isRead={record.owner_read}
+              lesseeReceive={record.lessee_receive}
               display={record.display}
             />
           ))}
