@@ -15,6 +15,7 @@ import RoundButton from 'components/RoundButton';
 import styles from './styles.sass';
 import Container from '../../Container';
 
+
 import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
    TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
@@ -51,21 +52,20 @@ class OrderList extends React.Component {
     }
     const { records, isFetching } = myOrder;
     const navs = [
-      { name: '收到預定', href: my.ownerOrderItem(TAB_REQUEST) },
-      { name: '尚未付款', href: my.ownerOrderItem(TAB_PAY) },
-      { name: '待出貨', href: my.ownerOrderItem(TAB_SHIPPING) },
-      { name: '待收貨', href: my.ownerOrderItem(TAB_RETURN) },
-      { name: '完成', href: my.ownerOrderItem(TAB_COMPLETE) },
-      { name: '取消', href: my.ownerOrderItem(TAB_CANCEL) },
-      { name: '申訴中', href: my.ownerOrderItem(TAB_SUE) },
-      { name: '申訴完成', href: my.ownerOrderItem(TAB_SUE_COMPLETE) },
+      { name: '收到預定', href: my.ownerOrderSpace(TAB_REQUEST) },
+      { name: '尚未付款', href: my.ownerOrderSpace(TAB_PAY) },
+      { name: '待開始', href: my.ownerOrderSpace(TAB_SHIPPING) },
+      { name: '執行中', href: my.ownerOrderSpace(TAB_RETURN) },
+      { name: '完成', href: my.ownerOrderSpace(TAB_COMPLETE) },
+      { name: '取消', href: my.ownerOrderSpace(TAB_CANCEL) },
+      { name: '申訴中', href: my.ownerOrderSpace(TAB_SUE) },
+      { name: '申訴完成', href: my.ownerOrderSpace(TAB_SUE_COMPLETE) },
     ];
     return (
       <Container titleText={'收到的預定'}>
         <div style={{ paddingBottom: 20 }}>
           <RoundButton
             text="物品"
-            isActive
             onClick={
               () => { browserHistory.push(my.ownerOrderItem(TAB_REQUEST)); }
             }
@@ -78,6 +78,7 @@ class OrderList extends React.Component {
           />
           <RoundButton
             text="空間"
+            isActive
             onClick={
               () => { browserHistory.push(my.ownerOrderSpace(TAB_REQUEST)); }
             }

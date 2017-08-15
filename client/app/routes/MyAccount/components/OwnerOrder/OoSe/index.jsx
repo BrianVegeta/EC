@@ -38,7 +38,7 @@ class OrderList extends React.Component {
       this.props.dispatchRecords();
     }
   }
-
+ß
   componentWillUnmount() {
     this.props.dispatchReset();
   }
@@ -51,27 +51,27 @@ class OrderList extends React.Component {
     }
     const { records, isFetching } = myOrder;
     const navs = [
-      { name: '收到預定', href: my.ownerOrderItem(TAB_REQUEST) },
-      { name: '尚未付款', href: my.ownerOrderItem(TAB_PAY) },
-      { name: '待出貨', href: my.ownerOrderItem(TAB_SHIPPING) },
-      { name: '待收貨', href: my.ownerOrderItem(TAB_RETURN) },
-      { name: '完成', href: my.ownerOrderItem(TAB_COMPLETE) },
-      { name: '取消', href: my.ownerOrderItem(TAB_CANCEL) },
-      { name: '申訴中', href: my.ownerOrderItem(TAB_SUE) },
-      { name: '申訴完成', href: my.ownerOrderItem(TAB_SUE_COMPLETE) },
+      { name: '收到預定', href: my.ownerOrderService(TAB_REQUEST) },
+      { name: '尚未付款', href: my.ownerOrderService(TAB_PAY) },
+      { name: '待開始', href: my.ownerOrderService(TAB_SHIPPING) },
+      { name: '執行中', href: my.ownerOrderService(TAB_RETURN) },
+      { name: '完成', href: my.ownerOrderService(TAB_COMPLETE) },
+      { name: '取消', href: my.ownerOrderService(TAB_CANCEL) },
+      { name: '申訴中', href: my.ownerOrderService(TAB_SUE) },
+      { name: '申訴完成', href: my.ownerOrderService(TAB_SUE_COMPLETE) },
     ];
     return (
       <Container titleText={'收到的預定'}>
         <div style={{ paddingBottom: 20 }}>
           <RoundButton
             text="物品"
-            isActive
             onClick={
               () => { browserHistory.push(my.ownerOrderItem(TAB_REQUEST)); }
             }
           />
           <RoundButton
             text="服務"
+            isActive
             onClick={
               () => { browserHistory.push(my.ownerOrderService(TAB_REQUEST)); }
             }

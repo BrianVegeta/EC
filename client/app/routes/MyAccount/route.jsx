@@ -43,11 +43,11 @@ export default store => ({
     routeWalletIn(store),
     routeWalletOut(store),
     routeOoIt(store),
-    // routeOoSe(store),
-    // routeOoSp(store),
-    // routeLoIt(store),
-    // routeLoSe(store),
-    // routeLoSp(store),
+    routeOoSe(store),
+    routeOoSp(store),
+    routeLoIt(store),
+    routeLoSe(store),
+    routeLoSp(store),
   ],
   /*
   childRoutes: [

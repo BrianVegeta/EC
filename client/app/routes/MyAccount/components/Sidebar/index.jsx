@@ -14,7 +14,7 @@ const myAccountNavs = {
   items: { text: '分享/發佈', path: my.itemPath },
   orders: { text: '收到的預訂', path: my.ownerOrderItem('TAB_REQUEST') },
   schedule: { text: '行事曆', path: my.calendarPath },
-  records: { text: '預訂記錄', path: my.itemPath },
+  records: { text: '預訂記錄', path: my.lesseeOrderItem('TAB_REQUEST') },
   wishs: { text: '許願紙條', path: my.wishPath },
   coupon: { text: '優惠卷', path: my.couponPath },
   favorite: { text: '收藏', path: my.collectionPath },

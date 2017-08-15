@@ -12,7 +12,7 @@ class Ajax::Api::ContractController < ApplicationController
       obj.response_data = []
     else
       obj.response_data.each_with_index.map { |item, index|
-        obj.response_data[index] = parse_contract_rsp(item) }
+        obj.response_data[index] = (item) }
     end
     respond success, obj
   end
@@ -276,7 +276,6 @@ class Ajax::Api::ContractController < ApplicationController
     if (response_data['contractstage'].nil?)
       raise 'error'
     end
-
     response_data = parse_contract_rsp(response_data)
     case response_data['type']
     when 'ITEM'
