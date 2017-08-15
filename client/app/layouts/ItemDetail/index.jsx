@@ -4,7 +4,7 @@ import myPropTypes from 'propTypes';
 import _ from 'lodash';
 
 import { initEnvironment } from 'actions/environmentActions';
-import HeaderContainer from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/Header/Container';
 import Footer from 'components/Footer';
 
 import MainWrapper from '../MainWrapper';

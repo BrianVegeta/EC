@@ -6,15 +6,22 @@ export default function hoverable(Component) {
 
     static defaultProps = {
       isHovering: false,
+      size: 34,
     };
 
     static propTypes = {
       isHovering: PropTypes.bool,
+      size: PropTypes.number,
     };
 
     render() {
-      const { isHovering } = this.props;
-      return <Component color={isHovering ? '#F57C00' : '#FDB485'} />;
+      const { isHovering, size } = this.props;
+      return (
+        <Component
+          color={isHovering ? '#F57C00' : '#FDB485'}
+          size={size}
+        />
+      );
     }
   };
 }

@@ -1,16 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
-import HeaderContainer from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/Header/Container';
 import Footer from 'components/Footer';
 import MainWrapper from './MainWrapper';
 
 export default class extends React.Component {
 
+  static defaultProps = {
+    main: null,
+    children: null,
+  };
+
   static propTypes = {
-    main: PropTypes.node.isRequired,
-    children: myPropTypes.children.isRequired,
+    main: myPropTypes.children,
+    children: myPropTypes.children,
     environment: myPropTypes.environment.isRequired,
   };
 

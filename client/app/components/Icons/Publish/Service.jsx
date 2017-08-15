@@ -5,13 +5,19 @@ import hoverable from './hoverable';
 
 class PublishService extends React.Component {
 
+  static defaultProps = {
+    size: 34,
+  };
+
   static propTypes = {
     color: PropTypes.string.isRequired,
+    size: PropTypes.number,
   };
 
   render() {
+    const { size } = this.props;
     return (
-      <svg width="34px" height="39px" viewBox="0 -5 34 39" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <svg width={`${size}px`} height={`${size}px`} viewBox="0 -5 34 40" version="1.1" xmlns="http://www.w3.org/2000/svg">
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g id="Artboard" transform="translate(-5.000000, -5.000000)">
             <g id="Group-3">

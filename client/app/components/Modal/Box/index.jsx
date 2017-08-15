@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import ReactModal from 'react-modal';
+
 import styled from 'styled-components';
 import classnames from 'classnames/bind';
 import styles from './styles.sass';
@@ -15,7 +16,6 @@ const ContentContainer = styled.div`
   margin: 80px auto;
   overflow: hidden;
 `;
-
 
 const cx = classnames.bind(styles);
 class Modal extends React.Component {
@@ -31,16 +31,17 @@ class Modal extends React.Component {
   };
 
   render() {
+    const { children, width, onClose } = this.props;
     return (
       <ReactModal
         isOpen
-        contentLabel="onRequestClose Example"
-        onRequestClose={this.props.onClose}
+        contentLabel="POPUP BOX"
+        onRequestClose={onClose}
         className={cx('modal')}
         overlayClassName={cx('overlay')}
       >
-        <ContentContainer width={this.props.width}>
-          {this.props.children}
+        <ContentContainer width={width}>
+          {children}
         </ContentContainer>
       </ReactModal>
     );

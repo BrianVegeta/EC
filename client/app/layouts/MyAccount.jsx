@@ -5,7 +5,7 @@ import myPropTypes from '../propTypes';
 import { initEnvironment } from '../actions/environmentActions';
 import Footer from '../components/Footer';
 import MainWrapper from './MainWrapper';
-import HeaderContainer from '../containers/HeaderContainer';
+import HeaderContainer from '../containers/Header/Container';
 
 class MyAccountLayout extends React.Component {
   static defaultProps = {

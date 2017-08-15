@@ -5,15 +5,21 @@ import hoverable from './hoverable';
 
 class PublishSpace extends React.Component {
 
+  static defaultProps = {
+    size: 34,
+  };
+
   static propTypes = {
     color: PropTypes.string.isRequired,
+    size: PropTypes.number,
   };
 
   render() {
+    const { size } = this.props;
     return (
       <svg
-        width="36px"
-        height="33px"
+        width={`${size}px`}
+        height={`${size}px`}
         viewBox="0 0 36 33"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

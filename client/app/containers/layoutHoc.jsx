@@ -10,7 +10,6 @@ import { prepareCategories } from 'actions/optionsActions';
 
 import * as paths from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
-import ModalContainer from 'containers/ModalContainer';
 import PopupContainer from 'containers/Popup/Container';
 import ScheduleContainer from 'containers/ScheduleContainer';
 
@@ -81,7 +80,6 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
       return (
         <div>
           <Component {...this.props} />
-          <ModalContainer />
           <PopupContainer />
           <ScheduleContainer />
         </div>

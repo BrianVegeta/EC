@@ -6,7 +6,7 @@ import myPropTypes from 'propTypes';
 import { initEnvironment } from 'actions/environmentActions';
 
 import Footer from 'components/Footer';
-import HeaderContainer from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/Header/Container';
 import MainWrapper from './MainWrapper';
 
 class OwnerprofileLayout extends React.Component {

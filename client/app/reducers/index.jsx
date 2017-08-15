@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux';
 
 import cities from 'modules/cities';
 import categories from 'modules/categories';
+import popup from 'modules/popup';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -18,7 +19,6 @@ import notification from './notificationReducer';
 import home from './homeReducer';
 import reservation from './reservationReducer';
 import modal from './modalReducer';
-import popup from './popupReducer';
 import secrecyVerification from './secrecyVerificationReducer';
 import schedule from './scheduleReducer';
 import options from './optionsReducer';
@@ -53,6 +53,7 @@ const reducers = {
   // coupon,
   myCoupon,
 };
+
 const RESET_ONE = 'RESET_ONE';
 const handleState = (state, action) => {
   if (action.type === RESET_ONE) {
@@ -71,7 +72,7 @@ const makeRootReducer = asyncReducers =>
   };
 
 export const injectReducer = (store, { key, reducer }) => {
-  
+
   if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
 
   store.asyncReducers[key] = reducer;

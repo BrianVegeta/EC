@@ -2,32 +2,21 @@
 // 彈跳視窗
 
 import * as types from 'constants/actionTypes/popup';
-import * as popupTypes from 'constants/popupTypes';
+
+export const NEW_PASSWORD = 'NEW_PASSWORD';
+export const CHECK_PASSWORD = 'CHECK_PASSWORD';
+export const BANK_SETUP = 'BANK_SETUP';
+export const ACCESS_CHECK = 'ACCESS_CHECK';
+export const PUBLISH_ENTRY = 'PUBLISH_ENTRY';
 
 const openPopup = actions => ({
   type: types.OPEN,
   ...actions,
 });
 
-export function popupNewPassword(options, width) {
-  return openPopup({
-    renderType: popupTypes.NEW_PASSWORD,
-    options,
-    width,
-  });
-}
-
-export function popupCheckPassword(options, width) {
-  return openPopup({
-    renderType: popupTypes.CHECK_PASSWORD,
-    options,
-    width,
-  });
-}
-
 export function popupBankInfoSetup(options, width) {
   return openPopup({
-    renderType: popupTypes.BANK_SETUP,
+    renderType: BANK_SETUP,
     options,
     width,
   });
@@ -35,7 +24,7 @@ export function popupBankInfoSetup(options, width) {
 
 export function popupAccessCheck(options, width) {
   return openPopup({
-    renderType: popupTypes.ACCESS_CHECK,
+    renderType: ACCESS_CHECK,
     options,
     width,
   });

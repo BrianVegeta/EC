@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 
-import { logout } from 'actions/authActions';
 import { my } from 'lib/paths';
 
 import classnames from 'classnames/bind';
@@ -33,18 +31,23 @@ class Header extends React.Component {
   };
 
   static propTypes = {
-    notification: myPropTypes.notification.isRequired,
-    auth: myPropTypes.authOnHeader.isRequired,
-    dispatch: PropTypes.func.isRequired,
-
     fixed: PropTypes.bool,
     hasShortcut: PropTypes.bool,
     searchable: PropTypes.bool,
+
+    notification: myPropTypes.notification.isRequired,
+    auth: myPropTypes.authOnHeader.isRequired,
+
+    dispatch: PropTypes.func.isRequired,
+    dispatchLogout: PropTypes.func.isRequired,
+    dispatchPublish: PropTypes.func.isRequired,
   };
 
   render() {
     const {
       dispatch,
+      dispatchLogout,
+      dispatchPublish,
       searchable,
       auth,
       fixed,
@@ -95,14 +98,16 @@ class Header extends React.Component {
                   <NavItem content="通知">
                     <Notification
                       notification={notification}
-                      dispatch={this.props.dispatch}
+                      dispatch={dispatch}
                     />
                   </NavItem>
                 }
                 {isLogin &&
-                  <NavItem content={<div className={cx('publish-btn')}>發佈</div>} >
-                    <div>test</div>
-                  </NavItem>
+                  <NavItem
+                    action={dispatchPublish}
+                    content="發佈"
+                    className={cx('publish-btn')}
+                  />
                 }
                 {isLogin &&
                   <NavItem content={<Me currentUser={auth.currentUser} />}>
@@ -111,7 +116,7 @@ class Header extends React.Component {
                         { link: '/', text: '編輯個人資料' },
                         { link: my.indexPath, text: '帳戶管理' },
                         { link: '/', text: '設定' },
-                        { action: () => dispatch(logout()), text: '登出' },
+                        { action: dispatchLogout, text: '登出' },
                       ]}
                     />
                   </NavItem>
@@ -126,8 +131,4 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { environment, auth, notification } = state;
-  return ({ environment, auth, notification });
-};
-export default connect(mapStateToProps)(CSS(Header, styles));
+export default CSS(Header, styles);
