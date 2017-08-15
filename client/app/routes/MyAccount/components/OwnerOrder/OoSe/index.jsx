@@ -12,14 +12,13 @@ import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
 import RoundButton from 'components/RoundButton';
 
-import styles from './styles.sass';
+import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
 import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
    TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
-const cx = classnames.bind(styles);
 class OrderList extends React.Component {
 
   static propTypes = {
@@ -83,21 +82,7 @@ class OrderList extends React.Component {
             }
           />
         </div>
-        <div styleName="container">
-          <ul className="clear">
-            {navs.map((nav, index) => (
-              <Link
-                key={`${index + 1}`}
-                to={nav.href}
-                activeClassName={cx('active')}
-                onlyActiveOnIndex
-              >
-                <li>{nav.name}</li>
-              </Link>
-            ))}
-          </ul>
-        </div>
-
+        <Navigation navs={navs} />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
@@ -116,6 +101,8 @@ class OrderList extends React.Component {
               startDate={record.leasestart}
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
+              isOwner
+              isRead={record.owner_read}
               unit={record.unit}
               display={record.display}
             />
@@ -126,4 +113,4 @@ class OrderList extends React.Component {
   }
 }
 
-export default CSS(OrderList, styles);
+export default OrderList

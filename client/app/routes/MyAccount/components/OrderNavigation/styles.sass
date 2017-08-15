@@ -10,10 +10,24 @@
     padding: 0
     a
       li
-        padding: 20px 24px
+        padding: 20px 20px
         float: left
         cursor: pointer
         color: $global-blackColor
+        position: relative
+        .notice-circle
+          background: $global-primaryColor
+          border-radius: 50%
+          display: inline-block
+          width: 20px
+          height: 20px
+          color: #fff
+          text-align: center
+          line-height: 20px
+          font-size: 10px
+          font-weight: 100
+          position: absolute
+          top: 7px
         &:hover
           color: $global-primaryColor
           border-bottom: 8px solid $global-primaryColor

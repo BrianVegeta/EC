@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
@@ -9,8 +10,11 @@ import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
 import { formatDate, formatDateForOrder, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
+import classnames from 'classnames/bind';
 
 import styles from './styles.sass';
+
+const cx = classnames.bind(styles);
 
 class OrderItemBoard extends React.Component {
 
@@ -26,8 +30,14 @@ class OrderItemBoard extends React.Component {
     endDate: PropTypes.number.isRequired,
     totalPrice: PropTypes.number.isRequired,
     unit: PropTypes.number.isRequired,
+    isOwner: PropTypes.bool.isRequired,
+    isRead: PropTypes.bool.isRequired,
     display: PropTypes.shape(
-      { show_detail: PropTypes.bool.isRequired },
+      {
+        show_detail: PropTypes.bool.isRequired,
+        can_ship: PropTypes.bool.isRequired,
+        can_camera: PropTypes.bool.isRequired,
+      },
     ).isRequired,
   };
 
@@ -50,17 +60,104 @@ class OrderItemBoard extends React.Component {
             請於{formatDateForOrder(this.props.startDate)}前點選「查看詳情」同意預定,遇時將自動取消
           </div>
         );
+      case 5:
+        return (
+          <div styleName="oib-hint-section">
+            請於{formatDateForOrder(this.props.startDate)}前點選「安排出貨」
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
+  renderMiniNote() {
+    return this.props.isOwner === true ? this.renderOwnerMiniNote() : this.renderLesseMiniNote();
+  }
+
+  renderOwnerMiniNote() {
+    switch (this.props.stage) {
+      case 1:
+        return (
+          <div styleName="oib-mini-note-section">
+            收到預訂
+          </div>
+        );
+      case 5:
+        return (
+          <div styleName="oib-mini-note-section">
+            待出貨
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
+
+  renderLesseMiniNote() {
+    switch (this.props.stage) {
       default:
         return null;
     }
   }
 
   renderAction() {
+    return this.props.isOwner === true ? this.renderOwnerActions() : this.renderLesseeActions();
+  }
+
+  renderOwnerActions() {
+    const { can_ship, can_camera } = this.props.display;
+    const buttonConfig = {
+      size: 'sm',
+      width: 'auto',
+      style: {
+        padding: '7px 7px',
+        marginLeft: 10,
+        display: 'inline-block',
+      },
+    };
+    return (
+      <div styleName="oib-action-section">
+        {can_camera &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'拍照'}
+            onClick={() => {}}
+          />
+        }
+        {can_ship &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'安排出貨'}
+            onClick={() => {}}
+          />
+        }
+        <FormButton
+          colorType={'greenBorder'}
+          {...buttonConfig}
+          content={'查看詳情'}
+          onClick={() => browserHistory.push(detail.orderPath(this.props.cid))}
+        />
+      </div>
+    )
+  }
+
+  renderLesseeActions() {
+    const buttonConfig = {
+      size: 'sm',
+      width: 'auto',
+      style: {
+        padding: '7px 7px',
+        marginLeft: 10,
+        display: 'inline-block',
+      },
+    };
     return (
       <div styleName="oib-action-section">
         <FormButton
           colorType={'greenBorder'}
-          size="sm"
+          {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(detail.orderPath(this.props.cid))}
         />
@@ -70,11 +167,11 @@ class OrderItemBoard extends React.Component {
 
   render() {
     const { photoHead, photoName, stage, cidNo, unit,
-      itemName, itemImgUrl, startDate, endDate, totalPrice, display } = this.props;
+      itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
     return (
       <div
-        styleName="oib-board-border"
-        className="clear">
+        className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
+      >
         <div styleName="oib-header-section">
           <div styleName="oib-header-avatar-style">
             <Avatar
@@ -96,6 +193,7 @@ class OrderItemBoard extends React.Component {
               onClick={() => {}}
             />
           </div>
+          {this.renderMiniNote()}
         </div>
         <div
           styleName="oib-body-section"
