@@ -37,6 +37,7 @@ class UserInfoBoard extends React.Component {
                 size="sm"
                 width={100}
                 content="私訊"
+                onClick={()=>{}}
               />
             </div>
           </div>

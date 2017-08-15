@@ -36,6 +36,9 @@ export const publishService = {
   cancelPolicyPath: '/p/publish-service/step6-cancel-policy',
   confirmPath: '/p/publish-service/step7-confirm',
 };
+export const detail = {
+  orderPath: cid => `/p/order_detail/${cid}`,
+}
 export const my = {
   indexPath: '/p/my',
   itemPath: '/p/my/item',

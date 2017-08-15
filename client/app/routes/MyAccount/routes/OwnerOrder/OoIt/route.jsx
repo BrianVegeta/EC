@@ -7,7 +7,6 @@ export default store => ({
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      console.log('hereA');
       const Container = require('../../../containers/OoItContainer').default;
       const reducer = require('../../../modules/myOrder').default;
       injectReducer(store, { key, reducer });

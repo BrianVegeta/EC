@@ -1,4 +1,5 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { forEach } from 'lodash';
 
 /* =============================================>>>>>
 = userprofile =
@@ -48,24 +49,37 @@ export const TAB_NULL = 'TAB_NULL';
 // = actions =
 // =============================================
 
-const fetching = () => ({
+const fetching = expireFlag => ({
   type: FETCHING,
+  expireFlag,
 });
 
-const fetched = records => ({
+const fetched = (records, tabName) => ({
   type: FETCHED,
   records,
+  tabName,
 });
 
 export const reset = () => ({
   type: RESET,
 });
 
-export function fetchRecords(roleType, orderType) {
+function checkExpire(records, tabName, expireFlag) {
+  return (dispatch, getState) => {
+    if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
+      return;
+    }
+    dispatch(fetched(records, tabName));
+  };
+}
+
+
+export function fetchRecords(roleType, orderType, tabName) {
   return (dispatch, getState) => {
     const { auth } = getState();
     const { currentUser } = auth;
-    dispatch(fetching());
+    const expireFlag = Date.now();
+    dispatch(fetching(expireFlag));
     asyncXhrAuthedPost(
       '/ajax/get_my_order.json',
       {
@@ -76,7 +90,7 @@ export function fetchRecords(roleType, orderType) {
       getState(),
     )
     .then((responseData) => {
-      dispatch(fetched(responseData));
+      dispatch(checkExpire(responseData, tabName, expireFlag));
     });
   };
 }
@@ -87,22 +101,31 @@ export function fetchRecords(roleType, orderType) {
 // =============================================
 
 const initialState = {
+  expireFlag: null,
   isFetching: false,
   records: [],
 };
 
 export default (state = initialState, action) => {
+  let newRecords = [];
   switch (action.type) {
     case FETCHING:
+      newRecords = [];
       return Object.assign({}, state, {
         records: [],
         isFetching: true,
+        expireFlag: action.expireFlag,
       });
 
     case FETCHED:
+      forEach(action.records, (order) => {
+        if (order.display.tab === action.tabName) {
+          newRecords.push(order);
+        }
+      });
       return Object.assign({}, state, {
         isFetching: false,
-        records: action.records,
+        records: newRecords,
       });
 
     case RESET:

@@ -7,7 +7,7 @@ import { my } from 'lib/paths';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import ListContainer from 'components/ListContainer';
-import CommentNote from 'components/CommentNote';
+import OrderItemBoard from 'components/OrderItemBoard';
 
 import styles from './styles.sass';
 import Container from '../../Container';
@@ -29,12 +29,24 @@ class OrderList extends React.Component {
     this.props.dispatchRecords();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.tabName !== this.props.tabName) {
+      this.props.dispatchReset();
+      this.props.dispatchRecords();
+    }
+  }
+
   componentWillUnmount() {
     this.props.dispatchReset();
   }
 
   render() {
-          console.log('hereB');
+    const { myOrder } = this.props;
+    console.log(this.props);
+    if (myOrder == null) {
+      return null;
+    }
+    const { records, isFetching } = myOrder;
     const navs = [
       { name: '收到預定', href: my.ownerOrderItem(TAB_REQUEST) },
       { name: '尚未付款', href: my.ownerOrderItem(TAB_PAY) },
@@ -45,12 +57,8 @@ class OrderList extends React.Component {
       { name: '申訴中', href: my.ownerOrderItem(TAB_SUE) },
       { name: '申訴完成', href: my.ownerOrderItem(TAB_SUE_COMPLETE) },
     ];
-
-    const { myOrder } = this.props;
-    const { records, isFetching } = myOrder;
-
     return (
-      <Container titleText={'收藏'}>
+      <Container titleText={'收到的預定'}>
         <div styleName="container">
           <ul className="clear">
             {navs.map((nav, index) => (
@@ -72,9 +80,20 @@ class OrderList extends React.Component {
           isInitialFetching={isFetching && records.length === 0}
         >
           {records.map((record, index) => (
-            <CommentNote
+            <OrderItemBoard
               key={`${index + 1}`}
-              data={record}
+              photoHead={record.lessee_img}
+              photoName={record.lessee_nick_name}
+              stage={record.contractstage}
+              cid={record.cid}
+              cidNo={record.cid_no}
+              itemName={record.pname}
+              itemImgUrl={record.img1}
+              startDate={record.leasestart}
+              endDate={record.leaseend}
+              totalPrice={record.lesseepayfee}
+              unit={record.unit}
+              display={record.display}
             />
           ))}
         </ListContainer>
@@ -83,4 +102,4 @@ class OrderList extends React.Component {
   }
 }
 
-export default OrderList;
+export default CSS(OrderList, styles);

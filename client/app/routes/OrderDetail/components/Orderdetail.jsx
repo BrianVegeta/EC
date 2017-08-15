@@ -4,7 +4,7 @@ import Icon from 'react-icons/lib/fa/calendar-o';
 
 import CalculationPanel from 'components/reservation/wrapper/CalculationPanel';
 import CSS from 'react-css-modules';
-import FormButtom from 'components/FormButton';
+import FormButton from 'components/FormButton';
 
 import { formatDate } from 'lib/time'
 import colors from 'styles/colorExport.scss';
@@ -152,11 +152,12 @@ class Orderdetail extends React.Component {
                   <div style={{ display: 'inline-block', color: colors.colorHeart }}>您尚未設定銀行帳戶喔！</div>
                 }
                 <div style={{ display: 'inline-block', marginLeft: 20 }}>
-                  <FormButtom
+                  <FormButton
                     colorType="greenBorder"
                     size="sm"
                     width={120}
                     content="前往設定"
+                    onClick={() => {}}
                   />
                 </div>
                 <div style={{ color: colors.placeholder, paddingTop: 20, paddingBottom: 50 }}>
@@ -204,20 +205,22 @@ class Orderdetail extends React.Component {
         <div style={{ height: 130 }}>
           { display.can_canel &&
             <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-              <FormButtom
+              <FormButton
                 colorType="greenBorder"
                 size="sm"
                 width={150}
                 content={display.is_owner ? '目前無法接單' : '取消訂單' }
+                onClick={() => {}}
               />
             </div>
           }
           { display.can_accept && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButtom
+            <FormButton
               colorType="greenBorder"
               size="sm"
               width={150}
               content="我同意此預訂"
+              onClick={() => {}}
             />
           </div>
           }
@@ -229,11 +232,12 @@ class Orderdetail extends React.Component {
           </div>
           }
           { display.can_pay && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButtom
+            <FormButton
               colorType="greenBorder"
               size="sm"
               width={150}
               content="付款"
+              onClick={() => {}}
             />
           </div>
           }
