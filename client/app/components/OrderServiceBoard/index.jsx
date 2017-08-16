@@ -45,7 +45,7 @@ class OrderItemBoard extends React.Component {
   renderFooter() {
     return (
       <div
-        styleName="oib-footer-section"
+        styleName="oseb-footer-section"
         className="clear"
       >
         {this.renderHint()}
@@ -63,7 +63,7 @@ class OrderItemBoard extends React.Component {
     } else if (this.props.stage > 5000 && this.props.stage < 6000) {
       str = '取消交易';
     }
-    return (<div styleName="oib-hint-section">{str}</div>);
+    return (<div styleName="oseb-hint-section">{str}</div>);
   }
 
   renderOwnerHint() {
@@ -140,7 +140,7 @@ class OrderItemBoard extends React.Component {
     } else if (this.props.stage > 5000 && this.props.stage < 6000) {
       str = '取消交易';
     }
-    return (<div styleName="oib-mini-note-section">{str}</div>);
+    return (<div styleName="oseb-mini-note-section">{str}</div>);
   }
 
   renderOwnerMiniNote() {
@@ -222,7 +222,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="oseb-action-section">
         {can_camera &&
           <FormButton
             colorType={'greenBorder'}
@@ -260,7 +260,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="oseb-action-section">
         <FormButton
           colorType={'greenBorder'}
           {...buttonConfig}
@@ -276,17 +276,17 @@ class OrderItemBoard extends React.Component {
       itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
     return (
       <div
-        className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('oseb-board-border', { colored: !isRead })}`}
       >
-        <div styleName="oib-header-section">
-          <div styleName="oib-header-avatar-style">
+        <div styleName="oseb-header-section">
+          <div styleName="oseb-header-avatar-style">
             <Avatar
               src={photoHead}
               width={40}
             />
           </div>
-          <div styleName="oib-header-name-style" >{ photoName }</div>
-          <div styleName="oib-header-chat-style" >
+          <div styleName="oseb-header-name-style" >{ photoName }</div>
+          <div styleName="oseb-header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -302,22 +302,22 @@ class OrderItemBoard extends React.Component {
           {this.renderMiniNote()}
         </div>
         <div
-          styleName="oib-body-section"
+          styleName="oseb-body-section"
           className="clear"
         >
-          <div styleName="oib-pic-style">
+          <div styleName="oseb-pic-style">
             <Picture
               src={itemImgUrl}
               width={120}
             />
           </div>
-          <div styleName="oib-content-style">
-            <div styleName="oib-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="oib-text-style">{`${itemName}`}</div>
-            <div styleName="oib-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
-            <div styleName="oib-price-section">
-              <div styleName="oib-unit-style">使用{rangeDiff(startDate, endDate)}天X{unit}件</div>
-              <div styleName="oib-price-style">總計 {formatCurrency(totalPrice)}</div>
+          <div styleName="oseb-content-style">
+            <div styleName="oseb-hint-style">{`訂單編號：${cidNo}`}</div>
+            <div styleName="oseb-text-style">{`${itemName}`}</div>
+            <div styleName="oseb-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="oseb-price-section">
+              <div styleName="oseb-unit-style">使用{rangeDiff(startDate, endDate)}天X{unit}件</div>
+              <div styleName="oseb-price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
         </div>
