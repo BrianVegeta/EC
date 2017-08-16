@@ -1,27 +1,16 @@
-import { injectReducer, removeReducer } from 'reducers';
-import { fetchOrder } from './modules/orderdetail';
+import { injectReducer } from 'reducers';
 
-const key = 'orderdetail';
 export default store => ({
   path: '/p/order_detail/:cid',
 
-  onEnter: (nextState) => {
-    const { cid } = nextState.params;
-    store.dispatch(fetchOrder(cid));
-  },
-
-  onLeave: () => {
-    removeReducer(store, { key });
-  },
-
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const Orderdetail = require('./containers/OrderdetailContainer').default;
-      const reducer = require('./modules/orderdetail').default;
-
-      injectReducer(store, { key, reducer });
-
-      cb(null, Orderdetail);
+      const Container = require('./containers/OrderdetailContainer').default;
+      const detailreducer = require('./modules/orderdetail').default;
+      const actionReducer = require('./modules/orderaction').default;
+      injectReducer(store, { key: 'orderaction', reducer: actionReducer });
+      injectReducer(store, { key: 'orderdetail', reducer: detailreducer });
+      cb(null, Container);
     }, 'orderdetail');
   },
 });

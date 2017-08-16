@@ -1,134 +1,74 @@
 import { connect } from 'react-redux';
 import Orderdetail from '../components/Orderdetail';
+import { fetchOrder, reset } from '../modules/orderdetail';
+import { doAccept, doCancel, doReject, doShipGoods,
+   doReturnConfirm, resetAction } from '../modules/orderaction';
 
-const fake = {
-  isFetchingOwner: false,
-  isFetchingLessee: false,
-  isFetchingOrder: false,
-  isFetchingImages: false,
-  isFetchingLog: false,
-  ownerProfile: {
-    uid: 'SACD5073',
-    name: 'kpc7',
-    email: 'kpc7@mailnesia.com',
-    phone: '0927007189',
-    picture: 'https://shareapisd.s3.amazonaws.com/SACD5073_1502075998591_profile.jpg',
-    autobiography: '',
-    website: '',
-    city: '台北市',
-    area: '大安区',
-    owner_credit: 0,
-    lessee_credit: 5,
-    credit: 2.5,
-    occupation: '',
-    bkg_img: null,
-    create_time: 1500012566000,
-    fb_id: null
-  },
-  lesseeProfile: {
-    uid: 'SACEJ0QL',
-    name: 'Lin Vincent',
-    email: 'tttt0807@mailnesia.com',
-    fb_id: '1768628126789001',
-    picture: 'https://shareapisd.s3.amazonaws.com/SACEJ0QL_profile.jpg',
-    autobiography: '',
-    website: 'www.yahoo.com',
-    city: '南投縣',
-    area: '鹿谷鄉',
-    owner_credit: 0,
-    lessee_credit: 0,
-    credit: 0,
-    occupation: null,
-    bkg_img: null,
-    create_time: 1501738128000,
-    phone: null
-  },
-  order: {
-    cid: 50732,
-    cid_no: 'CCEJ0_01708_0003',
-    pid: 1404,
-    type: 'SPACE',
-    coupon: [],
-    img1: 'https://shareapisd.s3.amazonaws.com/SACD5073_1502076519413.jpg',
-    pname: '怒腦腦奧耄耄耄耄腦',
-    pdes: '你能喔喔你',
-    overdue_rate: null,
-    send_type: '0',
-    return_type: '0',
-    service_location_type: null,
-    note: '',
-    leasestart: 1502899200000,
-    leaseend: 1503503999000,
-    paymenttype: 4,
-    calculate_charge_type: 'day',
-    price: 8510,
-    unit: 1,
-    deposit: 4500,
-    currency: 'NTD',
-    discounts: [],
-    rules: [
-      '其實是',
-      '欸和姥姥冒泡'
-    ],
-    cancel_policys: [],
-    owneruid: 'SACD5073',
-    owner_nick_name: 'kpc7',
-    owner_real_name: null,
-    ownercountryid: null,
-    ownerphone: null,
-    owneremail: null,
-    owner_read: true,
-    item_owner_receive_city: null,
-    item_owner_receive_area: null,
-    item_owner_receive_address: null,
-    owner_receive: false,
-    owner_receive_time: null,
-    lesseeuid: 'SACEJ0QL',
-    lessee_nick_name: 'Lin Vincent',
-    lessee_real_name: '大大',
-    lesseecountryid: 'A1234XXXXX',
-    lesseephone: '0917989236',
-    lesseeemail: 'tttt0807@mailnesia.com',
-    lessee_read: true,
-    item_lessee_receive_city: null,
-    item_lessee_receive_area: null,
-    item_lessee_receive_address: null,
-    lessee_receive: false,
-    lessee_receive_time: null,
-    lessee_send_time: null,
-    service_city: null,
-    service_area: null,
-    service_address: null,
-    space_city: '新竹縣',
-    space_area: '竹北市',
-    space_address: 'ㄋㄛㄋㄛㄟㄋ',
-    contractstage: 5101,
-    ownerlastcheck: 0,
-    owner_confirm_time: null,
-    lesseelastcheck: 0,
-    lessee_confirm_time: null,
-    ownerscore: null,
-    owner_comment: null,
-    lesseescore: null,
-    lessee_comment: null,
-    totalfee: 64070,
-    creditcardfee: 1282,
-    dragonfee: 0,
-    tax: 0,
-    ownertakenfee: 58288,
-    lesseepayfee: 64070,
-    shipping_time: 1502985599000,
-    finished_time: null,
-    last_update_time: 1502079211000,
-    create_time: 1502076579000
-  },
-  logs: [],
-  images: null,
-  isFetchingLogs: false
-}
-
-const mapStateToProps = ({ environment, orderdetail, auth }) => ({
-  environment, orderdetail, auth,
+const mapStateToProps = ({ environment, orderdetail, orderaction, auth }) => ({
+  environment, orderdetail, orderaction, auth,
 });
 
-export default connect(mapStateToProps)(Orderdetail);
+/* pick dispatch */
+const mapDispatchToProps = (dispatch, { params }) => ({
+  dispatch,
+  dispatchRecords: () => dispatch(fetchOrder(params.cid)),
+  dispatchReset: () => dispatch(reset()),
+  dispatchResetAction: () => dispatch(resetAction()),
+  dispatchAccept: () => {
+    dispatch(doAccept(params.cid))
+    .then(() => {
+      dispatch(reset());
+      dispatch(resetAction());
+      dispatch(fetchOrder(params.cid));
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  },
+  dispatchCancel: () => {
+    dispatch(doCancel(params.cid))
+    .then(() => {
+      dispatch(reset());
+      dispatch(resetAction());
+      dispatch(fetchOrder(params.cid));
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  },
+  dispatchReject: () => {
+    dispatch(doReject(params.cid))
+    .then(() => {
+      dispatch(reset());
+      dispatch(resetAction());
+      dispatch(fetchOrder(params.cid));
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  },
+  dispatchShipGoods: () => {
+    dispatch(doShipGoods(params.cid))
+    .then(() => {
+      dispatch(reset());
+      dispatch(resetAction());
+      dispatch(fetchOrder(params.cid));
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  },
+  dispatchReturnConfirm: () => {
+    dispatch(doReturnConfirm(params.cid))
+    .then(() => {
+      dispatch(reset());
+      dispatch(resetAction());
+      dispatch(fetchOrder(params.cid));
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orderdetail);

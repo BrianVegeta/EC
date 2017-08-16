@@ -57,7 +57,7 @@ class Items extends React.Component {
 
     const { renderNoDataText } = this.constructor;
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
-    console.log(mineModel.categoryID);
+
     return (
       <Container icon={TitleIcon} titleText="發佈">
         <ItemControlBar

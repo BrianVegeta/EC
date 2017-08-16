@@ -112,6 +112,13 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #CONTRACT
+      post 'get_my_order', to: 'contract#get_my_contract' #
+      post 'reject_order', to: 'contract#reject' #
+      post 'cancel_order', to: 'contract#cancel' #
+      post 'accept_order', to: 'contract#sign' #
+      post 'ship_item_goods', to: 'contract#ship_goods' #
+      post 'receive_confirm', to: 'contract#receive_goods'
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
 

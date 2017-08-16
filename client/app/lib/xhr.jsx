@@ -165,8 +165,8 @@ export const asyncXhrPost = (path, params) =>
   });
 
 // ASYNC AUTH POST
-export const asyncXhrAuthedPost = (path, params, state) =>
-  new Promise((resolve) => {
+export const asyncXhrAuthedPost = (path, params, state, isCatch = false) =>
+  new Promise((resolve, reject) => {
     fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
     .then(response => response.json())
     .then((json) => {
@@ -178,9 +178,10 @@ export const asyncXhrAuthedPost = (path, params, state) =>
           pathname: paths.LOGIN,
           referrer: state.routing.locationBeforeTransitions.pathname,
         });
+      } else if (isCatch) {
+        reject(json);
       } else {
         console.log(json);
-        // reject(json);
       }
     })
     .catch((err) => { throw err; });
