@@ -1,4 +1,7 @@
 import { connect } from 'react-redux';
+
+import { popupScoreRating } from 'modules/popup';
+
 import Orderdetail from '../components/Orderdetail';
 import { fetchOrder, reset } from '../modules/orderdetail';
 import { doAccept, doCancel, doReject, doShipGoods,
@@ -11,6 +14,7 @@ const mapStateToProps = ({ environment, orderdetail, orderaction, auth }) => ({
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params }) => ({
   dispatch,
+  dispatchPopupScore: () => dispatch(popupScoreRating()),
   dispatchRecords: () => dispatch(fetchOrder(params.cid)),
   dispatchReset: () => dispatch(reset()),
   dispatchResetAction: () => dispatch(resetAction()),

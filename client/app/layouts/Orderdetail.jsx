@@ -1,7 +1,7 @@
 import React from 'react';
 import myPropTypes from 'propTypes';
 
-import HeaderContainer from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/Header/Container';
 
 import MainWrapper from './MainWrapper';
 

@@ -8,9 +8,11 @@ import {
   RENDER_ACCESS_CHECK,
   RENDER_BANK_SETUP,
   RENDER_PUBLISH_ENTRY,
+  RENDER_SCORE_RATING,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetupContainer';
 import AccessCheckContainer from 'containers/Popup/AccessCheckContainer';
+import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 
 
 class Popup extends React.Component {
@@ -49,6 +51,16 @@ class Popup extends React.Component {
             <AccessCheckContainer
               onChecked={options.onChecked}
             />;
+          </ModalBox>
+        );
+
+      case RENDER_SCORE_RATING:
+        return (
+          <ModalBox
+            width={600}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <ScoreRatingContainer />;
           </ModalBox>
         );
 

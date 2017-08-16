@@ -7,6 +7,7 @@ const ACTION_PREFIX = 'POPUP';
 export const RENDER_BANK_SETUP = 'RENDER_BANK_SETUP';
 export const RENDER_ACCESS_CHECK = 'RENDER_ACCESS_CHECK';
 export const RENDER_PUBLISH_ENTRY = 'RENDER_PUBLISH_ENTRY';
+export const RENDER_SCORE_RATING = 'RENDER_SCORE_RATING';
 
 
 // =============================================
@@ -39,6 +40,9 @@ export const popupAccessCheck = options =>
 
 export const popupPublishEntry = options =>
   openPopup({ renderType: RENDER_PUBLISH_ENTRY, options });
+
+export const popupScoreRating = options =>
+  openPopup({ renderType: RENDER_SCORE_RATING, options });
 
 
 // =============================================

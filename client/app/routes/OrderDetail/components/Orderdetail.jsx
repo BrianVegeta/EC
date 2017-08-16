@@ -30,6 +30,7 @@ class Orderdetail extends React.Component {
       isErr: PropTypes.bool,
       errMsg: PropTypes.string,
     }).isRequired,
+    dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     dispatchAccept: PropTypes.func.isRequired,
@@ -275,15 +276,16 @@ class Orderdetail extends React.Component {
             />
           </div>
           }
-          { display.can_ship && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButton
-              colorType="greenBorder"
-              size="sm"
-              width={150}
-              content="確認出貨"
-              onClick={this.props.dispatchShipGoods}
-            />
-          </div>
+          { display.can_ship &&
+            <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
+              <FormButton
+                colorType="greenBorder"
+                size="sm"
+                width={150}
+                content="確認出貨"
+                onClick={this.props.dispatchShipGoods}
+              />
+            </div>
           }
           { display.can_return_confirm && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
             <FormButton
@@ -294,6 +296,17 @@ class Orderdetail extends React.Component {
               onClick={this.props.dispatchReturnConfirm}
             />
           </div>
+          }
+          { true &&
+            <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
+              <FormButton
+                colorType="greenBorder"
+                size="sm"
+                width={150}
+                content="評分"
+                onClick={this.props.dispatchPopupScore}
+              />
+            </div>
           }
         </div>
       </div>
