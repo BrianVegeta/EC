@@ -23,6 +23,7 @@
 .entry-container
   margin: 0 45px 20px auto
   width: 150px
+  transition: background-color .25s ease
   .icon-container
     display: inline-block
     vertical-align: middle
@@ -34,6 +35,9 @@
     padding: 25px
     &:hover
       background: #f1f1f1
+    svg
+      polygon, path
+        transition: fill .25s ease
   .text
     display: inline-block
     vertical-align: middle

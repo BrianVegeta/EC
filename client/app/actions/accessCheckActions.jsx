@@ -1,11 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import * as types from 'constants/actionTypes/accessCheck';
-// import { popupAccessCheck } from 'actions/popupActions';
 import {
   fetchXhrAuthedGet,
   fetchXhrAuthedPost,
 } from 'lib/xhr';
-import { popupAccessCheck } from 'actions/popupActions';
+import { popupAccessCheck } from 'modules/popup';
 
 const existChecking = () => ({
   type: types.EXIST_CHECKING,

@@ -1,18 +1,31 @@
 $borderColor: #999
-.inputArrows
-  .dateInputArrow
-    cursor: pointer
-    position: absolute
-    margin-top: -9px
-    z-index: 3
-    top: 50%
-    svg
-      fill: $borderColor
 
-.dateinputStartArrow
-  composes: dateInputArrow
-  right: 52%
+.container
+  display: inline-block
 
-.dateinputEndArrow
-  composes: dateInputArrow
-  right: 2%
+
+.dateInputArrow
+  cursor: pointer
+  position: absolute
+  margin-top: -9px
+  z-index: 3
+  top: 50%
+  svg
+    fill: $borderColor
+  &.start
+    right: 52%
+  &.end
+    right: 2%
+
+.calendarInfo
+  padding: 10px 20px
+  .reset
+    display: inline-block
+    font-size: 0.8em
+    text-decoration: underline
+    float: left
+  .notice
+    display: inline-block
+    font-size: 0.8em
+    color: #666
+    float: right

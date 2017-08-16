@@ -1,53 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames/bind';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
-const defaultProps = {
-  helperText: null,
-  helperBottomText: null,
-  limiter: null,
-  optional: false,
-  multiple: false,
-  large: false,
-  groupStyle: {},
-  headerTextStyle: {},
-  topLine: false,
-};
-const propTypes = {
-  large: PropTypes.bool,
-  headerText: PropTypes.string.isRequired,
-  limiter: PropTypes.node,
-  helperText: PropTypes.string,
-  helperBottomText: PropTypes.string,
-  optional: PropTypes.bool,
-  multiple: PropTypes.bool,
-  children: PropTypes.node.isRequired,
-  groupStyle: PropTypes.object.isRequired,
-  headerTextStyle: PropTypes.object.isRequired,
-  topLine: PropTypes.bool,
-};
-const InputField = props => (
-  <div styleName="inputGroup" style={props.groupStyle}>
-    { props.topLine &&
-      <div styleName="interval-line" />
-    }
-    <div className={cx('inputHeader', { inputHeaderLarge: props.large })}>
-      <div style={props.headerTextStyle}>
-        {props.headerText}
-        {props.optional && <span styleName="optional">（非必填）</span>}
-        {props.multiple && <span styleName="multiple">（可複選）</span>}
-        {props.limiter && <span styleName="inputLimiter">{props.limiter}</span>}
+
+class FormGroup extends React.Component {
+
+  static defaultProps = {
+    topLine: false,
+    large: false,
+    limiter: null,
+
+    headerText: null,
+    helperText: null,
+    helperBottomText: null,
+    helperBottom: null,
+
+    optional: false,
+    multiple: false,
+    groupStyle: {},
+    headerTextStyle: {},
+  };
+
+  static propTypes = {
+    topLine: PropTypes.bool,
+    large: PropTypes.bool,
+    limiter: PropTypes.node,
+
+    headerText: PropTypes.string,
+    helperText: PropTypes.string,
+    helperBottomText: PropTypes.string,
+    helperBottom: PropTypes.node,
+
+    optional: PropTypes.bool,
+    multiple: PropTypes.bool,
+    children: PropTypes.node.isRequired,
+    groupStyle: PropTypes.object,
+    headerTextStyle: PropTypes.object,
+  };
+
+  static renderHeader({
+    headerTextStyle, headerText, optional, multiple, limiter,
+  }) {
+    return (
+      <div style={headerTextStyle}>
+        {headerText}
+        {optional && <span styleName="optional">（非必填）</span>}
+        {multiple && <span styleName="multiple">（可複選）</span>}
+        {limiter && <span styleName="input-limiter">{limiter}</span>}
       </div>
-      {props.helperText && <div styleName="helper">{props.helperText}</div>}
-    </div>
-    <div styleName="inputControl">{props.children}</div>
-    {props.helperBottomText && <div styleName="helperBottom">{props.helperBottomText}</div>}
-  </div>
-);
-InputField.defaultProps = defaultProps;
-InputField.propTypes = propTypes;
-export default CSS(InputField, styles);
+    );
+  }
+
+  render() {
+    const {
+      topLine,
+      large,
+
+      headerText,
+      helperText,
+      helperBottomText,
+      helperBottom,
+
+      children,
+      groupStyle,
+    } = this.props;
+
+    return (
+      <div styleName="container" style={groupStyle}>
+        {topLine && <div styleName="interval-line" />}
+        <div className={cx('input-header', { 'input-header-large': large })}>
+          {headerText && this.constructor.renderHeader(this.props)}
+          {helperText && <div styleName="helper">{helperText}</div>}
+        </div>
+        <div styleName="input-control">{children}</div>
+        {helperBottom && <div styleName="helper-bottom">{helperBottom}</div>}
+        {helperBottomText && <div styleName="helper-bottom">{helperBottomText}</div>}
+      </div>
+    );
+  }
+}
+
+export default CSS(FormGroup, styles);

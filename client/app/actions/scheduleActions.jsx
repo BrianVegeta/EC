@@ -9,7 +9,7 @@ import {
   popupCheckPassword,
   popupBankInfoSetup,
   closePopup,
-} from 'actions/popupActions';
+} from 'modules/popup';
 import {
   asyncCheckPasswordExist,
 } from 'actions/secrecyVerificationActions';

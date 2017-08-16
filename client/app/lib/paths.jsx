@@ -26,10 +26,7 @@ export const items = {
   servicePath: '/p/i/service',
 };
 
-export const publish = {
-  spaceIndexPath: '/p/publish-space',
-};
-
+/* 發佈服務 */
 export const publishService = {
   indexPath: '/p/publish-service',
   coverPath: '/p/publish-service',
@@ -39,6 +36,17 @@ export const publishService = {
   regulationPath: '/p/publish-service/step5-regulation',
   confirmPath: '/p/publish-service/step6-confirm',
 };
+
+/* 預訂服務 */
+export const reservationService = {
+  indexPath: pid => `/p/reservation-service/${pid}`,
+  formPath: pid => `/p/reservation-service/${pid}`,
+  paymentPath: pid => `/p/reservation-service/${pid}/step2-payment`,
+  confirmPath: pid => `/p/reservation-service/${pid}/step3-confirm`,
+};
+
+
+/* 我的帳戶 */
 export const my = {
   indexPath: '/p/my',
   itemPath: '/p/my/item',

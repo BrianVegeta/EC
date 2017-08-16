@@ -66,10 +66,7 @@ class ModalPublish extends React.Component {
       >
         <div className="container no-bg">
           <div styleName="control">
-            <button
-              className="button"
-              onClick={onClose}
-            >
+            <button className="button" onClick={onClose}>
               <CloseIcon size={30} />
             </button>
           </div>
@@ -78,7 +75,7 @@ class ModalPublish extends React.Component {
               <div className={cx('text', { hovering: isHovering })}>
                 {shortcut.text}
               </div>
-              <Link to={shortcut.path}>
+              <Link to={shortcut.path} onClick={onClose}>
                 <ReactHoverObserver
                   className={cx('icon-container')}
                   onHoverChang={this.onHoverChange}

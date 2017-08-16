@@ -5,11 +5,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import SelectionButton from 'components/inputs/common/SelectionButton';
-import hasError from 'components/inputs/hoc/hasError';
+
+import SelectionButton from 'components/Input/SelectionButton';
+import hasError from 'components/Input/hoc/hasError';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import * as helpers from './helper';
+import {
+  getChoiceFromValue,
+} from './helper';
 
 class Selection extends React.Component {
 
@@ -21,12 +25,20 @@ class Selection extends React.Component {
     disabled: false,
     invalid: false,
     dropdownMaxHeight: null,
+
     renderChoice: null,
     renderOption: null,
+    renderNoData: null,
   };
 
   static propTypes = {
-    options: PropTypes.arrayOf(PropTypes.array).isRequired,
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        value: PropTypes.oneOfType([
+          PropTypes.string, PropTypes.number,
+        ]).isRequired,
+      }).isRequired,
+    ).isRequired,
     onBlur: PropTypes.func.isRequired,
 
     placeholder: PropTypes.string,
@@ -36,8 +48,10 @@ class Selection extends React.Component {
     disabled: PropTypes.bool,
     invalid: PropTypes.bool,
     dropdownMaxHeight: PropTypes.number,
+
     renderChoice: PropTypes.func,
     renderOption: PropTypes.func,
+    renderNoData: PropTypes.func,
   };
 
   constructor(props) {
@@ -51,44 +65,46 @@ class Selection extends React.Component {
     this.selectBtn.closeDropdown();
   }
 
-  getOptions() {
-    return helpers.generateOptions(this.props.options);
-  }
-
-  getChoice() {
-    const choice = helpers.getChoiceFromValue(
-      this.getOptions(),
-      this.props.value,
-    );
+  renderChoice() {
+    const { options, value, renderChoice } = this.props;
+    const choice = getChoiceFromValue(options, value);
     if (!choice) return null;
 
-    if (this.props.renderChoice) {
-      return this.props.renderChoice(choice);
-    }
+    if (renderChoice) return renderChoice(choice);
     return choice.text;
   }
 
   render() {
-    const { renderOption } = this.props;
+    const {
+      renderOption,
+      renderNoData,
+      options,
+      placeholder,
+      dropdownMaxHeight,
+      width,
+      invalid,
+      disabled,
+      onBlur,
+    } = this.props;
 
     return (
       <SelectionButton
         ref={selectBtn => (this.selectBtn = selectBtn)}
-        placeholder={this.props.placeholder}
-        value={this.getChoice()}
-        maxHeight={this.props.dropdownMaxHeight}
-        width={this.props.width}
-        invalid={this.props.invalid}
-        disabled={this.props.disabled}
-        onBlur={this.props.onBlur}
+        placeholder={placeholder}
+        value={this.renderChoice()}
+        maxHeight={dropdownMaxHeight}
+        width={width}
+        invalid={invalid}
+        disabled={disabled}
+        onBlur={onBlur}
       >
-        {this.getOptions().map((option, i) => (
+        {options.length === 0 && renderNoData && renderNoData() }
+        {options.map((option, i) => (
           <div
             key={`${i + 1}`}
             styleName="option"
             onClick={() => this.onSelect(option)}
             role="button"
-            tabIndex={0}
           >
             {renderOption ? renderOption(option) : option.text}
           </div>

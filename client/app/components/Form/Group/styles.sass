@@ -1,17 +1,24 @@
 @import "~styles/color.sass"
 
 
-.inputGroup
+.container
   margin-bottom: 40px
   .interval-line
     border-bottom: 1px solid $global-lineColor
     margin-bottom: 40px
-  .inputHeader
+  .input-header
     font-size: 16px
     font-weight: 400
     color: $global-middleBlack
     margin-bottom: 10px
-  .inputHeaderLarge
+    .input-limiter
+      float: right
+    .optional
+      color: $global-middleBlack
+    .helper
+      color: $global-middleBlack
+      margin-top: 10px
+  .input-header-large
     font-size: 24px
     font-weight: 100
     margin-bottom: 40px
@@ -22,17 +29,9 @@
       font-size: 16px
       font-weight: 400
       color: $global-blackColor
-  .inputHeader
-    .inputLimiter
-      float: right
-    .optional
-      color: $global-middleBlack
-    .helper
-      color: $global-middleBlack
-      margin-top: 10px
-  .inputControl
+  .input-control
     position: relative
-  .helperBottom
+  .helper-bottom
     color: $global-blackColor
     font-size: 14px
     margin-top: 10px

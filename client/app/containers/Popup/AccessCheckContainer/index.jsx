@@ -8,7 +8,7 @@ import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 import LoadingOverlay from 'components/Loading/Overlay';
 
-import { closePopup } from 'actions/popupActions';
+import { closePopup } from 'modules/popup';
 import {
   checkPasswordExist,
   resetState,

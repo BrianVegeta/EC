@@ -97,23 +97,20 @@ export const savePublish = () =>
         assign_area: assignArea,
         assign_address: assignAddress,
         calculate_charge_type: chargeType,
-        start_date: startDate.valueOf(),
-        end_date: endDate.valueOf(),
+        start_date: (startDate ? startDate.valueOf() : null),
+        end_date: (endDate ? endDate.valueOf() : null),
         discounts: (chargeType === CHARGE_TYPE_FIX) ?
           [{ type: 'FIX', param: 0, discount }] : [],
         rules: regulation,
         min_lease_days: 0,
       };
-      // # min_lease_days : int => 最低租期時間 0~999
-      //
-      //
       asyncXhrAuthedPost(
         '/ajax/create_service_item.json',
         requestParams,
         getState(),
       )
       .then((data) => {
-        console.log(data);
+        console.warn(data);
         resolve(data);
       })
       .catch(() => reject());

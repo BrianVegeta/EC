@@ -144,33 +144,6 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderDiscount({ discount, price }) {
-    const { dispatchChangeData } = this.props;
-    return (
-      <div styleName="discounts-container">
-        <FormGroup
-          headerText={'設定優惠價'}
-          helperText={'優惠價能吸引更多人前來預訂'}
-          large
-          optional
-          topLine
-        >
-          <FormGroup headerText="下單可享優惠價格">
-            <div styleName="discount">
-              <InputTextCurrency
-                ref={discountInput => (this.discountInput = discountInput)}
-                value={discount}
-                onChange={value => dispatchChangeData({ discount: value })}
-                constraints={constraints.discount(price || 0)}
-                validateOnBlur
-              />
-            </div>
-          </FormGroup>
-        </FormGroup>
-      </div>
-    );
-  }
-
   renderAfterChoosed({ isChargeFix }) {
     const {
       publish,
@@ -212,7 +185,27 @@ class StepPrice extends React.Component {
           this.renderDatesAndUnit(publish) :
           this.renderReservationDays(publish)
         }
-        {isChargeFix && this.renderDiscount(publish)}
+        <div styleName="discounts-container">
+          <FormGroup
+            headerText={'設定優惠價'}
+            helperText={'優惠價能吸引更多人前來預訂'}
+            large
+            optional
+            topLine
+          >
+            <FormGroup headerText="下單可享優惠價格">
+              <div styleName="discount">
+                <InputTextCurrency
+                  ref={discountInput => (this.discountInput = discountInput)}
+                  value={discount}
+                  onChange={value => dispatchChangeData({ discount: value })}
+                  constraints={constraints.discount(price || 0)}
+                  validateOnBlur
+                />
+              </div>
+            </FormGroup>
+          </FormGroup>
+        </div>
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}

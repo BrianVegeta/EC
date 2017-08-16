@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import classnames from 'classnames/bind';
 import { DateRangePicker } from 'react-dates';
-import moment from 'moment';
 import ArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
 import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down';
 import ArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+
+import moment from 'moment';
+import 'moment/locale/zh-tw';
+
+import { isToday, inDates } from 'lib/time';
 
 import hasError from 'components/Input/hoc/hasError';
 
@@ -15,32 +19,36 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
-class Dates extends React.PureComponent {
+class Dates extends React.Component {
 
   static defaultProps = {
     startDate: null,
     endDate: null,
-    onBlur: null,
+    preparation: 0,
+    minPicks: 0,
   };
 
   static propTypes = {
     startDate: momentPropTypes.momentObj,
     endDate: momentPropTypes.momentObj,
+    preparation: PropTypes.number,
+    minPicks: PropTypes.number,
     onDatesChange: PropTypes.func.isRequired,
-    // for hasError
-    onBlur: PropTypes.func,
+
+    onBlur: PropTypes.func.isRequired, // for hasError
   };
+
+  static todayDate() {
+    return moment().format('YYYY-MM-DD');
+  }
 
   static renderDay(momentObj) {
     return momentObj.format('D');
-    // return (
-    //   <div>
-    //     <div>{momentObj.format('D')}</div>
-    //     {momentObj.isSame(moment(), 'd') &&
-    //       <span>1</span>
-    //     }
-    //   </div>
-    // );
+  }
+
+  static renderMonth(momentObj) {
+    momentObj.locale('zh-tw');
+    return momentObj.format('MMMM YYYY');
   }
 
   constructor(props) {
@@ -48,26 +56,12 @@ class Dates extends React.PureComponent {
     this.state = {
       focusedInput: null,
     };
+
     this.openStartDate = this.openStartDate.bind(this);
     this.openEndDate = this.openEndDate.bind(this);
-    this.onDatesChange = this.onDatesChange.bind(this);
-    this.onClose = this.onClose.bind(this);
-  }
-
-  onClose() {
-    const { onBlur } = this.props;
-    if (onBlur) {
-      onBlur();
-    }
-  }
-
-  onDatesChange(startDate, endDate) {
-    // update dates range
-    this.props.onDatesChange(startDate, endDate);
-  }
-
-  onFocusChange(focusedInput) {
-    this.setState({ focusedInput });
+    this.resetInputs = this.resetInputs.bind(this);
+    this.renderCalendarInfo = this.renderCalendarInfo.bind(this);
+    this.isDayBlocked = this.isDayBlocked.bind(this);
   }
 
   openCalendar(inputType) {
@@ -82,54 +76,78 @@ class Dates extends React.PureComponent {
     this.openCalendar('endDate');
   }
 
-  renderDownArrow(inputType) {
-    switch (inputType) {
-      case 'startDate':
-        return (
-          <div className={cx('dateinputStartArrow')}>
-            <ArrowDown onClick={this.openStartDate} />
-          </div>
-        );
-      case 'endDate':
-        return (
-          <div className={cx('dateinputEndArrow')}>
-            <ArrowDown onClick={this.openEndDate} />
-          </div>
-        );
-      default:
-        return null;
-    }
+  resetInputs() {
+    this.setState({ focusedInput: 'startDate' });
+    this.props.onDatesChange({ startDate: null, endDate: null });
+  }
+
+  isDayBlocked(day) {
+    const { preparation } = this.props;
+    if (preparation === null) return false;
+    if (preparation === 0) return false;
+
+    const today = moment();
+    const daysLater = moment().add(preparation, 'days');
+    return inDates(day, today, daysLater) || isToday(day);
+  }
+
+  renderCalendarInfo() {
+    return (
+      <div className={`${cx('calendarInfo')} clear`}>
+        <button
+          className={`button ${cx('reset')}`}
+          onClick={this.resetInputs}
+        >
+          清除
+        </button>
+        <div className={cx('notice')}>• 最少租用天數</div>
+      </div>
+    );
   }
 
   render() {
     moment.locale('zh-tw');
-    const { startDate, endDate } = this.props;
-
+    const { startDate, endDate, onDatesChange } = this.props;
     return (
-      <DateRangePicker
-        ref={dp => (this.dp = dp)}
-        onClose={this.onClose}
-        startDate={startDate}
-        endDate={endDate}
-        onDatesChange={this.onDatesChange}
-        focusedInput={this.state.focusedInput}
-        onFocusChange={focusedInput => this.setState({ focusedInput })}
-        numberOfMonths={1}
-        customArrowIcon={
-          <div className={cx('inputArrows')}>
-            {this.renderDownArrow('startDate')}
-            {this.renderDownArrow('endDate')}
-          </div>
-        }
-        startDatePlaceholderText="開始日"
-        endDatePlaceholderText="結束日"
-        renderDay={this.constructor.renderDay}
-        hideKeyboardShortcutsPanel
-        keepOpenOnDateSelect
-        navPrev={<ArrowLeft />}
-        navNext={<ArrowRight />}
-        displayFormat="YYYY/MM/DD"
-      />
+      <div styleName="container">
+        <style>
+          {`
+            .CalendarDay--blocked-calendar, .CalendarDay--blocked-calendar:active  {
+              background: #f1f1f1;
+            }
+          `}
+        </style>
+        <DateRangePicker
+          ref={dp => (this.dp = dp)}
+          {...{ startDate, endDate, onDatesChange }}
+          focusedInput={this.state.focusedInput}
+          onFocusChange={focusedInput => this.setState({ focusedInput })}
+          numberOfMonths={1}
+          customArrowIcon={
+            <div>
+              <div className={cx('dateInputArrow', 'start')}>
+                <ArrowDown onClick={this.openStartDate} />
+              </div>
+              <div className={cx('dateInputArrow', 'end')}>
+                <ArrowDown onClick={this.openEndDate} />
+              </div>
+            </div>
+          }
+          startDatePlaceholderText="開始日"
+          endDatePlaceholderText="結束日"
+          renderDay={this.constructor.renderDay}
+          renderMonth={this.constructor.renderMonth}
+          hideKeyboardShortcutsPanel
+          keepOpenOnDateSelect
+          navPrev={<ArrowLeft />}
+          navNext={<ArrowRight />}
+          displayFormat="YYYY/MM/DD"
+          isDayBlocked={this.isDayBlocked}
+          minimumNights={this.props.minPicks}
+          renderCalendarInfo={this.renderCalendarInfo}
+          onClose={this.props.onBlur}
+        />
+      </div>
     );
   }
 }

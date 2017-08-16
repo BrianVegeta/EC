@@ -1,6 +1,6 @@
 import layoutHoc from 'containers/layoutHoc';
 
-import Fixed from 'layouts/Fixed';
+// import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
 import layoutItemDetail from 'layouts/ItemDetail';
 import Publish from 'layouts/Publish';
@@ -20,17 +20,21 @@ import routeItemsCategory from './Items/routeCategory';
 
 import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
-
+/* 我的帳戶 */
 import routeMyAccount from './MyAccount/route';
 // import Categories from './Categories';
+/* 商品細節 */
 import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
-// import PublishService from './PublishService/route';
+/* 發佈服務 */
+import routePublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
 // import Registration from './Auth/Registration';
+/* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
+import routeReservationService from './ReservationService/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 
@@ -75,14 +79,13 @@ export default store => ({
         routeOrderdetail(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
-    //   childRoutes: [
-    //     PublishService(store),
-    //     // ReleaseService(store.routesHelper, store.dispatch),
-    //     // ReleaseSpace(routesHelper, dispatch),
-    //   ],
-    // },
+    {
+      component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
+      childRoutes: [
+        routePublishService(store),
+        routeReservationService(store),
+      ],
+    },
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
@@ -90,19 +93,11 @@ export default store => ({
       ],
     },
     {
-      component: layoutHoc(layoutItemDetail, { requireAuth, confirmLeave, requireCates }),
+      component: layoutHoc(layoutItemDetail, { requireAuth, requireCates }),
       childRoutes: [
         routeItem(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Fixed, { requireAuth, confirmLeave }),
-    //   childRoutes: [
-    //     ReservationGoods(() => {
-    //       // dispatch(editItem(nextState.params.pid));
-    //     }, store.dispatch),
-    //   ],
-    // },
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [

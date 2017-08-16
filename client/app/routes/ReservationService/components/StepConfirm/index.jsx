@@ -8,7 +8,6 @@ import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import { findCategoryNamesByID } from 'lib/category';
 import { formatCurrency } from 'lib/currency';
 import { formatDate } from 'lib/time';
-import { htmlNewLineToBreak } from 'lib/htmlUtils';
 
 import ButtonNextStep, {
   STATUS_DISABLE,
@@ -75,10 +74,10 @@ class StepConfirm extends React.Component {
     .then(() => {
       dispatchSavePublish()
       .then(() => redirectToItems())
-      .catch(error => console.warn(error));
+      .catch(error => console.log(error));
     })
     .catch((errors) => {
-      console.warn(errors);
+      console.log(errors);
       alert('尚未填寫完整');
     });
   }
@@ -137,7 +136,7 @@ class StepConfirm extends React.Component {
               </tr>
               <tr>
                 <th>描述</th>
-                <td>{htmlNewLineToBreak(descript)}</td>
+                <td>{descript}</td>
               </tr>
               <tr>
                 <th>分類</th>
@@ -233,9 +232,7 @@ class StepConfirm extends React.Component {
         </ConfirmTitle>
         {regulation &&
           <ConfirmTitle title="分享人守則">
-            <div styleName="text-block">
-              {htmlNewLineToBreak(regulation)}
-            </div>
+            <div styleName="text-block">{regulation}</div>
           </ConfirmTitle>
         }
         <ButtonNextStep

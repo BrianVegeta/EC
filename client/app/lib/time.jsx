@@ -4,7 +4,7 @@ import { extendMoment } from 'moment-range';
 
 moment.locale('zh-tw');
 const DATE_FORMAT = 'YYYY/MM/DD';
-const DATE_FORMAT_FOR_ORDER = 'MM/DD(dddd)'
+const DATE_FORMAT_FOR_ORDER = 'MM/DD(dddd)';
 export function getMoment(number) {
   return moment(number);
 }
@@ -56,3 +56,6 @@ export function rangeDiff(startDate, endDate, included) {
   }
   return diff;
 }
+
+
+export const now = () => moment().valueOf();

@@ -10,11 +10,11 @@ import constraints, {
   PRICE_MAX,
 } from 'constraints/publish';
 
-import {
-  REDUCER_KEY as PUBLISH_REDUCER_KEY,
-  CHARGE_TYPE_FIX,
-} from './publish';
-import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
+// import {
+//   REDUCER_KEY as PUBLISH_REDUCER_KEY,
+//   CHARGE_TYPE_FIX,
+// } from './publish';
+// import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 
 
 /* =============================================>>>>>
@@ -175,11 +175,14 @@ export const validatePriceBy = ({
     };
   }
 
-  const isFixType = chargeType === CHARGE_TYPE_FIX;
-  const datesConstraint = isFixType ? constraints.serviceDates : null;
-  const unitConstraint = isFixType ? constraints.serviceUnit : null;
-  const advanceDaysConstraint = isFixType ? null : constraints.serviceReservationDays;
-  const discountConstraint = isFixType ? constraints.discount : null;
+  const serviceDatesValidation = chargeType === CHARGE_TYPE_FIX ?
+    constraints.serviceDates : null;
+
+  const serviceUnitValidation = chargeType === CHARGE_TYPE_FIX ?
+    constraints.serviceUnit : null;
+
+  const serviceReservationDaysValidation = chargeType === CHARGE_TYPE_FIX ?
+    null : constraints.serviceReservationDays;
 
   const errors = validate({
     price,
@@ -191,10 +194,10 @@ export const validatePriceBy = ({
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    serviceDates: datesConstraint,
-    unit: unitConstraint,
-    reservationDays: advanceDaysConstraint,
-    discount: discountConstraint,
+    serviceDates: serviceDatesValidation,
+    unit: serviceUnitValidation,
+    reservationDays: serviceReservationDaysValidation,
+    discount: constraints.discount,
   });
 
   return {

@@ -9,10 +9,8 @@ import TitleWrapper from 'components/reservation/wrapper/Title';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/inputs/Radio';
 
-// import { modalBankSetup } from 'actions/scheduleActions';
-import { popupBankInfoSetup } from 'actions/popupActions';
+import { popupBankInfoSetup } from 'modules/popup';
 import { requestAccessCheck } from 'actions/accessCheckActions';
-
 
 import Model from '../Model';
 import BankInfoModel from '../Model/BankInfo';
