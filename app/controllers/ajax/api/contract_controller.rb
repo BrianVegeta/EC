@@ -164,7 +164,7 @@ class Ajax::Api::ContractController < ApplicationController
 
   # 還貨商品
   def return_goods
-    obj = ::Api::Contract::returnGoods.new cid_params, current_apitoken
+    obj = ::Api::Contract::ReturnGoods.new cid_params, current_apitoken
     success = obj.request
     respond success, obj
   end

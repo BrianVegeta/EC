@@ -54,9 +54,10 @@ const fetching = expireFlag => ({
   expireFlag,
 });
 
-const fetched = (records, tabName) => ({
+const fetched = (records, roleType, tabName) => ({
   type: FETCHED,
   records,
+  roleType,
   tabName,
 });
 
@@ -64,12 +65,12 @@ export const reset = () => ({
   type: RESET,
 });
 
-function checkExpire(records, tabName, expireFlag) {
+function checkExpire(records, roleType, tabName, expireFlag) {
   return (dispatch, getState) => {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    dispatch(fetched(records, tabName));
+    dispatch(fetched(records, roleType, tabName));
   };
 }
 
@@ -90,7 +91,7 @@ export function fetchRecords(roleType, orderType, tabName) {
       getState(),
     )
     .then((responseData) => {
-      dispatch(checkExpire(responseData, tabName, expireFlag));
+      dispatch(checkExpire(responseData, roleType, tabName, expireFlag));
     });
   };
 }
@@ -104,28 +105,52 @@ const initialState = {
   expireFlag: null,
   isFetching: false,
   records: [],
+  unreads: [],
 };
 
 export default (state = initialState, action) => {
   let newRecords = [];
+  let newUnreads = {};
+  let targetTabName = '';
   switch (action.type) {
     case FETCHING:
       newRecords = [];
       return Object.assign({}, state, {
         records: [],
+        unreads: [],
         isFetching: true,
         expireFlag: action.expireFlag,
       });
 
     case FETCHED:
+      newUnreads = state.unreads;
       forEach(action.records, (order) => {
-        if (order.display.tab === action.tabName) {
+        targetTabName = order.display.tab;
+        if (targetTabName === action.tabName) {
           newRecords.push(order);
+        }
+        if (targetTabName in newUnreads) {
+          if (action.roleType === ROLE_OWNER) {
+            newUnreads[targetTabName] += (order.owner_read ? 0 : 1);
+          } else if (action.roleType === ROLE_LESSEE) {
+            newUnreads[targetTabName] += (order.lessee_read ? 0 : 1);
+          } else {
+            newUnreads[targetTabName] += (order.owner_read ? 0 : 1);
+            newUnreads[targetTabName] += (order.lessee_read ? 0 : 1);
+          }
+        } else if (action.roleType === ROLE_OWNER) {
+          newUnreads[targetTabName] = (order.owner_read ? 0 : 1);
+        } else if (action.roleType === ROLE_LESSEE) {
+          newUnreads[targetTabName] = (order.lessee_read ? 0 : 1);
+        } else {
+          newUnreads[targetTabName] = (order.owner_read ? 0 : 1);
+          newUnreads[targetTabName] = (order.lessee_read ? 0 : 1);
         }
       });
       return Object.assign({}, state, {
         isFetching: false,
         records: newRecords,
+        unreads: newUnreads,
       });
 
     case RESET:

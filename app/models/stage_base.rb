@@ -144,17 +144,17 @@ class StageBase
 
   def check_can_canel
     if self.is_owner == true
-      modify_display_param(KEY_CANCEL, self.screen_type <= STAGE_LESSEE_PAY)
+      modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
     else
       modify_display_param(KEY_CANCEL, self.screen_type < STAGE_CONTRACT_START)
     end
   end
 
   def check_can_accept
-    stage_check = (self.screen_type == STAGE_LAST_CHECK)
+    stage_check = (self.screen_type == STAGE_WAITING_CONFIRM)
     condition_check = (self.is_owner == true)
-    modify_display_param(KEY_CAN_ACCEPT, stage_check && condition_check);
-    modify_display_param(KEY_CAN_REJECT, stage_check && condition_check);
+    modify_display_param(KEY_CAN_ACCEPT, stage_check && condition_check)
+    modify_display_param(KEY_CAN_REJECT, stage_check && condition_check)
   end
 
   def check_can_edit
@@ -162,7 +162,9 @@ class StageBase
   end
 
   def check_can_pay
-    modify_display_param(KEY_PAY, self.screen_type == STAGE_LESSEE_PAY)
+    stage_check = (self.screen_type == STAGE_LESSEE_PAY)
+    condition_check = (self.is_owner == false)
+    modify_display_param(KEY_PAY, stage_check && condition_check)
   end
 
   def check_sue

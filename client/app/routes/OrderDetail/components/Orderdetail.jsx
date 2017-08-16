@@ -22,7 +22,30 @@ class Orderdetail extends React.Component {
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
     }).isRequired,
+    orderaction: PropTypes.shape({
+      lock: PropTypes.bool,
+      curAction: PropTypes.string,
+      requestId: PropTypes.number,
+      success: PropTypes.bool,
+      isErr: PropTypes.bool,
+      errMsg: PropTypes.string,
+    }).isRequired,
+    dispatchRecords: PropTypes.func.isRequired,
+    dispatchReset: PropTypes.func.isRequired,
+    dispatchAccept: PropTypes.func.isRequired,
+    dispatchCancel: PropTypes.func.isRequired,
+    dispatchReject: PropTypes.func.isRequired,
+    dispatchShipGoods: PropTypes.func.isRequired,
+    dispatchReturnConfirm: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    this.props.dispatchRecords();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchReset();
+  }
 
   render() {
     const { orderdetail } = this.props;
@@ -30,6 +53,7 @@ class Orderdetail extends React.Component {
     if (order == null) {
       return null;
     }
+    console.log(this.props);
     const { display } = order;
     const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
 
@@ -191,7 +215,7 @@ class Orderdetail extends React.Component {
             <div styleName="padding-40btm-style" />
           </div>
           }
-          { order.overdue_rate && <div styleName="section-content">
+          { (order.overdue_rate) && <div styleName="section-content">
             <div styleName="section-header">逾期金政策</div>
             <div>
               <span>逾期1天，將從押金扣除</span>
@@ -210,7 +234,7 @@ class Orderdetail extends React.Component {
                 size="sm"
                 width={150}
                 content={display.is_owner ? '目前無法接單' : '取消訂單' }
-                onClick={() => {}}
+                onClick={this.props.dispatchCancel}
               />
             </div>
           }
@@ -220,14 +244,24 @@ class Orderdetail extends React.Component {
               size="sm"
               width={150}
               content="我同意此預訂"
-              onClick={() => {}}
+              onClick={this.props.dispatchAccept}
             />
           </div>
           }
-          { display.can_rejct && <div style={{ display: 'inline-block', width: 420, marginLeft: 20, verticalAlign: 'middle' }}>
+          { display.can_reject && <div style={{ display: 'inline-block', width: 420, marginLeft: 20, verticalAlign: 'middle' }}>
             <div>
               <span>對於此預訂單有問題嗎？您可以提出修改並私訊享用人，請對方做修改喔!</span>
-              <span style={{ color: colors.activeColor }}> 提出修改預訂單 </span>
+              <button
+                style={{
+                  color: colors.activeColor,
+                  padding: 0,
+                  border: 'none',
+                  background: 'none'
+                }}
+                onClick={this.props.dispatchReject}
+              >
+                提出修改預訂單
+              </button>
             </div>
           </div>
           }
@@ -238,6 +272,26 @@ class Orderdetail extends React.Component {
               width={150}
               content="付款"
               onClick={() => {}}
+            />
+          </div>
+          }
+          { display.can_ship && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
+            <FormButton
+              colorType="greenBorder"
+              size="sm"
+              width={150}
+              content="確認出貨"
+              onClick={this.props.dispatchShipGoods}
+            />
+          </div>
+          }
+          { display.can_return_confirm && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
+            <FormButton
+              colorType="greenBorder"
+              size="sm"
+              width={150}
+              content="確認收貨"
+              onClick={this.props.dispatchReturnConfirm}
             />
           </div>
           }

@@ -1,19 +1,26 @@
 import { asyncXhrAuthedPost, asyncXhrAuthedGet } from 'lib/xhr';
 
+/* =============================================>>>>>
+= orderDetail =
+===============================================>>>>>*/
+
+const ACTION_PREFIX = 'ORDER.DETAIL';
+const REDUCER_KEY = 'orderdetail';
 
 // =============================================
 // = action type =
 // =============================================
-const prefix = action => (`ORDERDETAIL.${action}`);
+const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
-export const FETCHING = prefix('FETCHING');
-export const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
-export const FETCHED_ORDER = prefix('FETCHED_ORDER');
-export const FETCHED_BANKACC = prefix('FETCHED_BANKACC');
-export const FETCHED_OWNER = prefix('FETCHED_OWNER');
-export const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
-export const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
-export const FETCHED_LOGS = prefix('FETCHED_LOGS');
+const FETCHING = prefix('FETCHING');
+const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
+const FETCHED_ORDER = prefix('FETCHED_ORDER');
+const FETCHED_BANKACC = prefix('FETCHED_BANKACC');
+const FETCHED_OWNER = prefix('FETCHED_OWNER');
+const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
+const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
+const FETCHED_LOGS = prefix('FETCHED_LOGS');
+const RESET = prefix('RESET');
 
 // =============================================
 // = actions =
@@ -55,6 +62,10 @@ const fetchedImages = images => ({
 const fetchedLogs = logs => ({
   type: FETCHED_LOGS,
   logs,
+});
+
+export const reset = () => ({
+  type: RESET,
 });
 
 export function fetchOrder(cid) {
@@ -190,6 +201,9 @@ export default (state = initialState, action) => {
         isFetchingLogs: false,
         logs: action.logs,
       });
+
+    case RESET:
+      return initialState;
 
     default:
       return state;

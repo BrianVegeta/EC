@@ -46,7 +46,7 @@ class ApiBase
 
   def handle_response_error
     case self.error_code
-    when ::Response::ErrorCode::SUCCESS
+    when ::Response::ErrorCode::SUCCESS, ::Response::ErrorCode::ALL_CONFIRM
       true
     else
       false

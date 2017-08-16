@@ -77,11 +77,11 @@ class OrderItemBoard extends React.Component {
         return ('完成付款後，您將會收到信箱以及推播通知。');
       case 5:
       case 6:
-      case 7:          
+      case 7:
         return (`將在${formatDateForOrder(this.props.startDate)}開始`);
       case 8:
-      case 9:    
-      case 10:          
+      case 9:
+      case 10:
         return ('');
       case 11:
         return ('交易完成！請給對方評價吧！');
@@ -105,11 +105,11 @@ class OrderItemBoard extends React.Component {
         return (`請在${formatDate(this.props.startDate)}前完成付款，逾時將自動取消。`);
       case 5:
       case 6:
-      case 7:          
+      case 7:
         return (`將在${formatDateForOrder(this.props.startDate)}開始`);
       case 8:
-      case 9:    
-      case 10:          
+      case 9:
+      case 10:
         return ('');
       case 11:
         return ('交易完成！請給對方評價吧！');

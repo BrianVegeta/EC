@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 import { my } from 'lib/paths';
 
-import classnames from 'classnames/bind';
-import CSS from 'react-css-modules';
-import { browserHistory } from 'react-router';
+// import classnames from 'classnames/bind';
+// import CSS from 'react-css-modules';
 
 import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
@@ -24,6 +23,7 @@ class OrderList extends React.Component {
   static propTypes = {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    tabName: PropTypes.string.isRequired,
   };
 
   componentDidMount() {
@@ -44,20 +44,36 @@ class OrderList extends React.Component {
 
   render() {
     const { myOrder } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     if (myOrder == null) {
       return null;
     }
-    const { records, isFetching } = myOrder;
+    const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '收到預定', href: my.lesseeOrderItem(TAB_REQUEST) },
-      { name: '尚未付款', href: my.lesseeOrderItem(TAB_PAY) },
-      { name: '待出貨', href: my.lesseeOrderItem(TAB_SHIPPING) },
-      { name: '待收貨', href: my.lesseeOrderItem(TAB_RETURN) },
-      { name: '完成', href: my.lesseeOrderItem(TAB_COMPLETE) },
-      { name: '取消', href: my.lesseeOrderItem(TAB_CANCEL) },
-      { name: '申訴中', href: my.lesseeOrderItem(TAB_SUE) },
-      { name: '申訴完成', href: my.lesseeOrderItem(TAB_SUE_COMPLETE) },
+      { name: '收到預定',
+        href: my.lesseeOrderItem(TAB_REQUEST),
+        tabName: TAB_REQUEST },
+      { name: '尚未付款',
+        href: my.lesseeOrderItem(TAB_PAY),
+        tabName: TAB_PAY },
+      { name: '待出貨',
+        href: my.lesseeOrderItem(TAB_SHIPPING),
+        tabName: TAB_SHIPPING },
+      { name: '待收貨',
+        href: my.lesseeOrderItem(TAB_RETURN),
+        tabName: TAB_RETURN },
+      { name: '完成',
+        href: my.lesseeOrderItem(TAB_COMPLETE),
+        tabName: TAB_COMPLETE },
+      { name: '取消',
+        href: my.lesseeOrderItem(TAB_CANCEL),
+        tabName: TAB_CANCEL },
+      { name: '申訴中',
+        href: my.lesseeOrderItem(TAB_SUE),
+        tabName: TAB_SUE },
+      { name: '申訴完成',
+        href: my.lesseeOrderItem(TAB_SUE_COMPLETE),
+        tabName: TAB_SUE_COMPLETE },
     ];
     return (
       <Container titleText={'預訂記錄'}>
@@ -82,7 +98,7 @@ class OrderList extends React.Component {
             }
           />
         </div>
-        <Navigation navs={navs} />
+        <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
@@ -102,6 +118,7 @@ class OrderList extends React.Component {
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
               unit={record.unit}
+              isRead={record.lessee_read}
               lesseeReceive={record.lessee_receive}
               display={record.display}
             />

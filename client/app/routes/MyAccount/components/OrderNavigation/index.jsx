@@ -15,10 +15,23 @@ class Navigation extends React.Component {
       {
         name: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
+        tabName: PropTypes.string.isRequired,
       }
     ).isRequired).isRequired,
+    unreads: PropTypes.arrayOf(PropTypes.number.isRequired)
   };
 
+  static defaultProps = {
+    unreads: [],
+  }
+  renderCircle(tabName) {
+    if (tabName in this.props.unreads && (this.props.unreads[tabName] > 0)) {
+      return (
+        <div styleName="notice-circle">{this.props.unreads[tabName]}</div>
+      );
+    }
+    return null;
+  }
   render() {
     const { navs } = this.props;
     return (
@@ -33,7 +46,7 @@ class Navigation extends React.Component {
             >
               <li>
                 {nav.name}
-                {<div styleName="notice-circle">1</div>}
+                {this.renderCircle(nav.tabName)}
               </li>
             </Link>
           ))}
