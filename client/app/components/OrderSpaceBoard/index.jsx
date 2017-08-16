@@ -76,17 +76,13 @@ class OrderItemBoard extends React.Component {
       case 4:
         return ('完成付款後，您將會收到信箱以及推播通知。');
       case 5:
-        return (`請於${formatDateForOrder(this.props.startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`);
       case 6:
-      case 7:
-        // str = ''; // 對方已收到您的物品。 if lessee_receive
-        return ('');
+      case 7:          
+        return (`將在${formatDateForOrder(this.props.startDate)}開始`);
       case 8:
+      case 9:    
+      case 10:          
         return ('');
-      case 9:
-        return ('提醒您，當對方確認寄還後，您將會收到推播以及email通知。');
-      case 10:
-        return ('對方已將物品寄還。');
       case 11:
         return ('交易完成！請給對方評價吧！');
       case 12:
@@ -108,15 +104,12 @@ class OrderItemBoard extends React.Component {
       case 4:
         return (`請在${formatDate(this.props.startDate)}前完成付款，逾時將自動取消。`);
       case 5:
-        return ('您已成功付款，我們會通知對方進行出貨。');
       case 6:
-      case 7:
-        return ('提醒您，收到貨時建議將物品拍照，以避免交易糾紛。'); // 請於使用日期結束的隔日" + fc_parse.getFormattedDateShiftDay(data.leaseend, 1) + "進行物品寄還。 if lessee_receive
+      case 7:          
+        return (`將在${formatDateForOrder(this.props.startDate)}開始`);
       case 8:
-        return '';
-      case 9:
-        return ('出貨時建議將物品拍照，拍照記錄能保障您的交易安全。');
-      case 10:
+      case 9:    
+      case 10:          
         return ('');
       case 11:
         return ('交易完成！請給對方評價吧！');
@@ -153,16 +146,13 @@ class OrderItemBoard extends React.Component {
       case 4:
         return ('待付款');
       case 5:
-        return ('待出貨');
       case 6:
       case 7:
-        return ('等待對方收貨'); // 已完成取件 if lessee_receive
+        return ('等待交易開始');
       case 8:
-        return ('交易進行中');
       case 9:
-        return ('訂單已結束，等待對方寄還');
       case 10:
-        return ('對方已寄還');
+        return ('交易進行中');
       case 11:
         return ('已完成');
       case 12:
@@ -184,17 +174,13 @@ class OrderItemBoard extends React.Component {
       case 4:
         return ('尚未付款');
       case 5:
-        return ('待對方出貨');
       case 6:
       case 7:
-      //  str = '對方已出貨'; // 你已完成取貨 if lessee_receive
-        return ('對方已出貨');
+        return ('等待交易開始');
       case 8:
-        return ('交易進行中');
       case 9:
-        return ('待寄還');
       case 10:
-        return ('已寄還，待對方收件');
+        return ('交易進行中');
       case 11:
         return ('已完成');
       case 12:
