@@ -3124,6 +3124,26 @@ interpret@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.3.tgz#cbc35c62eeee73f19ab7b10a801511401afc0f90"
 
+intl-format-cache@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.0.5.tgz#b484cefcb9353f374f25de389a3ceea1af18d7c9"
+
+intl-messageformat-parser@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.1.0.tgz#e8ed8f30853969bf1f5bedef0e944d2b1053409b"
+
+intl-messageformat@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-1.1.0.tgz#f46a168c1bd5e1838ecbddda809a0754727f4422"
+  dependencies:
+    intl-messageformat-parser "1.1.0"
+
+intl-relativeformat@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-1.1.0.tgz#86dc7b8b212883de186d9fda56b874012948df20"
+  dependencies:
+    intl-messageformat "1.1.0"
+
 invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
@@ -5271,6 +5291,15 @@ react-img-preload@^2.0.0:
   dependencies:
     react "^0.13.3"
 
+react-intl@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-1.2.2.tgz#7ee749aaef6167f56fea7480f2d88b2ca30a00bd"
+  dependencies:
+    intl-format-cache "2.0.5"
+    intl-messageformat "1.1.0"
+    intl-relativeformat "1.1.0"
+    react ">=0.11.2 <0.14.0"
+
 react-masonry-component@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-masonry-component/-/react-masonry-component-5.0.5.tgz#7a6e92fc4f67f6e7c1710b4fb90b4d7e81c0719f"
@@ -5537,6 +5566,16 @@ react-spinkit@^3.0.0:
     object-assign "^4.1.0"
     prop-types "^15.5.8"
 
+react-star-rating-input@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-star-rating-input/-/react-star-rating-input-6.2.0.tgz#2719aa66f6783984107c03ba6d1c6ed3d9e00e51"
+  dependencies:
+    react-intl "^1.2.2"
+
+react-stars@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-stars/-/react-stars-2.2.3.tgz#7af7e930978476baa6ca4c3e0d54843e57b5b0c5"
+
 react-sticky@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-6.0.1.tgz#356988bdcc6fc8cd2d89746d2302edce67d86687"
@@ -5569,7 +5608,7 @@ react-truncate@^2.1.0:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/react-truncate/-/react-truncate-2.1.4.tgz#58126a199c8afdac87873986e08210fd7305ef43"
 
-react@^0.13.3:
+"react@>=0.11.2 <0.14.0", react@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react/-/react-0.13.3.tgz#a2dfa85335d7dc02b82b482f089582e64cc13356"
   dependencies:
