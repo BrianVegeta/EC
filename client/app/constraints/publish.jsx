@@ -123,7 +123,7 @@ export default {
       notValid: '^請填數字',
       onlyInteger: true,
       notInteger: '^請填數字',
-      lessThanOrEqualTo: price,
+      lessThanOrEqualTo: parseInt(price, 10),
       notLessThanOrEqualTo: `^不可超過設定價格 ${formatCurrency(price)}`,
     },
   }),

@@ -11,6 +11,7 @@ class Detail extends React.Component {
 
   static defaultProps = {
     extra: false,
+    del: false,
   };
 
   static propTypes = {
@@ -19,15 +20,16 @@ class Detail extends React.Component {
       amount: PropTypes.number.isRequired,
     }).isRequired,
     extra: PropTypes.bool,
+    del: PropTypes.bool,
   };
 
   render() {
-    const { data, extra } = this.props;
+    const { data, extra, del } = this.props;
     const { text, amount } = data;
     return (
       <DetailContainer className="clear">
         <Label >{text}</Label>
-        <Price extra={extra}>{formatCurrency(amount)}</Price>
+        <Price extra={extra} del={del}>{formatCurrency(amount, 'NTD ')}</Price>
       </DetailContainer>
     );
   }

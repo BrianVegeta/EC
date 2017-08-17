@@ -9,6 +9,7 @@ import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputSelectionCoupons from 'components/Input/SelectionCoupons';
+import BillingDetail, { calculateService } from 'components/BillingDetail';
 import constraints from 'constraints/publish';
 // import InputText from 'components/Input/Text';
 // import InputTextArea from 'components/Input/TextArea';
@@ -117,8 +118,7 @@ class StepForm extends React.Component {
       </FormGroup>
     );
   }
-  // renderChoice,
-  // renderOption,
+
   renderCoupons({ coupon_no }) {
     const {
       dispatchChangeData,
@@ -138,17 +138,28 @@ class StepForm extends React.Component {
     );
   }
 
+  renderBillingDetail(
+    { leasestart, leaseend, unit },
+    { calculate_charge_type, price, deposit, discounts },
+  ) {
+    const calculateParams = {
+      calculate_charge_type, price, deposit, discounts, leasestart, leaseend, unit,
+    };
+    const couponOffset = 300;
+    const props = calculateService(calculateParams, couponOffset);
+
+    return <BillingDetail {...props} />;
+  }
+
   renderDetail(chargeType) {
-    const {
-      reservation,
-      reservationItem,
-    } = this.props;
+    const { reservation, reservationItem } = this.props;
 
     switch (chargeType) {
       case CHARGE_TYPE_FIX: {
         return (
           <div>
             <div>##### {CHARGE_TYPE_FIX} #####</div>
+            {this.renderBillingDetail(reservation, reservationItem)}
           </div>
         );
       }
@@ -159,6 +170,7 @@ class StepForm extends React.Component {
             <div>##### {CHARGE_TYPE_DAY} #####</div>
             {this.renderDatesPicker(reservation, reservationItem)}
             {this.renderCoupons(reservation)}
+            {this.renderBillingDetail(reservation, reservationItem)}
           </ConfirmTitle>
         );
       }
@@ -168,6 +180,7 @@ class StepForm extends React.Component {
           <ConfirmTitle title="交易明細" >
             <div>##### {CHARGE_TYPE_COUNT} #####</div>
             {this.renderDatesPicker(reservation, reservationItem)}
+            {this.renderBillingDetail(reservation, reservationItem)}
           </ConfirmTitle>
         );
       }

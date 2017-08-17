@@ -29,6 +29,7 @@ export const ConclusionLabel = Label.extend`
 
 export const Price = styled.span`
   color: ${props => (props.extra ? colors.colorDanger : colors.blackColor)};
+  ${({ del }) => (del && 'text-decoration: line-through;')}
   float: right;
 `;
 

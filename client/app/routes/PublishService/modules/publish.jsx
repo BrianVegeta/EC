@@ -99,11 +99,12 @@ export const savePublish = () =>
         calculate_charge_type: chargeType,
         start_date: (startDate ? startDate.valueOf() : null),
         end_date: (endDate ? endDate.valueOf() : null),
-        discounts: (chargeType === CHARGE_TYPE_FIX) ?
+        discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
           [{ type: 'FIX', param: 0, discount }] : [],
-        rules: regulation,
+        rules: [regulation],
         min_lease_days: 0,
       };
+
       asyncXhrAuthedPost(
         '/ajax/create_service_item.json',
         requestParams,

@@ -56,7 +56,9 @@ class SelectionButton extends React.Component {
   }
   onButtonPress() {
     const { isHoverOnButtonInner, isDropdownOpen } = this.state;
+    console.log(isHoverOnButtonInner, isDropdownOpen);
     if (isHoverOnButtonInner) this.setState({ isDropdownOpen: !isDropdownOpen });
+    console.log('button press');
   }
   innerMouseEnter() {
     this.setState({ isHoverOnButtonInner: true });

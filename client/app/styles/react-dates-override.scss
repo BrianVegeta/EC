@@ -143,3 +143,7 @@ $react-dates-z-index: 0 !default;
     border-bottom-right-radius: $radius;
   }
 }
+
+.DateRangePicker__picker {
+  z-index: 2;
+}

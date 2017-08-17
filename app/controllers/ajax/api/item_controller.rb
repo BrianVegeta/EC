@@ -23,6 +23,7 @@ class Ajax::Api::ItemController < ApplicationController
   # 新增服務
   def service_add
     obj = ::Api::Item::ServiceAdd.new service_params, current_apitoken
+
     success = obj.request
     if success
       obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
@@ -217,7 +218,7 @@ class Ajax::Api::ItemController < ApplicationController
       :return_option, :return_city, :return_area, :return_address,
       :overdue_rate, :deposit, :ship_before_start_days, :min_lease_days,
       :tag1, :tag2, :tag3,
-      rules: [], discounts: []).merge(current_uid_params)
+      rules: [], discounts: [:type, :param, :discount]).merge(current_uid_params)
 
   end
 
@@ -268,8 +269,8 @@ class Ajax::Api::ItemController < ApplicationController
       :currency, :deposit, :advance_reservation_days, :min_lease_days,
       :tag1, :tag2, :tag3,
       :assign_address_type, :assign_city, :assign_area, :assign_address,
-      :calculate_charge_type, :start_date, :end_date,
-      rules: [], discounts: []).merge(current_uid_params)
+      :calculate_charge_type, :start_date, :end_date, :discounts => [:type, :param, :discount],
+      rules: []).merge(current_uid_params)
 
   end
 
@@ -312,7 +313,7 @@ class Ajax::Api::ItemController < ApplicationController
        :cat_id, :city, :area, :unit, :price,
        :currency, :deposit, :advance_reservation_days, :min_lease_days,
        :tag1, :tag2, :tag3, :assign_address, :calculate_charge_type,
-       rules: [], discounts: []).merge(current_uid_params)
+       rules: [], discounts: [:type, :param, :discount]).merge(current_uid_params)
 
    end
 
