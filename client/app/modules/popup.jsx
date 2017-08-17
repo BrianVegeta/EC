@@ -44,7 +44,6 @@ export const popupPublishEntry = options =>
 export const popupScoreRating = options =>
   openPopup({ renderType: RENDER_SCORE_RATING, options });
 
-
 // =============================================
 // = reducer =
 // =============================================

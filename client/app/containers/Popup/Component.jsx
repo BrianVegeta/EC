@@ -60,7 +60,9 @@ class Popup extends React.Component {
             width={470}
             onClose={this.props.dispatchCloseModal}
           >
-            <ScoreRatingContainer />
+            <ScoreRatingContainer
+              onScore={options.onScore}
+            />
           </ModalBox>
         );
 

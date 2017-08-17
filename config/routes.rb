@@ -118,7 +118,10 @@ Rails.application.routes.draw do
       post 'cancel_order', to: 'contract#cancel' #
       post 'accept_order', to: 'contract#sign' #
       post 'ship_item_goods', to: 'contract#ship_goods' #
-      post 'receive_confirm', to: 'contract#receive_goods'
+      post 'return_item_goods', to: 'contract#return_goods' #
+      post 'receive_confirm', to: 'contract#receive_goods' #
+      post 'score_order', to: 'contract#score' #
+
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
 

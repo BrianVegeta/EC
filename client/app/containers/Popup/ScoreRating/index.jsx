@@ -14,22 +14,26 @@ import styles from './styles.sass';
 class ScoreRating extends React.Component {
   static propTypes = {
     dispatchClosePopup: PropTypes.func.isRequired,
+    onScore: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
     this.state = {
-      score: 1,
+      score: 5,
       description: '',
     };
+    this.onSave = this.onSave.bind(this);
   }
 
   onSave() {
     const isValid = this.descriptionInput.valid();
     if (isValid) {
       console.log('EXCUTE');
+      this.props.onScore(this.state.score, this.state.description);
+      this.props.dispatchClosePopup();
       return;
     }
-    console.log('NOT VALID');
+    alert('請輸入評價！！');
   }
 
   render() {
@@ -50,8 +54,8 @@ class ScoreRating extends React.Component {
         <div styleName="score-rating-star-section">
           <ReactStars
             count={5}
-            value={1}
-            onChange={(value) => { this.state = value; }}
+            value={this.state.score}
+            onChange={(value) => { this.state.score = value; }}
             half={false}
             size={30}
             color1={'#DBDBDB'}
@@ -89,7 +93,7 @@ class ScoreRating extends React.Component {
               size="sm"
               width={150}
               content="確定"
-              onClick={this.props.dispatchClosePopup}
+              onClick={this.onSave}
             />
           </div>
         </div>

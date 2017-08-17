@@ -89,7 +89,29 @@ export function doShipGoods(cid) {
       });
     });
 }
-export function doReturnConfirm(cid) {
+
+export function doReturn(cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'reject'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/return_item_goods.json',
+        { cid }, getState(), isCatch,
+      )
+      .then(() => {
+        dispatch(success(requestId));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+export function doReceiveConfirm(cid) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const requestId = Date.now();
@@ -132,9 +154,29 @@ export function doCancel(cid) {
     });
   }
 }
+export function doScore(cid, score, comment) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
 
-export const doReject = cid =>
-  (dispatch, getState) =>
+      dispatch(lock(requestId, 'reject'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/score_order.json',
+        { cid, score, comment }, getState(), isCatch,
+      )
+      .then(() => {
+        dispatch(success(requestId));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+export function doReject(cid) {
+  return (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const requestId = Date.now();
 
@@ -153,6 +195,8 @@ export const doReject = cid =>
         reject('失敗');
       });
     });
+}
+
 // =============================================
 // = reducer =
 // =============================================
