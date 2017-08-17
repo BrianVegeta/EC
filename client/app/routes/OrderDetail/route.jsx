@@ -7,8 +7,6 @@ export default store => ({
     require.ensure([], (require) => {
       const Container = require('./containers/OrderdetailContainer').default;
       const detailreducer = require('./modules/orderdetail').default;
-      const actionReducer = require('./modules/orderaction').default;
-      injectReducer(store, { key: 'orderaction', reducer: actionReducer });
       injectReducer(store, { key: 'orderdetail', reducer: detailreducer });
       cb(null, Container);
     }, 'orderdetail');

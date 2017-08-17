@@ -11,12 +11,23 @@ import { formatCurrency } from 'lib/currency';
 import { formatDate, formatDateForOrder, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
+import { popupScoreRating } from 'modules/popup';
+
+import { doShipGoods, doScore, resetAction }
+  from 'modules/orderAction';
 
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
 
 class OrderItemBoard extends React.Component {
+
+  static defaultProps = {
+    isOwner: false,
+    lesseeReceive: false,
+    targetScore: 0,
+    targetComment: '',
+  }
 
   static propTypes = {
     photoHead: PropTypes.string.isRequired,
@@ -26,22 +37,52 @@ class OrderItemBoard extends React.Component {
     cidNo: PropTypes.string.isRequired,
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
+    targetName: PropTypes.string.isRequired,
+    targetUrl: PropTypes.string.isRequired,
+    targetScore: PropTypes.string,
+    targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,
     totalPrice: PropTypes.number.isRequired,
     unit: PropTypes.number.isRequired,
-    isOwner: PropTypes.bool.isRequired,
+    isOwner: PropTypes.bool,
     isRead: PropTypes.bool.isRequired,
-    lesseeReceive: PropTypes.bool.isRequired,
+    lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
-        show_detail: PropTypes.bool.isRequired,
-        can_ship: PropTypes.bool.isRequired,
-        can_camera: PropTypes.bool.isRequired,
+        show_detail: PropTypes.bool,
+        can_ship: PropTypes.bool,
+        can_edit: PropTypes.bool,
+        can_pay: PropTypes.bool,
+        can_camera: PropTypes.bool,
+        can_score: PropTypes.bool,
+        view_score: PropTypes.bool,
       },
     ).isRequired,
+    dispatch: PropTypes.func.isRequired,
+    dispatchRefresh: PropTypes.func.isRequired,
   };
-
+  callScorePanel(isView) {
+    this.props.dispatch(popupScoreRating({
+      isView,
+      targetName: this.props.targetName,
+      targetScore: this.props.targetScore,
+      targetComment: this.props.targetComment,
+      targetUrl: this.props.targetUrl,
+      onScore: (score, comment) => {
+        this.props.dispatch(doScore(this.props.cid, score, comment))
+        .then(() => {
+          this.props.dispatch(resetAction());
+          if (this.props.dispatchRefresh) {
+            this.props.dispatchRefresh();
+          }
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      },
+    }))
+  }
   renderFooter() {
     return (
       <div
@@ -211,7 +252,8 @@ class OrderItemBoard extends React.Component {
   }
 
   renderOwnerActions() {
-    const { can_ship, can_camera } = this.props.display;
+    const { display } = this.props;
+    const { can_ship, can_camera, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -236,7 +278,32 @@ class OrderItemBoard extends React.Component {
             colorType={'greenBorder'}
             {...buttonConfig}
             content={'安排出貨'}
-            onClick={() => {}}
+            onClick={() => {
+              this.props.dispatch(doShipGoods(this.props.cid))
+              .then(() => {
+                this.props.dispatch(resetAction());
+                this.props.dispatchRefresh();
+              })
+              .catch((error) => {
+                alert(error);
+              });
+            }}
+          />
+        }
+        {can_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'評分'}
+            onClick={() => this.callScorePanel(false)}
+          />
+        }
+        {view_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'查看評價'}
+            onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
@@ -250,6 +317,8 @@ class OrderItemBoard extends React.Component {
   }
 
   renderLesseeActions() {
+    const { display } = this.props;
+    const { can_edit, can_pay, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -261,6 +330,38 @@ class OrderItemBoard extends React.Component {
     };
     return (
       <div styleName="oib-action-section">
+        {can_edit &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'修改預訂單'}
+            onClick={() => {}}
+          />
+        }
+        {can_pay &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'付款'}
+            onClick={() => {}}
+          />
+        }
+        {can_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'評分'}
+            onClick={() => this.callScorePanel(false)}
+          />
+        }
+        {view_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'查看評價'}
+            onClick={() => this.callScorePanel(true)}
+          />
+        }
         <FormButton
           colorType={'greenBorder'}
           {...buttonConfig}

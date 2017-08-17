@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import cities from 'modules/cities';
 import categories from 'modules/categories';
 import popup from 'modules/popup';
+import orderAction from 'modules/orderAction';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -24,6 +25,7 @@ import schedule from './scheduleReducer';
 import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
 import accessCheck from './accessCheckReducer';
+
 
 
 const reducers = {
@@ -52,6 +54,7 @@ const reducers = {
   // ownerProfile,
   // coupon,
   myCoupon,
+  orderAction,
 };
 
 const RESET_ONE = 'RESET_ONE';

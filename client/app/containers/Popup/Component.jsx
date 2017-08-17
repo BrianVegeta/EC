@@ -62,6 +62,11 @@ class Popup extends React.Component {
           >
             <ScoreRatingContainer
               onScore={options.onScore}
+              targetUrl={options.targetUrl}
+              targetName={options.targetName}
+              targetScore={options.targetScore}
+              targetComment={options.targetComment}
+              isView={options.isView}
             />
           </ModalBox>
         );

@@ -121,6 +121,8 @@ Rails.application.routes.draw do
       post 'return_item_goods', to: 'contract#return_goods' #
       post 'receive_confirm', to: 'contract#receive_goods' #
       post 'score_order', to: 'contract#score' #
+      post 'end_service', to: 'contract#service_end' #
+      post 'end_space', to: 'contract#space_end' #
 
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'

@@ -41,14 +41,14 @@ class ServiceStage < StageBase
   ####################### BASE STAGE FUNCTION #####################################
 
   def check_contract_end
-        
+
     if not (self.screen_type >= STAGE_CONTRACT_START && self.screen_type <= STAGE_RETURN_CONFIRM)
       return
     end
 
-    modify_display_param(KEY_OWNER_END, (self.contract['owner_send_time'].nil?))
+    modify_display_param(KEY_OWNER_END, (self.contract['owner_send_time'].nil?) && self.is_owner)
 
-    modify_display_param(KEY_LESSEE_END, (self.contract['lessee_send_time'].nil?))
+    modify_display_param(KEY_LESSEE_END, (self.contract['lessee_send_time'].nil?) && !self.is_owner)
 
   end
 

@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-icons/lib/fa/calendar-o';
-import forEach from 'lodash';
 
-import CalculationPanel from 'components/reservation/wrapper/CalculationPanel';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
-import { formatDate } from 'lib/time'
+import { formatDate } from 'lib/time';
 
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
 
-import Calculation from '../adapter/Calculation'
-import Banner from './Banner/index'
-import MiniMap from './MiniMap/index'
-import UserInfoBoard from './UserInfoBoard/index'
+import Banner from './Banner/index';
+import MiniMap from './MiniMap/index';
+import UserInfoBoard from './UserInfoBoard/index';
 
 class Orderdetail extends React.Component {
 
@@ -23,14 +20,6 @@ class Orderdetail extends React.Component {
     orderdetail: PropTypes.shape({
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
-    }).isRequired,
-    orderaction: PropTypes.shape({
-      lock: PropTypes.bool,
-      curAction: PropTypes.string,
-      requestId: PropTypes.number,
-      success: PropTypes.bool,
-      isErr: PropTypes.bool,
-      errMsg: PropTypes.string,
     }).isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
@@ -41,6 +30,8 @@ class Orderdetail extends React.Component {
     dispatchShipGoods: PropTypes.func.isRequired,
     dispatchReturn: PropTypes.func.isRequired,
     dispatchReceiveConfirm: PropTypes.func.isRequired,
+    dispatchEndSpace: PropTypes.func.isRequired,
+    dispatchEndService: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -241,7 +232,6 @@ class Orderdetail extends React.Component {
     if (order == null) {
       return null;
     }
-    console.log(order);
     console.log(this.props);
     const { display } = order;
     const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
@@ -249,16 +239,18 @@ class Orderdetail extends React.Component {
     this.ownerPicture = ownerProfile ? ownerProfile.picture : null;
     this.lesseePicture = lesseeProfile ? lesseeProfile.picture : null;
 
-    this.Calculation = new Calculation('FIX', order.price, order.deposit, order.unit,
-        order.discounts, 0, order.leasestart, order.leaseend);
+    let dispatchEnd = () => {};
+    if (order.type === 'SERVICE') {
+      dispatchEnd = this.props.dispatchEndService;
+    } else if (order.type === 'SERVICE') {
+      dispatchEnd = this.props.dispatchEndSpace;
+    }
+    const targetName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
+    const targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
+    const targetUrl = display.is_owner ? this.lesseePicture : this.ownerPicture;
+    const targetComment = display.is_owner ? order.lessee_comment : order.owner_comment;
+    const targetScore = display.is_owner ? order.lesseescore : order.ownerscore;
 
-    const model2 = {
-      priceDesc: this.Calculation.getPriceDesc(),
-      depositDesc: this.Calculation.getDepositDesc(),
-      couponDesc: this.Calculation.getCouponDesc(),
-      discountDesc: this.Calculation.getDiscountDesc(),
-      total: this.Calculation.total_price,
-    };
     return (
       <div>
         <div styleName="container">
@@ -283,9 +275,9 @@ class Orderdetail extends React.Component {
             </div>
             <div styleName="top_40px_style">
               <UserInfoBoard
-                realname={display.is_owner ? order.lessee_real_name : order.owner_real_name}
-                phone={display.is_owner ? order.lesseephone : order.ownerphone}
-                imgUrl={display.is_owner ? this.lesseePicture : this.ownerPicture}
+                realname={targetName}
+                imgUrl={targetUrl}
+                phone={targetPhone}
               />
             </div>
           </div>
@@ -305,7 +297,6 @@ class Orderdetail extends React.Component {
           </div>
           <div styleName="section-content">
             <div styleName="section-header">交易明細</div>
-            <CalculationPanel model={model2} />
             <BillingDetail {...calculateService(order, null)} />
             {this.renderAcceptHint(order.contractstage)}
             {this.renderBankInfo(order.contractstage, bankReady)}
@@ -342,9 +333,20 @@ class Orderdetail extends React.Component {
           {this.renderButtonStyle(display.can_return_confirm,
             () => this.props.dispatchReceiveConfirm,
             '確認收貨')}
+          {this.renderButtonStyle(display.can_owner_end,
+            dispatchEnd,
+            '確認結束')}
+          {this.renderButtonStyle(display.can_lessee_end,
+            dispatchEnd,
+            '確認結束')}
           {this.renderButtonStyle(display.can_score,
-            this.props.dispatchPopupScore,
+            () => this.props.dispatchPopupScore(false, targetName,
+              null, null, targetUrl),
             '評價')}
+          {this.renderButtonStyle(display.view_score,
+            () => this.props.dispatchPopupScore(true, targetName,
+              targetScore, targetComment, targetUrl),
+            '查看評價')}
           {this.renderRejectStyle(display.can_reject,
             this.props.dispatchReject)}
         </div>

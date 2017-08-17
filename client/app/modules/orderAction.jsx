@@ -5,7 +5,6 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'ORDER.ACTION';
-const REDUCER_KEY = 'orderaction';
 
 // =============================================
 // = action type =
