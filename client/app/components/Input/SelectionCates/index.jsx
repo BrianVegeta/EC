@@ -4,7 +4,7 @@ import {
   find,
   forEach,
 } from 'lodash';
-import SelectionButton from 'components/Input/SelectionButton';
+import SelectionButton from 'components/Input/SelectionBtn';
 import hasError from 'components/Input/hoc/hasError';
 
 import Dropdown from './Dropdown';

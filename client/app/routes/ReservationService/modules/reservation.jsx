@@ -46,6 +46,10 @@ const initialState = {
   leasestart: null,
   leaseend: null,
   couponNo: null,
+  serviceLocationType: null,
+  serviceCity: '',
+  serviceArea: '',
+  serviceAddress: '',
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);

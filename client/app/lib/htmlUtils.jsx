@@ -3,8 +3,8 @@ import React from 'react';
 
 export const htmlNewLineToBreak = text => (
   <div>
-    {text.split('\n').map(t => (
-      <div>{t}</div>
+    {text.split('\n').map((t, i) => (
+      <div key={`${i + 1}`}>{t}</div>
     ))}
   </div>
 );

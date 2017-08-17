@@ -27,7 +27,9 @@ export default function inputWithError(InputComponent, defaultProps = {}) {
     };
 
     static propTypes = {
-      value: PropTypes.string,
+      value: PropTypes.oneOfType([
+        PropTypes.string, PropTypes.number,
+      ]),
       equalityTarget: PropTypes.objectOf(PropTypes.string),
       onBlur: PropTypes.func,
       constraints: PropTypes.objectOf(

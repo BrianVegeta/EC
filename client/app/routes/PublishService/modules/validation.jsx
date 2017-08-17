@@ -180,7 +180,6 @@ export const validatePriceBy = ({
   const unitConstraint = isFixType ? constraints.serviceUnit : null;
   const advanceDaysConstraint = isFixType ? null : constraints.serviceReservationDays;
   const discountConstraint = isFixType ? constraints.discount(price) : null;
-  console.log(constraints.discount(price));
 
   const errors = validate({
     price,

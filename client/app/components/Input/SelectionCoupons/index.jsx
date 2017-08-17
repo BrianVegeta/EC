@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { find } from 'lodash';
 
 import InputSelection from 'components/Input/Selection';
 import { formatCurrency } from 'lib/currency';
@@ -23,11 +24,11 @@ const optionPropType = PropTypes.shape({
 class InputSelectionCoupons extends React.Component {
 
   static defaultProps = {
-    value: null,
+    couponNo: null,
   };
 
   static propTypes = {
-    value: PropTypes.string,
+    couponNo: PropTypes.number,
     onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(optionPropType).isRequired,
   };
@@ -41,35 +42,49 @@ class InputSelectionCoupons extends React.Component {
       <div className={cx('option-container')}>
         <div className={cx('name')}>{name}</div>
         <div className="clear">
-          <div className={cx('price')}>{formatCurrency(amount)}</div>
-          <div className={cx('expire-date')}>
+          <span className={cx('price')}>{formatCurrency(amount)}</span>
+          <span className={cx('expire-date')}>
             {formatDate(expiration_time)}到期
-          </div>
+          </span>
         </div>
       </div>
     );
   }
 
-  render() {
-    const {
-      value,
-      onSelect,
-      options,
-    } = this.props;
+  static renderChoice({ name }) {
+    return name;
+  }
 
-    const selectionOptions = options.map((option) => {
+  getSelectionOptions() {
+    const { options } = this.props;
+
+    return options.map((option) => {
       const { id, ...otherOption } = option;
       return { value: id, ...otherOption };
     });
+  }
+
+  getChoice() {
+    const { couponNo } = this.props;
+    return find(this.getSelectionOptions(), { value: couponNo });
+  }
+
+  render() {
+    const {
+      couponNo,
+      onSelect,
+    } = this.props;
 
     return (
       <InputSelection
+        ref={inputSelection => (this.inputSelection = inputSelection)}
         placeholder="選擇折價券"
-        value={value}
-        options={selectionOptions}
-        onSelect={onSelect}
+        value={couponNo}
+        options={this.getSelectionOptions()}
+        onSelect={option => onSelect(option)}
         renderNoData={this.constructor.renderNoData}
         renderOption={this.constructor.renderOption}
+        renderChoice={this.constructor.renderChoice}
       />
     );
   }

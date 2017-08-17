@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  find,
+} from 'lodash';
 
 // import myPropTypes from 'propTypes';
 import FormContainer from 'components/Publish/FormContainer';
@@ -9,16 +12,12 @@ import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputSelectionCoupons from 'components/Input/SelectionCoupons';
+import InputSelection from 'components/Input/Selection';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
+import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
+import InputText from 'components/Input/Text';
 import constraints from 'constraints/publish';
-// import InputText from 'components/Input/Text';
-// import InputTextArea from 'components/Input/TextArea';
-// import InputTextTag from 'components/Input/TextTag';
-// import FormTitleLimiter from 'components/Form/TitleLimiter';
-// import constraints from 'constraints';
-// import {
-//   CATEGORY_SERVICE,
-// } from 'constants/enums';
+
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
@@ -31,6 +30,8 @@ import {
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_COUNT,
+  ASSIGN_ADDRESS_BY_OWNER,
+  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';
 
 
@@ -54,6 +55,21 @@ class StepForm extends React.Component {
     isValid: PropTypes.bool.isRequired,
     nextStep: PropTypes.func.isRequired,
   };
+
+  static getCouponOffset({ couponNo, reservationCoupons }) {
+    if (!couponNo) return null;
+    const coupon = find(reservationCoupons.records, { id: couponNo });
+    return coupon ? coupon.amount : null;
+  }
+
+  static getUnit(type) {
+    switch (type) {
+      case CHARGE_TYPE_FIX: return '次';
+      case CHARGE_TYPE_DAY: return '天';
+      case CHARGE_TYPE_COUNT: return '人';
+      default: return '';
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -119,7 +135,7 @@ class StepForm extends React.Component {
     );
   }
 
-  renderCoupons({ coupon_no }) {
+  renderCoupons({ couponNo }) {
     const {
       dispatchChangeData,
       reservationCoupons,
@@ -129,7 +145,8 @@ class StepForm extends React.Component {
       <FormGroup>
         <div styleName="coupons-container">
           <InputSelectionCoupons
-            value={coupon_no}
+            ref={selectionCoupon => (this.selectionCoupon = selectionCoupon)}
+            couponNo={couponNo}
             options={reservationCoupons.records}
             onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
           />
@@ -139,16 +156,125 @@ class StepForm extends React.Component {
   }
 
   renderBillingDetail(
-    { leasestart, leaseend, unit },
+    { leasestart, leaseend, unit, couponNo },
     { calculate_charge_type, price, deposit, discounts },
   ) {
+    const { reservationCoupons } = this.props;
+    const { getCouponOffset } = this.constructor;
     const calculateParams = {
-      calculate_charge_type, price, deposit, discounts, leasestart, leaseend, unit,
+      calculate_charge_type,
+      price,
+      deposit,
+      discounts,
+      leasestart,
+      leaseend,
+      unit,
     };
-    const couponOffset = 300;
+    const couponOffset = getCouponOffset({ couponNo, reservationCoupons });
     const props = calculateService(calculateParams, couponOffset);
 
     return <BillingDetail {...props} />;
+  }
+
+  /**
+   *
+   * 服務指定地址
+   *
+   */
+  renderAssignAddress({ serviceCity, serviceArea, serviceAddress }) {
+    const { dispatchChangeData } = this.props;
+    return (
+      <div styleName="assign-address">
+        <div styleName="city-area-container">
+          <InputSelectionCitiesContainer
+            ref={serviceCityAreaInput => (
+              this.serviceCityAreaInput = (
+                serviceCityAreaInput && serviceCityAreaInput.getWrappedInstance()
+              )
+            )}
+            cityName={serviceCity}
+            areaName={serviceArea}
+            value={`${serviceCity}${serviceArea}`}
+            onSelect={city => dispatchChangeData({
+              serviceCity: city.cityName,
+              serviceArea: city.areaName,
+            })}
+            constraints={constraints.cityArea}
+            validateOnBlur
+          />
+        </div>
+        <InputText
+          ref={serviceAddressInput => (
+            this.serviceAddressInput = serviceAddressInput
+          )}
+          placeholder="請輸入詳細地址"
+          onChange={value => dispatchChangeData({ serviceAddress: value })}
+          value={serviceAddress}
+          constraints={constraints.address}
+          validateOnBlur
+        />
+      </div>
+    );
+  }
+
+  /**
+   *
+   * 指定方式服務
+   *
+   */
+  renderAssign(
+    { assign_address_type, assign_city, assign_area },
+    { serviceLocationType, serviceCity, serviceArea, serviceAddress },
+  ) {
+    const { dispatchChangeData } = this.props;
+
+    const byOwner = assign_address_type.includes(ASSIGN_ADDRESS_BY_OWNER);
+    const byCustomer = assign_address_type.includes(ASSIGN_ADDRESS_BY_CUSTOMER);
+
+    if (byOwner && !byCustomer) {
+      return (
+        <div styleName="assign-container">
+          <FormGroup helperBottom="當分享人同意您的預定時，您將會收到確切的服務地址。">
+            <div styleName="assign-type">到店服務</div>
+            <div styleName="assign-content">
+              <span styleName="address-label">地點：</span>
+              <span styleName="address">{assign_city}{assign_area}</span>
+            </div>
+          </FormGroup>
+        </div>
+      );
+    }
+
+    if (!byOwner && byCustomer) {
+      return (
+        <div styleName="assign-container">
+          <FormGroup>
+            <div styleName="assign-type">到府服務</div>
+            <div styleName="assign-content">
+              <FormGroup
+                headerText="指定地址"
+                helperBottom="當分享人同意您的預定後，您的地址才會被分享人知道。"
+              >
+                {this.renderAssignAddress({ serviceCity, serviceArea, serviceAddress })}
+              </FormGroup>
+            </div>
+          </FormGroup>
+        </div>
+      );
+    }
+
+    return (
+      <div styleName="assign-container">
+        <InputSelection
+          options={[
+            { value: ASSIGN_ADDRESS_BY_OWNER, text: '親自前往' },
+            { value: ASSIGN_ADDRESS_BY_CUSTOMER, text: '到府服務' },
+          ]}
+          value={serviceLocationType}
+          onSelect={({ value }) => dispatchChangeData({ serviceLocationType: value })}
+        />
+      </div>
+    );
   }
 
   renderDetail(chargeType) {
@@ -157,10 +283,12 @@ class StepForm extends React.Component {
     switch (chargeType) {
       case CHARGE_TYPE_FIX: {
         return (
-          <div>
+          <ConfirmTitle title="交易明細" >
             <div>##### {CHARGE_TYPE_FIX} #####</div>
+            <div>活動時間</div>
+            {this.renderCoupons(reservation)}
             {this.renderBillingDetail(reservation, reservationItem)}
-          </div>
+          </ConfirmTitle>
         );
       }
 
@@ -180,6 +308,8 @@ class StepForm extends React.Component {
           <ConfirmTitle title="交易明細" >
             <div>##### {CHARGE_TYPE_COUNT} #####</div>
             {this.renderDatesPicker(reservation, reservationItem)}
+            {'數量'}
+            {this.renderCoupons(reservation)}
             {this.renderBillingDetail(reservation, reservationItem)}
           </ConfirmTitle>
         );
@@ -195,6 +325,7 @@ class StepForm extends React.Component {
       isValid,
       isFetched,
       reservationItem,
+      reservation,
     } = this.props;
 
     const {
@@ -214,14 +345,13 @@ class StepForm extends React.Component {
             img1={img1}
             pname={pname}
             price={price}
-            unit={{
-              [CHARGE_TYPE_FIX]: '次',
-              [CHARGE_TYPE_DAY]: '天',
-              [CHARGE_TYPE_COUNT]: '人',
-            }[calculate_charge_type]}
+            unit={this.constructor.getUnit(calculate_charge_type)}
           />
         </div>
         {this.renderDetail(calculate_charge_type)}
+        <ConfirmTitle title="服務方式" >
+          {this.renderAssign(reservationItem, reservation)}
+        </ConfirmTitle>
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}

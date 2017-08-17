@@ -6,7 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
-import SelectionButton from 'components/Input/SelectionButton';
+import SelectionButton from 'components/Input/SelectionBtn';
 import hasError from 'components/Input/hoc/hasError';
 
 import CSS from 'react-css-modules';
@@ -61,13 +61,21 @@ class Selection extends React.Component {
 
   onSelect(option) {
     const { onSelect } = this.props;
-    if (onSelect) onSelect(option);
+    if (onSelect) {
+      onSelect(option);
+    }
+
     this.selectBtn.closeDropdown();
   }
 
+  getChoice() {
+    const { options, value } = this.props;
+    return getChoiceFromValue(options, value);
+  }
+
   renderChoice() {
-    const { options, value, renderChoice } = this.props;
-    const choice = getChoiceFromValue(options, value);
+    const { renderChoice } = this.props;
+    const choice = this.getChoice();
     if (!choice) return null;
 
     if (renderChoice) return renderChoice(choice);

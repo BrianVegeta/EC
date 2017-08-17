@@ -52,14 +52,16 @@ class SelectionButton extends React.Component {
     this.setState({ isFocusing: false, isDropdownOpen: false });
   }
   onFocus() {
+    console.log('focus');
     this.setState({ isFocusing: true });
   }
+
   onButtonPress() {
     const { isHoverOnButtonInner, isDropdownOpen } = this.state;
-    console.log(isHoverOnButtonInner, isDropdownOpen);
-    if (isHoverOnButtonInner) this.setState({ isDropdownOpen: !isDropdownOpen });
-    console.log('button press');
+    this.setState({ isDropdownOpen: !isDropdownOpen });
+    // if (isHoverOnButtonInner) this.setState({ isDropdownOpen: !isDropdownOpen });
   }
+
   innerMouseEnter() {
     this.setState({ isHoverOnButtonInner: true });
   }

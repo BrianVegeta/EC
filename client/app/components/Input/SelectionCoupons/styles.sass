@@ -1,4 +1,5 @@
 @import "~styles/color.sass"
+@import "~styles/input.sass"
 
 .no-data
   padding: 0 20px
@@ -7,13 +8,22 @@
 
 .option-container
   .name
+    display: -webkit-box
+    -webkit-line-clamp: 2
+    -webkit-box-orient: vertical
     overflow: hidden
     line-height: 1.2em
     max-height: 2.4em
     text-overflow: ellipsis
     white-space: normal
     word-wrap: break-word
+    margin-bottom: 6px
+  .price, .expire-date
+    vertical-align: middle
+    line-height: 25px
   .price
+    float: left
     font-weight: 500
   .expire-date
+    float: right
     font-size: 14px
