@@ -10,7 +10,7 @@ const mapStateToProps = ({ environment }) => ({
 });
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { onScore }) => ({
   dispatch,
   dispatchClosePopup: () => dispatch(closePopup()),
 });

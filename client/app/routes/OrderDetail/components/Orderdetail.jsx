@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-icons/lib/fa/calendar-o';
+import forEach from 'lodash';
 
 import CalculationPanel from 'components/reservation/wrapper/CalculationPanel';
 import CSS from 'react-css-modules';
@@ -37,7 +38,8 @@ class Orderdetail extends React.Component {
     dispatchCancel: PropTypes.func.isRequired,
     dispatchReject: PropTypes.func.isRequired,
     dispatchShipGoods: PropTypes.func.isRequired,
-    dispatchReturnConfirm: PropTypes.func.isRequired,
+    dispatchReturn: PropTypes.func.isRequired,
+    dispatchReceiveConfirm: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -48,6 +50,190 @@ class Orderdetail extends React.Component {
     this.props.dispatchReset();
   }
 
+  renderButtonStyle(show, dispatchAction, buttonText) {
+    if (!(show)) {
+      return null;
+    }
+    return (
+      <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
+        <FormButton
+          colorType="greenBorder"
+          size="sm"
+          width={150}
+          content={buttonText}
+          onClick={dispatchAction}
+        />
+      </div>
+    );
+  }
+
+  renderRejectStyle(show, dispatchAction) {
+    if (!(show)) {
+      return null;
+    }
+    return (
+      <div style={{ display: 'inline-block', width: 420, marginLeft: 20, verticalAlign: 'middle' }}>
+        <div>
+          <span>對於此預訂單有問題嗎？您可以提出修改並私訊享用人，請對方做修改喔!</span>
+          <button
+            style={{
+              color: colors.activeColor,
+              padding: 0,
+              border: 'none',
+              background: 'none'
+            }}
+            onClick={dispatchAction}
+          >
+            提出修改預訂單
+          </button>
+        </div>
+      </div>
+    );
+  }
+  renderOverdueRate(overdueRate, deposit) {
+    if (!overdueRate || overdueRate <= 0) {
+      return null;
+    }
+
+    const overdueRatePerDay = (overdueRate == null) ? 0 :
+    ((deposit * overdueRate) / 100);
+
+    return (
+      <div styleName="section-content">
+        <div styleName="section-header">逾期金政策</div>
+        <div>
+          <span>逾期1天，將從押金扣除</span>
+          <span style={{ color: colors.colorHeart }}>{`NTD$${overdueRatePerDay}`}</span>
+          <span>，扣除的總金額則取決於逾期的天數做累加計算</span>
+        </div>
+        <div styleName="padding-40btm-style" />
+      </div>
+    );
+  }
+  renderCancelPolicys(cancelPolicys) {
+    if (!cancelPolicys || cancelPolicys.length <= 0) {
+      return null;
+    }
+    return (
+      <div styleName="section-content">
+        <div styleName="section-header">退訂政策</div>
+        <div>
+          <span>開始租借前</span>
+          <span style={{ color: colors.colorHeart }}>
+            {cancelPolicys[0].advance_day}
+          </span>
+          <span>天取消訂單，扣除</span>
+          <span style={{ color: colors.colorHeart }}>{`${cancelPolicys[0].rate}%`}</span>
+          <span>金額</span>
+        </div>
+        <div styleName="padding-40btm-style" />
+      </div>
+    );
+  }
+  renderRules(rules) {
+    if (!rules || rules.length <= 0) {
+      return null;
+    }
+
+    return (
+      <div styleName="section-content">
+        <div styleName="section-header">分享人守則</div>
+        <div>
+          {
+            rules.map((rule, i) =>
+              <div key={`${rule.describe}_${i + 1}`}>{rule}</div>
+          )}
+        </div>
+        <div styleName="padding-40btm-style" />
+      </div>
+    );
+  }
+  renderShippingDetail(sendType, returnType) {
+    let showSecondLine = false;
+    let sendTypeName = '';
+    let sendDetail = '';
+    let returnTypeName = '';
+    let returnDetail = '';
+
+    switch (sendType) {
+      case '0':
+        sendTypeName = '面交';
+        sendDetail = ''
+        break;
+      case '1':
+        sendTypeName = '自行寄送';
+        showSecondLine = true;
+        break;
+      default:
+        sendTypeName = '';
+        sendDetail = '';
+        break;
+    }
+
+    switch (returnType) {
+      case '0':
+        returnTypeName = '面交';
+        returnDetail = ''
+        break;
+      case '1':
+        returnTypeName = '自行寄送';
+        showSecondLine = true;
+        break;
+      default:
+        returnTypeName = '其他';
+        returnDetail = ''
+    }
+
+    return (
+      <div>
+        <div style={{ position: 'relative' }}>
+          <div styleName="half-width-style">{ `到貨方式: ${sendTypeName}` }</div>
+          <div styleName="half-width-style">{ `還貨方式: ${returnTypeName}` }</div>
+        </div>
+        { showSecondLine &&
+          <div style={{ position: 'relative', paddingTop: 10 }}>
+            <div styleName="half-width-style">{ sendDetail }</div>
+            <div styleName="half-width-style">{ returnDetail }</div>
+          </div>
+        }
+      </div>
+    );
+  }
+  renderAcceptHint(contractstage) {
+    if (contractstage !== 1) {
+      return null;
+    }
+    return (
+      <div style={{ paddingBottom: 50, paddingTop: 20, fontSize: 16, fontWeight: 400 }}>
+        備註：請盡快同意！
+      </div>
+    );
+  }
+  renderBankInfo(contractstage, bankReady){
+    if (contractstage > 4) {
+      return null;
+    }
+    return (
+      <div>
+        { (bankReady === 1) ?
+          <div style={{ display: 'inline-block', color: colors.blackColor }}>設定銀行帳戶</div> :
+          <div style={{ display: 'inline-block', color: colors.colorHeart }}>您尚未設定銀行帳戶喔！</div>
+        }
+        <div style={{ display: 'inline-block', marginLeft: 20 }}>
+          <FormButton
+            colorType="greenBorder"
+            size="sm"
+            width={120}
+            content="前往設定"
+            onClick={() => {}}
+          />
+        </div>
+        <div style={{ color: colors.placeholder, paddingTop: 20, paddingBottom: 50 }}>
+          當交易完成後，銀行會在每週一、三，將您的收入款項轉帳至您的銀行帳戶
+        </div>
+      </div>
+    )
+  }
   render() {
     const { orderdetail } = this.props;
     const { order } = orderdetail;
@@ -58,12 +244,6 @@ class Orderdetail extends React.Component {
     const { display } = order;
     const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
 
-    if (order.contractstage < 4) {
-      this.show_bank = true;
-      this.bank_ok = bankReady;
-    } else {
-      this.show_bank = false;
-    }
     this.ownerPicture = ownerProfile ? ownerProfile.picture : null;
     this.lesseePicture = lesseeProfile ? lesseeProfile.picture : null;
 
@@ -77,40 +257,6 @@ class Orderdetail extends React.Component {
       discountDesc: this.Calculation.getDiscountDesc(),
       total: this.Calculation.total_price,
     }
-
-    this.showSecondLine = false;
-
-    switch (order.send_type) {
-      case '0':
-        this.sendTypeName = '面交';
-        this.sendDetail = ''
-        break;
-      case '1':
-        this.sendTypeName = '自行寄送';
-        this.showSecondLine = true;
-        break;
-      default:
-        this.sendTypeName = '';
-        this.sendDetail = '';
-        break;
-    }
-
-    switch (order.return_type) {
-      case '0':
-        this.returnTypeName = '面交';
-        this.returnDetail = ''
-        break;
-      case '1':
-        this.returnTypeName = '自行寄送';
-        this.showSecondLine = true;
-        break;
-      default:
-        this.returnTypeName = '其他';
-        this.returnDetail = ''
-    }
-    this.overdue_rate_per_day = (order.overdue_rate == null) ? 0 :
-    ((order.deposit * order.overdue_rate) / 100);
-
     return (
       <div>
         <div styleName="container">
@@ -135,9 +281,9 @@ class Orderdetail extends React.Component {
             </div>
             <div styleName="top_40px_style">
               <UserInfoBoard
-                realname={display.is_owner ? order.owner_real_name : order.lessee_real_name }
-                phone={display.is_owner ? order.ownerphone : order.lesseephone}
-                imgUrl={display.is_owner ? this.ownerPicture : this.lesseePicture }
+                realname={display.is_owner ? order.lessee_real_name : order.owner_real_name}
+                phone={display.is_owner ? order.lesseephone : order.ownerphone}
+                imgUrl={display.is_owner ? this.lesseePicture : this.ownerPicture}
               />
             </div>
           </div>
@@ -152,162 +298,52 @@ class Orderdetail extends React.Component {
           </div>
           <div styleName="section-content">
             <div styleName="section-header">物流方式</div>
-            <div style={{ position: 'relative' }}>
-              <div styleName="half-width-style">{ `到貨方式: ${this.sendTypeName}` }</div>
-              <div styleName="half-width-style">{ `還貨方式: ${this.returnTypeName}` }</div>
-            </div>
-            { this.showSecondLine && <div style={{ position: 'relative', paddingTop: 10 }}>
-              <div styleName="half-width-style">{ this.sendDetail }</div>
-              <div styleName="half-width-style">{ this.rendDetail }</div>
-            </div>
-            }
+            {this.renderShippingDetail(order.send_type, order.return_type)}
             <div styleName="padding-40btm-style" />
           </div>
           <div styleName="section-content">
             <div styleName="section-header">交易明細</div>
-            <CalculationPanel
-              model={model2}
-            />
-            <div style={{ paddingBottom: 50, paddingTop: 20, fontSize: 16, fontWeight: 400 }}>
-              備註：請盡快同意！</div>
-            { this.show_bank &&
-              <div>
-                { (this.bank_ok === 1) ?
-                  <div style={{ display: 'inline-block', color: colors.blackColor }}>設定銀行帳戶</div> :
-                  <div style={{ display: 'inline-block', color: colors.colorHeart }}>您尚未設定銀行帳戶喔！</div>
-                }
-                <div style={{ display: 'inline-block', marginLeft: 20 }}>
-                  <FormButton
-                    colorType="greenBorder"
-                    size="sm"
-                    width={120}
-                    content="前往設定"
-                    onClick={() => {}}
-                  />
-                </div>
-                <div style={{ color: colors.placeholder, paddingTop: 20, paddingBottom: 50 }}>
-                  當交易完成後，銀行會在每週一、三，將您的收入款項轉帳至您的銀行帳戶
-                </div>
-              </div>
-            }
+            <CalculationPanel model={model2} />
+            {this.renderAcceptHint(order.contractstage)}
+            {this.renderBankInfo(order.contractstage, bankReady)}
           </div>
-          { (order.rules.length > 0) && <div styleName="section-content">
-            <div styleName="section-header">分享人守則</div>
-            <div>
-              {
-                order.rules.map((rule, i) =>
-                  <div key={`${rule.describe}_${i + 1}`}>{rule}</div>
-              )}
-            </div>
-            <div styleName="padding-40btm-style" />
-          </div>
-          }
-          { (order.cancel_policys.length > 0) && <div styleName="section-content">
-            <div styleName="section-header">退訂政策</div>
-            <div>
-              <span>開始租借前</span>
-              <span style={{ color: colors.colorHeart }}>
-                {order.cancel_policys[0].advance_day}
-              </span>
-              <span>天取消訂單，扣除</span>
-              <span style={{ color: colors.colorHeart }}>{`${order.cancel_policys[0].rate}%`}</span>
-              <span>金額</span>
-            </div>
-            <div styleName="padding-40btm-style" />
-          </div>
-          }
-          { (order.overdue_rate) && <div styleName="section-content">
-            <div styleName="section-header">逾期金政策</div>
-            <div>
-              <span>逾期1天，將從押金扣除</span>
-              <span style={{ color: colors.colorHeart }}>{`NTD$${this.overdue_rate_per_day}`}</span>
-              <span>，扣除的總金額則取決於逾期的天數做累加計算</span>
-            </div>
-            <div styleName="padding-40btm-style" />
-          </div>
-          }
+          {this.renderRules(order.rules)}
+          {this.renderCancelPolicys(order.cancel_policys)}
+          {this.renderOverdueRate(order.overdue_rate, order.deposit)}
         </div>
         <div style={{ height: 130 }}>
-          { display.can_canel &&
-            <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-              <FormButton
-                colorType="greenBorder"
-                size="sm"
-                width={150}
-                content={display.is_owner ? '目前無法接單' : '取消訂單' }
-                onClick={this.props.dispatchCancel}
-              />
-            </div>
-          }
-          { display.can_accept && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButton
-              colorType="greenBorder"
-              size="sm"
-              width={150}
-              content="我同意此預訂"
-              onClick={this.props.dispatchAccept}
-            />
-          </div>
-          }
-          { display.can_reject && <div style={{ display: 'inline-block', width: 420, marginLeft: 20, verticalAlign: 'middle' }}>
-            <div>
-              <span>對於此預訂單有問題嗎？您可以提出修改並私訊享用人，請對方做修改喔!</span>
-              <button
-                style={{
-                  color: colors.activeColor,
-                  padding: 0,
-                  border: 'none',
-                  background: 'none'
-                }}
-                onClick={this.props.dispatchReject}
-              >
-                提出修改預訂單
-              </button>
-            </div>
-          </div>
-          }
-          { display.can_pay && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButton
-              colorType="greenBorder"
-              size="sm"
-              width={150}
-              content="付款"
-              onClick={() => {}}
-            />
-          </div>
-          }
-          { display.can_ship &&
-            <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-              <FormButton
-                colorType="greenBorder"
-                size="sm"
-                width={150}
-                content="確認出貨"
-                onClick={this.props.dispatchShipGoods}
-              />
-            </div>
-          }
-          { display.can_return_confirm && <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-            <FormButton
-              colorType="greenBorder"
-              size="sm"
-              width={150}
-              content="確認收貨"
-              onClick={this.props.dispatchReturnConfirm}
-            />
-          </div>
-          }
-          { true &&
-            <div style={{ display: 'inline-block', marginLeft: 20, verticalAlign: 'middle' }}>
-              <FormButton
-                colorType="greenBorder"
-                size="sm"
-                width={150}
-                content="評分"
-                onClick={this.props.dispatchPopupScore}
-              />
-            </div>
-          }
+          {this.renderButtonStyle(display.can_cancel,
+            this.props.dispatchCancel,
+            display.is_owner ? '目前無法接單' : '取消訂單')}
+          {this.renderButtonStyle(display.can_accept,
+            this.props.dispatchAccept,
+            '我同意此預訂')}
+          {this.renderButtonStyle(display.can_edit,
+            () => {},
+            '修改訂單')}
+          {this.renderButtonStyle(display.can_pay,
+            () => {},
+            '付款')}
+          {this.renderButtonStyle(display.can_camera,
+            () => {},
+            '拍照')}
+          {this.renderButtonStyle(display.can_ship,
+            this.props.dispatchShipGoods,
+            '確認出貨')}
+          {this.renderButtonStyle(display.can_ship_confirm,
+            () => this.props.dispatchReceiveConfirm,
+            '確認收貨')}
+          {this.renderButtonStyle(display.can_return,
+            this.props.dispatchReturn,
+            '確認還貨')}
+          {this.renderButtonStyle(display.can_return_confirm,
+            () => this.props.dispatchReceiveConfirm,
+            '確認收貨')}
+          {this.renderButtonStyle(display.can_score,
+            this.props.dispatchPopupScore,
+            '評價')}
+          {this.renderRejectStyle(display.can_reject,
+            this.props.dispatchReject)}
         </div>
       </div>
     );

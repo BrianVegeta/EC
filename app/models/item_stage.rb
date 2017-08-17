@@ -57,28 +57,28 @@ class ItemStage < StageBase
     check_stage = self.screen_type == STAGE_SHIPPING
     check_condition = (self.is_owner == true)
     modify_display_param(KEY_SHIP, check_stage && check_condition)
-    modify_display_param(KEY_CAMERA, check_stage && check_condition)
+    modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
   def check_can_ship_confirm
     check_stage = self.screen_type == STAGE_SHIP_CONFIRM || self.screen_type == STAGE_CONTRACT_ONGOING
-    check_condition = (self.is_owner == false) && (not self.contract['lessee_receive'].nil?) && (self.contract['lessee_receive'] == false)
-    modify_display_param(KEY_RETURN, check_stage && check_condition)
-    modify_display_param(KEY_CAMERA, check_stage && check_condition)
+    check_condition = (self.is_owner == false) && (not self.contract['lessee_receive'])
+    modify_display_param(KEY_SHIP_CONFIRM, check_stage && check_condition)
+    modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
   def check_return_ship
     check_stage = self.screen_type == STAGE_CONTRACT_END
     check_condition = (self.is_owner == false)
     modify_display_param(KEY_RETURN, check_stage && check_condition)
-    modify_display_param(KEY_CAMERA, check_stage && check_condition)
+    modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
   def check_return_confirm
     check_stage = self.screen_type == STAGE_RETURN_CONFIRM
-    check_condition = (self.is_owner == true) && (not self.contract['owner_receive'].nil?) && (self.contract['owner_receive'] == false)
+    check_condition = (self.is_owner == true) && (not self.contract['owner_receive'])
     modify_display_param(KEY_RETURN_CONFIRM, check_stage && check_condition)
-    modify_display_param(KEY_CAMERA, check_stage && check_condition)
+    modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
 end

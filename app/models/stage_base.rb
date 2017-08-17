@@ -16,6 +16,10 @@ class StageBase
   STAGE_COMPLETE = 12
   STAGE_COMPLETE2 = 13
 
+  CONTRACT_TYPE_ITEM = 'ITEM'
+  CONTRACT_TYPE_SERVICE = 'SERVICE'
+  CONTRACT_TYPE_SPACE = 'SPACE'
+
   #合約TAB代號
   TAB_REQUEST = 'TAB_REQUEST'
   TAB_PAY = 'TAB_PAY'
@@ -32,7 +36,7 @@ class StageBase
   TAB_NULL = 'TAB_NULL'
 
   KEY_TAB = 'tab'
-  KEY_CANCEL = 'can_canel'
+  KEY_CANCEL = 'can_cancel'
   KEY_CAN_EDIT = 'can_edit'
   KEY_CAN_ACCEPT = 'can_accept'
   KEY_CAN_REJECT = 'can_reject'
@@ -40,9 +44,9 @@ class StageBase
   KEY_PAY = 'can_pay'
   KEY_SCORE = 'can_score'
   KEY_SUE = 'can_sue'
-  KEY_OWNER_SCORE = 'can_owner_score'
+  # KEY_OWNER_SCORE = 'can_owner_score'
   KEY_OWNER_VISIT_SCORE = 'can_owner_visit_score'
-  KEY_LESSEE_SCORE = 'can_lessee_score'
+  # KEY_LESSEE_SCORE = 'can_lessee_score'
   KEY_LESSEE_VISIT_SCORE = 'can_lessee_visit_score'
 
 
@@ -79,7 +83,6 @@ class StageBase
     end
 
     self.screen_type = contractstage % 100                                    #狀態代號末兩碼
-
 
     self.stage_type = (contractstage / 1000).floor                            #狀態代號前兩碼
 
@@ -146,7 +149,12 @@ class StageBase
     if self.is_owner == true
       modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
     else
-      modify_display_param(KEY_CANCEL, self.screen_type < STAGE_CONTRACT_START)
+      if self.contract['type'] == CONTRACT_TYPE_ITEM
+        modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
+      else
+        modify_display_param(KEY_CANCEL, self.screen_type < STAGE_CONTRACT_START)
+      end
+
     end
   end
 
@@ -173,16 +181,18 @@ class StageBase
 
   def check_score
 
-    if not (self.screen_type >= STAGE_SCORE)
+    if (self.screen_type < STAGE_SCORE)
       return
     end
 
     if self.is_owner
-      modify_display_param(KEY_OWNER_SCORE, (self.contract['ownerscore'].nil?))
-      modify_display_param(KEY_OWNER_VISIT_SCORE, (not self.contract['ownerscore'].nil?))
+      modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
+      # modify_display_param(KEY_OWNER_SCORE, (self.contract['ownerscore'].nil?))
+      modify_display_param(KEY_OWNER_VISIT_SCORE, (not self.contract['lesseescore'].nil?))
     else
-      modify_display_param(KEY_LESSEE_SCORE, (self.contract['lesseescore'].nil?))
-      modify_display_param(KEY_LESSEE_VISIT_SCORE, (not self.contract['lesseescore'].nil?))
+      modify_display_param(KEY_SCORE, (self.contract['ownerscore'].nil?))
+      # modify_display_param(KEY_LESSEE_SCORE, (self.contract['lesseescore'].nil?))
+      modify_display_param(KEY_LESSEE_VISIT_SCORE, (not self.contract['ownerscore'].nil?))
     end
 
 

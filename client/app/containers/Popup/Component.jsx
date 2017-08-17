@@ -57,10 +57,12 @@ class Popup extends React.Component {
       case RENDER_SCORE_RATING:
         return (
           <ModalBox
-            width={600}
+            width={470}
             onClose={this.props.dispatchCloseModal}
           >
-            <ScoreRatingContainer />;
+            <ScoreRatingContainer
+              onScore={options.onScore}
+            />
           </ModalBox>
         );
 
