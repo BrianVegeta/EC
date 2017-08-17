@@ -71,7 +71,7 @@ export default (
     price, deposit, discounts,
     leasestart, leaseend, unit,
   },
-  couponOffset,
+  couponOffset = null,
 ) => {
   const priceParams = { leasestart, leaseend, unit: (unit || 1), price };
   const priceDetail = calPrice(priceParams, calculate_charge_type);

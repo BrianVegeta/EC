@@ -119,8 +119,8 @@ class BillingDetail extends React.Component {
           renderDiscount(priceDetail, discountDetail) :
           renderPrice(priceDetail)
         }
-        {renderDetail(depositDetail)}
-        {renderDetail(couponDetail, true)}
+        {depositDetail && renderDetail(depositDetail)}
+        {couponDetail && renderDetail(couponDetail, true)}
         <ConclusionDetail className="clear">
           <ConclusionLabel highlight>總計</ConclusionLabel>
           <ConclusionPrice highlight>{formatCurrency(total, 'NTD ')}</ConclusionPrice>

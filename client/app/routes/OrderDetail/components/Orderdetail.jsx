@@ -4,10 +4,11 @@ import Icon from 'react-icons/lib/fa/calendar-o';
 import forEach from 'lodash';
 
 import CalculationPanel from 'components/reservation/wrapper/CalculationPanel';
-import CSS from 'react-css-modules';
+import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
-
 import { formatDate } from 'lib/time'
+
+import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
 
@@ -240,6 +241,7 @@ class Orderdetail extends React.Component {
     if (order == null) {
       return null;
     }
+    console.log(order);
     console.log(this.props);
     const { display } = order;
     const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
@@ -256,7 +258,7 @@ class Orderdetail extends React.Component {
       couponDesc: this.Calculation.getCouponDesc(),
       discountDesc: this.Calculation.getDiscountDesc(),
       total: this.Calculation.total_price,
-    }
+    };
     return (
       <div>
         <div styleName="container">
@@ -304,6 +306,7 @@ class Orderdetail extends React.Component {
           <div styleName="section-content">
             <div styleName="section-header">交易明細</div>
             <CalculationPanel model={model2} />
+            <BillingDetail {...calculateService(order, null)} />
             {this.renderAcceptHint(order.contractstage)}
             {this.renderBankInfo(order.contractstage, bankReady)}
           </div>
