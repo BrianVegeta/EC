@@ -8,7 +8,9 @@ import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
-import { formatDate, formatDateForOrder, rangeDiff } from 'lib/time';
+import { generateOwnerItemString, generateLesseeItemString }
+  from 'lib/contractString';
+import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating } from 'modules/popup';
@@ -30,7 +32,7 @@ class OrderItemBoard extends React.Component {
   }
 
   static propTypes = {
-    photoHead: PropTypes.string.isRequired,
+    photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
@@ -39,7 +41,7 @@ class OrderItemBoard extends React.Component {
     itemImgUrl: PropTypes.string.isRequired,
     targetName: PropTypes.string.isRequired,
     targetUrl: PropTypes.string.isRequired,
-    targetScore: PropTypes.string,
+    targetScore: PropTypes.number,
     targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,
@@ -83,168 +85,26 @@ class OrderItemBoard extends React.Component {
       },
     }))
   }
-  renderFooter() {
-    return (
-      <div
-        styleName="oib-footer-section"
-        className="clear"
-      >
-        {this.renderHint()}
-        {this.renderAction()}
-      </div>
-    );
-  }
-  renderHint() {
-    let str = '';
-    if (this.props.stage < 100) {
-      str = this.props.isOwner === true ? this.renderOwnerHint() : this.renderLesseeHint();
-    } else if (this.props.stage < 3000) {
-      const screen_id = this.props.stage % 100;
-      str = (screen_id > 11) ? '申訴完成' : '申訴中';
-    } else if (this.props.stage > 5000 && this.props.stage < 6000) {
-      str = '取消交易';
+  generateString() {
+    const { isOwner, stage, startDate } = this.props;
+    const objString = { title: '', text: '' };
+    if (stage < 1000) {
+      if (isOwner) {
+        return generateOwnerItemString(stage, startDate);
+      } else {
+        return generateLesseeItemString(stage, startDate);
+      }
+    } else if (stage > 1000 && stage < 3000) {
+      const screenStage = stage % 100;
+      if (screenStage < 11) {
+        objString.title = '申訴中';
+      } else {
+        objString.title = '申訴完成';
+      }
+    } else {
+      objString.title = '合約已取消';
     }
-    return (<div styleName="oib-hint-section">{str}</div>);
-  }
-
-  renderOwnerHint() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return (`請在${formatDateForOrder(this.props.startDate)}前同意預訂單，逾時將自動取消。`);
-      case 3:
-        return ('在對方修改後，您才能進行同意。');
-      case 4:
-        return ('完成付款後，您將會收到信箱以及推播通知。');
-      case 5:
-        return (`請於${formatDateForOrder(this.props.startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`);
-      case 6:
-      case 7:
-        // str = ''; // 對方已收到您的物品。 if lessee_receive
-        return ('');
-      case 8:
-        return ('');
-      case 9:
-        return ('提醒您，當對方確認寄還後，您將會收到推播以及email通知。');
-      case 10:
-        return ('對方已將物品寄還。');
-      case 11:
-        return ('交易完成！請給對方評價吧！');
-      case 12:
-      case 13:
-        return ('您已完成評價，謝謝您使用ShareApp！');
-      default:
-        break;
-    }
-    return '';
-  }
-
-  renderLesseeHint() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('在對方同意您的預訂後您才能進行付款。');
-      case 3:
-        return ('在您修改後，對方才可同意。');
-      case 4:
-        return (`請在${formatDate(this.props.startDate)}前完成付款，逾時將自動取消。`);
-      case 5:
-        return ('您已成功付款，我們會通知對方進行出貨。');
-      case 6:
-      case 7:
-        return ('提醒您，收到貨時建議將物品拍照，以避免交易糾紛。'); // 請於使用日期結束的隔日" + fc_parse.getFormattedDateShiftDay(data.leaseend, 1) + "進行物品寄還。 if lessee_receive
-      case 8:
-        return '';
-      case 9:
-        return ('出貨時建議將物品拍照，拍照記錄能保障您的交易安全。');
-      case 10:
-        return ('');
-      case 11:
-        return ('交易完成！請給對方評價吧！');
-      case 12:
-      case 13:
-        return ('您已完成評價，謝謝您使用ShareApp！');
-      default:
-        break;
-    }
-    return ('');
-  }
-
-
-  renderMiniNote() {
-    let str = '';
-    if (this.props.stage < 100) {
-      str = this.props.isOwner === true ? this.renderOwnerMiniNote() : this.renderLesseMiniNote();
-    } else if (this.props.stage < 3000) {
-      const screen_id = this.props.stage % 100;
-      str = (screen_id > 11) ? '申訴完成' : '申訴中';
-    } else if (this.props.stage > 5000 && this.props.stage < 6000) {
-      str = '取消交易';
-    }
-    return (<div styleName="oib-mini-note-section">{str}</div>);
-  }
-
-  renderOwnerMiniNote() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('收到預訂');
-      case 3:
-        return ('待對方修改預訂單');
-      case 4:
-        return ('待付款');
-      case 5:
-        return ('待出貨');
-      case 6:
-      case 7:
-        return ('等待對方收貨'); // 已完成取件 if lessee_receive
-      case 8:
-        return ('交易進行中');
-      case 9:
-        return ('訂單已結束，等待對方寄還');
-      case 10:
-        return ('對方已寄還');
-      case 11:
-        return ('已完成');
-      case 12:
-      case 13:
-        return ('已評分');
-      default:
-        break;
-    }
-    return ('');
-  }
-
-  renderLesseMiniNote() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('等待對方同意');
-      case 3:
-        return ('待您修改預訂單');
-      case 4:
-        return ('尚未付款');
-      case 5:
-        return ('待對方出貨');
-      case 6:
-      case 7:
-      //  str = '對方已出貨'; // 你已完成取貨 if lessee_receive
-        return ('對方已出貨');
-      case 8:
-        return ('交易進行中');
-      case 9:
-        return ('待寄還');
-      case 10:
-        return ('已寄還，待對方收件');
-      case 11:
-        return ('已完成');
-      case 12:
-      case 13:
-        return ('已評分');
-      default:
-        break;
-    }
-    return ('');
+    return objString;
   }
 
   renderAction() {
@@ -373,8 +233,9 @@ class OrderItemBoard extends React.Component {
   }
 
   render() {
-    const { photoHead, photoName, stage, cidNo, unit,
+    const { photoHead, photoName, cidNo, unit,
       itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
+    const objectString = this.generateString();
     return (
       <div
         className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
@@ -400,7 +261,7 @@ class OrderItemBoard extends React.Component {
               onClick={() => {}}
             />
           </div>
-          {this.renderMiniNote()}
+          <div styleName="oib-mini-note-section">{objectString.title}</div>
         </div>
         <div
           styleName="oib-body-section"
@@ -422,7 +283,7 @@ class OrderItemBoard extends React.Component {
             </div>
           </div>
         </div>
-        {this.renderHint(stage, startDate)}
+        <div styleName="oib-hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );

@@ -232,7 +232,7 @@ class Orderdetail extends React.Component {
     if (order == null) {
       return null;
     }
-    console.log(this.props);
+    // console.log(this.props);
     const { display } = order;
     const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
 
@@ -245,7 +245,8 @@ class Orderdetail extends React.Component {
     } else if (order.type === 'SERVICE') {
       dispatchEnd = this.props.dispatchEndSpace;
     }
-    const targetName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
+    const targetName = display.is_owner ? order.lessee_nick_name : order.owner_nick_name;
+    const targetRealName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
     const targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
     const targetUrl = display.is_owner ? this.lesseePicture : this.ownerPicture;
     const targetComment = display.is_owner ? order.lessee_comment : order.owner_comment;
@@ -262,7 +263,9 @@ class Orderdetail extends React.Component {
           <div styleName="section-content">
             <div styleName="banner_style" >
               <Banner
-                type={order.contractstage}
+                type={order.type}
+                contractstage={order.contractstage}
+                isOwner={display.is_owner}
                 startDate={order.leasestart}
               />
             </div>
@@ -275,7 +278,7 @@ class Orderdetail extends React.Component {
             </div>
             <div styleName="top_40px_style">
               <UserInfoBoard
-                realname={targetName}
+                realname={targetRealName}
                 imgUrl={targetUrl}
                 phone={targetPhone}
               />

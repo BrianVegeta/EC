@@ -8,7 +8,9 @@ import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
-import { formatDate, formatDateForOrder, rangeDiff } from 'lib/time';
+import { generateOwnerServiceString, generateServiceItemString }
+  from 'lib/contractString';
+import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating } from 'modules/popup';
@@ -26,7 +28,7 @@ class OrderServiceBoard extends React.Component {
   }
 
   static propTypes = {
-    photoHead: PropTypes.string.isRequired,
+    photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
@@ -77,154 +79,26 @@ class OrderServiceBoard extends React.Component {
       },
     }))
   }
-  renderFooter() {
-    return (
-      <div
-        styleName="oseb-footer-section"
-        className="clear"
-      >
-        {this.renderHint()}
-        {this.renderAction()}
-      </div>
-    );
-  }
-  renderHint() {
-    let str = '';
-    if (this.props.stage < 100) {
-      str = this.props.isOwner === true ? this.renderOwnerHint() : this.renderLesseeHint();
-    } else if (this.props.stage < 3000) {
-      const screen_id = this.props.stage % 100;
-      str = (screen_id > 11) ? '申訴完成' : '申訴中';
-    } else if (this.props.stage > 5000 && this.props.stage < 6000) {
-      str = '取消交易';
+  generateString() {
+    const { isOwner, stage, startDate } = this.props;
+    const objString = { title: '', text: '' };
+    if (stage < 1000) {
+      if (isOwner) {
+        return generateOwnerServiceString(stage, startDate);
+      } else {
+        return generateLesseeServiceString(stage, startDate);
+      }
+    } else if (stage > 1000 && stage < 3000) {
+      const screenStage = stage % 100;
+      if (screenStage < 11) {
+        objString.title = '申訴中';
+      } else {
+        objString.title = '申訴完成';
+      }
+    } else {
+      objString.title = '合約已取消';
     }
-    return (<div styleName="oseb-hint-section">{str}</div>);
-  }
-
-  renderOwnerHint() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return (`請在${formatDateForOrder(this.props.startDate)}前同意預訂單，逾時將自動取消。`);
-      case 3:
-        return ('在對方修改後，您才能進行同意。');
-      case 4:
-        return ('完成付款後，您將會收到信箱以及推播通知。');
-      case 5:
-      case 6:
-      case 7:
-        return (`將在${formatDateForOrder(this.props.startDate)}開始`);
-      case 8:
-      case 9:
-      case 10:
-        return ('');
-      case 11:
-        return ('交易完成！請給對方評價吧！');
-      case 12:
-      case 13:
-        return ('您已完成評價，謝謝您使用ShareApp！');
-      default:
-        break;
-    }
-    return '';
-  }
-
-  renderLesseeHint() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('在對方同意您的預訂後您才能進行付款。');
-      case 3:
-        return ('在您修改後，對方才可同意。');
-      case 4:
-        return (`請在${formatDate(this.props.startDate)}前完成付款，逾時將自動取消。`);
-      case 5:
-      case 6:
-      case 7:
-        return (`將在${formatDateForOrder(this.props.startDate)}開始`);
-      case 8:
-      case 9:
-      case 10:
-        return ('');
-      case 11:
-        return ('交易完成！請給對方評價吧！');
-      case 12:
-      case 13:
-        return ('您已完成評價，謝謝您使用ShareApp！');
-      default:
-        break;
-    }
-    return ('');
-  }
-
-
-  renderMiniNote() {
-    let str = '';
-    if (this.props.stage < 100) {
-      str = this.props.isOwner === true ? this.renderOwnerMiniNote() : this.renderLesseMiniNote();
-    } else if (this.props.stage < 3000) {
-      const screen_id = this.props.stage % 100;
-      str = (screen_id > 11) ? '申訴完成' : '申訴中';
-    } else if (this.props.stage > 5000 && this.props.stage < 6000) {
-      str = '取消交易';
-    }
-    return (<div styleName="oseb-mini-note-section">{str}</div>);
-  }
-
-  renderOwnerMiniNote() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('收到預訂');
-      case 3:
-        return ('待對方修改預訂單');
-      case 4:
-        return ('待付款');
-      case 5:
-      case 6:
-      case 7:
-        return ('等待交易開始');
-      case 8:
-      case 9:
-      case 10:
-        return ('交易進行中');
-      case 11:
-        return ('已完成');
-      case 12:
-      case 13:
-        return ('已評分');
-      default:
-        break;
-    }
-    return ('');
-  }
-
-  renderLesseMiniNote() {
-    switch (this.props.stage) {
-      case 1:
-      case 2:
-        return ('等待對方同意');
-      case 3:
-        return ('待您修改預訂單');
-      case 4:
-        return ('尚未付款');
-      case 5:
-      case 6:
-      case 7:
-        return ('等待交易開始');
-      case 8:
-      case 9:
-      case 10:
-        return ('交易進行中');
-      case 11:
-        return ('已完成');
-      case 12:
-      case 13:
-        return ('已評分');
-      default:
-        break;
-    }
-    return ('');
+    return objString;
   }
 
   renderAction() {
@@ -328,8 +202,9 @@ class OrderServiceBoard extends React.Component {
   }
 
   render() {
-    const { photoHead, photoName, stage, cidNo, unit,
+    const { photoHead, photoName, cidNo, unit,
       itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
+    const objectString = this.generateString();
     return (
       <div
         className={`clear ${cx('oseb-board-border', { colored: !isRead })}`}
@@ -355,7 +230,7 @@ class OrderServiceBoard extends React.Component {
               onClick={() => {}}
             />
           </div>
-          {this.renderMiniNote()}
+          <div styleName="oseb-mini-note-section">{objectString.title}</div>
         </div>
         <div
           styleName="oseb-body-section"
@@ -377,7 +252,7 @@ class OrderServiceBoard extends React.Component {
             </div>
           </div>
         </div>
-        {this.renderHint(stage, startDate)}
+        <div styleName="oseb-hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );
