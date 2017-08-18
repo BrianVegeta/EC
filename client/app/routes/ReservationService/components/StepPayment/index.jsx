@@ -28,6 +28,7 @@ class StepPayment extends React.Component {
 
     dispatchValidate: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
+    dispatchBankSetup: PropTypes.func.isRequired,
 
     nextStep: PropTypes.func.isRequired,
     isValid: PropTypes.bool.isRequired,
@@ -72,6 +73,7 @@ class StepPayment extends React.Component {
   }
 
   renderAtmDetail() {
+    const { dispatchBankSetup } = this.props;
     return (
       <div styleName="atm-detail-container">
         <div styleName="bank-container">
@@ -83,7 +85,7 @@ class StepPayment extends React.Component {
             size="sm"
             content="查看"
             width="auto"
-            onClick={() => console.log('click')}
+            onClick={dispatchBankSetup}
           />
         </div>
         <div styleName="helper-text">

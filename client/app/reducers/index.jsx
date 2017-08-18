@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import cities from 'modules/cities';
 import categories from 'modules/categories';
 import popup from 'modules/popup';
+import access from 'modules/access';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -23,7 +24,6 @@ import secrecyVerification from './secrecyVerificationReducer';
 import schedule from './scheduleReducer';
 import options from './optionsReducer';
 import popupBankSetup from './popupBankSetupReducer';
-import accessCheck from './accessCheckReducer';
 
 
 const reducers = {
@@ -47,7 +47,7 @@ const reducers = {
   schedule,
   options,
   popupBankSetup,
-  accessCheck,
+  access,
   // myCollection,
   // ownerProfile,
   // coupon,

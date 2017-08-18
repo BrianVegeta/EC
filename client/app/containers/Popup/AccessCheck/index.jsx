@@ -1,72 +1,90 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import { connect } from 'react-redux';
 
 import CloseIcon from 'react-icons/lib/md/close';
 import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 import LoadingOverlay from 'components/Loading/Overlay';
-
-import { closePopup } from 'modules/popup';
-import {
-  checkPasswordExist,
-  resetState,
-} from 'actions/accessCheckActions';
-
-import { NEW, CHECK } from 'constants/renderTypes/accessCheck';
+import { NEW, CHECK } from 'modules/access';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import AccessCheckModel from './Model';
 
-class PopupAccessCheckContainer extends React.Component {
+class PopupAcessCheck extends React.Component {
 
   static propTypes = {
-    accessCheck: myPropTypes.accessCheck.isRequired,
+    access: myPropTypes.accessCheck.isRequired,
     onChecked: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
+
+    dispatchCheckPasswordExist: PropTypes.func.isRequired,
+    dispatchResetAccess: PropTypes.func.isRequired,
+    dispatchChangePassword: PropTypes.func.isRequired,
+    dispatchCreatePassword: PropTypes.func.isRequired,
+    dispatchCheckPassword: PropTypes.func.isRequired,
+    dispatchClosePopup: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.onClose = this.onClose.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
-    this.props.dispatch(
-      checkPasswordExist(),
-    );
+    const { dispatchCheckPasswordExist } = this.props;
+    dispatchCheckPasswordExist();
   }
 
   componentWillUnmount() {
-    this.props.dispatch(
-      resetState(),
-    );
+    const { dispatchResetAccess } = this.props;
+    dispatchResetAccess();
   }
 
-  onClose() {
-    this.props.dispatch(closePopup());
+  onSubmit() {
+    const {
+      access,
+      dispatchCreatePassword,
+      dispatchCheckPassword,
+      onChecked,
+    } = this.props;
+
+    const {
+      renderType,
+      password,
+    } = access;
+
+    switch (renderType) {
+      case NEW:
+        dispatchCreatePassword(password, onChecked);
+        return;
+
+      case CHECK:
+        dispatchCheckPassword(password, onChecked);
+        return;
+
+      default:
+        throw new Error(`RENDER TYPE NOT IN [${NEW}, ${CHECK}]`);
+    }
   }
 
   render() {
     const {
-      accessCheck,
-      dispatch,
-      onChecked,
+      access,
+      dispatchClosePopup,
+      dispatchChangePassword,
     } = this.props;
 
-    const accessCheckModel = new AccessCheckModel({
-      accessCheck,
-      onChecked,
-      dispatch,
-    });
+    // const accessCheckModel = new AccessCheckModel({
+    //   access,
+    //   onChecked,
+    //   dispatch,
+    // });
 
     const {
       password,
       renderType,
       isChecking,
-    } = accessCheck;
+    } = access;
 
     if (isChecking) {
       return (
@@ -80,7 +98,7 @@ class PopupAccessCheckContainer extends React.Component {
       <div styleName="container">
         <div styleName="header">
           <span styleName="close">
-            <CloseIcon size={25} onClick={this.onClose} />
+            <CloseIcon size={25} onClick={dispatchClosePopup} />
           </span>
         </div>
         <div styleName="body">
@@ -100,7 +118,7 @@ class PopupAccessCheckContainer extends React.Component {
                 value={password}
                 placeholder="請輸入密碼"
                 align="center"
-                onChange={accessCheckModel.onPasswordChange}
+                onChange={value => dispatchChangePassword({ password: value })}
                 autoComplete="off"
               />
             </div>
@@ -110,7 +128,7 @@ class PopupAccessCheckContainer extends React.Component {
               width={170}
               colorType="green"
               content="送出"
-              onClick={accessCheckModel.onSubmit}
+              onClick={this.onSubmit}
             />
           </div>
         </div>
@@ -118,9 +136,4 @@ class PopupAccessCheckContainer extends React.Component {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  const { accessCheck } = state;
-  return { accessCheck };
-};
-export default connect(mapStateToProps)(CSS(PopupAccessCheckContainer, styles));
+export default CSS(PopupAcessCheck, styles);

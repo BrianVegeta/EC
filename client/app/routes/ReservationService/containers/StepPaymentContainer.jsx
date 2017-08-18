@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 import { reservationService as rsRouter } from 'lib/paths';
+import { popupAccessCheck, popupBankInfoSetup } from 'modules/popup';
 
 import StepPayment from '../components/StepPayment';
 import {
@@ -26,15 +27,26 @@ const mapStateToProps = ({ environment, reservationService }) => {
 };
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatchChooseAtm: () =>
-    dispatch(changeData({ paymenttype: PAYMENT_TYPE_ATM })),
-  dispatchChooseCreditCard: () =>
-    dispatch(changeData({ paymenttype: PAYMENT_TYPE_CREDIT_CARD })),
-  // dispatchValidate: () => dispatch(validatePrice()),
-  dispatchValidate: () => console.log('validate'),
-  dispatchTouchPath: () => dispatch(touchPath(rsRouter.paymentPath)),
-  nextStep: () => browserHistory.push(rsRouter.confirmPath),
-});
+const mapDispatchToProps = (dispatch) => {
+  /* DISPATCH 查看銀行 */
+  const dispatchBankSetup = () => {
+    const onAccessChecked = () => dispatch(popupBankInfoSetup());
+    dispatch(popupAccessCheck({
+      onChecked: onAccessChecked,
+    }));
+  };
+
+  return ({
+    dispatchChooseAtm: () =>
+      dispatch(changeData({ paymenttype: PAYMENT_TYPE_ATM })),
+    dispatchChooseCreditCard: () =>
+      dispatch(changeData({ paymenttype: PAYMENT_TYPE_CREDIT_CARD })),
+    dispatchBankSetup,
+    // dispatchValidate: () => dispatch(validatePrice()),
+    dispatchValidate: () => console.log('validate'),
+    dispatchTouchPath: () => dispatch(touchPath(rsRouter.paymentPath)),
+    nextStep: () => browserHistory.push(rsRouter.confirmPath),
+  });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepPayment);

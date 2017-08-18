@@ -11,7 +11,7 @@ import {
   RENDER_SCORE_RATING,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetupContainer';
-import AccessCheckContainer from 'containers/Popup/AccessCheckContainer';
+import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 
 
@@ -48,9 +48,7 @@ class Popup extends React.Component {
             width={500}
             onClose={this.props.dispatchCloseModal}
           >
-            <AccessCheckContainer
-              onChecked={options.onChecked}
-            />;
+            <AccessCheckContainer onChecked={options.onChecked} />;
           </ModalBox>
         );
 
