@@ -6,7 +6,7 @@ import { reservationService as rsRouter } from 'lib/paths';
 import StepForm from '../components/StepForm';
 import { changeData, touchPath } from '../modules/reservation';
 import { fetchCoupons } from '../modules/reservationCoupons';
-// import { validateAboutBy, validateAbout } from '../modules/validation';
+import { validateForm, validateFormBy } from '../modules/validation';
 
 /* pick props */
 const mapStateToProps = ({
@@ -14,24 +14,31 @@ const mapStateToProps = ({
   reservationCoupons,
   reservationService,
   reservationServiceItem,
-}) => ({
-  environment,
-  reservationCoupons,
-  reservation: reservationService,
-  reservationItem: reservationServiceItem,
-  isFetched:
-    Boolean(reservationCoupons.updatedAt && reservationServiceItem.owner),
-  isValid: true,
-});
+}) => {
+  const coupons = reservationCoupons;
+  const reservation = reservationService;
+  const item = reservationServiceItem;
+  const isFetched = Boolean(coupons.updatedAt && item.owner);
+  const isValid = isFetched ? validateFormBy(reservation, item).isValid : false;
+
+  return ({
+    environment,
+    reservationCoupons: coupons,
+    reservation,
+    reservationItem: item,
+    isFetched: Boolean(coupons.updatedAt && item.owner),
+    isValid,
+  });
+};
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
+const { formPath, paymentPath } = rsRouter;
+const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
   dpFetchCoupons: () => dispatch(fetchCoupons()),
   dispatchChangeData: data => dispatch(changeData(data)),
-
-  // dispatchValidate: () => dispatch(validateAbout()),
-  dispatchTouchPath: () => dispatch(touchPath(rsRouter.formPath)),
-  nextStep: () => browserHistory.push(rsRouter.confirmPath),
+  dispatchTouchPath: () => dispatch(touchPath(formPath(pid))),
+  dispatchValidate: () => dispatch(validateForm()),
+  nextStep: () => browserHistory.push(paymentPath(pid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepForm);

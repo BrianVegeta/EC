@@ -18,7 +18,7 @@ import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Cont
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputTextCounter from 'components/Input/TextCounter';
-import constraints from 'constraints/publish';
+import constraints from 'constraints/reservation';
 import { formatDate, rangeDiff } from 'lib/time';
 
 import ButtonNextStep, {
@@ -44,6 +44,8 @@ class StepForm extends React.Component {
     dpFetchCoupons: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
+    dispatchValidate: PropTypes.func.isRequired,
+    nextStep: PropTypes.func.isRequired,
 
     reservation: PropTypes.shape({
       title: PropTypes.string,
@@ -56,7 +58,6 @@ class StepForm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
-    nextStep: PropTypes.func.isRequired,
   };
 
   static getCouponOffset({ couponNo, reservationCoupons }) {
@@ -94,6 +95,14 @@ class StepForm extends React.Component {
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
+
+    this.couponInput = null;
+    this.datesInput = null;
+    this.unitInput = null;
+    this.serviceCityAreaInput = null;
+    this.serviceAddressInput = null;
+    this.serviceLocationTypeInput = null;
+    this.noteInput = null;
   }
 
   componentDidMount() {
@@ -102,30 +111,27 @@ class StepForm extends React.Component {
   }
 
   onNextStepClick() {
-    const {
-      nextStep,
-    } = this.props;
-    nextStep();
-    // dispatchValidate()
-    // .then(() => {
-    //   nextStep();
-    // })
-    // .catch((errors) => {
-    //   const { chargeTypeError, totalError } = errors;
-    //
-    //   this.setState({ chargeTypeError: chargeTypeError || '' });
-    //   if (chargeTypeError) return;
-    //
-    //   this.setState({ totalError: totalError || '' });
-    //   this.priceInput.valid();
-    //   this.depositInput.valid();
-    //   if (this.datesInput) this.datesInput.valid();
-    //   if (this.unitInput) this.unitInput.valid();
-    //   if (this.reservationDaysInput) this.reservationDaysInput.valid();
-    //   this.discountInput.valid();
-    // });
+    const { nextStep, dispatchValidate } = this.props;
+
+    dispatchValidate()
+    .then(() => nextStep())
+    .catch((errors) => {
+      console.log(errors);
+
+      if (this.datesInput) this.datesInput.valid();
+      if (this.unitInput) this.unitInput.valid();
+      if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();
+      if (this.serviceAddressInput) this.serviceAddressInput.valid();
+      if (this.serviceLocationTypeInput) this.serviceLocationTypeInput.valid();
+      this.noteInput = null;
+    });
   }
 
+  /**
+   *
+   * 選擇日期
+   *
+   */
   renderDatesPicker(
     { leasestart, leaseend },
     { advance_reservation_days },
@@ -135,39 +141,46 @@ class StepForm extends React.Component {
     const helperBottom = advance_reservation_days ?
         (<span>請{advanceDays}預約</span>) : null;
 
+    const ref = datesInput => (this.datesInput = datesInput);
+    const onDatesChange = ({ startDate, endDate }) =>
+      dispatchChangeData({ leasestart: startDate, leaseend: endDate });
+
     return (
       <FormGroup
         headerText={'服務時間'}
         helperBottom={helperBottom}
       >
         <InputDatesPicker
+          ref={ref}
           startDate={leasestart}
           endDate={leaseend}
-          onDatesChange={({ startDate, endDate }) =>
-            dispatchChangeData({ leasestart: startDate, leaseend: endDate })
-          }
+          onDatesChange={onDatesChange}
           preparation={advance_reservation_days}
           value={leasestart && leaseend && 'date'}
-          constraints={constraints.serviceDates}
+          constraints={constraints.dates}
           validateOnBlur
         />
       </FormGroup>
     );
   }
 
+  /**
+   *
+   * 選擇折價券
+   *
+   */
   renderCoupons({ couponNo }) {
     const {
       dispatchChangeData,
-      reservationCoupons,
+      reservationCoupons: { records: myCouponList },
     } = this.props;
 
     return (
       <FormGroup>
         <div styleName="coupons-container">
           <InputSelectionCoupons
-            ref={selectionCoupon => (this.selectionCoupon = selectionCoupon)}
             couponNo={couponNo}
-            options={reservationCoupons.records}
+            options={myCouponList}
             onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
           />
         </div>
@@ -175,6 +188,11 @@ class StepForm extends React.Component {
     );
   }
 
+  /**
+   *
+   * 計算帳目
+   *
+   */
   renderBillingDetail(
     { leasestart, leaseend, unit, couponNo },
     { calculate_charge_type, price, deposit, discounts },
@@ -206,9 +224,10 @@ class StepForm extends React.Component {
     renderOption = false,
   ) {
     const { dispatchChangeData } = this.props;
-    const refSelectionCities = cityArea => (
+    const refServiceCityArea = cityArea => (
       this.serviceCityAreaInput = cityArea && cityArea.getWrappedInstance()
     );
+    const refServiceAddress = address => (this.serviceAddressInput = address);
     const onCitiesSelect = ({ cityName, areaName }) => dispatchChangeData({
       serviceCity: cityName, serviceArea: areaName,
     });
@@ -224,7 +243,7 @@ class StepForm extends React.Component {
             <div styleName="assign-address">
               <div styleName="city-area-container">
                 <InputSelectionCitiesContainer
-                  ref={refSelectionCities}
+                  ref={refServiceCityArea}
                   cityName={serviceCity}
                   areaName={serviceArea}
                   value={`${serviceCity}${serviceArea}`}
@@ -234,7 +253,7 @@ class StepForm extends React.Component {
                 />
               </div>
               <InputText
-                ref={address => (this.serviceAddressInput = address)}
+                ref={refServiceAddress}
                 placeholder="請輸入詳細地址"
                 onChange={value => dispatchChangeData({ serviceAddress: value })}
                 value={serviceAddress}
@@ -286,6 +305,7 @@ class StepForm extends React.Component {
           return null;
       }
     };
+    const refServiceLocationType = input => (this.serviceLocationTypeInput = input);
 
     return (
       <div styleName="assign-container">
@@ -295,9 +315,12 @@ class StepForm extends React.Component {
           <div>
             <div styleName="service-location-container">
               <InputSelection
+                ref={refServiceLocationType}
                 options={options}
                 value={serviceLocationType}
                 onSelect={onServiceLocatonSelect}
+                constraints={constraints.serviceLocationType}
+                validateOnBlur
               />
             </div>
             {renderSelectedDetail()}
@@ -319,11 +342,11 @@ class StepForm extends React.Component {
     return (
       <InputTextArea
         ref={refNoteInput}
-        placeholder="清楚介紹您的服務，敘述更多吸引人的細節"
+        placeholder="有什麼需要跟分享人說的？"
         onChange={value => dispatchChangeData({ note: value })}
         value={note}
         minHeight={150}
-        constraints={constraints.regulation}
+        constraints={constraints.note}
         validateOnBlur
       />
     );
@@ -352,7 +375,7 @@ class StepForm extends React.Component {
           min={1}
           max={itemUnit}
           onChange={value => dispatchChangeData({ unit: value })}
-          constraints={constraints.serviceUnit}
+          constraints={constraints.unit(itemUnit)}
           validateOnBlur
         />
       </FormGroup>
@@ -381,7 +404,11 @@ class StepForm extends React.Component {
       }
 
       case CHARGE_TYPE_DAY:
-        return this.renderDatesPicker(reservation, reservationItem);
+        return (
+          <div styleName="dates-picker-container">
+            {this.renderDatesPicker(reservation, reservationItem)}
+          </div>
+        );
 
       case CHARGE_TYPE_COUNT: {
         return (

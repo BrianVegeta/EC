@@ -52,6 +52,7 @@ class Textarea extends React.Component {
             onChange,
             onBlur: this.onBlur,
           }}
+          spellCheck={false}
         />
       </div>
     );

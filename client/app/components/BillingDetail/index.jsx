@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  isEqual,
+} from 'lodash';
 
 import { formatCurrency } from 'lib/currency';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
 import {
   Container,
   ConclusionDetail,
@@ -97,6 +99,28 @@ class BillingDetail extends React.Component {
       </div>
     );
   }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      priceDetail,
+      depositDetail,
+      couponDetail,
+      discountDetail,
+      total,
+    } = this.props;
+    const beenPriceChanged = !isEqual(priceDetail, nextProps.priceDetail);
+    const beenDepositChanged = !isEqual(depositDetail, nextProps.depositDetail);
+    const beenCouponChanged = !isEqual(couponDetail, nextProps.couponDetail);
+    const beenDiscountChanged = !isEqual(discountDetail, nextProps.discountDetail);
+    const beenTotalChanged = !isEqual(total, nextProps.total);
+    if (beenPriceChanged) return true;
+    if (beenDepositChanged) return true;
+    if (beenCouponChanged) return true;
+    if (beenDiscountChanged) return true;
+    if (beenTotalChanged) return true;
+    return false;
+  }
+
 
   render() {
     const {
