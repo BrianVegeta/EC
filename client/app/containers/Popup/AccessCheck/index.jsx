@@ -5,6 +5,7 @@ import myPropTypes from 'propTypes';
 import CloseIcon from 'react-icons/lib/md/close';
 import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
+import AlertPanel from 'components/Alert/Panel';
 import LoadingOverlay from 'components/Loading/Overlay';
 import { NEW, CHECK } from 'modules/access';
 
@@ -74,16 +75,11 @@ class PopupAcessCheck extends React.Component {
       dispatchChangePassword,
     } = this.props;
 
-    // const accessCheckModel = new AccessCheckModel({
-    //   access,
-    //   onChecked,
-    //   dispatch,
-    // });
-
     const {
       password,
       renderType,
       isChecking,
+      hasError,
     } = access;
 
     if (isChecking) {
@@ -114,6 +110,11 @@ class PopupAcessCheck extends React.Component {
               {renderType === NEW && <div>您尚未設定密碼，請先設定。</div>}
             </div>
             <div styleName="input">
+              {hasError &&
+                <div styleName="error-message">
+                  <AlertPanel text="密碼錯誤" />
+                </div>
+              }
               <InputPassword
                 value={password}
                 placeholder="請輸入密碼"

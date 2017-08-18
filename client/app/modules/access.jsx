@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import {
-  fetchXhrAuthedGet,
-  fetchXhrAuthedPost,
+  asyncXhrAuthedGet,
+  asyncXhrAuthedPost,
 } from 'lib/xhr';
 
 /* =============================================>>>>>
@@ -22,6 +22,7 @@ export const EXIST_CHECKED = prefix('EXIST_CHECKED');
 export const CHANGE_STATE = prefix('CHANGE_STATE');
 export const CHECKING = prefix('CHECKING');
 export const CHECKED = prefix('CHECKED');
+export const SET_ERROR = prefix('SET_ERROR');
 export const RESET = prefix('RESET');
 
 // =============================================
@@ -45,6 +46,11 @@ const changeChecked = () => ({
   type: CHECKED,
 });
 
+const setError = hasError => ({
+  type: SET_ERROR,
+  hasError,
+});
+
 export const changeState = state => ({
   type: CHANGE_STATE,
   state,
@@ -59,38 +65,46 @@ export const checkPasswordExist = () =>
   (dispatch, getState) => {
     dispatch(existChecking());
 
-    fetchXhrAuthedGet(
-      '/ajax/password/exist.json', getState(),
-      response => dispatch(existChecked(response.data)),
-    );
+    asyncXhrAuthedGet('/ajax/password/exist.json', getState())
+    .then(data => dispatch(existChecked(data)));
   };
 
 // CREATE PASSWORD
 export const createPassword = (password, onChecked) =>
   (dispatch, getState) => {
     dispatch(changeChecking());
+    setError(null);
 
-    fetchXhrAuthedPost(
-      '/ajax/password/create.json', { password }, getState(),
-      () => {
-        dispatch(changeChecked());
+    asyncXhrAuthedPost(
+      '/ajax/password/create.json',
+      { password },
+      getState(),
+    ).then((isChecked) => {
+      dispatch(changeChecked());
+      dispatch(setError(!isChecked));
+      if (isChecked) {
         onChecked(password);
-      },
-    );
+      }
+    });
   };
 
 // CHECK PASSWORD
 export const checkPassword = (password, onChecked) =>
   (dispatch, getState) => {
     dispatch(changeChecking());
+    setError(null);
 
-    fetchXhrAuthedPost(
-      '/ajax/password/check.json', { password }, getState(),
-      () => {
-        dispatch(changeChecked());
+    asyncXhrAuthedPost(
+      '/ajax/password/check.json',
+      { password },
+      getState(),
+    ).then((isChecked) => {
+      dispatch(changeChecked());
+      dispatch(setError(!isChecked));
+      if (isChecked) {
         onChecked(password);
-      },
-    );
+      }
+    });
   };
 
 // =============================================
@@ -100,6 +114,7 @@ const initialState = {
   isChecking: false,
   renderType: CHECK,
   password: '',
+  hasError: null,
 };
 
 const home = (state = initialState, action) => {
@@ -126,6 +141,11 @@ const home = (state = initialState, action) => {
     case CHECKED:
       return Object.assign({}, state, {
         isChecking: false,
+      });
+
+    case SET_ERROR:
+      return Object.assign({}, state, {
+        hasError: action.hasError,
       });
 
     case RESET:

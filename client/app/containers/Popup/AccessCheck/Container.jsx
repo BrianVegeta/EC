@@ -7,15 +7,14 @@ import {
   createPassword,
 } from 'modules/access';
 import { closePopup } from 'modules/popup';
+
 import Component from './index';
 
 /* pick props */
-const mapStateToProps = ({ environment, access }) => {
-  return ({
-    environment,
-    access,
-  });
-};
+const mapStateToProps = ({ environment, access }) => ({
+  environment,
+  access,
+});
 
 /* pick dispatch */
 const mapDispatchToProps = (dispatch) => {
@@ -26,7 +25,7 @@ const mapDispatchToProps = (dispatch) => {
 
   return ({
     dispatchResetAccess: () => dispatch(reset()),
-    dispatchCheckPasswordExist: () => console.log('check password exist '),
+    dispatchCheckPasswordExist: () => dispatch(checkPasswordExist()),
     dispatchChangePassword: data => dispatch(changeState(data)),
     dispatchCreatePassword,
     dispatchCheckPassword,

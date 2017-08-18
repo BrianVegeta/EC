@@ -41,6 +41,16 @@ class InputText extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log('password mount');
+    console.log(this.input.getAttribute('type'));
+    this.input.setAttribute('type', 'password');
+  }
+
+  componentWillUnmount() {
+    this.input.setAttribute('type', 'text');
+  }
+
   onBlur() {
     const { onBlur } = this.props;
     if (onBlur) { onBlur(); }
@@ -71,11 +81,9 @@ class InputText extends React.Component {
     const { isFocusing } = this.state;
     const inputProps = {
       ref: input => (this.input = input),
-      type: autoComplete === 'off' ? 'text' : 'password',
-      autoComplete,
+      type: 'text',
+      autoComplete: 'off',
       className: cx('input', { isFocusing }),
-      onFocus: this.onFocus,
-      onBlur: this.onBlur,
       onChange: this.onChange,
       placeholder,
       style: { width, textAlign: align },

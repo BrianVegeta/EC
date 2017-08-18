@@ -48,7 +48,7 @@ class Popup extends React.Component {
             width={500}
             onClose={this.props.dispatchCloseModal}
           >
-            <AccessCheckContainer onChecked={options.onChecked} />;
+            <AccessCheckContainer onChecked={options.onChecked} />
           </ModalBox>
         );
 
