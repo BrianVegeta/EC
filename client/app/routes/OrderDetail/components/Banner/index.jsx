@@ -11,20 +11,208 @@ const cx = classnames.bind(styles);
 class Banner extends React.Component {
 
   static propTypes = {
-    type: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    contractstage: PropTypes.number.isRequired,
     startDate: PropTypes.number.isRequired,
   };
 
-  render() {
-    const { type, startDate } = this.props;
-    const isOrderType = type < 100;
+  generateString() {
+    switch (this.props.type) {
+      case 'ITEM':
+        return this.generateItemString();
+      case 'SERVICE':
+        return this.generateServiceString();
+      case 'SPACE':
+        return this.generateSpaceString();
+      default:
+        return ({ title: '', text: '' });
+    }
+  }
+
+  generateItemString() {
     let title = '';
     let text = '';
+    switch (this.props.contractstage) {
+      case 1:
+        title = '請同意預訂單';
+        text = `請在${formatDate(this.props.startDate)}出貨前同意預訂單，逾時將自動取消。`;
+        break;
+      case 2:
+        title = '';
+        text = '';
+        break;
+      case 3:
+        title = '';
+        text = '';
+        break;
+      case 4:
+        title = '';
+        text = '';
+        break;
+      case 5:
+        title = '';
+        text = '';
+        break;
+      case 6:
+        title = '';
+        text = '';
+        break;
+      case 7:
+        title = '';
+        text = '';
+        break;
+      case 8:
+        title = '';
+        text = '';
+        break;
+      case 9:
+        title = '';
+        text = '';
+        break;
+      case 10:
+        title = '';
+        text = '';
+        break;
+      case 11:
+        title = '';
+        text = '';
+        break;
+      case 12:
+      case 13:
+        title = '';
+        text = '';
+        break;
+      default:
+        break;
+    }
+
+    return ({ title, text });
+  }
+
+  generateServiceString() {
+    let title = '';
+    let text = '';
+    switch (this.props.contractstage) {
+      case 1:
+        title = '請同意預訂單';
+        text = `請在${formatDate(this.props.startDate)}出貨前同意預訂單，逾時將自動取消。`;
+        break;
+      case 2:
+        title = '';
+        text = '';
+        break;
+      case 3:
+        title = '';
+        text = '';
+        break;
+      case 4:
+        title = '';
+        text = '';
+        break;
+      case 5:
+        title = '';
+        text = '';
+        break;
+      case 6:
+        title = '';
+        text = '';
+        break;
+      case 7:
+        title = '';
+        text = '';
+        break;
+      case 8:
+        title = '';
+        text = '';
+        break;
+      case 9:
+        title = '';
+        text = '';
+        break;
+      case 10:
+        title = '';
+        text = '';
+        break;
+      case 11:
+        title = '';
+        text = '';
+        break;
+      case 12:
+      case 13:
+        title = '';
+        text = '';
+        break;
+      default:
+        break;
+    }
+
+    return ({ title, text });
+  }
+
+  generateSpaceString() {
+    let title = '';
+    let text = '';
+    switch (this.props.contractstage) {
+      case 1:
+        title = '請同意預訂單';
+        text = `請在${formatDate(this.props.startDate)}出貨前同意預訂單，逾時將自動取消。`;
+        break;
+      case 2:
+        title = '';
+        text = '';
+        break;
+      case 3:
+        title = '';
+        text = '';
+        break;
+      case 4:
+        title = '';
+        text = '';
+        break;
+      case 5:
+        title = '';
+        text = '';
+        break;
+      case 6:
+        title = '';
+        text = '';
+        break;
+      case 7:
+        title = '';
+        text = '';
+        break;
+      case 8:
+        title = '';
+        text = '';
+        break;
+      case 9:
+        title = '';
+        text = '';
+        break;
+      case 10:
+        title = '';
+        text = '';
+        break;
+      case 11:
+        title = '';
+        text = '';
+        break;
+      case 12:
+      case 13:
+        title = '';
+        text = '';
+        break;
+      default:
+        break;
+    }
+    return ({ title, text });
+  }
+  render() {
+    const { type } = this.props;
+    const isOrderType = type < 100;
+    let objString = { title: '', text: '' };
     if (type < 100) {
-      title = '請同意預訂單';
-      text = `請在${formatDate(startDate)}出貨前同意預訂單，逾時將自動取消。`;
-    } else {
-      title = 'ERROR~~~';
+      objString = this.generateString();
     }
     return (
       <div
@@ -37,10 +225,10 @@ class Banner extends React.Component {
           <div>
             <Icon styleName="icon" size={35} />
           </div>
-          <div styleName="title">{ title }</div>
+          <div styleName="title">{ objString.title }</div>
         </div>
         <div styleName="body_content">
-          <span>{ text }</span>
+          <span>{ objString.text }</span>
         </div>
       </div>
     );
