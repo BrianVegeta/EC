@@ -1,5 +1,8 @@
 @import "~styles/color.sass"
 
+.detail-container
+  padding: 20px 0
+
 .header-note-container
   margin-bottom: 80px
 
@@ -10,6 +13,12 @@
   position: relative
   font-size: 18px
   padding: 30px 0
+  .service-location-container
+    width: 200px
+    margin-bottom: 30px
+  .city-area-container
+    width: 270px
+    margin-bottom: 10px
   .assign-type
     font-weight: 500
     margin-bottom: 20px
@@ -22,6 +31,18 @@
       margin-top: 20px
 
 
-.city-area-container
-  width: 300px
-  margin-bottom: 10px
+.duration-container
+  font-size: 18px
+  .label
+    color: $global-blackColor
+  .time
+    color: $global-primaryColor
+
+.dates-picker-container
+  vertical-align: top
+  display: inline-block
+  width: 330px
+.count-container
+  vertical-align: top
+  display: inline-block
+  width: 155px

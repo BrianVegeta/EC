@@ -69,11 +69,14 @@ class FormGroup extends React.Component {
       groupStyle,
     } = this.props;
 
+    const { headerTextStyle, optional, multiple, limiter } = this.props;
+    const headerProps = { headerTextStyle, headerText, optional, multiple, limiter };
+
     return (
       <div styleName="container" style={groupStyle}>
         {topLine && <div styleName="interval-line" />}
         <div className={cx('input-header', { 'input-header-large': large })}>
-          {headerText && this.constructor.renderHeader(this.props)}
+          {headerText && this.constructor.renderHeader(headerProps)}
           {helperText && <div styleName="helper">{helperText}</div>}
         </div>
         <div styleName="input-control">{children}</div>

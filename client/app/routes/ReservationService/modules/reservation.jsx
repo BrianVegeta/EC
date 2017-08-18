@@ -50,6 +50,8 @@ const initialState = {
   serviceCity: '',
   serviceArea: '',
   serviceAddress: '',
+  note: '',
+  unit: 1,
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);

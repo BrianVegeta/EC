@@ -87,7 +87,7 @@ class Dates extends React.Component {
     if (preparation === 0) return false;
 
     const today = moment();
-    const daysLater = moment().add(preparation, 'days');
+    const daysLater = today.add(preparation, 'days');
     return inDates(day, today, daysLater) || isToday(day);
   }
 
@@ -108,6 +108,7 @@ class Dates extends React.Component {
   render() {
     moment.locale('zh-tw');
     const { startDate, endDate, onDatesChange } = this.props;
+
     return (
       <div styleName="container">
         <style>
