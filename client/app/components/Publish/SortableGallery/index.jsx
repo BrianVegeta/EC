@@ -6,6 +6,9 @@ import {
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc';
+import {
+  isEqual,
+} from 'lodash';
 
 import ThumbDropzone from 'components/Publish/ThumbDropzone';
 import ThumbDropped from 'components/Publish/ThumbDropped';
@@ -15,7 +18,12 @@ import styles from './styles.sass';
 const LEAST_COVER_SHOWN = 3;
 class SortableGallery extends React.Component {
 
+  static defaultProps = {
+    addCoverLabel: true,
+  }
+
   static propTypes = {
+    addCoverLabel: PropTypes.bool,
     createCover: PropTypes.func.isRequired,
     deleteCover: PropTypes.func.isRequired,
     changeOrders: PropTypes.func.isRequired,
@@ -31,6 +39,11 @@ class SortableGallery extends React.Component {
   constructor(props) {
     super(props);
     this.onSortEnd = this.onSortEnd.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { covers } = this.props;
+    return !isEqual(covers, nextProps.covers);
   }
 
   onSortEnd({ oldIndex, newIndex }) {
@@ -49,6 +62,7 @@ class SortableGallery extends React.Component {
       covers,
       createCover,
       deleteCover,
+      addCoverLabel,
     } = this.props;
     const itemClass = styles.imageDropzone;
     const galleryClass = styles.gallery;
@@ -59,10 +73,10 @@ class SortableGallery extends React.Component {
           value.isEmpty ?
             <ThumbDropzone
               onDrop={createCover}
-              coverLabel={value.isCover && coverLabel}
+              coverLabel={addCoverLabel && value.isCover && coverLabel}
             /> :
             <ThumbDropped
-              coverLabel={value.isCover && coverLabel}
+              coverLabel={addCoverLabel && value.isCover && coverLabel}
               coverUrl={value.blob}
               onEdit={() => this.openModal(value.key, value.blob)}
               onRemove={() => deleteCover(value.key)}
