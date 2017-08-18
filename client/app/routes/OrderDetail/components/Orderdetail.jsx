@@ -1,9 +1,11 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-icons/lib/fa/calendar-o';
 
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
+import MiniMap from 'components/MiniMap/index';
 import { formatDate } from 'lib/time';
 
 import CSS from 'react-css-modules';
@@ -11,7 +13,6 @@ import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
 
 import Banner from './Banner/index';
-import MiniMap from './MiniMap/index';
 import UserInfoBoard from './UserInfoBoard/index';
 
 class Orderdetail extends React.Component {
@@ -21,6 +22,7 @@ class Orderdetail extends React.Component {
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
     }).isRequired,
+    dispatch: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
@@ -227,7 +229,7 @@ class Orderdetail extends React.Component {
     )
   }
   render() {
-    const { orderdetail } = this.props;
+    const { orderdetail, dispatch } = this.props;
     const { order } = orderdetail;
     if (order == null) {
       return null;
@@ -278,6 +280,8 @@ class Orderdetail extends React.Component {
             </div>
             <div styleName="top_40px_style">
               <UserInfoBoard
+                cid={order.cid}
+                dispatch={dispatch}
                 realname={targetRealName}
                 imgUrl={targetUrl}
                 phone={targetPhone}

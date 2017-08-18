@@ -112,6 +112,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+
+      #SUE
+      post 'send_sue_request', to: 'contract#report'
+
       #CONTRACT
       post 'get_my_order', to: 'contract#get_my_contract' #
       post 'reject_order', to: 'contract#reject' #

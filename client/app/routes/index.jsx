@@ -37,7 +37,7 @@ import AuthLogin from './Auth/Login';
 import routeReservationService from './ReservationService/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
-
+import sueForm from './SueForm/route';
 
 const requireCates = true;
 const requireAuth = true;
@@ -98,6 +98,12 @@ export default store => ({
         routeItem(store),
       ],
     },
+    {
+      component: layoutHoc(layoutItemDetail, { requireAuth, requireCates }),
+      childRoutes: [
+        sueForm(store),
+      ],
+    }
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [
