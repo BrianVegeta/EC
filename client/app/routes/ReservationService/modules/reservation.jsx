@@ -1,13 +1,12 @@
 import { isEqual } from 'lodash';
-import { asyncXhrPost } from 'lib/xhr';
-// import moment from 'moment';
-// import { REDUCER_KEY as COVER_REDUCER_KEY } from './covers';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'RESERVATION.SERVICE';
 export const REDUCER_KEY = 'reservationService';
+export const PAYMENT_TYPE_ATM = 1;
+export const PAYMENT_TYPE_CREDIT_CARD = 4;
 
 // =============================================
 // = action type =
@@ -52,6 +51,7 @@ const initialState = {
   serviceAddress: '',
   note: '',
   unit: 1,
+  paymenttype: null,
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);

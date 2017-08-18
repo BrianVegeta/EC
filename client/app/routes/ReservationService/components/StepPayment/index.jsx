@@ -4,33 +4,31 @@ import myPropTypes from 'propTypes';
 
 import FormContainer from 'components/Publish/FormContainer';
 import FormGroup from 'components/Form/Group';
+import FormButton from 'components/FormButton';
 import InputRadio from 'components/Input/Radio';
-import InputTextCurrency from 'components/Input/TextCurrency';
-import InputDatesPicker from 'components/Input/DatesPicker';
-import InputTextCounter from 'components/Input/TextCounter';
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 
-// import classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import {
-  CHARGE_TYPE_FIX,
-  CHARGE_TYPE_COUNT,
-  CHARGE_TYPE_DAY,
-} from '../../modules/publish';
 
+const cx = classnames.bind(styles);
 
-class StepPrice extends React.Component {
+class StepPayment extends React.Component {
 
   static propTypes = {
-    publish: myPropTypes.publish.isRequired,
-    dispatchChangeData: PropTypes.func.isRequired,
+    isAtmChoosed: PropTypes.bool.isRequired,
+    isCreditCardChoosed: PropTypes.bool.isRequired,
+    dispatchChooseAtm: PropTypes.func.isRequired,
+    dispatchChooseCreditCard: PropTypes.func.isRequired,
+
     dispatchValidate: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
+
     nextStep: PropTypes.func.isRequired,
     isValid: PropTypes.bool.isRequired,
   };
@@ -73,163 +71,60 @@ class StepPrice extends React.Component {
     });
   }
 
-  renderRadioInput(state, text, CHARGE_TYPE) {
-    const { dispatchChangeData } = this.props;
+  renderAtmDetail() {
     return (
-      <div styleName="charge-type">
-        <InputRadio
-          checked={state === CHARGE_TYPE}
-          onChange={() => dispatchChangeData({ chargeType: CHARGE_TYPE })}
-        >
-          {text}
-        </InputRadio>
-      </div>
-    );
-  }
-
-  renderDatesAndUnit({ startDate, endDate, unit }) {
-    const { dispatchChangeData } = this.props;
-    return (
-      <div>
-        <div styleName="dates">
-          <FormGroup headerText="活動日期">
-            <InputDatesPicker
-              ref={datesInput => (this.datesInput = datesInput)}
-              startDate={startDate}
-              endDate={endDate}
-              onDatesChange={dates => dispatchChangeData(dates)}
-              value={startDate && endDate && 'date'}
-              constraints={constraints.serviceDates}
-              validateOnBlur
-            />
-          </FormGroup>
-        </div>
-        <div styleName="unit">
-          <FormGroup headerText="人數上限">
-            <InputTextCounter
-              ref={unitInput => (this.unitInput = unitInput)}
-              value={unit ? String(unit) : ''}
-              suffix="人"
-              placeholder="請輸入"
-              min={SERVICE_UNIT_MIN}
-              max={false}
-              onChange={value => dispatchChangeData({ unit: value })}
-              constraints={constraints.serviceUnit}
-              validateOnBlur
-            />
-          </FormGroup>
-        </div>
-      </div>
-    );
-  }
-
-  renderReservationDays({ reservationDays }) {
-    const { dispatchChangeData } = this.props;
-    return (
-      <FormGroup headerText="提前預約天數">
-        <div styleName="reservation-days">
-          <InputTextCounter
-            ref={reservationDaysInput => (this.reservationDaysInput = reservationDaysInput)}
-            value={reservationDays ? String(reservationDays) : ''}
-            suffix="天"
-            placeholder="請輸入天數(選填)"
-            min={0}
-            max={30}
-            onChange={value => dispatchChangeData({ unit: value })}
-            constraints={constraints.serviceReservationDays}
-            validateOnBlur
+      <div styleName="atm-detail-container">
+        <div styleName="bank-container">
+          <span styleName="bank-name">
+            銀行帳戶：遠東國際商業銀行
+          </span>
+          <FormButton
+            colorType="greenBorder"
+            size="sm"
+            content="查看"
+            width="auto"
+            onClick={() => console.log('click')}
           />
         </div>
-      </FormGroup>
-    );
-  }
-
-  renderAfterChoosed({ isChargeFix }) {
-    const {
-      publish,
-      dispatchChangeData,
-      isValid,
-    } = this.props;
-    const {
-      price,
-      deposit,
-      discount,
-    } = publish;
-
-    return (
-      <div styleName="container">
-        <FormGroup headerText="價格">
-          <div styleName="currency-block">
-            <InputTextCurrency
-              ref={priceInput => (this.priceInput = priceInput)}
-              value={price}
-              onChange={value => dispatchChangeData({ price: value })}
-              constraints={constraints.price}
-              validateOnBlur
-            />
-          </div>
-        </FormGroup>
-        <FormGroup headerText="押金">
-          <div styleName="currency-block">
-            <InputTextCurrency
-              ref={depositInput => (this.depositInput = depositInput)}
-              value={deposit}
-              onChange={value => dispatchChangeData({ deposit: value })}
-              constraints={constraints.deposit}
-              validateOnBlur
-            />
-          </div>
-        </FormGroup>
-        {
-          isChargeFix ?
-          this.renderDatesAndUnit(publish) :
-          this.renderReservationDays(publish)
-        }
-        <div styleName="discounts-container">
-          <FormGroup
-            headerText={'設定優惠價'}
-            helperText={'優惠價能吸引更多人前來預訂'}
-            large
-            optional
-            topLine
-          >
-            <FormGroup headerText="下單可享優惠價格">
-              <div styleName="discount">
-                <InputTextCurrency
-                  ref={discountInput => (this.discountInput = discountInput)}
-                  value={discount}
-                  onChange={value => dispatchChangeData({ discount: value })}
-                  constraints={constraints.discount(price || 0)}
-                  validateOnBlur
-                />
-              </div>
-            </FormGroup>
-          </FormGroup>
+        <div styleName="helper-text">
+          當交易完成後，銀行會在每週一、三，將您的收入款項轉帳至您的銀行帳戶
         </div>
-        <ButtonNextStep
-          status={isValid ? STATUS_VALID : STATUS_DISABLE}
-          onClick={this.onNextStepClick}
-        />
       </div>
     );
   }
 
   render() {
-    const { publish } = this.props;
-    const { chargeType } = publish;
+    const {
+      isAtmChoosed,
+      isCreditCardChoosed,
+      dispatchChooseAtm,
+      dispatchChooseCreditCard,
+    } = this.props;
     return (
       <FormContainer title="設定價格" >
-        {this.renderRadioInput(chargeType, '固定價格計費', CHARGE_TYPE_FIX)}
-        {this.renderRadioInput(chargeType, '數量計費', CHARGE_TYPE_COUNT)}
-        {this.renderRadioInput(chargeType, '天數計費', CHARGE_TYPE_DAY)}
-        {{
-          [CHARGE_TYPE_FIX]: this.renderAfterChoosed({ isChargeFix: true }),
-          [CHARGE_TYPE_COUNT]: this.renderAfterChoosed({ isChargeFix: false }),
-          [CHARGE_TYPE_DAY]: this.renderAfterChoosed({ isChargeFix: false }),
-        }[chargeType]}
+        <div styleName="radio-group">
+          <div styleName="radio-container">
+            <InputRadio checked={isAtmChoosed} onChange={dispatchChooseAtm} >
+              <div className={cx('radio-label')}>ATM 銀行轉帳</div>
+              <div className={cx('label-helper')}>
+                您可以在實體ATM或網路銀行轉帳，使用ShareApp指定的銀行帳號（虛擬帳號）
+              </div>
+            </InputRadio>
+          </div>
+          <div styleName="radio-container">
+            <InputRadio checked={isCreditCardChoosed} onChange={dispatchChooseCreditCard} >
+              <div className={cx('radio-label')}>信用卡支付</div>
+            </InputRadio>
+          </div>
+        </div>
+        {this.renderAtmDetail()}
+        <ButtonNextStep
+          status={true ? STATUS_VALID : STATUS_DISABLE}
+          onClick={this.onNextStepClick}
+        />
       </FormContainer>
     );
   }
 }
 
-export default CSS(StepPrice, styles);
+export default CSS(StepPayment, styles);
