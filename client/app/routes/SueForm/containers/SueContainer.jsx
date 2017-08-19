@@ -5,7 +5,7 @@ import { detail as orderRouter } from 'lib/paths';
 
 import { sendSueReport } from '../modules/sueAction';
 import { fetchOrder, reset } from '../modules/sueDetail';
-import { createCover, deleteCover, changeOrders }
+import { createCover, deleteCover, changeOrders, processRawCovers }
   from '../modules/sueGallery';
 
 import SueForm from '../components/SueForm';
@@ -28,14 +28,17 @@ const returnLastPath = cid =>
 const mapDispatchToProps = (dispatch, { params: { cid } }) => ({
   dispatch,
   dispatchRecords: () => dispatch(fetchOrder(cid)),
-  dispatchSend: (img1, img2, img3, targetstage, reason, targetUid, type) =>
-    dispatch(sendSueReport(
-      cid, img1,
-      img2, img3, targetstage,
-      reason, targetUid, type,
-    )),
+  dispatchSend: (pid, targetstage, reason, targetUid, type) => {
+    dispatch(processRawCovers()).then((imgData) => {
+      dispatch(sendSueReport(
+        cid, pid, imgData, targetstage,
+        reason, targetUid, type,
+      )).then(dispatch(returnLastPath(cid)));
+    }
+  )
+  },
   dispatchReset: () => dispatch(reset()),
-  dispatchCreateCover: blob => dispatch(createCover(blob)),
+  dispatchCreateCover: (blob, cidNo) => dispatch(createCover(blob, cidNo)),
   dispatchDeleteCover: key => dispatch(deleteCover(key)),
   dispatchChangeOrders: covers => dispatch(changeOrders(covers)),
   dispatchCancel: () => {

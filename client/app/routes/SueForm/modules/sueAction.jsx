@@ -45,24 +45,27 @@ export const resetAction = () => ({
   type: RESET,
 });
 
-export function sendSueReport(cid, img1, img2, img3, targetstage, reason, targetUid, type) {
+export function sendSueReport(cid, pid, imgData, targetstage, reason, targetuid, type) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const { auth } = getState();
       const { currentUser } = auth;
       const requestId = Date.now();
-
+      const img1 = (imgData.length > 0) ? imgData[0] : null;
+      const img2 = (imgData.length > 1) ? imgData[1] : null;
+      const img3 = (imgData.length > 2) ? imgData[2] : null;
       dispatch(lock(requestId, 'accept'));
       const isCatch = true;
       asyncXhrAuthedPost(
         '/ajax/send_sue_request.json',
         { cid,
+          pid,
           img1,
           img2,
           img3,
           targetstage,
           reason,
-          targetUid,
+          targetuid,
           type,
           uid: currentUser.uid
         }, getState(), isCatch,

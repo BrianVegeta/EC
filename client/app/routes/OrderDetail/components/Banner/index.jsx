@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import Icon from 'react-icons/lib/fa/adjust';
 import CSS from 'react-css-modules';
 
-import classnames from 'classnames/bind';
 import { generateOwnerItemString, generateOwnerServiceString,
   generateOwnerSpaceString, generateLesseeItemString,
   generateLesseeServiceString, generateLesseeSpaceString }
   from 'lib/contractString'
 import styles from './styles.sass';
 
-const cx = classnames.bind(styles);
 class Banner extends React.Component {
 
   static propTypes = {
@@ -48,35 +46,16 @@ class Banner extends React.Component {
   }
 
   render() {
-    const { contractstage } = this.props;
-    const regularContract = (contractstage < 1000);
-    let objString = { title: '', text: '' };
-    if (regularContract) {
-      objString = this.generateString();
-    } else if (contractstage > 1000 && contractstage < 3000) {
-      const screenStage = contractstage % 100;
-      if (screenStage < 11) {
-        objString.title = '申訴中';
-      } else {
-        objString.title = '申訴完成';
-      }
-    } else {
-      objString.title = '合約已取消';
-    }
+    const objString = this.generateString();
     return (
-      <div
-        className={cx('banner_bkg', {
-          'order-type': regularContract,
-          'sue-type': !regularContract,
-        })}
-      >
-        <div styleName="title_content">
+      <div styleName="order_banner_bkg" className="clear">
+        <div styleName="order_banner_title_content">
           <div>
-            <Icon styleName="icon" size={35} />
+            <Icon styleName="order_banner_icon" size={35} />
           </div>
-          <div styleName="title">{ objString.title }</div>
+          <div styleName="order_banner_title">{ objString.title }</div>
         </div>
-        <div styleName="body_content">
+        <div styleName="order_banner_body_content">
           <span>{ objString.text }</span>
         </div>
       </div>

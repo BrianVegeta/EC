@@ -52,7 +52,7 @@ export function fetchOrder(cid) {
 // =============================================
 const initialState = {
   isFetching: false,
-  records: null,
+  record: null,
 };
 
 export default (state = initialState, action) => {
@@ -65,7 +65,7 @@ export default (state = initialState, action) => {
     case FETCHED:
       return Object.assign({}, state, {
         isFetching: false,
-        records: action.result,
+        record: action.result,
       });
 
     case RESET:

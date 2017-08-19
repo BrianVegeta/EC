@@ -74,7 +74,7 @@ export default store => ({
     },
     /* Order detail*/
     {
-      component: layoutHoc(layoutOrderdetail, {}),
+      component: layoutHoc(layoutOrderdetail, { requireAuth }),
       childRoutes: [
         routeOrderdetail(store),
       ],
@@ -84,26 +84,17 @@ export default store => ({
       childRoutes: [
         routePublishService(store),
         routeReservationService(store),
+        routeItem(store),
+        sueForm(store),
       ],
     },
+
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
         routeMyAccount(store),
       ],
     },
-    {
-      component: layoutHoc(layoutItemDetail, { requireAuth, requireCates }),
-      childRoutes: [
-        routeItem(store),
-      ],
-    },
-    {
-      component: layoutHoc(layoutItemDetail, { requireAuth, requireCates }),
-      childRoutes: [
-        sueForm(store),
-      ],
-    }
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [

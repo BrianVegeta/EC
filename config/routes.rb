@@ -251,6 +251,7 @@ Rails.application.routes.draw do
     resources :images, only: [] do
       collection do
         put 'item_cover'
+        put 'sue_picture/:cid_no', action: :sue_picture
       end
     end
 

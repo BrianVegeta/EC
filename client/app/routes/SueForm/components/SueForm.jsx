@@ -44,6 +44,7 @@ class SueForm extends React.Component {
 
     this.uploadData = {
       cid: 0,
+      pid: 0,
       img1: null,
       img2: null,
       img3: null,
@@ -53,7 +54,6 @@ class SueForm extends React.Component {
       sueType: 0,
       sueCategory: 0,
       sueStage: 0,
-      targetstage: 0,
     }
 
     this.onSave = this.onSave.bind(this);
@@ -86,8 +86,13 @@ class SueForm extends React.Component {
     if (!isValid) {
       return this.setState({ showNeedCheck, showNeedReason });
     }
-    alert('PASS!!!');
-    //PASS
+    const { pid, reason, targetUid, type, sueType,
+      sueCategory, sueStage } = this.uploadData;
+    const targetstage = sueType + sueCategory + sueStage;
+    console.log(this.uploadData);
+    console.log(targetstage);
+    this.props.dispatchSend(pid, targetstage, reason, targetUid, type);
+
     return 0;
   }
 
@@ -134,29 +139,35 @@ class SueForm extends React.Component {
   }
   render() {
     const { sueDetail, sueGallery } = this.props;
-    const { records } = sueDetail;
-    if (!(records) || (records.contractstage > 1000)) {
+    const { record } = sueDetail;
+    if (!(record) || (record.contractstage > 1000)) {
       return null;
     }
     if (this.uploadData.cid === 0) {
       const { currentUser } = this.props;
-      const isOwner = (currentUser.uid === records.owneruid);
-      this.uploadData.cid = records.cid;
-      this.uploadData.targetUid = isOwner ? records.lesseeuid : records.owneruid;
+      const isOwner = (currentUser.uid === record.owneruid);
+      this.uploadData.pid = record.pid;
+      this.uploadData.cid = record.cid;
+      this.uploadData.targetUid = isOwner ? record.lesseeuid : record.owneruid;
       this.uploadData.sueType = isOwner ? 1000 : 2000;
-      this.uploadData.sueStage = (records.contractstage % 100);
+      this.uploadData.sueStage = (record.contractstage % 100);
     }
-    const { dispatchCreateCover, dispatchDeleteCover, dispatchChangeOrders }
-      = this.props;
+    const {
+      dispatchCreateCover,
+      dispatchDeleteCover,
+      dispatchChangeOrders,
+    } = this.props;
     const { reason, showNeedCheck, showNeedReason } = this.state;
+    console.log('render');
+    console.log(this.state);
     return (
       <div styleName="sue-form-content-border">
         <div styleName="sue-form-header">申訴</div>
         <div styleName="sue-form-section-background">
           <MiniMap
-            cover={`${records.img1}`}
-            cidNumber={`合約編號：${records.cid_no}`}
-            itemName={`${records.pname}`}
+            cover={`${record.img1}`}
+            cidNumber={`合約編號：${record.cid_no}`}
+            itemName={`${record.pname}`}
           />
           <div styleName="sue-red-text-hint">
             當您提出申訴後，雙方必須在14天內私下進行協議，
@@ -173,7 +184,7 @@ class SueForm extends React.Component {
               outerStyle={{ display: 'inline-block', marginLeft: '20px' }}
             />
           }
-          {this.renderSueOption(records.type)}
+          {this.renderSueOption(record.type)}
         </div>
         <div styleName="sue-form-section-background">
           <div styleName="sue-form-section-title">備註</div>
@@ -202,7 +213,7 @@ class SueForm extends React.Component {
             <SortableGallery
               addCoverLabel={false}
               covers={sueGallery}
-              createCover={dispatchCreateCover}
+              createCover={blob => dispatchCreateCover(blob, record.cid_no)}
               deleteCover={dispatchDeleteCover}
               changeOrders={dispatchChangeOrders}
               openCropper={() => {}}
@@ -211,7 +222,7 @@ class SueForm extends React.Component {
         </div>
         <div styleName="sue-checkbox-container-style">
           <CheckBox
-            check={this.state.check}
+            checked={this.state.check}
             onChange={val => this.setState({ check: val })}
           >
             <span styleName="sue-checkbox-text-style">我已確認以上的申訴資訊</span>

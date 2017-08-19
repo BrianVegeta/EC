@@ -9,6 +9,7 @@ import {
   RENDER_BANK_SETUP,
   RENDER_PUBLISH_ENTRY,
   RENDER_SCORE_RATING,
+  RENDER_SUE_DETAIL,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetupContainer';
 import AccessCheckContainer from 'containers/Popup/AccessCheckContainer';
@@ -76,6 +77,16 @@ class Popup extends React.Component {
           <ModalPublish onClose={this.props.dispatchCloseModal} />
         );
       }
+
+      case RENDER_SUE_DETAIL:
+        return (
+          <ModalBox
+            width={470}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <div>This is sue page</div>
+          </ModalBox>
+        );
 
       default:
         return null;

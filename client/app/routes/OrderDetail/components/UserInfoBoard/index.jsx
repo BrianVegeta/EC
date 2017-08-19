@@ -1,24 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 
 import CSS from 'react-css-modules';
 
-import { detail } from 'lib/paths';
+import { orderRouter } from 'lib/paths';
 import { redirectToWithReferrer } from 'lib/redirect';
 
 import styles from './styles.sass';
 
 class UserInfoBoard extends React.Component {
-
+  static defaultProps = {
+    imgUrl: '',
+    contractstage: 0,
+  }
   static propTypes = {
     cid: PropTypes.number.isRequired,
     realname: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     imgUrl: PropTypes.string,
+    contractstage: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -29,17 +32,19 @@ class UserInfoBoard extends React.Component {
 
   onSue() {
     const { cid, dispatch } = this.props;
-    const suePath = detail.sueFormPath(cid);
+    const suePath = orderRouter.sueFormPath(cid);
     dispatch(redirectToWithReferrer(suePath));
   }
 
   render() {
-    console.log(this.props);
     const {
       realname,
       phone,
       imgUrl,
+      contractstage
     } = this.props;
+
+    const showSueForm = (contractstage > 4 && contractstage < 11);
     return (
       <div styleName="boundary">
         <div styleName="head-style">
@@ -60,15 +65,17 @@ class UserInfoBoard extends React.Component {
                   onClick={() => {}}
                 />
               </div>
-              <div styleName="btn-outer-style">
-                <FormButton
-                  colorType={'green'}
-                  size="sm"
-                  width={100}
-                  content={'申訴'}
-                  onClick={this.onSue}
-                />
-              </div>
+              { showSueForm &&
+                <div styleName="btn-outer-style">
+                  <FormButton
+                    colorType={'green'}
+                    size="sm"
+                    width={100}
+                    content={'申訴'}
+                    onClick={this.onSue}
+                  />
+                </div>
+              }
             </div>
           </div>
         </div>

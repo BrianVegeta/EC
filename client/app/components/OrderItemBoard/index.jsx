@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import { detail } from 'lib/paths';
+import { orderRouter } from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -170,7 +170,7 @@ class OrderItemBoard extends React.Component {
           colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
-          onClick={() => browserHistory.push(detail.orderPath(this.props.cid))}
+          onClick={() => browserHistory.push(orderRouter.orderPath(this.props.cid))}
         />
       </div>
     )
@@ -226,7 +226,7 @@ class OrderItemBoard extends React.Component {
           colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
-          onClick={() => browserHistory.push(detail.orderPath(this.props.cid))}
+          onClick={() => browserHistory.push(orderRouter.orderPath(this.props.cid))}
         />
       </div>
     )

@@ -12,7 +12,8 @@ import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
 
-import Banner from './Banner/index';
+import Banner from './Banner';
+import SueBanner from './SueBanner';
 import UserInfoBoard from './UserInfoBoard/index';
 
 class Orderdetail extends React.Component {
@@ -228,6 +229,36 @@ class Orderdetail extends React.Component {
       </div>
     )
   }
+
+  renderBanner(order, isOwner, dispatch) {
+    const { contractstage, cid, type, leasestart } = order;
+    if (contractstage < 1000) {
+      return (
+        <div styleName="banner_style" >
+          <Banner
+            cid={cid}
+            type={type}
+            contractstage={contractstage}
+            isOwner={isOwner}
+            startDate={leasestart}
+            dispatch={dispatch}
+          />
+        </div>
+      );
+    } else if (contractstage > 1000 && contractstage < 3000) {
+      return (
+        <div styleName="banner_style" >
+          <SueBanner
+            cid={cid}
+            contractstage={contractstage}
+            dispatch={dispatch}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
   render() {
     const { orderdetail, dispatch } = this.props;
     const { order } = orderdetail;
@@ -263,14 +294,7 @@ class Orderdetail extends React.Component {
             </h1>
           </div>
           <div styleName="section-content">
-            <div styleName="banner_style" >
-              <Banner
-                type={order.type}
-                contractstage={order.contractstage}
-                isOwner={display.is_owner}
-                startDate={order.leasestart}
-              />
-            </div>
+            {this.renderBanner(order, display.is_owner, dispatch)}
             <div styleName="top_40px_style">
               <MiniMap
                 cover={`${order.img1}`}
@@ -281,6 +305,7 @@ class Orderdetail extends React.Component {
             <div styleName="top_40px_style">
               <UserInfoBoard
                 cid={order.cid}
+                contractstage={order.contractstage}
                 dispatch={dispatch}
                 realname={targetRealName}
                 imgUrl={targetUrl}

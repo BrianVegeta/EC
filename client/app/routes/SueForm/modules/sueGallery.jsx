@@ -11,7 +11,7 @@ import {
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.COVERS';
 const COVER_PARAM_KEY = 'croppedImage';
-export const REDUCER_KEY = 'covers';
+export const REDUCER_KEY = 'sueGallery';
 
 
 // =============================================
@@ -31,9 +31,10 @@ const RESET = prefix('RESET');
 // = actions =
 // =============================================
 
-export const createCover = blob => ({
+export const createCover = (blob, cidNo) => ({
   type: CREATE_COVER,
   blob,
+  cidNo,
 });
 
 export const changeOrders = covers => ({
@@ -63,7 +64,7 @@ export const reset = () => ({
   type: RESET,
 });
 
-export function uploadCover(key, base64) {
+export function uploadCover(key, base64, cidNo) {
   return (dispatch) => {
     const blob = base64ToBlobData(base64);
     dispatch(updatedCover(key, URL.createObjectURL(blob)));
@@ -71,7 +72,7 @@ export function uploadCover(key, base64) {
     const formData = new FormData();
     formData.append(COVER_PARAM_KEY, blob);
 
-    asyncXhrPutImage('/ajax/images/item_cover.json', formData)
+    asyncXhrPutImage(`/ajax/images/sue_picture/${cidNo}.json`, formData)
     .then((s3) => {
       asyncS3ToBlob(s3)
       .then(responseBlobUrl =>
@@ -81,7 +82,7 @@ export function uploadCover(key, base64) {
   };
 }
 
-export const asyncUploadCover = (key, base64) =>
+export const asyncUploadCover = (key, base64, cidNo) =>
   dispatch =>
     new Promise((resolve, reject) => {
       const blobData = base64ToBlobData(base64);
@@ -90,7 +91,7 @@ export const asyncUploadCover = (key, base64) =>
       const formData = new FormData();
       formData.append(COVER_PARAM_KEY, blobData);
 
-      asyncXhrPutImage('/ajax/images/item_cover.json', formData)
+      asyncXhrPutImage(`/ajax/images/sue_picture/${cidNo}.json`, formData)
       .then((s3) => {
         asyncS3ToBlob(s3)
         .then((responseBlobUrl) => {
@@ -101,12 +102,12 @@ export const asyncUploadCover = (key, base64) =>
       .catch(e => reject(e));
     });
 
-export const asyncUploadBlobCover = (key, blob) =>
+export const asyncUploadBlobCover = (key, blob, cidNo) =>
   dispatch =>
     new Promise((resolve) => {
       asyncContainBlobTobase64(blob)
       .then((base64) => {
-        dispatch(asyncUploadCover(key, base64))
+        dispatch(asyncUploadCover(key, base64, cidNo))
         .then(s3 => resolve(s3))
         .catch(e => console.log(e));
       });
@@ -118,18 +119,18 @@ export const processRawCovers = () =>
       const covers = getState()[REDUCER_KEY];
       const rawCovers = covers.filter(cover => !cover.isStored);
       const promises = rawCovers.map(cover =>
-        dispatch(asyncUploadBlobCover(cover.key, cover.blob)),
+        dispatch(asyncUploadBlobCover(cover.key, cover.blob, cover.cidNo)),
       );
       Promise.all(promises)
       .then(results => resolve(results))
       .catch(e => console.log(e));
     });
 
-
 // =============================================
 // = reducer =
 // =============================================
 const initialThumb = {
+  cidNo: null,
   key: '?',
   blob: null,
   s3: null,
@@ -146,6 +147,7 @@ export default (state = initialState, action) => {
         Object.assign({}, initialThumb, {
           key: `KEY_${Date.now().toString()}`,
           blob: action.blob,
+          cidNo: action.cidNo,
         }),
       );
 
