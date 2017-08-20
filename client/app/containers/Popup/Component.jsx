@@ -14,7 +14,7 @@ import {
 import BankSetupContainer from 'containers/Popup/BankSetupContainer';
 import AccessCheckContainer from 'containers/Popup/AccessCheckContainer';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
-
+import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 
 class Popup extends React.Component {
 
@@ -84,7 +84,19 @@ class Popup extends React.Component {
             width={470}
             onClose={this.props.dispatchCloseModal}
           >
-            <div>This is sue page</div>
+            <SueDetailContainter
+              cid={options.cid}
+              u_no={options.u_no}
+              suer_name={options.suer_name}
+              defender_name={options.defender_name}
+              img1={options.img1}
+              img2={options.img2}
+              img3={options.img3}
+              sue_reason={options.sue_reason}
+              status={options.status}
+              case_end={options.case_end}
+              create_time={options.create_time}
+            />
           </ModalBox>
         );
 

@@ -4,11 +4,27 @@ import Icon from 'react-icons/lib/fa/adjust';
 import CSS from 'react-css-modules';
 
 import FormButton from 'components/FormButton';
+
+import { popupSueDetail } from 'modules/popup';
+
 import styles from './styles.sass';
 
 class SueBanner extends React.Component {
 
   static propTypes = {
+    sueDetail: PropTypes.shape({
+      u_no: PropTypes.string,
+      type: PropTypes.string,
+      status: PropTypes.string,
+      sue_reason: PropTypes.string,
+      img1: PropTypes.string,
+      img2: PropTypes.string,
+      img3: PropTypes.string,
+      defender_name: PropTypes.string,
+      suer_name: PropTypes.string,
+      case_end: PropTypes.number,
+      create_time: PropTypes.number,
+    }).isRequired,
     contractstage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -20,8 +36,9 @@ class SueBanner extends React.Component {
   }
 
   onSueDetail() {
-    const { cid, dispatch } = this.props;
-    console.log('onSueDetail');
+    const { cid, dispatch, sueDetail } = this.props;
+    const option = Object.assign({}, sueDetail, { cid });
+    dispatch(popupSueDetail(option));
   }
 
   render() {

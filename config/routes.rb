@@ -115,7 +115,7 @@ Rails.application.routes.draw do
 
       #SUE
       post 'send_sue_request', to: 'contract#report'
-
+      post 'get_sue_report', to: 'contract#get_report'
       #CONTRACT
       post 'get_my_order', to: 'contract#get_my_contract' #
       post 'reject_order', to: 'contract#reject' #

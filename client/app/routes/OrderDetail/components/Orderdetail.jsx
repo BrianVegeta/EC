@@ -23,6 +23,18 @@ class Orderdetail extends React.Component {
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
     }).isRequired,
+    sueDetail: PropTypes.shape({
+      u_no: PropTypes.string,
+      type: PropTypes.string,
+      status: PropTypes.number,
+      img1: PropTypes.string,
+      img2: PropTypes.string,
+      img3: PropTypes.string,
+      defender_name: PropTypes.string,
+      suer_name: PropTypes.string,
+      case_end: PropTypes.number,
+      create_time: PropTypes.number,
+    }),
     dispatch: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
@@ -246,9 +258,13 @@ class Orderdetail extends React.Component {
         </div>
       );
     } else if (contractstage > 1000 && contractstage < 3000) {
+      if (!(this.props.orderdetail.sueDetail)) {
+        return null;
+      }
       return (
         <div styleName="banner_style" >
           <SueBanner
+            sueDetail={this.props.orderdetail.sueDetail}
             cid={cid}
             contractstage={contractstage}
             dispatch={dispatch}

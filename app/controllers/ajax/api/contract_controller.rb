@@ -81,10 +81,11 @@ class Ajax::Api::ContractController < ApplicationController
 
   # 取回申訴列表
   def get_report
-    obj = ::Api::Contract::GetReport.new current_uid_params, current_apitoken
+    obj = ::Api::Contract::GetReport.new cid_params, current_apitoken
     success = obj.request
+    # obj.response_data = map_json_array obj.response_data, ResponseJson::UserReport.structure
     if success
-       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
+        obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
     end
     respond success, obj
   end
