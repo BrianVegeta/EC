@@ -24,22 +24,26 @@ class OrderList extends React.Component {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchRecords();
+    this.refreshScreen();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.tabName !== this.props.tabName) {
-      this.props.dispatchReset();
-      this.props.dispatchRecords();
+      this.refreshScreen();
     }
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  refreshScreen() {
+    this.props.dispatchReset();
+    this.props.dispatchRecords();
   }
 
   render() {
@@ -114,6 +118,10 @@ class OrderList extends React.Component {
               cidNo={record.cid_no}
               itemName={record.pname}
               itemImgUrl={record.img1}
+              targetName={record.lessee_nick_name}
+              targetUrl={''}
+              targetScore={record.lesseescore}
+              targetComment={record.lessee_comment}
               startDate={record.leasestart}
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
@@ -121,6 +129,8 @@ class OrderList extends React.Component {
               isRead={record.owner_read}
               unit={record.unit}
               display={record.display}
+              dispatch={this.props.dispatch}
+              dispatchRefresh={this.refreshScreen}
             />
           ))}
         </ListContainer>

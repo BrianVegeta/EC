@@ -7,6 +7,7 @@ import popup from 'modules/popup';
 import access from 'modules/access';
 import banks from 'modules/banks';
 import personalBankInfo from 'modules/personalBankInfo';
+import orderAction from 'modules/orderAction';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -56,6 +57,7 @@ const reducers = {
   // ownerProfile,
   // coupon,
   myCoupon,
+  orderAction,
 };
 
 const RESET_ONE = 'RESET_ONE';

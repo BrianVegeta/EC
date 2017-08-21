@@ -42,7 +42,7 @@ class Main extends React.Component {
     const ref = regulation => (this[ITEM_MAIN_REGULATION] = regulation);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
-            <Regulation rules={rules} />
+        <Regulation rules={rules} />
       </div>
     );
   }
@@ -56,12 +56,12 @@ class Main extends React.Component {
     const id = ITEM_MAIN_CANCEL_POLICY;
     const ref = cancel_policy => (this[ITEM_MAIN_CANCEL_POLICY]) = cancel_policy;
     return (
-            <div styleName="nav-anchor" {...{ id, ref }} >
-                <CancelPolicy
-                    advance_day= {cancel_policys[0].advance_day}
-                    rate= {cancel_policys[0].rate}
-                />
-            </div>
+      <div styleName="nav-anchor" {...{ id, ref }} >
+        <CancelPolicy
+          advance_day={cancel_policys[0].advance_day}
+          rate={cancel_policys[0].rate}
+        />
+      </div>
     );
   }
 
@@ -75,13 +75,14 @@ class Main extends React.Component {
         <div styleName="title-footer">
           <TitleFooter location={`${city}${area}`}/>
         </div>
-            <Description description={pdes} />
-            <Tags tags={tags} />
+        <Description description={pdes} />
+        <Tags tags={tags} />
         <Detail
-            city={city}
-            area={area}
-            unit={unit}
-            calculate_charge_type={calculate_charge_type} />
+          city={city}
+          area={area}
+          unit={unit}
+          calculate_charge_type={calculate_charge_type}
+        />
       </div>
     );
   }
@@ -91,41 +92,41 @@ class Main extends React.Component {
     const { ownerProfile } = item
 
     if (ownerProfile == null || ownerProfile['uid'] == null) {
-        return (
-                <div styleName="nav-anchor" {...{ id, ref }} >
-                  <Sharer
-                      name={""}
-                      picture={""}
-                      city={""}
-                      area={""}
-                      autobiography={""}
-                      owner_credit={0.0}
-                      create_time={0}
-                      target_uid={""}
-                      is_follow={false}
-                      dispatch={dispatch} />
-                </div>
-        );
+      return (
+        <div styleName="nav-anchor" {...{ id, ref }} >
+          <Sharer
+            name={""}
+            picture={""}
+            city={""}
+            area={""}
+            autobiography={""}
+            owner_credit={0.0}
+            create_time={0}
+            target_uid={""}
+            is_follow={false}
+            dispatch={dispatch}
+          />
+        </div>
+      );
     } else {
-        return (
-                <div styleName="nav-anchor" {...{ id, ref }} >
-                  <Sharer
-                      name={ownerProfile.name}
-                      picture={ownerProfile.picture}
-                      city={ownerProfile.city}
-                      area={ownerProfile.area}
-                      autobiography={ownerProfile.autobiography}
-                      owner_credit={ownerProfile.owner_credit}
-                      create_time={ownerProfile.create_time}
-                      target_uid={ownerProfile.uid}
-                      is_follow={false}
-                      dispatch={dispatch} />
-                </div>
-        );
+      return (
+        <div styleName="nav-anchor" {...{ id, ref }} >
+          <Sharer
+            name={ownerProfile.name}
+            picture={ownerProfile.picture}
+            city={ownerProfile.city}
+            area={ownerProfile.area}
+            autobiography={ownerProfile.autobiography}
+            owner_credit={ownerProfile.owner_credit}
+            create_time={ownerProfile.create_time}
+            target_uid={ownerProfile.uid}
+            is_follow={false}
+            dispatch={dispatch}
+          />
+        </div>
+      );
     }
   }
-
-
 
   render() {
     const { item , dispatch} = this.props

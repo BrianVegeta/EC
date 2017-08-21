@@ -31,25 +31,25 @@ class Item extends React.Component {
   };
 
   componentDidMount() {
-    console.log('did MOUNT');
+    // console.log('did MOUNT');
     this.props.dispatchFetchItem();
     this.props.dispatchReset();
     this.props.dispatchRecords();
   }
 
   shouldComponentUpdate(nextProps) {
-    console.log('shouldUpdate');
-    console.log(nextProps);
+    // console.log('shouldUpdate');
+    // console.log(nextProps);
 
     if (nextProps.item.isFetching) {
-      console.log('no update');
+      // console.log('no update');
       return false;
     } else if (nextProps.messageboard.isFetching === true) {
-      console.log('no update');
+      // console.log('no update');
       return false;
     }
 
-    console.log('yes update');
+    // console.log('yes update');
     return true;
   }
 
@@ -58,7 +58,7 @@ class Item extends React.Component {
   }
 
   render() {
-    console.log('did render');
+    // console.log('did render');
     const { item, dispatch, auth } = this.props;
     console.log(this.props);
     const model = new Model(item, dispatch, auth.currentUser);

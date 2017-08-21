@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import { my } from 'lib/paths';
 
@@ -25,22 +25,26 @@ class OrderList extends React.Component {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchRecords();
+    this.refreshScreen();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.tabName !== this.props.tabName) {
-      this.props.dispatchReset();
-      this.props.dispatchRecords();
+      this.refreshScreen();
     }
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  refreshScreen() {
+    this.props.dispatchReset();
+    this.props.dispatchRecords();
   }
 
   render() {
@@ -119,8 +123,12 @@ class OrderList extends React.Component {
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
               unit={record.unit}
+              isOwner={false}
+              lesseeReceive={record.lessee_receive}
               isRead={record.lessee_read}
               display={record.display}
+              dispatch={this.props.dispatch}
+              dispatchRefresh={this.refreshScreen}
             />
           ))}
         </ListContainer>

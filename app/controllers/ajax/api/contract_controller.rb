@@ -81,10 +81,11 @@ class Ajax::Api::ContractController < ApplicationController
 
   # 取回申訴列表
   def get_report
-    obj = ::Api::Contract::GetReport.new current_uid_params, current_apitoken
+    obj = ::Api::Contract::GetReport.new cid_params, current_apitoken
     success = obj.request
+    # obj.response_data = map_json_array obj.response_data, ResponseJson::UserReport.structure
     if success
-       obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
+        obj.response_data = reverse_merge(obj.response_data, ResponseJson::UserReport.structure)
     end
     respond success, obj
   end
@@ -410,6 +411,7 @@ class Ajax::Api::ContractController < ApplicationController
   end
 
   def report_params
+    # pid : long => PID
     # img1 : String => 照片一
     # img2 : String => 照片二：
     # img3 : String => 照片三
@@ -417,7 +419,7 @@ class Ajax::Api::ContractController < ApplicationController
     # reason : String => 原因
     # targetuid　: String => 對方UID
     # type : int => 類型
-    params.permit(:img1, :img2, :img3, :targetstage, :reason, :targetuid, :type).merge(cid_params)
+    params.permit(:img1, :img2, :img3, :targetstage, :reason, :targetuid, :type, :pid).merge(cid_params)
   end
 
   def contract_of_me_params

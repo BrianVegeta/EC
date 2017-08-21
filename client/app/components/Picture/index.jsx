@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
+import {
+  isEqual,
+} from 'lodash';
 
 import SinglePreload from 'components/SinglePreload';
 import TransitionFade from 'components/Transition/Fade';
@@ -28,6 +31,11 @@ class Picture extends React.Component {
     style: myPropTypes.style,
     hasShadow: PropTypes.bool,
   };
+
+  shouldComponentUpdate(nextProps) {
+    const { src } = this.props;
+    return !isEqual(src, nextProps.src);
+  }
 
   render() {
     const { src, width, style, hasShadow } = this.props;

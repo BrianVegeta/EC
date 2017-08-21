@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import { my } from 'lib/paths';
 
@@ -25,23 +25,28 @@ class OrderList extends React.Component {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchRecords();
+    this.refreshScreen();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.tabName !== this.props.tabName) {
-      this.props.dispatchReset();
-      this.props.dispatchRecords();
+      this.refreshScreen();
     }
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
   }
+
+  refreshScreen() {
+    this.props.dispatchReset();
+    this.props.dispatchRecords();
+  }
+
 
   render() {
     const { myOrder } = this.props;
@@ -115,6 +120,10 @@ class OrderList extends React.Component {
               cidNo={record.cid_no}
               itemName={record.pname}
               itemImgUrl={record.img1}
+              targetName={record.lessee_nick_name}
+              targetUrl={''}
+              targetScore={record.lesseescore}
+              targetComment={record.lessee_comment}
               startDate={record.leasestart}
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
@@ -122,6 +131,8 @@ class OrderList extends React.Component {
               isOwner
               isRead={record.owner_read}
               display={record.display}
+              dispatch={this.props.dispatch}
+              dispatchRefresh={this.refreshScreen}
             />
           ))}
         </ListContainer>

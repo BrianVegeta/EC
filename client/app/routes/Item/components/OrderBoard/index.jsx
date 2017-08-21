@@ -1,7 +1,7 @@
 //@ author: vincent
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import myPropTypes from 'propTypes';
 import styled from 'styled-components';
 import FormButton from 'components/FormButton';
@@ -39,17 +39,45 @@ class OrderBoard extends React.Component {
   static propTypes = {
     model: myPropTypes.orderBoard.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.redirect = this.redirect.bind(this);
+  }
+
+  redirect() {
+    const { model } = this.props;
+    const { isMine, type } = model;
+
+    if (isMine) {
+      switch (type) {
+        case 'SERVICE':
+          break;
+        default:
+
+      }
+    } else {
+      switch (type) {
+        case 'SERVICE':
+
+          break;
+        default:
+
+      }
+    }
+  }
+
   render() {
     const { model } = this.props;
     return (
       <Container>
-        {model.discounts && model.discounts.map((discount, index) =>
+        {model.discounts && model.discounts.map((discount, index) => (
           <Discounter
             key={`${index + 1}`}
             text={discount.text}
             price={discount.price}
-          />,
-        )}
+          />
+        ))}
         <div styleName="term">
           {model.minCostDesc && <Term icon="date" content={model.minCostDesc} />}
           {model.dateRange && <Term icon="date" content={model.dateRange} />}
