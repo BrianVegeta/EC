@@ -48,7 +48,7 @@ export const reservationService = {
 export const orderRouter = {
   orderPath: cid => `/p/order_detail/${cid}`,
   sueFormPath: cid => `/p/sue-form/${cid}`,
-}
+};
 
 /* 我的帳戶 */
 export const my = {

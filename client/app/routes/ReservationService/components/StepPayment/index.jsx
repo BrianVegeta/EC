@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import myPropTypes from 'propTypes';
+// import myPropTypes from 'propTypes';
 
 import FormContainer from 'components/Publish/FormContainer';
-import FormGroup from 'components/Form/Group';
 import FormButton from 'components/FormButton';
 import InputRadio from 'components/Input/Radio';
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
-import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
+import AlertPanel from 'components/Alert/Panel';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -38,8 +37,8 @@ class StepPayment extends React.Component {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
     this.state = {
-      chargeTypeError: '',
-      totalError: '',
+      paymentTypeError: '',
+      bankInfoError: '',
     };
   }
 
@@ -52,28 +51,21 @@ class StepPayment extends React.Component {
       dispatchValidate,
       nextStep,
     } = this.props;
-    dispatchValidate()
-    .then(() => {
+    dispatchValidate().then(() => {
+      this.setState({ paymentTypeError: '', bankInfoError: '' });
       nextStep();
-    })
-    .catch((errors) => {
-      const { chargeTypeError, totalError } = errors;
-
-      this.setState({ chargeTypeError: chargeTypeError || '' });
-      if (chargeTypeError) return;
-
-      this.setState({ totalError: totalError || '' });
-      this.priceInput.valid();
-      this.depositInput.valid();
-      if (this.datesInput) this.datesInput.valid();
-      if (this.unitInput) this.unitInput.valid();
-      if (this.reservationDaysInput) this.reservationDaysInput.valid();
-      this.discountInput.valid();
+    }).catch((errors) => {
+      const { paymenttype, atm } = errors;
+      this.setState({
+        paymentTypeError: paymenttype || '',
+        bankInfoError: atm || '',
+      });
     });
   }
 
   renderAtmDetail() {
     const { dispatchBankSetup } = this.props;
+    const { bankInfoError } = this.state;
     return (
       <div styleName="atm-detail-container">
         <div styleName="bank-container">
@@ -91,6 +83,7 @@ class StepPayment extends React.Component {
         <div styleName="helper-text">
           當交易完成後，銀行會在每週一、三，將您的收入款項轉帳至您的銀行帳戶
         </div>
+        <AlertPanel text={bankInfoError} />
       </div>
     );
   }
@@ -101,7 +94,10 @@ class StepPayment extends React.Component {
       isCreditCardChoosed,
       dispatchChooseAtm,
       dispatchChooseCreditCard,
+      isValid,
     } = this.props;
+    const { paymentTypeError } = this.state;
+
     return (
       <FormContainer title="設定價格" >
         <div role="form">
@@ -119,10 +115,11 @@ class StepPayment extends React.Component {
                 <div className={cx('radio-label')}>信用卡支付</div>
               </InputRadio>
             </div>
+            <AlertPanel text={paymentTypeError} />
           </div>
-          {this.renderAtmDetail()}
+          {isAtmChoosed && this.renderAtmDetail()}
           <ButtonNextStep
-            status={true ? STATUS_VALID : STATUS_DISABLE}
+            status={isValid ? STATUS_VALID : STATUS_DISABLE}
             onClick={this.onNextStepClick}
           />
         </div>

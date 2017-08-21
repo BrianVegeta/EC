@@ -11,40 +11,41 @@ import {
   PAYMENT_TYPE_ATM,
   PAYMENT_TYPE_CREDIT_CARD,
 } from '../modules/reservation';
-// import { validatePrice, validatePriceBy } from '../modules/validation';
+import { validatePayment, validatePaymentBy } from '../modules/validation';
 
 /* pick props */
-const mapStateToProps = ({ environment, reservationService }) => {
+const mapStateToProps = ({ environment, reservationService, personalBankInfo }) => {
   const { paymenttype } = reservationService;
   return ({
     environment,
     reservation: reservationService,
     isAtmChoosed: (paymenttype === PAYMENT_TYPE_ATM),
     isCreditCardChoosed: (paymenttype === PAYMENT_TYPE_CREDIT_CARD),
-    // isValid: validatePriceBy(publish).isValid,
-    isValid: false,
+    isValid: validatePaymentBy(
+      reservationService,
+      personalBankInfo.isReady,
+    ).isValid,
   });
 };
 
 /* pick dispatch */
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { params: { pid } }) => {
   /* DISPATCH 查看銀行 */
   const dispatchBankSetup = () => {
     dispatch(popupAccessCheck({
       onChecked: password => dispatch(popupBankInfoSetup({ password })),
     }));
   };
-
+  const { paymentPath, confirmPath } = rsRouter;
   return ({
     dispatchChooseAtm: () =>
       dispatch(changeData({ paymenttype: PAYMENT_TYPE_ATM })),
     dispatchChooseCreditCard: () =>
       dispatch(changeData({ paymenttype: PAYMENT_TYPE_CREDIT_CARD })),
     dispatchBankSetup,
-    // dispatchValidate: () => dispatch(validatePrice()),
-    dispatchValidate: () => console.log('validate'),
-    dispatchTouchPath: () => dispatch(touchPath(rsRouter.paymentPath)),
-    nextStep: () => browserHistory.push(rsRouter.confirmPath),
+    dispatchValidate: () => dispatch(validatePayment()),
+    dispatchTouchPath: () => dispatch(touchPath(paymentPath(pid))),
+    nextStep: () => browserHistory.push(confirmPath(pid)),
   });
 };
 

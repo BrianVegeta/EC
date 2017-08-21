@@ -116,8 +116,6 @@ class StepForm extends React.Component {
     dispatchValidate()
     .then(() => nextStep())
     .catch((errors) => {
-      console.log(errors);
-
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();

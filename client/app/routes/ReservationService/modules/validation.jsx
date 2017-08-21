@@ -7,6 +7,8 @@ import {
 import constraints from 'constraints/reservation';
 import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
+  PAYMENT_TYPE_ATM,
+  PAYMENT_TYPE_CREDIT_CARD,
 } from './reservation';
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
@@ -76,6 +78,39 @@ export const validateForm = () =>
         reject(errors);
       }
     });
+
+export const validatePaymentBy = ({ paymenttype }, isBankInfoReady) => {
+  if (![PAYMENT_TYPE_ATM, PAYMENT_TYPE_CREDIT_CARD].includes(paymenttype)) {
+    return {
+      isValid: false,
+      errors: { paymenttype: '請選擇付款方式' },
+    };
+  }
+  if (PAYMENT_TYPE_ATM === paymenttype && !isBankInfoReady) {
+    return {
+      isValid: false,
+      errors: { atm: '請設定銀行帳戶' },
+    };
+  }
+  return { isValid: true, errors: {} };
+};
+
+export const validatePayment = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const reservation = getState()[RESERVATION_REDUCER_KEY];
+      const { personalBankInfo } = getState();
+      const { isValid, errors } = validatePaymentBy(
+        reservation,
+        personalBankInfo.isReady,
+      );
+      if (isValid) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+
 
 /* =============================================>>>>>
 = Validate all =
