@@ -12,15 +12,25 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class ScoreRating extends React.Component {
+  static defaultProps = {
+    targetScore: 1,
+    targetComment: '',
+  }
+
   static propTypes = {
     dispatchClosePopup: PropTypes.func.isRequired,
     onScore: PropTypes.func.isRequired,
+    isView: PropTypes.bool.isRequired,
+    targetScore: PropTypes.number,
+    targetComment: PropTypes.string,
+    targetName: PropTypes.string.isRequired,
+    targetUrl: PropTypes.string.isRequired,
   }
   constructor(props) {
     super(props);
     this.state = {
-      score: 5,
-      description: '',
+      score: props.targetScore,
+      description: props.targetComment,
     };
     this.onSave = this.onSave.bind(this);
   }
@@ -28,7 +38,6 @@ class ScoreRating extends React.Component {
   onSave() {
     const isValid = this.descriptionInput.valid();
     if (isValid) {
-      console.log('EXCUTE');
       this.props.onScore(this.state.score, this.state.description);
       this.props.dispatchClosePopup();
       return;
@@ -38,18 +47,19 @@ class ScoreRating extends React.Component {
 
   render() {
     const { description } = this.state;
+    const { targetUrl, targetName } = this.props;
     return (
       <div>
         <div styleName="score-rating-title-section">評價</div>
         <div styleName="score-rating-photo-section">
           <Avatar
-            src={'https://shareapisd.s3.amazonaws.com/SACAW0X1_1500531998767_profile.jpg'}
+            src={targetUrl}
           />
         </div>
         <div
           className="clear"
           styleName="score-rating-name-section">
-          漩渦鳴人
+          {targetName}
         </div>
         <div styleName="score-rating-star-section">
           <ReactStars
@@ -58,24 +68,29 @@ class ScoreRating extends React.Component {
             onChange={(value) => { this.state.score = value; }}
             half={false}
             size={30}
+            edit={!(this.props.isView)}
             color1={'#DBDBDB'}
             color2={'#31ABBA'}
           />
         </div>
         <div styleName="score-rating-comment-section">
-          <FormGroup
-            headerText={'您的評語'}
-            limiter={<FormTitleLimiter limit={250} length={description.length} />}
-          >
-            <InputTextArea
-              ref={descriptionInput => (this.descriptionInput = descriptionInput)}
-              placeholder="留下評語"
-              onChange={value => this.setState({ description: value })}
-              value={description}
-              constraints={constraints.descript}
-              validateOnBlur
-            />
-          </FormGroup>
+          { this.props.isView ?
+            <div styleName="score-rating-comment-text">{this.state.description}</div>
+            :
+            <FormGroup
+              headerText={'您的評語'}
+              limiter={<FormTitleLimiter limit={250} length={description.length} />}
+            >
+              <InputTextArea
+                ref={descriptionInput => (this.descriptionInput = descriptionInput)}
+                placeholder="留下評語"
+                onChange={value => this.setState({ description: value })}
+                value={description}
+                constraints={constraints.descript}
+                validateOnBlur
+              />
+            </FormGroup>
+          }
         </div>
         <div styleName="score-rating-action-section">
           <div styleName="score-rating-left-button">
@@ -83,19 +98,21 @@ class ScoreRating extends React.Component {
               colorType="greenBorder"
               size="sm"
               width={150}
-              content="取消"
+              content={this.props.isView ? '確定' : '取消'}
               onClick={this.props.dispatchClosePopup}
             />
           </div>
-          <div styleName="score-rating-right-button">
-            <FormButton
-              colorType="green"
-              size="sm"
-              width={150}
-              content="確定"
-              onClick={this.onSave}
-            />
-          </div>
+          { !(this.props.isView) &&
+            <div styleName="score-rating-right-button">
+              <FormButton
+                colorType="green"
+                size="sm"
+                width={150}
+                content="確定"
+                onClick={this.onSave}
+              />
+            </div>
+          }
         </div>
       </div>
     );

@@ -20,6 +20,7 @@ const FETCHED_OWNER = prefix('FETCHED_OWNER');
 const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
 const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
 const FETCHED_LOGS = prefix('FETCHED_LOGS');
+const FETCHED_SUE_DETAIL = prefix('FETCHED_SUE_DETAIL');
 const RESET = prefix('RESET');
 
 // =============================================
@@ -63,6 +64,12 @@ const fetchedLogs = logs => ({
   type: FETCHED_LOGS,
   logs,
 });
+
+const fetchedSueDetail = sueDetail => ({
+  type: FETCHED_SUE_DETAIL,
+  sueDetail,
+});
+
 
 export const reset = () => ({
   type: RESET,
@@ -115,7 +122,16 @@ export function fetchOrder(cid) {
           dispatch(fetchedLogs(responseLogData));
         });
       }
-
+      if (contractstage > 1000 && contractstage < 3000) {
+        asyncXhrAuthedPost(
+          '/ajax/get_sue_report.json',
+          { cid },
+          getState(),
+        )
+        .then((sueData) => {
+          dispatch(fetchedSueDetail(sueData));
+        });
+      }
       // 只有物品及二手有圖片
       if (type === 'ITEM') {
         dispatch(fetchingImage());
@@ -142,8 +158,10 @@ const initialState = {
   isFetchingImages: false,
   isFetchingLog: false,
   isFetchingBank: false,
+  isFetchingSue: false,
   ownerProfile: null,
   lesseeProfile: null,
+  sueDetail: null,
   bankReady: 0,
   order: null,
   logs: null,
@@ -200,6 +218,12 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetchingLogs: false,
         logs: action.logs,
+      });
+
+    case FETCHED_SUE_DETAIL:
+      return Object.assign({}, state, {
+        isFetchingSue: false,
+        sueDetail: action.sueDetail,
       });
 
     case RESET:

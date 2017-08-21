@@ -3,44 +3,60 @@ import PropTypes from 'prop-types';
 import Icon from 'react-icons/lib/fa/adjust';
 import CSS from 'react-css-modules';
 
-import classnames from 'classnames/bind';
-import { formatDate } from 'lib/time'
+import { generateOwnerItemString, generateOwnerServiceString,
+  generateOwnerSpaceString, generateLesseeItemString,
+  generateLesseeServiceString, generateLesseeSpaceString }
+  from 'lib/contractString'
 import styles from './styles.sass';
 
-const cx = classnames.bind(styles);
 class Banner extends React.Component {
 
   static propTypes = {
-    type: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    contractstage: PropTypes.number.isRequired,
     startDate: PropTypes.number.isRequired,
+    isOwner: PropTypes.bool.isRequired,
   };
 
-  render() {
-    const { type, startDate } = this.props;
-    const isOrderType = type < 100;
-    let title = '';
-    let text = '';
-    if (type < 100) {
-      title = '請同意預訂單';
-      text = `請在${formatDate(startDate)}出貨前同意預訂單，逾時將自動取消。`;
+  generateString() {
+    const { isOwner, type, contractstage, startDate } = this.props;
+    if (isOwner) {
+      switch (type) {
+        case 'ITEM':
+          return generateOwnerItemString(contractstage, startDate);
+        case 'SERVICE':
+          return generateOwnerServiceString(contractstage, startDate);
+        case 'SPACE':
+          return generateOwnerSpaceString(contractstage, startDate);
+        default:
+          return ({ title: '', text: '' });
+      }
     } else {
-      title = 'ERROR~~~';
+      switch (this.props.type) {
+        case 'ITEM':
+          return generateLesseeItemString(contractstage, startDate);
+        case 'SERVICE':
+          return generateLesseeServiceString(contractstage, startDate);
+        case 'SPACE':
+          return generateLesseeSpaceString(contractstage, startDate);
+        default:
+          return ({ title: '', text: '' });
+      }
     }
+  }
+
+  render() {
+    const objString = this.generateString();
     return (
-      <div
-        className={cx('banner_bkg', {
-          'order-type': isOrderType,
-          'sue-type': !isOrderType,
-        })}
-      >
-        <div styleName="title_content">
+      <div styleName="order_banner_bkg" className="clear">
+        <div styleName="order_banner_title_content">
           <div>
-            <Icon styleName="icon" size={35} />
+            <Icon styleName="order_banner_icon" size={35} />
           </div>
-          <div styleName="title">{ title }</div>
+          <div styleName="order_banner_title">{ objString.title }</div>
         </div>
-        <div styleName="body_content">
-          <span>{ text }</span>
+        <div styleName="order_banner_body_content">
+          <span>{ objString.text }</span>
         </div>
       </div>
     );

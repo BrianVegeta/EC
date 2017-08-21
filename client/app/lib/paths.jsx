@@ -45,10 +45,10 @@ export const reservationService = {
   confirmPath: pid => `/p/reservation-service/${pid}/step3-confirm`,
 };
 
-
-export const detail = {
+export const orderRouter = {
   orderPath: cid => `/p/order_detail/${cid}`,
-};
+  sueFormPath: cid => `/p/sue-form/${cid}`,
+}
 
 /* 我的帳戶 */
 export const my = {

@@ -43,6 +43,7 @@ class StageBase
   KEY_SHOW_DETAIL = 'show_detail'
   KEY_PAY = 'can_pay'
   KEY_SCORE = 'can_score'
+  KEY_VIEW_SCORE = 'view_score'
   KEY_SUE = 'can_sue'
   # KEY_OWNER_SCORE = 'can_owner_score'
   KEY_OWNER_VISIT_SCORE = 'can_owner_visit_score'
@@ -188,11 +189,11 @@ class StageBase
     if self.is_owner
       modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
       # modify_display_param(KEY_OWNER_SCORE, (self.contract['ownerscore'].nil?))
-      modify_display_param(KEY_OWNER_VISIT_SCORE, (not self.contract['lesseescore'].nil?))
+      modify_display_param(KEY_VIEW_SCORE, (not self.contract['lesseescore'].nil?))
     else
       modify_display_param(KEY_SCORE, (self.contract['ownerscore'].nil?))
       # modify_display_param(KEY_LESSEE_SCORE, (self.contract['lesseescore'].nil?))
-      modify_display_param(KEY_LESSEE_VISIT_SCORE, (not self.contract['ownerscore'].nil?))
+      modify_display_param(KEY_VIEW_SCORE, (not self.contract['ownerscore'].nil?))
     end
 
 

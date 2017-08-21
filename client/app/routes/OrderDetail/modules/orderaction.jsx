@@ -1,5 +1,4 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
-import { forEach } from 'lodash';
 
 /* =============================================>>>>>
 = userprofile =
@@ -47,27 +46,27 @@ export const resetAction = () => ({
 });
 
 export function doAccept(cid) {
-  return (dispatch, getState) => {
-    const requestId = Date.now();
-    dispatch(lock(requestId, 'accept'));
-    const isCatch = true;
-    asyncXhrAuthedPost(
-      '/ajax/accept_order.json',
-      {
-        cid,
-      },
-      getState(),
-      isCatch,
-    )
-    .then(() => {
-      dispatch(success(requestId));
-    })
-    .catch((error) => {
-      dispatch(failed('失敗'));
-      reject('失敗');
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'accept'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/accept_order.json',
+        { cid }, getState(), isCatch,
+      )
+      .then(() => {
+        dispatch(success(requestId));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
     });
-  }
 }
+
 export function doShipGoods(cid) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {
@@ -184,6 +183,29 @@ export function doReject(cid) {
       const isCatch = true;
       asyncXhrAuthedPost(
         '/ajax/reject_order.json',
+        { cid }, getState(), isCatch,
+      )
+      .then(() => {
+        dispatch(success(requestId));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
+export function doEndOrder(type, cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      const apiUrl = (type === 'SERVICE') ? '/ajax/end_service.json' : '/ajax/end_space.json';
+      dispatch(lock(requestId, 'reject'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        apiUrl,
         { cid }, getState(), isCatch,
       )
       .then(() => {

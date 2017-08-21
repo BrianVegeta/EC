@@ -9,11 +9,12 @@ import {
   RENDER_BANK_SETUP,
   RENDER_PUBLISH_ENTRY,
   RENDER_SCORE_RATING,
+  RENDER_SUE_DETAIL,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
-
+import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 
 class Popup extends React.Component {
 
@@ -60,6 +61,11 @@ class Popup extends React.Component {
           >
             <ScoreRatingContainer
               onScore={options.onScore}
+              targetUrl={options.targetUrl}
+              targetName={options.targetName}
+              targetScore={options.targetScore}
+              targetComment={options.targetComment}
+              isView={options.isView}
             />
           </ModalBox>
         );
@@ -69,6 +75,28 @@ class Popup extends React.Component {
           <ModalPublish onClose={this.props.dispatchCloseModal} />
         );
       }
+
+      case RENDER_SUE_DETAIL:
+        return (
+          <ModalBox
+            width={470}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <SueDetailContainter
+              cid={options.cid}
+              u_no={options.u_no}
+              suer_name={options.suer_name}
+              defender_name={options.defender_name}
+              img1={options.img1}
+              img2={options.img2}
+              img3={options.img3}
+              sue_reason={options.sue_reason}
+              status={options.status}
+              case_end={options.case_end}
+              create_time={options.create_time}
+            />
+          </ModalBox>
+        );
 
       default:
         return null;

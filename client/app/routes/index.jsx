@@ -28,6 +28,7 @@ import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
 /* 發佈服務 */
 import routePublishService from './PublishService/route';
+import routeEditService from './PublishService/editRoute';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
@@ -37,7 +38,7 @@ import AuthLogin from './Auth/Login';
 import routeReservationService from './ReservationService/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
-
+import sueForm from './SueForm/route';
 
 const requireCates = true;
 const requireAuth = true;
@@ -74,7 +75,7 @@ export default store => ({
     },
     /* Order detail*/
     {
-      component: layoutHoc(layoutOrderdetail, {}),
+      component: layoutHoc(layoutOrderdetail, { requireAuth }),
       childRoutes: [
         routeOrderdetail(store),
       ],
@@ -83,19 +84,17 @@ export default store => ({
       component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
         routePublishService(store),
+        routeEditService(store),
         routeReservationService(store),
+        routeItem(store),
+        sueForm(store),
       ],
     },
+
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
         routeMyAccount(store),
-      ],
-    },
-    {
-      component: layoutHoc(layoutItemDetail, { requireAuth, requireCates }),
-      childRoutes: [
-        routeItem(store),
       ],
     },
     // {

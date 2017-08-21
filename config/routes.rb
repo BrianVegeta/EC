@@ -112,6 +112,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+
+      #SUE
+      post 'send_sue_request', to: 'contract#report'
+      post 'get_sue_report', to: 'contract#get_report'
       #CONTRACT
       post 'get_my_order', to: 'contract#get_my_contract' #
       post 'reject_order', to: 'contract#reject' #
@@ -121,6 +125,8 @@ Rails.application.routes.draw do
       post 'return_item_goods', to: 'contract#return_goods' #
       post 'receive_confirm', to: 'contract#receive_goods' #
       post 'score_order', to: 'contract#score' #
+      post 'end_service', to: 'contract#service_end' #
+      post 'end_space', to: 'contract#space_end' #
 
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
@@ -245,6 +251,7 @@ Rails.application.routes.draw do
     resources :images, only: [] do
       collection do
         put 'item_cover'
+        put 'sue_picture/:cid_no', action: :sue_picture
       end
     end
 
