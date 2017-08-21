@@ -62,7 +62,6 @@ class Controller extends React.Component {
     this.props.dispatchGetVerifyCode(
       newValue,
     ).then(() => {
-      console.log(newValue);
       this.switchToVerifying(newValue);
     }).catch(({ message }) => {
       this.setState({
@@ -106,7 +105,6 @@ class Controller extends React.Component {
   }
 
   switchToVerifying(newValue) {
-    console.log(`switchToVerifying ${newValue}`);
     const newState = Object.assign({}, initialState, {
       newValue,
       flow: FLOW_VERIFYING,
@@ -147,7 +145,6 @@ class Controller extends React.Component {
       inputError,
       onCancel: this.switchToInit,
     };
-    console.log(`${flow} ${newValue}`);
 
     return (
       <Container>
