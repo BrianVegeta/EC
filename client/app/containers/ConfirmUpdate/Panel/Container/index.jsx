@@ -10,9 +10,9 @@ import styles from './styles.sass';
 class PanelContainer extends React.Component {
 
   static defaultProps = {
-    hasTakenError: false,
-    hasConfirmError: false,
-    inputErrorMessage: null,
+    changeError: '',
+    confirmError: '',
+    inputError: '',
   };
 
   static propTypes = {
@@ -20,9 +20,9 @@ class PanelContainer extends React.Component {
     children: myPropTypes.children.isRequired,
     onCancel: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    hasTakenError: PropTypes.bool,
-    hasConfirmError: PropTypes.bool,
-    inputErrorMessage: PropTypes.string,
+    changeError: PropTypes.string,
+    confirmError: PropTypes.string,
+    inputError: PropTypes.string,
   }
 
   render() {
@@ -31,9 +31,9 @@ class PanelContainer extends React.Component {
       onCancel,
       isLoading,
       children,
-      hasTakenError,
-      hasConfirmError,
-      inputErrorMessage,
+      changeError,
+      confirmError,
+      inputError,
     } = this.props;
 
     const label = {
@@ -43,9 +43,9 @@ class PanelContainer extends React.Component {
 
     return (
       <div styleName="container">
-        {hasTakenError && <div styleName="error">{label}已被使用。</div>}
-        {hasConfirmError && <div styleName="error">失敗，驗證碼錯誤。</div>}
-        {inputErrorMessage && <div styleName="error">{inputErrorMessage}</div>}
+        {changeError && <div styleName="error">{changeError}</div>}
+        {confirmError && <div styleName="error">{confirmError}</div>}
+        {inputError && <div styleName="error">{inputError}</div>}
         <div styleName="close">
           <IconClose size={25} onClick={onCancel} />
         </div>

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import FormBlock from 'components/FormButton';
 import InputText from 'components/Input/Text';
+import { TO_CREATE, TO_UPDATE } from 'modules/VerifyUpdate';
 import constraints from 'constraints';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import { CREATE, UPDATE } from '../../constants/actionTypes';
 
 class PanelEdit extends React.Component {
 
@@ -45,8 +46,8 @@ class PanelEdit extends React.Component {
     }[valueType];
 
     const action = {
-      [CREATE]: '新增',
-      [UPDATE]: '變更',
+      [TO_CREATE]: '新增',
+      [TO_UPDATE]: '變更',
     }[actionType];
 
     return (

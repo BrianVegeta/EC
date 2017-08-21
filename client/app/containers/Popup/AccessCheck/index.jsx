@@ -121,6 +121,7 @@ class PopupAcessCheck extends React.Component {
                 align="center"
                 onChange={value => dispatchChangePassword({ password: value })}
                 autoComplete="off"
+                onEnter={this.onSubmit}
               />
             </div>
           </div>

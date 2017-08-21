@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import classnames from 'classnames/bind';
+// import classnames from 'classnames/bind';
 // import hasError from 'components/inputs/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
-const cx = classnames.bind(styles);
 class InputText extends React.Component {
 
   static defaultProps = {
@@ -18,6 +17,8 @@ class InputText extends React.Component {
     width: '100%',
     onChange: null,
     onBlur: null, // need for validator
+    onFocus: null,
+    onEnter: null,
   };
 
   static propTypes = {
@@ -29,43 +30,39 @@ class InputText extends React.Component {
     width: myPropTypes.width,
     onChange: PropTypes.func,
     onBlur: PropTypes.func, // need for validator
+    onFocus: PropTypes.func,
+    onEnter: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
-    this.onBlur = this.onBlur.bind(this);
-    this.onFocus = this.onFocus.bind(this);
+
     this.onChange = this.onChange.bind(this);
-    this.state = {
-      isFocusing: false,
-    };
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   componentDidMount() {
-    console.log('password mount');
-    console.log(this.input.getAttribute('type'));
-    this.input.setAttribute('type', 'password');
+    const { autoComplete } = this.props;
+    if (autoComplete === 'off') {
+      this.input.setAttribute('type', 'password');
+    }
   }
 
   componentWillUnmount() {
-    this.input.setAttribute('type', 'text');
-  }
-
-  onBlur() {
-    const { onBlur } = this.props;
-    if (onBlur) { onBlur(); }
-    this.setState({ isFocusing: false });
-  }
-
-  onFocus() {
-    if (this.props.autoComplete === 'off') {
-      this.input.setAttribute('type', 'password');
+    const { autoComplete } = this.props;
+    if (autoComplete === 'off') {
+      this.input.setAttribute('type', 'text');
     }
-    this.setState({ isFocusing: true });
   }
 
   onChange(e) {
     this.props.onChange(e.target.value);
+  }
+
+  onKeyDown(e) {
+    if (e.key === 'Enter') {
+      this.props.onEnter();
+    }
   }
 
   render() {
@@ -76,23 +73,27 @@ class InputText extends React.Component {
       value,
       width,
       disabled,
+      onBlur,
+      onFocus,
     } = this.props;
 
-    const { isFocusing } = this.state;
-    const inputProps = {
-      ref: input => (this.input = input),
-      type: 'text',
-      autoComplete: 'off',
-      className: cx('input', { isFocusing }),
-      onChange: this.onChange,
-      placeholder,
-      style: { width, textAlign: align },
-      value,
-      disabled,
-    };
+    const style = { width, textAlign: align };
 
     return (
-      <input {...inputProps} />
+      <input
+        ref={input => (this.input = input)}
+        type={autoComplete === 'off' ? 'text' : 'password'}
+        value={value}
+        placeholder={placeholder}
+        styleName="input"
+        style={style}
+        disabled={disabled}
+        autoComplete={autoComplete}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onKeyDown={this.onKeyDown}
+        onChange={this.onChange}
+      />
     );
   }
 }

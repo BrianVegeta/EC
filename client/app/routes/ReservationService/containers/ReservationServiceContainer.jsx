@@ -3,12 +3,15 @@ import { includes } from 'lodash';
 
 import { reservationService as rsRouter } from 'lib/paths';
 
-// import { fetchCategories } from 'modules/categories';
-import Component from '../components/ReservationService';
+import {
+  checkReadyAndSet,
+  reset as resetBankInfo,
+} from 'modules/personalBankInfo';
 import {
   fetchItem,
   reset as resetItem,
 } from '../modules/reservationItem';
+import Component from '../components/ReservationService';
 // import {
 //   validateAboutBy,
 //   validateCoversBy,
@@ -63,11 +66,9 @@ const mapStateToProps = ({ environment, reservationService }, { params }) => {
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params }) => ({
   dispatchFetchItem: () => dispatch(fetchItem(params.pid)),
-  dispatchReset: () => {
-    dispatch(resetItem());
-  },
-  // dispatchFetchCategories: () => dispatch(fetchCategories()),
-  // dispatchFetchCities: () => dispatch(fetchCities()),
+  dispatchReset: () => dispatch(resetItem()),
+  dispatchCheckBankInfoReady: () => dispatch(checkReadyAndSet()),
+  dispatchResetBankInfo: () => dispatch(resetBankInfo()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

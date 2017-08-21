@@ -104,26 +104,28 @@ class StepPayment extends React.Component {
     } = this.props;
     return (
       <FormContainer title="設定價格" >
-        <div styleName="radio-group">
-          <div styleName="radio-container">
-            <InputRadio checked={isAtmChoosed} onChange={dispatchChooseAtm} >
-              <div className={cx('radio-label')}>ATM 銀行轉帳</div>
-              <div className={cx('label-helper')}>
-                您可以在實體ATM或網路銀行轉帳，使用ShareApp指定的銀行帳號（虛擬帳號）
-              </div>
-            </InputRadio>
+        <div role="form">
+          <div styleName="radio-group">
+            <div styleName="radio-container">
+              <InputRadio checked={isAtmChoosed} onChange={dispatchChooseAtm} >
+                <div className={cx('radio-label')}>ATM 銀行轉帳</div>
+                <div className={cx('label-helper')}>
+                  您可以在實體ATM或網路銀行轉帳，使用ShareApp指定的銀行帳號（虛擬帳號）
+                </div>
+              </InputRadio>
+            </div>
+            <div styleName="radio-container">
+              <InputRadio checked={isCreditCardChoosed} onChange={dispatchChooseCreditCard} >
+                <div className={cx('radio-label')}>信用卡支付</div>
+              </InputRadio>
+            </div>
           </div>
-          <div styleName="radio-container">
-            <InputRadio checked={isCreditCardChoosed} onChange={dispatchChooseCreditCard} >
-              <div className={cx('radio-label')}>信用卡支付</div>
-            </InputRadio>
-          </div>
+          {this.renderAtmDetail()}
+          <ButtonNextStep
+            status={true ? STATUS_VALID : STATUS_DISABLE}
+            onClick={this.onNextStepClick}
+          />
         </div>
-        {this.renderAtmDetail()}
-        <ButtonNextStep
-          status={true ? STATUS_VALID : STATUS_DISABLE}
-          onClick={this.onNextStepClick}
-        />
       </FormContainer>
     );
   }

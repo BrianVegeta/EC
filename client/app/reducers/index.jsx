@@ -5,6 +5,8 @@ import cities from 'modules/cities';
 import categories from 'modules/categories';
 import popup from 'modules/popup';
 import access from 'modules/access';
+import banks from 'modules/banks';
+import personalBankInfo from 'modules/personalBankInfo';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -28,8 +30,10 @@ import popupBankSetup from './popupBankSetupReducer';
 
 const reducers = {
   routing: routerReducer,
+  personalBankInfo,
   cities,
   categories,
+  banks,
   modal,
   environment,
   auth,

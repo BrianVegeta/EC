@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TO_CREATE, TO_UPDATE } from 'modules/VerifyUpdate';
+
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import { CREATE, UPDATE } from '../../constants/actionTypes';
 
 class PanelInit extends React.Component {
 
@@ -17,13 +18,10 @@ class PanelInit extends React.Component {
     const { valueType, actionType, value, toEdit } = this.props;
 
     switch (actionType) {
-      case CREATE:
+      case TO_CREATE:
         return (
           <div styleName="container">
-            <button
-              styleName="create-button"
-              onClick={toEdit}
-            >
+            <button styleName="create-button" onClick={toEdit} >
               {{
                 phone: '＋新增電話號碼',
                 email: '＋新增電子信箱',
@@ -31,7 +29,7 @@ class PanelInit extends React.Component {
             </button>
           </div>
         );
-      case UPDATE:
+      case TO_UPDATE:
         return (
           <div styleName="container">
             <span styleName="label">

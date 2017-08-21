@@ -18,7 +18,7 @@ export default {
     },
   },
   // 身分證字號或統編
-  identityNo: {
+  idNumber: {
     presence: {
       message: '請填身分證字號或統編',
     },

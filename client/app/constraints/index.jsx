@@ -4,7 +4,7 @@ import publish from './publish';
 
 const {
   realName,
-  identityNo,
+  idNumber,
   accBankId,
   accBankBranchId,
   accName,
@@ -50,7 +50,7 @@ export default {
   phone,
   /* BANK */
   realName,
-  identityNo,
+  idNumber,
   accBankId,
   accBankBranchId,
   accName,

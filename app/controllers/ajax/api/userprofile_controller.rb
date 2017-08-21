@@ -54,19 +54,14 @@ class Ajax::Api::UserprofileController < ApplicationController
   # 更新手機
   # post /ajax/user/update/phone/confirm
   def update_phone
-    respond true, OpenStruct.new({ response_data: nil })
-    return
-
     obj = ::Api::Userprofile::UpdatePhone.new verify_phone_params, current_apitoken
+    success = obj.request
     respond success, obj
   end
 
   # 取得更新手機驗證碼
   # post /ajax/user/update/phone
   def get_phone_verify_code
-    respond true, OpenStruct.new({ response_data: nil })
-    return
-
     obj = ::Api::Userprofile::GetPhoneVerifyCode.new update_phone_params, current_apitoken
     success = obj.request
 

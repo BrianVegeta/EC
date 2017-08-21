@@ -28,6 +28,8 @@ class PublishService extends React.Component {
     children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
 
+    dispatchCheckBankInfoReady: PropTypes.func.isRequired,
+    dispatchResetBankInfo: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
   };
@@ -35,10 +37,13 @@ class PublishService extends React.Component {
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchItem();
+
+    this.props.dispatchCheckBankInfoReady();
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+    this.props.dispatchResetBankInfo();
   }
 
   render() {

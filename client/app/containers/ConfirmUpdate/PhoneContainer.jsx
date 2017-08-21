@@ -1,29 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Controller from './Controller';
-import PhoneModel from './Model/Phone';
+import { getPhoneVerifyCode, updatePhone } from 'modules/VerifyUpdate';
 
-class ConfirmUpdatePhoneContainer extends React.Component {
+import Component from './Component';
 
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-  };
 
-  render() {
-    const { dispatch, onChange } = this.props;
-    const model = new PhoneModel({ dispatch, onChange });
-    return (
-      <Controller
-        valueType="phone"
-        value={this.props.value}
-        getVerifyCode={model.getVerifyCode}
-        onConfirm={model.onConfirm}
-      />
-    );
-  }
-}
+/* pick props */
+const mapStateToProps = ({ environment }, { value, afterUpdateConfirm }) => ({
+  environment,
+  value,
+  valueType: 'phone',
+  afterUpdateConfirm,
+});
 
-export default connect()(ConfirmUpdatePhoneContainer);
+/* pick dispatch */
+const mapDispatchToProps = (dispatch, { password }) => ({
+  dispatchGetVerifyCode: value => dispatch(getPhoneVerifyCode(value, password)),
+  dispatchVerifyUpdate: verifyCode => dispatch(updatePhone(verifyCode)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

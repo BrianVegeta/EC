@@ -30,9 +30,8 @@ const mapStateToProps = ({ environment, reservationService }) => {
 const mapDispatchToProps = (dispatch) => {
   /* DISPATCH 查看銀行 */
   const dispatchBankSetup = () => {
-    const onAccessChecked = () => dispatch(popupBankInfoSetup());
     dispatch(popupAccessCheck({
-      onChecked: onAccessChecked,
+      onChecked: password => dispatch(popupBankInfoSetup({ password })),
     }));
   };
 
