@@ -1,33 +1,39 @@
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-
-// import { CATEGORY_SERVICE } from 'constants/enums';
+// import { browserHistory } from 'react-router';
+import { reservationService as rsRouter } from 'lib/paths';
 import {
-  publishService as publishServiceRouter,
-  items as itemsRouter,
-} from 'lib/paths';
+  fetchCoupons,
+} from '../modules/reservationCoupons';
 
 import StepConfirm from '../components/StepConfirm';
-import { saveReservation, touchPath } from '../modules/reservation';
-// import {
-//   validateAll,
-//   validateAllBy,
-// } from '../modules/validation';
+import {
+  changeData,
+  touchPath,
+} from '../modules/reservation';
 
 /* pick props */
-const mapStateToProps = ({ environment, reservation }) => ({
+const mapStateToProps = ({
   environment,
-  reservation,
-  // categories: categories[CATEGORY_SERVICE],
-  // isValid: validateAllBy(publish, covers),
+  reservationService,
+  reservationServiceItem,
+  reservationCoupons,
+}) => ({
+  environment,
+  reservation: reservationService,
+  reservationItem: reservationServiceItem,
+  reservationCoupons,
+  isFetched: Boolean(reservationCoupons.updatedAt && reservationServiceItem.owner),
+  isValid: false,
 });
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  // dispatchSavePublish: () => dispatch(saveReservation()),
-  // dispatchValidateAll: () => dispatch(validateAll()),
-  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.confirmPath)),
-  redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
+const { confirmPath } = rsRouter;
+const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
+  dispatchFetchCoupons: () => dispatch(fetchCoupons()),
+  dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
+  dispatchChangeData: data => dispatch(changeData(data)),
+  // redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);

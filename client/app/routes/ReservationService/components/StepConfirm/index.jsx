@@ -1,29 +1,43 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import myPropTypes from 'propTypes';
+import {
+  find,
+  isEmpty,
+} from 'lodash';
+import IconCalendar from 'react-icons/lib/fa/calendar';
 
-import Picture from 'components/Picture';
+import ReservationItemNote from 'components/ReservationItemNote';
+import OwnerInfoNote from 'components/OwnerInfoNote';
+import InputCheckBox from 'components/Input/CheckBox';
+import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
-import { findCategoryNamesByID } from 'lib/category';
-import { formatCurrency } from 'lib/currency';
-import { formatDate } from 'lib/time';
-
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import { htmlNewLineToBreak } from 'lib/htmlUtils';
+import { formatDate, rangeDiff } from 'lib/time';
 
-import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
   CHARGE_TYPE_FIX,
-  CHARGE_TYPE_COUNT,
   CHARGE_TYPE_DAY,
-} from '../../modules/publish';
+  CHARGE_TYPE_COUNT,
+  ASSIGN_ADDRESS_BY_OWNER,
+  ASSIGN_ADDRESS_BY_CUSTOMER,
+} from '../../modules/reservationItem';
+import {
+  PAYMENT_TYPE_ATM,
+  PAYMENT_TYPE_CREDIT_CARD,
+} from '../../modules/reservation';
+import RenderAssignOwner from '../RenderAssign/Owner';
+import RenderAssignCustomer from '../RenderAssign/Customer';
 
-const cx = classnames.bind(styles);
+
+// const cx = classnames.bind(styles);
 class StepConfirm extends React.Component {
 
   static defaultProps = {
@@ -31,28 +45,29 @@ class StepConfirm extends React.Component {
   };
 
   static propTypes = {
-    covers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    categories: myPropTypes.middleCategories,
-    publish: myPropTypes.publish.isRequired,
-    isValid: PropTypes.bool.isRequired,
-
+    dispatchChangeData: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
-    dispatchSavePublish: PropTypes.func.isRequired,
-    dispatchValidateAll: PropTypes.func.isRequired,
-    redirectToItems: PropTypes.func.isRequired,
+    dispatchFetchCoupons: PropTypes.func.isRequired,
+    // dispatchValidate: PropTypes.func.isRequired,
+    // nextStep: PropTypes.func.isRequired,
+
+    reservation: PropTypes.shape({
+      title: PropTypes.string,
+    }).isRequired,
+    reservationItem: PropTypes.shape({
+      owner: PropTypes.object,
+    }).isRequired,
+    reservationCoupons: PropTypes.shape({
+      records: PropTypes.array.isRequired,
+    }).isRequired,
+    isFetched: PropTypes.bool.isRequired,
+    isValid: PropTypes.bool.isRequired,
   };
 
-  static renderCovers(covers) {
-    return (
-      <div className={cx('covers-container')}>
-        {covers.map((cover, i) => (
-          <div key={`${i + 1}`} className={cx('photo')}>
-            <Picture src={cover.s3} />
-            {i === 0 && <div className={cx('cover-label')}>封面</div>}
-          </div>
-        ))}
-      </div>
-    );
+  static getCouponOffset({ couponNo, reservationCoupons }) {
+    if (!couponNo) return null;
+    const coupon = find(reservationCoupons.records, { id: couponNo });
+    return coupon ? coupon.amount : null;
   }
 
   constructor(props) {
@@ -62,179 +77,172 @@ class StepConfirm extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
+    this.props.dispatchFetchCoupons();
   }
 
   onNextStepClick() {
+  }
+
+  renderBillingDetail(
+    { leasestart, leaseend, unit, couponNo },
+    { calculate_charge_type, price, deposit, discounts },
+  ) {
+    const { reservationCoupons } = this.props;
+    const { getCouponOffset } = this.constructor;
+    const props = calculateService({
+      calculate_charge_type,
+      price,
+      deposit,
+      discounts,
+      leasestart,
+      leaseend,
+      unit,
+    }, getCouponOffset({ couponNo, reservationCoupons }));
+    return <BillingDetail {...props} />;
+  }
+
+  /* 服務方式 */
+  renderAssign() {
+    const { reservation, reservationItem } = this.props;
+    const { assign_city, assign_area } = reservationItem;
     const {
-      dispatchSavePublish,
-      dispatchValidateAll,
-      redirectToItems,
-    } = this.props;
-    dispatchValidateAll()
-    .then(() => {
-      dispatchSavePublish()
-      .then(() => redirectToItems())
-      .catch(error => console.log(error));
-    })
-    .catch((errors) => {
-      console.log(errors);
-      alert('尚未填寫完整');
-    });
+      serviceLocationType,
+      serviceCity,
+      serviceArea,
+      serviceAddress,
+    } = reservation;
+    switch (serviceLocationType) {
+      case ASSIGN_ADDRESS_BY_OWNER:
+        return (
+          <RenderAssignOwner
+            cityArea={`${assign_city}${assign_area}`}
+          />
+        );
+
+      case ASSIGN_ADDRESS_BY_CUSTOMER:
+        return (
+          <RenderAssignCustomer
+            cityArea={`${serviceCity}${serviceArea}`}
+            address={serviceAddress}
+          />
+        );
+
+      default:
+        return (
+          <div>尚未選擇</div>
+        );
+
+    }
+  }
+
+  /* 支付方式 */
+  renderPaymentType() {
+    const { reservation: { paymenttype } } = this.props;
+    switch (paymenttype) {
+      case PAYMENT_TYPE_ATM:
+        return (<div styleName="payment-type-container">ATM 銀行轉帳</div>);
+      case PAYMENT_TYPE_CREDIT_CARD:
+        return (<div styleName="payment-type-container">信用卡</div>);
+      default:
+        return '尚未選擇';
+    }
+  }
+
+  renderDates(calculate_charge_type) {
+    const { reservation, reservationItem } = this.props;
+    const { leasestart, leaseend } =
+      (calculate_charge_type === CHARGE_TYPE_FIX) ?
+        reservationItem : reservation;
+    if (!leasestart || !leaseend) return '尚未填寫';
+    const totalDays = rangeDiff(leasestart, leaseend, true);
+    return totalDays > 1 ?
+      `${formatDate(leasestart)} - ${formatDate(leaseend)}（共 ${totalDays} 天）`
+      : `${formatDate(leasestart)}`;
   }
 
   render() {
     const {
-      publish,
+      dispatchChangeData,
+      reservationItem,
+      reservation,
+      isFetched,
       isValid,
-      covers,
-      categories,
     } = this.props;
+    if (!isFetched) return null;
     const {
-      title,
-      descript,
-      categoryID,
-      tag1, tag2, tag3,
-    } = publish;
-    const categoryNames = findCategoryNamesByID(categoryID, categories);
-
-    const {
-      assignAddressByOwner,
-      assignAddressByCustomer,
-      assignCity,
-      assignArea,
-      assignAddress,
-    } = publish;
-
-    const {
+      pname,
+      img1,
       price,
-      deposit,
-      chargeType,
-      startDate,
-      endDate,
-      unit,
-      reservationDays,
-      discount,
-    } = publish;
-
+      calculate_charge_type,
+      rules,
+      cancel_policys,
+      owner: {
+        uid,
+        name,
+        picture,
+      },
+    } = reservationItem;
     const {
-      regulation,
-    } = publish;
-
-    const { renderCovers } = this.constructor;
-
+      note,
+      isAgree,
+    } = reservation;
     return (
-      <FormContainer title="確認發佈" >
-        <ConfirmTitle title="物品照片" >
-          {renderCovers(covers)}
-        </ConfirmTitle>
-        <ConfirmTitle title="關於服務">
-          <table styleName="table">
-            <tbody>
-              <tr>
-                <th width={154}>服務名稱</th>
-                <td>{title}</td>
-              </tr>
-              <tr>
-                <th>描述</th>
-                <td>{descript}</td>
-              </tr>
-              <tr>
-                <th>分類</th>
-                <td>{categoryNames && `${categoryNames.middleName}/${categoryNames.name}`}</td>
-              </tr>
-              <tr>
-                <th>標籤</th>
-                <td>
-                  {tag1 && <div>#{tag1}</div>}
-                  {tag2 && <div>#{tag2}</div>}
-                  {tag3 && <div>#{tag3}</div>}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </ConfirmTitle>
-        <ConfirmTitle title="服務資訊">
-          <table styleName="table">
-            <tbody>
-              <tr>
-                <th width={154}>可服務方式</th>
-                <td>
-                  {assignAddressByOwner && '到店服務'}
-                  {assignAddressByOwner && assignAddressByCustomer && '、'}
-                  {assignAddressByCustomer && '到府服務'}
-                </td>
-              </tr>
-              {
-                assignAddressByOwner &&
-                <tr>
-                  <th>服務地址</th>
-                  <td>
-                    {assignCity}
-                    {assignArea}
-                    {assignAddress}
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </ConfirmTitle>
-        <ConfirmTitle title="設定價格">
-          <table styleName="table">
-            <tbody>
-              <tr>
-                <th width={154}>價格</th>
-                <td>
-                  <div>分享金： {formatCurrency(price)}</div>
-                  <div>押金： {formatCurrency(deposit)}</div>
-                </td>
-              </tr>
-              <tr>
-                <th>計費方式</th>
-                <td>
-                  <div>
-                    {{
-                      [CHARGE_TYPE_FIX]: '固定價格計費',
-                      [CHARGE_TYPE_COUNT]: '數量計費',
-                      [CHARGE_TYPE_DAY]: '天數計費',
-                    }[chargeType]}
-                  </div>
-                  {
-                    chargeType === CHARGE_TYPE_FIX ?
-                      <div>
-                        <div>
-                          活動時間：
-                          {formatDate(startDate)}-{formatDate(endDate)}
-                        </div>
-                        <div>
-                          人數上限：
-                          {unit}
-                        </div>
-                      </div>
-                      :
-                      <div>
-                        提前預約天數：
-                        {reservationDays}天
-                      </div>
-                  }
-                </td>
-              </tr>
-              {
-                discount ?
-                  <tr>
-                    <th width={154}>優惠價</th>
-                    <td>{formatCurrency(discount)}</td>
-                  </tr>
-                  :
-                  null
-              }
-            </tbody>
-          </table>
-        </ConfirmTitle>
-        {regulation &&
-          <ConfirmTitle title="分享人守則">
-            <div styleName="text-block">{regulation}</div>
+      <FormContainer title="填寫預訂資訊" >
+        <div styleName="header-note-container">
+          <ReservationItemNote
+            {...{ pname, img1, price }}
+            unit={{
+              [CHARGE_TYPE_FIX]: '次',
+              [CHARGE_TYPE_DAY]: '天',
+              [CHARGE_TYPE_COUNT]: '人',
+            }[calculate_charge_type]}
+          />
+          <OwnerInfoNote
+            avatarSrc={picture}
+            userId={uid}
+            username={name}
+            dispatchChat={() => console.log('chat')}
+          />
+          <div styleName="info-item">
+            <div styleName="icon-container">
+              <IconCalendar size={25} />
+            </div>
+            <div styleName="content-container">
+              <span styleName="label">日期：</span>
+              <span styleName="text">
+                {this.renderDates(calculate_charge_type)}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div styleName="detail">
+          <ConfirmTitle title="交易明細" >
+            <div styleName="price-detail">
+              {this.renderBillingDetail(reservation, reservationItem)}
+            </div>
+            {note && <div styleName="note">備註：{note}</div>}
+          </ConfirmTitle>
+        </div>
+        <ConfirmTitle title="支付方式" >{this.renderPaymentType()}</ConfirmTitle>
+        <ConfirmTitle title="服務方式" >{this.renderAssign()}</ConfirmTitle>
+        {!isEmpty(rules) && rules[0] &&
+          <ConfirmTitle title="分享人守則" >
+            {htmlNewLineToBreak(rules[0])}
           </ConfirmTitle>
         }
+        {!isEmpty(cancel_policys) && cancel_policys[0] &&
+          <ConfirmTitle title="退訂政策" >
+            未完成
+          </ConfirmTitle>
+        }
+        <div styleName="confirm-agree">
+          <InputCheckBox
+            checked={isAgree}
+            onChange={checked => dispatchChangeData({ isAgree: checked })}
+          >
+            <span styleName="agree-text">我已確定以上資訊</span>
+          </InputCheckBox>
+        </div>
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}

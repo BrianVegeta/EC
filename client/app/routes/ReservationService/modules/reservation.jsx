@@ -52,6 +52,7 @@ const initialState = {
   note: '',
   unit: 1,
   paymenttype: null,
+  isAgree: false,
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);
