@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import {
   isFunction,
 } from 'lodash';
+import ReactHoverObserver from 'react-hover-observer';
 
 
 import Dropdown from '../Dropdown';
@@ -18,6 +19,7 @@ class NavItem extends React.Component {
     className: null,
     children: null,
     action: null,
+    link: null,
   };
 
   static propTypes = {
@@ -31,6 +33,7 @@ class NavItem extends React.Component {
       PropTypes.func,
       PropTypes.string,
     ]),
+    link: PropTypes.string,
   };
 
   getRenderType() {
@@ -48,6 +51,17 @@ class NavItem extends React.Component {
   }
 
   renderDropdownButton(content) {
+    const { link } = this.props;
+    if (link) {
+      return (
+        <ReactHoverObserver
+          className="nav-hover"
+          onHoverChanged={e => (this.dropdown.triggerClick(e))}
+        >
+          <Link to={link}>{content}</Link>
+        </ReactHoverObserver>
+      );
+    }
     return (
       <button
         className="button"

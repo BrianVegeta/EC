@@ -39,6 +39,7 @@ import routeReservationService from './ReservationService/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
+import notify from './Notification/route';
 
 const requireCates = true;
 const requireAuth = true;
@@ -90,13 +91,18 @@ export default store => ({
         sueForm(store),
       ],
     },
-
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
         routeMyAccount(store),
       ],
     },
+    {
+      component: layoutHoc(Mine, { requireAuth }),
+      childRoutes: [
+        notify(store),
+      ],
+    }
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [

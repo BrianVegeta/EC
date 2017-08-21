@@ -112,7 +112,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
-
+      #NOTIFICATION
+      post 'get_unread_notify', to: 'sync#notification_unread' #
+      post 'count_unread_notify', to: 'sync#notification_unread_count' #
+      post 'get_notify', to: 'sync#notification_read' #
       #SUE
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'

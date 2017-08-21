@@ -5,7 +5,7 @@ export default class {
     const {
       boxItems,
     } = props;
-    console.log(boxItems);
+    // console.log(boxItems);
     this.boxItems = boxItems;
     this.dispatch = dispatch;
     this.getNotitications = this.getNotitications.bind(this);
