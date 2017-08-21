@@ -229,7 +229,12 @@ class Ajax::Api::UserprofileController < ApplicationController
     # requier password
 
     # 請使用cipher encript
-    obj = ::Api::Userprofile::BankInfoUpdate.new bank_info_update_params, current_apitoken
+    uid = current_uid_params['uid']
+    data = bank_info_update_params['data'].to_json
+    encrypted = ::Cypher.new.encrypt(data, uid)
+    # raise encrypted.inspect
+    update_params = { 'value' => encrypted, 'device_type' => 3, 'uid' => uid }
+    obj = ::Api::Userprofile::BankInfoUpdate.new update_params, current_apitoken
     success = obj.request
     respond success, obj
   end
@@ -342,7 +347,8 @@ class Ajax::Api::UserprofileController < ApplicationController
   def bank_info_update_params
     # value => String => 加密後資料
     # device_type : Int => 3(固定)
-    params.permit(:value, :device_type).merge(current_uid_params)
+    # params.permit(:value, :device_type).merge(current_uid_params)
+    params.permit(data: [:RN, :CID, :PH, :EM, :BKBR, :BKN, :BRN, :BN, :BA]);
   end
 
   def set_params

@@ -101,7 +101,6 @@ Rails.application.routes.draw do
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
 
 
-      post 'userprofile/bank_info_update', to: 'userprofile#bank_info_update'
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out' #
 
@@ -182,6 +181,7 @@ Rails.application.routes.draw do
       post 'user_info', to: 'userprofile#user_general_info'
       ###### BANK INFO (AUTHED)
       scope :bank do
+        post 'bankacc_update', to: 'userprofile#bank_info_update'
         post 'bankacc', to: 'userprofile#bank_info'
         get 'bankacc/ready', to: 'userprofile#bank_info_ready'
       end

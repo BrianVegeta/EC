@@ -1,12 +1,17 @@
 // remove popupBankSetupActions.jsx
 // remove bankaccActions.jsx
-
+import {
+  isEmpty,
+} from 'lodash';
+import validate from 'validate.js';
 import { Map } from 'immutable';
 import { asyncXhrAuthedGet, asyncXhrAuthedPost } from 'lib/xhr';
+import constraints from 'constraints/bankSetup';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PERSONAL_BANK_INFO';
+export const REDUCER_KEY = 'personalBankInfo';
 
 
 // =============================================
@@ -15,7 +20,9 @@ const ACTION_PREFIX = 'PERSONAL_BANK_INFO';
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const RESET = prefix('RESET');
+const RESET_BANK_INFO = prefix('RESET_BANK_INFO');
 const CHANGE_INFO = prefix('CHANGE_INFO');
+const SET_INFO_FETCHED = prefix('SET_INFO_FETCHED');
 const CHANGE_PASSWORD = prefix('CHANGE_PASSWORD');
 const SET_READY_STATE = prefix('SET_READY_STATE');
 
@@ -27,9 +34,17 @@ export const reset = () => ({
   type: RESET,
 });
 
+export const resetBankInfo = () => ({
+  type: RESET_BANK_INFO,
+});
+
 export const changeInfo = info => ({
   type: CHANGE_INFO,
   info,
+});
+
+export const setInfoFetched = () => ({
+  type: SET_INFO_FETCHED,
 });
 
 export const changePassword = password => ({
@@ -54,6 +69,21 @@ const unzipInfo = ({ BKN, BKBR, BRN, PH, EM, BN, BA, RN, CID }) => ({
   accName: BN,
   accNo: BA,
 });
+
+const zipInfo = ({
+  realName, idNumber, phone, email,
+  accBankId, accBankBranchId, accBankName, accBankBranchName, accName, accNo,
+}) => ({
+  RN: realName,
+  CID: idNumber,
+  PH: phone,
+  EM: email,
+  BKBR: `${accBankId}${accBankBranchId}`,
+  BKN: accBankName,
+  BRN: accBankBranchName,
+  BN: accName,
+  BA: accNo,
+});
 // bankName: BKN, // 銀行名稱
 // bankNumber: BKBR, // 000[-]0000
 // bankBranchName: BRN, // 羅斯福分行
@@ -77,10 +107,12 @@ export const fetchInfo = () =>
   (dispatch, getState) =>
     asyncXhrAuthedPost(
       '/ajax/bank/bankacc.json',
+      {},
       getState(),
     ).then((data) => {
       const info = unzipInfo(data);
       dispatch(changeInfo(info));
+      dispatch(setInfoFetched());
     }).catch(() => {});
 
 /**
@@ -105,6 +137,43 @@ export const checkReadyAndSet = () =>
     .then()
     .catch();
 
+export const validateInfo = () =>
+  (dispatch, getState) => {
+    const { info } = getState()[REDUCER_KEY];
+    return new Promise((resolve, reject) => {
+      const errors = validate(info, {
+        realName: constraints.realName,
+        idNumber: constraints.idNumber,
+        phone: constraints.phone,
+        email: constraints.email,
+        accBankId: constraints.accBankId,
+        accBankBranchId: constraints.accBankBranchId,
+        accName: constraints.accName,
+        accNo: constraints.accNo,
+      });
+      if (isEmpty(errors)) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+  };
+
+/* 儲存銀行資料 */
+export const saveBankInfo = () =>
+  (dispatch, getState) => {
+    const { info } = getState()[REDUCER_KEY];
+    return new Promise((resolve, reject) => {
+      asyncXhrAuthedPost(
+        '/ajax/bank/bankacc_update.json',
+        { data: zipInfo(info) },
+        getState(),
+      ).then((data) => {
+        resolve(data);
+      }).catch(error => reject(error));
+    });
+  };
+
 
 // =============================================
 // = reducer =
@@ -113,6 +182,7 @@ const initialState = {
   isChecked: false,
   isReady: false,
 
+  infoFetched: false,
   info: {
     realName: '',
     idNumber: '',
@@ -134,11 +204,21 @@ export default (state = initialState, action) => {
     case RESET:
       return initialState;
 
+    case RESET_BANK_INFO:
+      return Object.assign({}, state, {
+        infoFetched: initialState.infoFetched,
+        info: initialState.info,
+        password: initialState.password,
+      });
+
     case CHANGE_INFO:
       return Map(state).update(
         'info',
         info => Object.assign({}, info, action.info),
       ).toJS();
+
+    case SET_INFO_FETCHED:
+      return Object.assign({}, state, { infoFetched: true });
 
     case CHANGE_PASSWORD:
       return Object.assign({}, state, { password: action.password });

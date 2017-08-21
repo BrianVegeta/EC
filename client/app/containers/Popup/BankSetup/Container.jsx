@@ -7,18 +7,26 @@ import {
   fetchInfo,
   changeInfo,
   changePassword,
-  reset as resetBankInfo,
+  resetBankInfo,
+  validateInfo,
+  saveBankInfo,
 } from 'modules/personalBankInfo';
+import {
+  closePopup,
+} from 'modules/popup';
 import Component from './index';
 
 /* pick props */
-const mapStateToProps = ({ environment, banks, personalBankInfo }, { password }) => ({
-  environment,
-  banks,
-  personalBankInfo,
-  isReadyToRender: (banks.length > 0 && personalBankInfo.isChecked),
-  checkedPassword: password,
-});
+const mapStateToProps = ({ environment, banks, personalBankInfo }, { password }) => {
+  const { isChecked, infoFetched } = personalBankInfo;
+  return ({
+    environment,
+    banks,
+    personalBankInfo,
+    isReadyToRender: (banks.length > 0 && isChecked && infoFetched),
+    checkedPassword: password,
+  });
+};
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
@@ -29,6 +37,10 @@ const mapDispatchToProps = dispatch => ({
   dispatchResetBankInfo: () => dispatch(resetBankInfo()),
   dispatchChangeInfo: data => dispatch(changeInfo(data)),
   dispatchChangePassword: password => dispatch(changePassword(password)),
+  dispatchSaveBankInfo: () => dispatch(saveBankInfo()),
+  dispatchValidate: () => dispatch(validateInfo()),
+
+  dispatchClosePopup: () => dispatch(closePopup()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

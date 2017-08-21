@@ -1,7 +1,7 @@
 class Api::Userprofile::BankInfoUpdate < ApiAuthedBase
-  
-  PATH = '/client/user/bank_info/update';
-  
+
+  PATH = '/client/user/bank_info/update/ec';
+
   def path
     PATH
   end
@@ -9,5 +9,5 @@ class Api::Userprofile::BankInfoUpdate < ApiAuthedBase
   def request_method
      :post_token
   end
-  
+
 end

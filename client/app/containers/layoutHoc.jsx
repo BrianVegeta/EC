@@ -11,7 +11,6 @@ import { prepareCategories } from 'actions/optionsActions';
 import * as paths from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
 import PopupContainer from 'containers/Popup/Container';
-import ScheduleContainer from 'containers/ScheduleContainer';
 
 import { confirmLeavePage } from 'lib/confirm';
 
@@ -81,7 +80,6 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
         <div>
           <Component {...this.props} />
           <PopupContainer />
-          <ScheduleContainer />
         </div>
       );
     }

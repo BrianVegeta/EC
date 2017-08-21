@@ -28,7 +28,7 @@ class Cypher
 
   def decrypt(encript_data , uid)
     if (encript_data.blank? || uid.blank? || (encript_data.length < 22))
-        raise 'encript_data or uid is nil or empty string!!!'
+      raise 'encript_data or uid is nil or empty string!!!'
     end
 
     # Parsing aesKey from data
