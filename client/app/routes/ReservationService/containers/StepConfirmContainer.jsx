@@ -12,6 +12,7 @@ import { validateAll, validateAllBy, validateAgree } from '../modules/validation
 /* pick props */
 const mapStateToProps = ({
   environment,
+  routingHelper,
   reservationService: reservation,
   reservationServiceItem: reservationItem,
   reservationCoupons,
@@ -25,6 +26,7 @@ const mapStateToProps = ({
   ) : false;
   return ({
     environment,
+    routingHelper,
     reservation,
     reservationItem,
     reservationCoupons,

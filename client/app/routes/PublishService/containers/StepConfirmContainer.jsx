@@ -15,8 +15,9 @@ import {
 } from '../modules/validation';
 
 /* pick props */
-const mapStateToProps = ({ environment, publish, covers, categories }) => ({
+const mapStateToProps = ({ environment, routingHelper, publish, covers, categories }) => ({
   environment,
+  routingHelper,
   publish,
   covers,
   categories: categories[CATEGORY_SERVICE],

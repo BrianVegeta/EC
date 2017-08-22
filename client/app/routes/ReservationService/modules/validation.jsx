@@ -12,8 +12,8 @@ import {
 } from './reservation';
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
-  // CHARGE_TYPE_FIX,
   // CHARGE_TYPE_DAY,
+  CHARGE_TYPE_FIX,
   CHARGE_TYPE_COUNT,
   // ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
@@ -37,6 +37,7 @@ export const validateFormBy = ({
   assign_address_type,
   unit: itemUnit,
 }) => {
+  const isFixChargeType = (calculate_charge_type === CHARGE_TYPE_FIX);
   const isCustomerAssign = serviceLocationType === ASSIGN_ADDRESS_BY_CUSTOMER;
   const isServiceLocationSelectable = assign_address_type.length > 1;
   const serviceCityAreaValidation = isCustomerAssign ? constraints.cityArea : null;
@@ -53,7 +54,7 @@ export const validateFormBy = ({
     note,
     unit,
   }, {
-    dates: constraints.dates,
+    dates: isFixChargeType ? null : constraints.dates,
     serviceLocationType: serviceLocationTypeValidation,
     serviceCityArea: serviceCityAreaValidation,
     serviceAddress: serviceAddressValidation,

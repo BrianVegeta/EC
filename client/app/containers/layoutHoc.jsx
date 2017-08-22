@@ -7,6 +7,7 @@ import myPropTypes from 'propTypes';
 import { initEnvironment } from 'actions/environmentActions';
 import { redirectTo } from 'actions/module/routingActions';
 import { prepareCategories } from 'actions/optionsActions';
+import { setRouteHook } from 'modules/routingHelper';
 
 import * as paths from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
@@ -43,15 +44,17 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
     handleConfirmLeave() {
       if (!confirmLeave) return;
 
-      const { router, route } = this.props;
+      const { router, route, dispatch } = this.props;
       window.addEventListener('beforeunload', confirmLeavePage);
-      router.setRouteLeaveHook(route, () => {
+      const remove = router.setRouteLeaveHook(route, () => {
         const sureToLeave = confirm('確定離開？您的變更將不會儲存');
         if (sureToLeave) {
           window.removeEventListener('beforeunload', confirmLeavePage);
+          dispatch(setRouteHook(null));
         }
         return sureToLeave;
       });
+      dispatch(setRouteHook(remove));
     }
 
     handleRequireAuth() {

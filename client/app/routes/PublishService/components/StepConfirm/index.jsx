@@ -31,6 +31,9 @@ class StepConfirm extends React.Component {
   };
 
   static propTypes = {
+    routingHelper: PropTypes.shape({
+      removeHook: PropTypes.func.isRequired,
+    }).isRequired,
     covers: PropTypes.arrayOf(PropTypes.object).isRequired,
     categories: myPropTypes.middleCategories,
     publish: myPropTypes.publish.isRequired,
@@ -69,14 +72,14 @@ class StepConfirm extends React.Component {
       dispatchSavePublish,
       dispatchValidateAll,
       redirectToItems,
+      routingHelper: { removeHook },
     } = this.props;
-    dispatchValidateAll()
-    .then(() => {
-      dispatchSavePublish()
-      .then(() => redirectToItems())
-      .catch(error => console.warn(error));
-    })
-    .catch((errors) => {
+    dispatchValidateAll().then(() => {
+      dispatchSavePublish().then(() => {
+        if (removeHook) removeHook();
+        redirectToItems();
+      }).catch(error => console.warn(error));
+    }).catch((errors) => {
       console.warn(errors);
       alert('尚未填寫完整');
     });
