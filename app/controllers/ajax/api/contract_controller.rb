@@ -332,7 +332,7 @@ class Ajax::Api::ContractController < ApplicationController
      # lessee_receive_address : String;
      # leasestart : Long => 合約開始時間
      # leaseend : Ｌong =>  合約結束時間
-  　 # coupon_no : String => 折價卷的代號
+  　 # coupon_no : String => 折價券的代號
      # note : String => 文字
 
      params.permit(:unit, :paymenttype, :send_type, :send_b_store_id,
@@ -361,7 +361,7 @@ class Ajax::Api::ContractController < ApplicationController
      # service_address : String 服務地址
      # leasestart : Long => 合約開始時間
      # leaseend : Ｌong =>  合約結束時間
-     # coupon_no : String => 折價卷的代號
+     # coupon_no : String => 折價券的代號
      # note : String => 文字
 
      params.permit(:unit, :paymenttype, :service_location_type, :service_city,
@@ -386,7 +386,7 @@ class Ajax::Api::ContractController < ApplicationController
        # paymenttype : int => 交易類型  1:ATM 4:信用卡;
        # leasestart : Long => 合約開始時間
        # leaseend : Ｌong =>  合約結束時間
-      　       # coupon_no : String => 折價卷的代號
+      　       # coupon_no : String => 折價券的代號
        # note : String => 文字
 
        params.permit(:unit, :paymenttype, :leasestart, :leaseend, :coupon_no, :note

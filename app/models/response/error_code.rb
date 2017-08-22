@@ -91,7 +91,7 @@ class Response::ErrorCode
     CATEGORY_MUST_BELONG_SPACE => '類型不屬於空間',
     LEASE_TERM_LESS_THAN_MIN_LEASE_DAYS => '租期小於最短租期',
 
-    COUPON_NO_EXIST => '優惠卷不存在',
+    COUPON_NO_EXIST => '優惠券不存在',
   }
 
   class << self

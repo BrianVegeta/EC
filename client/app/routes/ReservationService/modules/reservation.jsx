@@ -50,7 +50,7 @@ export const reset = () => ({
 // # service_address : String 服務地址
 // # leasestart : Long => 合約開始時間
 // # leaseend : Ｌong =>  合約結束時間
-// # coupon_no : String => 折價卷的代號
+// # coupon_no : String => 折價券的代號
 // # note : String => 文字
 const transformParams = (pid, assignAddressType, {
   paymenttype,
