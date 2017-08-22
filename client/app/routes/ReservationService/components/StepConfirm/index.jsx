@@ -135,14 +135,15 @@ class StepConfirm extends React.Component {
   /* 服務方式 */
   renderAssign() {
     const { reservation, reservationItem } = this.props;
-    const { assign_city, assign_area } = reservationItem;
+    const { assign_city, assign_area, assign_address_type } = reservationItem;
     const {
       serviceLocationType,
       serviceCity,
       serviceArea,
       serviceAddress,
     } = reservation;
-    switch (serviceLocationType) {
+    const assignType = serviceLocationType || assign_address_type;
+    switch (assignType) {
       case ASSIGN_ADDRESS_BY_OWNER:
         return (
           <RenderAssignOwner
