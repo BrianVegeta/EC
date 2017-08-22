@@ -56,7 +56,7 @@ class OrderList extends React.Component {
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '收到預定',
+      { name: '收到訂單',
         href: my.ownerOrderSpace(TAB_REQUEST),
         tabName: TAB_REQUEST },
       { name: '尚未付款',
@@ -82,7 +82,7 @@ class OrderList extends React.Component {
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
-      <Container titleText={'收到的預定'}>
+      <Container titleText={'收到訂單'}>
         <div style={{ paddingBottom: 20 }}>
           <RoundButton
             text="物品"
@@ -107,7 +107,7 @@ class OrderList extends React.Component {
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何訂單' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           {records.map((record, index) => (

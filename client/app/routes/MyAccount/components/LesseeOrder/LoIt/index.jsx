@@ -54,7 +54,7 @@ class OrderList extends React.Component {
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '收到預定',
+      { name: '收到預訂',
         href: my.lesseeOrderItem(TAB_REQUEST),
         tabName: TAB_REQUEST },
       { name: '尚未付款',
@@ -105,7 +105,7 @@ class OrderList extends React.Component {
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           {records.map((record, index) => (
