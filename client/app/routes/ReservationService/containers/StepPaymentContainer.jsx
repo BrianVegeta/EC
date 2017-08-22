@@ -20,6 +20,7 @@ const mapStateToProps = ({ environment, reservationService, personalBankInfo }) 
     environment,
     reservation: reservationService,
     isAtmChoosed: (paymenttype === PAYMENT_TYPE_ATM),
+    atmBankName: personalBankInfo.bankName,
     isCreditCardChoosed: (paymenttype === PAYMENT_TYPE_CREDIT_CARD),
     isValid: validatePaymentBy(
       reservationService,
@@ -31,9 +32,11 @@ const mapStateToProps = ({ environment, reservationService, personalBankInfo }) 
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params: { pid } }) => {
   /* DISPATCH 查看銀行 */
+  const popupBankSetup = password =>
+    dispatch(popupBankInfoSetup({ password }));
   const dispatchBankSetup = () => {
     dispatch(popupAccessCheck({
-      onChecked: password => dispatch(popupBankInfoSetup({ password })),
+      onChecked: popupBankSetup,
     }));
   };
   const { paymentPath, confirmPath } = rsRouter;

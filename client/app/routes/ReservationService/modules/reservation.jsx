@@ -1,6 +1,8 @@
 import { isEqual } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
-import { REDUCER_KEY as ITEM_REDUCER_KEY } from './reservationItem';
+import {
+  REDUCER_KEY as ITEM_REDUCER_KEY,
+} from './reservationItem';
 
 /* =============================================>>>>>
 = settings =
@@ -49,7 +51,7 @@ export const reset = () => ({
 // # leaseend : Ｌong =>  合約結束時間
 // # coupon_no : String => 折價卷的代號
 // # note : String => 文字
-const transformParams = (pid, {
+const transformParams = (pid, assignAddressType, {
   paymenttype,
   serviceLocationType, serviceCity, serviceArea, serviceAddress,
   leasestart, leaseend,
@@ -62,7 +64,8 @@ const transformParams = (pid, {
   unit,
   note,
   coupon_no: couponNo,
-  service_location_type: serviceLocationType,
+  service_location_type: assignAddressType.length > 1 ?
+    serviceLocationType : assignAddressType,
   service_city: serviceCity,
   service_area: serviceArea,
   service_address: serviceAddress,
@@ -72,10 +75,10 @@ export const saveReservation = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const reservation = getState()[REDUCER_KEY];
-      const { pid } = getState()[ITEM_REDUCER_KEY];
+      const { pid, assign_address_type } = getState()[ITEM_REDUCER_KEY];
       asyncXhrAuthedPost(
         '/ajax/reserve_service.json',
-        transformParams(pid, reservation),
+        transformParams(pid, assign_address_type, reservation),
         getState(),
         true,
       ).then((data) => {

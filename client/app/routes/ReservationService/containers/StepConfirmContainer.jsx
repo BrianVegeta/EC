@@ -15,14 +15,14 @@ const mapStateToProps = ({
   reservationService: reservation,
   reservationServiceItem: reservationItem,
   reservationCoupons,
+  personalBankInfo,
 }) => {
   const isFetched = Boolean(
     reservationCoupons.updatedAt && reservationItem.owner,
   );
   const isValid = isFetched ? validateAllBy(
-    reservation,
-    reservationItem,
-  ).isValid : false;
+    reservation, reservationItem, personalBankInfo.isReady,
+  ) : false;
   return ({
     environment,
     reservation,
@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
   dispatchValidateAll: () => dispatch(validateAll()),
   dispatchValidate: () => dispatch(validateAgree()),
   dispatchSaveReservation: () => dispatch(saveReservation()),
-  redirectToMyOrder: () => browserHistory.push(my.ownerOrderService('TAB_REQUEST')),
+  redirectToMyOrder: () => browserHistory.push(my.lesseeOrderService('TAB_REQUEST')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);

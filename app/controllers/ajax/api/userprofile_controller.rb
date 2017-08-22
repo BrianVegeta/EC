@@ -249,6 +249,15 @@ class Ajax::Api::UserprofileController < ApplicationController
     respond success, obj
   end
 
+  # 銀行資料是否齊全
+  # GET /ajax/bank/bankacc/info_ready.json
+  def bank_info_display_ready
+    obj = ::Api::Userprofile::BankInfoDisplayReady.new current_uid_params, current_apitoken
+    success = obj.request
+
+    respond success, obj
+  end
+
   # 設定自動出款
   def bank_info_auto_wire
     obj = ::Api::Userprofile::BankInfoAutoWire.new set_params, current_apitoken

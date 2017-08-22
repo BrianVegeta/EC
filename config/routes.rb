@@ -185,6 +185,7 @@ Rails.application.routes.draw do
         post 'bankacc_update', to: 'userprofile#bank_info_update'
         post 'bankacc', to: 'userprofile#bank_info'
         get 'bankacc/ready', to: 'userprofile#bank_info_ready'
+        get 'bankacc/info_ready', to: 'userprofile#bank_info_display_ready'
       end
       ###### PASSWORD CHECK (AUTHED)
       scope :password do

@@ -21,6 +21,7 @@ class StepPayment extends React.Component {
 
   static propTypes = {
     isAtmChoosed: PropTypes.bool.isRequired,
+    atmBankName: PropTypes.string.isRequired,
     isCreditCardChoosed: PropTypes.bool.isRequired,
     dispatchChooseAtm: PropTypes.func.isRequired,
     dispatchChooseCreditCard: PropTypes.func.isRequired,
@@ -64,13 +65,13 @@ class StepPayment extends React.Component {
   }
 
   renderAtmDetail() {
-    const { dispatchBankSetup } = this.props;
+    const { dispatchBankSetup, atmBankName } = this.props;
     const { bankInfoError } = this.state;
     return (
       <div styleName="atm-detail-container">
         <div styleName="bank-container">
           <span styleName="bank-name">
-            銀行帳戶：遠東國際商業銀行
+            銀行帳戶：{atmBankName}
           </span>
           <FormButton
             colorType="greenBorder"

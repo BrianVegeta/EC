@@ -38,6 +38,7 @@ class BankSetupContainer extends React.Component {
     dispatchFetchBankInfo: PropTypes.func.isRequired,
     dispatchResetBankInfo: PropTypes.func.isRequired,
     dispatchChangeInfo: PropTypes.func.isRequired,
+    dispatchChangeData: PropTypes.func.isRequired,
     dispatchChangePassword: PropTypes.func.isRequired,
     dispatchSaveBankInfo: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
@@ -91,13 +92,14 @@ class BankSetupContainer extends React.Component {
 
   onSubmit() {
     const {
+      dispatchChangeData,
       dispatchValidate,
       dispatchSaveBankInfo,
       dispatchClosePopup,
     } = this.props;
     dispatchValidate().then(() => {
-      dispatchSaveBankInfo().then((data) => {
-        console.log(data);
+      dispatchSaveBankInfo().then(({ bankName }) => {
+        dispatchChangeData({ bankName });
         dispatchClosePopup();
       });
     }).catch((errors) => {

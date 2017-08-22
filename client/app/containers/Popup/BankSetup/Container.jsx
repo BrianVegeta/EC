@@ -6,6 +6,7 @@ import {
 import {
   fetchInfo,
   changeInfo,
+  changeData,
   changePassword,
   resetBankInfo,
   validateInfo,
@@ -36,6 +37,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchFetchBankInfo: () => dispatch(fetchInfo()),
   dispatchResetBankInfo: () => dispatch(resetBankInfo()),
   dispatchChangeInfo: data => dispatch(changeInfo(data)),
+  dispatchChangeData: data => dispatch(changeData(data)),
   dispatchChangePassword: password => dispatch(changePassword(password)),
   dispatchSaveBankInfo: () => dispatch(saveBankInfo()),
   dispatchValidate: () => dispatch(validateInfo()),

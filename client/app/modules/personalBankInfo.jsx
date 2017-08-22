@@ -22,6 +22,7 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 const RESET = prefix('RESET');
 const RESET_BANK_INFO = prefix('RESET_BANK_INFO');
 const CHANGE_INFO = prefix('CHANGE_INFO');
+const CHANGE_DATA = prefix('CHANGE_DATA');
 const SET_INFO_FETCHED = prefix('SET_INFO_FETCHED');
 const CHANGE_PASSWORD = prefix('CHANGE_PASSWORD');
 const SET_READY_STATE = prefix('SET_READY_STATE');
@@ -43,6 +44,11 @@ export const changeInfo = info => ({
   info,
 });
 
+export const changeData = data => ({
+  type: CHANGE_DATA,
+  data,
+});
+
 export const setInfoFetched = () => ({
   type: SET_INFO_FETCHED,
 });
@@ -52,9 +58,11 @@ export const changePassword = password => ({
   password,
 });
 
-const setReadyState = isReady => ({
+const setReadyState = ({ isReady, bankName, hasPassword }) => ({
   type: SET_READY_STATE,
   isReady,
+  bankName,
+  hasPassword,
 });
 
 const unzipInfo = ({ BKN, BKBR, BRN, PH, EM, BN, BA, RN, CID }) => ({
@@ -124,10 +132,10 @@ export const asyncCheckReady = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
       asyncXhrAuthedGet(
-        '/ajax/bank/bankacc/ready.json',
+        '/ajax/bank/bankacc/info_ready.json',
         getState(),
-      ).then((isReady) => {
-        dispatch(setReadyState(!!isReady));
+      ).then((data) => {
+        dispatch(setReadyState(data));
       }).catch(error => reject(error));
     });
 
@@ -163,13 +171,14 @@ export const validateInfo = () =>
 export const saveBankInfo = () =>
   (dispatch, getState) => {
     const { info } = getState()[REDUCER_KEY];
+    const { accBankName } = info;
     return new Promise((resolve, reject) => {
       asyncXhrAuthedPost(
         '/ajax/bank/bankacc_update.json',
         { data: zipInfo(info) },
         getState(),
-      ).then((data) => {
-        resolve(data);
+      ).then(() => {
+        resolve({ bankName: accBankName });
       }).catch(error => reject(error));
     });
   };
@@ -181,6 +190,8 @@ export const saveBankInfo = () =>
 const initialState = {
   isChecked: false,
   isReady: false,
+  bankName: '',
+  hasPassword: false,
 
   infoFetched: false,
   info: {
@@ -217,6 +228,9 @@ export default (state = initialState, action) => {
         info => Object.assign({}, info, action.info),
       ).toJS();
 
+    case CHANGE_DATA:
+      return Object.assign({}, state, action.data);
+
     case SET_INFO_FETCHED:
       return Object.assign({}, state, { infoFetched: true });
 
@@ -224,10 +238,11 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { password: action.password });
 
     case SET_READY_STATE:
-      return Object.assign({}, state, {
-        isChecked: true,
-        isReady: action.isReady,
-      });
+      return Map(state).set('isChecked', true)
+        .set('isReady', action.isReady)
+        .set('bankName', action.bankName)
+        .set('hasPassword', action.hasPassword)
+        .toJS();
 
     default:
       return state;

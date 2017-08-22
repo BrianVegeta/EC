@@ -58,7 +58,7 @@ const mapStateToProps = ({
     {
       text: '確認預訂資訊',
       path: rsRouter.confirmPath(pid),
-      isValid: true,
+      isValid: false,
     },
   ];
 
