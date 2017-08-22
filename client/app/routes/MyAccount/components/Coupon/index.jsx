@@ -32,10 +32,10 @@ class CouponsContainer extends React.Component {
     const { records } = myCoupon;
     const noRecords = (myCoupon.isFetching === false && records.length === 0);
     return (
-      <Container titleText={'優惠卷'}>
+      <Container titleText={'優惠券'}>
         <ListContainer
           minHeight={500}
-          noDataText={noRecords ? '目前沒有優惠卷' : null}
+          noDataText={noRecords ? '目前沒有優惠券' : null}
           isInitialFetching={myCoupon.isFetching}
         >
           { records.map(couponItem => (

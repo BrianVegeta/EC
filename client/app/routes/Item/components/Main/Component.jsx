@@ -31,7 +31,6 @@ class Main extends React.Component {
   };
 
   rComment(isPaginable, comments, dispatchRecords, dispatchAddMessage) {
-    console.log(dispatchAddMessage);
     const id = ITEM_MAIN_COMMENT;
     const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
     return (
@@ -73,7 +72,8 @@ class Main extends React.Component {
   rIntroduction(item) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
-    const { pname, pdes, unit, city, area, tags, category } = item;
+    const { pname, pdes, city, area, tags, category } = item;
+    console.log(item);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={pname} />
@@ -151,7 +151,6 @@ class Main extends React.Component {
   render() {
     const { item, messageboard, dispatch, dispatchRecords, dispatchAddMessage } = this.props;
     const images = without([item.img1, item.img2, item.img3], null);
-    console.log(messageboard);
     return (
       <div styleName="container">
         <div styleName="cover">

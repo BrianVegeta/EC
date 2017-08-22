@@ -78,10 +78,10 @@ Rails.application.routes.draw do
       post 'item/message_add', to: 'item#message_add' #
 
       #SYNC
-      post 'sync/notification', to: 'sync#notification' #
-      post 'sync/notification_unread', to: 'sync#notification_unread' #
-      post 'sync/notification_unread_count', to: 'sync#notification_unread_count' #
-      post 'sync/notification_read', to: 'sync#notification_read' #
+      # post 'sync/notification', to: 'sync#notification' #
+      # post 'sync/notification_unread', to: 'sync#notification_unread' #
+      # post 'sync/notification_unread_count', to: 'sync#notification_unread_count' #
+      # post 'sync/notification_read', to: 'sync#notification_read' #
       post 'sync/chat_rooms', to: 'sync#chat_rooms' #
       post 'sync/chat_logs', to: 'sync#chat_logs' #
 

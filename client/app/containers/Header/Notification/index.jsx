@@ -27,7 +27,9 @@ class Notification extends React.Component {
           {boxItems.map((item) => {
             const itemModel = new ModelRow(item, dispatch);
             return (
-              <div styleName="card">
+              <div
+                key={item.id}
+                styleName="card">
                 <div styleName="title"></div>
                 <div styleName="content">{itemModel.description}</div>
                 <div styleName="created">{itemModel.created}</div>

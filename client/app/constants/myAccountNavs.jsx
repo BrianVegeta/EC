@@ -4,7 +4,7 @@ export default {
   schedule: { text: '行事曆', path: '/' },
   records: { text: '預訂記錄', path: '/' },
   wishs: { text: '許願紙條', path: '/p/my_account/wishs' },
-  coupon: { text: '優惠卷', path: '/' },
+  coupon: { text: '優惠券', path: '/' },
   favorite: { text: '收藏', path: '/' },
   wallet: { text: '我的錢包', path: '/' },
   score: { text: '評價', path: '/' },

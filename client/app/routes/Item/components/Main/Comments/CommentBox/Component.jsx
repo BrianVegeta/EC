@@ -62,7 +62,6 @@ class Comment extends React.Component {
   }
 
   rController(dispatchAddMessage) {
-    console.log('rController');
     return (
       <div styleName="buttons">
         <button styleName="cancel" onClick={this.onBtnCancel}>
