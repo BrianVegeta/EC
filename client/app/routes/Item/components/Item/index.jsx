@@ -60,7 +60,6 @@ class Item extends React.Component {
   render() {
     // console.log('did render');
     const { item, dispatch, auth } = this.props;
-    console.log(this.props);
     const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
     return (
