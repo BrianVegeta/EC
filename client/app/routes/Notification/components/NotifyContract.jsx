@@ -12,6 +12,8 @@ class NotifyContract extends React.Component {
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
     dispatchUnreadCount: PropTypes.func.isRequired,
+    dispatchReset: PropTypes.func.isRequired,
+    dispatchMore: PropTypes.func.isRequired,
   };
 
 
@@ -19,13 +21,15 @@ class NotifyContract extends React.Component {
     this.props.dispatchUnreadCount();
   }
 
+  componentWillUnmount() {
+    this.props.dispatchReset();
+  }
+
 
   render() {
+    // console.log(this.props);
     const { notify } = this.props;
-    const { unreadCount, isFetching, records } = notify;
-    if (isFetching === true) {
-      return null;
-    }
+    const { unreadCount, isFetching, isPaginable, records } = notify;
     const navs = [
       { name: '訂單更新',
         href: notifyPath.contractNotifyPath,
@@ -37,27 +41,26 @@ class NotifyContract extends React.Component {
         href: notifyPath.systemNotifyPath,
         tabName: 'SYSTEM' },
     ];
-    console.log(this.props);
     return (
       <Container titleText={'訂單更新'}>
         <Navigation navs={navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何通知' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
-            isPaginable
+            isPaginable={isPaginable}
             isFetching={isFetching}
-            loadMore={() => { console.log('yes'); }}
+            loadMore={this.props.dispatchMore}
           >
-            {records.map((record, index) => (
+            {records.map(record => (
               <NotifyContractBoard
-                key={`${index + 1}`}
-                id={record.id}
+                key={record.id}
+                cid={record.cid}
                 message={record.message}
                 createTime={record.createTime}
-                isRead
+                isRead={record.isRead}
               />
             ))}
           </PaginationContainer>

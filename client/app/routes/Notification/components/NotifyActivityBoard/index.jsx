@@ -5,39 +5,52 @@ import { Link } from 'react-router';
 import BellIcon from 'react-icons/lib/md/notifications';
 import colors from 'styles/colorExport.scss';
 import { formatDate } from 'lib/time';
-import { orderRouter } from 'lib/paths';
 import styles from './styles.sass';
 
-class NotifyContractBoard extends React.Component {
+class NotifyActivityBoard extends React.Component {
+  static defaultProps = {
+    url: '/',
+  }
   static propTypes = {
-    cid: PropTypes.number.isRequired,
+    type: PropTypes.number.isRequired,
+    url: PropTypes.string,
     message: PropTypes.string.isRequired,
     createTime: PropTypes.number.isRequired,
     isRead: PropTypes.bool.isRequired,
   };
+  renderMessage() {
+    const { type, url, message } = this.props;
+    switch (type) {
+      case 1:
+        return (
+          <Link
+            styleName="notify-activity-link"
+            to={url}
+          >
+            {message}
+          </Link>
+        );
+      default:
+        return (<div>message</div>);
+    }
+  }
   render() {
-    const { cid, message, createTime, isRead } = this.props;
+    const { createTime, isRead } = this.props;
     const bellColor = isRead ? colors.placeholder : colors.orangeColor;
-
     return (
       <div
-        styleName="notify-contract-border"
+        styleName="notify-activity-border"
         className="clear"
       >
-        <div styleName="notify-contract-icon">
+        <div styleName="notify-activity-icon">
           <BellIcon
             size={40}
             color={bellColor}
           />
         </div>
-        <div styleName="notify-contract-content">
-          <Link
-            styleName="notify-contract-link"
-            to={orderRouter.orderPath(cid)}
-          >
-            {message}
-          </Link>
-          <div styleName="notify-contract-time">
+        <div styleName="notify-activity-content">
+          {this.renderMessage()}
+          <div styleName="notify-activity-time">
             {formatDate(createTime)}
           </div>
         </div>
@@ -46,4 +59,4 @@ class NotifyContractBoard extends React.Component {
   }
 }
 
-export default CSS(NotifyContractBoard, styles);
+export default CSS(NotifyActivityBoard, styles);

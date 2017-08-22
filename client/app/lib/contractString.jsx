@@ -152,7 +152,7 @@ export function generateOwnerServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeServiceString() {
+export function generateLesseeServiceString(contractstage, startDate) {
   let title = '';
   let text = '';
   switch (contractstage) {

@@ -28,7 +28,7 @@ class Notification extends React.Component {
             const itemModel = new ModelRow(item, dispatch);
             return (
               <div styleName="card">
-                <div styleName="title">Title</div>
+                <div styleName="title"></div>
                 <div styleName="content">{itemModel.description}</div>
                 <div styleName="created">{itemModel.created}</div>
               </div>

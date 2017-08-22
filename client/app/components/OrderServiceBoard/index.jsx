@@ -8,7 +8,7 @@ import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
-import { generateOwnerServiceString, generateServiceItemString }
+import { generateOwnerServiceString, generateLesseeSpaceString }
   from 'lib/contractString';
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
@@ -86,7 +86,7 @@ class OrderServiceBoard extends React.Component {
       if (isOwner) {
         return generateOwnerServiceString(stage, startDate);
       } else {
-        return generateLesseeServiceString(stage, startDate);
+        return generateLesseeSpaceString(stage, startDate);
       }
     } else if (stage > 1000 && stage < 3000) {
       const screenStage = stage % 100;
