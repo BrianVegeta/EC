@@ -53,6 +53,9 @@ class StepConfirm extends React.Component {
     dispatchValidateAll: PropTypes.func.isRequired,
     dispatchSaveReservation: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
+    routingHelper: PropTypes.shape({
+      removeHook: PropTypes.func.isRequired,
+    }).isRequired,
 
     reservation: PropTypes.shape({
       title: PropTypes.string,
@@ -92,11 +95,13 @@ class StepConfirm extends React.Component {
       dispatchValidate,
       dispatchValidateAll,
       redirectToMyOrder,
+      routingHelper: { removeHook },
     } = this.props;
     dispatchValidate().then(() => {
       this.setState({ agreeError: '' });
       dispatchValidateAll().then(() => {
         dispatchSaveReservation().then(() => {
+          if (removeHook) removeHook();
           redirectToMyOrder();
         }).catch((error) => {
           console.warn(error);

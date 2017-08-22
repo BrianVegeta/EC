@@ -1,6 +1,7 @@
 import { publishService as router } from 'lib/paths';
 import { injectReducer } from 'reducers';
 import { omit } from 'lodash';
+import { checkStepsRestart } from 'modules/routingHelper';
 
 import { REDUCER_KEY as PUBLISH_REDUCER_KEY } from './modules/publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './modules/covers';
@@ -31,6 +32,11 @@ export default store => ({
   },
 
   indexRoute: omit(routeStepCover(store), ['path']),
+
+  onEnter: () => {
+    const stepStartPath = router.indexPath;
+    store.dispatch(checkStepsRestart(stepStartPath));
+  },
 
   childRoutes: [
     routeStepCover(store),
