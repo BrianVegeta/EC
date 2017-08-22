@@ -5,15 +5,14 @@ import myPropTypes from 'propTypes';
 import Picture from 'components/Picture';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
-import { findCategoryNamesByID } from 'lib/category';
-import { formatCurrency } from 'lib/currency';
-import { formatDate } from 'lib/time';
-import { htmlNewLineToBreak } from 'lib/htmlUtils';
-
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import { findCategoryNamesByID } from 'lib/category';
+import { formatCurrency } from 'lib/currency';
+import { formatDate } from 'lib/time';
+import { htmlNewLineToBreak } from 'lib/htmlUtils';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';

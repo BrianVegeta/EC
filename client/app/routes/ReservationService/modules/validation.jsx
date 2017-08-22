@@ -19,6 +19,10 @@ import {
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
 
+const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
+const ERROR_BANK_INFO_READY = '請設定銀行帳戶。';
+const ERROR_AGREE = '請確認以上資訊並勾選。';
+
 
 /* =============================================>>>>>
 = Validate Form =
@@ -35,15 +39,12 @@ export const validateFormBy = ({
 }) => {
   const isCustomerAssign = serviceLocationType === ASSIGN_ADDRESS_BY_CUSTOMER;
   const isServiceLocationSelectable = assign_address_type.length > 1;
-
   const serviceCityAreaValidation = isCustomerAssign ? constraints.cityArea : null;
   const serviceAddressValidation = isCustomerAssign ? constraints.address : null;
   const serviceLocationTypeValidation = isServiceLocationSelectable ?
     constraints.serviceLocationType : null;
-
   const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_COUNT);
   const unitValidation = isCountChargeType ? constraints.unit(itemUnit) : null;
-
   const errors = validate({
     dates: leasestart && leaseend && 'date',
     serviceLocationType,
@@ -79,17 +80,20 @@ export const validateForm = () =>
       }
     });
 
+/* =============================================>>>>>
+= Validate payment =
+===============================================>>>>>*/
 export const validatePaymentBy = ({ paymenttype }, isBankInfoReady) => {
   if (![PAYMENT_TYPE_ATM, PAYMENT_TYPE_CREDIT_CARD].includes(paymenttype)) {
     return {
       isValid: false,
-      errors: { paymenttype: '請選擇付款方式' },
+      errors: { paymenttype: ERROR_PAYMENT_TYPE },
     };
   }
   if (PAYMENT_TYPE_ATM === paymenttype && !isBankInfoReady) {
     return {
       isValid: false,
-      errors: { atm: '請設定銀行帳戶' },
+      errors: { atm: ERROR_BANK_INFO_READY },
     };
   }
   return { isValid: true, errors: {} };
@@ -111,32 +115,46 @@ export const validatePayment = () =>
       }
     });
 
+/* =============================================>>>>>
+= Validate agree  =
+===============================================>>>>>*/
+export const validateAgreeBy = ({ isAgree }) => ({
+  isValid: isAgree,
+  errors: isAgree ? {} : { agree: ERROR_AGREE },
+});
+
+export const validateAgree = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const reservation = getState()[RESERVATION_REDUCER_KEY];
+      const { isValid, errors } = validateAgreeBy(reservation);
+
+      if (isValid) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+
 
 /* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
-export const validateAllBy = (publish, covers) => {
-  const isCoversValid = validateCoversBy(covers).isValid;
-  const isAboutValid = validateAboutBy(publish).isValid;
-  const isDeliveryValid = validateDeliveryBy(publish).isValid;
-  const isPriceValid = validatePriceBy(publish).isValid;
-  const isRegulationValid = validateRegulationBy(publish).isValid;
-  return isCoversValid
-    && isAboutValid
-    && isDeliveryValid
-    && isPriceValid
-    && isRegulationValid;
+export const validateAllBy = (reservation, item, isBankInfoReady) => {
+  const isFormValid = validateFormBy(reservation, item).isValid;
+  const isPaymentValid = validatePaymentBy(reservation, isBankInfoReady);
+  const isAgreeValid = validateAgreeBy(reservation);
+
+  return isFormValid && isPaymentValid && isAgreeValid;
 };
 
 export const validateAll = () =>
   dispatch =>
     new Promise((resolve, reject) => {
       const promises = [
-        dispatch(validateCovers()),
-        dispatch(validateAbout()),
-        dispatch(validateDelivery()),
-        dispatch(validatePrice()),
-        dispatch(validateRegulation()),
+        dispatch(validateForm()),
+        dispatch(validatePayment()),
+        dispatch(validateAgree()),
       ];
 
       Promise.all(promises)

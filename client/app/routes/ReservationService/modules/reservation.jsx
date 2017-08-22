@@ -1,4 +1,6 @@
 import { isEqual } from 'lodash';
+import { asyncXhrAuthedPost } from 'lib/xhr';
+import { REDUCER_KEY as ITEM_REDUCER_KEY } from './reservationItem';
 
 /* =============================================>>>>>
 = settings =
@@ -35,6 +37,53 @@ export const touchPath = path => ({
 export const reset = () => ({
   type: RESET,
 });
+
+// # pid : long => 商品ID
+// # unit : int => 數量;
+// # paymenttype : int => 交易類型  1:ATM 4:信用卡;
+// # service_location_type : String => 服務合約時 , 記錄由誰指定服務地址 0:分享人 1:享用人
+// # service_city : String 服務城市
+// # service_area : String 服務地區
+// # service_address : String 服務地址
+// # leasestart : Long => 合約開始時間
+// # leaseend : Ｌong =>  合約結束時間
+// # coupon_no : String => 折價卷的代號
+// # note : String => 文字
+const transformParams = (pid, {
+  paymenttype,
+  serviceLocationType, serviceCity, serviceArea, serviceAddress,
+  leasestart, leaseend,
+  couponNo, unit,
+  note,
+}) => ({
+  pid,
+  leasestart: leasestart.valueOf(),
+  leaseend: leaseend.valueOf(),
+  unit,
+  note,
+  coupon_no: couponNo,
+  service_location_type: serviceLocationType,
+  service_city: serviceCity,
+  service_area: serviceArea,
+  service_address: serviceAddress,
+  paymenttype,
+});
+export const saveReservation = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const reservation = getState()[REDUCER_KEY];
+      const { pid } = getState()[ITEM_REDUCER_KEY];
+      asyncXhrAuthedPost(
+        '/ajax/reserve_service.json',
+        transformParams(pid, reservation),
+        getState(),
+        true,
+      ).then((data) => {
+        resolve(data);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
 
 
 // =============================================

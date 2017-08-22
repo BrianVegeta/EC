@@ -17,6 +17,7 @@ const optionPropType = PropTypes.shape({
     PropTypes.number,
   ]).isRequired,
   name: PropTypes.string.isRequired,
+  coupon_no: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,
   expiration_time: PropTypes.number.isRequired,
 }).isRequired;
@@ -28,7 +29,7 @@ class InputSelectionCoupons extends React.Component {
   };
 
   static propTypes = {
-    couponNo: PropTypes.number,
+    couponNo: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(optionPropType).isRequired,
   };
@@ -59,8 +60,8 @@ class InputSelectionCoupons extends React.Component {
     const { options } = this.props;
 
     return options.map((option) => {
-      const { id, ...otherOption } = option;
-      return { value: id, ...otherOption };
+      const { coupon_no, ...otherOption } = option;
+      return { value: coupon_no, ...otherOption };
     });
   }
 

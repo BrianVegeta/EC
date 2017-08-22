@@ -13,6 +13,7 @@ import InputCheckBox from 'components/Input/CheckBox';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
+import AlertPanel from 'components/Alert/Panel';
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
@@ -48,8 +49,10 @@ class StepConfirm extends React.Component {
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
     dispatchFetchCoupons: PropTypes.func.isRequired,
-    // dispatchValidate: PropTypes.func.isRequired,
-    // nextStep: PropTypes.func.isRequired,
+    dispatchValidate: PropTypes.func.isRequired,
+    dispatchValidateAll: PropTypes.func.isRequired,
+    dispatchSaveReservation: PropTypes.func.isRequired,
+    redirectToMyOrder: PropTypes.func.isRequired,
 
     reservation: PropTypes.shape({
       title: PropTypes.string,
@@ -73,6 +76,9 @@ class StepConfirm extends React.Component {
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
+    this.state = {
+      agreeError: '',
+    };
   }
 
   componentDidMount() {
@@ -81,6 +87,26 @@ class StepConfirm extends React.Component {
   }
 
   onNextStepClick() {
+    const {
+      dispatchSaveReservation,
+      dispatchValidate,
+      dispatchValidateAll,
+      redirectToMyOrder,
+    } = this.props;
+    dispatchValidate().then(() => {
+      this.setState({ agreeError: '' });
+      dispatchValidateAll().then(() => {
+        dispatchSaveReservation().then(() => {
+          redirectToMyOrder();
+        }).catch((error) => {
+          console.warn(error);
+        });
+      }).catch(() => {
+        alert('資料尚未填寫完整');
+      });
+    }).catch((errors) => {
+      this.setState({ agreeError: errors.agree || '' });
+    });
   }
 
   renderBillingDetail(
@@ -186,6 +212,7 @@ class StepConfirm extends React.Component {
       note,
       isAgree,
     } = reservation;
+    const { agreeError } = this.state;
     return (
       <FormContainer title="填寫預訂資訊" >
         <div styleName="header-note-container">
@@ -242,6 +269,11 @@ class StepConfirm extends React.Component {
           >
             <span styleName="agree-text">我已確定以上資訊</span>
           </InputCheckBox>
+          {agreeError &&
+            <div styleName="error">
+              <AlertPanel text={agreeError} width="auto" />
+            </div>
+          }
         </div>
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}

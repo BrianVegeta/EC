@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       post 'contract/report', to: 'contract#report'
       post 'contract/return_goods', to: 'contract#return_goods'
       post 'contract/score', to: 'contract#score'
-      post 'contract/service_create', to: 'contract#service_create'
+
       post 'contract/service_end', to: 'contract#service_end'
       post 'contract/service_update', to: 'contract#service_update'
       post 'contract/ship_goods', to: 'contract#ship_goods'
@@ -116,6 +116,7 @@ Rails.application.routes.draw do
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'
       #CONTRACT
+      post 'reserve_service', to: 'contract#service_create'
       post 'get_my_order', to: 'contract#get_my_contract' #
       post 'reject_order', to: 'contract#reject' #
       post 'cancel_order', to: 'contract#cancel' #

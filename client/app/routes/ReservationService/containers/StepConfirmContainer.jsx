@@ -1,30 +1,37 @@
 import { connect } from 'react-redux';
-// import { browserHistory } from 'react-router';
-import { reservationService as rsRouter } from 'lib/paths';
+import { browserHistory } from 'react-router';
 import {
-  fetchCoupons,
-} from '../modules/reservationCoupons';
-
+  reservationService as rsRouter,
+  my,
+} from 'lib/paths';
+import { fetchCoupons } from '../modules/reservationCoupons';
 import StepConfirm from '../components/StepConfirm';
-import {
-  changeData,
-  touchPath,
-} from '../modules/reservation';
+import { changeData, touchPath, saveReservation } from '../modules/reservation';
+import { validateAll, validateAllBy, validateAgree } from '../modules/validation';
 
 /* pick props */
 const mapStateToProps = ({
   environment,
-  reservationService,
-  reservationServiceItem,
+  reservationService: reservation,
+  reservationServiceItem: reservationItem,
   reservationCoupons,
-}) => ({
-  environment,
-  reservation: reservationService,
-  reservationItem: reservationServiceItem,
-  reservationCoupons,
-  isFetched: Boolean(reservationCoupons.updatedAt && reservationServiceItem.owner),
-  isValid: false,
-});
+}) => {
+  const isFetched = Boolean(
+    reservationCoupons.updatedAt && reservationItem.owner,
+  );
+  const isValid = isFetched ? validateAllBy(
+    reservation,
+    reservationItem,
+  ).isValid : false;
+  return ({
+    environment,
+    reservation,
+    reservationItem,
+    reservationCoupons,
+    isFetched,
+    isValid,
+  });
+};
 
 /* pick dispatch */
 const { confirmPath } = rsRouter;
@@ -32,8 +39,10 @@ const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
   dispatchFetchCoupons: () => dispatch(fetchCoupons()),
   dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
   dispatchChangeData: data => dispatch(changeData(data)),
-  // redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
-
+  dispatchValidateAll: () => dispatch(validateAll()),
+  dispatchValidate: () => dispatch(validateAgree()),
+  dispatchSaveReservation: () => dispatch(saveReservation()),
+  redirectToMyOrder: () => browserHistory.push(my.ownerOrderService('TAB_REQUEST')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);
