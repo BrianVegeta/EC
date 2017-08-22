@@ -111,6 +111,8 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #SEARCH
+      post 'multi', to: 'search#multi_search'
       #NOTIFICATION
       post 'get_unread_notify', to: 'sync#notification_unread' #
       post 'count_unread_notify', to: 'sync#notification_unread_count' #
