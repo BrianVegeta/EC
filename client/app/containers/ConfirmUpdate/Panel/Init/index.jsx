@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TO_CREATE, TO_UPDATE } from 'modules/VerifyUpdate';
+import { TO_CREATE, TO_UPDATE } from 'modules/confirmUpdate';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';

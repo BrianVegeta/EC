@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import FormBlock from 'components/FormButton';
 import InputText from 'components/Input/Text';
-import { TO_CREATE, TO_UPDATE } from 'modules/VerifyUpdate';
+import { TO_CREATE, TO_UPDATE } from 'modules/confirmUpdate';
 import constraints from 'constraints';
 
 import CSS from 'react-css-modules';

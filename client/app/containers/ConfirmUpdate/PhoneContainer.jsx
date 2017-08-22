@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getPhoneVerifyCode, updatePhone } from 'modules/VerifyUpdate';
+import { getPhoneVerifyCode, updatePhone } from 'modules/confirmUpdate';
 
 import Component from './Component';
 

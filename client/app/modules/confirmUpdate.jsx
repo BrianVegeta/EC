@@ -37,7 +37,6 @@ export const updatePhone = sms =>
         getState(),
         isCatch,
       ).then((data) => {
-        console.log(data);
         resolve(data);
       }).catch((error) => {
         reject(error);
@@ -54,7 +53,6 @@ export const getEmailVerifyCode = (email, password) =>
         getState(),
         isCatch,
       ).then((data) => {
-        console.log(data);
         resolve(data);
       }).catch((error) => {
         reject(error);
@@ -71,7 +69,6 @@ export const updateEmail = verifyCode =>
         getState(),
         isCatch,
       ).then((data) => {
-        console.log(data);
         resolve(data);
       }).catch((error) => {
         reject(error);

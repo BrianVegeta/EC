@@ -31,6 +31,10 @@ export default store => ({
 
   indexRoute: omit(routeStepForm(store), ['path']),
 
+  onEnter: () => {
+    console.log('on enter');
+  },
+
   childRoutes: [
     routeStepForm(store),
     routeStepPayment(store),

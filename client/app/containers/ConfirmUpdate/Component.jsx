@@ -11,7 +11,7 @@ import {
   FLOW_INIT,
   FLOW_EDITING,
   FLOW_VERIFYING,
-} from 'modules/VerifyUpdate';
+} from 'modules/confirmUpdate';
 
 import PanelInit from './Panel/Init';
 import PanelEdit from './Panel/Edit';
