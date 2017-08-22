@@ -1,0 +1,40 @@
+@import "~styles/color.sass"
+
+.container
+  border: 1px solid $global-lineColor
+  color: $global-blackColor
+  width: 438px
+  margin-bottom: 40px
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+    a
+      li
+        padding: 20px 40px 20px 40px
+        float: left
+        cursor: pointer
+        color: $global-blackColor
+        position: relative
+        .notice-circle
+          background: $global-primaryColor
+          border-radius: 50%
+          display: inline-block
+          width: 20px
+          height: 20px
+          color: #fff
+          text-align: center
+          line-height: 20px
+          font-size: 10px
+          font-weight: 100
+          position: absolute
+          top: 7px
+        &:hover
+          color: $global-primaryColor
+          border-bottom: 8px solid $global-primaryColor
+          padding-bottom: 12px
+      &.active
+        li
+          color: $global-primaryColor
+          border-bottom: 8px solid $global-primaryColor
+          padding-bottom: 12px

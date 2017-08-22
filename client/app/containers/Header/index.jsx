@@ -7,7 +7,7 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 
-import { my } from 'lib/paths';
+import { my, notifyPath } from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import cn from 'classnames';
@@ -95,7 +95,7 @@ class Header extends React.Component {
                   </NavItem>
                 }
                 {isLogin &&
-                  <NavItem content="通知">
+                  <NavItem content="通知" link={notifyPath.contractNotifyPath}>
                     <Notification
                       notification={notification}
                       dispatch={dispatch}

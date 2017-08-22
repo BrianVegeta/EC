@@ -1,7 +1,7 @@
 class Ajax::Api::SyncController < ApplicationController
   include WardenHelper
   include RespondHelper
-  
+
   ###################### ACTION ##################################
   # 取得通知訊息
   def notification
@@ -30,7 +30,7 @@ class Ajax::Api::SyncController < ApplicationController
     respond success, obj
   end
 
-  # 已讀通知書量
+  # 已讀通知數量
   def notification_read
     obj = ::Api::Sync::NotificationRead.new notification_read_params, current_apitoken
     success = obj.request

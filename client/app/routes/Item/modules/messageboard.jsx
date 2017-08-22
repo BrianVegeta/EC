@@ -80,7 +80,7 @@ export function fetchRecords(pid, target = TARGET_OWNER, recursiveRecords = []) 
       size: (size - recursiveRecords.length),
       pid,
     };
-    console.log('fetching fetchRecords');
+
     const expireFlag = Date.now();
     /* LOADING FETCH */
     dispatch(fetching(expireFlag));
@@ -141,7 +141,6 @@ const initialState = {
   records: [],
   size: SIZE,
   index: 0,
-  recursiveTimes: 0,
 };
 
 export default (state = initialState, action) => {

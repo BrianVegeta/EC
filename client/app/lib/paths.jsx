@@ -22,6 +22,12 @@ export const userprofilePaths = {
   commentsLesseePath: uid => `/p/userprofile/${uid}/comments-lessee`,
 };
 
+export const notifyPath = {
+  contractNotifyPath: '/p/notify/contract',
+  activityNotifyPath: '/p/notify/activity',
+  systemNotifyPath: '/p/notify/system',
+}
+
 export const items = {
   servicePath: '/p/i/service',
 };
