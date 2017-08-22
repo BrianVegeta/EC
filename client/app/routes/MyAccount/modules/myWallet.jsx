@@ -121,7 +121,7 @@ export function fetchRecords(type, startDate, endDate, recursiveRecords = []) {
 // =============================================
 const initialState = {
   expireFlag: null,
-  isPaginable: true,
+  isPaginable: false,
   isFetching: false,
   records: [],
   size: SIZE,

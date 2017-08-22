@@ -1,5 +1,5 @@
-import { asyncXhrAuthedPost, asyncXhrAuthedGet } from 'lib/xhr';
-
+import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncCheckReady } from 'modules/personalBankInfo';
 /* =============================================>>>>>
 = orderDetail =
 ===============================================>>>>>*/
@@ -15,7 +15,6 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 const FETCHING = prefix('FETCHING');
 const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
 const FETCHED_ORDER = prefix('FETCHED_ORDER');
-const FETCHED_BANKACC = prefix('FETCHED_BANKACC');
 const FETCHED_OWNER = prefix('FETCHED_OWNER');
 const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
 const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
@@ -38,12 +37,6 @@ const fetchedOrder = order => ({
   type: FETCHED_ORDER,
   order,
 });
-
-const fetchedBankAcc = result => ({
-  type: FETCHED_BANKACC,
-  result,
-});
-
 
 const fetchedOwner = userprofile => ({
   type: FETCHED_OWNER,
@@ -105,13 +98,7 @@ export function fetchOrder(cid) {
         dispatch(fetchedLessee(responseUserData));
       });
       if (contractstage < 4) {
-        asyncXhrAuthedGet(
-          '/ajax/bank/bankacc/ready.json',
-          { },
-          getState(),
-        ).then((responseBankData) => {
-          dispatch(fetchedBankAcc(responseBankData));
-        });
+        dispatch(asyncCheckReady());
       } else {
         asyncXhrAuthedPost(
           '/ajax/get_order_logs.json',
@@ -157,12 +144,10 @@ const initialState = {
   isFetchingOrder: false,
   isFetchingImages: false,
   isFetchingLog: false,
-  isFetchingBank: false,
   isFetchingSue: false,
   ownerProfile: null,
   lesseeProfile: null,
   sueDetail: null,
-  bankReady: 0,
   order: null,
   logs: null,
   images: null,
@@ -173,7 +158,6 @@ export default (state = initialState, action) => {
     case FETCHING:
       return Object.assign({}, state, {
         isFetchingOrder: true,
-        isFetchingBank: true,
         isFetchingOwner: true,
         isFetchingLessee: true,
       });
@@ -184,11 +168,6 @@ export default (state = initialState, action) => {
         isFetchingOwner: true,
         isFetchingLessee: true,
         order: action.order,
-      });
-    case FETCHED_BANKACC:
-      return Object.assign({}, state, {
-        isFetchingOrder: false,
-        bankReady: action.result,
       });
 
     case FETCHED_OWNER:

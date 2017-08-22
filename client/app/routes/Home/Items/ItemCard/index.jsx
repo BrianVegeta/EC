@@ -28,7 +28,7 @@ class ItemCard extends React.Component {
       ownerName,
       favoriteCount,
     } = item;
-    
+
     return (
       <div styleName="container">
         <Link to={itemPath(pname, pid)} >
@@ -47,12 +47,14 @@ class ItemCard extends React.Component {
             </div>
             <span styleName="username">{ownerName}</span>
           </div>
-          <FavoriteHeart 
-            pid={pid} 
-            isActive={isMyFavorite} 
-            count={favoriteCount} 
-            dispatch={dispatch} 
-          />
+          <div style={{ float: 'right' }}>
+            <FavoriteHeart
+              pid={pid}
+              isActive={isMyFavorite}
+              count={favoriteCount}
+              dispatch={dispatch}
+            />
+          </div>
         </div>
       </div>
     );

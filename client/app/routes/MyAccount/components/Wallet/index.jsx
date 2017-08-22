@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DatesPicker from 'components/inputs/DatesPicker';
 import FormButton from 'components/FormButton';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
+import WalletNote from 'components/WalletNote';
+import DatesPicker from 'components/Input/DatesPicker';
 
 import CSS from 'react-css-modules';
 
@@ -41,19 +42,18 @@ class Wallet extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatchReset;
+    this.props.dispatchReset();
   }
 
   onSearch() {
     if (this.state.startDate === null || this.state.endDate === null) {
       return;
     }
-    this.props.dispatchReset;
+    this.props.dispatchReset();
     this.props.dispatchFetchRecords(this.state.startDate.valueOf(),
      this.state.endDate.valueOf());
   }
   onDatesChange({ startDate, endDate }) {
-    console.log(startDate, endDate);
     this.setState({ startDate, endDate });
   }
 
@@ -63,10 +63,7 @@ class Wallet extends React.Component {
       { name: '入帳', href: my.walletPathIn },
       { name: '出帳', href: my.walletPathOut },
     ];
-    console.log(this.state);
-
     const { myWallet, dispatchFetchRecords } = this.props;
-
     const {
       isPaginable,
       isFetching,
@@ -74,7 +71,6 @@ class Wallet extends React.Component {
     } = myWallet;
 
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
-    console.log(this.state);
     return (
       <Container titleText={'我的錢包'}>
         <div styleName="wallet_banner_bkg" />
@@ -85,6 +81,8 @@ class Wallet extends React.Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.onDatesChange}
+            isOutsideRange={() => false}
+            showHint={false}
           />
         </div>
         <div style={{ paddingLeft: 40, display: 'inline-block' }}>
@@ -126,7 +124,7 @@ class Wallet extends React.Component {
                 transactionPrice={record.price}
                 cidNo={record.args_no}
                 remark={record.remark}
-                />
+              />
             ))}
           </PaginationContainer>
         </ListContainer>

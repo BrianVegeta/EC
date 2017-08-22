@@ -82,7 +82,7 @@ class OrderList extends React.Component {
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
-      <Container titleText={'收到訂單'}>
+      <Container titleText={'廠商訂單'}>
         <div style={{ paddingBottom: 20 }}>
           <RoundButton
             text="物品"

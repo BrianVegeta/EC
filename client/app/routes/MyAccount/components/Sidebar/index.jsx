@@ -7,14 +7,16 @@ import myPropTypes from 'propTypes';
 import Avatar from 'components/Avatar';
 import { my } from 'lib/paths';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+const cx = classnames.bind(styles);
 const myAccountNavs = {
   items: { text: '分享/發佈', path: my.itemPath },
-  orders: { text: '收到的預訂', path: my.ownerOrderItem('TAB_REQUEST') },
+  orders: { text: '廠商訂單', path: my.ownerOrderItem('TAB_REQUEST') },
   schedule: { text: '行事曆', path: my.calendarPath },
-  records: { text: '預訂記錄', path: my.lesseeOrderItem('TAB_REQUEST') },
+  records: { text: '消費狀態', path: my.lesseeOrderItem('TAB_REQUEST') },
   wishs: { text: '許願紙條', path: my.wishPath },
   coupon: { text: '優惠券', path: my.couponPath },
   favorite: { text: '收藏', path: my.collectionPath },
@@ -51,7 +53,12 @@ class MyAccountSidebar extends React.Component {
           <ul styleName="navsList" className="default-ul">
             {navs.map((nav, index) => (
               <li key={`${index + 1}`} styleName="listItem">
-                <Link to={nav.path} styleName="itemLink">
+                <Link
+                  to={nav.path}
+                  styleName="itemLink"
+                  activeClassName={cx('active')}
+                  onlyActiveOnIndex
+                >
                   {nav.text}
                 </Link>
               </li>

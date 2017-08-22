@@ -86,7 +86,7 @@ class Main extends React.Component {
           unit={item.unit}
           calculate_charge_type={item.calculate_charge_type}
           topCategory={item.top_category}
-          advanceDay={item.ship_before_start_days}
+          advanceDay={item.advance_reservation_days}
           sendOption={item.send_option}
           returnOption={item.return_option}
           shipDay={item.ship_before_start_days}

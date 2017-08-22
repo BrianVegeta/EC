@@ -1,12 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-icons/lib/fa/calendar-o';
+import IconCalendar from 'react-icons/lib/fa/calendar-o';
+import IconLocation from 'react-icons/lib/md/location-on';
 
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
-import { formatDate } from 'lib/time';
+import { formatDate, rangeDiff } from 'lib/time';
 
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
@@ -36,6 +37,7 @@ class Orderdetail extends React.Component {
       create_time: PropTypes.number,
     }),
     dispatch: PropTypes.func.isRequired,
+    dispatchBankSetup: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
@@ -155,14 +157,72 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
-  renderShippingDetail(sendType, returnType) {
+  renderSchedule() {
+    const { orderdetail } = this.props;
+    const { order } = orderdetail;
+    const { type, leasestart, leaseend,
+      service_city, service_area, service_address,
+      space_city, space_area, space_address,
+     } = order;
+    let titleStr = '';
+    let hintStr = '';
+    let address = null;
+    switch (type) {
+      case 'ITEM':
+        titleStr = '使用時間';
+        break;
+      case 'SERVICE':
+        titleStr = '服務資訊';
+        address = `${service_city}${service_area}${service_address}`;
+        hintStr = '同意預定後才,顯示完整以上資訊';
+        break;
+      case 'SPACE':
+        titleStr = '空間資訊';
+        address = `${space_city}${space_area}${space_address}`;
+        hintStr = '同意預定後才,顯示完整以上資訊';
+        break;
+      default:
+        break;
+    }
+    const totalDay = rangeDiff(leasestart, leaseend, true);
+    return (
+      <div styleName="section-content" className="clear">
+        <div styleName="section-header">{titleStr}</div>
+        { address &&
+          <div>
+            <div styleName="mini-icon-style">
+              <IconLocation size={30} />
+            </div>
+            <div styleName="mini-icon-text-style">
+              { `詳細地址：${address}`}
+            </div>
+          </div>
+        }
+        <div>
+          <div styleName="mini-icon-style">
+            <IconCalendar size={30} />
+          </div>
+          <div styleName="mini-icon-text-style">
+            { `使用日期：${formatDate(leasestart)}~${formatDate(leaseend)}(共${totalDay}天)`}
+          </div>
+        </div>
+        <div styleName="mini-icon-hint-style">{hintStr}</div>
+      </div>
+    );
+  }
+  renderShippingDetail(order) {
+    const { type, send_type, return_type } = order;
+    if (type !== 'ITEM') {
+      return null;
+    }
+
     let showSecondLine = false;
     let sendTypeName = '';
     let sendDetail = '';
     let returnTypeName = '';
     let returnDetail = '';
 
-    switch (sendType) {
+    switch (send_type) {
       case '0':
         sendTypeName = '面交';
         sendDetail = ''
@@ -177,7 +237,7 @@ class Orderdetail extends React.Component {
         break;
     }
 
-    switch (returnType) {
+    switch (return_type) {
       case '0':
         returnTypeName = '面交';
         returnDetail = ''
@@ -192,17 +252,21 @@ class Orderdetail extends React.Component {
     }
 
     return (
-      <div>
-        <div style={{ position: 'relative' }}>
-          <div styleName="half-width-style">{ `到貨方式: ${sendTypeName}` }</div>
-          <div styleName="half-width-style">{ `還貨方式: ${returnTypeName}` }</div>
-        </div>
-        { showSecondLine &&
-          <div style={{ position: 'relative', paddingTop: 10 }}>
-            <div styleName="half-width-style">{ sendDetail }</div>
-            <div styleName="half-width-style">{ returnDetail }</div>
+      <div styleName="section-content">
+        <div styleName="section-header">物流方式</div>
+        <div>
+          <div style={{ position: 'relative' }}>
+            <div styleName="half-width-style">{ `到貨方式: ${sendTypeName}` }</div>
+            <div styleName="half-width-style">{ `還貨方式: ${returnTypeName}` }</div>
           </div>
-        }
+          { showSecondLine &&
+            <div style={{ position: 'relative', paddingTop: 10 }}>
+              <div styleName="half-width-style">{ sendDetail }</div>
+              <div styleName="half-width-style">{ returnDetail }</div>
+            </div>
+          }
+        </div>
+        <div styleName="padding-40btm-style" />
       </div>
     );
   }
@@ -216,13 +280,19 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
-  renderBankInfo(contractstage, bankReady){
+  renderBankInfo(contractstage){
     if (contractstage > 4) {
       return null;
     }
+    const { personalBankInfo } = this.props;
+    const { isReady, isChecked } = personalBankInfo;
+
+    if (isChecked === false) {
+      return (<div style={{ height: 128 }} />);
+    }
     return (
       <div>
-        { (bankReady === 1) ?
+        { (isReady) ?
           <div style={{ display: 'inline-block', color: colors.blackColor }}>設定銀行帳戶</div> :
           <div style={{ display: 'inline-block', color: colors.colorHeart }}>您尚未設定銀行帳戶喔！</div>
         }
@@ -232,7 +302,7 @@ class Orderdetail extends React.Component {
             size="sm"
             width={120}
             content="前往設定"
-            onClick={() => {}}
+            onClick={this.props.dispatchBankSetup}
           />
         </div>
         <div style={{ color: colors.placeholder, paddingTop: 20, paddingBottom: 50 }}>
@@ -275,6 +345,18 @@ class Orderdetail extends React.Component {
       return null;
     }
   }
+  renderMiniMap(order){
+    const { img1, cid_no, pname } = order;
+    return (
+      <div styleName="top_40px_style">
+        <MiniMap
+          cover={`${img1}`}
+          cidNumber={`合約編號：${cid_no}`}
+          itemName={`${pname}`}
+        />
+      </div>
+    );
+  }
   render() {
     const { orderdetail, dispatch } = this.props;
     const { order } = orderdetail;
@@ -283,10 +365,10 @@ class Orderdetail extends React.Component {
     }
     // console.log(this.props);
     const { display } = order;
-    const { bankReady, ownerProfile, lesseeProfile } = orderdetail;
+    const { ownerProfile, lesseeProfile } = orderdetail;
 
-    this.ownerPicture = ownerProfile ? ownerProfile.picture : null;
-    this.lesseePicture = lesseeProfile ? lesseeProfile.picture : null;
+    const ownerPicture = ownerProfile ? ownerProfile.picture : null;
+    const lesseePicture = lesseeProfile ? lesseeProfile.picture : null;
 
     let dispatchEnd = () => {};
     if (order.type === 'SERVICE') {
@@ -294,10 +376,11 @@ class Orderdetail extends React.Component {
     } else if (order.type === 'SERVICE') {
       dispatchEnd = this.props.dispatchEndSpace;
     }
+
     const targetName = display.is_owner ? order.lessee_nick_name : order.owner_nick_name;
     const targetRealName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
     const targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
-    const targetUrl = display.is_owner ? this.lesseePicture : this.ownerPicture;
+    const targetUrl = display.is_owner ? lesseePicture : ownerPicture;
     const targetComment = display.is_owner ? order.lessee_comment : order.owner_comment;
     const targetScore = display.is_owner ? order.lesseescore : order.ownerscore;
 
@@ -311,13 +394,7 @@ class Orderdetail extends React.Component {
           </div>
           <div styleName="section-content">
             {this.renderBanner(order, display.is_owner, dispatch)}
-            <div styleName="top_40px_style">
-              <MiniMap
-                cover={`${order.img1}`}
-                cidNumber={`合約編號：${order.cid_no}`}
-                itemName={`${order.pname}`}
-              />
-            </div>
+            {this.renderMiniMap(order)}
             <div styleName="top_40px_style">
               <UserInfoBoard
                 cid={order.cid}
@@ -329,25 +406,13 @@ class Orderdetail extends React.Component {
               />
             </div>
           </div>
-          <div styleName="section-content">
-            <div styleName="section-header">使用時間</div>
-            <div style={{ paddingBottom: 40 }}>
-              <div styleName="mini-icon-style">
-                <Icon size={35} />
-              </div>
-              <div styleName="mini-icon-text-style">{`使用日期：${formatDate(order.leasestart)}~${formatDate(order.leaseend)}`}</div>
-            </div>
-          </div>
-          <div styleName="section-content">
-            <div styleName="section-header">物流方式</div>
-            {this.renderShippingDetail(order.send_type, order.return_type)}
-            <div styleName="padding-40btm-style" />
-          </div>
+          {this.renderSchedule()}
+          {this.renderShippingDetail(order)}
           <div styleName="section-content">
             <div styleName="section-header">交易明細</div>
             <BillingDetail {...calculateService(order, null)} />
             {this.renderAcceptHint(order.contractstage)}
-            {this.renderBankInfo(order.contractstage, bankReady)}
+            {this.renderBankInfo(order.contractstage)}
           </div>
           {this.renderRules(order.rules)}
           {this.renderCancelPolicys(order.cancel_policys)}

@@ -50,7 +50,7 @@ class Navigation extends React.Component {
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
 
     return (
-      <Container titleText={'收藏'}>
+      <Container titleText={'評價'}>
         <div styleName="container">
           <ul className="clear">
             {navs.map((nav, index) => (

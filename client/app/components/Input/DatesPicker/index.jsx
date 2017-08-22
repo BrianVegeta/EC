@@ -26,6 +26,8 @@ class Dates extends React.Component {
     endDate: null,
     preparation: 0,
     minPicks: 0,
+    isOutsideRange: undefined,
+    showHint: true,
   };
 
   static propTypes = {
@@ -34,7 +36,8 @@ class Dates extends React.Component {
     preparation: PropTypes.number,
     minPicks: PropTypes.number,
     onDatesChange: PropTypes.func.isRequired,
-
+    isOutsideRange: PropTypes.func,
+    showHint: PropTypes.bool,
     onBlur: PropTypes.func.isRequired, // for hasError
   };
 
@@ -92,6 +95,7 @@ class Dates extends React.Component {
   }
 
   renderCalendarInfo() {
+    const { showHint } = this.props;
     return (
       <div className={`${cx('calendarInfo')} clear`}>
         <button
@@ -100,14 +104,16 @@ class Dates extends React.Component {
         >
           清除
         </button>
-        <div className={cx('notice')}>• 最少租用天數</div>
+        { showHint &&
+          <div className={cx('notice')}>• 最少租用天數</div>
+        }
       </div>
     );
   }
 
   render() {
     moment.locale('zh-tw');
-    const { startDate, endDate, onDatesChange } = this.props;
+    const { startDate, endDate, onDatesChange, isOutsideRange } = this.props;
 
     return (
       <div styleName="container">
@@ -120,7 +126,7 @@ class Dates extends React.Component {
         </style>
         <DateRangePicker
           ref={dp => (this.dp = dp)}
-          {...{ startDate, endDate, onDatesChange }}
+          {...{ startDate, endDate, onDatesChange, isOutsideRange }}
           focusedInput={this.state.focusedInput}
           onFocusChange={focusedInput => this.setState({ focusedInput })}
           numberOfMonths={1}
@@ -140,6 +146,7 @@ class Dates extends React.Component {
           renderMonth={this.constructor.renderMonth}
           hideKeyboardShortcutsPanel
           keepOpenOnDateSelect
+          enableOutsideDays
           navPrev={<ArrowLeft />}
           navNext={<ArrowRight />}
           displayFormat="YYYY/MM/DD"
