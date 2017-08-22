@@ -19,7 +19,7 @@ export function generateOwnerItemString(contractstage, startDate) {
       break;
     case 5:
       title = '待出貨';
-      text = `請於${formatDateForOrder(startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`;;
+      text = `請於${formatDateForOrder(startDate)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`;
       break;
     case 6:
     case 7:
@@ -152,7 +152,7 @@ export function generateOwnerServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeServiceString() {
+export function generateLesseeServiceString(contractstage, startDate) {
   let title = '';
   let text = '';
   switch (contractstage) {

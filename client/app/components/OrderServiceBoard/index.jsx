@@ -8,8 +8,10 @@ import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
-import { generateOwnerServiceString, generateServiceItemString }
-  from 'lib/contractString';
+import {
+  generateOwnerServiceString,
+  generateLesseeServiceString,
+} from 'lib/contractString';
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
@@ -21,6 +23,7 @@ const cx = classnames.bind(styles);
 
 class OrderServiceBoard extends React.Component {
   static defaultProps = {
+    photoHead: null,
     isOwner: false,
     lesseeReceive: false,
     targetScore: 0,
@@ -45,7 +48,7 @@ class OrderServiceBoard extends React.Component {
     unit: PropTypes.number.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isRead: PropTypes.bool.isRequired,
-    lesseeReceive: PropTypes.bool,
+    // lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
         show_detail: PropTypes.bool.isRequired,
@@ -77,17 +80,15 @@ class OrderServiceBoard extends React.Component {
           alert(error);
         });
       },
-    }))
+    }));
   }
   generateString() {
     const { isOwner, stage, startDate } = this.props;
     const objString = { title: '', text: '' };
     if (stage < 1000) {
-      if (isOwner) {
-        return generateOwnerServiceString(stage, startDate);
-      } else {
-        return generateLesseeServiceString(stage, startDate);
-      }
+      const generateString = isOwner ?
+        generateOwnerServiceString : generateLesseeServiceString;
+      return generateString(stage, startDate);
     } else if (stage > 1000 && stage < 3000) {
       const screenStage = stage % 100;
       if (screenStage < 11) {
@@ -108,7 +109,8 @@ class OrderServiceBoard extends React.Component {
   renderOwnerActions() {
     const { display } = this.props;
     const { can_score, view_score } = display;
-    const buttonConfig = {
+    const buttonProps = {
+      colorType: 'greenBorder',
       size: 'sm',
       width: 'auto',
       style: {
@@ -121,28 +123,27 @@ class OrderServiceBoard extends React.Component {
       <div styleName="oseb-action-section">
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'評分'}
+            {...buttonProps}
+            content="評分"
             onClick={() => this.callScorePanel(false)}
           />
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
+            {...buttonProps}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'greenBorder'}
-          {...buttonConfig}
-          content={'查看詳情'}
-          onClick={() => browserHistory.push(orderRouter.orderPath(this.props.cid))}
+          {...buttonProps}
+          content="查看詳情"
+          onClick={() => browserHistory.push(
+            orderRouter.orderPath(this.props.cid),
+          )}
         />
       </div>
-    )
+    );
   }
 
   renderLesseeActions() {
