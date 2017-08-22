@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { today } from 'lib/time';
 import {
   REDUCER_KEY as ITEM_REDUCER_KEY,
 } from './reservationItem';
@@ -59,8 +60,8 @@ const transformParams = (pid, assignAddressType, {
   note,
 }) => ({
   pid,
-  leasestart: leasestart.valueOf(),
-  leaseend: leaseend.valueOf(),
+  leasestart: leasestart ? leasestart.valueOf() : null,
+  leaseend: leaseend ? leaseend.valueOf() : null,
   unit,
   note,
   coupon_no: couponNo,

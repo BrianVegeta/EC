@@ -1,6 +1,7 @@
+import { omit } from 'lodash';
 import { reservationService as router } from 'lib/paths';
 import { injectReducer } from 'reducers';
-import { omit } from 'lodash';
+import { checkStepsRestart } from 'modules/routingHelper';
 
 import { REDUCER_KEY as RESERVATION_REDUCER_KEY } from './modules/reservation';
 import { REDUCER_KEY as ITEM_REDUCER_KEY } from './modules/reservationItem';
@@ -31,8 +32,9 @@ export default store => ({
 
   indexRoute: omit(routeStepForm(store), ['path']),
 
-  onEnter: () => {
-    console.log('on enter');
+  onEnter: ({ params: { pid } }) => {
+    const stepStartPath = router.indexPath(pid);
+    store.dispatch(checkStepsRestart(stepStartPath));
   },
 
   childRoutes: [

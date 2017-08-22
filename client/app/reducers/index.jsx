@@ -8,6 +8,7 @@ import access from 'modules/access';
 import banks from 'modules/banks';
 import personalBankInfo from 'modules/personalBankInfo';
 import orderAction from 'modules/orderAction';
+import routingHelper from 'modules/routingHelper';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -31,6 +32,7 @@ import popupBankSetup from './popupBankSetupReducer';
 
 const reducers = {
   routing: routerReducer,
+  routingHelper,
   personalBankInfo,
   cities,
   categories,

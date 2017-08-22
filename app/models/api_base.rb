@@ -41,14 +41,15 @@ class ApiBase
     self.response_data = response['data'] if response.has_key?('data')
     self.response_headers = response.headers
 
-    handle_response_error
+    handle_response_error response
   end
 
-  def handle_response_error
+  def handle_response_error response
     case self.error_code
     when ::Response::ErrorCode::SUCCESS, ::Response::ErrorCode::ALL_CONFIRM
       true
     else
+      raise response.inspect
       false
     end
   end

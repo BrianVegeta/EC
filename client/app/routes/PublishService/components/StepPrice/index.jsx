@@ -161,7 +161,7 @@ class StepPrice extends React.Component {
                 ref={discountInput => (this.discountInput = discountInput)}
                 value={discount}
                 onChange={value => dispatchChangeData({ discount: value })}
-                constraints={constraints.discount(price || 0)}
+                constraints={discount ? constraints.discount(price || 0) : null}
                 validateOnBlur
               />
             </div>
