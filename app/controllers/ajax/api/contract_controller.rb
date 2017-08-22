@@ -337,8 +337,7 @@ class Ajax::Api::ContractController < ApplicationController
 
      params.permit(:unit, :paymenttype, :send_type, :send_b_store_id,
        :return_type, :item_lessee_receive_city, :item_lessee_receive_area,
-       :lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note,
-       :city, :area
+       :lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note
        ).merge(current_uid_params)
 
   end
@@ -366,8 +365,7 @@ class Ajax::Api::ContractController < ApplicationController
      # note : String => 文字
 
      params.permit(:unit, :paymenttype, :service_location_type, :service_city,
-       :service_area, :service_address, :leasestart, :leaseend, :coupon_no, :note,
-       :city, :area,
+       :service_area, :service_address, :leasestart, :leaseend, :coupon_no, :note
        ).merge(current_uid_params)
 
   end
@@ -391,8 +389,7 @@ class Ajax::Api::ContractController < ApplicationController
       　       # coupon_no : String => 折價卷的代號
        # note : String => 文字
 
-       params.permit(:unit, :paymenttype, :leasestart, :leaseend, :coupon_no, :note,
-       :city, :area
+       params.permit(:unit, :paymenttype, :leasestart, :leaseend, :coupon_no, :note
          ).merge(current_uid_params)
 
   end
