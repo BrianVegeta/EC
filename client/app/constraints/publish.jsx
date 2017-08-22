@@ -62,6 +62,11 @@ export default {
       maximum: 15,
       tooLong: '^請短於%{count}個字',
     },
+    format: {
+      pattern: '[\u4e00-\u9fa5_a-zA-Z0-9 ]{0,50}$',
+      flags: 'i',
+      message: '^只能輸入中文,英文',
+    },
   },
   price: {
     presence: {

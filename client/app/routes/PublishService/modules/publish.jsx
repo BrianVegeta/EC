@@ -43,71 +43,57 @@ export const reset = () => ({
   type: RESET,
 });
 
+const transformParams = (covers, {
+  title, descript, categoryID,
+  cityName, areaName,
+  tag1, tag2, tag3,
+  unit, price, deposit, reservationDays,
+  assignAddressByOwner, assignAddressByCustomer,
+  assignCity, assignArea, assignAddress,
+  chargeType, startDate, endDate, discount,
+  regulation,
+}) => {
+  const assignTypes = [];
+  if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
+  if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
+  return ({
+    pname: title,
+    img1: covers[0] && covers[0].s3,
+    img2: covers[1] && covers[1].s3,
+    img3: covers[2] && covers[2].s3,
+    pdes: descript,
+    cat_id: categoryID,
+    city: cityName,
+    area: areaName,
+    unit,
+    price,
+    deposit,
+    currency: 'NTD',
+    advance_reservation_days: reservationDays,
+    tag1: (tag1 || null),
+    tag2: (tag2 || null),
+    tag3: (tag3 || null),
+    assign_address_type: assignTypes.join(''),
+    assign_city: assignCity,
+    assign_area: assignArea,
+    assign_address: assignAddress,
+    calculate_charge_type: chargeType,
+    start_date: (startDate ? startDate.valueOf() : null),
+    end_date: (endDate ? endDate.valueOf() : null),
+    discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
+      [{ type: 'FIX', param: 0, discount }] : [],
+    rules: [regulation],
+    min_lease_days: 0,
+  });
+};
 export const savePublish = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
-      const {
-        title,
-        descript,
-        categoryID,
-        city, area,
-        unit,
-        price,
-        deposit,
-        reservationDays,
-        tag1,
-        tag2,
-        tag3,
-        assignAddressByOwner,
-        assignAddressByCustomer,
-        assignCity,
-        assignArea,
-        assignAddress,
-        chargeType,
-        startDate,
-        endDate,
-        discount,
-        regulation,
-      } = getState()[REDUCER_KEY];
+      const publish = getState()[REDUCER_KEY];
       const covers = getState()[COVER_REDUCER_KEY];
-
-      const assignTypes = [];
-      if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
-      if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
-
-      const requestParams = {
-        pname: title,
-        img1: covers[0] && covers[0].s3,
-        img2: covers[1] && covers[1].s3,
-        img3: covers[2] && covers[2].s3,
-        pdes: descript,
-        cat_id: categoryID,
-        city,
-        area,
-        unit,
-        price,
-        deposit,
-        currency: 'NTD',
-        advance_reservation_days: reservationDays,
-        tag1: (tag1 || null),
-        tag2: (tag2 || null),
-        tag3: (tag3 || null),
-        assign_address_type: assignTypes.join(''),
-        assign_city: assignCity,
-        assign_area: assignArea,
-        assign_address: assignAddress,
-        calculate_charge_type: chargeType,
-        start_date: (startDate ? startDate.valueOf() : null),
-        end_date: (endDate ? endDate.valueOf() : null),
-        discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
-          [{ type: 'FIX', param: 0, discount }] : [],
-        rules: [regulation],
-        min_lease_days: 0,
-      };
-
       asyncXhrAuthedPost(
         '/ajax/create_service_item.json',
-        requestParams,
+        transformParams(covers, publish),
         getState(),
       )
       .then((data) => {
