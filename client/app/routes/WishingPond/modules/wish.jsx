@@ -4,9 +4,9 @@ import { reduceDuplicateRecords } from 'lib/utils';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'USERPROFILE.WISH_LIST';
-const REDUCER_KEY = 'userprofileWishList';
-const SIZE = 3;
+const ACTION_PREFIX = 'WISH';
+export const REDUCER_KEY = 'wish';
+const SIZE = 20;
 const DUPLICATE_ID = 'id';
 
 
@@ -66,7 +66,7 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export function fetchRecords(uid, recursiveRecords = []) {
+export function fetchRecords(recursiveRecords = []) {
   return (dispatch, getState) => {
     const {
       size,
@@ -75,11 +75,9 @@ export function fetchRecords(uid, recursiveRecords = []) {
       recursiveTimes,
       lastId,
     } = getState()[REDUCER_KEY];
-
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
-      uid,
       // last_id: lastId,
     };
 
@@ -95,9 +93,12 @@ export function fetchRecords(uid, recursiveRecords = []) {
     )
     .then((data) => {
       const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_ID);
-      if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
+      if (
+        reducedRecords.length < data.length &&
+        recursiveTimes <= RECURSIVE_LIMIT
+      ) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(uid, reducedRecords));
+        dispatch(fetchRecords(reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */

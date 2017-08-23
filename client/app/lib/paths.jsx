@@ -35,9 +35,17 @@ export const notifyPath = {
   systemNotifyPath: '/p/notify/system',
 };
 
+/* 商品列表 */
 export const items = {
   servicePath: '/p/i/service',
+  goodsPath: '/p/i/goods',
+  spacePath: '/p/i/space',
 };
+
+export const wishRouter = {
+  indexPath: '/p/i/wishing-pond',
+};
+
 
 /* 發佈服務 */
 export const publishService = {

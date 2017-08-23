@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import {
+  items as itemsRouter,
+  wishRouter,
+} from 'lib/paths';
+import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
   CATEGORY_SPACE,
@@ -14,11 +18,10 @@ import styles from './styles.sass';
 
 
 const navs = [
-  { name: '分享服務', href: '/p/i/service', topCategory: CATEGORY_SERVICE },
-  { name: '租借空間', href: '/p/i/space', topCategory: CATEGORY_SPACE },
-  { name: '租借物品', href: '/p/i/goods', topCategory: CATEGORY_GOODS },
-  { name: '分享王', href: '/' },
-  { name: '許願看板', href: '/' },
+  { name: '分享服務', href: itemsRouter.servicePath, topCategory: CATEGORY_SERVICE },
+  { name: '租借空間', href: itemsRouter.spacePath, topCategory: CATEGORY_SPACE },
+  { name: '租借物品', href: itemsRouter.goodsPath, topCategory: CATEGORY_GOODS },
+  { name: '許願看板', href: wishRouter.indexPath },
 ];
 
 const cx = classnames.bind(styles);

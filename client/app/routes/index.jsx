@@ -2,7 +2,7 @@ import layoutHoc from 'containers/layoutHoc';
 
 // import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
-import layoutItemDetail from 'layouts/ItemDetail';
+// import layoutItemDetail from 'layouts/ItemDetail';
 import Publish from 'layouts/Publish';
 import Mine from 'layouts/MyAccount';
 import Signinup from 'layouts/Signinup';
@@ -15,6 +15,7 @@ import routeItemsGoods from './Items/routeGoods';
 import routeItemsService from './Items/routeService';
 import routeItemsSpace from './Items/routeSpace';
 import routeItemsCategory from './Items/routeCategory';
+import routeWishingPond from './WishingPond/route';
 
 // import routeItemsCategory from './ItemListCategory/route';
 
@@ -56,8 +57,7 @@ export default store => ({
         routeItemsService(store),
         routeItemsSpace(store),
         routeItemsCategory(store),
-        // Categories(routesHelper, dispatch),
-        // // Tanzaku(routesHelper, dispatch),
+        routeWishingPond(store),
       ],
     },
     /* User profile */

@@ -27,14 +27,26 @@ class WishList extends React.Component {
     eachMargin: PropTypes.number,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isWaiting: true,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isWaiting: false });
+  }
+
   render() {
     const { records, eachMargin } = this.props;
-
+    const { isWaiting } = this.state;
+    const mountRecords = isWaiting ? [] : records;
     return (
       <div styleName="container">
         <ListContainer marginLeft={eachMargin} className="clear">
           <Masonry>
-            {records.map((record, index) => (
+            {mountRecords.map((record, index) => (
               <ItemContainer
                 key={`${index + 1}`}
                 className={cx('item')}
