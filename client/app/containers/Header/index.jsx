@@ -78,18 +78,18 @@ class Header extends React.Component {
               }
               <ul className="navs navs-right" >
                 <NavItem action={SHAREAPP_HELP_URL} content="幫助" />
-                <NavItem action="/" content="收藏" />
+                <NavItem action={my.collectionPath} content="收藏" />
                 {!isLogin && <NavItem action="/p/registration" content="註冊" />}
                 {!isLogin && <NavItem action="/p/login" content="登入" />}
                 {isLogin &&
                   <NavItem content="我的商店">
                     <DropdownNavs
                       list={[
-                        { link: '/', text: '收到的預訂' },
-                        { link: '/', text: '消費訂單' },
-                        { link: '/', text: '分享/發佈' },
-                        { link: '/', text: '我的錢包' },
-                        { link: '/', text: '評價' },
+                        { link: my.ownerOrderItem('TAB_REQUEST'), text: '廠商訂單' },
+                        { link: my.lesseeOrderItem('TAB_REQUEST'), text: '消費狀態' },
+                        { link: my.itemPath, text: '分享/發佈' },
+                        { link: my.walletPath, text: '我的錢包' },
+                        { link: my.commentOwnerPath, text: '評價' },
                       ]}
                     />
                   </NavItem>

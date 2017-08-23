@@ -1,18 +1,7 @@
-// @author: vincent
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ITEM_MAIN_INTRODUCTION,
-  ITEM_MAIN_REGULATION,
-  ITEM_MAIN_CANCEL_POLICY,
-  ITEM_MAIN_COMMENT,
-  ITEM_MAIN_SHARER,
-} from 'constants/itemDetailScrollNavs';
-import colors from 'styles/colorExport.scss';
-import { without } from 'lodash';
 import Cover from './Cover';
-
-// import Breadcrumbs from './Breadcrumbs';
+import Breadcrumbs from './Breadcrumbs';
 import Title from './Title';
 import TitleFooter from './TitleFooter';
 import Description from './Description';
@@ -23,6 +12,13 @@ import CancelPolicy from './CancelPolicy';
 // import PublicComment from './PublicComment';
 import Comments from './Comments';
 import Sharer from './Sharer';
+import {
+  ITEM_MAIN_INTRODUCTION,
+  ITEM_MAIN_REGULATION,
+  ITEM_MAIN_CANCEL_POLICY,
+  ITEM_MAIN_COMMENT,
+  ITEM_MAIN_SHARER,
+} from '../../../constants/itemDetailScrollNavs';
 
 class Main extends React.Component {
 
@@ -30,17 +26,13 @@ class Main extends React.Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  rComment(isPaginable, comments, dispatchRecords, dispatchAddMessage) {
+  rComment(comments) {
     const id = ITEM_MAIN_COMMENT;
     const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
+    console.warn('please finish this comments');
     return (
-      <div styleName="nav-anchor" {...{ id, ref }}>
-        <Comments
-          isPaginable={isPaginable}
-          comments={comments}
-          dispatchRecords={dispatchRecords}
-          dispatchAddMessage={dispatchAddMessage}
-        />
+      <div styleName="nav-anchor" {...{ id, ref }} >
+        <Comments />
       </div>
     );
   }
@@ -55,15 +47,19 @@ class Main extends React.Component {
     );
   }
 
-  rCancelPolicy(cancelPolicys) {
+  rCancelPolicy(cancel_policys) {
+
+    if (cancel_policys == null || cancel_policys.length == 0) {
+        return null;
+    }
 
     const id = ITEM_MAIN_CANCEL_POLICY;
-    const ref = cancelPolicysRef => (this[ITEM_MAIN_CANCEL_POLICY] = cancelPolicysRef);
+    const ref = cancel_policy => (this[ITEM_MAIN_CANCEL_POLICY]) = cancel_policy;
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <CancelPolicy
-          advance_day={cancelPolicys[0].advance_day}
-          rate={cancelPolicys[0].rate}
+          advance_day={cancel_policys[0].advance_day}
+          rate={cancel_policys[0].rate}
         />
       </div>
     );
@@ -72,23 +68,20 @@ class Main extends React.Component {
   rIntroduction(item) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
-    const { pname, pdes, city, area, tags, category } = item;
+    const {pname, pdes, unit, city, area, tags, calculate_charge_type} = item;
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={pname} />
         <div styleName="title-footer">
-          <TitleFooter location={`${city}${area}`} category={category} />
+          <TitleFooter location={`${city}${area}`}/>
         </div>
         <Description description={pdes} />
         <Tags tags={tags} />
         <Detail
-          unit={item.unit}
-          calculate_charge_type={item.calculate_charge_type}
-          topCategory={item.top_category}
-          advanceDay={item.advance_reservation_days}
-          sendOption={item.send_option}
-          returnOption={item.return_option}
-          shipDay={item.ship_before_start_days}
+          city={city}
+          area={area}
+          unit={unit}
+          calculate_charge_type={calculate_charge_type}
         />
       </div>
     );
@@ -102,14 +95,14 @@ class Main extends React.Component {
       return (
         <div styleName="nav-anchor" {...{ id, ref }} >
           <Sharer
-            name={''}
-            picture={''}
-            city={''}
-            area={''}
-            autobiography={''}
+            name={""}
+            picture={""}
+            city={""}
+            area={""}
+            autobiography={""}
             owner_credit={0.0}
             create_time={0}
-            target_uid={''}
+            target_uid={""}
             is_follow={false}
             dispatch={dispatch}
           />
@@ -135,33 +128,20 @@ class Main extends React.Component {
     }
   }
 
-  rOverdueRate(overdueRate, deposit) {
-    const overdueRatePerDay = ((deposit * overdueRate) / 100);
-    return (<div styleName="section-content">
-      <div style={{ lineHeight: '100px', fontWeight: 500, fontSize: 24 }}>逾期金政策</div>
-      <div>
-        <span>逾期1天，將從押金扣除</span>
-        <span style={{ color: colors.colorHeart }}>{`NTD$${overdueRatePerDay}`}</span>
-        <span>，扣除的總金額則取決於逾期的天數做累加計算</span>
-      </div>
-      <div style={{ paddingBottom: 40 }} />
-    </div>);
-  }
   render() {
-    const { item, messageboard, dispatch, dispatchRecords, dispatchAddMessage } = this.props;
-    const images = without([item.img1, item.img2, item.img3], null);
+    const { item , dispatch} = this.props
+    // console.log(this.props);
     return (
       <div styleName="container">
         <div styleName="cover">
-          <Cover images={images} />
+          <Cover />
         </div>
+        <Breadcrumbs />
         {this.rIntroduction(item)}
-        { (item.rules.length > 0) && this.rRegulation(item.rules)}
-        { (item.cancel_policys.length > 0) && this.rCancelPolicy(item.cancel_policys)}
-        { item.overdue_rate && this.rOverdueRate(item.overdue_rate, item.deposit)}
+        {this.rRegulation(item.rules)}
+        {this.rCancelPolicy(item.cancel_policys)}
         {this.rSharer(item, dispatch)}
-        {this.rComment(messageboard.isPaginable, messageboard.records,
-          dispatchRecords, dispatchAddMessage)}
+        {this.rComment(item.comments)}
       </div>
     );
   }

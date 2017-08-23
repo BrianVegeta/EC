@@ -68,6 +68,8 @@ class StepConfirm extends React.Component {
   }
 
   onNextStepClick() {
+    console.log(this.props);
+
     const {
       dispatchSavePublish,
       dispatchValidateAll,

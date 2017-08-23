@@ -14,5 +14,6 @@ export default class {
     this.addresses = `${handleNullAtrr(user.city)}${handleNullAtrr(user.area)}`;
     this.avatar = handleNullAtrr(user.picture);
     this.avatarBg = _.isEqual(this.avatar, '') ? null : this.avatar;
+    this.uid = user.uid;
   }
 }

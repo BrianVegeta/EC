@@ -24,6 +24,7 @@ class Dates extends React.Component {
     endDate: null,
     preparation: 0,
     minPicks: 0,
+    isOutsideRange: undefined
   };
 
   static propTypes = {
@@ -32,8 +33,8 @@ class Dates extends React.Component {
     preparation: PropTypes.number,
     minPicks: PropTypes.number,
     onDatesChange: PropTypes.func.isRequired,
-
     onBlur: PropTypes.func.isRequired, // for hasError
+    isOutsideRange: PropTypes.func,
   };
 
   static todayDate() {
@@ -105,7 +106,8 @@ class Dates extends React.Component {
 
   render() {
     moment.locale('zh-tw');
-    const { startDate, endDate, onDatesChange } = this.props;
+    console.log('bbb');
+    const { startDate, endDate, onDatesChange, isOutsideRange } = this.props;
     return (
       <DateRangePicker
         ref={dp => (this.dp = dp)}
@@ -132,6 +134,7 @@ class Dates extends React.Component {
         navPrev={<ArrowLeft />}
         navNext={<ArrowRight />}
         displayFormat="YYYY/MM/DD"
+        isOutsideRange={isOutsideRange}
         isDayBlocked={this.isDayBlocked}
         minimumNights={this.props.minPicks}
         renderCalendarInfo={this.renderCalendarInfo}

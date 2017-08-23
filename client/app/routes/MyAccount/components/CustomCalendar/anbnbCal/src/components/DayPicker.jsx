@@ -191,9 +191,6 @@ export default class DayPicker extends React.Component {
     super(props);
 
     const currentMonth = props.hidden ? moment() : props.initialVisibleMonth();
-    console.log('constructor');
-    console.log(props.hidden);
-    console.log(currentMonth);
     let focusedDate = currentMonth.clone().startOf('month');
     if (props.getFirstFocusableDay) {
       focusedDate = props.getFirstFocusableDay(currentMonth);

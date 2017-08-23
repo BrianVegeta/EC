@@ -57,7 +57,6 @@ export default function DayPickerNavigation(props) {
     phrases,
     isRTL,
   } = props;
-  console.log(hiddenChangeMonthButton);
   const isVertical = orientation !== HORIZONTAL_ORIENTATION;
   const isVerticalScrollable = orientation === VERTICAL_SCROLLABLE;
 

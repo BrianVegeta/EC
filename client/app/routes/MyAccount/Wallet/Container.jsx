@@ -9,7 +9,7 @@ import Container from '../components/Container';
 class WalletContainer extends React.Component {
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
 
     return (
       <Container titleText={'我的錢包'}></Container>

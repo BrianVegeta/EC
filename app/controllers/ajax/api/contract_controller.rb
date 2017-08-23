@@ -257,6 +257,8 @@ class Ajax::Api::ContractController < ApplicationController
       response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);
       response_data['lessee_real_name'] = replaceString(response_data['lessee_real_name'], 0, 2);
       response_data['lesseephone'] = replaceString(response_data['lesseephone'], 3, 6);
+      response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+      response_data['space_address'] = replaceString(response_data['space_address'], 0, 5);
     end
     return response_data
   end

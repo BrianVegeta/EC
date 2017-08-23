@@ -8,7 +8,12 @@ import Time from 'components/Icons/Time';
 import { replace } from 'lodash';
 
 class Detail extends React.Component {
-
+  static defaultProps = {
+    advanceDay: 0,
+    sendOption: '',
+    returnOption: '',
+    shipDay: 3,
+  }
   static propTypes = {
     unit: PropTypes.number.isRequired,
     calculate_charge_type: PropTypes.string.isRequired,
@@ -95,11 +100,10 @@ class Detail extends React.Component {
   }
 
   render() {
-    const { unit, calculate_charge_type,
+    const { unit,
        topCategory, advanceDay, sendOption, returnOption, shipDay } = this.props;
     switch (topCategory) {
       case '1':
-        console.log(unit);
         const unitStr = (unit && unit > 0) ? `${unit}件` : '無庫存';
         const sendStr = sendOption ? this.renderShipmentStr(sendOption) : '沒有提供';
         const returnStr = returnOption ? this.renderShipmentStr(returnOption) : '沒有提供';

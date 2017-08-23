@@ -10,7 +10,7 @@ class RowWish extends React.Component {
 
   static propTypes = {
     source: PropTypes.shape({
-      pid: PropTypes.string.isRequired,
+      pid: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       picture: PropTypes.string.isRequired,
       priceLabel: PropTypes.string.isRequired,

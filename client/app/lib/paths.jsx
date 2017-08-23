@@ -87,7 +87,6 @@ export const my = {
   collectionPath: '/p/my/collections',
   calendarPath: '/p/my/calendar',
   couponPath: '/p/my/coupon',
-  commentPath: '/p/my/comment',
   commentOwnerPath: '/p/my/comment-owner',
   commentLesseePath: '/p/my/comment-lessee',
 };

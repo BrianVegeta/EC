@@ -27,7 +27,7 @@ class Comments extends React.Component {
 
   render() {
     const { comments, isPaginable, dispatchAddMessage } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div styleName="container">
         <h2 styleName="title">公開留言</h2>
