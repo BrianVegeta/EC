@@ -33,13 +33,13 @@ const cx = classnames.bind(styles);
 class Sidebar extends React.Component {
 
   static propTypes = {
-    item: myPropTypes.item.isRequired,
+    itemDetail: myPropTypes.item.isRequired,
     isMyOwn: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { item, isMyOwn } = this.props;
-    const { price } = item;
+    const { itemDetail, isMyOwn } = this.props;
+    const { price } = itemDetail;
 
     return (
       <StickyContainer style={{ height: 1700 }}>
@@ -56,10 +56,10 @@ class Sidebar extends React.Component {
                 </div>
                 <div className={cx('body')} >
                   <OrderBoard
-                    model={new BoardModel(item, isMyOwn)}
+                    model={new BoardModel(itemDetail, isMyOwn)}
                     isSticky={isSticky}
                   />
-                  <InteractiveBoard favorite={item.favorite_count} />
+                  <InteractiveBoard favorite={itemDetail.favorite_count} />
                   <ReportLink >
                     <Link to="/" >
                       <IconFlag size={18} />

@@ -152,16 +152,18 @@ export const asyncXhrAuthedGet = (path, state) =>
 // ASYNC POST
 export const asyncXhrPost = (path, params) =>
   new Promise((resolve, reject) => {
-    fetch(path, { ...SETTINGS_POST, body: JSON.stringify(params) })
-    .then(response => response.json())
-    .then((json) => {
+    fetch(
+      path,
+      { ...SETTINGS_POST, body: JSON.stringify(params) },
+    ).then(response =>
+      response.json(),
+    ).then((json) => {
       if (json.success) {
         resolve(json.data);
       } else {
         reject();
       }
-    })
-    .catch((err) => { throw err; });
+    }).catch((err) => { throw err; });
   });
 
 // ASYNC AUTH POST

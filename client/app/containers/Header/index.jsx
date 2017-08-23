@@ -7,7 +7,12 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 
-import { my, notifyPath } from 'lib/paths';
+import {
+  my,
+  notifyPath,
+  registrationPath,
+  loginPath,
+} from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import cn from 'classnames';
@@ -34,26 +39,29 @@ class Header extends React.Component {
     hasShortcut: PropTypes.bool,
     searchable: PropTypes.bool,
 
-    notification: myPropTypes.notification.isRequired,
     auth: myPropTypes.authOnHeader.isRequired,
-
-    dispatch: PropTypes.func.isRequired,
     dispatchLogout: PropTypes.func.isRequired,
     dispatchPublish: PropTypes.func.isRequired,
   };
 
   render() {
     const {
-      dispatch,
       dispatchLogout,
       dispatchPublish,
       searchable,
-      auth,
+      auth: { isLogin, currentUser },
       fixed,
       hasShortcut,
-      notification,
     } = this.props;
-    const { isLogin } = auth;
+
+    const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
+    const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
+    const myCommentsPath = my.commentOwnerPath;
+    const myItemsPath = my.itemPath;
+    const myWalletPath = my.walletPath;
+    const myCollectionPath = my.collectionPath;
+    const notifyIndexPath = notifyPath.contractNotifyPath;
+
 
     return (
       <header
@@ -78,28 +86,23 @@ class Header extends React.Component {
               }
               <ul className="navs navs-right" >
                 <NavItem action={SHAREAPP_HELP_URL} content="幫助" />
-                <NavItem action={my.collectionPath} content="收藏" />
-                {!isLogin && <NavItem action="/p/registration" content="註冊" />}
-                {!isLogin && <NavItem action="/p/login" content="登入" />}
+                <NavItem action={myCollectionPath} content="收藏" />
+                {!isLogin && <NavItem action={registrationPath} content="註冊" />}
+                {!isLogin && <NavItem action={loginPath} content="登入" />}
                 {isLogin &&
                   <NavItem content="我的商店">
                     <DropdownNavs
                       list={[
-                        { link: my.ownerOrderItem('TAB_REQUEST'), text: '廠商訂單' },
-                        { link: my.lesseeOrderItem('TAB_REQUEST'), text: '消費狀態' },
-                        { link: my.itemPath, text: '分享/發佈' },
-                        { link: my.walletPath, text: '我的錢包' },
-                        { link: my.commentOwnerPath, text: '評價' },
+                        { link: myOrdersPath, text: '廠商訂單' },
+                        { link: myLesseeOrdersPath, text: '消費狀態' },
+                        { link: myItemsPath, text: '分享/發佈' },
+                        { link: myWalletPath, text: '我的錢包' },
+                        { link: myCommentsPath, text: '評價' },
                       ]}
                     />
                   </NavItem>
                 }
-                {isLogin &&
-                  <NavItem
-                    action={notifyPath.contractNotifyPath}
-                    content="通知"
-                  />
-                }
+                {isLogin && <NavItem action={notifyIndexPath} content="通知" />}
                 {isLogin &&
                   <NavItem
                     action={dispatchPublish}
@@ -108,12 +111,11 @@ class Header extends React.Component {
                   />
                 }
                 {isLogin &&
-                  <NavItem content={<Me currentUser={auth.currentUser} />}>
+                  <NavItem content={<Me currentUser={currentUser} />}>
                     <DropdownNavs
                       list={[
                         { link: '/', text: '編輯個人資料' },
                         { link: my.indexPath, text: '帳戶管理' },
-                        { link: '/', text: '設定' },
                         { action: dispatchLogout, text: '登出' },
                       ]}
                     />

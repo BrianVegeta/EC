@@ -3,11 +3,11 @@ import Sidebar from '../components/Sidebar';
 
 /* pick props */
 const mapStateToProps = ({ environment, item, auth: { currentUser } }) => {
-  const { uid } = item;
+  const { detail } = item;
   return ({
     environment,
-    isMyOwn: currentUser.uid === uid,
-    item,
+    isMyOwn: currentUser.uid === detail.uid,
+    itemDetail: detail,
   });
 };
 

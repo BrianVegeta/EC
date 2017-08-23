@@ -1,0 +1,99 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+class CommentBox extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.onTextboxFocus = this.onTextboxFocus.bind(this);
+    this.onTextboxBlur = this.onTextboxBlur.bind(this);
+    this.onTextboxChange = this.onTextboxChange.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+    this.onComment = this.onComment.bind(this);
+    this.placeholder = '請輸入您想詢問的內容';
+    this.state = {
+      isControllerReady: false,
+      isFocusing: false,
+      textbox: { html: 'test', text: '' },
+    };
+  }
+
+  onTextboxFocus() {
+    this.setState({
+      isControllerReady: true,
+      isFocusing: true,
+    });
+  }
+
+  onTextboxBlur() {
+    this.setState(
+      Object.assign({}, this.state, { isFocusing: false }),
+    );
+  }
+
+  onTextboxChange(e) {
+    this.setState({
+      textbox: { html: e.target.innerHTML, text: e.target.innerText },
+    });
+  }
+
+  onCancel() {
+    this.textbox.innerHTML = null;
+    this.setState({
+      isControllerReady: false,
+      isFocusing: false,
+    });
+  }
+
+  onComment() {
+    console.log(1);
+  }
+
+  rButtons() {
+    return (
+      <div styleName="buttons">
+        <button styleName="cancel" onClick={this.onCancel}>
+          取消
+        </button>
+        <button styleName="comment" onClick={this.onComment}>
+          留言
+        </button>
+      </div>
+    );
+  }
+
+  rPlaceholder() {
+    return <span styleName="placeholder">{this.placeholder}</span>;
+  }
+
+  render() {
+    const { isControllerReady, isFocusing } = this.state;
+    return (
+      <div styleName="container">
+        <div styleName="title">我要留言</div>
+        <div styleName={isFocusing ? 'tb-container-focusing' : 'tb-container'}>
+          <div
+            styleName="textbox"
+            contentEditable="plaintext-only"
+            suppressContentEditableWarning
+            role="textbox"
+            onFocus={this.onTextboxFocus}
+            onBlur={this.onTextboxBlur}
+            onInput={this.onTextboxChange}
+            onKeyUp={this.onTextboxChange}
+            ref={textbox => (this.textbox = textbox)}
+          >
+          </div>
+        </div>
+        <div styleName="controller">
+          { isControllerReady && this.rButtons() }
+        </div>
+        <div>
+          {this.state.textbox.html}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default CommentBox;

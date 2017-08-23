@@ -4,17 +4,13 @@ import myPropTypes from 'propTypes';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import Sidebar from '../Sidebar';
 import Main from '../Main';
-import Model from '../Model';
 import SidebarContainer from '../../containers/SidebarContainer';
 
 
 class Item extends React.Component {
   static propTypes = {
     item: myPropTypes.item.isRequired,
-    auth: myPropTypes.authOnHeader.isRequired,
-    dispatch: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
@@ -41,9 +37,8 @@ class Item extends React.Component {
   }
 
   render() {
-    const { item, dispatch, auth } = this.props;
-    const model = new Model(item, dispatch, auth.currentUser);
-    if (!model.exist) return null;
+    const { item } = this.props;
+    if (!item.isFetched) return null;
     return (
       <div styleName="container" className="clear">
         <div styleName="sidebar-container">

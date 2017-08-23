@@ -116,10 +116,9 @@ export function addMessage(pid, message) {
     const expireFlag = Date.now();
     dispatch(fetching(expireFlag));
 
-    let params = { pid, message };
     asyncXhrAuthedPost(
       '/ajax/add_message.json',
-      params,
+      { pid, message },
       getState(),
     ).then(() => {
       console.log('add success');

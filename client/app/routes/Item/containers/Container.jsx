@@ -5,7 +5,10 @@ import { fetchRecords, reset, addMessage } from '../modules/messageboard';
 import { editItem } from '../modules/item';
 /* pick dispatch */
 const mapStateToProps = ({ environment, item, messageboard, auth }) => ({
-  environment, item, auth, messageboard,
+  environment,
+  item,
+  auth,
+  messageboard,
 });
 /* pick dispatch */
 

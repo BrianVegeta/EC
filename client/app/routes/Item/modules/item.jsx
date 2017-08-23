@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash';
-import { fetchXhrPost } from 'lib/xhr';
+import { asyncXhrPost } from 'lib/xhr';
 
 /* =============================================>>>>>
 = settings =
@@ -10,9 +10,10 @@ export const REDUCER_KEY = 'item';
 = action types =
 ===============================================>>>>>*/
 
-const prefix = action => (`USERPROFILE.${action}`);
+const prefix = action => (`ITEM.${action}`);
 const SET_EDIT = prefix('SET_EDIT');
 const CHANGE_OWNER = prefix('CHANGE_OWNER');
+const FETCHED = prefix('FETCHED');
 
 /* =============================================>>>>>
 = actions =
@@ -28,25 +29,27 @@ const changeOwner = userProfile => ({
   userProfile,
 });
 
+const fetched = () => ({
+  type: FETCHED,
+});
+
 
 export function editItem(pid) {
   return (dispatch) => {
-    fetchXhrPost(
+    asyncXhrPost(
       '/ajax/item_detail.json',
       { pid },
-      (response) => {
-        dispatch(setEdit(response.data));
-        // <--- CHANGE OWNER ---
-        fetchXhrPost(
-          '/ajax/user_info.json',
-          { uid: response.data.uid },
-          (userResponse) => {
-            dispatch(changeOwner(userResponse.data.user_profile));
-          },
-        );
-        // ---- CHANGE OWNER --->
-      },
-    );
+    ).then((data) => {
+      dispatch(setEdit(data));
+      const { uid } = data;
+      asyncXhrPost(
+        '/ajax/user_info.json',
+        { uid },
+      ).then(({ user_profile }) => {
+        dispatch(changeOwner(user_profile));
+        dispatch(fetched());
+      });
+    });
   };
 }
 
@@ -55,7 +58,9 @@ export function editItem(pid) {
 = reducers =
 ===============================================>>>>>*/
 const initialState = {
+  isFetched: false,
   ownerProfile: {},
+  detail: {},
 };
 
 export const isStateInitial = props =>
@@ -65,11 +70,18 @@ export default function (state = initialState, action) {
   switch (action.type) {
 
     case SET_EDIT:
-      return Object.assign({}, state, action.detail);
+      return Object.assign({}, state, {
+        detail: action.detail,
+      });
 
     case CHANGE_OWNER:
       return Object.assign({}, state, {
         ownerProfile: action.userProfile,
+      });
+
+    case FETCHED:
+      return Object.assign({}, state, {
+        isFetched: true,
       });
 
     default:
