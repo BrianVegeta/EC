@@ -1,17 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
-import { forbidExtraProps } from 'airbnb-prop-types';
+
 import { forEach } from 'lodash';
 import moment from 'moment';
 import 'moment/locale/zh-tw';
 import OrderNote from 'components/OrderNote';
-// import { DayPickerRangeController } from 'react-dates';
+import SimpleCalendar from 'components/SimpleCalendar';
 import 'styles/react-dates-override.scss';
-import { DayPickerRangeController } from '../CustomCalendar/anbnbCal';
 
 import Container from '../Container';
-
 
 class Calendar extends React.Component {
 
@@ -28,7 +25,7 @@ class Calendar extends React.Component {
     monthFormat: 'MMMM YYYY',
   };
 
-  static propTypes = forbidExtraProps({
+  static propTypes = {
     dispatchCalendar: PropTypes.func,
     dispatchReset: PropTypes.func,
     bCode: PropTypes.number,
@@ -43,7 +40,9 @@ class Calendar extends React.Component {
     monthFormat: PropTypes.string,
 
     //isRTL: PropTypes.bool,
-  });
+  };
+
+
   constructor(props) {
     super(props);
     this.bCode = 0x00000000;
@@ -54,12 +53,10 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    console.log('DID MOUNT');
     this.props.dispatchCalendar(this.startDate.valueOf(), this.endDate.valueOf());
   }
 
   componentWillUnmount() {
-    console.log('DID UNMOUNT');
     this.props.dispatchReset();
   }
 
@@ -70,26 +67,6 @@ class Calendar extends React.Component {
     this.props.dispatchCalendar(this.startDate.valueOf(), this.endDate.valueOf());
   }
 
-  renderNavigation() {
-    return (
-      <div style={{ height: 80 }}>
-        <button
-          className="button"
-          style={{ width: '200px', float: 'left' }}
-          onClick={() => { this.changeMonth(-1); }}
-        >
-          上一個月
-        </button>
-        <button
-          className="button"
-          style={{ width: '200px', float: 'right' }}
-          onClick={() => { this.changeMonth(1); }}
-        >
-          下一個月
-        </button>
-      </div>
-    );
-  }
   render() {
     const { myCalendar } = this.props;
     const { records, isFetching } = myCalendar;
@@ -97,7 +74,7 @@ class Calendar extends React.Component {
     if (records.length === 0 && isFetching) {
       return (
         <Container titleText={'行事曆'}>
-          { this.renderNavigation()}
+          <div style={{ height: 400 }} />
         </Container>
       )
     }
@@ -119,20 +96,22 @@ class Calendar extends React.Component {
         this.bCode = (this.bCode | result);
       });
     }
-
     return (
       <Container titleText={'行事曆'}>
-        { this.renderNavigation() }
         <div className="clear">
-          <DayPickerRangeController
-            disableFocusedInput
-            hiddenChangeMonthButton
-            language={'zh-tw'}
-            initialVisibleMonth={() => this.startDate }
-            isDayBlocked={() => true }
-            isDayHighlighted={(momentObj) => {
-              return (this.bCode & (2 ** momentObj.date()));
-            }}
+          <SimpleCalendar
+            date={this.startDate}
+            onPickDate={() => {}}
+            onNextMonth={() => this.changeMonth(1)}
+            onPrevMonth={() => this.changeMonth(-1)}
+            checkHighlight={DayOfMonth => (this.bCode & (2 ** DayOfMonth))}
+            renderDay={date => (
+              <span
+                style={{ fontWeight: date.isSame(moment(), 'day') ? 700 : 400 }}
+              >
+                {date.format('D')}
+              </span>
+            )}
           />
         </div>
         <div>
