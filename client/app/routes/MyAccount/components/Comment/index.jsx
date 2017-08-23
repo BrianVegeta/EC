@@ -70,7 +70,7 @@ class Navigation extends React.Component {
             <div styleName="score">{Math.floor(score * 10) / 10}</div>
             <div styleName="stars-container">
               <Stars score={score} activeColor="#FF9442" size={28} />
-              <div styleName="comment-count">86則評價</div>
+              <div styleName="comment-count"></div>
             </div>
           </div>
         </div>
