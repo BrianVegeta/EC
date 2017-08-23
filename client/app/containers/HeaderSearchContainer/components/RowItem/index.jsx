@@ -6,11 +6,11 @@ import Picture from 'components/Picture';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
-class RowWish extends React.Component {
+class RowItem extends React.Component {
 
   static propTypes = {
     source: PropTypes.shape({
-      pid: PropTypes.number.isRequired,
+      id: PropTypes.number,
       title: PropTypes.string.isRequired,
       picture: PropTypes.string.isRequired,
       priceLabel: PropTypes.string.isRequired,
@@ -35,4 +35,4 @@ class RowWish extends React.Component {
     );
   }
 }
-export default CSS(RowWish, styles);
+export default CSS(RowItem, styles);

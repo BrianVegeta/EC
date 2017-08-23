@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import SearchIcon from 'react-icons/lib/md/search';
 import classnames from 'classnames/bind';
 import { connect } from 'react-redux';
+import { debounce } from 'lodash';
+import { searchUserByName, searchItemByName,
+  searchWishByName } from 'actions/searchActions';
 import LoadingSpinner from 'components/Loading/MDSpinner';
+import ButtonLoadMore from 'components/Button/LoadMore';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import SearchPanel from './components/SearchPanel';
@@ -19,19 +23,39 @@ import myPropTypes from '../../propTypes';
 
 const cx = classnames.bind(styles);
 class Search extends React.Component {
+
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     search: myPropTypes.search.isRequired,
   };
+
+  renderMoreButtion(isPaginable, isCurrentPage, isFetching, fetchAction) {
+    if (!isCurrentPage || !isPaginable || !(fetchAction)) {
+      return null;
+    }
+    return (
+      <div styleName="search-more-btn">
+        <ButtonLoadMore
+          isLoading={isFetching}
+          onClick={fetchAction}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { search, dispatch } = this.props;
     const model = new Model(search, dispatch);
-    const { users, items, wishs } = model;
+    const { users, items, wishs,
+      isUsersPaginating, isItemsPaginating, isWishsPaginating} = model;
+    const { isPaginable, isUserFetching,
+      isItemFetching, isWishFetching, query } = search;
+    // console.log(this.props);
     return (
       <div styleName="container">
         <Inputer
           placeholder="尋找你的好物、服務、空間、分享人名稱"
-          onChange={model.doSearch}
+          onChange={debounce(model.doSearch, 1000)}
           setInputRect={model.setInputRect}
         />
         {model.isPanelShow &&
@@ -40,7 +64,7 @@ class Search extends React.Component {
               <Collection
                 headerText="用戶"
                 seeAll={model.doSearchUser}
-                isPaginating={model.isUsersPaginating}
+                isPaginating={isUsersPaginating}
                 prev={model.prevSearch}
               >
                 {users.map((user, index) =>
@@ -49,6 +73,12 @@ class Search extends React.Component {
                     user={new ModelRowUser(user, dispatch)}
                   />,
                 )}
+                {
+                  this.renderMoreButtion(isPaginable,
+                    isUsersPaginating,
+                    isUserFetching,
+                    () => dispatch(searchUserByName(query, true)))
+                }
               </Collection>
             }
             {model.wishs &&
@@ -64,6 +94,11 @@ class Search extends React.Component {
                     source={new ModelRowWish(wish, dispatch)}
                   />,
                 )}
+                { this.renderMoreButtion(isPaginable,
+                  isWishsPaginating,
+                  isWishFetching,
+                  () => dispatch(searchWishByName(query, true)))
+                }
               </Collection>
             }
             {model.items &&
@@ -79,6 +114,11 @@ class Search extends React.Component {
                     source={new ModelRowItem(item, dispatch)}
                   />,
                 )}
+                { this.renderMoreButtion(isPaginable,
+                  isItemsPaginating,
+                  isItemFetching,
+                  () => dispatch(searchItemByName(query, true)))
+                }
               </Collection>
             }
             {model.shouldLoading &&
