@@ -130,7 +130,7 @@ class Main extends React.Component {
 
   render() {
     const { item , dispatch} = this.props
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div styleName="container">
         <div styleName="cover">

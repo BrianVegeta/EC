@@ -73,7 +73,6 @@ class Main extends React.Component {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
     const { pname, pdes, city, area, tags, category } = item;
-    console.log(item);
     return (
       <div styleName="nav-anchor" {...{ id, ref }} >
         <Title title={pname} />

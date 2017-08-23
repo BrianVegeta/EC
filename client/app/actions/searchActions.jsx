@@ -1,5 +1,5 @@
 import * as TYPES from '../constants/actionTypes';
-import { fetchXhrPost } from '../lib/xhr';
+import { fetchXhrPost, asyncXhrAuthedPost } from '../lib/xhr';
 
 
 export const closeResultPanel = () => ({
@@ -83,33 +83,65 @@ function innerSearchByName(name, path, before, after) {
 }
 
 export function searchUserByName(name) {
-  return (dispatch) => {
-    innerSearchByName(
-      name,
-      '/ajax/search/user.json',
-      () => dispatch(beforeFetchUser()),
-      users => dispatch(afterFetchUser(users)),
-    );
+  return (dispatch, getState) => {
+    dispatch(beforeFetchUser());
+    asyncXhrAuthedPost(
+      '/ajax/search_user.json',
+      {
+        name,
+        index: 0,
+        size: 20,
+      },
+      getState(),
+    ).then((responseData) => {
+      dispatch(afterFetchUser(responseData))
+    });
   };
 }
 export function searchItemByName(name) {
-  return (dispatch) => {
-    innerSearchByName(
-      name,
-      '/ajax/search/item.json',
-      () => dispatch(beforeFetchItem()),
-      items => dispatch(afterFetchItem(items)),
-    );
+  return (dispatch, getState) => {
+    dispatch(beforeFetchItem());
+    asyncXhrAuthedPost(
+      '/ajax/search_item.json',
+      {
+        name,
+        index: 0,
+        size: 20,
+      },
+      getState(),
+    ).then((responseData) => {
+      dispatch(afterFetchItem(responseData))
+    });
+
+    // innerSearchByName(
+    //   name,
+    //   '/ajax/search/item.json',
+    //   () => dispatch(beforeFetchItem()),
+    //   items => dispatch(afterFetchItem(items)),
+    // );
   };
 }
 export function searchWishByName(name) {
-  return (dispatch) => {
-    innerSearchByName(
-      name,
-      '/ajax/search/wish.json',
-      () => dispatch(beforeFetchWish()),
-      wishs => dispatch(afterFetchWish(wishs)),
-    );
+  return (dispatch, getState) => {
+    dispatch(beforeFetchWish());
+    asyncXhrAuthedPost(
+      '/ajax/serach_wish.json',
+      {
+        name,
+        last_id: 0,
+        index: 0,
+        size: 20,
+      },
+      getState(),
+    ).then((responseData) => {
+      dispatch(afterFetchWish(responseData))
+    });
+    // innerSearchByName(
+    //   name,
+    //   '/ajax/search/wish.json',
+    //   () => dispatch(beforeFetchWish()),
+    //   wishs => dispatch(afterFetchWish(wishs)),
+    // );
   };
 }
 
