@@ -35,21 +35,26 @@ class WishingPond extends React.Component {
       records,
     } = wish;
 
-    const hasNoData = !isPaginable && !isFetching && records.length === 0;
+    const hasNoRecords = records.length === 0;
+    const hasNoData = !isPaginable && !isFetching && hasNoRecords;
 
     return (
       <div>
         <ListContainer
           minHeight={500}
           noDataText={hasNoData ? '尚無任何許願紙條' : null}
-          isInitialFetching={isFetching}
+          isInitialFetching={isFetching && hasNoRecords}
         >
           <PaginationContainer
             isPaginable={isPaginable}
             isFetching={isFetching}
             loadMore={dispatchFetchRecords}
           >
-            <WishList records={records} />
+            <WishList
+              records={records}
+              editable={false}
+              shouldInitAnimate
+            />
           </PaginationContainer>
         </ListContainer>
       </div>

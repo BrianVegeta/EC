@@ -13,7 +13,12 @@ import styles from './styles.sass';
 
 class WishNote extends React.Component {
 
+  static defaultProps = {
+    editable: true,
+  };
+
   static propTypes = {
+    editable: PropTypes.bool,
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -21,20 +26,29 @@ class WishNote extends React.Component {
       pname: PropTypes.string.isRequired,
       expprice: PropTypes.number.isRequired,
       uid: PropTypes.string.isRequired,
-      user_img: PropTypes.string.isRequired,
+      user_img: PropTypes.string,
       user_name: PropTypes.string.isRequired,
     }).isRequired,
   };
 
+  renderDeleteButton() {
+    return (
+      <div styleName="delete">
+        <IconDelete />
+        <span styleName="delete-text">刪除</span>
+      </div>
+    );
+  }
+
   render() {
-    const { data } = this.props;
+    const { editable, data } = this.props;
     const {
       picture,
       description,
-      id,
+      // id,
       pname,
       expprice,
-      uid,
+      // uid,
       user_img,
       user_name,
     } = data;
@@ -48,8 +62,8 @@ class WishNote extends React.Component {
               src={picture}
               hasShadow={false}
               style={{
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5,
+                borderTopLeftRadius: 4,
+                borderTopRightRadius: 4,
               }}
             />
           </div>
@@ -67,10 +81,7 @@ class WishNote extends React.Component {
               </div>
               <div styleName="username">{user_name}</div>
             </div>
-            <div styleName="delete">
-              <IconDelete />
-              <span styleName="delete-text">刪除</span>
-            </div>
+            {editable && this.renderDeleteButton()}
           </div>
         </div>
       </div>

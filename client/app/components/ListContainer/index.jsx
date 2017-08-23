@@ -41,10 +41,7 @@ class ListContainer extends React.Component {
   }
 
   render() {
-    const {
-      minHeight,
-    } = this.props;
-
+    const { minHeight } = this.props;
     return (
       <div styleName="container" style={{ minHeight }} >
         {this.renderContent()}

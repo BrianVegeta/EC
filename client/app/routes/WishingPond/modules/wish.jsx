@@ -6,7 +6,7 @@ import { reduceDuplicateRecords } from 'lib/utils';
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'WISH';
 export const REDUCER_KEY = 'wish';
-const SIZE = 20;
+const SIZE = 18;
 const DUPLICATE_ID = 'id';
 
 

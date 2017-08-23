@@ -21,6 +21,8 @@ class Preload extends React.Component {
     super(props);
     this.state = {
       loadStatus: IMAGE_LOADING_STATUS,
+      width: null,
+      height: null,
     };
 
     this.handleSuccess = this.handleSuccess.bind(this);
@@ -60,8 +62,13 @@ class Preload extends React.Component {
     this.image = null;
   }
 
-  handleSuccess() {
-    this.setState({ loadStatus: IMAGE_LOADED_STATUS });
+  handleSuccess(e) {
+    const { width, height } = e.target;
+    this.setState({
+      loadStatus: IMAGE_LOADED_STATUS,
+      width,
+      height,
+    });
   }
 
   handleError() {
@@ -69,12 +76,14 @@ class Preload extends React.Component {
   }
 
   render() {
+    const { imageSrc } = this.props;
+    const { width, height } = this.state;
     switch (this.state.loadStatus) {
       case IMAGE_LOADING_STATUS:
         return this.props.renderLoading();
 
       case IMAGE_LOADED_STATUS:
-        return this.props.renderLoaded(this.props.imageSrc);
+        return this.props.renderLoaded(imageSrc, { width, height });
 
       case IMAGE_FAILED_STATUS:
         return this.props.renderFailed();
