@@ -15,11 +15,10 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 import Me from './Me';
-// import ShortcutNavbar from './ShortcutNavbar';
 import DropdownNavs from './DropdownNavs';
 import Logo from './Logo';
 import NavItem from './NavItem';
-import Notification from './Notification';
+
 
 const cx = classnames.bind(styles);
 class Header extends React.Component {
@@ -55,6 +54,7 @@ class Header extends React.Component {
       notification,
     } = this.props;
     const { isLogin } = auth;
+
     return (
       <header
         className={
@@ -95,12 +95,10 @@ class Header extends React.Component {
                   </NavItem>
                 }
                 {isLogin &&
-                  <NavItem content="通知" link={notifyPath.contractNotifyPath}>
-                    <Notification
-                      notification={notification}
-                      dispatch={dispatch}
-                    />
-                  </NavItem>
+                  <NavItem
+                    action={notifyPath.contractNotifyPath}
+                    content="通知"
+                  />
                 }
                 {isLogin &&
                   <NavItem

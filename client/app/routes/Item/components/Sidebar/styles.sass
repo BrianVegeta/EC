@@ -4,24 +4,36 @@
 .container
   position: relative
   padding-bottom: 40px
-  &.fixed
-    .header, .body
-      transform: translate3d(0,0,0)
-      position: fixed
-      z-index: 1005
-      top: 0
   .header
     width: 368px
-    height: 70px
     border-top: 1px solid $global-lineColor
     border-left: 1px solid $global-lineColor
     border-right: 1px solid $global-lineColor
+    .price-container
+      color: $global-blackColor
+      font-size: 20px
+      background-color: #fff
+      padding: 15px 25px
+      .dollar
+        font-size: 33px
+        font-weight: 600
+      .price
+        font-size: 36px
+        font-family: "Helvetica Neue"
+        font-weight: 600
+    &.reverse
+      border: 0
+      .price-container
+        color: #fff
+        background-color: $global-primaryColor
   .body
-    position: absolute
-    top: 0
     width: 368px
-    margin-top: 70px
-    .report
-      margin-top: 30px
-    &.bottom
-      position: absolute !important
+    .order-board
+      padding: 0px 20px 40px 20px
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1)
+      border-left: 1px solid $global-lineColor
+      border-right: 1px solid $global-lineColor
+      border-bottom: 1px solid $global-lineColor
+      .board-inner
+        border-top: 1px solid $global-lineColor
+        padding: 19px 0px

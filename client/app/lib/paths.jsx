@@ -1,13 +1,18 @@
 /* eslint-disable import/prefer-default-export */
+import { trim } from 'lodash';
 
 export const LOGIN = '/p/login';
 
 
-const escapeAlias = alias =>
-  alias.replace(/[^\u4e00-\u9fa5a-zA-Z0-9-_]/g, '-');
+const escapeAlias = (alias) => {
+  const duplicated = alias.replace(/[^\u4e00-\u9fa5a-zA-Z0-9-_]/g, '-');
+  const dashLine = duplicated.replace(/((.)\2)+/g, '-');
+  const trimed = trim(dashLine, '-');
+  return trimed || '-';
+};
 
-export const itemPath = (name, id) =>
-  `/p/${escapeAlias(name)}-i.${id}`;
+export const itemPath = (name, pid, escape = true) =>
+  `/p/${escape ? escapeAlias(name) : name}-i.${pid}`;
 
 export const categoriedItemPath = (categoryName, cid) =>
   `/p/i/${escapeAlias(categoryName)}-c.${cid}`;
@@ -26,7 +31,7 @@ export const notifyPath = {
   contractNotifyPath: '/p/notify/contract',
   activityNotifyPath: '/p/notify/activity',
   systemNotifyPath: '/p/notify/system',
-}
+};
 
 export const items = {
   servicePath: '/p/i/service',
@@ -50,6 +55,15 @@ export const reservationService = {
   paymentPath: pid => `/p/reservation-service/${pid}/step2-payment`,
   confirmPath: pid => `/p/reservation-service/${pid}/step3-confirm`,
 };
+/* 預訂物品 */
+export const reservationGoods = {
+  indexPath: pid => `/p/reservation-goods/${pid}`,
+};
+/* 預訂空間 */
+export const reservationSpace = {
+  indexPath: pid => `/p/reservation-space/${pid}`,
+};
+
 
 export const orderRouter = {
   orderPath: cid => `/p/order_detail/${cid}`,

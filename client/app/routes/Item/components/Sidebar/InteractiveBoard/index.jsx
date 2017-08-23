@@ -50,8 +50,12 @@ const ShareGroup = styled.div`
 
 `;
 class InteractiveBoard extends React.Component {
+
   static propTypes = {
-    favorite: PropTypes.oneOfType([PropTypes.strging, PropTypes.number]).isRequired,
+    favorite: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
   }
   static defaultProps = {
     favorite: 0,

@@ -9,13 +9,12 @@ const mapStateToProps = ({ environment, item, messageboard, auth }) => ({
 });
 /* pick dispatch */
 
-const mapDispatchToProps = (dispatch, { params }) => ({
+const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
   dispatch,
-  dispatchFetchItem: () => dispatch(editItem(params.pid)),
-  dispatchRecords: () => dispatch(fetchRecords(params.pid)),
+  dispatchFetchItem: () => dispatch(editItem(pid)),
+  dispatchRecords: () => dispatch(fetchRecords(pid)),
   dispatchReset: () => dispatch(reset()),
-  dispatchAddMessage: (message) =>
-  dispatch(addMessage(params.pid, message)),
+  dispatchAddMessage: message => dispatch(addMessage(pid, message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Item);

@@ -1,0 +1,26 @@
+//@ author: vincnet
+@import "~styles/color.sass"
+
+.container
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1)
+  padding: 0px 20px 40px 20px
+  border-left: 1px solid $global-lineColor
+  border-right: 1px solid $global-lineColor
+  border-bottom: 1px solid $global-lineColor
+  .term
+    border-top: 1px solid $global-lineColor
+    padding: 19px 0px
+    &.fixed
+      border-top: 0
+    .amount-warn
+      color: #F26363
+      font-size: 15px
+      line-height: 15px
+      margin: 17px 0 17px 20px
+  .reserve-button-container
+    width: 100%
+    margin: 10px 0
+  .notice-container
+    text-align: center
+    font-size: 14px
+    color: #777

@@ -6,13 +6,18 @@ import {
 } from 'lodash';
 import ReactHoverObserver from 'react-hover-observer';
 
-
+import styled from 'styled-components';
 import Dropdown from '../Dropdown';
 
 const RENDER_TYPE_BUTTON = 'RENDER_TYPE_BUTTON';
 const RENDER_TYPE_DROPDOWN = 'RENDER_TYPE_DROPDOWN';
 const RENDER_TYPE_URL = 'RENDER_TYPE_URL';
 const RENDER_TYPE_HREF = 'RENDER_TYPE_HREF';
+
+const HoverContainer = styled.div`
+  display: inline-block;
+`;
+
 class NavItem extends React.Component {
 
   static defaultProps = {
@@ -58,7 +63,9 @@ class NavItem extends React.Component {
           className="nav-hover"
           onHoverChanged={e => (this.dropdown.triggerClick(e))}
         >
-          <Link to={link}>{content}</Link>
+          <HoverContainer >
+            <Link to={link}>{content}</Link>
+          </HoverContainer>
         </ReactHoverObserver>
       );
     }

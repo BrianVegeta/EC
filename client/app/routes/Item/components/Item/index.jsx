@@ -1,23 +1,13 @@
-//@ author: vincnet
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
-import IconFlag from 'react-icons/lib/fa/flag';
-
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
 import Sidebar from '../Sidebar';
 import Main from '../Main';
-import PriceHeader from '../PriceHeader';
-import OrderBoard from '../OrderBoard';
-import InteractiveBoard from '../InteractiveBoard';
 import Model from '../Model';
-import {
-  Container,
-  SidebarContainer,
-  MainContainer,
-  ReportLink,
-} from './styles';
+import SidebarContainer from '../../containers/SidebarContainer';
 
 
 class Item extends React.Component {
@@ -38,18 +28,11 @@ class Item extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    // console.log('shouldUpdate');
-    // console.log(nextProps);
-
     if (nextProps.item.isFetching) {
-      // console.log('no update');
       return false;
     } else if (nextProps.messageboard.isFetching === true) {
-      // console.log('no update');
       return false;
     }
-
-    // console.log('yes update');
     return true;
   }
 
@@ -58,30 +41,20 @@ class Item extends React.Component {
   }
 
   render() {
-    // console.log('did render');
     const { item, dispatch, auth } = this.props;
     const model = new Model(item, dispatch, auth.currentUser);
     if (!model.exist) return null;
     return (
-      <Container className="clear">
-        <SidebarContainer>
-          <Sidebar header={<PriceHeader price={item.price} />}>
-            <OrderBoard model={model.orderBoard} />
-            <InteractiveBoard favorite={item.favorite_count} />
-            <ReportLink >
-              <Link to="/" >
-                <IconFlag size={18} />
-                <span>檢舉此物品</span>
-              </Link>
-            </ReportLink>
-          </Sidebar>
-        </SidebarContainer>
-        <MainContainer >
+      <div styleName="container" className="clear">
+        <div styleName="sidebar-container">
+          <SidebarContainer />
+        </div>
+        <div styleName="main-container" >
           <Main {...this.props} />
-        </MainContainer>
-      </Container>
+        </div>
+      </div>
     );
   }
 }
 
-export default Item;
+export default CSS(Item, styles);
