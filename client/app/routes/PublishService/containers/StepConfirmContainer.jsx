@@ -14,7 +14,13 @@ const {
 } = publishServiceRouter;
 
 /* pick props */
-const mapStateToProps = ({ environment, routingHelper, publish, covers, categories }) => ({
+const mapStateToProps = ({
+  environment,
+  routingHelper,
+  publish,
+  covers,
+  categories,
+}) => ({
   environment,
   routingHelper,
   publish,
@@ -24,11 +30,14 @@ const mapStateToProps = ({ environment, routingHelper, publish, covers, categori
 });
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatchSavePublish: () => dispatch(savePublish()),
-  dispatchValidateAll: () => dispatch(validateAll()),
-  dispatchTouchPath: () => dispatch(touchPath(confirmPath())),
-  redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
-});
+const mapDispatchToProps = (dispatch, { location: { query } }) => {
+  const { pid } = query;
+  return ({
+    dispatchSavePublish: () => dispatch(savePublish()),
+    dispatchValidateAll: () => dispatch(validateAll()),
+    dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
+    redirectToItems: () => browserHistory.push(itemsRouter.servicePath()),
+  });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);

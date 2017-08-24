@@ -241,6 +241,7 @@ class StepConfirm extends React.Component {
           </ConfirmTitle>
         }
         <ButtonNextStep
+          text="儲存"
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}
         />

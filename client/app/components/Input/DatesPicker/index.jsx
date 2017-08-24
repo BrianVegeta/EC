@@ -6,14 +6,11 @@ import { DateRangePicker } from 'react-dates';
 import ArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
 import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down';
 import ArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
-
 import moment from 'moment';
 import 'moment/locale/zh-tw';
 
 import { isToday, inDates } from 'lib/time';
-
-import hasError from 'components/Input/hoc/hasError';
-
+import hasDatesError from 'components/Input/hoc/hasDatesError';
 import 'styles/react-dates-override.scss';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -160,4 +157,4 @@ class Dates extends React.Component {
   }
 }
 
-export default hasError(CSS(Dates, styles));
+export default hasDatesError(CSS(Dates, styles));

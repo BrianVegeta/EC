@@ -49,7 +49,6 @@ class ApiBase
     when ::Response::ErrorCode::SUCCESS, ::Response::ErrorCode::ALL_CONFIRM
       true
     else
-      # raise response.inspect
       false
     end
   end

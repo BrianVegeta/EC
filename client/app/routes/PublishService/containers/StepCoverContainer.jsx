@@ -20,17 +20,20 @@ const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
 });
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatchCreateCover: blob => dispatch(createCover(blob)),
-  dispatchDeleteCover: key => dispatch(deleteCover(key)),
-  dispatchChangeOrders: covers => dispatch(changeOrders(covers)),
-  dispatchOpenCropper: (key, blob) => dispatch(openCropper(key, blob)),
-  dispatchCloseCropper: () => dispatch(closeCropper()),
-  dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
-  dispatchProcessRawCovers: () => dispatch(processRawCovers()),
+const mapDispatchToProps = (dispatch, { location: { query } }) => {
+  const { pid } = query;
+  return ({
+    dispatchCreateCover: blob => dispatch(createCover(blob)),
+    dispatchDeleteCover: key => dispatch(deleteCover(key)),
+    dispatchChangeOrders: covers => dispatch(changeOrders(covers)),
+    dispatchOpenCropper: (key, blob) => dispatch(openCropper(key, blob)),
+    dispatchCloseCropper: () => dispatch(closeCropper()),
+    dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
+    dispatchProcessRawCovers: () => dispatch(processRawCovers()),
 
-  dispatchTouchPath: () => dispatch(touchPath(coverPath())),
-  nextStep: () => browserHistory.push(aboutPath()),
-});
+    dispatchTouchPath: () => dispatch(touchPath(coverPath(pid))),
+    nextStep: () => browserHistory.push(aboutPath(pid)),
+  });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Step1Cover);

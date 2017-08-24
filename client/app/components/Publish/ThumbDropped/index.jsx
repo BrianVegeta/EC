@@ -12,15 +12,16 @@ import styles from './styles.sass';
 class ThumbDropped extends React.Component {
   static defaultProps = {
     coverLabel: null,
+    coverUrl: null,
   };
   static propTypes = {
     coverLabel: PropTypes.node,
-    coverUrl: PropTypes.string.isRequired,
+    coverUrl: PropTypes.string,
     onEdit: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
   };
   render() {
-    const { coverUrl, onEdit, onRemove } = this.props;
+    const { coverUrl, onEdit, onRemove, coverLabel } = this.props;
     const iconProps = { size: 16, color: '#fff', style: { display: 'block' } };
     return (
       <div
@@ -28,7 +29,7 @@ class ThumbDropped extends React.Component {
         style={{ width: DROPBOX_SIZE, height: DROPBOX_SIZE }}
       >
         <Picture src={coverUrl} />
-        {this.props.coverLabel}
+        {coverLabel}
         <div styleName="ctrlGroups" >
           <button className="button" styleName="ctrlIcon" onClick={onEdit} >
             <EditIcon {...iconProps} />

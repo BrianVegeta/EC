@@ -176,7 +176,6 @@ export const validatePriceBy = ({
   }
 
   const isFixType = chargeType === CHARGE_TYPE_FIX;
-  const datesConstraint = isFixType ? constraints.serviceDates : null;
   const unitConstraint = isFixType ? constraints.serviceUnit : null;
   const advanceDaysConstraint = isFixType ? null : constraints.serviceReservationDays;
   const discountConstraint = isFixType && discount ? constraints.discount(price) : null;
@@ -184,14 +183,16 @@ export const validatePriceBy = ({
   const errors = validate({
     price,
     deposit,
-    serviceDates: startDate && endDate && 'date',
+    startDate,
+    endDate,
     unit,
     reservationDays,
     discount,
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    serviceDates: datesConstraint,
+    startDate: isFixType ? constraints.startDate : null,
+    endDate: isFixType ? constraints.endDate : null,
     unit: unitConstraint,
     reservationDays: advanceDaysConstraint,
     discount: discountConstraint,

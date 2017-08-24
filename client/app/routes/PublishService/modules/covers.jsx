@@ -158,20 +158,28 @@ const asyncTransformBlob = ({ img1, img2, img3 }) =>
   });
 
 export const setupCoversForEdit = ({ img1, img2, img3 }) =>
-  (dispatch) => {
-    const restoreThumb = (s3, blob) =>
-      Object.assign({}, initialThumb, { s3, blob, isStored: true });
+  dispatch =>
+    new Promise((resolve) => {
+      const restoreThumb = (s3, blob) =>
+        Object.assign({}, initialThumb, { s3, blob, isStored: true });
 
-    asyncTransformBlob(
-      { img1, img2, img3 },
-    ).then((blobs) => {
-      const covers = [];
-      if (img1) covers.push(restoreThumb(img1, blobs[0]));
-      if (img2) covers.push(restoreThumb(img2, blobs[1]));
-      if (img3) covers.push(restoreThumb(img3, blobs[2]));
-      dispatch(setupCovers(covers));
+      const paddingCovers = [];
+      if (img1) paddingCovers.push(restoreThumb(img1, null));
+      if (img2) paddingCovers.push(restoreThumb(img2, null));
+      if (img3) paddingCovers.push(restoreThumb(img3, null));
+      dispatch(setupCovers(paddingCovers));
+
+      asyncTransformBlob(
+        { img1, img2, img3 },
+      ).then((blobs) => {
+        const covers = [];
+        if (img1) covers.push(restoreThumb(img1, blobs[0]));
+        if (img2) covers.push(restoreThumb(img2, blobs[1]));
+        if (img3) covers.push(restoreThumb(img3, blobs[2]));
+        dispatch(setupCovers(covers));
+        resolve();
+      });
     });
-  };
 
 
 // =============================================

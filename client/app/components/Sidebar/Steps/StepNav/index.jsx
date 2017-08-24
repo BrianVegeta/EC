@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-
 import IconChecked from 'components/Icons/Checked';
-
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
 
-export const STATUS_CHECKED = 'STATUS_CHECKED';
-export const STATUS_UNCHECK = 'STATUS_UNCHECK';
+export const CHECKED = 'CHECKED';
+export const UNCHECK = 'UNCHECK';
 
 const cx = classnames.bind(styles);
-class SidebarCheck extends React.Component {
+class StepNav extends React.Component {
 
   static defaultProps = {
     isTouched: false,
@@ -21,10 +19,7 @@ class SidebarCheck extends React.Component {
 
   static propTypes = {
     isTouched: PropTypes.bool,
-    status: PropTypes.oneOf([
-      STATUS_UNCHECK,
-      STATUS_CHECKED,
-    ]).isRequired,
+    status: PropTypes.oneOf([CHECKED, UNCHECK]).isRequired,
     text: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
   };
@@ -32,14 +27,14 @@ class SidebarCheck extends React.Component {
   render() {
     const { text, path, status, isTouched } = this.props;
     return {
-      [STATUS_UNCHECK]: (
+      [UNCHECK]: (
         <Link to={path}>
           <div className={cx('container', { untouched: !isTouched })}>
             <div styleName="text">{text}</div>
           </div>
         </Link>
       ),
-      [STATUS_CHECKED]: (
+      [CHECKED]: (
         <Link to={path}>
           <div className={cx('container', 'checked')}>
             <div styleName="icon">
@@ -53,4 +48,4 @@ class SidebarCheck extends React.Component {
   }
 }
 
-export default CSS(SidebarCheck, styles);
+export default CSS(StepNav, styles);

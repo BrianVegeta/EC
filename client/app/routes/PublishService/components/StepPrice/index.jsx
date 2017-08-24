@@ -97,9 +97,9 @@ class StepPrice extends React.Component {
               ref={datesInput => (this.datesInput = datesInput)}
               startDate={startDate}
               endDate={endDate}
+              startDateConstraint={constraints.startDate}
+              endDateConstraint={constraints.endDate}
               onDatesChange={dates => dispatchChangeData(dates)}
-              value={startDate && endDate && 'date'}
-              constraints={constraints.serviceDates}
               validateOnBlur
             />
           </FormGroup>
@@ -129,7 +129,7 @@ class StepPrice extends React.Component {
       <FormGroup headerText="提前預約天數">
         <div styleName="reservation-days">
           <InputTextCounter
-            ref={reservationDaysInput => (this.reservationDaysInput = reservationDaysInput)}
+            ref={input => (this.reservationDaysInput = input)}
             value={reservationDays ? String(reservationDays) : ''}
             suffix="天"
             placeholder="請輸入天數(選填)"

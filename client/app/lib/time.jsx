@@ -59,3 +59,6 @@ export function rangeDiff(startDate, endDate, included) {
 
 
 export const now = () => moment().valueOf();
+export {
+  moment,
+};

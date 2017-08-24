@@ -1,6 +1,6 @@
+import { parseInt } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now, getMoment } from 'lib/time';
-// import moment from 'moment';
 import {
   REDUCER_KEY as COVER_REDUCER_KEY,
   setupCoversForEdit,
@@ -70,7 +70,7 @@ const transformState = ({
     descript: pdes,
     cityName: city,
     areaName: area,
-    categoryID: cat_id,
+    categoryID: parseInt(cat_id),
     tag1: tags[0],
     tag2: tags[1],
     tag3: tags[2],
@@ -98,8 +98,8 @@ export const editPublish = pid =>
       { pid },
     ).then((data) => {
       dispatch(fetchedForEdit(transformState(data)));
-      dispatch(setupCoversForEdit(data));
-      console.log(data);
+      dispatch(setupCoversForEdit(data)).then(() => {
+      });
     }).catch(error => console.log(error));
   };
 

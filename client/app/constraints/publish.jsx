@@ -1,8 +1,7 @@
 import validate from 'validate.js';
+import { now, formatDate } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
-import {
-  parseInt,
-} from 'lodash';
+import { parseInt } from 'lodash';
 
 export const PRICE_MIN = 100;
 export const PRICE_MAX = 99999;
@@ -22,6 +21,10 @@ export const numberNotInRage = (value, { min, max }) => {
   return null;
 };
 validate.validators.numberNotInRage = numberNotInRage;
+validate.extend(validate.validators.datetime, {
+  parse: momentObj => momentObj,
+  format: momentValue => formatDate(momentValue),
+});
 
 export default {
   title: {
@@ -93,6 +96,24 @@ export default {
       notInteger: '^請填數字',
       lessThanOrEqualTo: PRICE_MAX,
       notLessThanOrEqualTo: `^請小於 ${formatCurrency(PRICE_MAX)}`,
+    },
+  },
+  startDate: {
+    presence: {
+      message: '^請選擇開始日期',
+    },
+    datetime: {
+      earliest: now(),
+      tooEarly: '^開始日期不得早於%{date}',
+    },
+  },
+  endDate: {
+    presence: {
+      message: '^請選擇結束日期',
+    },
+    datetime: {
+      earliest: now(),
+      tooEarly: '^結束日期不得早於%{date}',
     },
   },
   serviceDates: {

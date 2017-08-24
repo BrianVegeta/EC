@@ -10,19 +10,26 @@ const {
   pricePath,
   regulationPath,
 } = publishServiceRouter;
-/* pick props */
+/* =============================================>>>>>
+= map props =
+===============================================>>>>>*/
 const mapStateToProps = ({ environment, publish }) => ({
   environment,
   publish,
   isValid: validatePriceBy(publish).isValid,
 });
 
-/* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatchChangeData: data => dispatch(changeData(data)),
-  dispatchValidate: () => dispatch(validatePrice()),
-  dispatchTouchPath: () => dispatch(touchPath(pricePath())),
-  nextStep: () => browserHistory.push(regulationPath()),
-});
+/* =============================================>>>>>
+= map dispatch =
+===============================================>>>>>*/
+const mapDispatchToProps = (dispatch, { location: { query } }) => {
+  const { pid } = query;
+  return ({
+    dispatchChangeData: data => dispatch(changeData(data)),
+    dispatchValidate: () => dispatch(validatePrice()),
+    dispatchTouchPath: () => dispatch(touchPath(pricePath(pid))),
+    nextStep: () => browserHistory.push(regulationPath(pid)),
+  });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepPrice);

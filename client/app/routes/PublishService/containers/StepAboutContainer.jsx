@@ -18,11 +18,14 @@ const mapStateToProps = ({ environment, publish }) => ({
 });
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatchChangeData: data => dispatch(changeData(data)),
-  dispatchValidate: () => dispatch(validateAbout()),
-  dispatchTouchPath: () => dispatch(touchPath(aboutPath())),
-  nextStep: () => browserHistory.push(deliveryPath()),
-});
+const mapDispatchToProps = (dispatch, { location: { query } }) => {
+  const { pid } = query;
+  return ({
+    dispatchChangeData: data => dispatch(changeData(data)),
+    dispatchValidate: () => dispatch(validateAbout()),
+    dispatchTouchPath: () => dispatch(touchPath(aboutPath(pid))),
+    nextStep: () => browserHistory.push(deliveryPath(pid)),
+  });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepAbout);
