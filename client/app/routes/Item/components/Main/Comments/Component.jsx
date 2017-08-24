@@ -31,7 +31,7 @@ class Comments extends React.Component {
     return (
       <div styleName="container">
         <h2 styleName="title">公開留言</h2>
-        <CommentBox dispatchAddMessage={dispatchAddMessage}/>
+        <CommentBox dispatchAddMessage={dispatchAddMessage} />
         <div styleName="comments">
           {comments.map((comment, i) => {
             const props = {

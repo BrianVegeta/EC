@@ -204,7 +204,7 @@ export function resendPhoneVerification({ phone }) {
   };
 }
 // EMAIL 登入
-export function loginEmail({ email, password }) {
+export function loginEmail({ email, password }, onAfterLogin) {
   return (dispatch) => {
     dispatch(setLoading());
     fetchXhrPost(
@@ -212,6 +212,9 @@ export function loginEmail({ email, password }) {
       { email, password },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        if (onAfterLogin) {
+          onAfterLogin();
+        }
         // REDIRECT
         browserHistory.push('/');
         dispatch(setLoaded());
@@ -224,7 +227,7 @@ export function loginEmail({ email, password }) {
   };
 }
 // PHONE 登入
-export function loginPhone({ phone, password }) {
+export function loginPhone({ phone, password }, onAfterLogin) {
   return (dispatch) => {
     dispatch(setLoading());
     fetchXhrPost(
@@ -232,6 +235,9 @@ export function loginPhone({ phone, password }) {
       { phone, password },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        if (onAfterLogin) {
+          onAfterLogin();
+        }
         browserHistory.push('/');
         dispatch(setLoaded());
       },
@@ -243,7 +249,7 @@ export function loginPhone({ phone, password }) {
   };
 }
 // FACEBOOK 登入
-export function loginFacebook({ userID, accessToken }) {
+export function loginFacebook({ userID, accessToken }, onAfterLogin) {
   return (dispatch) => {
     dispatch(setLoading());
     fetchXhrPost(
@@ -251,6 +257,9 @@ export function loginFacebook({ userID, accessToken }) {
       { fb_id: userID, access_token: accessToken },
       (response) => {
         dispatch(doLogin(response.data.user_profile));
+        if (onAfterLogin) {
+          onAfterLogin();
+        }
         browserHistory.push('/');
         dispatch(setLoaded());
       },

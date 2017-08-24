@@ -11,6 +11,10 @@ const escapeAlias = (alias) => {
   return trimed || '-';
 };
 
+export const authPath = {
+  loginPath: '/p/login',
+  registrationPath: '/p/registration',
+}
 export const itemPath = (name, pid, escape = true) =>
   `/p/${escape ? escapeAlias(name) : name}-i.${pid}`;
 
