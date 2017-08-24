@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
-import { publishService as router } from 'lib/paths';
+import { publishServiceRouter as router } from 'lib/paths';
 
+const path = router.coverPath();
 export default store => ({
-  path: router.coverPath,
+  path,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

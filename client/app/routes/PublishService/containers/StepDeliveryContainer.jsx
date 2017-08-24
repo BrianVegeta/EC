@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import { publishService as publishServiceRouter } from 'lib/paths';
+import { publishServiceRouter } from 'lib/paths';
 
 import StepDelivery from '../components/StepDelivery';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../modules/publish';
 import { validateDelivery, validateDeliveryBy } from '../modules/validation';
 
+const { deliveryPath, pricePath } = publishServiceRouter;
 /* pick props */
 const mapStateToProps = ({ environment, publish }) => ({
   environment,
@@ -21,8 +22,8 @@ const mapStateToProps = ({ environment, publish }) => ({
 const mapDispatchToProps = dispatch => ({
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchValidate: () => dispatch(validateDelivery()),
-  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.deliveryPath)),
-  nextStep: () => browserHistory.push(publishServiceRouter.pricePath),
+  dispatchTouchPath: () => dispatch(touchPath(deliveryPath())),
+  nextStep: () => browserHistory.push(pricePath()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepDelivery);

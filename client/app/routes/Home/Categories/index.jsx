@@ -5,9 +5,11 @@ import SliderArrow from '../SliderArrow';
 import Category from './Category';
 
 class Categories extends React.Component {
+
   static propTypes = {
-    categories: myPropTypes.categories.isRequired,
+    categories: myPropTypes.middleCategories.isRequired,
   };
+
   render() {
     const { categories } = this.props;
     if (categories.length <= 0) return null;
@@ -25,11 +27,11 @@ class Categories extends React.Component {
     return (
       <div style={{ margin: '0 -15px' }} >
         <Slider {...sliderSettings}>
-          {categories.map((category, index) =>
+          {categories.map((category, index) => (
             <div key={`${index + 1}`} style={{ padding: '0 15px' }}>
               <Category category={category} />
-            </div>,
-          )}
+            </div>
+          ))}
         </Slider>
       </div>
     );

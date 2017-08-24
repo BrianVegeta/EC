@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import { publishService as publishServiceRouter } from 'lib/paths';
+import { publishServiceRouter } from 'lib/paths';
 
 import StepRegulation from '../components/StepRegulation';
 import { changeData, touchPath } from '../modules/publish';
 import { validateRegulation, validateRegulationBy } from '../modules/validation';
 
 /* pick props */
-const PATH_KEY = 'confirmPath';
+const { regulationPath, confirmPath } = publishServiceRouter;
 const mapStateToProps = ({ environment, publish }) => ({
   environment,
   publish,
@@ -19,8 +19,8 @@ const mapStateToProps = ({ environment, publish }) => ({
 const mapDispatchToProps = dispatch => ({
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchValidate: () => dispatch(validateRegulation()),
-  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.regulationPath)),
-  nextStep: () => browserHistory.push(publishServiceRouter[PATH_KEY]),
+  dispatchTouchPath: () => dispatch(touchPath(regulationPath())),
+  nextStep: () => browserHistory.push(confirmPath()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepRegulation);

@@ -5,6 +5,7 @@ import {
   asyncS3ToBlob,
   asyncContainBlobTobase64,
 } from 'lib/utils';
+import { now } from 'lib/time';
 
 /* =============================================>>>>>
 = settings =
@@ -19,6 +20,7 @@ export const REDUCER_KEY = 'covers';
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
+const SETUP_COVERS = prefix('SETUP_COVERS');
 const CREATE_COVER = prefix('CREATE_COVER');
 const DELETE_COVER = prefix('DELETE_COVER');
 const UPDATING_COVER = prefix('UPDATING_COVER');
@@ -26,10 +28,28 @@ const UPDATED_COVER = prefix('UPDATED_COVER');
 const CHANGE_ORDERS = prefix('CHANGE_ORDERS');
 const RESET = prefix('RESET');
 
+/* =============================================>>>>>
+= helpers =
+===============================================>>>>>*/
+const initialThumb = {
+  key: '?',
+  blob: null,
+  s3: null,
+  isUploading: false,
+  isStored: false,
+};
+
+const generateKey = () => `KEY_${now()}`;
+
 
 // =============================================
 // = actions =
 // =============================================
+
+export const setupCovers = covers => ({
+  type: SETUP_COVERS,
+  covers,
+});
 
 export const createCover = blob => ({
   type: CREATE_COVER,
@@ -125,26 +145,50 @@ export const processRawCovers = () =>
       .catch(e => console.log(e));
     });
 
+/* restore covers below */
+const asyncTransformBlob = ({ img1, img2, img3 }) =>
+  new Promise((resolve) => {
+    const promises = [];
+    if (img1) promises.push(asyncS3ToBlob(img1));
+    if (img2) promises.push(asyncS3ToBlob(img2));
+    if (img3) promises.push(asyncS3ToBlob(img3));
+    Promise.all(promises).then((results) => {
+      resolve(results);
+    }).catch(e => console.log(e));
+  });
+
+export const setupCoversForEdit = ({ img1, img2, img3 }) =>
+  (dispatch) => {
+    const restoreThumb = (s3, blob) =>
+      Object.assign({}, initialThumb, { s3, blob, isStored: true });
+
+    asyncTransformBlob(
+      { img1, img2, img3 },
+    ).then((blobs) => {
+      const covers = [];
+      if (img1) covers.push(restoreThumb(img1, blobs[0]));
+      if (img2) covers.push(restoreThumb(img2, blobs[1]));
+      if (img3) covers.push(restoreThumb(img3, blobs[2]));
+      dispatch(setupCovers(covers));
+    });
+  };
+
 
 // =============================================
 // = reducer =
 // =============================================
-const initialThumb = {
-  key: '?',
-  blob: null,
-  s3: null,
-  isUploading: false,
-  isStored: false,
-};
 const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
 
+    case SETUP_COVERS:
+      return action.covers;
+
     case CREATE_COVER:
       return state.concat(
         Object.assign({}, initialThumb, {
-          key: `KEY_${Date.now().toString()}`,
+          key: generateKey(),
           blob: action.blob,
         }),
       );

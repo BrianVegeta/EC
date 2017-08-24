@@ -35,7 +35,8 @@ class OrderBoard extends React.Component {
       deposit,
       payment,
       onReserve,
-      isMine,
+      onEdit,
+      isMyOwn,
     } = model;
     return (
       <div styleName="container">
@@ -56,9 +57,9 @@ class OrderBoard extends React.Component {
         </div>
         <div styleName="reserve-button-container">
           <FormButton
-            content={isMine ? '編輯商品' : '馬上預訂'}
-            colorType={isMine ? 'greenBorder' : 'orange'}
-            onClick={isMine ? null : onReserve}
+            content={isMyOwn ? '編輯商品' : '馬上預訂'}
+            colorType={isMyOwn ? 'greenBorder' : 'orange'}
+            onClick={isMyOwn ? onEdit : onReserve}
             size="md"
           />
         </div>

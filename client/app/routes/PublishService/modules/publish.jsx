@@ -1,6 +1,10 @@
-import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
+import { now, getMoment } from 'lib/time';
 // import moment from 'moment';
-import { REDUCER_KEY as COVER_REDUCER_KEY } from './covers';
+import {
+  REDUCER_KEY as COVER_REDUCER_KEY,
+  setupCoversForEdit,
+} from './covers';
 
 /* =============================================>>>>>
 = settings =
@@ -21,6 +25,7 @@ export const CHARGE_TYPE_DAY = 'day';
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 export const CHANGE_DATA = prefix('CHANGE_DATA');
+export const FETCHED_FOR_EDIT = prefix('FETCHED_FOR_EDIT');
 export const TOUCH_PATH = prefix('TOUCH_PATH');
 export const RESET = prefix('RESET');
 
@@ -39,9 +44,64 @@ export const touchPath = path => ({
   path,
 });
 
+export const fetchedForEdit = data => ({
+  type: FETCHED_FOR_EDIT,
+  data,
+});
+
 export const reset = () => ({
   type: RESET,
 });
+
+/* transform fetched data to state */
+const transformState = ({
+  pname, pdes, city, area, cat_id, tags,
+  assign_address_type, assign_city, assign_area, assign_address,
+  calculate_charge_type, price, deposit, leasestart, leaseend, unit,
+  ship_before_start_days, discounts, rules,
+}) => {
+  const assignAddressByCustomer =
+    assign_address_type.indexOf(ASSIGN_ADDRESS_BY_CUSTOMER) >= 0;
+  const assignAddressByOwner =
+    assign_address_type.indexOf(ASSIGN_ADDRESS_BY_OWNER) >= 0;
+  const discount = discounts[0] ? discounts[0].discount : '';
+  return ({
+    title: pname,
+    descript: pdes,
+    cityName: city,
+    areaName: area,
+    categoryID: cat_id,
+    tag1: tags[0],
+    tag2: tags[1],
+    tag3: tags[2],
+    assignAddressByCustomer,
+    assignAddressByOwner,
+    assignCity: assign_city,
+    assignArea: assign_area,
+    assignAddress: assign_address,
+    chargeType: calculate_charge_type,
+    price,
+    deposit,
+    startDate: getMoment(leasestart),
+    endDate: getMoment(leaseend),
+    unit,
+    reservationDays: ship_before_start_days,
+    discount,
+    regulation: rules[0] || '',
+  });
+};
+
+export const editPublish = pid =>
+  (dispatch) => {
+    asyncXhrPost(
+      '/ajax/item_detail.json',
+      { pid },
+    ).then((data) => {
+      dispatch(fetchedForEdit(transformState(data)));
+      dispatch(setupCoversForEdit(data));
+      console.log(data);
+    }).catch(error => console.log(error));
+  };
 
 const transformParams = (covers, {
   title, descript, categoryID,
@@ -86,6 +146,7 @@ const transformParams = (covers, {
     min_lease_days: 0,
   });
 };
+
 export const savePublish = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
@@ -95,12 +156,9 @@ export const savePublish = () =>
         '/ajax/create_service_item.json',
         transformParams(covers, publish),
         getState(),
-      )
-      .then((data) => {
-        console.warn(data);
+      ).then((data) => {
         resolve(data);
-      })
-      .catch(() => reject());
+      }).catch(() => reject());
     });
 
 // =============================================
@@ -108,6 +166,7 @@ export const savePublish = () =>
 // =============================================
 const initialState = {
   touchedStepPaths: [],
+  fetchedAt: null,
   /* ABOUT */
   title: '',
   descript: '',
@@ -170,6 +229,13 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         touchedStepPaths: state.touchedStepPaths.concat(action.path),
       });
+    }
+
+    case FETCHED_FOR_EDIT: {
+      const newState = Object.assign({}, action.data, {
+        fetchedAt: now(),
+      });
+      return Object.assign({}, state, newState);
     }
 
     case RESET:

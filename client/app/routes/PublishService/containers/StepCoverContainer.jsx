@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { publishService as router } from 'lib/paths';
+import { publishServiceRouter } from 'lib/paths';
 import Step1Cover from '../components/StepCover';
 import {
   createCover,
@@ -9,11 +9,11 @@ import {
   uploadCover,
   processRawCovers,
 } from '../modules/covers';
-import {
-  touchPath,
-} from '../modules/publish';
+import { touchPath } from '../modules/publish';
 import { openCropper, closeCropper } from '../modules/cropper';
 
+
+const { coverPath, aboutPath } = publishServiceRouter;
 /* pick props */
 const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
   environment, publish, covers, cropper,
@@ -29,8 +29,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchUploadCover: (key, base64) => dispatch(uploadCover(key, base64)),
   dispatchProcessRawCovers: () => dispatch(processRawCovers()),
 
-  dispatchTouchPath: () => dispatch(touchPath(router.coverPath)),
-  nextStep: () => browserHistory.push(router.aboutPath),
+  dispatchTouchPath: () => dispatch(touchPath(coverPath())),
+  nextStep: () => browserHistory.push(aboutPath()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Step1Cover);

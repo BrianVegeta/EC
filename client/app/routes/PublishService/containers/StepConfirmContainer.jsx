@@ -1,18 +1,17 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-
 import { CATEGORY_SERVICE } from 'constants/enums';
 import {
-  publishService as publishServiceRouter,
+  publishServiceRouter,
   items as itemsRouter,
 } from 'lib/paths';
-
 import StepConfirm from '../components/StepConfirm';
 import { savePublish, touchPath } from '../modules/publish';
-import {
-  validateAll,
-  validateAllBy,
-} from '../modules/validation';
+import { validateAll, validateAllBy } from '../modules/validation';
+
+const {
+  confirmPath,
+} = publishServiceRouter;
 
 /* pick props */
 const mapStateToProps = ({ environment, routingHelper, publish, covers, categories }) => ({
@@ -28,7 +27,7 @@ const mapStateToProps = ({ environment, routingHelper, publish, covers, categori
 const mapDispatchToProps = dispatch => ({
   dispatchSavePublish: () => dispatch(savePublish()),
   dispatchValidateAll: () => dispatch(validateAll()),
-  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.confirmPath)),
+  dispatchTouchPath: () => dispatch(touchPath(confirmPath())),
   redirectToItems: () => browserHistory.push(itemsRouter.servicePath),
 });
 

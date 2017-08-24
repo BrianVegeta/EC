@@ -47,15 +47,24 @@ export const wishRouter = {
 };
 
 
-/* 發佈服務 */
-export const publishService = {
-  indexPath: '/p/publish-service',
-  coverPath: '/p/publish-service',
-  aboutPath: '/p/publish-service/step2-about',
-  deliveryPath: '/p/publish-service/step3-delivery',
-  pricePath: '/p/publish-service/step4-price',
-  regulationPath: '/p/publish-service/step5-regulation',
-  confirmPath: '/p/publish-service/step6-confirm',
+/* =============================================>>>>>
+= 發佈服務 =
+===============================================>>>>>*/
+const gPublishServiceUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-service'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishServiceRouter = {
+  indexPath: pid => gPublishServiceUrl('', pid),
+  coverPath: pid => gPublishServiceUrl('', pid),
+  aboutPath: pid => gPublishServiceUrl('step2-about', pid),
+  deliveryPath: pid => gPublishServiceUrl('step3-delivery', pid),
+  pricePath: pid => gPublishServiceUrl('step4-price', pid),
+  regulationPath: pid => gPublishServiceUrl('step5-regulation', pid),
+  cancelPolicyPath: pid => gPublishServiceUrl('step6-cancel-policy', pid),
+  confirmPath: pid => gPublishServiceUrl('step7-confirm', pid),
 };
 
 /* 預訂服務 */

@@ -1,11 +1,14 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-
-import { publishService as publishServiceRouter } from 'lib/paths';
-
+import { publishServiceRouter } from 'lib/paths';
 import StepAbout from '../components/StepAbout';
 import { changeData, touchPath } from '../modules/publish';
 import { validateAboutBy, validateAbout } from '../modules/validation';
+
+const {
+  aboutPath,
+  deliveryPath,
+} = publishServiceRouter;
 
 /* pick props */
 const mapStateToProps = ({ environment, publish }) => ({
@@ -18,8 +21,8 @@ const mapStateToProps = ({ environment, publish }) => ({
 const mapDispatchToProps = dispatch => ({
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchValidate: () => dispatch(validateAbout()),
-  dispatchTouchPath: () => dispatch(touchPath(publishServiceRouter.aboutPath)),
-  nextStep: () => browserHistory.push(publishServiceRouter.deliveryPath),
+  dispatchTouchPath: () => dispatch(touchPath(aboutPath())),
+  nextStep: () => browserHistory.push(deliveryPath()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepAbout);

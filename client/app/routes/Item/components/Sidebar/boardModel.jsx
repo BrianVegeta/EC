@@ -6,7 +6,9 @@ import {
   reservationGoods as rsGoodsRouter,
   reservationService as rsServiceRouter,
   reservationSpace as rsSpaceRouter,
+  publishServiceRouter,
 } from 'lib/paths';
+
 
 const CATE_GOODS = '1';
 const CATE_SERVICE = '2';
@@ -14,7 +16,6 @@ const CATE_SPACE = '3';
 const FIX_CHARGE_TYPE = 'fix';
 const ASSIGN_BY_OWNER = '0';
 const ASSIGN_BY_CUSTOMER = '1';
-
 export default class {
 
   static serviceAssignWay({ assign_address_type: type }) {
@@ -43,14 +44,23 @@ export default class {
     return () => browserHistory.push(rsRouter.indexPath(pid));
   }
 
+  static editPublish({ top_category, pid }) {
+    const publishRouter = {
+      [CATE_GOODS]: publishServiceRouter,
+      [CATE_SERVICE]: publishServiceRouter,
+      [CATE_SPACE]: publishServiceRouter,
+    }[top_category];
+    return () => browserHistory.push(publishRouter.indexPath(pid));
+  }
+
   static renderMinLeaseCostDesc({ min_lease_days, price }) {
     const total = formatCurrency(min_lease_days * price);
     return `最少租借${min_lease_days}天，共計${total}`;
   }
 
-  constructor(detail, { uid: currentUserId }) {
+  constructor(detail, isMyOwn) {
     const {
-      uid,
+      // uid,
       // pid,
       discounts,
       top_category,
@@ -64,8 +74,7 @@ export default class {
       unit,
     } = detail;
 
-    const isMine = (uid === currentUserId);
-    this.isMine = isMine;
+    this.isMyOwn = isMyOwn;
     this.topCategory = top_category;
     this.discounts = discounts && discounts.map(discount =>
       this.formatDiscount(discount, top_category),
@@ -77,8 +86,10 @@ export default class {
       redirectToReservation,
       serviceAssignWay,
       renderMinLeaseCostDesc,
+      editPublish,
     } = this.constructor;
     this.onReserve = redirectToReservation(detail);
+    this.onEdit = editPublish(detail);
 
     switch (top_category) {
       case CATE_GOODS:
@@ -87,7 +98,9 @@ export default class {
 
       case CATE_SERVICE:
         if (calculate_charge_type === FIX_CHARGE_TYPE) {
-          this.dateRange = `活動日期：${formatDate(leasestart)}～${formatDate(leaseend)}`;
+          const leasestartDate = formatDate(leasestart);
+          const leaseendDate = formatDate(leaseend);
+          this.dateRange = `活動日期：${leasestartDate}～${leaseendDate}`;
           this.amountRemaining = `最後剩餘名額：${unit}人（限一人一單）`;
         }
         this.serviceAssignWay = `服務方式：${serviceAssignWay(detail)}`;

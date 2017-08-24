@@ -8,7 +8,7 @@ import SidebarCheck, {
   STATUS_CHECKED,
   STATUS_UNCHECK,
 } from 'components/Publish/SidebarCheck';
-import { publishService } from 'lib/paths';
+import { publishServiceRouter } from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -30,6 +30,8 @@ class PublishService extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
     dispatchFetchCities: PropTypes.func.isRequired,
     dispatchFetchCategories: PropTypes.func.isRequired,
+    dispatchCheckEdit: PropTypes.func.isRequired,
+    isFetched: PropTypes.bool.isRequired,
   };
 
   static mapPathsTouched(paths, touchedStepPaths) {
@@ -42,6 +44,7 @@ class PublishService extends React.Component {
   componentDidMount() {
     this.props.dispatchFetchCities();
     this.props.dispatchFetchCategories();
+    this.props.dispatchCheckEdit();
   }
 
   componentWillUnmount() {
@@ -58,37 +61,49 @@ class PublishService extends React.Component {
       isDeliveryValid,
       isPriceValid,
       isRegulationValid,
+      isFetched,
     } = this.props;
+
+    if (!isFetched) return null;
+
+    const {
+      indexPath,
+      aboutPath,
+      deliveryPath,
+      pricePath,
+      regulationPath,
+      confirmPath,
+    } = publishServiceRouter;
 
     const stepPaths = [
       {
         text: '上傳照片',
-        path: publishService.indexPath,
+        path: indexPath(),
         isValid: isCoversValid,
       },
       {
         text: '關於服務',
-        path: publishService.aboutPath,
+        path: aboutPath(),
         isValid: isAboutValid,
       },
       {
         text: '服務資訊',
-        path: publishService.deliveryPath,
+        path: deliveryPath(),
         isValid: isDeliveryValid,
       },
       {
         text: '設定價格',
-        path: publishService.pricePath,
+        path: pricePath(),
         isValid: isPriceValid,
       },
       {
         text: '建立分享人守則',
-        path: publishService.regulationPath,
+        path: regulationPath(),
         isValid: isRegulationValid,
       },
       {
         text: '確認發佈',
-        path: publishService.confirmPath,
+        path: confirmPath(),
         isValid: false,
       },
     ];

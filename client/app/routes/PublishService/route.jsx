@@ -1,4 +1,4 @@
-import { publishService as router } from 'lib/paths';
+import { publishServiceRouter } from 'lib/paths';
 import { injectReducer } from 'reducers';
 import { omit } from 'lodash';
 import { checkStepsRestart } from 'modules/routingHelper';
@@ -15,8 +15,9 @@ import routeStepCancelPolicy from './routes/routeStepCancelPolicy';
 import routeStepConfirm from './routes/routeStepConfirm';
 
 
+const path = publishServiceRouter.indexPath();
 export default store => ({
-  path: router.indexPath,
+  path,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
@@ -33,8 +34,9 @@ export default store => ({
 
   indexRoute: omit(routeStepCover(store), ['path']),
 
-  onEnter: () => {
-    const stepStartPath = router.indexPath;
+  onEnter: ({ location: { query } }) => {
+    const { pid } = query;
+    const stepStartPath = publishServiceRouter.indexPath(pid);
     store.dispatch(checkStepsRestart(stepStartPath));
   },
 
@@ -44,7 +46,7 @@ export default store => ({
     routeStepDelivery(store),
     routeStepPrice(store),
     routeStepRegulation(store),
-    routeStepConfirm(store),
     routeStepCancelPolicy(store),
+    routeStepConfirm(store),
   ],
 });

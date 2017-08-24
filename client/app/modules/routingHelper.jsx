@@ -19,8 +19,8 @@ const SET_ROUTE_HOOK = prefix('SET_ROUTE_HOOK');
 export const checkStepsRestart = path =>
   (dispatch, getState) => {
     const { routing } = getState();
-    const { pathname } = routing.locationBeforeTransitions;
-    if (pathname !== path) browserHistory.push(path);
+    const { pathname, search } = routing.locationBeforeTransitions;
+    if (`${pathname}${search}` !== path) browserHistory.push(path);
   };
 
 export const setRouteHook = removeHook => ({
