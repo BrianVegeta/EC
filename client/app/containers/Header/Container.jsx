@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-
 import { logout } from 'actions/authActions';
 import { popupPublishEntry } from 'modules/popup';
 
@@ -17,7 +16,9 @@ const mapStateToProps = ({ environment, auth, notification }, props) => ({
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
   dispatch,
-  dispatchLogout: () => dispatch(logout()),
+  dispatchLogout: () => {
+    dispatch(logout());
+  },
   dispatchPublish: () => dispatch(popupPublishEntry()),
 });
 

@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myCoupon';
 export default store => ({
-  path: 'coupon',
+  path: my.couponPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

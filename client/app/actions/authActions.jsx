@@ -2,24 +2,26 @@
 
 import * as types from 'constants/actionTypes/auth';
 import { browserHistory } from 'react-router';
-
 import {
   fetchXhrDelete,
   fetchXhrPost,
   fetchXhrGet,
 } from 'lib/xhr';
+import {
+  refreshRoute,
+} from 'lib/redirect';
 
 const doLogout = () => ({
   type: types.LOGOUT,
 });
 
-export function logout() {
-  return (dispatch) => {
+export const logout = () =>
+  (dispatch) => {
     fetchXhrDelete('/ajax/logout.json', () => {
       dispatch(doLogout());
+      dispatch(refreshRoute());
     });
   };
-}
 
 const doLogin = currentUser => ({
   type: types.LOGIN,

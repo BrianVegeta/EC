@@ -29,6 +29,7 @@ class CouponsContainer extends React.Component {
   }
 
   render() {
+        console.log('render coupon');
     const { myCoupon } = this.props;
     const { records } = myCoupon;
     const noRecords = (myCoupon.isFetching === false && records.length === 0);

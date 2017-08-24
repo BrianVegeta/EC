@@ -12,3 +12,21 @@ export const redirectToWithReferrer = pathname =>
       },
     });
   };
+
+export const refreshRoute = () =>
+  (dispatch, getState) => {
+    const {
+      routing: {
+        locationBeforeTransitions: {
+          pathname,
+        },
+      },
+    } = getState();
+
+    browserHistory.push({
+      pathname,
+      state: {
+        forceChange: true,
+      },
+    });
+  };
