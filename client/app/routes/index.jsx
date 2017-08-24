@@ -2,7 +2,6 @@ import layoutHoc from 'containers/layoutHoc';
 
 // import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
-// import layoutItemDetail from 'layouts/ItemDetail';
 import Publish from 'layouts/Publish';
 import Mine from 'layouts/MyAccount';
 import Signinup from 'layouts/Signinup';
@@ -32,7 +31,7 @@ import routePublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
-// import Registration from './Auth/Registration';
+import Registration from './Auth/Registration';
 /* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
@@ -40,6 +39,7 @@ import routeReservationService from './ReservationService/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
 import notify from './Notification/route';
+
 
 const requireCates = true;
 const requireAuth = true;
@@ -70,7 +70,7 @@ export default store => ({
       component: layoutHoc(Signinup, {}),
       childRoutes: [
         AuthLogin(store.routesHelper, store.dispatch),
-        // Registration(routesHelper, dispatch),
+        Registration(store.routesHelper, store.dispatch),
       ],
     },
     /* Order detail*/

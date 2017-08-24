@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormButton from 'components/FormButton';
+import CoverThreePics from 'components/CoverThreePics';
 import { without } from 'lodash';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
-import Cover from './Cover'
 
 class SueDetail extends React.Component {
 
@@ -63,7 +62,7 @@ class SueDetail extends React.Component {
         </div>
         <div style={{ margin: '20px 30px 0px 30px' }}>
           <div style={{ marginBottom: 10 }}>申訴照片：</div>
-          <Cover images={images} />
+          <CoverThreePics images={images} />
         </div>
         <div style={{ marginBottom: 30 }}>
           <FormButton

@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myCalendar';
 export default store => ({
-  path: 'calendar',
+  path: my.calendarPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

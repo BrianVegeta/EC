@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myItem';
 export default store => ({
-  path: 'item',
+  path: my.itemPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

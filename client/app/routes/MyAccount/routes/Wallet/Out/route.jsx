@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myWallet';
 export default store => ({
-  path: 'wallet-out',
+  path: my.walletPathOut,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

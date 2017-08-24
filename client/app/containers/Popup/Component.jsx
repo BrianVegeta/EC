@@ -10,11 +10,13 @@ import {
   RENDER_PUBLISH_ENTRY,
   RENDER_SCORE_RATING,
   RENDER_SUE_DETAIL,
+  RENDER_LOGIN,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
+import LoginContainer from 'containers/Popup/Login/Container';
 
 class Popup extends React.Component {
 
@@ -98,6 +100,18 @@ class Popup extends React.Component {
           </ModalBox>
         );
 
+      case RENDER_LOGIN:
+        return (
+          <ModalBox
+            width={470}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <LoginContainer
+              onClose={this.props.dispatchCloseModal}
+              onAfterLogin={options.onAfterLogin}
+            />
+          </ModalBox>
+        );
       default:
         return null;
 

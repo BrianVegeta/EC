@@ -14,6 +14,7 @@ class CouponsContainer extends React.Component {
     }).isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchPopLogin: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -28,11 +29,15 @@ class CouponsContainer extends React.Component {
   }
 
   render() {
+        console.log('render coupon');
     const { myCoupon } = this.props;
     const { records } = myCoupon;
     const noRecords = (myCoupon.isFetching === false && records.length === 0);
     return (
       <Container titleText={'優惠券'}>
+        <button
+          onClick={this.props.dispatchPopLogin}
+        >LOGIN</button>
         <ListContainer
           minHeight={500}
           noDataText={noRecords ? '目前沒有優惠券' : null}

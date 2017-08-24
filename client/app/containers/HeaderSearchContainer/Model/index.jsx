@@ -83,15 +83,15 @@ class Search {
   }
   doSearchUser() {
     const checkedName = this.constructor.filterCharacter(this.query);
-    this.dispatch(searchUserByName(checkedName));
+    this.dispatch(searchUserByName(checkedName, false, []));
   }
   doSearchItem() {
     const checkedName = this.constructor.filterCharacter(this.query);
-    this.dispatch(searchItemByName(checkedName));
+    this.dispatch(searchItemByName(checkedName, false, []));
   }
   doSearchWish() {
     const checkedName = this.constructor.filterCharacter(this.query);
-    this.dispatch(searchWishByName(checkedName));
+    this.dispatch(searchWishByName(checkedName, false, []));
   }
   setInputRect(rect) {
     this.dispatch(setInputRect(rect));

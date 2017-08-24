@@ -1,28 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import { connect } from 'react-redux';
 
 import FacebookLogin from 'react-facebook-login';
 import TextField from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
 import AlertPanel from 'components/Alert/Panel';
 import LoadingOverlay from 'components/Loading/Overlay';
-
+import { Link } from 'react-router';
 import { FACEBOOK_APP_ID } from 'constants/config';
 import constraints from 'constraints';
 import LoginModel from 'models/LoginModel';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
+import { authPath } from 'lib/paths';
 import styles from './styles.sass';
 
-
 const cx = classnames.bind(styles);
-class LoginContainer extends React.Component {
+class LoginPopUp extends React.Component {
 
   static propTypes = {
     auth: PropTypes.shape(myPropTypes.loginAuthShape).isRequired,
     dispatch: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onAfterLogin: PropTypes.func.isRequired,
   };
 
   login({ onLogin }) {
@@ -34,7 +35,7 @@ class LoginContainer extends React.Component {
   }
 
   render() {
-    const { auth, dispatch } = this.props;
+    const { auth, dispatch, onAfterLogin } = this.props;
     const {
       isLoading,
       loginError,
@@ -54,7 +55,7 @@ class LoginContainer extends React.Component {
         password,
       },
       dispatch,
-      onAfterLogin: () => {},
+      onAfterLogin,
     });
 
     const {
@@ -72,6 +73,15 @@ class LoginContainer extends React.Component {
 
     return (
       <div styleName="container">
+        <div style={{ float: 'right' }}>
+          <button
+            styleName="popup-login-close-btn"
+            onClick={this.props.onClose}
+          >X</button>
+        </div>
+        <div styleName="popup-login-title">
+          登入
+        </div>
         {isLoading && <LoadingOverlay />}
         <AlertPanel text={loginError} />
         {{
@@ -136,12 +146,14 @@ class LoginContainer extends React.Component {
             callback={loginModel.onFacebookLogin}
           />
         </div>
+        <div style={{ padding: '20px 0px 20px 10px' }}>
+          <Link to={authPath.registrationPath} >
+            <span>註冊新帳號</span>
+          </Link>
+        </div>
       </div>
     );
   }
 }
-const mapStateToProps = (state) => {
-  const { auth } = state;
-  return ({ auth });
-};
-export default connect(mapStateToProps)(CSS(LoginContainer, styles));
+
+export default CSS(LoginPopUp, styles);

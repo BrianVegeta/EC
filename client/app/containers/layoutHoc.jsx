@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
@@ -20,10 +21,13 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
 
     static propTypes = {
       dispatch: PropTypes.func.isRequired,
-      auth: myPropTypes.authOnHeader.isRequired,
+      isLogin: PropTypes.bool.isRequired,
       router: myPropTypes.router.isRequired,
       route: myPropTypes.route.isRequired,
       options: myPropTypes.options.isRequired,
+      routing: PropTypes.shape({
+        locationBeforeTransitions: PropTypes.object.isRequired,
+      }).isRequired,
     };
 
     componentDidMount() {
@@ -31,6 +35,21 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
       this.handleRequireAuth();
       this.handleConfirmLeave();
       this.handleRequireCates();
+    }
+
+    componentDidUpdate({ routing: { locationBeforeTransitions } }) {
+      const {
+        locationBeforeTransitions: currentTransition,
+      } = this.props.routing;
+      if (
+        !isEqual(currentTransition, locationBeforeTransitions) &&
+        currentTransition.state &&
+        currentTransition.state.forceChange
+      ) {
+        this.handleRequireAuth();
+        this.handleConfirmLeave();
+        this.handleRequireCates();
+      }
     }
 
     componentWillUnmount() {
@@ -45,6 +64,7 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
       if (!confirmLeave) return;
 
       const { router, route, dispatch } = this.props;
+      window.removeEventListener('beforeunload', confirmLeavePage);
       window.addEventListener('beforeunload', confirmLeavePage);
       const remove = router.setRouteLeaveHook(route, () => {
         const sureToLeave = confirm('確定離開？您的變更將不會儲存');
@@ -58,27 +78,25 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
     }
 
     handleRequireAuth() {
+      const { isLogin, dispatch } = this.props;
       if (!requireAuth) return;
-      if (this.props.auth.isLogin) return;
+      if (isLogin) return;
 
-      this.props.dispatch(
-        redirectTo(paths.LOGIN),
-      );
+      dispatch(redirectTo(paths.LOGIN));
     }
 
     handleRequireCates() {
+      const { options: { categories }, dispatch } = this.props;
       if (!requireCates) return;
-      if (isCategoriesReady(this.props.options.categories)) return;
+      if (isCategoriesReady(categories)) return;
 
-      this.props.dispatch(
-        prepareCategories(),
-      );
+      dispatch(prepareCategories());
     }
 
     render() {
-      const { auth, options } = this.props;
-      if (requireAuth && !auth.isLogin) return null;
-      if (requireCates && !isCategoriesReady(options.categories)) return null;
+      const { isLogin, options: { categories } } = this.props;
+      if (requireAuth && !isLogin) return null;
+      if (requireCates && !isCategoriesReady(categories)) return null;
       return (
         <div>
           <Component {...this.props} />
@@ -89,17 +107,19 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
   };
 }
 
-export default function (Component, { requireAuth, requireCates, confirmLeave }) {
-  const layoutOptions = { requireAuth, confirmLeave, requireCates };
-  const mapStateToProps = (state) => {
-    const { environment, auth, options, routing } = state;
-    return { environment, auth, options, routing };
+export default function (
+  Component,
+  { requireAuth, requireCates, confirmLeave },
+) {
+  const mapStateToProps = ({ environment, auth, options, routing }) => {
+    const { isLogin } = auth;
+    return { environment, isLogin, options, routing };
   };
   return (
     connect(mapStateToProps)(
       layout(
         withRouter(Component),
-        layoutOptions,
+        { requireAuth, requireCates, confirmLeave },
       ),
     )
   );
