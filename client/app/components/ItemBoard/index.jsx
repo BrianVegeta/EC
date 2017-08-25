@@ -12,56 +12,66 @@ import Avatar from 'components/Avatar';
 import { itemPath } from 'lib/paths';
 import { formatCurrency } from 'lib/currency';
 
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import { CoverContainer } from './styles';
 
+
+export const CONTROL_TYPE_PUBLIC = 'CONTROL_TYPE_PUBLIC';
+export const CONTROL_TYPE_PRIVATE = 'CONTROL_TYPE_PRIVATE';
+const cx = classnames.bind(styles);
 class ItemBoard extends React.Component {
 
   static defaultProps = {
     size: 246,
     canFavorite: true,
-    type: 'public',
-    onDelete: () => console.error('Action NOT defined!!!'),
+    type: CONTROL_TYPE_PUBLIC,
+    onDelete: null,
   };
 
   static propTypes = {
     item: myPropTypes.itemBoard.isRequired,
     size: PropTypes.number,
-    type: PropTypes.oneOf(['public', 'private']),
+    type: PropTypes.oneOf([CONTROL_TYPE_PUBLIC, CONTROL_TYPE_PRIVATE]),
     onDelete: PropTypes.func,
   };
 
-  renderAction() {
-    const { type, onDelete, favorite_count, item } = this.props;
-    switch (type) {
-      case 'private':
-        return (
-          <div styleName="delete">
-            <button
-              className="button"
-              styleName="deleteBtn"
-              onClick={() => onDelete(item.pid)}
-            >
-              <IconDelete size={20} />
-              <span styleName="delete-text">刪除</span>
-            </button>
-          </div>
-        );
-      default:
-        return (
-          <div styleName="favorite">
-            <span styleName="favoriteCount">{favorite_count}</span>
-            <button className="button" styleName="favoriteHeart">
-              <FavoriteHeart size={20} />
-            </button>
-          </div>
-        );
-    }
+  constructor(props) {
+    super(props);
+    this.onDelete = this.onDelete.bind(this);
+  }
+
+  onDelete() {
+    const { onDelete, item: { pid } } = this.props;
+    if (onDelete) onDelete(pid);
+  }
+
+  renderDelete() {
+    return (
+      <div styleName="delete">
+        <button className={`button ${cx('deleteBtn')}`} onClick={this.onDelete} >
+          <IconDelete size={20} />
+          <span styleName="delete-text">刪除</span>
+        </button>
+      </div>
+    );
+  }
+
+  renderFavorite() {
+    const { item: { favorite_count } } = this.props;
+    return (
+      <div styleName="favorite">
+        <span styleName="favoriteCount">{favorite_count}</span>
+        <button className="button" styleName="favoriteHeart">
+          <FavoriteHeart size={20} />
+        </button>
+      </div>
+    );
   }
 
   render() {
-    const { item, size } = this.props;
+    const { item, size, type } = this.props;
     const {
       pname,
       pid,
@@ -89,7 +99,10 @@ class ItemBoard extends React.Component {
             </div>
             <span styleName="username">{owner_name}</span>
           </div>
-          { this.renderAction() }
+          {{
+            [CONTROL_TYPE_PUBLIC]: this.renderFavorite(),
+            [CONTROL_TYPE_PRIVATE]: this.renderDelete(),
+          }[type]}
         </div>
       </div>
     );
