@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myCollections';
 export default store => ({
-  path: 'collections',
+  path: my.collectionPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

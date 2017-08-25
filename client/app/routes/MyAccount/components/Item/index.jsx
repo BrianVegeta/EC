@@ -46,9 +46,7 @@ class Items extends React.Component {
   render() {
     const { mine, dispatch, dispatchFetchItem, dispatchReset, myItem } = this.props;
     const mineModel = new Model(mine, dispatch, dispatchFetchItem, dispatchReset);
-
     if (!myItem) return null;
-
     const {
       isPaginable,
       isFetching,

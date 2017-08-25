@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myWish';
 export default store => ({
-  path: 'wish',
+  path: my.wishPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

@@ -190,7 +190,12 @@ export default (state = initialState, action) => {
     case FETCHED_IMAGES:
       return Object.assign({}, state, {
         isFetchingImages: false,
-        images: action.images,
+        images: {
+          beforeShip: action.images.OWNER_SEND,
+          afterShip: action.images.LESSEE_RECEIVE,
+          beforeReturn: action.images.LESSEE_SEND,
+          afterReturn: action.images.OWNER_RECEIVE,
+        }
       });
 
     case FETCHED_LOGS:

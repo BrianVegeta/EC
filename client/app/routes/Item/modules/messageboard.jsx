@@ -121,10 +121,8 @@ export function addMessage(pid, message) {
       { pid, message },
       getState(),
     ).then(() => {
-      console.log('add success');
       dispatch(reset());
       dispatch(fetchRecords(pid));
-      console.log('add done');
     });
   };
 }
@@ -137,6 +135,7 @@ const initialState = {
   expireFlag: null,
   isPaginable: true,
   isFetching: false,
+  recursiveTimes: 0,
   records: [],
   size: SIZE,
   index: 0,

@@ -7,6 +7,7 @@ import IconLocation from 'react-icons/lib/md/location-on';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
+import CoverThreePics from 'components/CoverThreePics';
 import { formatDate, rangeDiff } from 'lib/time';
 
 import CSS from 'react-css-modules';
@@ -210,6 +211,46 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
+
+  renderImages() {
+    const { orderdetail } = this.props;
+    const { images } = orderdetail;
+    if (!(images)) {
+      return null;
+    }
+    const checkReady = array => (array && array.length > 0)
+    const { beforeShip, afterShip, beforeReturn, afterReturn } = images;
+    return (
+      <div styleName="section-content" className="clear">
+        <div styleName="section-header">拍照存證</div>
+        { (checkReady(beforeShip)) &&
+          <div style={{ marginLeft: 20 }}>
+            <div>出貨前</div>
+            <CoverThreePics images={beforeShip} />
+          </div>
+        }
+        { (checkReady(afterShip)) &&
+          <div style={{ marginLeft: 20 }}>
+            <div>收貨後</div>
+            <CoverThreePics images={afterShip} />
+          </div>
+        }
+        { (checkReady(beforeReturn)) &&
+          <div style={{ marginLeft: 20 }}>
+            <div>還貨前</div>
+            <CoverThreePics images={beforeReturn} />
+          </div>
+        }
+        { (checkReady(afterReturn)) &&
+          <div style={{ marginLeft: 20 }}>
+            <div>還貨後</div>
+            <CoverThreePics images={afterReturn} />
+          </div>
+        }
+      </div>
+    );
+  }
+
   renderShippingDetail(order) {
     const { type, send_type, return_type } = order;
     if (type !== 'ITEM') {
@@ -345,7 +386,7 @@ class Orderdetail extends React.Component {
       return null;
     }
   }
-  renderMiniMap(order){
+  renderMiniMap(order) {
     const { img1, cid_no, pname } = order;
     return (
       <div styleName="top_40px_style">
@@ -407,6 +448,7 @@ class Orderdetail extends React.Component {
             </div>
           </div>
           {this.renderSchedule()}
+          {this.renderImages()}
           {this.renderShippingDetail(order)}
           <div styleName="section-content">
             <div styleName="section-header">交易明細</div>

@@ -2,6 +2,7 @@
 // import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 import { omit } from 'lodash';
+import { my } from 'lib/paths';
 import routeMyItem from './routes/Item/route'
 import routeMyCollection from './routes/Collections/route';
 import routeMyCoupon from './routes/Coupon/route';
@@ -20,7 +21,7 @@ import routeLoSe from './routes/LesseeOrder/LoSe/route';
 import routeLoSp from './routes/LesseeOrder/LoSp/route';
 
 export default store => ({
-  path: '/p/my',
+  path: my.indexPath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

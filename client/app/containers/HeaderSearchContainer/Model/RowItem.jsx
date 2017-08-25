@@ -11,7 +11,7 @@ export default class {
       price,
     } = item;
 
-    this.pid = pid;
+    this.id = pid;
     this.title = pname;
     this.picture = img1;
     this.priceLabel = `NT${numeral(price).format('$0,000')}`;

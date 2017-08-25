@@ -9,7 +9,7 @@ export const RENDER_ACCESS_CHECK = 'RENDER_ACCESS_CHECK';
 export const RENDER_PUBLISH_ENTRY = 'RENDER_PUBLISH_ENTRY';
 export const RENDER_SCORE_RATING = 'RENDER_SCORE_RATING';
 export const RENDER_SUE_DETAIL = 'RENDER_SUE_DETAIL';
-
+export const RENDER_LOGIN = 'RENDER_LOGIN';
 // =============================================
 // = action type =
 // =============================================
@@ -46,6 +46,9 @@ export const popupScoreRating = options =>
 
 export const popupSueDetail = options =>
   openPopup({ renderType: RENDER_SUE_DETAIL, options });
+
+export const popupLogin = options =>
+  openPopup({ renderType: RENDER_LOGIN, options });
 
 // =============================================
 // = reducer =

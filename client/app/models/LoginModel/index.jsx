@@ -10,8 +10,8 @@ import SimpleInputHocModel from './SimpleInputHocModel';
 
 
 class RegistrationModel {
-  constructor({ email, phone, password, loginBy, dispatch }) {
-    this.props = { email, phone, password, loginBy, dispatch };
+  constructor({ email, phone, password, loginBy, dispatch, onAfterLogin }) {
+    this.props = { email, phone, password, loginBy, dispatch, onAfterLogin };
 
     this.EMAIL_AUTH = EMAIL_AUTH;
     this.PHONE_AUTH = PHONE_AUTH;
@@ -32,22 +32,23 @@ class RegistrationModel {
   }
 
   onEmailLogin() {
-    const { email, password } = this.props;
+    const { email, password, onAfterLogin } = this.props;
     this.props.dispatch(
-      loginEmail({ email, password }),
+      loginEmail({ email, password }, onAfterLogin),
     );
   }
 
   onPhoneLogin() {
-    const { phone, password } = this.props;
+    const { phone, password, onAfterLogin } = this.props;
     this.props.dispatch(
-      loginPhone({ phone, password }),
+      loginPhone({ phone, password }, onAfterLogin),
     );
   }
 
   onFacebookLogin(response) {
+    const { onAfterLogin } = this.props;
     this.props.dispatch(
-      loginFacebook(response),
+      loginFacebook(response, onAfterLogin),
     );
   }
 

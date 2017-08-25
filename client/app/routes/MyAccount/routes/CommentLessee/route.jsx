@@ -1,8 +1,9 @@
 import { injectReducer } from 'reducers';
+import { my } from 'lib/paths';
 
 const key = 'myComment';
 export default store => ({
-  path: 'comment-lessee',
+  path: my.commentLesseePath,
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

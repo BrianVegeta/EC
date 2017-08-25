@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'rmc-nuka-carousel';
+import { Link } from 'react-router';
 import { Preload } from 'react-preload';
+import { userprofilePaths, itemPath } from 'lib/paths';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Spinner from '../../../components/Spinner';
@@ -53,15 +55,36 @@ class Banner extends React.Component {
               }],
             }}
           >
-            {banners.map(item =>
-              <div
-                key={item.id}
-                styleName="banner"
-                style={{
-                  backgroundImage: `url(${item.url})`,
-                  height: this.carouselHeight,
-                }}
-              />,
+            {banners.map((item) => {
+              let url = '/';
+              switch (item.action) {
+                case 0:
+                  url = item.arg;
+                  break;
+                case 1:
+                  url = userprofilePaths.indexPath(item.arg);
+                  break;
+                case 2:
+                  url = itemPath(item.name, item.arg);
+                  break;
+                default:
+                  break;
+              }
+              return (
+                <Link
+                  key={item.id}
+                  to={url}
+                >
+                  <div
+                    styleName="banner"
+                    style={{
+                      backgroundImage: `url(${item.url})`,
+                      height: this.carouselHeight,
+                    }}
+                  />
+                </Link>
+              );
+            }
             )}
           </Carousel>
         </div>
