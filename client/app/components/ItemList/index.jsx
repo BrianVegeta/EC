@@ -20,6 +20,7 @@ class ItemList extends React.Component {
     canFavorite: true,
     canDelete: false,
     type: 'public',
+    onDelete: () => {},
   };
 
   static propTypes = {
@@ -27,11 +28,12 @@ class ItemList extends React.Component {
       PropTypes.object.isRequired,
     ).isRequired,
     eachMargin: PropTypes.number,
-    type: PropTypes.oneOf(['private', 'public'])
+    type: PropTypes.oneOf(['private', 'public']),
+    onDelete: PropTypes.func,
   };
 
   render() {
-    const { records, eachMargin, type } = this.props;
+    const { records, eachMargin, type, onDelete } = this.props;
     return (
       <div styleName="container">
         <ItemsContainer marginLeft={eachMargin} className="clear">
@@ -44,6 +46,7 @@ class ItemList extends React.Component {
               <ItemBoard
                 item={item}
                 type={type}
+                onDelete={onDelete}
               />
             </ItemContainer>
           ))}

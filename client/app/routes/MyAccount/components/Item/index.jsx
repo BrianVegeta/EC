@@ -22,6 +22,7 @@ class Items extends React.Component {
     dispatch: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchDelete: PropTypes.func.isRequired,
   };
 
   static renderNoDataText(category) {
@@ -31,7 +32,6 @@ class Items extends React.Component {
       [CATEGORY_SPACE]: '尚未上架任何物件',
     }[category];
   }
-
   componentDidMount() {
     // const { mine, dispatch } = this.props;
     this.props.dispatchReset();
@@ -44,7 +44,8 @@ class Items extends React.Component {
   }
 
   render() {
-    const { mine, dispatch, dispatchFetchItem, dispatchReset, myItem } = this.props;
+    const { mine, dispatch, dispatchFetchItem, dispatchReset, dispatchDelete,
+       myItem } = this.props;
     const mineModel = new Model(mine, dispatch, dispatchFetchItem, dispatchReset);
     if (!myItem) return null;
     const {
@@ -75,6 +76,7 @@ class Items extends React.Component {
             <ItemList
               records={records}
               type="private"
+              onDelete={dispatchDelete}
               eachMargin={26}
             />
           </PaginationContainer>

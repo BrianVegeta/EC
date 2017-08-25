@@ -169,6 +169,7 @@ Rails.application.routes.draw do
       post 'remove_fav', to: 'favorite#remove' #
 
       # ITEM
+      post 'delete_item', to: 'item#remove_items' #
       post 'item_detail', to: 'item#view_item' #
       post 'create_service_item', to: 'item#service_add'
       post 'update_service_item', to: 'item#service_update'

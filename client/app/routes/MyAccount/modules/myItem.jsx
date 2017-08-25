@@ -1,4 +1,4 @@
-import { asyncXhrPost } from 'lib/xhr';
+import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 
 /* =============================================>>>>>
@@ -14,6 +14,7 @@ const SIZE = 9;
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
+export const DELETE = prefix('DELETE');
 export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
@@ -24,9 +25,10 @@ export const RESET = prefix('RESET');
 // =============================================
 // = actions =
 // =============================================
-const fetching = expireFlag => ({
+const fetching = (expireFlag, categoryID) => ({
   type: FETCHING,
   expireFlag,
+  categoryID,
 });
 
 const fetched = records => ({
@@ -89,7 +91,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
     dispatch(countRecursiveTimes());
     /* LOADING FETCH */
     const expireFlag = Date.now();
-    dispatch(fetching(expireFlag));
+    dispatch(fetching(expireFlag, categoryID));
     /* API REQUEST */
     asyncXhrPost(
       '/ajax/item/list.json',
@@ -112,11 +114,27 @@ export function fetchItems(categoryID, recursiveRecords = []) {
   };
 }
 
-
+export function deleteItem(pid) {
+  return (dispatch, getState) => {
+    asyncXhrAuthedPost(
+      '/ajax/delete_item.json',
+      {
+        pids: [pid],
+      },
+      getState(),
+    )
+    .then(() => {
+      const { categoryID } = getState()[REDUCER_KEY];
+      dispatch(reset());
+      dispatch(fetchItems(categoryID));
+    });
+  };
+}
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
+  categoryID: 0,
   expireFlag: null,
   isPaginable: true,
   isFetching: false,
@@ -130,6 +148,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case FETCHING:
       return Object.assign({}, state, {
+        categoryID: action.categoryID,
         isFetching: true,
         expireFlag: action.expireFlag,
       });

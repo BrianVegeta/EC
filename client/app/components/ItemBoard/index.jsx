@@ -22,7 +22,7 @@ class ItemBoard extends React.Component {
     size: 246,
     canFavorite: true,
     type: 'public',
-    onDelete: () => console.alert('action NOT defined!!!'),
+    onDelete: () => console.error('Action NOT defined!!!'),
   };
 
   static propTypes = {
@@ -33,7 +33,7 @@ class ItemBoard extends React.Component {
   };
 
   renderAction() {
-    const { type, onDelete, favorite_count } = this.props;
+    const { type, onDelete, favorite_count, item } = this.props;
     switch (type) {
       case 'private':
         return (
@@ -41,7 +41,7 @@ class ItemBoard extends React.Component {
             <button
               className="button"
               styleName="deleteBtn"
-              onClick={onDelete}
+              onClick={() => onDelete(item.pid)}
             >
               <IconDelete size={20} />
               <span styleName="delete-text">刪除</span>

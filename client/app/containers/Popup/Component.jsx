@@ -11,12 +11,14 @@ import {
   RENDER_SCORE_RATING,
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
+  RENDER_TWO_BUTTONS,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
+import TwoButtonsContainer from 'containers/Popup/TwoButtons';
 
 class Popup extends React.Component {
 
@@ -109,6 +111,23 @@ class Popup extends React.Component {
             <LoginContainer
               onClose={this.props.dispatchCloseModal}
               onAfterLogin={options.onAfterLogin}
+            />
+          </ModalBox>
+        );
+      case RENDER_TWO_BUTTONS:
+        return (
+          <ModalBox
+            width={470}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <TwoButtonsContainer
+              title={options.title}
+              content={options.content}
+              leftBtnContent={options.leftBtnContent}
+              onLeftClick={options.onLeftClick}
+              rightBtnContent={options.rightBtnContent}
+              onRightClick={options.onRightClick}
+              onClose={this.props.dispatchCloseModal}
             />
           </ModalBox>
         );

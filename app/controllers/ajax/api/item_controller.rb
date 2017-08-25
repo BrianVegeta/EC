@@ -379,7 +379,7 @@ class Ajax::Api::ItemController < ApplicationController
 
    def remove_params
      # pid : List<long> => 要移除的商品
-     params.permit(pid: []).merge(current_uid_params)
+     params.permit(pids: []).merge(current_uid_params)
    end
 
    def relative_item_params
