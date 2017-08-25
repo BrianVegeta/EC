@@ -17,6 +17,9 @@ class ItemList extends React.Component {
 
   static defaultProps = {
     eachMargin: 26,
+    canFavorite: true,
+    canDelete: false,
+    type: 'public',
   };
 
   static propTypes = {
@@ -24,11 +27,11 @@ class ItemList extends React.Component {
       PropTypes.object.isRequired,
     ).isRequired,
     eachMargin: PropTypes.number,
+    type: PropTypes.oneOf(['private', 'public'])
   };
 
   render() {
-    const { records, eachMargin } = this.props;
-
+    const { records, eachMargin, type } = this.props;
     return (
       <div styleName="container">
         <ItemsContainer marginLeft={eachMargin} className="clear">
@@ -38,7 +41,10 @@ class ItemList extends React.Component {
               className={cx('item-card')}
               marginLeft={eachMargin}
             >
-              <ItemBoard item={item} />
+              <ItemBoard
+                item={item}
+                type={type}
+              />
             </ItemContainer>
           ))}
         </ItemsContainer>

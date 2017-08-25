@@ -56,6 +56,13 @@ class Items extends React.Component {
     this.props.dispatchFetchRecords();
   }
 
+  componentWillUpdate(nextProps) {
+    if (this.props.categoryID !== nextProps.categoryID) {
+      this.props.dispatchReset();
+      this.props.dispatchFetchRecords();
+    }
+  }
+
   componentWillUnmount() {
     this.props.dispatchReset();
   }

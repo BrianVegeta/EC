@@ -1,10 +1,66 @@
+@import "~styles/color.sass"
+
 .container
-  height: 500px
+  height: 232px
   width: 100%
   display: table
-  background-color: #999
+  background-color: #FFF
 
 .context
-  display: table-cell
-  vertical-align: middle
-  text-align: center
+  margin: auto
+  width: 900px
+  margin-top: 42px
+  color: $global-placeholder
+  font-weight: 200
+//  background-color: #000
+  // display: table-cell
+
+.linfo-content
+  float: left
+  height: 148px
+  width: 305px
+  border-right: 1px solid #CECECE
+  .qrcode
+    float: left
+    width: 110px
+    height: 110px
+    background: url(./qrcode-shareapp.png) center center/cover no-repeat
+  .download
+    width: 125px
+    height: 40px
+    .apple
+      border-radius: 6px
+      margin: 7px 0px 0px 125px
+      width: 125px
+      height: 40px
+      background: url(./download-apple.png) center center/cover no-repeat
+    .google
+      border-radius: 6px
+      margin: 15px 0px 0px 125px
+      width: 125px
+      height: 40px
+      background: url(./download-google.png) center center/cover no-repeat
+  .copyright-text
+    display: inline-block
+    font-size: 15px
+    margin: 12px 0px 0px 0px
+
+.rinfo-content
+  margin-left: 345px
+  .link-collection
+    margin-top: 10px
+    a
+      margin-right: 40px
+      color: $global-placeholder
+      &:hover
+        color: $global-hoverColor
+
+  .social-media-wrapper
+    display: inline-block
+    margin-left: 40px
+  .contact-email
+    margin-top: 48px
+  .contact-number
+    margin-top: 24px
+  .span-text
+    line-height: 16px

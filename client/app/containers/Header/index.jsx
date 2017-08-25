@@ -6,6 +6,7 @@ import { IndexLink } from 'react-router';
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
+import Logo from 'components/Icons/Logo';
 
 import {
   my,
@@ -21,7 +22,6 @@ import styles from './styles.sass';
 
 import Me from './Me';
 import DropdownNavs from './DropdownNavs';
-import Logo from './Logo';
 import NavItem from './NavItem';
 
 

@@ -74,6 +74,7 @@ class Items extends React.Component {
           >
             <ItemList
               records={records}
+              type="private"
               eachMargin={26}
             />
           </PaginationContainer>
