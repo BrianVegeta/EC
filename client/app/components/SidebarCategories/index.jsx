@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
+import { pick, keys, isEqual } from 'lodash';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -13,6 +14,17 @@ class SidebarCategories extends React.Component {
     categoryID: PropTypes.string.isRequired,
     categories: myPropTypes.middleCategories.isRequired,
   };
+
+  shouldComponentUpdate(nextProps) {
+    const changePropsKeys = keys(this.constructor.propTypes);
+    const pickNextProps = pick(nextProps, changePropsKeys);
+    const pickProps = pick(this.props, changePropsKeys);
+    if (isEqual(pickNextProps, pickProps)) {
+      return false;
+    }
+    console.log(nextProps);
+    return true;
+  }
 
   render() {
     const {

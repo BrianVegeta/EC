@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { findTopCategory } from 'lib/category';
 import IconService from 'components/Icons/Publish/Service';
 import IconGoods from 'components/Icons/Publish/Goods';
 import IconSpace from 'components/Icons/Publish/Space';
@@ -23,10 +23,15 @@ import styles from './styles.sass';
 
 class Items extends React.Component {
 
+  static defaultProps = {
+    topCategoryID: null,
+  };
+
   static propTypes = {
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     categoryID: PropTypes.string.isRequired,
+    topCategoryID: PropTypes.string,
     categoryName: PropTypes.string.isRequired,
     items: PropTypes.shape({
       records: PropTypes.array,
@@ -42,12 +47,12 @@ class Items extends React.Component {
     }
   }
 
-  static renderNoDataText(categoryID) {
-    switch (categoryID) {
+  static renderNoDataText(id) {
+    switch (id) {
       case CATEGORY_GOODS_ID: return '尚無此類物品';
       case CATEGORY_SERVICE_ID: return '尚無此類服務項目';
       case CATEGORY_SPACE_ID: return '尚無此類物件';
-      default: return null;
+      default: return '';
     }
   }
 
@@ -56,8 +61,8 @@ class Items extends React.Component {
     this.props.dispatchFetchRecords();
   }
 
-  componentWillUpdate(nextProps) {
-    if (this.props.categoryID !== nextProps.categoryID) {
+  componentDidUpdate(prevProps) {
+    if (this.props.categoryID !== prevProps.categoryID) {
       this.props.dispatchReset();
       this.props.dispatchFetchRecords();
     }
@@ -71,6 +76,7 @@ class Items extends React.Component {
     const {
       categoryName,
       categoryID,
+      topCategoryID,
       items,
       dispatchFetchRecords,
     } = this.props;
@@ -81,9 +87,9 @@ class Items extends React.Component {
       records,
     } = items;
 
-    const hasNoData = !isPaginable && !isFetching && records.length === 0;
-
     const { renderTitleIcon, renderNoDataText } = this.constructor;
+    const hasNoData = !isPaginable && !isFetching && records.length === 0;
+    const noDataText = renderNoDataText(topCategoryID || categoryID);
     return (
       <div styleName="container">
         <PageHeader >
@@ -98,7 +104,7 @@ class Items extends React.Component {
           <div style={{ marginLeft: 279 }} styleName="items-container">
             <ListContainer
               minHeight={500}
-              noDataText={hasNoData ? renderNoDataText(categoryID) : null}
+              noDataText={hasNoData ? noDataText : null}
               isInitialFetching={isFetching && records.length === 0}
             >
               <PaginationContainer
