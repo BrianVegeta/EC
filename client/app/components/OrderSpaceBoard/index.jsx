@@ -38,7 +38,7 @@ class OrderSpaceBoard extends React.Component {
     itemImgUrl: PropTypes.string.isRequired,
     targetName: PropTypes.string.isRequired,
     targetUrl: PropTypes.string.isRequired,
-    targetScore: PropTypes.string,
+    targetScore: PropTypes.number,
     targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,

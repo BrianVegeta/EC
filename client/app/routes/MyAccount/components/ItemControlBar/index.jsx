@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditIcon from 'react-icons/lib/md/edit';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import RoundButton from '../../../../components/RoundButton';
@@ -29,12 +28,6 @@ class ControlBar extends React.Component {
           isActive={getIsActive('space')}
           onClick={() => tab('space')}
         />
-        <div styleName="control">
-          <button className="button" onClick={() => console.log(1)} >
-            <EditIcon size={20} />
-            <span styleName="text">編輯</span>
-          </button>
-        </div>
       </div>
     );
   }
