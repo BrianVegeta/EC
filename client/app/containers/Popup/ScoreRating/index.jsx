@@ -50,18 +50,18 @@ class ScoreRating extends React.Component {
     const { targetUrl, targetName } = this.props;
     return (
       <div>
-        <div styleName="score-rating-title-section">評價</div>
-        <div styleName="score-rating-photo-section">
+        <div styleName="title-section">評價</div>
+        <div styleName="photo-section">
           <Avatar
             src={targetUrl}
           />
         </div>
         <div
           className="clear"
-          styleName="score-rating-name-section">
+          styleName="name-section">
           {targetName}
         </div>
-        <div styleName="score-rating-star-section">
+        <div styleName="star-section">
           <ReactStars
             count={5}
             value={this.state.score}
@@ -73,9 +73,9 @@ class ScoreRating extends React.Component {
             color2={'#31ABBA'}
           />
         </div>
-        <div styleName="score-rating-comment-section">
+        <div styleName="comment-section">
           { this.props.isView ?
-            <div styleName="score-rating-comment-text">{this.state.description}</div>
+            <div styleName="comment-text">{this.state.description}</div>
             :
             <FormGroup
               headerText={'您的評語'}
@@ -92,8 +92,8 @@ class ScoreRating extends React.Component {
             </FormGroup>
           }
         </div>
-        <div styleName="score-rating-action-section">
-          <div styleName="score-rating-left-button">
+        <div styleName="action-section">
+          <div styleName="left-button">
             <FormButton
               colorType="greenBorder"
               size="sm"
@@ -103,7 +103,7 @@ class ScoreRating extends React.Component {
             />
           </div>
           { !(this.props.isView) &&
-            <div styleName="score-rating-right-button">
+            <div styleName="right-button">
               <FormButton
                 colorType="green"
                 size="sm"

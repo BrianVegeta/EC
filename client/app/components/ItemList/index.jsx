@@ -2,7 +2,10 @@ import React from 'react';
 // import myPropTypes from 'propTypes';
 import PropTypes from 'prop-types';
 
-import ItemBoard from 'components/ItemBoard';
+import ItemBoard, {
+  CONTROL_TYPE_PUBLIC,
+  CONTROL_TYPE_PRIVATE,
+} from 'components/ItemBoard';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -19,7 +22,8 @@ class ItemList extends React.Component {
     eachMargin: 26,
     canFavorite: true,
     canDelete: false,
-    type: 'public',
+    type: CONTROL_TYPE_PUBLIC,
+    onDelete: null,
   };
 
   static propTypes = {
@@ -27,11 +31,12 @@ class ItemList extends React.Component {
       PropTypes.object.isRequired,
     ).isRequired,
     eachMargin: PropTypes.number,
-    type: PropTypes.oneOf(['private', 'public'])
+    type: PropTypes.oneOf([CONTROL_TYPE_PUBLIC, CONTROL_TYPE_PRIVATE]),
+    onDelete: PropTypes.func,
   };
 
   render() {
-    const { records, eachMargin, type } = this.props;
+    const { records, eachMargin, type, onDelete } = this.props;
     return (
       <div styleName="container">
         <ItemsContainer marginLeft={eachMargin} className="clear">
@@ -44,6 +49,7 @@ class ItemList extends React.Component {
               <ItemBoard
                 item={item}
                 type={type}
+                onDelete={onDelete}
               />
             </ItemContainer>
           ))}
@@ -52,5 +58,8 @@ class ItemList extends React.Component {
     );
   }
 }
-
+export {
+  CONTROL_TYPE_PUBLIC,
+  CONTROL_TYPE_PRIVATE,
+};
 export default CSS(ItemList, styles);

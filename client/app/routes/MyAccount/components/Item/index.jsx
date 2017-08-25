@@ -5,7 +5,7 @@ import myPropTypes from 'propTypes';
 
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
-import ItemList from 'components/ItemList';
+import ItemList, { CONTROL_TYPE_PRIVATE } from 'components/ItemList';
 import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
@@ -17,11 +17,18 @@ import ItemControlBar from '../ItemControlBar';
 import Model from './Model';
 
 class Items extends React.Component {
+
   static propTypes = {
     mine: myPropTypes.mine.isRequired,
+    myItem: PropTypes.shape({
+      isPaginable: PropTypes.bool.isRequired,
+      isFetching: PropTypes.bool.isRequired,
+      records: PropTypes.array.isRequired,
+    }).isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchDelete: PropTypes.func.isRequired,
   };
 
   static renderNoDataText(category) {
@@ -44,7 +51,14 @@ class Items extends React.Component {
   }
 
   render() {
-    const { mine, dispatch, dispatchFetchItem, dispatchReset, myItem } = this.props;
+    const {
+      mine,
+      dispatch,
+      dispatchFetchItem,
+      dispatchReset,
+      dispatchDelete,
+      myItem,
+    } = this.props;
     const mineModel = new Model(mine, dispatch, dispatchFetchItem, dispatchReset);
     if (!myItem) return null;
     const {
@@ -74,7 +88,8 @@ class Items extends React.Component {
           >
             <ItemList
               records={records}
-              type="private"
+              type={CONTROL_TYPE_PRIVATE}
+              onDelete={dispatchDelete}
               eachMargin={26}
             />
           </PaginationContainer>
