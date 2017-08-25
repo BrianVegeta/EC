@@ -171,7 +171,7 @@ Rails.application.routes.draw do
       # ITEM
       post 'item_detail', to: 'item#view_item' #
       post 'create_service_item', to: 'item#service_add'
-      post 'item/service_update', to: 'item#service_update'
+      post 'update_service_item', to: 'item#service_update'
 
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #

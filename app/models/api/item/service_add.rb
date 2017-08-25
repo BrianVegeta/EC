@@ -1,13 +1,11 @@
 class Api::Item::ServiceAdd < ApiAuthedBase
-  
-  PATH = '/client/item/service/add';
-  
+  include ItemPublishHandleError
+
   def path
-    PATH
+    '/client/item/service/add'
   end
 
   def request_method
      :post_token
   end
-  
 end

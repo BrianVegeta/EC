@@ -113,6 +113,7 @@ class Selection extends React.Component {
             styleName="option"
             onClick={() => this.onSelect(option)}
             role="button"
+            tabIndex="0"
           >
             {renderOption ? renderOption(option) : option.text}
           </div>
@@ -121,4 +122,4 @@ class Selection extends React.Component {
     );
   }
 }
-export default hasError(CSS(Selection, styles));
+export default hasError(CSS(Selection, styles), { validateOnChange: true });

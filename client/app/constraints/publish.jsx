@@ -154,4 +154,14 @@ export default {
     },
   }),
   regulation: {},
+  advanceDay: {
+    presence: {
+      message: '^請選擇',
+    },
+  },
+  rate: {
+    presence: {
+      message: '^請選擇',
+    },
+  },
 };

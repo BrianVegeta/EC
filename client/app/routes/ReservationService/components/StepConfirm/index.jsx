@@ -15,8 +15,7 @@ import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import AlertPanel from 'components/Alert/Panel';
 import ButtonNextStep, {
-  STATUS_DISABLE,
-  STATUS_VALID,
+  STATUS_DISABLE, STATUS_VALID,
 } from 'components/Button/NextStep';
 import { htmlNewLineToBreak } from 'lib/htmlUtils';
 import { formatDate, rangeDiff } from 'lib/time';

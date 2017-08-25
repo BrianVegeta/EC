@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import _ from 'lodash';
+import { isArray, isEqual, head } from 'lodash';
 import validate from 'validate.js';
 import styled from 'styled-components';
 import ErrorTooltip from 'components/ErrorTooltip';
@@ -23,10 +23,12 @@ export default function inputWithError(InputComponent, defaultProps = {}) {
       width: '100%',
       skipValidation: defaultProps.skipValidation || false,
       validateOnBlur: defaultProps.validateOnBlur && true,
+      validateOnChange: defaultProps.validateOnChange && true,
       errorType: defaultProps.errorType || 'tooltip',
     };
 
     static propTypes = {
+      // placeholder
       value: PropTypes.oneOfType([
         PropTypes.string, PropTypes.number,
       ]),
@@ -43,6 +45,7 @@ export default function inputWithError(InputComponent, defaultProps = {}) {
       width: myPropTypes.width,
       skipValidation: PropTypes.bool,
       validateOnBlur: PropTypes.bool,
+      validateOnChange: PropTypes.bool,
       errorType: PropTypes.oneOf(['none', 'tooltip', 'inline']),
     };
 
@@ -52,6 +55,16 @@ export default function inputWithError(InputComponent, defaultProps = {}) {
       this.state = {
         error: null,
       };
+    }
+
+    componentDidUpdate(prevProps) {
+      const { value, validateOnChange } = this.props;
+      if (
+        validateOnChange &&
+        !isEqual(value, prevProps.value)
+      ) {
+        this.valid();
+      }
     }
 
     onBlur() {
@@ -86,12 +99,12 @@ export default function inputWithError(InputComponent, defaultProps = {}) {
         return true;
       }
       const errors = this.validator();
-      if (!_.isArray(errors)) {
+      if (!isArray(errors)) {
         this.clearError();
         return true;
       }
 
-      const error = _.head(errors);
+      const error = head(errors);
       if (!error) {
         this.clearError();
         return true;

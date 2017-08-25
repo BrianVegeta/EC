@@ -1,13 +1,11 @@
 class Api::Item::ItemUpdate < ApiAuthedBase
-  
-  PATH = '/client/item/item/update';
-  
+  include ItemPublishHandleError
+
   def path
-    PATH
+    '/client/item/item/update'
   end
 
   def request_method
      :post_token
   end
-  
 end

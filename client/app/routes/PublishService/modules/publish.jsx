@@ -161,6 +161,20 @@ export const savePublish = () =>
       }).catch(() => reject());
     });
 
+export const updatePublish = pid =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const publish = getState()[REDUCER_KEY];
+      const covers = getState()[COVER_REDUCER_KEY];
+      asyncXhrAuthedPost(
+        '/ajax/update_service_item.json',
+        Object.assign({}, transformParams(covers, publish), { pid }),
+        getState(),
+      ).then((data) => {
+        resolve(data);
+      }).catch(() => reject());
+    });
+
 // =============================================
 // = reducer =
 // =============================================
@@ -192,6 +206,9 @@ const initialState = {
   reservationDays: 1,
   discount: '',
   regulation: '',
+  hasCancelPolicy: false,
+  advanceDay: null,
+  rate: null,
   /* TEST DATA */
   // title: 'title',
   // descript: 'afafaf',

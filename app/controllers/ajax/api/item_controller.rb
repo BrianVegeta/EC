@@ -263,13 +263,27 @@ class Ajax::Api::ItemController < ApplicationController
     # - N = x的N值
     # - z = 符合條件後，新的價格
     # rules : List<String> => 分享人守則
+    # cancel_policys: [{ advance_day, rate }]
+    #     advance_day
+    #        -int
+    #        -not null
+    #        -min:0
+    #        -desc:提前退訂天數
+    #     rate
+    #        -int
+    #        -not null
+    #        -min:0
+    #        -max:100
+    #        -desc:扣除分享金的%數
 
     params.permit(:pname, :img1, :img2, :img2, :pdes,
       :cat_id, :city, :area, :unit, :price,
       :currency, :deposit, :advance_reservation_days, :min_lease_days,
       :tag1, :tag2, :tag3,
       :assign_address_type, :assign_city, :assign_area, :assign_address,
-      :calculate_charge_type, :start_date, :end_date, :discounts => [:type, :param, :discount],
+      :calculate_charge_type, :start_date, :end_date,
+      :discounts => [:type, :param, :discount],
+      cancel_policys: [:advance_day, :rate],
       rules: []).merge(current_uid_params)
 
   end

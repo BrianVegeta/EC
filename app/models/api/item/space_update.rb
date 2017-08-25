@@ -1,13 +1,11 @@
 class Api::Item::SpaceUpdate < ApiAuthedBase
-  
-  PATH = '/client/item/space/update';
-  
+  include ItemPublishHandleError
+
   def path
-    PATH
+    '/client/item/space/update'
   end
 
   def request_method
      :post_token
   end
-  
 end

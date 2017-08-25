@@ -180,7 +180,6 @@ class StepPrice extends React.Component {
     const {
       price,
       deposit,
-      discount,
     } = publish;
 
     return (

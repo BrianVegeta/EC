@@ -1,15 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import validate from 'validate.js';
-import {
-  isEmpty,
-  filter,
-} from 'lodash';
-
+import { isEmpty, filter } from 'lodash';
 import { formatCurrency } from 'lib/currency';
-import constraints, {
-  PRICE_MAX,
-} from 'constraints/publish';
-
+import constraints, { PRICE_MAX } from 'constraints/publish';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
   CHARGE_TYPE_FIX,
@@ -247,19 +240,53 @@ export const validateRegulation = () =>
     });
 
 /* =============================================>>>>>
+= Cancel policy =
+===============================================>>>>>*/
+export const validateCancelPolicyBy = ({ hasCancelPolicy, advanceDay, rate }) => {
+  if (!hasCancelPolicy) return { isValid: true };
+
+  const errors = validate({ advanceDay, rate }, {
+    advanceDay: constraints.advanceDay,
+    rate: constraints.rate,
+  });
+
+  return {
+    isValid: isEmpty(errors),
+    errors,
+  };
+};
+
+export const validateCancelPolicy = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const publish = getState()[PUBLISH_REDUCER_KEY];
+      const { isValid, errors } = validateCancelPolicyBy(publish);
+
+      if (isValid) {
+        resolve();
+      } else {
+        reject(errors);
+      }
+    });
+
+/* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
 export const validateAllBy = (publish, covers) => {
-  const isCoversValid = validateCoversBy(covers).isValid;
-  const isAboutValid = validateAboutBy(publish).isValid;
-  const isDeliveryValid = validateDeliveryBy(publish).isValid;
-  const isPriceValid = validatePriceBy(publish).isValid;
-  const isRegulationValid = validateRegulationBy(publish).isValid;
-  return isCoversValid
-    && isAboutValid
-    && isDeliveryValid
-    && isPriceValid
-    && isRegulationValid;
+  const { isValid: isCoversValid } = validateCoversBy(covers);
+  const { isValid: isAboutValid } = validateAboutBy(publish);
+  const { isValid: isDeliveryValid } = validateDeliveryBy(publish);
+  const { isValid: isPriceValid } = validatePriceBy(publish);
+  const { isValid: isRegulationValid } = validateRegulationBy(publish);
+  const { isValid: isCancelPolicyValid } = validateCancelPolicyBy(publish);
+  return (
+    isCoversValid &&
+    isAboutValid &&
+    isDeliveryValid &&
+    isPriceValid &&
+    isRegulationValid &&
+    isCancelPolicyValid
+  );
 };
 
 export const validateAll = () =>
@@ -271,6 +298,7 @@ export const validateAll = () =>
         dispatch(validateDelivery()),
         dispatch(validatePrice()),
         dispatch(validateRegulation()),
+        dispatch(validateCancelPolicy()),
       ];
 
       Promise.all(promises)

@@ -1,13 +1,11 @@
 class Api::Item::SpaceAdd < ApiAuthedBase
-  
-  PATH = '/client/item/space/add';
-  
+  include ItemPublishHandleError
+
   def path
-    PATH
+    '/client/item/space/add'
   end
 
   def request_method
      :post_token
   end
-  
 end

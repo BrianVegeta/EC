@@ -78,3 +78,12 @@ export const asyncContainBlobTobase64 = (blob, width = 650, height = 650) =>
     img.onerror = e => reject(e);
     img.src = blob;
   });
+
+
+/**
+ *
+ * map sidebar steps
+ *
+ */
+export const mapSidebarSteps = steps =>
+  steps.map(([text, path, isValid]) => ({ text, path, isValid }));

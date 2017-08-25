@@ -53,7 +53,7 @@ class StepRegulation extends React.Component {
     const { publish, dispatchChangeData, isValid } = this.props;
     const { regulation } = publish;
     return (
-      <FormContainer title="建立分享人守則" >
+      <FormContainer title="建立分享人守則" optional>
         <div styleName="form-group">
           <InputTextArea
             ref={regulationInput => (this.regulationInput = regulationInput)}

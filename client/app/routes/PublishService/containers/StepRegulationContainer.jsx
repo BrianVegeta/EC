@@ -8,7 +8,7 @@ import { validateRegulation, validateRegulationBy } from '../modules/validation'
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/
-const { regulationPath, confirmPath } = publishServiceRouter;
+const { regulationPath, cancelPolicyPath } = publishServiceRouter;
 const mapStateToProps = ({ environment, publish }) => ({
   environment,
   publish,
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, { location: { query } }) => {
     dispatchChangeData: data => dispatch(changeData(data)),
     dispatchValidate: () => dispatch(validateRegulation()),
     dispatchTouchPath: () => dispatch(touchPath(regulationPath(pid))),
-    nextStep: () => browserHistory.push(confirmPath(pid)),
+    nextStep: () => browserHistory.push(cancelPolicyPath(pid)),
   });
 };
 

@@ -6,12 +6,12 @@ import {
   items as itemsRouter,
 } from 'lib/paths';
 import StepConfirm from '../components/StepConfirm';
-import { savePublish, touchPath } from '../modules/publish';
+import { savePublish, updatePublish, touchPath } from '../modules/publish';
 import { validateAll, validateAllBy } from '../modules/validation';
 
-const {
-  confirmPath,
-} = publishServiceRouter;
+
+const { confirmPath } = publishServiceRouter;
+const { servicePath: serviceItemsPath } = itemsRouter;
 
 /* pick props */
 const mapStateToProps = ({
@@ -33,10 +33,13 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch, { location: { query } }) => {
   const { pid } = query;
   return ({
-    dispatchSavePublish: () => dispatch(savePublish()),
+    dispatchSavePublish: () => {
+      if (pid) return dispatch(updatePublish(pid));
+      return dispatch(savePublish());
+    },
     dispatchValidateAll: () => dispatch(validateAll()),
     dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
-    redirectToItems: () => browserHistory.push(itemsRouter.servicePath()),
+    redirectToItems: () => browserHistory.push(serviceItemsPath),
   });
 };
 
