@@ -3,6 +3,7 @@ import React from 'react';
 import myPropTypes from 'propTypes';
 import PropTypes from 'prop-types';
 
+import IconDelete from 'react-icons/lib/md/delete';
 import { Link } from 'react-router';
 import FavoriteHeart from 'components/FavoriteHeart';
 import Picture from 'components/Picture';
@@ -19,12 +20,45 @@ class ItemBoard extends React.Component {
 
   static defaultProps = {
     size: 246,
+    canFavorite: true,
+    type: 'public',
+    onDelete: () => console.alert('action NOT defined!!!'),
   };
 
   static propTypes = {
     item: myPropTypes.itemBoard.isRequired,
     size: PropTypes.number,
+    type: PropTypes.oneOf(['public', 'private']),
+    onDelete: PropTypes.func,
   };
+
+  renderAction() {
+    const { type, onDelete, favorite_count } = this.props;
+    switch (type) {
+      case 'private':
+        return (
+          <div styleName="delete">
+            <button
+              className="button"
+              styleName="deleteBtn"
+              onClick={onDelete}
+            >
+              <IconDelete size={20} />
+              <span styleName="delete-text">刪除</span>
+            </button>
+          </div>
+        );
+      default:
+        return (
+          <div styleName="favorite">
+            <span styleName="favoriteCount">{favorite_count}</span>
+            <button className="button" styleName="favoriteHeart">
+              <FavoriteHeart size={20} />
+            </button>
+          </div>
+        );
+    }
+  }
 
   render() {
     const { item, size } = this.props;
@@ -35,7 +69,6 @@ class ItemBoard extends React.Component {
       price,
       owner_name,
       owner_img,
-      favorite_count,
     } = item;
 
     return (
@@ -56,12 +89,7 @@ class ItemBoard extends React.Component {
             </div>
             <span styleName="username">{owner_name}</span>
           </div>
-          <div styleName="favorite">
-            <span styleName="favoriteCount">{favorite_count}</span>
-            <button className="button" styleName="favoriteHeart">
-              <FavoriteHeart size={20} />
-            </button>
-          </div>
+          { this.renderAction() }
         </div>
       </div>
     );

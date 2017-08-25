@@ -73,9 +73,18 @@ class Wallet extends React.Component {
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
     return (
       <Container titleText={'我的錢包'}>
-        <div styleName="wallet_banner_bkg" />
-        <div styleName="wallet-balance-text-style">錢包餘額</div>
-        <div styleName="wallet-balance-value-style">NTD $2,000</div>
+        <div styleName="banner">
+          <div styleName="background" />
+          <div styleName="content" >
+            <div styleName="title">啟用銀行託管，好方便！</div>
+            <div>直接支付，讓消費更簡單</div>
+            <div styleName="detail">
+              <a>查看詳情 &gt;&gt;</a>
+            </div>
+          </div>
+        </div>
+        <div styleName="balance-text-style">錢包餘額</div>
+        <div styleName="balance-value-style">NTD $2,000</div>
         <div style={{ paddingTop: 40, display: 'inline-block' }}>
           <DatesPicker
             startDate={this.state.startDate}
@@ -93,7 +102,7 @@ class Wallet extends React.Component {
             content={'搜尋'}
           />
         </div>
-        <div styleName="wallet-nav-container">
+        <div styleName="nav-container">
           <ul className="clear">
             {navs.map((nav, index) => (
               <Link

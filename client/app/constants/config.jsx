@@ -3,7 +3,7 @@
 export const FACEBOOK_APP_ID = '332439867215198';
 export const SHAREAPP_HELP_URL = 'https://www.shareapp.com.tw/faq';
 
-export const SHAREAPP_OFFICAL = 'https//www.shareapp.com.tw';
+export const SHAREAPP_OFFICAL = 'https://www.shareapp.com.tw';
 export const SHAREAPP_BLOG = 'https://www.shareapp.com.tw/blog';
 export const SHAREAPP_ABOUT = 'https://www.shareapp.com.tw/about';
 export const SHAREAPP_FAQ = 'https://www.shareapp.com.tw/faq';
