@@ -1,9 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable camelcase */
 import validate from 'validate.js';
-import {
-  isEmpty,
-} from 'lodash';
+import { isEmpty, includes } from 'lodash';
 import constraints from 'constraints/reservation';
 import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
@@ -85,19 +83,15 @@ export const validateForm = () =>
 = Validate payment =
 ===============================================>>>>>*/
 export const validatePaymentBy = ({ paymenttype }, isBankInfoReady) => {
-  if (![PAYMENT_TYPE_ATM, PAYMENT_TYPE_CREDIT_CARD].includes(paymenttype)) {
-    return {
-      isValid: false,
-      errors: { paymenttype: ERROR_PAYMENT_TYPE },
-    };
+  const paymentTypes = [PAYMENT_TYPE_ATM, PAYMENT_TYPE_CREDIT_CARD];
+  const errors = {};
+  if (!includes(paymentTypes, paymenttype)) {
+    errors.paymenttype = ERROR_PAYMENT_TYPE;
   }
-  if (PAYMENT_TYPE_ATM === paymenttype && !isBankInfoReady) {
-    return {
-      isValid: false,
-      errors: { atm: ERROR_BANK_INFO_READY },
-    };
+  if (!isBankInfoReady) {
+    errors.atm = ERROR_BANK_INFO_READY;
   }
-  return { isValid: true, errors: {} };
+  return { isValid: isEmpty(errors), errors };
 };
 
 export const validatePayment = () =>

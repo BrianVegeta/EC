@@ -1,12 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  find,
-  isEmpty,
-} from 'lodash';
+import { find, isEmpty } from 'lodash';
 import IconCalendar from 'react-icons/lib/fa/calendar';
-
 import ReservationItemNote from 'components/ReservationItemNote';
 import OwnerInfoNote from 'components/OwnerInfoNote';
 import InputCheckBox from 'components/Input/CheckBox';
@@ -19,7 +15,6 @@ import ButtonNextStep, {
 } from 'components/Button/NextStep';
 import { htmlNewLineToBreak } from 'lib/htmlUtils';
 import { formatDate, rangeDiff } from 'lib/time';
-
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
@@ -55,7 +50,6 @@ class StepConfirm extends React.Component {
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func.isRequired,
     }).isRequired,
-
     reservation: PropTypes.shape({
       title: PropTypes.string,
     }).isRequired,
@@ -274,7 +268,7 @@ class StepConfirm extends React.Component {
           >
             <span styleName="agree-text">我已確定以上資訊</span>
           </InputCheckBox>
-          {agreeError &&
+          {agreeError && !isAgree &&
             <div styleName="error">
               <AlertPanel text={agreeError} width="auto" />
             </div>

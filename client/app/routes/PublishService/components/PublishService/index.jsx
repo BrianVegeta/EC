@@ -31,6 +31,7 @@ class PublishService extends React.Component {
   };
 
   componentDidMount() {
+    this.props.dispatchReset();
     this.props.dispatchFetchCities();
     this.props.dispatchFetchCategories();
     this.props.dispatchCheckEdit();
