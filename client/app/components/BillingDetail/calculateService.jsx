@@ -73,15 +73,16 @@ export default (
   },
   couponOffset = null,
 ) => {
+  /* 價格 */
   const priceParams = { leasestart, leaseend, unit: (unit || 1), price };
   const priceDetail = calPrice(priceParams, calculate_charge_type);
-
+  /* 優惠 */
   const discountDetail = calDiscounts({ discounts });
   const total = discountDetail ? discountDetail.amount : priceDetail.amount;
-
+  /* 押金 */
   const depositDetail = calDeposit({ deposit });
   const depositAmount = depositDetail ? depositDetail.amount : 0;
-
+  /* 折價劵 */
   const couponDetail = calCoupon({ couponOffset });
   const couponAmount = couponDetail ? couponDetail.amount : 0;
 

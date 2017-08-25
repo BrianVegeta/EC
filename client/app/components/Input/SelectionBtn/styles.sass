@@ -32,16 +32,16 @@ $disableBorderColor: #B8B8B8
     z-index: 1
     height: 100%
     background-color: #fff
-    .innerText
+    .inner-text
+      float: left
       max-height: $inputLineHeight
+      line-height: $inputLineHeight
       overflow: hidden
       margin-right: 30px
       .placeholder
         color: $placeholderColor
-    .dropdownArrow
-      color: $inputBorderColor
+    svg
       float: right
-      margin: (($inputHeight - ($inputPaddingTop * 2)) - $arrowSize) / 2
   &.focusing
     border-bottom: 0
     box-shadow: $inputFocusingShadow

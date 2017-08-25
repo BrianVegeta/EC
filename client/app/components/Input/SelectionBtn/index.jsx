@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ArrowDownIcon from 'react-icons/lib/md/keyboard-arrow-down';
-import {
-  isEmpty,
-} from 'lodash';
+// import ArrowDownIcon from 'react-icons/lib/md/keyboard-arrow-down';
+import IconArrowDown from 'components/Icons/ArrowDown';
+import { isEmpty } from 'lodash';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -113,7 +112,7 @@ class SelectionButton extends React.Component {
       >
         <button
           ref={btn => (this.button = btn)}
-          className={`${cx('input', {
+          className={`clear ${cx('input', {
             focusing: isFocusing,
             disabled,
             invalid,
@@ -122,15 +121,13 @@ class SelectionButton extends React.Component {
           disabled={disabled}
         >
           <div className={cx('inner-wrapper', { dropdowning: isFocusing })}>
-            <span styleName="dropdownArrow">
-              <ArrowDownIcon size={30} />
-            </span>
-            <div styleName="innerText">
+            <div styleName="inner-text">
               {isEmpty(value) ?
                 <span styleName="placeholder">{placeholder}</span> :
                 value
               }
             </div>
+            <IconArrowDown viewBox="-2 -6 20 20" size={24} />
           </div>
         </button>
         {isFocusing &&

@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-import { includes } from 'lodash';
-
 import { reservationService as rsRouter } from 'lib/paths';
-
+import { mapSidebarSteps } from 'lib/utils';
 import {
   checkReadyAndSet,
   reset as resetBankInfo,
@@ -12,60 +10,41 @@ import {
   reset as resetItem,
 } from '../modules/reservationItem';
 import Component from '../components/ReservationService';
-import {
-  validateFormBy,
-  validatePaymentBy,
-} from '../modules/validation';
-// import { reset as resetCovers } from '../modules/covers';
-// import { reset as resetCropper } from '../modules/cropper';
-// import { reset as resetPublish } from '../modules/publish';
+import { validateFormBy, validatePaymentBy } from '../modules/validation';
 
-const mapPathsTouched = (steps, touchedStepPaths) =>
-  steps.map(step => ({
-    isTouched: includes(touchedStepPaths, step.path),
-    ...step,
-  }));
+
+const {
+  formPath,
+  paymentPath,
+  confirmPath,
+} = rsRouter;
 
 /* pick props */
 const mapStateToProps = ({
   environment,
   reservationCoupons,
-  reservationService,
-  reservationServiceItem,
-  personalBankInfo,
-}, { params }) => {
-  const { touchedStepPaths } = reservationService;
-  const { pid } = params;
-  const isFetched = Boolean(reservationCoupons.updatedAt && reservationServiceItem.owner);
+  reservationService: reservation,
+  reservationServiceItem: item,
+  personalBankInfo: { isReady: isBankReady },
+}, { params: { pid } }) => {
+  const { touchedStepPaths } = reservation;
+  const isFetched = Boolean(item.owner);
+  const { isValid: isFormValid } = isFetched ?
+    validateFormBy(reservation, item) : { isValid: false };
+  const { isValid: isPaymentValid } = validatePaymentBy(reservation, isBankReady);
 
-  const steps = [
-    {
-      text: '填寫預訂資訊',
-      path: rsRouter.formPath(pid),
-      isValid: isFetched ? validateFormBy(
-        reservationService,
-        reservationServiceItem,
-      ).isValid : false,
-    },
-    {
-      text: '支付方式',
-      path: rsRouter.paymentPath(pid),
-      isValid: validatePaymentBy(
-        reservationService,
-        personalBankInfo.isReady,
-      ).isValid,
-    },
-    {
-      text: '確認預訂資訊',
-      path: rsRouter.confirmPath(pid),
-      isValid: false,
-    },
-  ];
+  const steps = mapSidebarSteps([
+    ['填寫預訂資訊', formPath(pid), isFetched ? isFormValid : false],
+    ['支付方式', paymentPath(pid), isPaymentValid],
+    ['確認預訂資訊', confirmPath(pid), false],
+  ]);
 
   return ({
     environment,
-    reservation: reservationService,
-    steps: mapPathsTouched(steps, touchedStepPaths),
+    touchedPaths: touchedStepPaths,
+    reservation,
+    steps,
+    isFetched,
   });
 };
 

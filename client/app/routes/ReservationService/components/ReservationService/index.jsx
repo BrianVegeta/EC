@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Sticky, StickyContainer } from 'react-sticky';
 
+import SidebarSteps, { stepPropType } from 'components/Sidebar/Steps';
 import myPropTypes from 'propTypes';
-import SidebarCheck, {
-  STATUS_CHECKED,
-  STATUS_UNCHECK,
-} from 'components/Publish/SidebarCheck';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -17,14 +14,9 @@ const cx = classnames.bind(styles);
 class PublishService extends React.Component {
 
   static propTypes = {
-    steps: PropTypes.arrayOf(
-      PropTypes.shape({
-        path: PropTypes.string,
-        text: PropTypes.string,
-        isValid: PropTypes.bool,
-        isTouched: PropTypes.bool,
-      }),
-    ).isRequired,
+    isFetched: PropTypes.bool.isRequired,
+    steps: PropTypes.arrayOf(stepPropType.isRequired).isRequired,
+    touchedPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
     children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
 
@@ -34,11 +26,27 @@ class PublishService extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      wrapperHeight: null,
+    };
+  }
+
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchItem();
-
     this.props.dispatchCheckBankInfoReady();
+  }
+
+  componentDidUpdate() {
+    if (
+      this.mainWrapper &&
+      this.mainWrapper.clientHeight > 0 &&
+      this.state.wrapperHeight === null
+    ) {
+      this.setWrapperContentHeight(this.mainWrapper.clientHeight);
+    }
   }
 
   componentWillUnmount() {
@@ -46,42 +54,37 @@ class PublishService extends React.Component {
     this.props.dispatchResetBankInfo();
   }
 
+  setWrapperContentHeight(height) {
+    this.setState({ wrapperHeight: height });
+  }
+
   render() {
     const {
       children,
-      environment,
+      environment: { height: screenHeight },
+      touchedPaths,
       steps,
+      isFetched,
     } = this.props;
+    if (!isFetched) return null;
 
+    const ref = mainWrapper => (this.mainWrapper = mainWrapper);
+    const stickyStyle = { height: (this.state.wrapperHeight || screenHeight) };
     return (
       <div styleName="container">
-        <StickyContainer
-          style={{ height: environment.height }}
-          className={cx('sidebar')}
-        >
+        <StickyContainer style={stickyStyle} className={cx('sidebar')} >
           <Sticky>
             {({ style }) => (
               <div style={{ paddingBottom: 100, ...style }}>
-                {steps.map((step, index) => {
-                  const { text, isValid, isTouched, path } = step;
-                  return (
-                    <SidebarCheck
-                      key={`${index + 1}`}
-                      text={text}
-                      status={
-                        (isValid && isTouched) ?
-                          STATUS_CHECKED : STATUS_UNCHECK
-                      }
-                      isTouched={isTouched}
-                      path={path}
-                    />
-                  );
-                })}
+                <SidebarSteps
+                  touchedPaths={touchedPaths}
+                  steps={steps}
+                />
               </div>
             )}
           </Sticky>
         </StickyContainer>
-        <div styleName="main-wrapper">
+        <div ref={ref} styleName="main-wrapper">
           {children}
         </div>
       </div>

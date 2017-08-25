@@ -60,9 +60,9 @@ class StepForm extends React.Component {
     isValid: PropTypes.bool.isRequired,
   };
 
-  static getCouponOffset({ couponNo, reservationCoupons }) {
+  static getCouponOffset({ couponNo, reservationCoupons: { records } }) {
     if (!couponNo) return null;
-    const coupon = find(reservationCoupons.records, { id: couponNo });
+    const coupon = find(records, { coupon_no: couponNo });
     return coupon ? coupon.amount : null;
   }
 

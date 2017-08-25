@@ -23,6 +23,7 @@ const RESET = prefix('RESET');
 const setCoupons = coupons => ({
   type: SET_COUPONS,
   coupons,
+  updatedAt: now(),
 });
 
 export const fetchCoupons = () =>
@@ -51,7 +52,7 @@ export default (state = initialState, action) => {
 
     case SET_COUPONS:
       return Object.assign({}, state, {
-        updatedAt: now(),
+        updatedAt: action.updatedAt,
         records: action.coupons,
       });
 
