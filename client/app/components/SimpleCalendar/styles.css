@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
+  /*-webkit-box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;*/
   margin: 0;
   padding: 0;
 }
@@ -19,26 +19,30 @@ body {
 }
 
 .Calendar-header-grid {
-  display: flex;
-  flex-wrap: wrap;
+  /*display: flex;
+  flex-wrap: wrap;*/
   width: 100%;
+  position: relative;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
 }
 
 .Calendar-header-grid-item {
-  flex: 0 14.28571%;
+  /*flex: 0 14.28571%;*/
+  width: 14.28571%;
+  display: inline-block;
   text-align: center;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /*display: flex;*/
+  /*flex-direction: column;
+  justify-content: center;*/
 }
 
 
 .Calendar-grid {
-  display: flex;
-  flex-wrap: wrap;
+  /*display: flex;
+  flex-wrap: wrap;*/
+  position: relative;
   width: 100%;
 }
 
@@ -48,9 +52,17 @@ body {
   color: #fff;
   text-align: center;
   line-height: 50px;
-  display: flex;
+  /*display: flex;*/
   font-size: 20px;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
+}
+.Calendar-header-currentDate {
+  display: inline-block;
+  width: 60%;
+}
+.prevMonth, .nextMonth {
+  display: inline-block;
+  width: 20%;
 }
 
 .Calendar-header button {
@@ -65,24 +77,21 @@ body {
 }
 
 .Calendar-grid-item {
-  flex: 0 14.28571%;
+  /*flex: 0 14.28571%;*/
+  display: inline-block;
+  width: 14.2857143%;
   text-align: center;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /*display: flex;*/
+  /*flex-direction: column;
+  justify-content: center;*/
 }
 
 .Calendar-grid-item.highlight {
   background-color: #31ABBA;
   color: #FFF
-}
-
-.Calendar-grid-item.nextMonth,
-.Calendar-grid-item.prevMonth {
-  color: #999;
 }
 
 .Calendar-grid-item:nth-child(7n+1) {

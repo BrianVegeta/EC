@@ -37,21 +37,28 @@ class Calendar extends Component {
     // onPickDate: () => {},
   };
 
-  handleNextMonth = () => {
+  constructor(props) {
+    super(props);
+    this.handleNextMonth = this.handleNextMonth.bind(this);
+    this.handlePrevMonth = this.handlePrevMonth.bind(this);
+  }
+
+  handleNextMonth() {
     if (this.props.onNextMonth) {
-      return this.props.onNextMonth();
+      this.props.onNextMonth();
+      return;
     }
-
     this.props.onChangeMonth(this.props.date.clone().add(1, 'months'));
-  };
+  }
 
-  handlePrevMonth = () => {
+  handlePrevMonth() {
     if (this.props.onPrevMonth) {
-      return this.props.onPrevMonth();
+      this.props.onPrevMonth();
+      return;
     }
 
     this.props.onChangeMonth(this.props.date.clone().subtract(1, 'months'));
-  };
+  }
 
   render() {
     const {
@@ -64,11 +71,21 @@ class Calendar extends Component {
     return (
       <div className="Calendar">
         <div className="Calendar-header">
-          <button onClick={this.handlePrevMonth}>上一月</button>
+          <button
+            className="prevMonth"
+            onClick={this.handlePrevMonth}
+          >
+            上一月
+          </button>
           <div className="Calendar-header-currentDate">
             {date.format('MMMM YYYY')}
           </div>
-          <button onClick={this.handleNextMonth}>下一月</button>
+          <button
+            className="prevMonth"
+            onClick={this.handleNextMonth}
+          >
+            下一月
+          </button>
         </div>
         <div className="Calendar-header-grid">
           <div className="Calendar-header-grid-item">日</div>
@@ -82,7 +99,7 @@ class Calendar extends Component {
         <div className="Calendar-grid">
           {createDateObjects(date, weekOffset, checkHighlight).map((day, i) => (
             <div
-              key={`day-${i}`}
+              key={`day-${i + 1}`}
               className={`Calendar-grid-item ${day.classNames || ''}`}
             >
               {renderDay(day.day)}
