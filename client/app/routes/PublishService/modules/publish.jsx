@@ -59,6 +59,7 @@ const transformState = ({
   assign_address_type, assign_city, assign_area, assign_address,
   calculate_charge_type, price, deposit, leasestart, leaseend, unit,
   ship_before_start_days, discounts, rules,
+  cancel_policys,
 }) => {
   const assignAddressByCustomer =
     assign_address_type.indexOf(ASSIGN_ADDRESS_BY_CUSTOMER) >= 0;
@@ -88,6 +89,9 @@ const transformState = ({
     reservationDays: ship_before_start_days,
     discount,
     regulation: rules[0] || '',
+    hasCancelPolicy: Boolean(cancel_policys[0]),
+    advanceDay: cancel_policys[0] ? cancel_policys[0].advance_day : null,
+    rate: cancel_policys[0] ? cancel_policys[0].rate : null,
   });
 };
 
@@ -112,6 +116,9 @@ const transformParams = (covers, {
   assignCity, assignArea, assignAddress,
   chargeType, startDate, endDate, discount,
   regulation,
+  hasCancelPolicy,
+  advanceDay,
+  rate,
 }) => {
   const assignTypes = [];
   if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
@@ -144,6 +151,7 @@ const transformParams = (covers, {
       [{ type: 'FIX', param: 0, discount }] : [],
     rules: [regulation],
     min_lease_days: 0,
+    cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
   });
 };
 
