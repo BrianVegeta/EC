@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SharerCard from './SharerCard';
 import Chat from 'react-icons/lib/md/chat';
 import Store from 'react-icons/lib/md/store';
+import { browserHistory } from 'react-router';
+import { userprofilePaths } from 'lib/paths';
 
+import SharerCard from './SharerCard';
 
 const propTypes = {
   name: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   area: PropTypes.string.isRequired,
@@ -37,7 +40,10 @@ const Sharer = props => (
         <Chat size={20} />
         <span>私訊分享人</span>
       </button>
-      <button className="button" styleName="store">
+      <button
+        onClick={() => browserHistory.push(userprofilePaths.indexPath(props.uid))}
+        className="button"
+        styleName="store">
         <Store size={20} />
         <span>查看店家</span>
       </button>

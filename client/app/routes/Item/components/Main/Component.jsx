@@ -131,19 +131,19 @@ class Main extends React.Component {
     );
   }
 
-  renderOwner({ ownerProfile: owner }, dispatch) {
+  renderOwner(ownerProfile, dispatch) {
     const id = ITEM_MAIN_SHARER;
     const ref = sharer => (this[ITEM_MAIN_SHARER] = sharer);
-
     const sharerProps = {
-      name: isEmpty(owner) ? '' : owner.name,
-      picture: isEmpty(owner) ? '' : owner.picture,
-      city: isEmpty(owner) ? '' : owner.city,
-      area: isEmpty(owner) ? '' : owner.area,
-      autobiography: isEmpty(owner) ? '' : owner.autobiography,
-      owner_credit: isEmpty(owner) ? 0.0 : owner.owner_credit,
-      create_time: isEmpty(owner) ? 0 : owner.create_time,
-      target_uid: isEmpty(owner) ? '' : owner.uid,
+      name: isEmpty(ownerProfile) ? '' : ownerProfile.name,
+      uid: isEmpty(ownerProfile) ? '' : ownerProfile.uid,
+      picture: isEmpty(ownerProfile) ? '' : ownerProfile.picture,
+      city: isEmpty(ownerProfile) ? '' : ownerProfile.city,
+      area: isEmpty(ownerProfile) ? '' : ownerProfile.area,
+      autobiography: isEmpty(ownerProfile) ? '' : ownerProfile.autobiography,
+      owner_credit: isEmpty(ownerProfile) ? 0.0 : ownerProfile.owner_credit,
+      create_time: isEmpty(ownerProfile) ? 0 : ownerProfile.create_time,
+      target_uid: isEmpty(ownerProfile) ? '' : ownerProfile.uid,
       is_follow: false,
       dispatch,
     };
