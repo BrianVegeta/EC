@@ -150,7 +150,7 @@ export const asyncXhrAuthedGet = (path, state) =>
   });
 
 // ASYNC POST
-export const asyncXhrPost = (path, params) =>
+export const asyncXhrPost = (path, params, catchError = false) =>
   new Promise((resolve, reject) => {
     fetch(
       path,
@@ -160,8 +160,10 @@ export const asyncXhrPost = (path, params) =>
     ).then((json) => {
       if (json.success) {
         resolve(json.data);
+      } else if (catchError) {
+        reject(json);
       } else {
-        reject();
+        console.log(json);
       }
     }).catch((err) => { throw err; });
   });
