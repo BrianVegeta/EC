@@ -5,6 +5,7 @@ import Home from 'layouts/Home';
 import Publish from 'layouts/Publish';
 import Mine from 'layouts/MyAccount';
 import Signinup from 'layouts/Signinup';
+import Item from 'layouts/Item';
 // import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
@@ -85,8 +86,13 @@ export default store => ({
       childRoutes: [
         routePublishService(store),
         routeReservationService(store),
-        routeItem(store),
         sueForm(store),
+      ],
+    },
+    {
+      component: layoutHoc(Item, { requireCates }),
+      childRoutes: [
+        routeItem(store),
       ],
     },
     {

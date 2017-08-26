@@ -1,12 +1,10 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-
-import HeaderContainer from 'containers/Header/Container';
 import myPropTypes from 'propTypes';
-
+import Footer from 'components/Footer';
+import HeaderContainer from 'containers/Header/Container';
 import MainWrapper from './MainWrapper';
 
-export default class extends React.Component {
+class OrderdetailLayout extends React.Component {
 
   static defaultProps = {
     children: null,
@@ -19,14 +17,15 @@ export default class extends React.Component {
 
   render() {
     const { children, environment } = this.props;
-
     return (
       <div className="container-gray-bg" style={{ paddingBottom: 20 }}>
         <HeaderContainer />
         <MainWrapper minHeight={environment.height}>
           {children}
         </MainWrapper>
+        <Footer />
       </div>
     );
   }
 }
+export default OrderdetailLayout;
