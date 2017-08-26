@@ -1,6 +1,9 @@
 import React from 'react';
 import TextTruncate from 'react-text-truncate';
 import CSS from 'react-css-modules';
+import { Link } from 'react-router';
+import { userprofilePaths, itemPath } from 'lib/paths';
+
 import styles from './styles.sass';
 import bindSlider from '../bindSlider';
 import myPropTypes from '../../../propTypes';
@@ -18,7 +21,9 @@ class Vendor extends React.Component {
       <div styleName="container">
         <div styleName="card">
           <div styleName="avatar">
-            <Avatar src={item.img} />
+            <Link to={userprofilePaths.indexPath(item.uid)}>
+              <Avatar src={item.img} />
+            </Link>
           </div>
           <div styleName="script">
             <div styleName="title">
@@ -41,7 +46,9 @@ class Vendor extends React.Component {
           <div styleName="gallery">
             {items.map((ownItem, index) =>
               <div styleName="item" key={`${index + 1}`}>
-                <Picture src={ownItem.img1} />
+                <Link to={itemPath(ownItem.pname, ownItem.pid)}>
+                  <Picture src={ownItem.img1} />
+                </Link>
               </div>,
             )}
           </div>
