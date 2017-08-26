@@ -129,7 +129,7 @@ const transformParams = (covers, {
     price,
     deposit,
     currency: 'NTD',
-    advance_reservation_days: reservationDays,
+    advance_reservation_days: reservationDays || 0,
     tag1: (tag1 || null),
     tag2: (tag2 || null),
     tag3: (tag3 || null),

@@ -112,7 +112,7 @@ class SelectionButton extends React.Component {
       >
         <button
           ref={btn => (this.button = btn)}
-          className={`clear ${cx('input', {
+          className={`${cx('input', {
             focusing: isFocusing,
             disabled,
             invalid,
@@ -120,7 +120,7 @@ class SelectionButton extends React.Component {
           onClick={this.onButtonPress}
           disabled={disabled}
         >
-          <div className={cx('inner-wrapper', { dropdowning: isFocusing })}>
+          <div className={`clear ${cx('inner-wrapper', { dropdowning: isFocusing })}`}>
             <div styleName="inner-text">
               {isEmpty(value) ?
                 <span styleName="placeholder">{placeholder}</span> :

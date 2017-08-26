@@ -25,6 +25,7 @@ class PublishService extends React.Component {
     steps: PropTypes.arrayOf(stepPropType.isRequired).isRequired,
 
     dispatchReset: PropTypes.func.isRequired,
+    dispatchTouchPath: PropTypes.func.isRequired,
     dispatchFetchCities: PropTypes.func.isRequired,
     dispatchFetchCategories: PropTypes.func.isRequired,
     dispatchCheckEdit: PropTypes.func.isRequired,
@@ -32,6 +33,7 @@ class PublishService extends React.Component {
 
   componentDidMount() {
     this.props.dispatchReset();
+    this.props.dispatchTouchPath();
     this.props.dispatchFetchCities();
     this.props.dispatchFetchCategories();
     this.props.dispatchCheckEdit();
