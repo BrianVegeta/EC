@@ -1,5 +1,36 @@
 import { asyncXhrPost } from 'lib/xhr';
 
+// =============================================
+// = settings =
+// =============================================
+export const REDUCER_KEY = 'auth';
+const prefix = action => (`AUTH.${action}`);
+
+
+// =============================================
+// = ACTION TYPE =
+// =============================================
+const LOGIN = prefix('LOGIN');
+const LOGOUT = prefix('LOGOUT');
+const CHANGE_CURRENT_USER = prefix('CHANGE_CURRENT_USER');
+
+
+// =============================================
+// = ACTIONS =
+// =============================================
+export const login = currentUser => ({
+  type: LOGIN,
+  currentUser,
+});
+
+export const logout = () => ({
+  type: LOGOUT,
+});
+
+export const changeCurrentUser = () => ({
+  type: CHANGE_CURRENT_USER,
+});
+
 // login email async(none dispatch)
 export const postLogin = ({ email, phone, password }) =>
   new Promise((resolve, reject) => {
@@ -25,3 +56,35 @@ export const postLoginFacebook = ({ userID, accessToken }) =>
       reject(message);
     });
   });
+
+
+// =============================================
+// = REDUCER =
+// =============================================
+const initialState = {
+  isLogin: false,
+  currentUser: {},
+};
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case LOGOUT:
+      return Object.assign({}, state, {
+        isLogin: false,
+        currentUser: {},
+      });
+
+    case LOGIN:
+      return Object.assign({}, state, {
+        isLogin: true,
+        currentUser: action.currentUser,
+      });
+
+    case CHANGE_CURRENT_USER:
+      return Object.assign({}, state, {
+        currentUser: action.currentUser,
+      });
+
+    default:
+      return Object.assign({}, initialState, state);
+  }
+};

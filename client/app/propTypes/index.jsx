@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import { EMAIL_AUTH, PHONE_AUTH } from 'constants/authBy';
-
 const string = PropTypes.string;
 const number = PropTypes.number;
 const node = PropTypes.node;
@@ -96,19 +94,11 @@ export default {
     favorite_count: PropTypes.number.isRequired,
   }),
   /* ----------- AUTH ----------- */
-  /* 登入 */
-  loginAuthShape: {
-    isLoading: PropTypes.bool.isRequired,
-    loginBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-  },
   /* 註冊 */
   signupAuthShape: {
     isLoading: PropTypes.bool.isRequired,
     registerError: PropTypes.string,
-    registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
+    registerBy: PropTypes.oneOf(['EMAIL_AUTH', 'PHONE_AUTH']).isRequired,
     email: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
@@ -119,7 +109,7 @@ export default {
   verificationAuthShape: {
     isLoading: PropTypes.bool.isRequired,
     verifyError: PropTypes.string,
-    registerBy: PropTypes.oneOf([EMAIL_AUTH, PHONE_AUTH]).isRequired,
+    registerBy: PropTypes.oneOf(['EMAIL_AUTH', 'PHONE_AUTH']).isRequired,
     email: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     verifyCode: PropTypes.string.isRequired,

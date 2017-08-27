@@ -1,4 +1,4 @@
-import layoutHoc from 'containers/layoutHoc';
+import layoutHoc from 'containers/layout';
 
 // import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
@@ -31,7 +31,7 @@ import routeItem from './Item/route';
 import routePublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
-import AuthLogin from './Auth/Login';
+import routeLogin from './AuthLogin/route';
 import Registration from './Auth/Registration';
 /* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
@@ -70,7 +70,7 @@ export default store => ({
     {
       component: layoutHoc(Signinup, {}),
       childRoutes: [
-        AuthLogin(store.routesHelper, store.dispatch),
+        routeLogin(store),
         Registration(store.routesHelper, store.dispatch),
       ],
     },

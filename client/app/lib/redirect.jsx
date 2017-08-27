@@ -30,3 +30,13 @@ export const refreshRoute = () =>
       },
     });
   };
+
+
+export const redirectAfterLogin = backupPath =>
+  (dispatch, getState) => {
+    const { routing: { locationBeforeTransitions } } = getState();
+    const { state } = locationBeforeTransitions;
+    browserHistory.push(
+      (state && state.referrer) ? state.referrer : backupPath,
+    );
+  };

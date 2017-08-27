@@ -9,10 +9,11 @@ import banks from 'modules/banks';
 import personalBankInfo from 'modules/personalBankInfo';
 import orderAction from 'modules/orderAction';
 import routingHelper from 'modules/routingHelper';
+import auth from 'modules/auth';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
-import auth from './authReducer';
+// import auth from './authReducer';
 import banners from './bannersReducer';
 import routesHelper from './routesHelperReducer';
 import recommends from './recommendsReducer';

@@ -1,4 +1,3 @@
-import { asyncXhrPost } from 'lib/xhr';
 import {
   postLogin,
   postLoginFacebook,
@@ -8,7 +7,7 @@ import {
 // = settings =
 // =============================================
 export const REDUCER_KEY = 'login';
-const prefix = action => (`WISH.${action}`);
+const prefix = action => (`LOGIN.${action}`);
 
 export const LOGIN_BY_EMAIL = 'LOGIN_BY_EMAIL';
 export const LOGIN_BY_PHONE = 'LOGIN_BY_PHONE';
@@ -60,50 +59,41 @@ export const reset = () => ({
   type: RESET,
 });
 
+// email login
 export const loginEmail = ({ email, password }) =>
   dispatch =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       dispatch(loading());
       postLogin({ email, password }).then((userProfile) => {
-        // dologin
-        console.log(userProfile);
-        resolve();
-        // browserHistory.push('/');
+        resolve(userProfile);
       }).catch((message) => {
         dispatch(loginFail(message));
         dispatch(loaded());
-        reject();
       });
     });
 
+// phone login
 export const loginPhone = ({ phone, password }) =>
   dispatch =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       dispatch(loading());
       postLogin({ phone, password }).then((userProfile) => {
-        // dologin
-        console.log(userProfile);
-        resolve();
-        // browserHistory.push('/');
+        resolve(userProfile);
       }).catch((message) => {
         dispatch(loginFail(message));
         dispatch(loaded());
-        reject();
       });
     });
 
+// facebook login
 export const loginFacebook = ({ userID, accessToken }) =>
   dispatch =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       postLoginFacebook({ userID, accessToken }).then((userProfile) => {
-        // dologin
-        console.log(userProfile);
-        resolve();
-        // browserHistory.push('/');
+        resolve(userProfile);
       }).catch((message) => {
         dispatch(loginFail(message));
         dispatch(loaded());
-        reject();
       });
     });
 
@@ -124,32 +114,25 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case LOADING:
-      return Object.assign({}, state, {
-        isLoading: true,
-      });
+      return Object.assign({}, state, { isLoading: true });
 
     case LOADED:
-      return Object.assign({}, state, {
-        isLoading: false,
-      });
+      return Object.assign({}, state, { isLoading: false });
 
     case SWITCH_LOGIN_BY_EMAIL:
-      return Object.assign({}, state, {
-        loginBy: LOGIN_BY_EMAIL,
-      });
+      return Object.assign({}, state, { loginBy: LOGIN_BY_EMAIL });
 
     case SWITCH_LOGIN_BY_PHONE:
-      return Object.assign({}, state, {
-        loginBy: LOGIN_BY_PHONE,
-      });
+      return Object.assign({}, state, { loginBy: LOGIN_BY_PHONE });
 
     case LOGIN_FAILED:
-      return Object.assign({}, state, {
-        loginError: action.message,
-      });
+      return Object.assign({}, state, { loginError: action.message });
 
     case CHANGE_FORM:
       return Object.assign({}, state, action.data);
+
+    case RESET:
+      return initialState;
 
     default:
       return state;

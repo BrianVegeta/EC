@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isFunction } from 'lodash';
 
 import IconPhone from 'react-icons/lib/md/phone-iphone';
 import IconLock from 'react-icons/lib/md/lock-outline';
@@ -12,6 +12,11 @@ import hasError from 'components/Input/hoc/hasError';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+
+export const ICON_TYPE_PHONE = 'ICON_TYPE_PHONE';
+export const ICON_TYPE_EMAIL = 'ICON_TYPE_EMAIL';
+export const ICON_TYPE_PASSWORD = 'ICON_TYPE_PASSWORD';
+export const ICON_TYPE_VERIFICATION = 'ICON_TYPE_VERIFICATION';
 
 const cx = classnames.bind(styles);
 class TextField extends React.Component {
@@ -31,7 +36,10 @@ class TextField extends React.Component {
     icon: PropTypes.oneOfType([
       PropTypes.func.isRequired,
       PropTypes.oneOf([
-        'phone', 'email', 'password', 'verification',
+        ICON_TYPE_PHONE,
+        ICON_TYPE_EMAIL,
+        ICON_TYPE_PASSWORD,
+        ICON_TYPE_VERIFICATION,
       ]).isRequired,
     ]),
     suffix: PropTypes.node,
@@ -43,92 +51,90 @@ class TextField extends React.Component {
     onChange: PropTypes.func,
   };
 
+  static chooseIcon(icon) {
+    switch (icon) {
+      case ICON_TYPE_PHONE: return <IconPhone />;
+      case ICON_TYPE_EMAIL: return <IconMail />;
+      case ICON_TYPE_PASSWORD: return <IconLock />;
+      case ICON_TYPE_VERIFICATION: return <IconVerified />;
+      default: return null;
+    }
+  }
+
   constructor(props) {
     super(props);
-
     this.state = {
       isFocusing: false,
     };
-
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(e) {
     const { onChange } = this.props;
     if (onChange === null) return;
-
     onChange(e.target.value);
-  }
-
-  switchIcon() {
-    const { icon } = this.props;
-    switch (icon) {
-      case 'phone':
-        return <IconPhone />;
-
-      case 'email':
-        return <IconMail />;
-
-      case 'password':
-        return <IconLock />;
-
-      case 'verification':
-        return <IconVerified />;
-
-      default:
-        return null;
-    }
   }
 
   renderIcon() {
     const { icon } = this.props;
-    if (_.isString(icon)) {
-      return this.switchIcon();
-    }
+    if (!icon) return null;
+    const { isFocusing } = this.state;
+    const { chooseIcon } = this.constructor;
+    return (
+      <div className={cx('icon', { focusing: isFocusing })}>
+        {isFunction(icon) ? icon() : chooseIcon(icon)}
+      </div>
+    );
+  }
 
-    return icon();
+  renderSuffix() {
+    const { suffix } = this.props;
+    if (!suffix) return null;
+    return <div styleName="suffix">{suffix}</div>;
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.props;
+    if (!errorMessage) return null;
+    return <div styleName="error-message">{errorMessage}</div>;
+  }
+
+  renderInput() {
+    const {
+      placeholder,
+      type,
+      value,
+      suffix,
+      suffixWidth,
+    } = this.props;
+    return (
+      <input
+        styleName="input"
+        type={type}
+        value={value}
+        spellCheck={false}
+        placeholder={placeholder}
+        style={{ marginRight: suffix ? suffixWidth : null }}
+        onFocus={() => this.setState({ isFocusing: true })}
+        onBlur={() => this.setState({ isFocusing: false })}
+        onChange={this.onChange}
+      />
+    );
   }
 
   render() {
-    const {
-      icon,
-      placeholder,
-      suffix,
-      suffixWidth,
-      type,
-      value,
-      errorMessage,
-    } = this.props;
+    const { icon } = this.props;
     const { isFocusing } = this.state;
-
     return (
-      <div styleName="inputControl">
-        { errorMessage && <div styleName="error">{errorMessage}</div> }
-        <div styleName="inputGroup">
-          <div styleName="inputGroupInner">
-            <div className={cx('inputOuter', { withIcon: !!icon })}>
-              <input
-                styleName="input"
-                type={type}
-                value={value}
-                spellCheck={false}
-                placeholder={placeholder}
-                style={{ marginRight: suffix ? suffixWidth : null }}
-                onFocus={() => this.setState({ isFocusing: true })}
-                onBlur={() => this.setState({ isFocusing: false })}
-                onChange={this.onChange}
-              />
+      <div styleName="input-control">
+        {this.renderErrorMessage()}
+        <div styleName="input-group">
+          <div styleName="input-group-inner">
+            <div className={cx('input-container', { 'with-icon': !!icon })}>
+              {this.renderInput()}
             </div>
-            {this.props.icon &&
-              <div className={cx('icon', { focusing: isFocusing })}>
-                {this.renderIcon()}
-              </div>
-            }
-            {suffix &&
-              <div styleName="suffix">
-                {suffix}
-              </div>
-            }
+            {this.renderIcon()}
+            {this.renderSuffix()}
           </div>
         </div>
         <div className={cx('bottomLine', { focusing: isFocusing })} />
