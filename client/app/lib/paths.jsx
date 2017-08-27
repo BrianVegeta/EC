@@ -72,6 +72,23 @@ export const publishServiceRouter = {
   confirmPath: pid => gPublishServiceUrl('step7-confirm', pid),
 };
 
+const gPublishSpaceUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-space'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishSpaceRouter = {
+  indexPath: pid => gPublishSpaceUrl('', pid),
+  coverPath: pid => gPublishSpaceUrl('', pid),
+  aboutPath: pid => gPublishSpaceUrl('step2-about', pid),
+  // deliveryPath: pid => gPublishSpaceUrl('step3-delivery', pid),
+  pricePath: pid => gPublishSpaceUrl('step3-price', pid),
+  regulationPath: pid => gPublishSpaceUrl('step4-regulation', pid),
+  cancelPolicyPath: pid => gPublishSpaceUrl('step5-cancel-policy', pid),
+  confirmPath: pid => gPublishSpaceUrl('step6-confirm', pid),
+};
+
 /* 預訂服務 */
 export const reservationService = {
   indexPath: pid => `/p/reservation-service/${pid}`,

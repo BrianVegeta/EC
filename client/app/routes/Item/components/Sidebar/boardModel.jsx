@@ -7,6 +7,7 @@ import {
   reservationService as rsServiceRouter,
   reservationSpace as rsSpaceRouter,
   publishServiceRouter,
+  publishSpaceRouter,
 } from 'lib/paths';
 
 
@@ -48,7 +49,7 @@ export default class {
     const publishRouter = {
       [CATE_GOODS]: publishServiceRouter,
       [CATE_SERVICE]: publishServiceRouter,
-      [CATE_SPACE]: publishServiceRouter,
+      [CATE_SPACE]: publishSpaceRouter,
     }[top_category];
     return () => browserHistory.push(publishRouter.indexPath(pid));
   }

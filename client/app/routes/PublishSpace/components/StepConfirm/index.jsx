@@ -18,9 +18,8 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
-  CHARGE_TYPE_FIX,
-  CHARGE_TYPE_COUNT,
   CHARGE_TYPE_DAY,
+  CHARGE_TYPE_MONTH,
 } from '../../modules/publish';
 
 const cx = classnames.bind(styles);
@@ -99,23 +98,15 @@ class StepConfirm extends React.Component {
       tag1, tag2, tag3,
     } = publish;
     const categoryNames = findCategoryNamesByID(categoryID, categories);
-
     const {
-      assignAddressByOwner,
-      assignAddressByCustomer,
-      assignCity,
-      assignArea,
+      cityName,
+      areaName,
       assignAddress,
     } = publish;
-
     const {
       price,
       deposit,
       chargeType,
-      startDate,
-      endDate,
-      unit,
-      reservationDays,
       discount,
       hasCancelPolicy,
       advanceDay,
@@ -146,7 +137,7 @@ class StepConfirm extends React.Component {
               </tr>
               <tr>
                 <th>分類</th>
-                <td>{categoryNames && `${categoryNames.middleName}/${categoryNames.name}`}</td>
+                <td>{categoryNames && `${categoryNames.middleName}`}</td>
               </tr>
               <tr>
                 <th>標籤</th>
@@ -159,28 +150,17 @@ class StepConfirm extends React.Component {
             </tbody>
           </table>
         </ConfirmTitle>
-        <ConfirmTitle title="服務資訊">
+        <ConfirmTitle title="空間資訊">
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>可服務方式</th>
+                <th width={154}>所地址</th>
                 <td>
-                  {assignAddressByOwner && '到店服務'}
-                  {assignAddressByOwner && assignAddressByCustomer && '、'}
-                  {assignAddressByCustomer && '到府服務'}
+                  {cityName}
+                  {areaName}
+                  {assignAddress}
                 </td>
               </tr>
-              {
-                assignAddressByOwner &&
-                <tr>
-                  <th>服務地址</th>
-                  <td>
-                    {assignCity}
-                    {assignArea}
-                    {assignAddress}
-                  </td>
-                </tr>
-              }
             </tbody>
           </table>
         </ConfirmTitle>
@@ -199,29 +179,10 @@ class StepConfirm extends React.Component {
                 <td>
                   <div>
                     {{
-                      [CHARGE_TYPE_FIX]: '固定價格計費',
-                      [CHARGE_TYPE_COUNT]: '數量計費',
-                      [CHARGE_TYPE_DAY]: '天數計費',
+                      [CHARGE_TYPE_DAY]: '以日計費',
+                      [CHARGE_TYPE_MONTH]: '以月計費',
                     }[chargeType]}
                   </div>
-                  {
-                    chargeType === CHARGE_TYPE_FIX ?
-                      <div>
-                        <div>
-                          活動時間：
-                          {formatDate(startDate)}-{formatDate(endDate)}
-                        </div>
-                        <div>
-                          人數上限：
-                          {unit}
-                        </div>
-                      </div>
-                      :
-                      <div>
-                        提前預約天數：
-                        {reservationDays}天
-                      </div>
-                  }
                 </td>
               </tr>
               {

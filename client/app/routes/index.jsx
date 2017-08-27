@@ -29,6 +29,7 @@ import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
 /* 發佈服務 */
 import routePublishService from './PublishService/route';
+import routePublishSpace from './PublishSpace/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import AuthLogin from './Auth/Login';
@@ -85,6 +86,7 @@ export default store => ({
       component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
         routePublishService(store),
+        routePublishSpace(store),
         routeReservationService(store),
         sueForm(store),
       ],
