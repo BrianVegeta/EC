@@ -28,6 +28,7 @@ import routeMyAccount from './MyAccount/route';
 import routeItem from './Item/route';
 // import Tanzaku from './Tanzaku';
 /* 發佈服務 */
+import routePublishGoods from './PublishGoods/route';
 import routePublishService from './PublishService/route';
 import routePublishSpace from './PublishSpace/route';
 // import ReleaseService from './Release/Service';
@@ -85,6 +86,7 @@ export default store => ({
     {
       component: layoutHoc(Publish, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
+        routePublishGoods(store),
         routePublishService(store),
         routePublishSpace(store),
         routeReservationService(store),

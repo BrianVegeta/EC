@@ -171,6 +171,8 @@ Rails.application.routes.draw do
       # ITEM
       post 'delete_item', to: 'item#remove_items' #
       post 'item_detail', to: 'item#view_item' #
+      post 'create_goods_item', to: 'item#item_add'
+      post 'update_goods_item', to: 'item#item_update'
       post 'create_service_item', to: 'item#service_add'
       post 'update_service_item', to: 'item#service_update'
       post 'create_space_item', to: 'item#space_add'

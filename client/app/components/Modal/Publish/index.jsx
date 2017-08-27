@@ -8,7 +8,7 @@ import CloseIcon from 'react-icons/lib/md/close';
 import GoodsIcon from 'components/Icons/Publish/Goods';
 import ServiceIcon from 'components/Icons/Publish/Service';
 import SpaceIcon from 'components/Icons/Publish/Space';
-import { publishServiceRouter, publishSpaceRouter,
+import { publishGoodsRoute, publishServiceRouter, publishSpaceRouter,
  } from 'lib/paths';
 
 import classnames from 'classnames/bind';
@@ -39,7 +39,7 @@ class ModalPublish extends React.Component {
   render() {
     const servicePath = publishServiceRouter.indexPath();
     const spacePath = publishSpaceRouter.indexPath();
-    const goodsPath = publishServiceRouter.indexPath();
+    const goodsPath = publishGoodsRoute.indexPath();
 
     const shortcuts = [
       { text: '服務', path: servicePath, Icon: ServiceIcon },
