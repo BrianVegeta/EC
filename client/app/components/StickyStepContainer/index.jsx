@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { isEqual } from 'lodash';
 
 import classnames from 'classnames/bind';
 import styles from './styles.sass';
@@ -22,12 +23,15 @@ class StickyStepContainer extends React.Component {
     };
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (
       this.mainWrapper &&
       this.mainWrapper.clientHeight > 0 &&
       this.state.wrapperHeight === null
     ) {
+      this.setWrapperContentHeight(this.mainWrapper.clientHeight);
+    }
+    if (!isEqual(prevProps.children[1], this.props.children[1])) {
       this.setWrapperContentHeight(this.mainWrapper.clientHeight);
     }
   }
