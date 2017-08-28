@@ -1,4 +1,5 @@
-import { asyncXhrPost, asyncXhrGet } from 'lib/xhr';
+import { asyncXhrPost, asyncXhrGet, fetchXhrDelete } from 'lib/xhr';
+import { refreshRoute } from 'lib/redirect';
 
 // =============================================
 // = settings =
@@ -23,9 +24,16 @@ export const login = currentUser => ({
   currentUser,
 });
 
-export const logout = () => ({
+const doLogout = () => ({
   type: LOGOUT,
 });
+
+export const logout = () =>
+  dispatch =>
+    fetchXhrDelete('/ajax/logout.json', () => {
+      dispatch(doLogout());
+      dispatch(refreshRoute());
+    });
 
 export const changeCurrentUser = () => ({
   type: CHANGE_CURRENT_USER,
