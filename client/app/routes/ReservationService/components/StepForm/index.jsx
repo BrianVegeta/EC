@@ -182,6 +182,16 @@ class StepForm extends React.Component {
             onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
           />
         </div>
+        {
+          couponNo &&
+            <button
+              className="button"
+              styleName="coupon-cancel"
+              onClick={() => dispatchChangeData({ couponNo: null })}
+            >
+              X 取消折價券
+            </button>
+        }
       </FormGroup>
     );
   }

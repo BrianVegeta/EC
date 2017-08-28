@@ -251,6 +251,9 @@ class Ajax::Api::ContractController < ApplicationController
   end
 
   def removePrivateData(response_data)
+    if current_user['uid'] === response_data['lesseeuid']
+      return response_data
+    end
     response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
     if (response_data['contractstage'] < 4)
       response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
@@ -351,7 +354,7 @@ class Ajax::Api::ContractController < ApplicationController
 
   def update_item_contract_params
     # cid : long => 合約ID
-    params.permit(:cid).merge(item_contract_params)
+    params.permit(:cid, :pid).merge(item_contract_params)
   end
 
   def service_contract_params
@@ -379,7 +382,7 @@ class Ajax::Api::ContractController < ApplicationController
 
   def update_service_contract_params
     # cid : long => 合約ID
-    params.permit(:cid).merge(service_contract_params)
+    params.permit(:cid, :pid).merge(service_contract_params)
   end
 
 
@@ -403,7 +406,7 @@ class Ajax::Api::ContractController < ApplicationController
 
   def update_space_contract_params
     # cid : long => 合約ID
-    params.permit(:cid).merge(service_contract_params)
+    params.permit(:cid, :pid).merge(service_contract_params)
   end
 
 

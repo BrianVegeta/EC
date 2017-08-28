@@ -116,6 +116,7 @@ class OrderList extends React.Component {
               photoName={record.lessee_nick_name}
               stage={record.contractstage}
               cid={record.cid}
+              pid={record.pid}
               cidNo={record.cid_no}
               itemName={record.pname}
               itemImgUrl={record.img1}

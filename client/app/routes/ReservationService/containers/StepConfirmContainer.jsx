@@ -6,7 +6,12 @@ import {
 } from 'lib/paths';
 import { fetchCoupons } from '../modules/reservationCoupons';
 import StepConfirm from '../components/StepConfirm';
-import { changeData, touchPath, saveReservation } from '../modules/reservation';
+import {
+  changeData,
+  touchPath,
+  saveReservation,
+  updateReservation,
+} from '../modules/reservation';
 import { validateAll, validateAllBy, validateAgree } from '../modules/validation';
 
 /* pick props */
@@ -37,13 +42,20 @@ const mapStateToProps = ({
 
 /* pick dispatch */
 const { confirmPath } = rsRouter;
-const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
+const mapDispatchToProps = (
+  dispatch,
+  { params: { pid }, location: { query: { cid } } },
+) => ({
   dispatchFetchCoupons: () => dispatch(fetchCoupons()),
-  dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
+  dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid, cid))),
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchValidateAll: () => dispatch(validateAll()),
   dispatchValidate: () => dispatch(validateAgree()),
-  dispatchSaveReservation: () => dispatch(saveReservation()),
+  dispatchSaveReservation: () => {
+    if (cid) return dispatch(updateReservation(cid));
+    return dispatch(saveReservation());
+  },
+
   redirectToMyOrder: () => browserHistory.push(my.lesseeOrderService('TAB_REQUEST')),
 });
 

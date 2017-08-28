@@ -121,13 +121,13 @@ class SelectionButton extends React.Component {
           disabled={disabled}
         >
           <div className={`clear ${cx('inner-wrapper', { dropdowning: isFocusing })}`}>
+            <IconArrowDown viewBox="-2 -6 20 20" size={24} />
             <div styleName="inner-text">
               {isEmpty(value) ?
                 <span styleName="placeholder">{placeholder}</span> :
                 value
               }
             </div>
-            <IconArrowDown viewBox="-2 -6 20 20" size={24} />
           </div>
         </button>
         {isFocusing &&
