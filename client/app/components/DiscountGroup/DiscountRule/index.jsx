@@ -3,21 +3,28 @@ import PropTypes from 'prop-types';
 import IconRemove from 'react-icons/lib/md/close';
 import validate from 'validate.js';
 import CSS from 'react-css-modules';
+import { DIMESIONS, ICONS } from 'constants';
+
+import InputCounterWithError from 'components/Input/TextCounter';
+import InputCurrencyWithError from 'components/Input/TextCurrency';
 import styles from './styles.sass';
 import constraints from '../constraints';
-import InputCounterWithError from '../../InputCounterWithError';
-import InputCurrencyWithError from '../../InputCurrencyWithError';
-import { DIMESIONS, ICONS } from '../../../../../constants';
+
 
 class DiscountRule extends React.Component {
   static defaultProps = {
     days: null,
     offer: null,
     hasHeader: false,
+    unit: null,
+    unitStr: '天',
+    unitMax: 30,
   };
   static propTypes = {
     days: PropTypes.number,
     offer: PropTypes.number,
+    unitStr: PropTypes.string,
+    unitMax: PropTypes.number,
     hasHeader: PropTypes.bool,
     price: PropTypes.number.isRequired,
     onRemove: PropTypes.func.isRequired,
@@ -58,9 +65,9 @@ class DiscountRule extends React.Component {
     const daysProps = {
       ref: di => (this.daysInput = di),
       value: this.props.days,
-      suffix: '天',
+      suffix: this.props.unitStr,
       min: 1,
-      max: 30,
+      max: this.props.unitMax,
       width: DIMESIONS.INPUT_DAYS_COUNTER_WIDTH,
       onChange: this.onDaysChange,
       validator: this.daysValidator,

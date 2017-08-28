@@ -1,5 +1,5 @@
 import numeral from 'numeral';
-import { LIMIT } from '../../../../constants';
+import { LIMIT } from 'constants';
 
 export default function discounts(price) {
   return {

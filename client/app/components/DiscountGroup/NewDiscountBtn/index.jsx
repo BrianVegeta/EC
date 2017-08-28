@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IconAdd from 'react-icons/lib/md/add';
 import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import {
   ICON_SIZE_DISCOUNT_CONTROL,
   ICON_COLOR_DISCOUNT_ADD,
   ICON_COLOR_DISCOUNT_ADD_DISABLE,
-} from '../../../../../constants/icons';
+} from 'constants/icons';
+
+import styles from './styles.sass';
+
 
 class NewBtn extends React.Component {
   static defaultProps = {

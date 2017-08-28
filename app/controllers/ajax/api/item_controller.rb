@@ -15,7 +15,7 @@ class Ajax::Api::ItemController < ApplicationController
 
   # 更新物品
   def item_update
-    obj = ::Api::Item::ItemUpdate.new item_params, current_apitoken
+    obj = ::Api::Item::ItemUpdate.new item_update_params, current_apitoken
     success = obj.request
     respond success, obj
   end
@@ -215,6 +215,7 @@ class Ajax::Api::ItemController < ApplicationController
 
     params.permit(:pname, :img1, :img2, :img2, :pdes,
       :cat_id, :city, :area, :unit, :price, :currency,
+      :send_option,
       :return_option, :return_city, :return_area, :return_address,
       :overdue_rate, :deposit, :ship_before_start_days, :min_lease_days,
       :tag1, :tag2, :tag3,

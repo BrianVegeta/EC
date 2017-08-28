@@ -18,8 +18,7 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
-  CHARGE_TYPE_DAY,
-  CHARGE_TYPE_MONTH,
+  CHARGE_TYPE_FIX,
 } from '../../modules/publish';
 
 const cx = classnames.bind(styles);
@@ -98,19 +97,27 @@ class StepConfirm extends React.Component {
       tag1, tag2, tag3,
     } = publish;
     const categoryNames = findCategoryNamesByID(categoryID, categories);
+
     const {
-      cityName,
-      areaName,
-      assignAddress,
+      // sendBy711,
+      sendByOtherShippment,
+      sendByInPerson,
+      // returnBy711,
+      returnByOtherShippment,
+      returnByInPerson,
+      returnCity,
+      returnArea,
+      returnAddress,
+      minimumShippemntDay,
     } = publish;
+
     const {
       price,
       deposit,
-      chargeType,
+      unit,
       discount,
-      hasCancelPolicy,
-      advanceDay,
-      rate,
+      hasOverduePolicy,
+      overdueRate,
     } = publish;
 
     const {
@@ -137,7 +144,7 @@ class StepConfirm extends React.Component {
               </tr>
               <tr>
                 <th>分類</th>
-                <td>{categoryNames && `${categoryNames.middleName}`}</td>
+                <td>{categoryNames && `${categoryNames.middleName}/${categoryNames.name}`}</td>
               </tr>
               <tr>
                 <th>標籤</th>
@@ -151,39 +158,53 @@ class StepConfirm extends React.Component {
             </tbody>
           </table>
         </ConfirmTitle>
-        <ConfirmTitle title="空間資訊">
+        <ConfirmTitle title="寄件資訊">
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>所地址</th>
+                <th width={154}>預計物流時間</th>
+                <td>使用的前{minimumShippemntDay}天內到貨</td>
+              </tr>
+              <tr>
+                <th width={154}>可寄件方式</th>
                 <td>
-                  {cityName}
-                  {areaName}
-                  {assignAddress}
+                  {sendByInPerson && '面交（自行協調取貨地點/'}
+                  {sendByOtherShippment && '自行寄件/'}
                 </td>
               </tr>
+              <tr>
+                <th width={154}>可寄還方式</th>
+                <td>
+                  {returnByInPerson && '面交（自行協調取貨地點/'}
+                  {returnByOtherShippment && '自行寄件/'}
+                </td>
+              </tr>
+              { returnByOtherShippment &&
+                <tr>
+                  <th width={154}>寄還地址</th>
+                  <td>{returnCity}{returnArea}{returnAddress}</td>
+                </tr>
+              }
             </tbody>
           </table>
         </ConfirmTitle>
-        <ConfirmTitle title="設定價格">
+        <ConfirmTitle title="設定庫存及價格">
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>價格</th>
+                <th width={154}>庫存數量：</th>
                 <td>
-                  <div>分享金： {formatCurrency(price)}</div>
-                  <div>押金： {formatCurrency(deposit)}</div>
+                  <div>{unit}個</div>
                 </td>
               </tr>
               <tr>
-                <th>計費方式</th>
+                <th width={154}>價格</th>
                 <td>
-                  <div>
-                    {{
-                      [CHARGE_TYPE_DAY]: '以日計費',
-                      [CHARGE_TYPE_MONTH]: '以月計費',
-                    }[chargeType]}
-                  </div>
+                  <div styleName="cell">分享金： {formatCurrency(price)}</div>
+                  <div styleName="cell">押金： {formatCurrency(deposit)}</div>
+                  { hasOverduePolicy &&
+                    <div styleName="cell">逾期金：逾期1天，扣除押金NTD${ Math.ceil((deposit * overdueRate) / 100) }</div>
+                  }
                 </td>
               </tr>
               {
@@ -191,15 +212,6 @@ class StepConfirm extends React.Component {
                   <tr>
                     <th width={154}>優惠價</th>
                     <td>{formatCurrency(discount)}</td>
-                  </tr>
-                  :
-                  null
-              }
-              {
-                hasCancelPolicy ?
-                  <tr>
-                    <th width={154}>退訂政策</th>
-                    <td>{`開始租借前${advanceDay}天若取消訂單，則扣除${rate}%押金`}</td>
                   </tr>
                   :
                   null

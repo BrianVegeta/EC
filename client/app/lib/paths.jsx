@@ -55,6 +55,22 @@ export const wishRouter = {
 /* =============================================>>>>>
 = 發佈服務 =
 ===============================================>>>>>*/
+const gPublishGoodsUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-goods'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishGoodsRouter = {
+  indexPath: pid => gPublishGoodsUrl('', pid),
+  coverPath: pid => gPublishGoodsUrl('', pid),
+  aboutPath: pid => gPublishGoodsUrl('step2-about', pid),
+  deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
+  pricePath: pid => gPublishGoodsUrl('step4-price', pid),
+  regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
+  confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
+};
+
 const gPublishServiceUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-service'];
   if (step) paths.push(step);
@@ -82,7 +98,6 @@ export const publishSpaceRouter = {
   indexPath: pid => gPublishSpaceUrl('', pid),
   coverPath: pid => gPublishSpaceUrl('', pid),
   aboutPath: pid => gPublishSpaceUrl('step2-about', pid),
-  // deliveryPath: pid => gPublishSpaceUrl('step3-delivery', pid),
   pricePath: pid => gPublishSpaceUrl('step3-price', pid),
   regulationPath: pid => gPublishSpaceUrl('step4-regulation', pid),
   cancelPolicyPath: pid => gPublishSpaceUrl('step5-cancel-policy', pid),

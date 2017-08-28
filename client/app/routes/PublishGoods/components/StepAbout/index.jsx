@@ -12,7 +12,7 @@ import FormGroup from 'components/Form/Group';
 import FormTitleLimiter from 'components/Form/TitleLimiter';
 import constraints from 'constraints';
 import {
-  CATEGORY_SPACE,
+  CATEGORY_GOODS,
 } from 'constants/enums';
 import ButtonNextStep, {
   STATUS_DISABLE,
@@ -62,7 +62,6 @@ class StepAbout extends React.Component {
       this.descriptInput.valid();
       this.cityAreaInput.valid();
       this.categoryInput.valid();
-      this.addressInput.valid();
       this.tag1Input.valid();
       this.tag2Input.valid();
       this.tag3Input.valid();
@@ -84,18 +83,17 @@ class StepAbout extends React.Component {
       tag1,
       tag2,
       tag3,
-      assignAddress,
     } = publish;
 
     return (
-      <FormContainer title="關於空間" >
+      <FormContainer title="關於物品" >
         <FormGroup
-          headerText={'空間名稱'}
+          headerText={'物品名稱'}
           limiter={<FormTitleLimiter limit={30} length={title.length} />}
         >
           <InputText
             ref={titleInput => (this.titleInput = titleInput)}
-            placeholder="請輸入空間標題"
+            placeholder="請輸入物品標題"
             onChange={value => dispatchChangeData({ title: value })}
             value={title}
             constraints={constraints.title}
@@ -103,19 +101,19 @@ class StepAbout extends React.Component {
           />
         </FormGroup>
         <FormGroup
-          headerText={'空間描述'}
+          headerText={'物品描述'}
           limiter={<FormTitleLimiter limit={250} length={descript.length} />}
         >
           <InputTextArea
             ref={descriptInput => (this.descriptInput = descriptInput)}
-            placeholder="清楚介紹您所提供的空間，敘述更多吸引人的細節"
+            placeholder="清楚介紹您的物品，敘述更多吸引人的細節"
             onChange={value => dispatchChangeData({ descript: value })}
             value={descript}
             constraints={constraints.descript}
             validateOnBlur
           />
         </FormGroup>
-        <FormGroup headerText="所在地區">
+        <FormGroup headerText="物品地區">
           <InputSelectionCitiesContainer
             ref={cityAreaInput => (
               this.cityAreaInput = (cityAreaInput && cityAreaInput.getWrappedInstance())
@@ -130,25 +128,14 @@ class StepAbout extends React.Component {
             constraints={constraints.cityArea}
             validateOnBlur
           />
-          <div styleName="assign-address-detail">
-            <InputText
-              ref={addressInput => (this.addressInput = addressInput)}
-              placeholder="請輸入詳細地址"
-              onChange={value => dispatchChangeData({ assignAddress: value })}
-              value={assignAddress}
-              constraints={constraints.address}
-              validateOnBlur
-            />
-          </div>
         </FormGroup>
         <FormGroup headerText={'分類'}>
           <InputSelectionCatesContainer
             ref={categoryInput => (
               this.categoryInput = (categoryInput && categoryInput.getWrappedInstance())
             )}
-            topCategory={CATEGORY_SPACE}
+            topCategory={CATEGORY_GOODS}
             categoryId={categoryID}
-            singleLevel
             placeholder="請選擇分類"
             onSelect={category => dispatchChangeData({ categoryID: category.categoryID })}
             value={categoryID ? String(categoryID) : ''}

@@ -6,6 +6,7 @@ import {
   reservationGoods as rsGoodsRouter,
   reservationService as rsServiceRouter,
   reservationSpace as rsSpaceRouter,
+  publishGoodsRouter,
   publishServiceRouter,
   publishSpaceRouter,
 } from 'lib/paths';
@@ -47,7 +48,7 @@ export default class {
 
   static editPublish({ top_category, pid }) {
     const publishRouter = {
-      [CATE_GOODS]: publishServiceRouter,
+      [CATE_GOODS]: publishGoodsRouter,
       [CATE_SERVICE]: publishServiceRouter,
       [CATE_SPACE]: publishSpaceRouter,
     }[top_category];
