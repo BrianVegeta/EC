@@ -17,10 +17,16 @@ class DiscountGroup extends React.Component {
     const uniqs = _.uniqBy(discounts, 'param');
     return uniqs.length !== discounts.length;
   }
+  static defaultProps = {
+    unitStr: '天',
+    unitMax: 30,
+  }
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     discounts: PropTypes.arrayOf(PropTypes.object).isRequired,
     price: PropTypes.number.isRequired,
+    unitStr: PropTypes.string,
+    unitMax: PropTypes.number,
     defaultDiscountObj: PropTypes.shape({
       type: PropTypes.string.isRequired,
       param: PropTypes.number,
@@ -73,6 +79,8 @@ class DiscountGroup extends React.Component {
             days={discount.param}
             offer={discount.discount}
             price={this.props.price}
+            unitStr={this.props.unitStr}
+            unitMax={this.props.unitMax}
             onRemove={() => this.remove(i)}
             onChange={(days, offer) => this.changeDiscount(days, offer, i)}
             hasHeader={i === 0}

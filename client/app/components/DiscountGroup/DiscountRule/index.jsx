@@ -61,7 +61,7 @@ class DiscountRule extends React.Component {
     return this.validator('offer');
   }
   render() {
-    const { hasHeader } = this.props;
+    const { hasHeader, unitStr, unitMax } = this.props;
     const daysProps = {
       ref: di => (this.daysInput = di),
       value: this.props.days,
@@ -82,7 +82,7 @@ class DiscountRule extends React.Component {
     return (
       <div styleName="ruleContainer">
         <div styleName="headers">
-          { hasHeader && <div styleName="daysHead">租借天數（最多30天）</div>}
+          { hasHeader && <div styleName="daysHead">租借天數（最多{unitMax}{unitStr}）</div>}
           { hasHeader && <div styleName="offerHead">每件優惠價</div>}
         </div>
         <div styleName="inputs" className="clear">

@@ -1,6 +1,6 @@
 import { parseInt } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
-import { now, getMoment } from 'lib/time';
+import { now } from 'lib/time';
 import {
   REDUCER_KEY as COVER_REDUCER_KEY,
   setupCoversForEdit,
@@ -29,7 +29,7 @@ export const CHANGE_DATA = prefix('CHANGE_DATA');
 export const FETCHED_FOR_EDIT = prefix('FETCHED_FOR_EDIT');
 export const TOUCH_PATH = prefix('TOUCH_PATH');
 export const RESET = prefix('RESET');
-
+export const CHANGE_PAID_TYPE = prefix('CHANGE_PAID_TYPE');
 
 // =============================================
 // = actions =
@@ -37,6 +37,11 @@ export const RESET = prefix('RESET');
 
 export const changeData = data => ({
   type: CHANGE_DATA,
+  data,
+});
+
+export const changePaidData = data => ({
+  type: CHANGE_PAID_TYPE,
   data,
 });
 
@@ -60,33 +65,26 @@ const transformState = ({
   assign_address, calculate_charge_type, price, deposit,
   ship_before_start_days, discounts, rules,
   cancel_policys,
-}) => {
-  const assignAddressByCustomer = false;
-  const assignAddressByOwner = true;
-  const discount = discounts[0] ? discounts[0].discount : '';
-  return ({
-    title: pname,
-    descript: pdes,
-    cityName: city,
-    areaName: area,
-    categoryID: parseInt(cat_id),
-    tag1: tags[0],
-    tag2: tags[1],
-    tag3: tags[2],
-    assignAddressByCustomer,
-    assignAddressByOwner,
-    assignAddress: assign_address,
-    chargeType: calculate_charge_type,
-    price,
-    deposit,
-    reservationDays: ship_before_start_days,
-    discount,
-    regulation: rules[0] || '',
-    hasCancelPolicy: Boolean(cancel_policys[0]),
-    advanceDay: cancel_policys[0] ? cancel_policys[0].advance_day : null,
-    rate: cancel_policys[0] ? cancel_policys[0].rate : null,
-  });
-};
+}) => ({
+  title: pname,
+  descript: pdes,
+  cityName: city,
+  areaName: area,
+  categoryID: parseInt(cat_id),
+  tag1: tags[0],
+  tag2: tags[1],
+  tag3: tags[2],
+  assignAddress: assign_address,
+  chargeType: calculate_charge_type,
+  price,
+  deposit,
+  reservationDays: ship_before_start_days,
+  discounts,
+  regulation: rules[0] || '',
+  hasCancelPolicy: Boolean(cancel_policys[0]),
+  advanceDay: cancel_policys[0] ? cancel_policys[0].advance_day : null,
+  rate: cancel_policys[0] ? cancel_policys[0].rate : null,
+});
 
 export const editPublish = pid =>
   (dispatch) => {
@@ -105,42 +103,35 @@ const transformParams = (covers, {
   cityName, areaName,
   tag1, tag2, tag3,
   price, deposit, reservationDays,
-  assignAddressByOwner, assignAddressByCustomer,
   assignAddress,
-  chargeType, discount,
+  chargeType, discounts,
   regulation,
   hasCancelPolicy,
   advanceDay,
   rate,
-}) => {
-  const assignTypes = [];
-  if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
-  if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
-  return ({
-    pname: title,
-    img1: covers[0] && covers[0].s3,
-    img2: covers[1] && covers[1].s3,
-    img3: covers[2] && covers[2].s3,
-    pdes: descript,
-    cat_id: categoryID,
-    city: cityName,
-    area: areaName,
-    price,
-    deposit,
-    currency: 'NTD',
-    advance_reservation_days: reservationDays || 0,
-    tag1: (tag1 || null),
-    tag2: (tag2 || null),
-    tag3: (tag3 || null),
-    assign_address: assignAddress,
-    calculate_charge_type: chargeType,
-    discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
-      [{ type: 'FIX', param: 0, discount }] : [],
-    rules: [regulation],
-    min_lease_days: 0,
-    cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
-  });
-};
+}) => ({
+  pname: title,
+  img1: covers[0] && covers[0].s3,
+  img2: covers[1] && covers[1].s3,
+  img3: covers[2] && covers[2].s3,
+  pdes: descript,
+  cat_id: categoryID,
+  city: cityName,
+  area: areaName,
+  price,
+  deposit,
+  currency: 'NTD',
+  advance_reservation_days: reservationDays || 0,
+  tag1: (tag1 || null),
+  tag2: (tag2 || null),
+  tag3: (tag3 || null),
+  assign_address: assignAddress,
+  calculate_charge_type: chargeType,
+  discounts,
+  rules: [regulation],
+  min_lease_days: 0,
+  cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
+});
 
 export const savePublish = () =>
   (dispatch, getState) =>
@@ -192,9 +183,9 @@ const initialState = {
   /* PRICE */
   chargeType: '',
   price: null,
-  deposit: null,
+  deposits: null,
+  discounts: [],
   reservationDays: 1,
-  discount: '',
   regulation: '',
   hasCancelPolicy: false,
   advanceDay: null,
@@ -228,6 +219,16 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_DATA:
       return Object.assign({}, state, action.data);
+
+    case CHANGE_PAID_TYPE: {
+      const resetData = Object.assign({}, action.data, {
+        deposit: null,
+        price: null,
+        discounts: [],
+        reservationDays: 1,
+      });
+      return Object.assign({}, state, resetData);
+    }
 
     case TOUCH_PATH: {
       if (state.touchedStepPaths.includes(action.path)) {

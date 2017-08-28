@@ -13,6 +13,7 @@ import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import { GREATER_OR_EQUAL_TO_N_COUNT } from 'constants/publishTypes';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 
 // import classnames from 'classnames/bind';
@@ -159,7 +160,7 @@ class StepPrice extends React.Component {
             discounts={discounts}
             price={tPrice}
             defaultDiscountObj={{
-              type: 'GREATER_OR_EQUAL_TO_N_COUNT',
+              type: GREATER_OR_EQUAL_TO_N_COUNT,
               param: null,
               discount: null,
             }}

@@ -5,7 +5,7 @@ import { formatCurrency } from 'lib/currency';
 import constraints, { PRICE_MAX } from 'constraints/publish';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
-  CHARGE_TYPE_FIX,
+  CHARGE_TYPE_MONTH,
 } from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 
@@ -153,7 +153,7 @@ export const validatePriceBy = ({
   price,
   deposit,
   reservationDays,
-  discount,
+  discounts,
 }) => {
   if (!chargeType) {
     return {
@@ -171,21 +171,32 @@ export const validatePriceBy = ({
     };
   }
 
-  const isFixType = chargeType === CHARGE_TYPE_FIX;
-  const advanceDaysConstraint = isFixType ? null : constraints.serviceReservationDays;
-  const discountConstraint = isFixType && discount ? constraints.discount(price) : null;
-
-  const errors = validate({
+  let errors = validate({
     price,
     deposit,
     reservationDays,
-    discount,
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    reservationDays: advanceDaysConstraint,
-    discount: discountConstraint,
+    reservationDays: constraints.serviceReservationDays,
   });
+
+  if (!(errors)) {
+    discounts.forEach((discount) => {
+      const param = discount.param;
+      const val = discount.discount;
+      const tError = validate({
+        param,
+        val,
+      }, {
+        param: constraints.discountParam,
+        val: constraints.discountVal(priceNumber),
+      });
+      if (isEmpty(errors)) {
+        errors = tError;
+      }
+    });
+  }
 
   return {
     isValid: isEmpty(errors),

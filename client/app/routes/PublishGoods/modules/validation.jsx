@@ -5,7 +5,6 @@ import { formatCurrency } from 'lib/currency';
 import constraints, { PRICE_MAX } from 'constraints/publish';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
-  CHARGE_TYPE_FIX,
 } from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 
@@ -174,7 +173,7 @@ export const validatePriceBy = ({
     };
   }
 
-  const errors = validate({
+  let errors = validate({
     price,
     deposit,
     unit,
@@ -185,7 +184,6 @@ export const validatePriceBy = ({
     unit: constraints.serviceUnit,
     minimumShippemntDay: constraints.minimumShippemntDay,
   });
-  let discountErrors = null;
   if (!(errors)) {
     discounts.forEach((discount) => {
       const param = discount.param;
@@ -197,14 +195,14 @@ export const validatePriceBy = ({
         param: constraints.discountParam,
         val: constraints.discountVal(priceNumber),
       });
-      if (isEmpty(discountErrors)) {
-        discountErrors = tError;
+      if (isEmpty(errors)) {
+        errors = tError;
       }
     });
   }
   return {
-    isValid: isEmpty(errors) && isEmpty(discountErrors),
-    errors: isEmpty(errors) ? discountErrors : errors,
+    isValid: isEmpty(errors),
+    errors,
   };
 };
 

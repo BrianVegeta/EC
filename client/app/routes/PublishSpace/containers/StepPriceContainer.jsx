@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { publishSpaceRouter } from 'lib/paths';
 import StepPrice from '../components/StepPrice';
-import { changeData, touchPath } from '../modules/publish';
+import { changeData, changePaidData, touchPath } from '../modules/publish';
 import { validatePrice, validatePriceBy } from '../modules/validation';
 
 
@@ -26,6 +26,7 @@ const mapDispatchToProps = (dispatch, { location: { query } }) => {
   const { pid } = query;
   return ({
     dispatchChangeData: data => dispatch(changeData(data)),
+    dispatchChangePaidData: data => dispatch(changePaidData(data)),
     dispatchValidate: () => dispatch(validatePrice()),
     dispatchTouchPath: () => dispatch(touchPath(pricePath(pid))),
     nextStep: () => browserHistory.push(regulationPath(pid)),
