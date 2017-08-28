@@ -1,4 +1,4 @@
-import { asyncXhrPost } from 'lib/xhr';
+import { asyncXhrPost, asyncXhrGet } from 'lib/xhr';
 
 // =============================================
 // = settings =
@@ -102,6 +102,15 @@ export const postResendVerify = ({ email, phone }) =>
     });
   });
 
+export const syncCurrentUser = () =>
+  dispatch =>
+    asyncXhrGet(
+      '/ajax/auth/sync.json',
+    ).then((userProfile) => {
+      dispatch(login(userProfile));
+    }).catch(() => {
+      dispatch(logout());
+    });
 
 // =============================================
 // = REDUCER =

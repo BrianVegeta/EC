@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { logout } from 'actions/authActions';
+import { logout } from 'modules/auth';
 import { popupPublishEntry } from 'modules/popup';
 
 import Component from './index';

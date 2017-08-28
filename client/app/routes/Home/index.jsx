@@ -1,4 +1,4 @@
-import { syncCurrentUser } from '../../actions/authActions';
+import { syncCurrentUser } from 'modules/auth';
 import { startup } from '../../actions/homeActions';
 
 export default dispatch => ({

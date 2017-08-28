@@ -1,15 +1,66 @@
 import { connect } from 'react-redux';
 
-import Component from './index';
+import { login as authLogin } from 'modules/auth';
+import { closePopup } from 'modules/popup';
+import {
+  REDUCER_KEY as LOGIN_REDUCER_KEY,
+  changeForm,
+  switchLoginByEmail,
+  switchLoginByPhone,
+  loginEmail,
+  loginPhone,
+  loginFacebook,
+  reset,
+} from 'modules/login';
+import Login from './index';
 
 
-const mapStateToProps = ({ environment, auth }) => ({
-  environment, auth
+/* =============================================>>>>>
+= map props =
+===============================================>>>>>*/
+const mapStateToProps = ({
+  environment,
+  [LOGIN_REDUCER_KEY]: login,
+}) => ({
+  environment,
+  login,
 });
 
-/* pick dispatch */
-const mapDispatchToProps = dispatch => ({
-  dispatch,
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+/* =============================================>>>>>
+= map dispatch =
+===============================================>>>>>*/
+const mapDispatchToProps = (dispatch, { onAfterLogin }) => {
+  const afterLogin = (userProfile) => {
+    dispatch(authLogin(userProfile));
+    dispatch(closePopup());
+    onAfterLogin();
+  };
+  const dispatchLoginEmail = ({ email, password }) => {
+    dispatch(
+      loginEmail({ email, password }),
+    ).then(afterLogin);
+  };
+  const dispatchLoginPhone = ({ phone, password }) => {
+    dispatch(
+      loginPhone({ phone, password }),
+    ).then(afterLogin);
+  };
+  const dispatchLoginFB = ({ userID, accessToken }) => {
+    dispatch(
+      loginFacebook({ userID, accessToken }),
+    ).then(afterLogin);
+  };
+  return ({
+    dispatchClose: () => dispatch(closePopup()),
+    dispatchChangeForm: data => dispatch(changeForm(data)),
+    dispatchSwitchEmailLogin: () => dispatch(switchLoginByEmail()),
+    dispatchSwitchPhoneLogin: () => dispatch(switchLoginByPhone()),
+    dispatchLoginEmail,
+    dispatchLoginPhone,
+    dispatchLoginFB,
+    dispatchReset: () => dispatch(reset()),
+  });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

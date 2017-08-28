@@ -10,6 +10,7 @@ import personalBankInfo from 'modules/personalBankInfo';
 import orderAction from 'modules/orderAction';
 import routingHelper from 'modules/routingHelper';
 import auth from 'modules/auth';
+import login from 'modules/login';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -41,6 +42,7 @@ const reducers = {
   modal,
   environment,
   auth,
+  login,
   banners,
   routesHelper,
   recommends,

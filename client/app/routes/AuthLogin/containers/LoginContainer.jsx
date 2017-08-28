@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import { login as authLogin } from 'modules/auth';
 import { redirectAfterLogin } from 'lib/redirect';
-import Login from '../components/Login';
 import {
   REDUCER_KEY as LOGIN_REDUCER_KEY,
   changeForm,
@@ -12,7 +11,8 @@ import {
   loginPhone,
   loginFacebook,
   reset,
-} from '../modules/login';
+} from 'modules/login';
+import Login from '../components/Login';
 
 
 /* =============================================>>>>>

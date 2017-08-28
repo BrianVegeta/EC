@@ -108,10 +108,7 @@ class Popup extends React.Component {
             width={470}
             onClose={this.props.dispatchCloseModal}
           >
-            <LoginContainer
-              onClose={this.props.dispatchCloseModal}
-              onAfterLogin={options.onAfterLogin}
-            />
+            <LoginContainer onAfterLogin={options.onAfterLogin} />
           </ModalBox>
         );
       case RENDER_TWO_BUTTONS:
