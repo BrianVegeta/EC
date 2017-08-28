@@ -101,6 +101,7 @@ class Login extends React.Component {
               icon={ICON_TYPE_EMAIL}
               placeholder="Email"
               onChange={value => dispatchChangeForm({ email: value })}
+              onEnter={this.login}
               value={email}
               constraints={constraints.email}
             />
@@ -111,6 +112,7 @@ class Login extends React.Component {
               icon={ICON_TYPE_PHONE}
               placeholder="手機號碼"
               onChange={value => dispatchChangeForm({ phone: value })}
+              onEnter={this.login}
               value={phone}
               constraints={constraints.phone}
             />
@@ -122,6 +124,7 @@ class Login extends React.Component {
           placeholder="密碼"
           type="password"
           onChange={value => dispatchChangeForm({ password: value })}
+          onEnter={this.login}
           value={password}
           constraints={constraints.password}
         />

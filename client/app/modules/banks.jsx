@@ -4,8 +4,6 @@ import { fromJS } from 'immutable';
 import {
   asyncXhrGet,
   asyncXhrPost,
-  // asyncXhrAuthedGet,
-  // asyncXhrAuthedPost,
 } from 'lib/xhr';
 
 /* =============================================>>>>>

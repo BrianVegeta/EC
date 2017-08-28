@@ -99,7 +99,7 @@ class BankSetupContainer extends React.Component {
     } = this.props;
     dispatchValidate().then(() => {
       dispatchSaveBankInfo().then(({ bankName }) => {
-        dispatchChangeData({ bankName });
+        dispatchChangeData({ bankName, isReady: true });
         dispatchClosePopup();
       });
     }).catch((errors) => {
@@ -167,7 +167,6 @@ class BankSetupContainer extends React.Component {
       ({ value: id, text: bankName }),
     );
     const branchOptions = this.constructor.generateBranchOptions(accBankId, banks);
-    console.log(accBankBranchId, branchOptions);
     return (
       <div styleName="container">
         <div styleName="header">設定銀行帳戶</div>
