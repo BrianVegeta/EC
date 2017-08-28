@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { browserHistory } from 'react-router';
 
+
 export const redirectToWithReferrer = pathname =>
   (dispatch, getState) => {
     const { routing: { locationBeforeTransitions } } = getState();

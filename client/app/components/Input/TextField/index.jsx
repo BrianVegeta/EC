@@ -30,6 +30,7 @@ class TextField extends React.Component {
     errorMessage: null,
     value: '',
     onChange: null,
+    onEnter: null,
   };
 
   static propTypes = {
@@ -49,6 +50,7 @@ class TextField extends React.Component {
     errorMessage: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onEnter: PropTypes.func,
   };
 
   static chooseIcon(icon) {
@@ -67,12 +69,20 @@ class TextField extends React.Component {
       isFocusing: false,
     };
     this.onChange = this.onChange.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   onChange(e) {
     const { onChange } = this.props;
     if (onChange === null) return;
     onChange(e.target.value);
+  }
+
+  onKeyDown(e) {
+    const { onEnter } = this.props;
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
+    }
   }
 
   renderIcon() {
@@ -118,6 +128,7 @@ class TextField extends React.Component {
         onFocus={() => this.setState({ isFocusing: true })}
         onBlur={() => this.setState({ isFocusing: false })}
         onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
       />
     );
   }

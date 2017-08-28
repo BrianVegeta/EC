@@ -32,6 +32,7 @@ export const changeCurrentUser = () => ({
 });
 
 // login email async(none dispatch)
+// 登入
 export const postLogin = ({ email, phone, password }) =>
   new Promise((resolve, reject) => {
     const path = email ? '/ajax/email_login.json' : '/ajax/phone_login.json';
@@ -44,15 +45,59 @@ export const postLogin = ({ email, phone, password }) =>
     });
   });
 
+// 登入 Facebook
 export const postLoginFacebook = ({ userID, accessToken }) =>
   new Promise((resolve, reject) => {
-    asyncXhrPost(
-      '/ajax/facebook_login_callback.json',
-      { fb_id: userID, access_token: accessToken },
-      true,
-    ).then(({ user_profile }) => {
+    const path = '/ajax/facebook_login_callback.json';
+    const params = { fb_id: userID, access_token: accessToken };
+    asyncXhrPost(path, params, true).then(({ user_profile }) => {
       resolve(user_profile);
     }).catch(({ message }) => {
+      reject(message);
+    });
+  });
+
+// 註冊
+export const postRegister = ({ email, phone, password }) =>
+  new Promise((resolve, reject) => {
+    const path = `/ajax/${email ? 'email' : 'phone'}_register.json`;
+    const params = email ? { email, password } : { phone, password };
+
+    asyncXhrPost(path, params, true).then(() => {
+      resolve();
+    }).catch(({ message }) => {
+      reject(message);
+    });
+  });
+
+// 驗證
+export const postVerify = ({
+  email, verifycode,
+  phone, sms,
+  password, name,
+}) =>
+  new Promise((resolve, reject) => {
+    const path = `/ajax/${email ? 'email' : 'phone'}_verify.json`;
+    const params = Object.assign(
+      {},
+      (email ? { email, verifycode } : { phone, sms }),
+      { password, name },
+    );
+
+    asyncXhrPost(path, params, true).then(({ user_profile }) => {
+      resolve(user_profile);
+    }).catch(({ message }) => {
+      reject(message);
+    });
+  });
+
+export const postResendVerify = ({ email, phone }) =>
+  new Promise((resolve, reject) => {
+    const path = `/ajax/${email ? 'email' : 'phone'}_verify_resend.json`;
+    const params = email ? { email } : { phone };
+    asyncXhrPost(path, params, true).then(() => {
+      resolve();
+    }).catch((message) => {
       reject(message);
     });
   });

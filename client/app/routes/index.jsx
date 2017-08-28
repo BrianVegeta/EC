@@ -32,7 +32,7 @@ import routePublishService from './PublishService/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import routeLogin from './AuthLogin/route';
-import Registration from './Auth/Registration';
+import routeRegistration from './AuthRegistration/route';
 /* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
@@ -71,7 +71,7 @@ export default store => ({
       component: layoutHoc(Signinup, {}),
       childRoutes: [
         routeLogin(store),
-        Registration(store.routesHelper, store.dispatch),
+        routeRegistration(store),
       ],
     },
     /* Order detail*/

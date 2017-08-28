@@ -4,7 +4,7 @@ import HeaderContainer from 'containers/Header/Container';
 import Footer from 'components/Footer';
 import AlignCenter from 'components/AlignCenter';
 import myPropTypes from 'propTypes';
-import MainWrapper from './MainWrapper';
+// import MainWrapper from './MainWrapper';
 
 export default class extends React.Component {
   static defaultProps = {

@@ -13,12 +13,6 @@ class Ajax::Auth::RegistrationController < ApplicationController
   def phone
     @user = ::Auth::Registration::Phone..new(phone_params)
     success = @user.request
-
-    if success
-      @user.response_data['user_profile'] = reverse_merge(
-        @user.response_data['user_profile'], ResponseJson::UserProfile.structure
-      )
-    end
     respond success, @user
   end
 
