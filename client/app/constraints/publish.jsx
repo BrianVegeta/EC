@@ -10,6 +10,8 @@ export const PRICE_MAX = 99999;
 export const SERVICE_UNIT_MIN = 1;
 export const SERVICE_RESERVATION_DAYS_MAX = 30;
 export const SERVICE_RESERVATION_DAYS_MIN = 0;
+export const SHIPPING_DAYS_MAX = 7;
+export const SHIPPING_DAYS_MIN = 0;
 
 
 export const numberNotInRage = (value, { min, max }) => {
@@ -144,6 +146,34 @@ export default {
       notLessThanOrEqualTo: `^最多 ${SERVICE_RESERVATION_DAYS_MIN}`,
     },
   },
+  minimumShippemntDay: {
+    numericality: {
+      notValid: '^請填數字',
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      greaterThanOrEqualTo: SHIPPING_DAYS_MIN,
+      notGreaterThanOrEqualTo: `^至少大於 ${SHIPPING_DAYS_MIN}`,
+      lessThanOrEqualTo: SHIPPING_DAYS_MAX,
+      notLessThanOrEqualTo: `^最多 ${SHIPPING_DAYS_MIN}`,
+    },
+  },
+  discountParam: {
+    presence: {
+      message: '^請填租期條件',
+    },
+  },
+  discountVal: price => ({
+    presence: {
+      message: '^請填特價金額',
+    },
+    numericality: {
+      notValid: '^請填數字',
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      lessThanOrEqualTo: parseInt(price, 10),
+      notLessThanOrEqualTo: `^不可超過設定價格 ${formatCurrency(price)}`,
+    },
+  }),
   discount: price => ({
     numericality: {
       notValid: '^請填數字',

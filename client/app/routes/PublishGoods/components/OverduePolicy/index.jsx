@@ -10,6 +10,7 @@ import SliderHandler from './SliderHandler';
 class OverduePolicy extends React.Component {
 
   static defaultProps = {
+    deposit: 0,
     enable: false,
     rate: 5,
   }

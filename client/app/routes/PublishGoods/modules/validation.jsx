@@ -134,7 +134,7 @@ export const validateDeliveryBy = ({
       returnAddress: constraints.address,
     });
   }
-  
+
   return {
     isValid: isEmpty(errors),
     errors,
@@ -158,19 +158,12 @@ export const validateDelivery = () =>
 = Price =
 ===============================================>>>>>*/
 export const validatePriceBy = ({
-  chargeType,
   price,
   deposit,
   unit,
-  reservationDays,
-  discount,
+  minimumShippemntDay,
+  discounts,
 }) => {
-  if (!chargeType) {
-    return {
-      isValid: false,
-      errors: { chargeTypeError: '請選擇一種計費方式' },
-    };
-  }
 
   const priceNumber = parseInt(price, 10) || 0;
   const depositNumber = parseInt(deposit, 10) || 0;
@@ -181,28 +174,37 @@ export const validatePriceBy = ({
     };
   }
 
-  const isFixType = chargeType === CHARGE_TYPE_FIX;
-  const unitConstraint = isFixType ? constraints.serviceUnit : null;
-  const advanceDaysConstraint = isFixType ? null : constraints.serviceReservationDays;
-  const discountConstraint = isFixType && discount ? constraints.discount(price) : null;
-
   const errors = validate({
     price,
     deposit,
     unit,
-    reservationDays,
-    discount,
+    minimumShippemntDay,
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    unit: unitConstraint,
-    reservationDays: advanceDaysConstraint,
-    discount: discountConstraint,
+    unit: constraints.serviceUnit,
+    minimumShippemntDay: constraints.minimumShippemntDay,
   });
-
+  let discountErrors = null;
+  if (!(errors)) {
+    discounts.forEach((discount) => {
+      const param = discount.param;
+      const val = discount.discount;
+      const tError = validate({
+        param,
+        val,
+      }, {
+        param: constraints.discountParam,
+        val: constraints.discountVal(priceNumber),
+      });
+      if (isEmpty(discountErrors)) {
+        discountErrors = tError;
+      }
+    });
+  }
   return {
-    isValid: isEmpty(errors),
-    errors,
+    isValid: isEmpty(errors) && isEmpty(discountErrors),
+    errors: isEmpty(errors) ? discountErrors : errors,
   };
 };
 

@@ -7,6 +7,8 @@ import FormGroup from 'components/Form/Group';
 import InputRadio from 'components/Input/Radio';
 import InputTextCurrency from 'components/Input/TextCurrency';
 import InputTextCounter from 'components/Input/TextCounter';
+import DiscountGroup from 'components/DiscountGroup';
+
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
@@ -60,6 +62,7 @@ class StepPrice extends React.Component {
       this.setState({ totalError: totalError || '' });
       this.priceInput.valid();
       this.depositInput.valid();
+      this.discountInput.valid();
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.reservationDaysInput) this.reservationDaysInput.valid();
@@ -138,7 +141,8 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderDiscount({ discount, price }) {
+  renderDiscount({ discounts, price }) {
+    const tPrice = (price) ? parseInt(price, 10) : 0;
     const { dispatchChangeData } = this.props;
     return (
       <div styleName="discounts-container">
@@ -149,17 +153,17 @@ class StepPrice extends React.Component {
           optional
           topLine
         >
-          <FormGroup headerText="下單可享優惠價格">
-            <div styleName="discount">
-              <InputTextCurrency
-                ref={discountInput => (this.discountInput = discountInput)}
-                value={discount}
-                onChange={value => dispatchChangeData({ discount: value })}
-                constraints={discount ? constraints.discount(price || 0) : null}
-                validateOnBlur
-              />
-            </div>
-          </FormGroup>
+          <DiscountGroup
+            ref={discountInput => (this.DiscountGroup = discountInput)}
+            onChange={dispatchChangeData}
+            discounts={discounts}
+            price={tPrice}
+            defaultDiscountObj={{
+              type: 'GREATER_OR_EQUAL_TO_N_COUNT',
+              param: null,
+              discount: null,
+            }}
+          />
         </FormGroup>
       </div>
     );

@@ -94,6 +94,7 @@ const transformState = ({
     unit,
     reservationDays: ship_before_start_days,
     discount,
+    discounts,
     regulation: rules[0] || '',
     hasOverduePolicy: (overdue_rate > 0),
     overdueRate: overdue_rate,
@@ -106,7 +107,6 @@ export const editPublish = pid =>
       '/ajax/item_detail.json',
       { pid },
     ).then((data) => {
-      console.log(data);
       dispatch(fetchedForEdit(transformState(data)));
       dispatch(setupCoversForEdit(data)).then(() => {
       });
@@ -121,7 +121,7 @@ const transformParams = (covers, {
   // assignAddressByOwner, assignAddressByCustomer,
   returnCity, returnArea, returnAddress,
   // startDate, endDate,
-  chargeType, discount,
+  chargeType, discounts,
   regulation,
   hasOverduePolicy,
   overdueRate,
@@ -171,8 +171,7 @@ const transformParams = (covers, {
     calculate_charge_type: chargeType,
     // start_date: (startDate ? startDate.valueOf() : null),
     // end_date: (endDate ? endDate.valueOf() : null),
-    discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
-      [{ type: 'FIX', param: 0, discount }] : [],
+    discounts,
     rules: [regulation],
     min_lease_days: 0,
     overdue_rate: hasOverduePolicy ? overdueRate : 0,
@@ -239,8 +238,7 @@ const initialState = {
   chargeType: 'fix',
   price: null,
   deposit: 0,
-  startDate: null,
-  endDate: null,
+  discounts: [],
   unit: 0,
   reservationDays: 1,
   discount: '',
