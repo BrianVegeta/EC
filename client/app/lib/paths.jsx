@@ -56,7 +56,7 @@ export const wishRouter = {
 = 發佈服務 =
 ===============================================>>>>>*/
 const gPublishGoodsUrl = (step = '', pid = '') => {
-  const paths = ['/p/publish-service'];
+  const paths = ['/p/publish-goods'];
   if (step) paths.push(step);
   if (pid) paths.push(`?pid=${pid}`);
   return paths.join('/');
@@ -68,7 +68,6 @@ export const publishGoodsRouter = {
   deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
   pricePath: pid => gPublishGoodsUrl('step4-price', pid),
   regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
-  cancelPolicyPath: pid => gPublishGoodsUrl('step6-cancel-policy', pid),
   confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
 };
 

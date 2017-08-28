@@ -130,17 +130,17 @@ class StepAbout extends React.Component {
             constraints={constraints.cityArea}
             validateOnBlur
           />
+          <div styleName="assign-address-detail">
+            <InputText
+              ref={addressInput => (this.addressInput = addressInput)}
+              placeholder="請輸入詳細地址"
+              onChange={value => dispatchChangeData({ assignAddress: value })}
+              value={assignAddress}
+              constraints={constraints.address}
+              validateOnBlur
+            />
+          </div>
         </FormGroup>
-        <div styleName="assign-address-detail">
-          <InputText
-            ref={addressInput => (this.addressInput = addressInput)}
-            placeholder="請輸入詳細地址"
-            onChange={value => dispatchChangeData({ assignAddress: value })}
-            value={assignAddress}
-            constraints={constraints.address}
-            validateOnBlur
-          />
-        </div>
         <FormGroup headerText={'分類'}>
           <InputSelectionCatesContainer
             ref={categoryInput => (

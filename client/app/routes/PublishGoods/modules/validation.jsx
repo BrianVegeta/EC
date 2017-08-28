@@ -100,27 +100,41 @@ export const validateAbout = () =>
 = Validate Delivery =
 ===============================================>>>>>*/
 export const validateDeliveryBy = ({
-  assignAddressByCustomer,
-  assignAddressByOwner,
-  assignCity,
-  assignArea,
-  assignAddress,
+  returnCity,
+  returnArea,
+  returnAddress,
+  sendBy711,
+  sendByOtherShippment,
+  sendByInPerson,
+  returnBy711,
+  returnByOtherShippment,
+  returnByInPerson,
 }) => {
-  if (!assignAddressByOwner) {
+  let errors = '';
+  if (!(sendBy711 || sendByOtherShippment || sendByInPerson)) {
     return {
-      isValid: !!assignAddressByCustomer,
-      errors: { optionError: '至少選擇一個選項' },
+      isValid: false,
+      errors: { optionError: '至少選擇一個出貨選項' },
     };
   }
 
-  const errors = validate({
-    assignCityArea: `${assignCity}${assignArea}`,
-    assignAddress,
-  }, {
-    assignCityArea: constraints.cityArea,
-    assignAddress: constraints.address,
-  });
+  if (!(returnBy711 || returnByOtherShippment || returnByInPerson)) {
+    return {
+      isValid: false,
+      errors: { optionError: '至少選擇一個還貨選項' },
+    };
+  }
 
+  if (returnByOtherShippment) {
+    errors = validate({
+      cityArea: `${returnCity}${returnArea}`,
+      returnAddress,
+    }, {
+      cityArea: constraints.cityArea,
+      returnAddress: constraints.address,
+    });
+  }
+  
   return {
     isValid: isEmpty(errors),
     errors,
@@ -147,7 +161,6 @@ export const validatePriceBy = ({
   chargeType,
   price,
   deposit,
-  startDate, endDate,
   unit,
   reservationDays,
   discount,
@@ -176,16 +189,12 @@ export const validatePriceBy = ({
   const errors = validate({
     price,
     deposit,
-    startDate,
-    endDate,
     unit,
     reservationDays,
     discount,
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    startDate: isFixType ? constraints.startDate : null,
-    endDate: isFixType ? constraints.endDate : null,
     unit: unitConstraint,
     reservationDays: advanceDaysConstraint,
     discount: discountConstraint,
@@ -240,36 +249,6 @@ export const validateRegulation = () =>
     });
 
 /* =============================================>>>>>
-= Cancel policy =
-===============================================>>>>>*/
-export const validateCancelPolicyBy = ({ hasCancelPolicy, advanceDay, rate }) => {
-  if (!hasCancelPolicy) return { isValid: true };
-
-  const errors = validate({ advanceDay, rate }, {
-    advanceDay: constraints.advanceDay,
-    rate: constraints.rate,
-  });
-
-  return {
-    isValid: isEmpty(errors),
-    errors,
-  };
-};
-
-export const validateCancelPolicy = () =>
-  (dispatch, getState) =>
-    new Promise((resolve, reject) => {
-      const publish = getState()[PUBLISH_REDUCER_KEY];
-      const { isValid, errors } = validateCancelPolicyBy(publish);
-
-      if (isValid) {
-        resolve();
-      } else {
-        reject(errors);
-      }
-    });
-
-/* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
 export const validateAllBy = (publish, covers) => {
@@ -278,14 +257,12 @@ export const validateAllBy = (publish, covers) => {
   const { isValid: isDeliveryValid } = validateDeliveryBy(publish);
   const { isValid: isPriceValid } = validatePriceBy(publish);
   const { isValid: isRegulationValid } = validateRegulationBy(publish);
-  const { isValid: isCancelPolicyValid } = validateCancelPolicyBy(publish);
   return (
     isCoversValid &&
     isAboutValid &&
     isDeliveryValid &&
     isPriceValid &&
-    isRegulationValid &&
-    isCancelPolicyValid
+    isRegulationValid
   );
 };
 
@@ -298,7 +275,6 @@ export const validateAll = () =>
         dispatch(validateDelivery()),
         dispatch(validatePrice()),
         dispatch(validateRegulation()),
-        dispatch(validateCancelPolicy()),
       ];
 
       Promise.all(promises)

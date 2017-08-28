@@ -56,15 +56,16 @@ export const reset = () => ({
 /* transform fetched data to state */
 const transformState = ({
   pname, pdes, city, area, cat_id, tags,
-  assign_address_type, assign_city, assign_area, assign_address,
-  calculate_charge_type, price, deposit, leasestart, leaseend, unit,
+  // assign_address_type, assign_city, assign_area, assign_address,
+  calculate_charge_type, price, deposit, unit,
   ship_before_start_days, discounts, rules,
-  cancel_policys,
+  overdue_rate, send_option, return_option,
+  return_city, return_area, return_address,
 }) => {
-  const assignAddressByCustomer =
-    assign_address_type.indexOf(ASSIGN_ADDRESS_BY_CUSTOMER) >= 0;
-  const assignAddressByOwner =
-    assign_address_type.indexOf(ASSIGN_ADDRESS_BY_OWNER) >= 0;
+  // const assignAddressByCustomer =
+  //   assign_address_type.indexOf(ASSIGN_ADDRESS_BY_CUSTOMER) >= 0;
+  // const assignAddressByOwner =
+  //   assign_address_type.indexOf(ASSIGN_ADDRESS_BY_OWNER) >= 0;
   const discount = discounts[0] ? discounts[0].discount : '';
   return ({
     title: pname,
@@ -75,23 +76,27 @@ const transformState = ({
     tag1: tags[0],
     tag2: tags[1],
     tag3: tags[2],
-    assignAddressByCustomer,
-    assignAddressByOwner,
-    assignCity: assign_city,
-    assignArea: assign_area,
-    assignAddress: assign_address,
+    sendBy711: (send_option.search('2') !== -1),
+    sendByOtherShippment: (send_option.search('1') !== -1),
+    sendByInPerson: (send_option.search('0') !== -1),
+    returnBy711: (return_option.search('2') !== -1),
+    returnByOtherShippment: (return_option.search('1') !== -1),
+    returnByInPerson: (return_option.search('0') !== -1),
+    minimumShippemntDay: ship_before_start_days,
+    // assignAddressByCustomer,
+    // assignAddressByOwner,
+    returnCity: return_city,
+    returnArea: return_area,
+    returnAddress: return_address,
     chargeType: calculate_charge_type,
     price,
     deposit,
-    startDate: getMoment(leasestart),
-    endDate: getMoment(leaseend),
     unit,
     reservationDays: ship_before_start_days,
     discount,
     regulation: rules[0] || '',
-    hasCancelPolicy: Boolean(cancel_policys[0]),
-    advanceDay: cancel_policys[0] ? cancel_policys[0].advance_day : null,
-    rate: cancel_policys[0] ? cancel_policys[0].rate : null,
+    hasOverduePolicy: (overdue_rate > 0),
+    overdueRate: overdue_rate,
   });
 };
 
@@ -101,6 +106,7 @@ export const editPublish = pid =>
       '/ajax/item_detail.json',
       { pid },
     ).then((data) => {
+      console.log(data);
       dispatch(fetchedForEdit(transformState(data)));
       dispatch(setupCoversForEdit(data)).then(() => {
       });
@@ -112,17 +118,32 @@ const transformParams = (covers, {
   cityName, areaName,
   tag1, tag2, tag3,
   unit, price, deposit, reservationDays,
-  assignAddressByOwner, assignAddressByCustomer,
-  assignCity, assignArea, assignAddress,
-  chargeType, startDate, endDate, discount,
+  // assignAddressByOwner, assignAddressByCustomer,
+  returnCity, returnArea, returnAddress,
+  // startDate, endDate,
+  chargeType, discount,
   regulation,
-  hasCancelPolicy,
-  advanceDay,
-  rate,
+  hasOverduePolicy,
+  overdueRate,
+  sendBy711,
+  sendByOtherShippment,
+  sendByInPerson,
+  returnBy711,
+  returnByOtherShippment,
+  returnByInPerson,
+  minimumShippemntDay,
 }) => {
-  const assignTypes = [];
-  if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
-  if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
+  // const assignTypes = [];
+  let sendOption = '';
+  let returnOption = '';
+  if (sendByInPerson) sendOption = sendOption.concat('0');
+  if (sendByOtherShippment) sendOption = sendOption.concat('1');
+  if (sendBy711) sendOption = sendOption.concat('2');
+  if (returnByInPerson) returnOption = returnOption.concat('0');
+  if (returnByOtherShippment) returnOption = returnOption.concat('1');
+  if (returnBy711) returnOption = returnOption.concat('2');
+  // if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
+  // if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
   return ({
     pname: title,
     img1: covers[0] && covers[0].s3,
@@ -140,18 +161,21 @@ const transformParams = (covers, {
     tag1: (tag1 || null),
     tag2: (tag2 || null),
     tag3: (tag3 || null),
-    assign_address_type: assignTypes.join(''),
-    assign_city: assignCity,
-    assign_area: assignArea,
-    assign_address: assignAddress,
+    send_option: sendOption,
+    return_option: returnOption,
+    ship_before_start_days: minimumShippemntDay,
+    // assign_address_type: assignTypes.join(''),
+    return_city: returnCity,
+    return_area: returnArea,
+    return_address: returnAddress,
     calculate_charge_type: chargeType,
-    start_date: (startDate ? startDate.valueOf() : null),
-    end_date: (endDate ? endDate.valueOf() : null),
+    // start_date: (startDate ? startDate.valueOf() : null),
+    // end_date: (endDate ? endDate.valueOf() : null),
     discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
       [{ type: 'FIX', param: 0, discount }] : [],
     rules: [regulation],
     min_lease_days: 0,
-    cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
+    overdue_rate: hasOverduePolicy ? overdueRate : 0,
   });
 };
 
@@ -199,21 +223,30 @@ const initialState = {
   tag2: '',
   tag3: '',
   /* DELIVERY */
-  assignAddressByCustomer: false,
-  assignAddressByOwner: false,
-  assignCity: '',
-  assignArea: '',
-  assignAddress: '',
+  sendBy711: false,
+  sendByOtherShippment: false,
+  sendByInPerson: false,
+  returnBy711: false,
+  returnByOtherShippment: false,
+  returnByInPerson: false,
+  minimumShippemntDay: 1,
+  // assignAddressByCustomer: false,
+  // assignAddressByOwner: false,
+  returnCity: '',
+  returnArea: '',
+  returnAddress: '',
   /* PRICE */
-  chargeType: '',
+  chargeType: 'fix',
   price: null,
-  deposit: null,
+  deposit: 0,
   startDate: null,
   endDate: null,
   unit: 0,
   reservationDays: 1,
   discount: '',
   regulation: '',
+  hasOverduePolicy: false,
+  overdueRate: 5,
   hasCancelPolicy: false,
   advanceDay: null,
   rate: null,

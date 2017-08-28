@@ -142,6 +142,7 @@ class StepConfirm extends React.Component {
               <tr>
                 <th>標籤</th>
                 <td>
+                  {!tag1 && !tag2 && !tag3 && <div>未設定</div>}
                   {tag1 && <div>#{tag1}</div>}
                   {tag2 && <div>#{tag2}</div>}
                   {tag3 && <div>#{tag3}</div>}

@@ -11,7 +11,6 @@ import routeStepAbout from './routes/routeStepAbout';
 import routeStepDelivery from './routes/routeStepDelivery';
 import routeStepPrice from './routes/routeStepPrice';
 import routeStepRegulation from './routes/routeStepRegulation';
-import routeStepCancelPolicy from './routes/routeStepCancelPolicy';
 import routeStepConfirm from './routes/routeStepConfirm';
 
 
@@ -46,7 +45,6 @@ export default store => ({
     routeStepDelivery(store),
     routeStepPrice(store),
     routeStepRegulation(store),
-    routeStepCancelPolicy(store),
     routeStepConfirm(store),
   ],
 });

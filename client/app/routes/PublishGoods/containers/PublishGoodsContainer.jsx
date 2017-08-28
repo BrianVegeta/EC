@@ -14,7 +14,7 @@ import {
 } from '../modules/publish';
 import {
   validateCoversBy, validateAboutBy, validateDeliveryBy, validatePriceBy,
-  validateRegulationBy, validateCancelPolicyBy,
+  validateRegulationBy,
 } from '../modules/validation';
 
 
@@ -25,7 +25,6 @@ const {
   deliveryPath,
   pricePath,
   regulationPath,
-  cancelPolicyPath,
   confirmPath,
 } = publishGoodsRouter;
 
@@ -47,14 +46,12 @@ const mapStateToProps = (
   const { isValid: isDeliveryValid } = validateDeliveryBy(publish);
   const { isValid: isPriceValid } = validatePriceBy(publish);
   const { isValid: isRegulationValid } = validateRegulationBy(publish);
-  const { isValid: isCancelPolicyValid } = validateCancelPolicyBy(publish);
   const steps = mapSidebarSteps([
     ['上傳照片', coverPath(pid), isCoversValid],
-    ['關於服務', aboutPath(pid), isAboutValid],
-    ['服務資訊', deliveryPath(pid), isDeliveryValid],
-    ['設定價格', pricePath(pid), isPriceValid],
+    ['關於物品', aboutPath(pid), isAboutValid],
+    ['寄件資訊', deliveryPath(pid), isDeliveryValid],
+    ['設定庫存及價格', pricePath(pid), isPriceValid],
     ['建立分享人守則', regulationPath(pid), isRegulationValid],
-    ['建立退訂政策', cancelPolicyPath(pid), isCancelPolicyValid],
     ['確認發佈', confirmPath(pid), false],
   ]);
   return ({

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { CATEGORY_SERVICE } from 'constants/enums';
+import { CATEGORY_GOODS } from 'constants/enums';
 import {
   publishGoodsRouter,
   items as itemsRouter,
@@ -25,7 +25,7 @@ const mapStateToProps = ({
   routingHelper,
   publish,
   covers,
-  categories: categories[CATEGORY_SERVICE],
+  categories: categories[CATEGORY_GOODS],
   isValid: validateAllBy(publish, covers),
 });
 

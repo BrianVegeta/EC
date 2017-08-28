@@ -6,7 +6,6 @@ import FormContainer from 'components/Publish/FormContainer';
 import FormGroup from 'components/Form/Group';
 import InputRadio from 'components/Input/Radio';
 import InputTextCurrency from 'components/Input/TextCurrency';
-import InputDatesPicker from 'components/Input/DatesPicker';
 import InputTextCounter from 'components/Input/TextCounter';
 import ButtonNextStep, {
   STATUS_DISABLE,
@@ -17,12 +16,7 @@ import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 // import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import {
-  CHARGE_TYPE_FIX,
-  CHARGE_TYPE_COUNT,
-  CHARGE_TYPE_DAY,
-} from '../../modules/publish';
-
+import OverduePolicy from '../OverduePolicy';
 
 class StepPrice extends React.Component {
 
@@ -87,29 +81,16 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderDatesAndUnit({ startDate, endDate, unit }) {
+  renderDatesAndUnit({ unit }) {
     const { dispatchChangeData } = this.props;
     return (
       <div>
-        <div styleName="dates">
-          <FormGroup headerText="活動日期">
-            <InputDatesPicker
-              ref={datesInput => (this.datesInput = datesInput)}
-              startDate={startDate}
-              endDate={endDate}
-              startDateConstraint={constraints.startDate}
-              endDateConstraint={constraints.endDate}
-              onDatesChange={dates => dispatchChangeData(dates)}
-              validateOnBlur
-            />
-          </FormGroup>
-        </div>
         <div styleName="unit">
-          <FormGroup headerText="人數上限">
+          <FormGroup headerText="庫存數量">
             <InputTextCounter
               ref={unitInput => (this.unitInput = unitInput)}
               value={unit ? String(unit) : ''}
-              suffix="人"
+              suffix="個"
               placeholder="請輸入"
               min={SERVICE_UNIT_MIN}
               max={false}
@@ -120,6 +101,19 @@ class StepPrice extends React.Component {
           </FormGroup>
         </div>
       </div>
+    );
+  }
+
+  renderOverduePolicy({ hasOverduePolicy, overdueRate, deposit }) {
+    return (
+      <FormGroup headerText="建立逾期金政策">
+        <OverduePolicy
+          enable={hasOverduePolicy}
+          rate={overdueRate}
+          deposit={deposit}
+          onChange={this.props.dispatchChangeData}
+        />
+      </FormGroup>
     );
   }
 
@@ -171,7 +165,7 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderAfterChoosed({ isChargeFix }) {
+  renderAfterChoosed() {
     const {
       publish,
       dispatchChangeData,
@@ -184,6 +178,7 @@ class StepPrice extends React.Component {
 
     return (
       <div styleName="container">
+        { this.renderDatesAndUnit(publish) }
         <FormGroup headerText="價格">
           <div styleName="currency-block">
             <InputTextCurrency
@@ -206,12 +201,9 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
-        {
-          isChargeFix ?
-          this.renderDatesAndUnit(publish) :
-          this.renderReservationDays(publish)
-        }
-        {isChargeFix && this.renderDiscount(publish)}
+
+        { this.renderOverduePolicy(publish) }
+        { this.renderDiscount(publish)}
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}
@@ -221,18 +213,9 @@ class StepPrice extends React.Component {
   }
 
   render() {
-    const { publish } = this.props;
-    const { chargeType } = publish;
     return (
-      <FormContainer title="設定價格" >
-        {this.renderRadioInput(chargeType, '固定價格計費', CHARGE_TYPE_FIX)}
-        {this.renderRadioInput(chargeType, '數量計費', CHARGE_TYPE_COUNT)}
-        {this.renderRadioInput(chargeType, '天數計費', CHARGE_TYPE_DAY)}
-        {{
-          [CHARGE_TYPE_FIX]: this.renderAfterChoosed({ isChargeFix: true }),
-          [CHARGE_TYPE_COUNT]: this.renderAfterChoosed({ isChargeFix: false }),
-          [CHARGE_TYPE_DAY]: this.renderAfterChoosed({ isChargeFix: false }),
-        }[chargeType]}
+      <FormContainer title="設定庫存及價格" >
+        {this.renderAfterChoosed()}
       </FormContainer>
     );
   }
