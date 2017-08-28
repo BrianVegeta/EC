@@ -53,6 +53,7 @@ class DiscountGroup extends React.Component {
     const uniqs = _.uniqBy(discounts, 'offer');
     return uniqs.length !== discounts.length;
   }
+
   render() {
     const { discounts } = this.props;
     return (

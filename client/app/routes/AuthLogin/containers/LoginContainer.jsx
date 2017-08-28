@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { login as authLogin } from 'modules/auth';
-import { closePopup } from 'modules/popup';
+import { redirectAfterLogin } from 'lib/redirect';
 import {
   REDUCER_KEY as LOGIN_REDUCER_KEY,
   changeForm,
@@ -12,7 +12,7 @@ import {
   loginFacebook,
   reset,
 } from 'modules/login';
-import Login from './index';
+import Login from '../components/Login';
 
 
 /* =============================================>>>>>
@@ -30,11 +30,10 @@ const mapStateToProps = ({
 /* =============================================>>>>>
 = map dispatch =
 ===============================================>>>>>*/
-const mapDispatchToProps = (dispatch, { onAfterLogin }) => {
+const mapDispatchToProps = (dispatch) => {
   const afterLogin = (userProfile) => {
     dispatch(authLogin(userProfile));
-    dispatch(closePopup());
-    onAfterLogin();
+    dispatch(redirectAfterLogin('/'));
   };
   const dispatchLoginEmail = ({ email, password }) => {
     dispatch(
@@ -52,7 +51,6 @@ const mapDispatchToProps = (dispatch, { onAfterLogin }) => {
     ).then(afterLogin);
   };
   return ({
-    dispatchClose: () => dispatch(closePopup()),
     dispatchChangeForm: data => dispatch(changeForm(data)),
     dispatchSwitchEmailLogin: () => dispatch(switchLoginByEmail()),
     dispatchSwitchPhoneLogin: () => dispatch(switchLoginByPhone()),

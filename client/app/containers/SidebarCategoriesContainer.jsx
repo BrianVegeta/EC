@@ -6,7 +6,7 @@ import { findTopCategory } from 'lib/category';
 
 /* pick props */
 const mapStateToProps = (
-  { environment, options: { categories } },
+  { environment, categories },
   { categoryID },
 ) => ({
   environment,

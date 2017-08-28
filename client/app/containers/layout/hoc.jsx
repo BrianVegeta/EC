@@ -1,37 +1,39 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-
-import { initEnvironment } from 'actions/environmentActions';
-import { redirectTo } from 'actions/module/routingActions';
-import { prepareCategories } from 'actions/optionsActions';
-import { setRouteHook } from 'modules/routingHelper';
-
-import * as paths from 'lib/paths';
+import { loginPath } from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
 import PopupContainer from 'containers/Popup/Container';
-
 import { confirmLeavePage } from 'lib/confirm';
 
-function layout(Component, { requireAuth, requireCates, confirmLeave }) {
+
+export default function layout(Component, {
+  requireAuth, requireCates, confirmLeave,
+}) {
   return class extends React.Component {
 
     static propTypes = {
-      dispatch: PropTypes.func.isRequired,
+      dispatchInitEnvironment: PropTypes.func.isRequired,
+      dispatchFetchCategories: PropTypes.func.isRequired,
+      dispatchRedirectToWithReferrer: PropTypes.func.isRequired,
+      dispatchSetRouteHook: PropTypes.func.isRequired,
+
       isLogin: PropTypes.bool.isRequired,
       router: myPropTypes.router.isRequired,
       route: myPropTypes.route.isRequired,
-      options: myPropTypes.options.isRequired,
+      categories: myPropTypes.categories.isRequired,
+      routingHelper: PropTypes.shape({
+        removeHook: PropTypes.func,
+      }).isRequired,
       routing: PropTypes.shape({
         locationBeforeTransitions: PropTypes.object.isRequired,
       }).isRequired,
     };
 
     componentDidMount() {
-      this.props.dispatch(initEnvironment());
+      this.props.dispatchInitEnvironment();
+
       this.handleRequireAuth();
       this.handleConfirmLeave();
       this.handleRequireCates();
@@ -54,6 +56,14 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
 
     componentWillUnmount() {
       window.removeEventListener('beforeunload', confirmLeavePage);
+      const {
+        routingHelper: { removeHook },
+        dispatchSetRouteHook,
+      } = this.props;
+      if (removeHook) {
+        removeHook();
+        dispatchSetRouteHook(null);
+      }
     }
 
     /**
@@ -63,38 +73,36 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
     handleConfirmLeave() {
       if (!confirmLeave) return;
 
-      const { router, route, dispatch } = this.props;
+      const { router, route, dispatchSetRouteHook } = this.props;
       window.removeEventListener('beforeunload', confirmLeavePage);
       window.addEventListener('beforeunload', confirmLeavePage);
       const remove = router.setRouteLeaveHook(route, () => {
         const sureToLeave = confirm('確定離開？您的變更將不會儲存');
         if (sureToLeave) {
           window.removeEventListener('beforeunload', confirmLeavePage);
-          dispatch(setRouteHook(null));
+          dispatchSetRouteHook(null);
         }
         return sureToLeave;
       });
-      dispatch(setRouteHook(remove));
+      dispatchSetRouteHook(remove);
     }
 
     handleRequireAuth() {
-      const { isLogin, dispatch } = this.props;
+      const { isLogin, dispatchRedirectToWithReferrer } = this.props;
       if (!requireAuth) return;
       if (isLogin) return;
-
-      dispatch(redirectTo(paths.LOGIN));
+      dispatchRedirectToWithReferrer(loginPath);
     }
 
     handleRequireCates() {
-      const { options: { categories }, dispatch } = this.props;
+      const { categories, dispatchFetchCategories } = this.props;
       if (!requireCates) return;
       if (isCategoriesReady(categories)) return;
-
-      dispatch(prepareCategories());
+      dispatchFetchCategories();
     }
 
     render() {
-      const { isLogin, options: { categories } } = this.props;
+      const { isLogin, categories } = this.props;
       if (requireAuth && !isLogin) return null;
       if (requireCates && !isCategoriesReady(categories)) return null;
       return (
@@ -105,22 +113,4 @@ function layout(Component, { requireAuth, requireCates, confirmLeave }) {
       );
     }
   };
-}
-
-export default function (
-  Component,
-  { requireAuth, requireCates, confirmLeave },
-) {
-  const mapStateToProps = ({ environment, auth, options, routing }) => {
-    const { isLogin } = auth;
-    return { environment, isLogin, options, routing };
-  };
-  return (
-    connect(mapStateToProps)(
-      layout(
-        withRouter(Component),
-        { requireAuth, requireCates, confirmLeave },
-      ),
-    )
-  );
 }

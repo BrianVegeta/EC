@@ -7,7 +7,7 @@ import { fetchRecords, reset } from '../modules/items';
 
 /* pick props */
 const mapStateToProps = ({
-  environment, items, options: { categories },
+  environment, items, categories,
 }, {
   params: { cid },
 }) => ({

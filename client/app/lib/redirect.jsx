@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { browserHistory } from 'react-router';
 
+
 export const redirectToWithReferrer = pathname =>
   (dispatch, getState) => {
     const { routing: { locationBeforeTransitions } } = getState();
@@ -29,4 +30,14 @@ export const refreshRoute = () =>
         forceChange: true,
       },
     });
+  };
+
+
+export const redirectAfterLogin = backupPath =>
+  (dispatch, getState) => {
+    const { routing: { locationBeforeTransitions } } = getState();
+    const { state } = locationBeforeTransitions;
+    browserHistory.push(
+      (state && state.referrer) ? state.referrer : backupPath,
+    );
   };

@@ -24,13 +24,9 @@ const setCategories = categories => ({
 
 export function fetchCategories() {
   return (dispatch) => {
-    asyncXhrGet('/ajax/categories.json')
-    .then((data) => {
-      dispatch(
-        setCategories(data),
-      );
-    })
-    .catch(() => {});
+    asyncXhrGet('/ajax/categories.json').then((data) => {
+      dispatch(setCategories(data));
+    }).catch(() => {});
   };
 }
 
@@ -38,7 +34,7 @@ export function fetchCategories() {
 // =============================================
 // = reducer =
 // =============================================
-export const initialState = [];
+export const initialState = {};
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_CATEGORIES:
