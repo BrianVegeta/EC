@@ -154,4 +154,5 @@ export const my = {
   couponPath: '/p/my/coupon',
   commentOwnerPath: '/p/my/comment-owner',
   commentLesseePath: '/p/my/comment-lessee',
+  profilePath: '/p/my/profile',
 };

@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable';
 import { asyncXhrPost, asyncXhrGet, fetchXhrDelete } from 'lib/xhr';
 import { refreshRoute } from 'lib/redirect';
 
@@ -35,8 +36,9 @@ export const logout = () =>
       dispatch(refreshRoute());
     });
 
-export const changeCurrentUser = () => ({
+export const changeCurrentUser = data => ({
   type: CHANGE_CURRENT_USER,
+  data,
 });
 
 // login email async(none dispatch)
@@ -142,9 +144,10 @@ export default (state = initialState, action) => {
       });
 
     case CHANGE_CURRENT_USER:
-      return Object.assign({}, state, {
-        currentUser: action.currentUser,
-      });
+      return fromJS(state).updateIn(
+        ['currentUser'],
+        currentUser => currentUser.merge(action.data),
+      ).toJS();
 
     default:
       return Object.assign({}, initialState, state);

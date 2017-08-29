@@ -87,8 +87,6 @@ Rails.application.routes.draw do
 
 
       #USERPROFILE
-      post 'userprofile/save', to: 'userprofile#save'
-      post 'userprofile/get', to: 'userprofile#get' #
       post 'userprofile/search', to: 'userprofile#search' #
 
       post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
@@ -194,6 +192,8 @@ Rails.application.routes.draw do
       # USERPROFILE
       ###### FROM OTHER USER
       post 'user_info', to: 'userprofile#user_general_info'
+      post 'get_userprofile', to: 'userprofile#get'
+      post 'save_userprofile', to: 'userprofile#save'
       ###### BANK INFO (AUTHED)
       scope :bank do
         post 'bankacc_update', to: 'userprofile#bank_info_update'

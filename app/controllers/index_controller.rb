@@ -8,7 +8,15 @@ class IndexController < ApplicationController
   def pages
     auth = { isLogin: user_signed_in? }
     if user_signed_in?
-      auth.merge!(currentUser: current_user.except('password', 'apitoken'))
+      auth_current_user = current_user
+
+      obj = ::Api::Userprofile::UserGeneralInfo.new(isShowItem: false, uid: current_user['uid'])
+      success = obj.request
+      if success
+        auth_current_user.merge! obj.response_data['user_profile']
+        warden_set_user auth_current_user
+      end
+      auth.merge!(currentUser: auth_current_user.except('password', 'apitoken'))
     end
 
     @props = {

@@ -29,7 +29,7 @@ class MyAccountLayout extends React.Component {
     return (
       <div className="container-gray-bg" >
         <HeaderContainer />
-        <MainWrapper minHeight={environment.height} >
+        <MainWrapper minHeight={environment.height} style={{ background: 'transparent' }}>
           {children}
         </MainWrapper>
         <Footer />

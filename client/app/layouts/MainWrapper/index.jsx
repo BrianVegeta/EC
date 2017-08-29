@@ -6,12 +6,14 @@ class MainWrapper extends React.Component {
   static defaultProps = {
     minHeight: null,
     paddingTop: 0,
+    style: null,
   };
 
   static propTypes = {
     children: PropTypes.element.isRequired,
     minHeight: PropTypes.number,
     paddingTop: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    style: PropTypes.object,
   };
 
   render() {
@@ -19,7 +21,7 @@ class MainWrapper extends React.Component {
     const style = { paddingTop, minHeight };
 
     return (
-      <div className="container main-wrapper clear" >
+      <div className="container main-wrapper clear" style={this.props.style}>
         <div className="main-container" style={style} >
           {children}
         </div>
