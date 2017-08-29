@@ -86,7 +86,7 @@ class OrderList extends React.Component {
           <RoundButton
             text="物品"
             onClick={
-              () => { browserHistory.push(my.lesseeOrderSpace(TAB_REQUEST)); }
+              () => { browserHistory.push(my.lesseeOrderItem(TAB_REQUEST)); }
             }
           />
           <RoundButton
