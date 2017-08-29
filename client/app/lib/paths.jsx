@@ -139,6 +139,9 @@ export const orderRouter = {
 export const my = {
   indexPath: '/p/my',
   itemPath: '/p/my/item',
+  myGoodsPath: '/p/my/goods',
+  myServicePath: '/p/my/service',
+  mySpacePath: '/p/my/space',
   wishPath: '/p/my/wish',
   ownerOrderItem: tabName => `/p/my/oo-it${tabName}`,
   ownerOrderService: tabName => `/p/my/oo-se${tabName}`,

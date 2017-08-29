@@ -3,7 +3,9 @@
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 import { omit } from 'lodash';
 import { my } from 'lib/paths';
-import routeMyItem from './routes/Item/route'
+import routeMyGoods from './routes/Item/Goods/route';
+import routeMyService from './routes/Item/Service/route';
+import routeMySpace from './routes/Item/Space/route';
 import routeMyCollection from './routes/Collections/route';
 import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
@@ -30,10 +32,12 @@ export default store => ({
     }, 'my.acc');
   },
 
-  indexRoute: omit(routeMyItem(store), ['path']),
+  indexRoute: omit(routeMyGoods(store), ['path']),
 
   childRoutes: [
-    routeMyItem(store),
+    routeMyGoods(store),
+    routeMyService(store),
+    routeMySpace(store),
     routeMyCollection(store),
     routeMyCoupon(store),
     routeMyOwnerComment(store),

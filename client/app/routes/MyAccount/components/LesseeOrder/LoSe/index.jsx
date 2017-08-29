@@ -55,7 +55,7 @@ class OrderList extends React.Component {
     const { records, isFetching, unreads } = myOrder;
 
     const navs = [
-      { name: '收到預訂',
+      { name: '提出預訂',
         href: my.lesseeOrderService(TAB_REQUEST),
         tabName: TAB_REQUEST },
       { name: '尚未付款',

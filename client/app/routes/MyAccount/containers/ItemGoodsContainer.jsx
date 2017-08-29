@@ -2,13 +2,13 @@ import { connect } from 'react-redux';
 // import { popupTwoButtons } from 'modules/popup';
 import swal, { confirmConfig } from 'lib/swal';
 // TODO: move to layout
-
-import Container from '../components/Item';
+// import { reset as resetMine } from 'actions/mineActions';
+import Container from '../components/Item/Goods';
 import { fetchItems, deleteItem, reset } from '../modules/myItem';
 
 const mapStateToProps = (state) => {
-  const { environment, mine, myItem } = state;
-  return ({ environment, mine, myItem });
+  const { environment, myItem } = state;
+  return ({ environment, myItem });
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -24,8 +24,10 @@ const mapDispatchToProps = (dispatch) => {
   };
   return ({
     dispatch,
-    dispatchFetchItem: catId => dispatch(fetchItems(catId)),
-    dispatchReset: () => dispatch(reset()),
+    dispatchFetchItem: () => dispatch(fetchItems('1')),
+    dispatchReset: () => {
+      dispatch(reset());
+    },
     dispatchDelete,
   });
 };

@@ -8,10 +8,14 @@ import InputRadio from 'components/Input/Radio';
 import InputTextCurrency from 'components/Input/TextCurrency';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputTextCounter from 'components/Input/TextCounter';
+import DiscountGroup from 'components/DiscountGroup';
+
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import { GREATER_OR_EQUAL_TO_N_DAY, GREATER_OR_EQUAL_TO_N_MONTH
+ } from 'constants/publishTypes';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 
 // import classnames from 'classnames/bind';
@@ -28,10 +32,12 @@ class StepPrice extends React.Component {
   static propTypes = {
     publish: myPropTypes.publish.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
+    dispatchChangePaidData: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
     nextStep: PropTypes.func.isRequired,
     isValid: PropTypes.bool.isRequired,
+
   };
 
   constructor(props) {
@@ -73,12 +79,12 @@ class StepPrice extends React.Component {
   }
 
   renderRadioInput(state, text, CHARGE_TYPE) {
-    const { dispatchChangeData } = this.props;
+    const { dispatchChangePaidData } = this.props;
     return (
       <div styleName="charge-type">
         <InputRadio
           checked={state === CHARGE_TYPE}
-          onChange={() => dispatchChangeData({ chargeType: CHARGE_TYPE })}
+          onChange={() => dispatchChangePaidData({ chargeType: CHARGE_TYPE })}
         >
           {text}
         </InputRadio>
@@ -143,7 +149,8 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderDiscount({ discount, price }) {
+  renderDiscount({ chargeType, discounts, price }) {
+    const tPrice = (price) ? parseInt(price, 10) : 0;
     const { dispatchChangeData } = this.props;
     return (
       <div styleName="discounts-container">
@@ -154,17 +161,20 @@ class StepPrice extends React.Component {
           optional
           topLine
         >
-          <FormGroup headerText="下單可享優惠價格">
-            <div styleName="discount">
-              <InputTextCurrency
-                ref={discountInput => (this.discountInput = discountInput)}
-                value={discount}
-                onChange={value => dispatchChangeData({ discount: value })}
-                constraints={discount ? constraints.discount(price || 0) : null}
-                validateOnBlur
-              />
-            </div>
-          </FormGroup>
+          <DiscountGroup
+            ref={discountInput => (this.DiscountGroup = discountInput)}
+            onChange={dispatchChangeData}
+            discounts={discounts}
+            price={tPrice}
+            unitStr={(chargeType === CHARGE_TYPE_MONTH) ? '月' : '天'}
+            unitMax={(chargeType === CHARGE_TYPE_MONTH) ? 12 : 30}
+            defaultDiscountObj={{
+              type: (chargeType === CHARGE_TYPE_MONTH) ? GREATER_OR_EQUAL_TO_N_MONTH
+                : GREATER_OR_EQUAL_TO_N_DAY,
+              param: null,
+              discount: null,
+            }}
+          />
         </FormGroup>
       </div>
     );

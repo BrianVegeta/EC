@@ -1,6 +1,6 @@
 import { parseInt } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
-import { now, getMoment } from 'lib/time';
+import { now } from 'lib/time';
 import {
   REDUCER_KEY as COVER_REDUCER_KEY,
   setupCoversForEdit,
@@ -83,8 +83,6 @@ const transformState = ({
     returnByOtherShippment: (return_option.search('1') !== -1),
     returnByInPerson: (return_option.search('0') !== -1),
     minimumShippemntDay: ship_before_start_days,
-    // assignAddressByCustomer,
-    // assignAddressByOwner,
     returnCity: return_city,
     returnArea: return_area,
     returnAddress: return_address,
@@ -118,9 +116,7 @@ const transformParams = (covers, {
   cityName, areaName,
   tag1, tag2, tag3,
   unit, price, deposit, reservationDays,
-  // assignAddressByOwner, assignAddressByCustomer,
   returnCity, returnArea, returnAddress,
-  // startDate, endDate,
   chargeType, discounts,
   regulation,
   hasOverduePolicy,
@@ -133,7 +129,6 @@ const transformParams = (covers, {
   returnByInPerson,
   minimumShippemntDay,
 }) => {
-  // const assignTypes = [];
   let sendOption = '';
   let returnOption = '';
   if (sendByInPerson) sendOption = sendOption.concat('0');
@@ -142,8 +137,6 @@ const transformParams = (covers, {
   if (returnByInPerson) returnOption = returnOption.concat('0');
   if (returnByOtherShippment) returnOption = returnOption.concat('1');
   if (returnBy711) returnOption = returnOption.concat('2');
-  // if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
-  // if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
   return ({
     pname: title,
     img1: covers[0] && covers[0].s3,
@@ -164,13 +157,10 @@ const transformParams = (covers, {
     send_option: sendOption,
     return_option: returnOption,
     ship_before_start_days: minimumShippemntDay,
-    // assign_address_type: assignTypes.join(''),
     return_city: returnCity,
     return_area: returnArea,
     return_address: returnAddress,
     calculate_charge_type: chargeType,
-    // start_date: (startDate ? startDate.valueOf() : null),
-    // end_date: (endDate ? endDate.valueOf() : null),
     discounts,
     rules: [regulation],
     min_lease_days: 0,
@@ -229,8 +219,6 @@ const initialState = {
   returnByOtherShippment: false,
   returnByInPerson: false,
   minimumShippemntDay: 1,
-  // assignAddressByCustomer: false,
-  // assignAddressByOwner: false,
   returnCity: '',
   returnArea: '',
   returnAddress: '',
