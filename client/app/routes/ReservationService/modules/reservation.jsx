@@ -1,8 +1,14 @@
+/* eslint-disable camelcase */
 import { isEqual } from 'lodash';
+import swal, { warningConfig } from 'lib/swal';
 import { asyncXhrAuthedPost } from 'lib/xhr';
-import { today } from 'lib/time';
+import { now, getMoment } from 'lib/time';
+import { my } from 'lib/paths';
+import { redirectWithoutHook } from 'lib/redirect';
 import {
   REDUCER_KEY as ITEM_REDUCER_KEY,
+  ASSIGN_ADDRESS_BY_OWNER,
+  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
 
 /* =============================================>>>>>
@@ -19,6 +25,7 @@ export const PAYMENT_TYPE_CREDIT_CARD = 4;
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const CHANGE_DATA = prefix('CHANGE_DATA');
+const FETCHED_FOR_EDIT = prefix('FETCHED_FOR_EDIT');
 const TOUCH_PATH = prefix('TOUCH_PATH');
 const RESET = prefix('RESET');
 
@@ -32,6 +39,11 @@ export const changeData = data => ({
   data,
 });
 
+export const fetchedForEdit = data => ({
+  type: FETCHED_FOR_EDIT,
+  data,
+});
+
 export const touchPath = path => ({
   type: TOUCH_PATH,
   path,
@@ -41,37 +53,65 @@ export const reset = () => ({
   type: RESET,
 });
 
-// # pid : long => 商品ID
-// # unit : int => 數量;
-// # paymenttype : int => 交易類型  1:ATM 4:信用卡;
-// # service_location_type : String => 服務合約時 , 記錄由誰指定服務地址 0:分享人 1:享用人
-// # service_city : String 服務城市
-// # service_area : String 服務地區
-// # service_address : String 服務地址
-// # leasestart : Long => 合約開始時間
-// # leaseend : Ｌong =>  合約結束時間
-// # coupon_no : String => 折價券的代號
-// # note : String => 文字
+const transformState = ({
+  leasestart, leaseend, coupon: { couponNo },
+  service_location_type, service_city, service_area, service_address,
+  note, unit, paymenttype,
+}) => ({
+  leasestart: leasestart ? getMoment(leasestart) : null,
+  leaseend: leaseend ? getMoment(leaseend) : null,
+  couponNo: couponNo || null,
+  serviceLocationType: service_location_type || null,
+  serviceCity: service_city || '',
+  serviceArea: service_area || '',
+  serviceAddress: service_address || '',
+  note: note || '',
+  unit: unit || 1,
+  paymenttype: paymenttype || null,
+});
+
+export const editReservation = cid =>
+  (dispatch, getState) => {
+    asyncXhrAuthedPost(
+      '/ajax/get_order.json', { cid }, getState(), true,
+    ).then((data) => {
+      if (!data.display.can_edit) {
+        dispatch(redirectWithoutHook(my.lesseeOrderService('TAB_REQUEST')));
+        swal(warningConfig({
+          title: '還不能修改',
+          text: '等待對方同意中不能修改預訂內容。',
+        }));
+        return;
+      }
+      dispatch(fetchedForEdit(transformState(data)));
+    }).catch(error => console.log(error));
+  };
+
 const transformParams = (pid, assignAddressType, {
   paymenttype,
   serviceLocationType, serviceCity, serviceArea, serviceAddress,
   leasestart, leaseend,
   couponNo, unit,
   note,
-}) => ({
-  pid,
-  leasestart: leasestart ? leasestart.valueOf() : null,
-  leaseend: leaseend ? leaseend.valueOf() : null,
-  unit,
-  note,
-  coupon_no: couponNo,
-  service_location_type: assignAddressType.length > 1 ?
-    serviceLocationType : assignAddressType,
-  service_city: serviceCity,
-  service_area: serviceArea,
-  service_address: serviceAddress,
-  paymenttype,
-});
+}) => {
+  const service_location_type = assignAddressType.length > 1 ?
+    serviceLocationType : assignAddressType;
+  const isAssignAddressByOwner = service_location_type === ASSIGN_ADDRESS_BY_OWNER;
+  return ({
+    pid,
+    leasestart: leasestart ? leasestart.valueOf() : null,
+    leaseend: leaseend ? leaseend.valueOf() : null,
+    unit,
+    note,
+    coupon_no: couponNo,
+    service_location_type,
+    service_city: isAssignAddressByOwner ? serviceCity : '',
+    service_area: isAssignAddressByOwner ? serviceArea : '',
+    service_address: isAssignAddressByOwner ? serviceAddress : '',
+    paymenttype,
+  });
+};
+
 export const saveReservation = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
@@ -89,11 +129,31 @@ export const saveReservation = () =>
       });
     });
 
+export const updateReservation = cid =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const reservation = getState()[REDUCER_KEY];
+      const { pid, assign_address_type } = getState()[ITEM_REDUCER_KEY];
+      const params = transformParams(pid, assign_address_type, reservation);
+
+      asyncXhrAuthedPost(
+        '/ajax/reserve_service_update.json',
+        Object.assign({}, params, { cid }),
+        getState(),
+        true,
+      ).then((data) => {
+        resolve(data);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+
 
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
+  fetchedAt: null,
   touchedStepPaths: [],
   leasestart: null,
   leaseend: null,
@@ -114,6 +174,11 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_DATA:
       return Object.assign({}, state, action.data);
+
+    case FETCHED_FOR_EDIT: {
+      const newState = Object.assign({}, action.data, { fetchedAt: now() });
+      return Object.assign({}, state, newState);
+    }
 
     case TOUCH_PATH: {
       if (state.touchedStepPaths.includes(action.path)) {

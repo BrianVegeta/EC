@@ -41,3 +41,11 @@ export const redirectAfterLogin = backupPath =>
       (state && state.referrer) ? state.referrer : backupPath,
     );
   };
+
+
+export const redirectWithoutHook = pathname =>
+  (dispatch, getState) => {
+    const { routingHelper: { removeHook } } = getState();
+    if (removeHook) removeHook();
+    browserHistory.push(pathname);
+  };

@@ -88,6 +88,9 @@ export const publishServiceRouter = {
   confirmPath: pid => gPublishServiceUrl('step7-confirm', pid),
 };
 
+/* =============================================>>>>>
+= 發佈空間 =
+===============================================>>>>>*/
 const gPublishSpaceUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-space'];
   if (step) paths.push(step);
@@ -105,11 +108,17 @@ export const publishSpaceRouter = {
 };
 
 /* 預訂服務 */
+const gReservationServiceUrl = (step = '', pid = '', cid = '') => {
+  const paths = [`/p/reservation-service/${pid}`];
+  if (step) paths.push(step);
+  if (cid) paths.push(`?cid=${cid}`);
+  return paths.join('/');
+};
 export const reservationService = {
-  indexPath: pid => `/p/reservation-service/${pid}`,
-  formPath: pid => `/p/reservation-service/${pid}`,
-  paymentPath: pid => `/p/reservation-service/${pid}/step2-payment`,
-  confirmPath: pid => `/p/reservation-service/${pid}/step3-confirm`,
+  indexPath: (pid, cid) => gReservationServiceUrl('', pid, cid),
+  formPath: (pid, cid) => gReservationServiceUrl('', pid, cid),
+  paymentPath: (pid, cid) => gReservationServiceUrl('step2-payment', pid, cid),
+  confirmPath: (pid, cid) => gReservationServiceUrl('step3-confirm', pid, cid),
 };
 /* 預訂物品 */
 export const reservationGoods = {

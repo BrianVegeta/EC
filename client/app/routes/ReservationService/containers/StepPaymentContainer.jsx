@@ -30,7 +30,10 @@ const mapStateToProps = ({ environment, reservationService, personalBankInfo }) 
 };
 
 /* pick dispatch */
-const mapDispatchToProps = (dispatch, { params: { pid } }) => {
+const mapDispatchToProps = (
+  dispatch,
+  { params: { pid }, location: { query: { cid } } },
+) => {
   /* DISPATCH 查看銀行 */
   const popupBankSetup = password =>
     dispatch(popupBankInfoSetup({ password }));
@@ -47,8 +50,8 @@ const mapDispatchToProps = (dispatch, { params: { pid } }) => {
       dispatch(changeData({ paymenttype: PAYMENT_TYPE_CREDIT_CARD })),
     dispatchBankSetup,
     dispatchValidate: () => dispatch(validatePayment()),
-    dispatchTouchPath: () => dispatch(touchPath(paymentPath(pid))),
-    nextStep: () => browserHistory.push(confirmPath(pid)),
+    dispatchTouchPath: () => dispatch(touchPath(paymentPath(pid, cid))),
+    nextStep: () => browserHistory.push(confirmPath(pid, cid)),
   });
 };
 

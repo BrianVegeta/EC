@@ -13,4 +13,10 @@ export const confirmConfig = ({ title, text, confirmButtonText }) => ({
   cancelButtonText: '取消',
 });
 
+export const warningConfig = ({ title, text }) => ({
+  title,
+  text,
+  type: 'warning',
+});
+
 export default swal;

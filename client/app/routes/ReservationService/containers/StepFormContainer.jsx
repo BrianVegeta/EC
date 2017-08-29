@@ -33,12 +33,15 @@ const mapStateToProps = ({
 
 /* pick dispatch */
 const { formPath, paymentPath } = rsRouter;
-const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
+const mapDispatchToProps = (
+  dispatch,
+  { params: { pid }, location: { query: { cid } } },
+) => ({
   dpFetchCoupons: () => dispatch(fetchCoupons()),
   dispatchChangeData: data => dispatch(changeData(data)),
-  dispatchTouchPath: () => dispatch(touchPath(formPath(pid))),
+  dispatchTouchPath: () => dispatch(touchPath(formPath(pid, cid))),
   dispatchValidate: () => dispatch(validateForm()),
-  nextStep: () => browserHistory.push(paymentPath(pid)),
+  nextStep: () => browserHistory.push(paymentPath(pid, cid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepForm);

@@ -258,7 +258,8 @@ class StepConfirm extends React.Component {
         }
         {!isEmpty(cancel_policys) && cancel_policys[0] &&
           <ConfirmTitle title="退訂政策" >
-            未完成
+            開始租借「前{cancel_policys[0].advance_day}天」取消訂單，
+            扣除<span styleName="danger">{cancel_policys[0].rate}</span>%分享金
           </ConfirmTitle>
         }
         <div styleName="confirm-agree">

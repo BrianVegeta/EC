@@ -11,9 +11,9 @@ import routeStepForm from './routes/routeStepForm';
 import routeStepPayment from './routes/routeStepPayment';
 import routeStepConfirm from './routes/routeStepConfirm';
 
-
+const { indexPath } = router;
 export default store => ({
-  path: router.indexPath(':pid'),
+  path: indexPath(':pid'),
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
@@ -32,8 +32,9 @@ export default store => ({
 
   indexRoute: omit(routeStepForm(store), ['path']),
 
-  onEnter: ({ params: { pid } }) => {
-    const stepStartPath = router.indexPath(pid);
+  onEnter: ({ params: { pid }, location: { query } }) => {
+    const { cid } = query;
+    const stepStartPath = router.indexPath(pid, cid);
     store.dispatch(checkStepsRestart(stepStartPath));
   },
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { find } from 'lodash';
+import IconCancel from 'react-icons/lib/md/add-circle-outline';
 
 import InputSelection from 'components/Input/Selection';
 import { formatCurrency } from 'lib/currency';

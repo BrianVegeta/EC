@@ -9,8 +9,12 @@ import styles from './styles.sass';
 
 class OwnerInfoNote extends React.Component {
 
+  static defaultProps = {
+    avatarSrc: null,
+  };
+
   static propTypes = {
-    avatarSrc: PropTypes.string.isRequired,
+    avatarSrc: PropTypes.string,
     userId: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     dispatchChat: PropTypes.func.isRequired,

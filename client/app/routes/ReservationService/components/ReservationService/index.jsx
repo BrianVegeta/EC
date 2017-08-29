@@ -13,16 +13,21 @@ import styles from './styles.sass';
 // const cx = classnames.bind(styles);
 class PublishService extends React.Component {
 
+  static defaultProps = {
+    touchedPaths: null,
+  };
+
   static propTypes = {
+    touchedPaths: PropTypes.arrayOf(PropTypes.string),
     isFetched: PropTypes.bool.isRequired,
     steps: PropTypes.arrayOf(stepPropType.isRequired).isRequired,
-    touchedPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
     children: myPropTypes.children.isRequired,
     environment: myPropTypes.environment.isRequired,
     dispatchCheckBankInfoReady: PropTypes.func.isRequired,
     dispatchResetBankInfo: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchCheckEdit: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -35,6 +40,7 @@ class PublishService extends React.Component {
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchItem();
+    this.props.dispatchCheckEdit();
     this.props.dispatchCheckBankInfoReady();
   }
 

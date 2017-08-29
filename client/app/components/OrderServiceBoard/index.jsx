@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import { orderRouter } from 'lib/paths';
+import { orderRouter, reservationService } from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -35,6 +35,7 @@ class OrderServiceBoard extends React.Component {
     photoName: PropTypes.string.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
+    pid: PropTypes.number.isRequired,
     cidNo: PropTypes.string.isRequired,
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
@@ -147,7 +148,7 @@ class OrderServiceBoard extends React.Component {
   }
 
   renderLesseeActions() {
-    const { display } = this.props;
+    const { display, cid, pid } = this.props;
     const { can_edit, can_pay, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
@@ -165,7 +166,9 @@ class OrderServiceBoard extends React.Component {
             colorType={'greenBorder'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={() => {}}
+            onClick={() => {
+              browserHistory.push(reservationService.indexPath(pid, cid));
+            }}
           />
         }
         {can_pay &&
@@ -199,7 +202,7 @@ class OrderServiceBoard extends React.Component {
           onClick={() => browserHistory.push(orderRouter.orderPath(this.props.cid))}
         />
       </div>
-    )
+    );
   }
 
   render() {
