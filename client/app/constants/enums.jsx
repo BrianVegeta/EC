@@ -7,6 +7,7 @@ export const CATEGORY_SPACE_ID = '3';
 export const CATEGORY_GOODS = 'goods';
 export const CATEGORY_SERVICE = 'service';
 export const CATEGORY_SPACE = 'space';
+
 export const mappingCategoryFromID = {
   [CATEGORY_GOODS_ID]: CATEGORY_GOODS,
   [CATEGORY_SERVICE_ID]: CATEGORY_SERVICE,

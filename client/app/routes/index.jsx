@@ -38,6 +38,7 @@ import routeRegistration from './AuthRegistration/route';
 /* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
+import routeReservationSpace from './ReservationSpace/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -90,6 +91,7 @@ export default store => ({
         routePublishService(store),
         routePublishSpace(store),
         routeReservationService(store),
+        routeReservationSpace(store),
         sueForm(store),
       ],
     },

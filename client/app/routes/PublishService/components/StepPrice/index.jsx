@@ -13,15 +13,15 @@ import ButtonNextStep, {
   STATUS_VALID,
 } from 'components/Button/NextStep';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
-
-// import classnames from 'classnames/bind';
-import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import {
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_COUNT,
   CHARGE_TYPE_DAY,
-} from '../../modules/publish';
+} from 'constants/publishTypes';
+// import classnames from 'classnames/bind';
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+
 
 
 class StepPrice extends React.Component {

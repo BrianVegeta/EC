@@ -71,20 +71,6 @@ class StepPrice extends React.Component {
     });
   }
 
-  renderRadioInput(state, text, CHARGE_TYPE) {
-    const { dispatchChangeData } = this.props;
-    return (
-      <div styleName="charge-type">
-        <InputRadio
-          checked={state === CHARGE_TYPE}
-          onChange={() => dispatchChangeData({ chargeType: CHARGE_TYPE })}
-        >
-          {text}
-        </InputRadio>
-      </div>
-    );
-  }
-
   renderDatesAndUnit({ unit }) {
     const { dispatchChangeData } = this.props;
     return (

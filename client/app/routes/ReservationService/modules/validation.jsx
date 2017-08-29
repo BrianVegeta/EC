@@ -10,10 +10,8 @@ import {
 } from './reservation';
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
-  // CHARGE_TYPE_DAY,
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_COUNT,
-  // ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
 

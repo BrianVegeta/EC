@@ -15,10 +15,6 @@ export const REDUCER_KEY = 'publish';
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';
 export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
-export const CHARGE_TYPE_FIX = 'fix';
-export const CHARGE_TYPE_COUNT = 'count';
-export const CHARGE_TYPE_DAY = 'day';
-export const CHARGE_TYPE_MONTH = 'month';
 
 // =============================================
 // = action type =

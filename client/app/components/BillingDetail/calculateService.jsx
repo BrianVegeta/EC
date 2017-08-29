@@ -1,11 +1,14 @@
 /* eslint-disable camelcase */
 
-import { rangeDiff } from 'lib/time';
+import { rangeDiff, monthDiff } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
 
-const CHARGE_TYPE_FIX = 'fix';
-const CHARGE_TYPE_COUNT = 'count';
-const CHARGE_TYPE_DAY = 'day';
+import {
+  CHARGE_TYPE_FIX,
+  CHARGE_TYPE_COUNT,
+  CHARGE_TYPE_DAY,
+  CHARGE_TYPE_MONTH
+} from 'constants/publishTypes';
 
 const formatDetail = (text, amount) => ({ text, amount });
 
@@ -35,6 +38,15 @@ const calPrice = ({ leasestart, leaseend, unit, price }, chargeType) => {
         `價格 ${formatCurrency(price, '')} x ${unit}個（件）`,
         price * unit,
       );
+
+    case CHARGE_TYPE_MONTH: {
+      const month = (leasestart && leaseend) ?
+        monthDiff(leasestart, leaseend, true) : 1;
+      return formatDetail(
+        `價格 ${formatCurrency(price, '')} x ${month}月`,
+        price * month,
+      );
+    }
 
     default:
       throw new Error('SERVICE WRONG TYPE');

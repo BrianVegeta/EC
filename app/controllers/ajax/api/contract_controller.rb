@@ -391,7 +391,7 @@ class Ajax::Api::ContractController < ApplicationController
        # paymenttype : int => 交易類型  1:ATM 4:信用卡;
        # leasestart : Long => 合約開始時間
        # leaseend : Ｌong =>  合約結束時間
-      　       # coupon_no : String => 折價券的代號
+       # coupon_no : String => 折價券的代號
        # note : String => 文字
 
        params.permit(:unit, :paymenttype, :leasestart, :leaseend, :coupon_no, :note
@@ -401,12 +401,12 @@ class Ajax::Api::ContractController < ApplicationController
 
   def create_space_contract_params
     # pid : long => 商品ID
-    params.permit(:pid).merge(service_contract_params)
+    params.permit(:pid).merge(space_contract_params)
   end
 
   def update_space_contract_params
     # cid : long => 合約ID
-    params.permit(:cid, :pid).merge(service_contract_params)
+    params.permit(:cid, :pid).merge(space_contract_params)
   end
 
 

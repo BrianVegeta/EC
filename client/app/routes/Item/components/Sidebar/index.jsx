@@ -8,6 +8,13 @@ import { formatCurrency } from 'lib/currency';
 import styled from 'styled-components';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
+import {
+  CHARGE_TYPE_FIX,
+  CHARGE_TYPE_DAY,
+  CHARGE_TYPE_COUNT,
+  CHARGE_TYPE_MONTH,
+} from 'constants/publishTypes';
+
 import styles from './styles.sass';
 
 import OrderBoard from './OrderBoard';
@@ -37,6 +44,20 @@ class Sidebar extends React.Component {
     isMyOwn: PropTypes.bool.isRequired,
   };
 
+  renderUnit({ calculate_charge_type }) {
+    switch (calculate_charge_type) {
+      case CHARGE_TYPE_FIX:
+        return ('次');
+      case CHARGE_TYPE_DAY:
+        return ('天');
+      case CHARGE_TYPE_COUNT:
+        return ('個');
+      case CHARGE_TYPE_MONTH:
+        return ('月');
+      default:
+        return ('個');
+    }
+  }
   render() {
     const { itemDetail, isMyOwn } = this.props;
     const { price } = itemDetail;
@@ -51,7 +72,7 @@ class Sidebar extends React.Component {
                   <div className={cx('price-container')}>
                     <span className={cx('dollar')}>NTD </span>
                     <span className={cx('price')}>{formatCurrency(price, '')}</span>
-                     /天
+                     /{this.renderUnit(itemDetail)}
                   </div>
                 </div>
                 <div className={cx('body')} >

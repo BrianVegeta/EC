@@ -14,17 +14,17 @@ import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
-import { GREATER_OR_EQUAL_TO_N_DAY, GREATER_OR_EQUAL_TO_N_MONTH
- } from 'constants/publishTypes';
-import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
-
-// import classnames from 'classnames/bind';
-import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import {
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_MONTH,
-} from '../../modules/publish';
+  GREATER_OR_EQUAL_TO_N_DAY,
+  GREATER_OR_EQUAL_TO_N_MONTH
+ } from 'constants/publishTypes';
+import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
+// import classnames from 'classnames/bind';
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+
 
 
 class StepPrice extends React.Component {

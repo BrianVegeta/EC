@@ -11,16 +11,17 @@ import ButtonNextStep, {
 } from 'components/Button/NextStep';
 import { findCategoryNamesByID } from 'lib/category';
 import { formatCurrency } from 'lib/currency';
-import { formatDate } from 'lib/time';
 import { htmlNewLineToBreak } from 'lib/htmlUtils';
 
 import classnames from 'classnames/bind';
-import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import {
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_MONTH,
-} from '../../modules/publish';
+} from 'constants/publishTypes';
+
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+
 
 const cx = classnames.bind(styles);
 class StepConfirm extends React.Component {

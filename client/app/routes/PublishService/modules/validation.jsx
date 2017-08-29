@@ -3,9 +3,9 @@ import validate from 'validate.js';
 import { isEmpty, filter } from 'lodash';
 import { formatCurrency } from 'lib/currency';
 import constraints, { PRICE_MAX } from 'constraints/publish';
+import { CHARGE_TYPE_FIX } from 'constants/publishTypes';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
-  CHARGE_TYPE_FIX,
 } from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 

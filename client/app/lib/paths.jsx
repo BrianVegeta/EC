@@ -120,13 +120,24 @@ export const reservationService = {
   paymentPath: (pid, cid) => gReservationServiceUrl('step2-payment', pid, cid),
   confirmPath: (pid, cid) => gReservationServiceUrl('step3-confirm', pid, cid),
 };
+
+/* 預訂空間 */
+const gReservationSpaceUrl = (step = '', pid = '', cid = '') => {
+  const paths = [`/p/reservation-space/${pid}`];
+  if (step) paths.push(step);
+  if (cid) paths.push(`?cid=${cid}`);
+  return paths.join('/');
+};
+export const reservationSpace = {
+  indexPath: (pid, cid) => gReservationSpaceUrl('', pid, cid),
+  formPath: (pid, cid) => gReservationSpaceUrl('', pid, cid),
+  paymentPath: (pid, cid) => gReservationSpaceUrl('step2-payment', pid, cid),
+  confirmPath: (pid, cid) => gReservationSpaceUrl('step3-confirm', pid, cid),
+};
+
 /* 預訂物品 */
 export const reservationGoods = {
   indexPath: pid => `/p/reservation-goods/${pid}`,
-};
-/* 預訂空間 */
-export const reservationSpace = {
-  indexPath: pid => `/p/reservation-space/${pid}`,
 };
 
 

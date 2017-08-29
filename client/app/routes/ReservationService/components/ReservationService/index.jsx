@@ -11,7 +11,7 @@ import styles from './styles.sass';
 
 
 // const cx = classnames.bind(styles);
-class PublishService extends React.Component {
+class ReservationService extends React.Component {
 
   static defaultProps = {
     touchedPaths: null,
@@ -70,4 +70,4 @@ class PublishService extends React.Component {
   }
 }
 
-export default CSS(PublishService, styles);
+export default CSS(ReservationService, styles);

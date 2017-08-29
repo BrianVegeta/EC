@@ -15,9 +15,6 @@ export const REDUCER_KEY = 'publish';
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';
 export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
-export const CHARGE_TYPE_FIX = 'fix';
-export const CHARGE_TYPE_COUNT = 'count';
-export const CHARGE_TYPE_DAY = 'day';
 
 // =============================================
 // = action type =
@@ -56,16 +53,11 @@ export const reset = () => ({
 /* transform fetched data to state */
 const transformState = ({
   pname, pdes, city, area, cat_id, tags,
-  // assign_address_type, assign_city, assign_area, assign_address,
   calculate_charge_type, price, deposit, unit,
   ship_before_start_days, discounts, rules,
   overdue_rate, send_option, return_option,
   return_city, return_area, return_address,
 }) => {
-  // const assignAddressByCustomer =
-  //   assign_address_type.indexOf(ASSIGN_ADDRESS_BY_CUSTOMER) >= 0;
-  // const assignAddressByOwner =
-  //   assign_address_type.indexOf(ASSIGN_ADDRESS_BY_OWNER) >= 0;
   const discount = discounts[0] ? discounts[0].discount : '';
   return ({
     title: pname,
@@ -236,29 +228,6 @@ const initialState = {
   hasCancelPolicy: false,
   advanceDay: null,
   rate: null,
-  /* TEST DATA */
-  // title: 'title',
-  // descript: 'afafaf',
-  // cityName: '高雄市',
-  // areaName: '苓雅區',
-  // categoryID: 157,
-  // tag1: 'AA',
-  // tag2: '',
-  // tag3: '',
-  // assignAddressByCustomer: true,
-  // assignAddressByOwner: true,
-  // assignCity: '高雄市',
-  // assignArea: '苓雅區',
-  // assignAddress: '中正路一段',
-  // chargeType: CHARGE_TYPE_FIX,
-  // price: '3000',
-  // deposit: '100',
-  // startDate: moment(),
-  // endDate: moment(),
-  // unit: 2,
-  // reservationDays: 5,
-  // discount: '123',
-  // regulation: 'afafa',
 };
 
 export default (state = initialState, action) => {

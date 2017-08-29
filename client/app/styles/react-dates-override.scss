@@ -144,6 +144,6 @@ $react-dates-z-index: 0 !default;
   }
 }
 
-.DateRangePicker__picker {
+.DateRangePicker__picker, .SingleDatePicker__picker {
   z-index: 2;
 }

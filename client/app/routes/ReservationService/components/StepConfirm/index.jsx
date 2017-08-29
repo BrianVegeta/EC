@@ -16,11 +16,14 @@ import ButtonNextStep, {
 import { htmlNewLineToBreak } from 'lib/htmlUtils';
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
-import styles from './styles.sass';
 import {
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_COUNT,
+} from 'constants/publishTypes';
+
+import styles from './styles.sass';
+import {
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';

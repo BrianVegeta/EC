@@ -5,7 +5,6 @@ import { formatCurrency } from 'lib/currency';
 import constraints, { PRICE_MAX } from 'constraints/publish';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
-  CHARGE_TYPE_MONTH,
 } from './publish';
 import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
 

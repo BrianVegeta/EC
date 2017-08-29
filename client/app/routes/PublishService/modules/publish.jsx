@@ -1,6 +1,7 @@
 import { parseInt } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now, getMoment } from 'lib/time';
+import { CHARGE_TYPE_FIX } from 'constants/publishTypes';
 import {
   REDUCER_KEY as COVER_REDUCER_KEY,
   setupCoversForEdit,
@@ -15,9 +16,6 @@ export const REDUCER_KEY = 'publish';
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';
 export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
-export const CHARGE_TYPE_FIX = 'fix';
-export const CHARGE_TYPE_COUNT = 'count';
-export const CHARGE_TYPE_DAY = 'day';
 
 // =============================================
 // = action type =
