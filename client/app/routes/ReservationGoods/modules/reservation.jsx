@@ -7,15 +7,13 @@ import { my } from 'lib/paths';
 import { redirectWithoutHook } from 'lib/redirect';
 import {
   REDUCER_KEY as ITEM_REDUCER_KEY,
-  ASSIGN_ADDRESS_BY_OWNER,
-  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'RESERVATION.SERVICE';
-export const REDUCER_KEY = 'reservationService';
+export const REDUCER_KEY = 'reservationGoods';
 export const PAYMENT_TYPE_ATM = 1;
 export const PAYMENT_TYPE_CREDIT_CARD = 4;
 
@@ -25,6 +23,7 @@ export const PAYMENT_TYPE_CREDIT_CARD = 4;
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const CHANGE_DATA = prefix('CHANGE_DATA');
+const CHANGE_MONTH = prefix('CHANGE_MONTH');
 const FETCHED_FOR_EDIT = prefix('FETCHED_FOR_EDIT');
 const TOUCH_PATH = prefix('TOUCH_PATH');
 const RESET = prefix('RESET');
@@ -37,6 +36,12 @@ const RESET = prefix('RESET');
 export const changeData = data => ({
   type: CHANGE_DATA,
   data,
+});
+
+export const changeMonth = (leasestart, month) => ({
+  type: CHANGE_MONTH,
+  leasestart,
+  month,
 });
 
 export const fetchedForEdit = data => ({
@@ -55,16 +60,18 @@ export const reset = () => ({
 
 const transformState = ({
   leasestart, leaseend, coupon: { couponNo },
-  service_location_type, service_city, service_area, service_address,
+  send_type, return_type,
+  item_lessee_receive_city, item_lessee_receive_area, item_lessee_receive_address,
   note, unit, paymenttype,
 }) => ({
   leasestart: leasestart ? getMoment(leasestart) : null,
   leaseend: leaseend ? getMoment(leaseend) : null,
   couponNo: couponNo || null,
-  serviceLocationType: service_location_type || null,
-  serviceCity: service_city || '',
-  serviceArea: service_area || '',
-  serviceAddress: service_address || '',
+  sendType: send_type,
+  returnType: return_type,
+  sendCity: item_lessee_receive_city,
+  sendArea: item_lessee_receive_area,
+  sendAddress: item_lessee_receive_address,
   note: note || '',
   unit: unit || 1,
   paymenttype: paymenttype || null,
@@ -89,14 +96,12 @@ export const editReservation = cid =>
 
 const transformParams = (pid, assignAddressType, {
   paymenttype,
-  serviceLocationType, serviceCity, serviceArea, serviceAddress,
+  sendType, returnType,
+  sendCity, sendArea, sendAddress,
   leasestart, leaseend,
   couponNo, unit,
   note,
 }) => {
-  const service_location_type = assignAddressType.length > 1 ?
-    serviceLocationType : assignAddressType;
-  const isAssignAddressByOwner = service_location_type === ASSIGN_ADDRESS_BY_OWNER;
   return ({
     pid,
     leasestart: leasestart ? leasestart.valueOf() : null,
@@ -104,10 +109,11 @@ const transformParams = (pid, assignAddressType, {
     unit,
     note,
     coupon_no: couponNo,
-    service_location_type,
-    service_city: isAssignAddressByOwner ? serviceCity : '',
-    service_area: isAssignAddressByOwner ? serviceArea : '',
-    service_address: isAssignAddressByOwner ? serviceAddress : '',
+    send_type: sendType,
+    return_type: returnType,
+    item_lessee_receive_city: sendCity,
+    item_lessee_receive_area: sendArea,
+    item_lessee_receive_address: sendAddress,
     paymenttype,
   });
 };
@@ -118,7 +124,7 @@ export const saveReservation = () =>
       const reservation = getState()[REDUCER_KEY];
       const { pid, assign_address_type } = getState()[ITEM_REDUCER_KEY];
       asyncXhrAuthedPost(
-        '/ajax/reserve_service.json',
+        '/ajax/reserve_goods.json',
         transformParams(pid, assign_address_type, reservation),
         getState(),
         true,
@@ -137,7 +143,7 @@ export const updateReservation = cid =>
       const params = transformParams(pid, assign_address_type, reservation);
 
       asyncXhrAuthedPost(
-        '/ajax/reserve_service_update.json',
+        '/ajax/reserve_goods_update.json',
         Object.assign({}, params, { cid }),
         getState(),
         true,
@@ -158,16 +164,16 @@ const initialState = {
   leasestart: null,
   leaseend: null,
   couponNo: null,
-  serviceLocationType: null,
-  serviceCity: '',
-  serviceArea: '',
-  serviceAddress: '',
+  sendType: null,
+  returnType: null,
+  sendCity: '',
+  sendArea: '',
+  sendAddress: '',
+  month: 1,
   note: '',
   unit: 1,
   paymenttype: null,
   isAgree: false,
-  sendType: null,
-  returnType: null,
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);
@@ -176,6 +182,17 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_DATA:
       return Object.assign({}, state, action.data);
+
+    case CHANGE_MONTH: {
+      const leasestart = (action.leasestart) ? action.leasestart : state.leasestart;
+      const month = (action.month) ? action.month : state.month;
+      if (leasestart) {
+        const leaseend = leasestart.clone();
+        leaseend.add(month, 'M');
+        return Object.assign({}, state, { month, leasestart, leaseend });
+      }
+      return Object.assign({}, state, { month });
+    }
 
     case FETCHED_FOR_EDIT: {
       const newState = Object.assign({}, action.data, { fetchedAt: now() });

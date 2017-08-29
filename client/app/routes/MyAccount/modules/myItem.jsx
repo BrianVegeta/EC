@@ -1,5 +1,6 @@
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
+import { LEASE } from 'constants/enums';
 
 /* =============================================>>>>>
 = userprofile =
@@ -77,6 +78,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
     } = getState()[REDUCER_KEY];
 
     const requestParams = {
+      type: LEASE,
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       category_id: categoryID,

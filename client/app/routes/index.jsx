@@ -39,6 +39,7 @@ import routeRegistration from './AuthRegistration/route';
 // import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
 import routeReservationSpace from './ReservationSpace/route';
+import routeReservationGoods from './ReservationGoods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -90,6 +91,7 @@ export default store => ({
         routePublishGoods(store),
         routePublishService(store),
         routePublishSpace(store),
+        routeReservationGoods(store),
         routeReservationService(store),
         routeReservationSpace(store),
         sueForm(store),

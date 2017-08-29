@@ -215,7 +215,7 @@ const initialState = {
   returnArea: '',
   returnAddress: '',
   /* PRICE */
-  chargeType: 'fix',
+  chargeType: 'days',
   price: null,
   deposit: 0,
   discounts: [],

@@ -88,7 +88,7 @@ class ResponseJson::Contract
         #  -String
         item_lessee_receive_area: nil,
         #  -String
-        item_lessee_receive_address: nil,
+        item_item_lessee_receive_address: nil,
         #  -String
         lessee_read: nil,
         #  -Boolean
