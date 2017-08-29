@@ -1,5 +1,7 @@
 import { fromJS } from 'immutable';
-import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrAuthedPost, asyncXhrPutImage } from 'lib/xhr';
+import { asyncContainBlobTobase64, base64ToBlobData } from 'lib/utils';
+import { REDUCER_KEY as AUTH_REDUCER_KEY } from 'modules/auth';
 // =============================================
 // = settings =
 // =============================================
@@ -79,11 +81,30 @@ export const updateUserprofile = () =>
       ).then(() => resolve(data)).catch(() => reject());
     });
 
+export const uploadAvatar = blob =>
+  (dispatch, getState) => {
+    dispatch(changeData({ picturePlaceholder: blob }));
+
+    const { currentUser: { uid } } = getState()[AUTH_REDUCER_KEY];
+    asyncContainBlobTobase64(blob, false).then((base64) => {
+      const formData = new FormData();
+      formData.append('image', base64ToBlobData(base64));
+      asyncXhrPutImage(
+        `/ajax/images/avatar/${uid}.json`,
+        formData,
+      ).then((url) => {
+        dispatch(changeData({ picture: url }));
+      });
+    });
+  };
+
+
 // =============================================
 // = REDUCER =
 // =============================================
 const initialState = {
   data: {
+    picturePlaceholder: null,
     picture: null,
     name: '',
     city: '',

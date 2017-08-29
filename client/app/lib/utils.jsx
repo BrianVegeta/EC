@@ -59,7 +59,7 @@ export const asyncS3ToBlob = (s3, type) =>
  * @blob      650
  * resove     base64
  */
-export const asyncContainBlobTobase64 = (blob, width = 650, height = 650) =>
+export const asyncContainBlobTobase64 = (blob, isContain = true, width = 650, height = 650) =>
   new Promise((resolve, reject) => {
     const img = new Image();
     const canvas = document.createElement('canvas');
@@ -67,7 +67,7 @@ export const asyncContainBlobTobase64 = (blob, width = 650, height = 650) =>
     canvas.width = width;
     canvas.height = height;
     img.onload = () => {
-      const max = Math.max(img.width, img.height);
+      const max = isContain ? Math.max(img.width, img.height) : Math.min(img.width, img.height);
       ctx.drawImage(
         img,
         (img.width - max) / 2, (img.height - max) / 2, max, max,

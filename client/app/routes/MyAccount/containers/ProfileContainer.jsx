@@ -5,9 +5,15 @@ import {
   REDUCER_KEY as PROFILE_REDUCER_KEY,
   fetchUserprofile,
   updateUserprofile,
+  uploadAvatar,
   changeData,
   reset,
 } from '../modules/myProfile';
+import {
+  REDUCER_KEY as CROPPER_REDUCER_KEY,
+  openCropper,
+  closeCropper,
+} from '../modules/avatarCropper';
 import Profile from '../components/Profile';
 
 
@@ -18,10 +24,12 @@ const mapStateToProps = ({
   environment,
   auth: { currentUser },
   [PROFILE_REDUCER_KEY]: profile,
+  [CROPPER_REDUCER_KEY]: cropper,
 }) => ({
   environment,
   currentUser,
   profile,
+  cropper,
 });
 
 
@@ -41,6 +49,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 
   return ({
+    dispatchOpenCropper: blob => dispatch(openCropper(blob)),
+    dispatchCloseCropper: () => dispatch(closeCropper()),
+    dispatchUploadAvatar: blob => dispatch(uploadAvatar(blob)),
     dispatchFetchUserprofile,
     dispatchUpdateUserprofile,
     dispatchChangeData: data => dispatch(changeData(data)),

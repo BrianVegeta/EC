@@ -15,6 +15,12 @@ export default store => ({
       } = require('../../modules/myProfile');
       injectReducer(store, { key, reducer });
 
+      const {
+        default: cropperReducer,
+        REDUCER_KEY: cropperKey,
+      } = require('../../modules/avatarCropper');
+      injectReducer(store, { key: cropperKey, reducer: cropperReducer });
+
       cb(null, Container);
     }, 'my.profile');
   },

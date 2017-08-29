@@ -268,6 +268,7 @@ Rails.application.routes.draw do
       collection do
         put 'item_cover'
         put 'sue_picture/:cid_no', action: :sue_picture
+        put 'avatar/:uid', action: :avatar
       end
     end
 

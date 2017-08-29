@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { Link } from 'react-router';
 import Icon from 'react-icons/lib/md/assignment-ind';
+import Dropzone from 'react-dropzone';
 
-import {
-  userprofilePaths as userprofileRouter,
-} from 'lib/paths';
+import { userprofilePaths as userprofileRouter } from 'lib/paths';
 import TableForm, { TableRow } from 'components/TableForm';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
@@ -14,6 +13,7 @@ import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
 import FormTitleLimiter from 'components/Form/TitleLimiter';
+import CropperEditor from 'components/Publish/CropperEditor';
 import constraints from 'constraints/profile';
 
 import classnames from 'classnames/bind';
@@ -27,23 +27,45 @@ class Profile extends React.Component {
 
   static propTypes = {
     currentUser: myPropTypes.currentUser.isRequired,
+    environment: myPropTypes.environment.isRequired,
+    cropper: PropTypes.shape({
+      blob: PropTypes.string,
+      key: PropTypes.string,
+    }).isRequired,
     profile: PropTypes.shape({
       data: PropTypes.object,
     }).isRequired,
+    dispatchOpenCropper: PropTypes.func.isRequired,
+    dispatchCloseCropper: PropTypes.func.isRequired,
+    dispatchUploadAvatar: PropTypes.func.isRequired,
     dispatchUpdateUserprofile: PropTypes.func.isRequired,
     dispatchFetchUserprofile: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.onUploadClick = this.onUploadClick.bind(this);
+  }
+
   componentDidMount() {
     this.props.dispatchFetchUserprofile();
   }
 
+  onUploadClick() {
+    this.avatarDropzone.open();
+  }
+
   render() {
     const {
+      dispatchOpenCropper,
+      dispatchCloseCropper,
+      dispatchUploadAvatar,
       dispatchChangeData,
       dispatchUpdateUserprofile,
       currentUser: { uid },
+      environment,
+      cropper,
       profile: {
         data: {
           picture,
@@ -56,6 +78,8 @@ class Profile extends React.Component {
         },
       },
     } = this.props;
+
+    const refAvatar = input => (this.avatarDropzone = input);
     const refName = input => (this.nameInput = input);
     const refCityArea = input => (
       this.cityAreaInput = (input && input.getWrappedInstance())
@@ -63,6 +87,7 @@ class Profile extends React.Component {
     const refOccupation = input => (this.occupationInput = input);
     const refWebsite = input => (this.websiteInput = input);
     const refAutobiography = input => (this.autobiographyInput = input);
+
     return (
       <Container titleText="公開資訊" icon={Icon} >
         <Link
@@ -77,15 +102,31 @@ class Profile extends React.Component {
             <span styleName="label">個人照片</span>
             <div styleName="input-container">
               <div styleName="avatar">
-                <Avatar src={picture} />
+                <Dropzone
+                  ref={refAvatar}
+                  style={{}}
+                  styleName="avatar-dropzone"
+                  multiple={false}
+                  onDrop={([{ preview }]) => dispatchOpenCropper(preview)}
+                >
+                  <Avatar src={picture} />
+                </Dropzone>
               </div>
+              {cropper.blob &&
+                <CropperEditor
+                  cropper={cropper}
+                  closeCropper={dispatchCloseCropper}
+                  uploadCover={(key, blob) => dispatchUploadAvatar(blob)}
+                  screenHeight={environment.height}
+                />
+              }
               <FormButton
                 content="上傳照片"
                 colorType="greenBorder"
                 size="sm"
                 width="auth"
                 style={{ verticalAlign: 'middle' }}
-                onClick={() => console.log('upload')}
+                onClick={this.onUploadClick}
               />
             </div>
           </TableRow>
