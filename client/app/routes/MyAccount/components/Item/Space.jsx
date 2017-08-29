@@ -1,49 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TitleIcon from 'react-icons/lib/md/add-circle';
-import myPropTypes from 'propTypes';
 
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import ItemList, { CONTROL_TYPE_PRIVATE } from 'components/ItemList';
-import {
-  CATEGORY_GOODS,
-  CATEGORY_SERVICE,
-  CATEGORY_SPACE,
-} from 'constants/enums';
-
+import { CATEGORY_SPACE } from 'constants/enums';
+import ItemControlBar from './ItemControlBar';
 import Container from '../Container';
-import ItemControlBar from '../ItemControlBar';
-import Model from './Model';
 
-class Items extends React.Component {
+class Space extends React.Component {
 
   static propTypes = {
-    mine: myPropTypes.mine.isRequired,
     myItem: PropTypes.shape({
       isPaginable: PropTypes.bool.isRequired,
       isFetching: PropTypes.bool.isRequired,
       records: PropTypes.array.isRequired,
     }).isRequired,
-    dispatch: PropTypes.func.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     dispatchDelete: PropTypes.func.isRequired,
   };
 
-  static renderNoDataText(category) {
-    return {
-      [CATEGORY_GOODS]: '尚未上架任何物品',
-      [CATEGORY_SERVICE]: '尚未上架任何服務項目',
-      [CATEGORY_SPACE]: '尚未上架任何物件',
-    }[category];
-  }
 
   componentDidMount() {
-    // const { mine, dispatch } = this.props;
     this.props.dispatchReset();
-    this.props.dispatchFetchItem('1');
-    // new Model(mine, dispatch).fetchItems();
+    this.props.dispatchFetchItem();
   }
 
   componentWillUnmount() {
@@ -51,15 +33,8 @@ class Items extends React.Component {
   }
 
   render() {
-    const {
-      mine,
-      dispatch,
-      dispatchFetchItem,
-      dispatchReset,
-      dispatchDelete,
-      myItem,
-    } = this.props;
-    const mineModel = new Model(mine, dispatch, dispatchFetchItem, dispatchReset);
+    const { myItem, dispatchDelete, dispatchFetchItem } = this.props;
+
     if (!myItem) return null;
     const {
       isPaginable,
@@ -67,24 +42,22 @@ class Items extends React.Component {
       records,
     } = myItem;
 
-    const { renderNoDataText } = this.constructor;
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
 
     return (
       <Container icon={TitleIcon} titleText="發佈">
         <ItemControlBar
-          tab={mineModel.tabCate}
-          getIsActive={mineModel.getIsActive}
+          getIsActive={CATEGORY_SPACE}
         />
         <ListContainer
           minHeight={500}
-          noDataText={hasNoData ? renderNoDataText(mineModel.itemsCateState) : null}
+          noDataText={hasNoData ? '尚未上架任何服務項目' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
             isPaginable={isPaginable}
             isFetching={isFetching}
-            loadMore={() => { dispatchFetchItem(mineModel.categoryID); }}
+            loadMore={() => { dispatchFetchItem(); }}
           >
             <ItemList
               records={records}
@@ -99,4 +72,4 @@ class Items extends React.Component {
   }
 }
 
-export default Items;
+export default Space;

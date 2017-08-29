@@ -13,7 +13,7 @@ import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
 const myAccountNavs = {
-  items: { text: '分享/發佈', path: my.itemPath },
+  items: { text: '分享/發佈', path: my.myGoodsPath },
   orders: { text: '廠商訂單', path: my.ownerOrderItem('TAB_REQUEST') },
   schedule: { text: '行事曆', path: my.calendarPath },
   records: { text: '消費狀態', path: my.lesseeOrderItem('TAB_REQUEST') },

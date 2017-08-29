@@ -163,7 +163,6 @@ export const validatePriceBy = ({
   minimumShippemntDay,
   discounts,
 }) => {
-
   const priceNumber = parseInt(price, 10) || 0;
   const depositNumber = parseInt(deposit, 10) || 0;
   if ((priceNumber + depositNumber) > PRICE_MAX) {

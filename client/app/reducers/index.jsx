@@ -21,7 +21,6 @@ import recommends from './recommendsReducer';
 import itemRelease from './itemReleaseReducer';
 // import publish from './publishReducer';
 import search from './searchReducer';
-import mine from './mineReducer';
 import notification from './notificationReducer';
 import home from './homeReducer';
 import reservation from './reservationReducer';
@@ -48,7 +47,6 @@ const reducers = {
   recommends,
   itemRelease,
   search,
-  mine,
   notification,
   home,
   reservation,
@@ -83,9 +81,7 @@ const makeRootReducer = asyncReducers =>
   };
 
 export const injectReducer = (store, { key, reducer }) => {
-
   if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
-
   store.asyncReducers[key] = reducer;
   store.replaceReducer(makeRootReducer(store.asyncReducers));
 };
