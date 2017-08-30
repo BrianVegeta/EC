@@ -7,9 +7,13 @@ import TableRow from './TableRow';
 
 class TableForm extends React.Component {
 
+  static defaultProps = {
+    className: null,
+  };
+
   static propTypes = {
     children: myPropTypes.children.isRequired,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
   };
 
   render() {

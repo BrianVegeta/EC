@@ -20,8 +20,6 @@ import PanelContainer from './Panel/Container';
 
 
 const Container = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
 `;
 
 const initialState = {
@@ -33,20 +31,28 @@ const initialState = {
 };
 class Controller extends React.Component {
 
+  static defaultProps = {
+    dispatchCheckPassword: null,
+    password: null,
+  };
+
   static propTypes = {
     valueType: PropTypes.oneOf(['phone', 'email']).isRequired,
     value: PropTypes.string.isRequired,
+    password: PropTypes.string,
 
     dispatchGetVerifyCode: PropTypes.func.isRequired,
     dispatchVerifyUpdate: PropTypes.func.isRequired,
     afterUpdateConfirm: PropTypes.func.isRequired,
+    dispatchCheckPassword: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
     this.state = Object.assign({}, initialState, {
-      newValue: this.props.value,
+      newValue: props.value,
+      password: props.password,
     });
 
     this.switchToInit = this.switchToInit.bind(this);
@@ -57,10 +63,10 @@ class Controller extends React.Component {
     this.resendVerifyCode = this.resendVerifyCode.bind(this);
   }
 
-  getVerifyCode(newValue) {
+  getVerifyCode({ newValue, password }) {
     this.startLoading();
     this.props.dispatchGetVerifyCode(
-      newValue,
+      newValue, password,
     ).then(() => {
       this.switchToVerifying(newValue);
     }).catch(({ message }) => {
@@ -113,16 +119,25 @@ class Controller extends React.Component {
   }
 
   switchToEdit() {
-    const newState = Object.assign({}, initialState, {
-      newValue: this.props.value,
+    const { value, dispatchCheckPassword } = this.props;
+    if (dispatchCheckPassword) {
+      dispatchCheckPassword().then((password) => {
+        this.setState(Object.assign({}, initialState, {
+          newValue: value,
+          flow: FLOW_EDITING,
+          password,
+        }));
+      });
+      return;
+    }
+    this.setState(Object.assign({}, initialState, {
+      newValue: value,
       flow: FLOW_EDITING,
-    });
-    this.setState(newState);
+    }));
   }
 
   resendVerifyCode() {
-    const { newValue } = this.state;
-    this.getVerifyCode(newValue);
+    this.getVerifyCode(this.state);
   }
 
   render() {
@@ -135,6 +150,7 @@ class Controller extends React.Component {
       changeError,
       confirmError,
       inputError,
+      password,
     } = this.state;
 
     const panelContainerProps = {
@@ -162,7 +178,10 @@ class Controller extends React.Component {
               <PanelEdit
                 valueType={valueType}
                 actionType={actionType}
-                getVerifyCode={this.getVerifyCode}
+                getVerifyCode={inputValue => this.getVerifyCode({
+                  newValue: inputValue,
+                  password,
+                })}
               />
             </PanelContainer>
           ),
@@ -171,7 +190,7 @@ class Controller extends React.Component {
               <PanelConfirm
                 newValue={newValue}
                 onConfirm={this.confirmUpdate}
-                onResend={() => this.getVerifyCode(newValue)}
+                onResend={() => this.getVerifyCode(this.state)}
                 onCancel={this.switchToInit}
                 setInputErrorMessage={message => this.setState({ inputError: message })}
               />

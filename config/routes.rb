@@ -89,8 +89,6 @@ Rails.application.routes.draw do
       #USERPROFILE
       post 'userprofile/search', to: 'userprofile#search' #
 
-      post 'userprofile/set_facebook', to: 'userprofile#set_facebook'
-      post 'userprofile/facebook_unbind', to: 'userprofile#facebook_unbind'
       post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
 
       post 'userprofile/update_password', to: 'userprofile#update_password'
@@ -194,6 +192,8 @@ Rails.application.routes.draw do
       post 'user_info', to: 'userprofile#user_general_info'
       post 'get_userprofile', to: 'userprofile#get'
       post 'save_userprofile', to: 'userprofile#save'
+      post 'user_bind_facebook', to: 'userprofile#set_facebook'
+      post 'user_unbind_facebook', to: 'userprofile#facebook_unbind'
       ###### BANK INFO (AUTHED)
       scope :bank do
         post 'bankacc_update', to: 'userprofile#bank_info_update'

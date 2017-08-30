@@ -17,6 +17,7 @@ import routeLoIt from './routes/LesseeOrder/LoIt/route';
 import routeLoSe from './routes/LesseeOrder/LoSe/route';
 import routeLoSp from './routes/LesseeOrder/LoSp/route';
 import routeProfile from './routes/Profile/route';
+import routeManage from './routes/Manage/route';
 
 export default store => ({
   path: my.indexPath,
@@ -48,5 +49,6 @@ export default store => ({
     routeLoSe(store),
     routeLoSp(store),
     routeProfile(store),
+    routeManage(store),
   ],
 });

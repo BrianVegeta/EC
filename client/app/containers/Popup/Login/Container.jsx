@@ -12,6 +12,7 @@ import {
   loginFacebook,
   reset,
 } from 'modules/login';
+import { refreshHard } from 'lib/redirect';
 import Login from './index';
 
 
@@ -33,7 +34,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch, { onAfterLogin }) => {
   const afterLogin = (userProfile) => {
     dispatch(authLogin(userProfile));
-    dispatch(closePopup());
+    dispatch(refreshHard());
+    // dispatch(closePopup());
     onAfterLogin();
   };
   const dispatchLoginEmail = ({ email, password }) => {

@@ -198,17 +198,21 @@ class BankSetupContainer extends React.Component {
               />
             </div>
           </FormBlock>
-          <ConfirmUpdatePhoneContainer
-            value={phone}
-            password={checkedPassword}
-            afterUpdateConfirm={this.changeInfo('phone')}
-          />
+          <div styleName="confirm-update">
+            <ConfirmUpdatePhoneContainer
+              value={phone}
+              password={checkedPassword}
+              afterUpdateConfirm={this.changeInfo('phone')}
+            />
+          </div>
           {phoneError && <AlertPanel text={phoneError} />}
-          <ConfirmUpdateEmailContainer
-            value={email}
-            password={checkedPassword}
-            afterUpdateConfirm={this.changeInfo('email')}
-          />
+          <div styleName="confirm-update">
+            <ConfirmUpdateEmailContainer
+              value={email}
+              password={checkedPassword}
+              afterUpdateConfirm={this.changeInfo('email')}
+            />
+          </div>
           {emailError && <AlertPanel text={emailError} />}
           <FormBlock title="銀行帳戶資訊" hasBottomLine={false}>
             <div styleName="formControl">

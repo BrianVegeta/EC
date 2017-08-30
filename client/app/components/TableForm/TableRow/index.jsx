@@ -8,20 +8,23 @@ class TableRow extends React.Component {
 
   static defaultProps = {
     labelWidth: null,
+    labelVerticalAlign: null,
   };
 
   static propTypes = {
     children: myPropTypes.children.isRequired,
     labelWidth: PropTypes.number,
+    labelVerticalAlign: PropTypes.string,
   };
 
   render() {
-    const { children, labelWidth } = this.props;
+    const { children, labelWidth, labelVerticalAlign } = this.props;
     return (
       <tr styleName="row">
         <th
           width={labelWidth}
           styleName="th"
+          style={{ verticalAlign: labelVerticalAlign }}
         >
           {children[0]}
         </th>
