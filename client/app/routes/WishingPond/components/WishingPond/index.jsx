@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import { find } from 'lodash';
+import { browserHistory } from 'react-router';
+import { publishWishRouter } from 'lib/paths';
 import WishList from 'components/WishList';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
@@ -88,7 +90,7 @@ class WishingPond extends React.Component {
             </div>
             <div styleName="action-filter-container">
               <AddWish
-                onClick={() => {}}
+                onClick={() => browserHistory.push(publishWishRouter.indexPath(''))}
               />
             </div>
           </div>

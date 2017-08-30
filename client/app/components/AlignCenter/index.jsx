@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual } from 'lodash';
 // import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
@@ -15,6 +16,28 @@ class AlignCenter extends React.Component {
     children: myPropTypes.children.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      margin: null,
+    };
+  }
+
+  componentDidMount() {
+    this.setMarginState();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { margin } = prevState;
+    if (!isEqual(margin, this.calcuMargin())) {
+      this.setMarginState();
+    }
+  }
+
+  setMarginState() {
+    this.setState({ margin: this.calcuMargin() });
+  }
+
   calcuMargin() {
     const { container, inner } = this;
     return {
@@ -24,9 +47,10 @@ class AlignCenter extends React.Component {
   }
 
   render() {
+    const { margin } = this.state;
     const { children } = this.props;
-    const innerStyle = (this.container && this.inner) ?
-      { marginTop: this.calcuMargin().top, marginLeft: this.calcuMargin().left } :
+    const innerStyle = (margin) ?
+      { marginTop: margin.top, marginLeft: margin.left } :
       { marginTop: null, marginLeft: null };
 
     return (

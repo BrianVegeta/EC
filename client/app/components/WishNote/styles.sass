@@ -14,28 +14,36 @@
     left: 1px
     width: 244px
     height: 244px
+    cursor: pointer
   .body-container
     padding: 15px
-    .title
-      color: $global-blackColor
-      font-weight: 600
-      margin-top: 15px
-    .title-button
-      background: transparent
-      margin: 0px
-      border-width: 0px
-      color: $global-blackColor
-      font-weight: 600
-      margin-top: 15px
+    .link-on-image, .link-on-title
+      outline: 0
+      display: inline
+      cursor: pointer
+    .link-on-title
       &:hover
-        color: $global-primaryColor
+        border-bottom: 1px solid $global-primaryColor
+        .title
+          color: $global-primaryColor
       &:active
         color: $global-blackColor
+      .title
+        color: $global-blackColor
+        font-weight: 600
+        margin-top: 15px
+        word-wrap: break-word
     .description
       color: #888
       font-size: 14px
       line-height: 14px
       margin-top: 11px
+      max-height: 28px
+      -webkit-line-clamp: 2
+      -webkit-box-orient: vertical
+      overflow: hidden
+      text-overflow: ellipsis
+      word-wrap: break-word
     .expect-price
       color: $global-primaryColor
       font-size: 15px

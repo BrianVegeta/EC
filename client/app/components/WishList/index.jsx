@@ -21,13 +21,12 @@ class WishList extends React.Component {
     editable: true,
     eachMargin: 26,
     shouldInitAnimate: false,
-    onShow: () => {},
   };
 
   static propTypes = {
     editable: PropTypes.bool,
     shouldInitAnimate: PropTypes.bool,
-    onShow: PropTypes.func,
+    onShow: PropTypes.func.isRequired,
     records: PropTypes.arrayOf(
       PropTypes.object.isRequired,
     ).isRequired,
@@ -65,7 +64,7 @@ class WishList extends React.Component {
   }
 
   render() {
-    const { records, eachMargin, editable } = this.props;
+    const { records, eachMargin, editable, onShow } = this.props;
     const { isWaiting } = this.state;
     const mountRecords = isWaiting ? [] : records;
     return (
@@ -79,7 +78,7 @@ class WishList extends React.Component {
                 marginLeft={eachMargin}
               >
                 <WishNote
-                  onShow={this.props.onShow}
+                  onShow={() => onShow(record.id)}
                   data={record}
                   editable={editable}
                 />
