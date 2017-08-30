@@ -1,7 +1,18 @@
 @import "~styles/color.sass"
 
-.label
-  color: $global-middleBlack
-  font-weight: normal
-.input-container
-  padding: 15px 0
+.form-container
+  position: relative
+  width: 100%
+  table
+    border: 1px solid $global-lineColor
+    padding: 30px 50px
+    width: 100%
+    margin-bottom: 30px
+    .label
+      color: $global-middleBlack
+      font-weight: normal
+    .input-container
+      padding: 15px 0
+      .input
+        width: 360px
+        display: inline-block

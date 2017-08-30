@@ -5,8 +5,8 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 // =============================================
 // = settings =
 // =============================================
-export const REDUCER_KEY = 'myManage';
-const prefix = action => (`MY.MANAGE.${action}`);
+export const REDUCER_KEY = 'myManagePasswordChange';
+const prefix = action => (`MY.MANAGE.PASSWORD_CHANGE.${action}`);
 
 // =============================================
 // = ACTION TYPE =
@@ -27,64 +27,35 @@ export const reset = () => ({
   type: RESET,
 });
 
-export const transformData = ({
-  fb_id, email, phone,
-}) => ({
-  fb_id,
-  email,
-  phone,
-});
-export const fetchUserData = () =>
-  (dispatch, getState) => {
-    asyncXhrAuthedPost(
-      '/ajax/get_userprofile.json',
-      getState(),
-    ).then((data) => {
-      dispatch(changeData(transformData(data)));
-    }).catch();
-  };
-
-export const connectFacebook = ({ userID, accessToken }) =>
+export const updatePassword = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
+      const {
+        data: {
+          password,
+          newPassword,
+        },
+      } = getState()[REDUCER_KEY];
+
       asyncXhrAuthedPost(
-        '/ajax/user_bind_facebook.json',
-        { fb_id: userID, access_token: accessToken },
-        getState(),
+        '/ajax/password/update.json',
+        { old_password: password, new_password: newPassword },
+        getState,
         true,
       ).then(() => {
-        dispatch(changeData({ fb_id: userID }));
         resolve();
-      }).catch(({ message }) => {
-        reject(message);
-      });
+        dispatch(reset());
+      }).catch(({ message }) => reject(message));
     });
-
-export const disconnectFacebook = ({ userID, accessToken }) =>
-  (dispatch, getState) =>
-    new Promise((resolve, reject) => {
-      asyncXhrAuthedPost(
-        '/ajax/user_unbind_facebook.json',
-        { fb_id: userID, access_token: accessToken },
-        getState(),
-        true,
-      ).then(() => {
-        dispatch(changeData({ fb_id: null }));
-        resolve();
-      }).catch(({ message }) => {
-        reject(message);
-      });
-    });
-
 
 // =============================================
 // = REDUCER =
 // =============================================
 const initialState = {
   data: {
-    fb_id: null,
-    phone: '',
-    email: '',
+    password: '',
+    newPassword: '',
+    newPasswordConfirmation: '',
   },
 };
 

@@ -7,7 +7,7 @@ import {
   fetchUserData,
   connectFacebook,
   disconnectFacebook,
-} from '../modules/myManage';
+} from '../modules/myManageVerify';
 import ManageVerify from '../components/ManageVerify';
 
 

@@ -81,7 +81,7 @@ class Profile extends React.Component {
     } = this.props;
 
     return (
-      <TableForm>
+      <TableForm styleName="form-container">
         <TableRow labelWidth={100} labelVerticalAlign="top">
           <span styleName="label">手機號碼</span>
           <div styleName="input-container">

@@ -1,5 +1,4 @@
 import { omit } from 'lodash';
-import { injectReducer } from 'reducers';
 import { my } from 'lib/paths';
 import routePasswordChange from './routePasswordChange';
 import routeVerify from './routeVerify';
@@ -12,11 +11,6 @@ export default store => ({
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
       const Container = require('../../containers/ManageContainer').default;
-      const {
-        default: reducer,
-        REDUCER_KEY: key,
-      } = require('../../modules/myManage');
-      injectReducer(store, { key, reducer });
 
       cb(null, Container);
     }, 'my.manage');
