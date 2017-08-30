@@ -22,7 +22,7 @@ const navs = [
   ['我的錢包', mineRouter.walletPath],
   ['評價', mineRouter.commentOwnerPath],
   ['公開資訊', mineRouter.profilePath],
-  ['帳號管理', ''],
+  ['帳號管理', mineRouter.manageVerifyPath],
   ['收款設定', ''],
 ];
 
