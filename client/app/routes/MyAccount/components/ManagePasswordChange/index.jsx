@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import myPropTypes from 'propTypes';
 
 import TableForm, { TableRow } from 'components/TableForm';
 import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 import constraints from 'constraints';
 
-import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 
-const cx = classnames.bind(styles);
 class Profile extends React.Component {
 
   static propTypes = {
+    hasDataChanged: PropTypes.bool.isRequired,
     passwordChange: PropTypes.shape({
       data: PropTypes.object.isRequired,
     }).isRequired,
@@ -45,6 +43,7 @@ class Profile extends React.Component {
   render() {
     const {
       dispatchChangeData,
+      hasDataChanged,
       passwordChange: {
         data: {
           password,
@@ -116,6 +115,7 @@ class Profile extends React.Component {
           style={{ padding: '12px 50px' }}
           width="auto"
           onClick={this.onSubmit}
+          disabled={!hasDataChanged}
         />
       </div>
     );

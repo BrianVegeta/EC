@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { isEqual } from 'lodash';
 
 
 // =============================================
@@ -48,6 +49,7 @@ export const updatePassword = () =>
       }).catch(({ message }) => reject(message));
     });
 
+
 // =============================================
 // = REDUCER =
 // =============================================
@@ -58,6 +60,9 @@ const initialState = {
     newPasswordConfirmation: '',
   },
 };
+
+export const hasDataChanged = ({ data }) =>
+  !isEqual(initialState.data, data);
 
 export default (state = initialState, action) => {
   switch (action.type) {

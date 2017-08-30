@@ -5,6 +5,7 @@ import {
   changeData,
   reset,
   updatePassword,
+  hasDataChanged,
 } from '../modules/myManagePasswordChange';
 import ManagePasswordChange from '../components/ManagePasswordChange';
 
@@ -18,6 +19,7 @@ const mapStateToProps = ({
 }) => ({
   environment,
   passwordChange,
+  hasDataChanged: hasDataChanged(passwordChange),
 });
 
 
@@ -25,7 +27,6 @@ const mapStateToProps = ({
 = map dispatch =
 ===============================================>>>>>*/
 const mapDispatchToProps = (dispatch) => {
-
   const dispatchUpdatePassword = () =>
     dispatch(updatePassword()).then(() => {
       swal(successConfig({ title: '變更密碼成功', text: null }));
