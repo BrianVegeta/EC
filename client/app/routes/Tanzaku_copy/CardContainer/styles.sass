@@ -1,0 +1,59 @@
+// @aurthor: vincent
+$carBodyBorderColor: #ddd
+$titleColor: #444
+$descriptionColor: #888
+$lastDayColor: #00A1B3
+
+.container
+  margin: 0px
+
+.card-block
+  display: inline-block
+  padding: 15px
+  width: 275px
+  .card
+    border-radius: 5px
+    box-shadow: 0 0 10px rgba(155, 155, 155, 0.5)
+    .coverPicture
+      width: 245px
+      height: 245px
+      border-bottom: 1px solid $carBodyBorderColor
+
+.cover
+  background: #fff url('./imageMiss.png') center/cover no-repeat
+  width: 245px
+  height: 245px
+  display: block
+  border-top-left-radius: 5px
+  border-top-right-radius: 5px
+
+.cardBody
+  padding: 15px
+  h3.title
+    line-height: 23px
+    font-size: 16px
+    color: $titleColor
+    margin: 0 0 15px 0
+    text-align: left
+  .titleClick, .coverClick
+    cursor: pointer
+  .description
+    color: $descriptionColor
+    font-size: 14px
+    margin-bottom: 15px
+  .expprice
+    color: $lastDayColor
+    font-size: 15px
+    margin-bottom: 15px
+  .cardFooter
+    .ownBy
+      position: relative
+
+.cardBodyHalf
+  composes: cardBody
+
+.cardBodyFull
+  composes: cardBody
+  border-top-left-radius: 5px
+  border-top-right-radius: 5px
+  border-top: 1px solid $carBodyBorderColor

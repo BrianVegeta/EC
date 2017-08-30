@@ -8,7 +8,8 @@ import PaginationContainer from 'components/PaginationContainer';
 import PageHeader from 'components/PageHeader';
 import PageTitle from 'components/PageTitle';
 import PageFilterBar from 'components/PageFilterBar';
-import IconTemp from 'react-icons/lib/md/brush';
+import AddWish from 'components/Button/AddWish';
+import IconWish from 'react-icons/lib/fa/magic';
 import styles from './styles.sass';
 
 class WishingPond extends React.Component {
@@ -24,7 +25,7 @@ class WishingPond extends React.Component {
   };
 
   static renderTitleIcon() {
-    return <IconTemp size={40} />;
+    return <IconWish size={40} />;
   }
 
   componentDidMount() {
@@ -74,7 +75,7 @@ class WishingPond extends React.Component {
               <PageFilterBar />
             </div>
             <div styleName="action-filter-container">
-              <button style={{ width: 100, height: 46 }}>許願</button>
+              <AddWish />
             </div>
           </div>
         </PageHeader>
