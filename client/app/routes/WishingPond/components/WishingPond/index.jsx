@@ -5,6 +5,7 @@ import WishList from 'components/WishList';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 
+import styles from './styles.sass';
 
 class WishingPond extends React.Component {
 
@@ -40,6 +41,14 @@ class WishingPond extends React.Component {
 
     return (
       <div>
+        <div>
+          <span>許願看板</span>
+          <span>有需求卻找不到？快來許願吧！</span>
+        </div>
+        <div>
+          <button>塞選</button>
+          <button>許願</button>
+        </div>
         <ListContainer
           minHeight={500}
           noDataText={hasNoData ? '尚無任何許願紙條' : null}
