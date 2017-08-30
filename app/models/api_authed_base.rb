@@ -26,7 +26,7 @@ class ApiAuthedBase < ApiBase
     else
       raise 'Need request method'
     end
-
+    
     case response.code
     when 200
       response

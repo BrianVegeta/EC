@@ -53,7 +53,7 @@ export const wishRouter = {
 
 
 /* =============================================>>>>>
-= 發佈服務 =
+= 發佈 =
 ===============================================>>>>>*/
 const gPublishGoodsUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-goods'];
@@ -70,7 +70,6 @@ export const publishGoodsRouter = {
   regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
   confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
 };
-
 const gPublishServiceUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-service'];
   if (step) paths.push(step);
@@ -87,10 +86,6 @@ export const publishServiceRouter = {
   cancelPolicyPath: pid => gPublishServiceUrl('step6-cancel-policy', pid),
   confirmPath: pid => gPublishServiceUrl('step7-confirm', pid),
 };
-
-/* =============================================>>>>>
-= 發佈空間 =
-===============================================>>>>>*/
 const gPublishSpaceUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-space'];
   if (step) paths.push(step);
@@ -107,6 +102,9 @@ export const publishSpaceRouter = {
   confirmPath: pid => gPublishSpaceUrl('step6-confirm', pid),
 };
 
+/* =============================================>>>>>
+= 預訂=
+===============================================>>>>>*/
 /* 預訂服務 */
 const gReservationServiceUrl = (step = '', pid = '', cid = '') => {
   const paths = [`/p/reservation-service/${pid}`];
@@ -134,19 +132,22 @@ export const reservationSpace = {
   paymentPath: (pid, cid) => gReservationSpaceUrl('step2-payment', pid, cid),
   confirmPath: (pid, cid) => gReservationSpaceUrl('step3-confirm', pid, cid),
 };
-
 /* 預訂物品 */
+const gReservationGoodsUrl = (step = '', pid = '', cid = '') => {
+  const paths = [`/p/reservation-goods/${pid}`];
+  if (step) paths.push(step);
+  if (cid) paths.push(`?cid=${cid}`);
+  return paths.join('/');
+};
 export const reservationGoods = {
-  indexPath: pid => `/p/reservation-goods/${pid}`,
+  indexPath: (pid, cid) => gReservationGoodsUrl('', pid, cid),
+  formPath: (pid, cid) => gReservationGoodsUrl('', pid, cid),
+  paymentPath: (pid, cid) => gReservationGoodsUrl('step2-payment', pid, cid),
+  confirmPath: (pid, cid) => gReservationGoodsUrl('step3-confirm', pid, cid),
 };
-
-
-export const orderRouter = {
-  orderPath: cid => `/p/order_detail/${cid}`,
-  sueFormPath: cid => `/p/sue-form/${cid}`,
-};
-
-/* 我的帳戶 */
+/* =============================================>>>>>
+= 我的帳戶 =
+===============================================>>>>>*/
 export const my = {
   indexPath: '/p/my',
   itemPath: '/p/my/item',

@@ -358,6 +358,7 @@ class Ajax::Api::ItemController < ApplicationController
 
    def search_item_params
      # my_uid -string
+     # type -String : LEASE, USED_ITEM
      # target_uid -string
      # category_id -string
      # price_max -int
@@ -373,7 +374,8 @@ class Ajax::Api::ItemController < ApplicationController
      # index -int -not null
      # size -int -not null
      params.permit(
-      :my_uid, :target_uid, :category_id,
+      :type, :category_id,
+      :my_uid, :target_uid,
       :price_max, :price_min,
       :transactiontype, :send_option,
       {locations: [:city, :area]},
