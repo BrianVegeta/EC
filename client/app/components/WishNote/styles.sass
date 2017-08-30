@@ -20,6 +20,17 @@
       color: $global-blackColor
       font-weight: 600
       margin-top: 15px
+    .title-button
+      background: transparent
+      margin: 0px
+      border-width: 0px
+      color: $global-blackColor
+      font-weight: 600
+      margin-top: 15px
+      &:hover
+        color: $global-primaryColor
+      &:active
+        color: $global-blackColor
     .description
       color: #888
       font-size: 14px
@@ -42,13 +53,17 @@
           vertical-align: middle
           float: left
         .username
+          color: $global-blackColor
           font-weight: 600
           padding-left: 10px
-          margin-left: 27px
           max-height: 27px
           line-height: 27px
           word-wrap: break-word
           overflow: hidden
+          &:hover
+            color: $global-primaryColor
+          &:active
+            color: $global-blackColor
       .delete
         display: inline-block
         position: absolute

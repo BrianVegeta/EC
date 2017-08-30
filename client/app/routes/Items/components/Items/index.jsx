@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findTopCategory } from 'lib/category';
+// import { findTopCategory } from 'lib/category';
 import IconService from 'components/Icons/Publish/Service';
 import IconGoods from 'components/Icons/Publish/Goods';
 import IconSpace from 'components/Icons/Publish/Space';

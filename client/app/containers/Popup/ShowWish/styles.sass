@@ -1,0 +1,82 @@
+// @author: vincent
+@import "~styles/color.sass"
+$contentMarginBottom: 15px
+$fontWeight: 600
+
+.container
+  background: white
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.5)
+  .wishContent
+    text-align: center
+    padding: 20px 22px
+    .close
+      cursor: pointer
+      color: $global-placeholder
+      line-height: 0px
+      font-size: 20px
+      float: right
+      margin: 0px -3px
+      &:hover
+        color: $global-blackColor
+    .picture
+      border: 1px solid #CECECE
+      width: 541px
+      height: 541px
+      margin: 10px auto 30px auto
+    .title, .price
+      margin-bottom: $contentMarginBottom
+    .title
+      color: $global-blackColor
+      font-size: 22px
+      font-weight: $fontWeight
+    .price
+      color: $global-primaryColor
+      font-size: 20px
+      font-weight: $fontWeight
+    .category, .city
+      color: $global-middleBlack
+      font-size: 14px
+      line-height: 24px
+    .content
+      color: $global-middleBlack
+      font-size: 17px
+      padding: 30px 6px
+      text-align: center
+      word-break: break-word
+  .wishFooter
+    padding: 15px 20px
+    border-top: 1px solid $global-lineColor
+    .image
+      display: inline-block
+      vertical-align: middle
+      width: 70px
+      height: 70px
+      border-radius: 100%
+    .content
+      display: inline-block
+      vertical-align: middle
+      white-space: nowrap
+      overflow: hidden
+      max-width: 60%
+      margin: 0px 25px
+      .title
+        color: $global-blackColor
+        font-size: 22px
+        margin-bottom: 10px
+        font-weight: $fontWeight
+      .hour
+        color: $global-middleBlack
+        font-size: 12px
+    .sendMessage
+      float: right
+      line-height: 70px
+      .sendMessageButton
+        padding: 14px 34px
+        border: 1px solid $global-primaryColor
+        background: $global-primaryColor
+        color: white
+        border-radius: 5px
+        &:hover
+          background: $global-hoverColor
+        &:active
+          background: $global-activeColor

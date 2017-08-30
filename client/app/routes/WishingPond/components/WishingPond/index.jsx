@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import CSS from 'react-css-modules';
+import { find } from 'lodash';
 import WishList from 'components/WishList';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
-
+import PageHeader from 'components/PageHeader';
+import PageTitle from 'components/PageTitle';
+import PageFilterBar from 'components/PageFilterBar';
+import AddWish from 'components/Button/AddWish';
+import IconWish from 'react-icons/lib/fa/magic';
 import styles from './styles.sass';
 
 class WishingPond extends React.Component {
@@ -17,8 +22,17 @@ class WishingPond extends React.Component {
     }).isRequired,
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchShow: PropTypes.func.isRequired,
   };
 
+  static renderTitleIcon() {
+    return <IconWish size={40} />;
+  }
+
+  constructor(props) {
+    super(props);
+    this.fetchSingleCard = this.fetchSingleCard.bind(this);
+  }
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchRecords();
@@ -28,8 +42,29 @@ class WishingPond extends React.Component {
     this.props.dispatchReset();
   }
 
+  fetchSingleCard(id) {
+    const { wish } = this.props;
+    const { records } = wish;
+
+    const card = find(records, { id });
+    this.props.dispatchShow({ card });
+  }
+
+  // <div styleName="title-container">
+  //   <div styleName="title-icon">
+  //     <IconTemp size={40} />
+  //   </div>
+  //   <span styleName="title">許願看板</span>
+  //   <span styleName="title-hint">有需求卻找不到？快來許願吧！</span>
+  // </div>
+  // <div styleName="action-container">
+  //   <button>篩選</button>
+  //   <button>許願</button>
+  // </div>
   render() {
     const { wish, dispatchFetchRecords } = this.props;
+    const { renderTitleIcon } = this.constructor;
+
     const {
       isPaginable,
       isFetching,
@@ -41,34 +76,46 @@ class WishingPond extends React.Component {
 
     return (
       <div>
-        <div>
-          <span>許願看板</span>
-          <span>有需求卻找不到？快來許願吧！</span>
-        </div>
-        <div>
-          <button>塞選</button>
-          <button>許願</button>
-        </div>
-        <ListContainer
-          minHeight={500}
-          noDataText={hasNoData ? '尚無任何許願紙條' : null}
-          isInitialFetching={isFetching && hasNoRecords}
-        >
-          <PaginationContainer
-            isPaginable={isPaginable}
-            isFetching={isFetching}
-            loadMore={dispatchFetchRecords}
+        <PageHeader >
+          <PageTitle
+            title="許願看板"
+            subtitle="有需求卻找不到？快來許願吧！"
+            renderIcon={() => renderTitleIcon()}
+          />
+          <div styleName="action-container">
+            <div styleName="action-filter-container">
+              <PageFilterBar />
+            </div>
+            <div styleName="action-filter-container">
+              <AddWish
+                onClick={() => {}}
+              />
+            </div>
+          </div>
+        </PageHeader>
+        <div className="clear">
+          <ListContainer
+            minHeight={500}
+            noDataText={hasNoData ? '尚無任何許願紙條' : null}
+            isInitialFetching={isFetching && hasNoRecords}
           >
-            <WishList
-              records={records}
-              editable={false}
-              shouldInitAnimate
-            />
-          </PaginationContainer>
-        </ListContainer>
+            <PaginationContainer
+              isPaginable={isPaginable}
+              isFetching={isFetching}
+              loadMore={dispatchFetchRecords}
+            >
+              <WishList
+                records={records}
+                editable={false}
+                onShow={this.fetchSingleCard}
+                shouldInitAnimate
+              />
+            </PaginationContainer>
+          </ListContainer>
+        </div>
       </div>
     );
   }
 }
 
-export default WishingPond;
+export default CSS(WishingPond, styles);
