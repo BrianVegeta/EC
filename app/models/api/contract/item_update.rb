@@ -1,7 +1,8 @@
 class Api::Contract::ItemUpdate < ApiAuthedBase
-  
+  include ContractPublishHandleError
+
   PATH = '/client/contract/item/update';
-  
+
   def path
     PATH
   end
@@ -9,5 +10,5 @@ class Api::Contract::ItemUpdate < ApiAuthedBase
   def request_method
      :post_token
   end
-  
+
 end

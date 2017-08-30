@@ -1,4 +1,5 @@
 class Api::Contract::ItemCreate < ApiAuthedBase
+  include ContractPublishHandleError
 
   PATH = '/client/contract/item/create';
 

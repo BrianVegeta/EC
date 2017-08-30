@@ -1,7 +1,8 @@
 class Api::Contract::ServiceCreate < ApiAuthedBase
-  
+    include ContractPublishHandleError
+
   PATH = '/client/contract//service/create';
-  
+
   def path
     PATH
   end
@@ -9,5 +10,5 @@ class Api::Contract::ServiceCreate < ApiAuthedBase
   def request_method
      :post_token
   end
-  
+
 end
