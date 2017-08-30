@@ -1,3 +1,4 @@
+# for facebook
 class Images::Avatar < Images::Base
 
   Paperclip.interpolates :useridxtimestamp do |attachment, style|

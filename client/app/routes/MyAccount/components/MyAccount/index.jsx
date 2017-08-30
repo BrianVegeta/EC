@@ -11,7 +11,7 @@ class MyAccount extends React.Component {
 
   static propTypes = {
     currentUser: PropTypes.shape({
-      picture: PropTypes.string.isRequired,
+      picture: PropTypes.string,
       name: PropTypes.string.isRequired,
     }).isRequired,
     children: myPropTypes.children,

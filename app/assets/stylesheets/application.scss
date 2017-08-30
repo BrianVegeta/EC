@@ -39,3 +39,7 @@ body, button, input, optgroup, select, textarea {
 .ReactModal__Body--open {
   overflow-y: hidden !important;
 }
+
+::-moz-focus-inner {
+  border:0;
+}

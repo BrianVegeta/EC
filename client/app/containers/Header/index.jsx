@@ -114,7 +114,7 @@ class Header extends React.Component {
                   <NavItem content={<Me currentUser={currentUser} />}>
                     <DropdownNavs
                       list={[
-                        { link: '/', text: '編輯個人資料' },
+                        { link: my.profilePath, text: '編輯個人資料' },
                         { link: my.indexPath, text: '帳戶管理' },
                         { action: dispatchLogout, text: '登出' },
                       ]}

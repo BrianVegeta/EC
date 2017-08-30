@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 const string = PropTypes.string;
 const number = PropTypes.number;
 const node = PropTypes.node;

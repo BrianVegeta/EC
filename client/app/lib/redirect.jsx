@@ -14,6 +14,18 @@ export const redirectToWithReferrer = pathname =>
     });
   };
 
+export const refreshHard = () =>
+  (dispatch, getState) => {
+    const {
+      routing: {
+        locationBeforeTransitions: {
+          pathname,
+        },
+      },
+    } = getState();
+    window.location.href = pathname;
+  };
+
 export const refreshRoute = () =>
   (dispatch, getState) => {
     const {
@@ -37,9 +49,11 @@ export const redirectAfterLogin = backupPath =>
   (dispatch, getState) => {
     const { routing: { locationBeforeTransitions } } = getState();
     const { state } = locationBeforeTransitions;
-    browserHistory.push(
-      (state && state.referrer) ? state.referrer : backupPath,
-    );
+    // for fire fox
+    window.location.href = (state && state.referrer) ? state.referrer : backupPath;
+    // browserHistory.push(
+    //   (state && state.referrer) ? state.referrer : backupPath,
+    // );
   };
 
 

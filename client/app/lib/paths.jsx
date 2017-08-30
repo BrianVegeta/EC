@@ -169,4 +169,8 @@ export const my = {
   couponPath: '/p/my/coupon',
   commentOwnerPath: '/p/my/comment-owner',
   commentLesseePath: '/p/my/comment-lessee',
+  profilePath: '/p/my/profile',
+  managePath: '/p/my/manage',
+  manageVerifyPath: '/p/my/manage/verify',
+  managePasswordChangePath: '/p/my/manage/password-change',
 };

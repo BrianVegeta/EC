@@ -19,4 +19,10 @@ export const warningConfig = ({ title, text }) => ({
   type: 'warning',
 });
 
+export const successConfig = ({ title, text }) => ({
+  title,
+  text,
+  type: 'success',
+});
+
 export default swal;
