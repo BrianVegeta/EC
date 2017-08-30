@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash';
 import { asyncXhrPost } from 'lib/xhr';
 import { today } from 'lib/time';
-
+import { changeData } from './reservation';
 // import moment from 'moment';
 // import { REDUCER_KEY as COVER_REDUCER_KEY } from './covers';
 
@@ -57,7 +57,8 @@ export const fetchItem = pid =>
   (dispatch) => {
     asyncXhrPost('/ajax/item_detail.json', { pid })
     .then((data) => {
-      const { send_option, return_option } = data;
+      const { send_option, return_option,
+        return_city, return_area, return_address } = data;
       let sendOption = [];
       let returnOption = [];
       sendOption = appendOption(sendOption,
@@ -72,7 +73,11 @@ export const fetchItem = pid =>
       const record = Object.assign({}, data, { sendOption, returnOption });
 
       dispatch(setItem(record));
-
+      dispatch(changeData({
+        returnCity: return_city,
+        returnArea: return_area,
+        returnAddress: return_address,
+      }));
       const { uid } = data;
       asyncXhrPost('/ajax/user_info.json', { uid })
       .then((userData) => {

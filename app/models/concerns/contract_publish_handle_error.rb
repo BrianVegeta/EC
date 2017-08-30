@@ -22,6 +22,7 @@ module ContractPublishHandleError
   included do
 
     def handle_response_error response
+      # raise response.inspect
       case self.error_code
       when SUCCESS
         true

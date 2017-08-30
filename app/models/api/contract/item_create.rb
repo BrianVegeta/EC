@@ -11,9 +11,4 @@ class Api::Contract::ItemCreate < ApiAuthedBase
      :post_token
   end
 
-  def handle_response_error response
-    raise response.inspect
-    super
-  end
-
 end

@@ -340,7 +340,8 @@ class Ajax::Api::ContractController < ApplicationController
     # coupon_no : String => 折價券的代號
     # note : String => 文字
 
-    params.permit(:unit, :paymenttype, :send_type, :send_b_store_id,
+    params.permit(:unit, :paymenttype, :send_b_store_id, :send_type,
+     :item_owner_receive_city, :item_owner_receive_area, :item_owner_receive_address,
      :return_type, :item_lessee_receive_city, :item_lessee_receive_area,
      :item_lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note
      ).merge(current_uid_params)

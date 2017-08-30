@@ -272,7 +272,7 @@ class StepForm extends React.Component {
 
     return (
       <div style={{ marginTop: 20 }}>
-        <FormGroup headerText="出貨地址">
+        <FormGroup headerText="到貨地址">
           <div styleName="assign-address">
             <div styleName="city-area-container">
               <InputSelectionCitiesContainer
@@ -455,7 +455,7 @@ class StepForm extends React.Component {
     }
     return (
       <div>
-        <FormGroup headerText="出貨方式">
+        <FormGroup headerText="到貨方式">
           <InputSelection
             ref={refGoodsSendInput}
             options={sendOption}

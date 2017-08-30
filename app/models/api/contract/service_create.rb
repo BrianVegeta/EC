@@ -1,5 +1,5 @@
 class Api::Contract::ServiceCreate < ApiAuthedBase
-    include ContractPublishHandleError
+  include ContractPublishHandleError
 
   PATH = '/client/contract//service/create';
 

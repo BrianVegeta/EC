@@ -136,16 +136,27 @@ class StepConfirm extends React.Component {
   renderSendType() {
     const { reservation } = this.props;
     const { sendCity, sendArea, sendAddress,
-      sendOption } = reservation;
-    switch (sendOption) {
+      sendType } = reservation;
+    switch (sendType) {
       case SEND_BY_IN_PERSON:
-        return (<div styleName="payment-type-container">面交（自行協調取貨地點）</div>);
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">到貨方式：</span>
+              <span styleName="return-type-text">面交（自行協調取貨地點）</span>
+            </div>
+          </div>
+        );
       case SEND_BY_OTHER_SHIPPMENT:
         return (
-          <div>
-            <div styleName="payment-type-container">自行寄送</div>
-            <div styleName="payment-type-container">
-              {sendCity}{sendArea}{sendAddress}
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">到貨方式：</span>
+              <span styleName="return-type-text">自行寄送</span>
+            </div>
+            <div styleName="return-type">
+              <span styleName="return-type-title">地址：</span>
+              <span styleName="return-type-text">{sendCity}{sendArea}{sendAddress}</span>
             </div>
           </div>
         );
@@ -155,12 +166,32 @@ class StepConfirm extends React.Component {
   }
   renderReturnType() {
     const { reservation } = this.props;
-    const { returnOption } = reservation;
-    switch (returnOption) {
+    const { returnCity, returnArea,
+      returnType } = reservation;
+    switch (returnType) {
       case SEND_BY_IN_PERSON:
-        return (<div styleName="payment-type-container">面交（自行協調取貨地點）</div>);
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">寄還方式：</span>
+              <span styleName="return-type-text">面交（自行協調取貨地點）</span>
+            </div>
+          </div>
+        );
       case SEND_BY_OTHER_SHIPPMENT:
-        return (<div styleName="payment-type-container">自行寄送</div>);
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">寄還方式：</span>
+              <span styleName="return-type-text">自行寄送</span>
+            </div>
+            <div styleName="return-type">
+              <span styleName="return-type-title">地址：</span>
+              <span styleName="return-type-text">{returnCity}{returnArea}</span>
+            </div>
+            <div styleName="return-hint">當您提交預訂單後，分享人會提供給您寄還的地點</div>
+          </div>
+        );
       default:
         return null;
     }
