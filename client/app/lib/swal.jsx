@@ -25,4 +25,10 @@ export const successConfig = ({ title, text }) => ({
   type: 'success',
 });
 
+export const errorConfig = ({ title, text }) => ({
+  title,
+  text,
+  type: 'error',
+});
+
 export default swal;

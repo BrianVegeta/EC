@@ -29,6 +29,7 @@ class Profile extends React.Component {
     dispatchFetchUserData: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     dispatchConnectFB: PropTypes.func.isRequired,
+    dispatchDisconnectFB: PropTypes.func.isRequired,
   };
 
   // constructor(props) {
@@ -44,16 +45,38 @@ class Profile extends React.Component {
     this.props.dispatchReset();
   }
 
+  renderFbBindingButton(fbID) {
+    const {
+      dispatchConnectFB,
+      dispatchDisconnectFB,
+    } = this.props;
+    if (fbID) {
+      return (
+        <FacebookLogin
+          appId={FACEBOOK_APP_ID}
+          textButton="取消連結"
+          cssClass={`button ${cx('fb-connect')}`}
+          fields="name,email,picture"
+          callback={dispatchDisconnectFB}
+        />
+      );
+    }
+    return (
+      <FacebookLogin
+        appId={FACEBOOK_APP_ID}
+        textButton="連結"
+        cssClass={`button ${cx('fb-connect')}`}
+        fields="name,email,picture"
+        callback={dispatchConnectFB}
+      />
+    );
+  }
+
   render() {
     const {
       dispatchChangeData,
-      dispatchConnectFB,
       manage: {
-        data: {
-          email,
-          phone,
-          fb_id,
-        },
+        data: { email, phone, fb_id },
       },
     } = this.props;
 
@@ -86,14 +109,7 @@ class Profile extends React.Component {
         <TableRow>
           <span styleName="label">Facebook</span>
           <div styleName="input-container">
-            <FacebookLogin
-              appId={FACEBOOK_APP_ID}
-              textButton="連結"
-              cssClass={`button ${cx('fb-connect')}`}
-              fields="name,email,picture"
-              callback={dispatchConnectFB}
-            />
-            <button className="button" styleName="fb-connect">連結</button>
+            {this.renderFbBindingButton(fb_id)}
           </div>
         </TableRow>
       </TableForm>
