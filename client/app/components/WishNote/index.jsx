@@ -2,10 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconDelete from 'react-icons/lib/md/delete';
-
+import { Link } from 'react-router';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import { formatCurrency } from 'lib/currency';
+import { userprofilePaths } from 'lib/paths';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -15,10 +16,12 @@ class WishNote extends React.Component {
 
   static defaultProps = {
     editable: true,
+    onShow: () => console.log('Need onShow'),
   };
 
   static propTypes = {
     editable: PropTypes.bool,
+    onShow: PropTypes.func,
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -48,7 +51,7 @@ class WishNote extends React.Component {
       // id,
       pname,
       expprice,
-      // uid,
+      uid,
       user_img,
       user_name,
     } = data;
@@ -69,7 +72,12 @@ class WishNote extends React.Component {
           </div>
         }
         <div styleName="body-container">
-          <div styleName="title">{pname}</div>
+          <button
+            styleName="title-button"
+            onClick={() => this.props.onShow(this.props.data.id)}
+          >
+            {pname}
+          </button>
           {description &&
             <div styleName="description">{description}</div>
           }
@@ -79,9 +87,14 @@ class WishNote extends React.Component {
               <div styleName="avatar">
                 <Avatar src={user_img} />
               </div>
-              <div styleName="username">{user_name}</div>
+              <Link
+                to={userprofilePaths.indexPath(uid)}
+                styleName="username"
+              >
+                {user_name}
+              </Link>
             </div>
-            {editable && this.renderDeleteButton()}
+            { editable && this.renderDeleteButton() }
           </div>
         </div>
       </div>

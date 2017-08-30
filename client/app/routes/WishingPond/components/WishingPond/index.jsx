@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
-
+import { find } from 'lodash';
 import WishList from 'components/WishList';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
@@ -22,12 +22,17 @@ class WishingPond extends React.Component {
     }).isRequired,
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchShow: PropTypes.func.isRequired,
   };
 
   static renderTitleIcon() {
     return <IconWish size={40} />;
   }
 
+  constructor(props) {
+    super(props);
+    this.fetchSingleCard = this.fetchSingleCard.bind(this);
+  }
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchRecords();
@@ -37,6 +42,13 @@ class WishingPond extends React.Component {
     this.props.dispatchReset();
   }
 
+  fetchSingleCard(id) {
+    const { wish } = this.props;
+    const { records } = wish;
+
+    const card = find(records, { id });
+    this.props.dispatchShow({ card });
+  }
 
   // <div styleName="title-container">
   //   <div styleName="title-icon">
@@ -75,7 +87,9 @@ class WishingPond extends React.Component {
               <PageFilterBar />
             </div>
             <div styleName="action-filter-container">
-              <AddWish />
+              <AddWish
+                onClick={() => {}}
+              />
             </div>
           </div>
         </PageHeader>
@@ -93,6 +107,7 @@ class WishingPond extends React.Component {
               <WishList
                 records={records}
                 editable={false}
+                onShow={this.fetchSingleCard}
                 shouldInitAnimate
               />
             </PaginationContainer>

@@ -21,11 +21,13 @@ class WishList extends React.Component {
     editable: true,
     eachMargin: 26,
     shouldInitAnimate: false,
+    onShow: () => {},
   };
 
   static propTypes = {
     editable: PropTypes.bool,
     shouldInitAnimate: PropTypes.bool,
+    onShow: PropTypes.func,
     records: PropTypes.arrayOf(
       PropTypes.object.isRequired,
     ).isRequired,
@@ -76,7 +78,11 @@ class WishList extends React.Component {
                 className={cx('item')}
                 marginLeft={eachMargin}
               >
-                <WishNote data={record} editable={editable} />
+                <WishNote
+                  onShow={this.props.onShow}
+                  data={record}
+                  editable={editable}
+                />
               </ItemContainer>
             ))}
           </Masonry>

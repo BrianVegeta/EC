@@ -12,17 +12,8 @@ import styles from './styles.sass';
 class AddWish extends React.Component {
 
   static propTypes={
-    dispatch: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    this.popupNewWish = this.popupNewWish.bind(this);
-  }
-
-  popupNewWish() {
-    // this.props.dispatch(popupNewWish({}, 600));
-  }
 
   render() {
     return (
@@ -30,7 +21,7 @@ class AddWish extends React.Component {
         <button
           className="button"
           styleName="newWishButton"
-          onClick={this.popupNewWish}
+          onClick={this.props.onClick}
         >
           <IconWish size={28} />
           <div styleName="text" >許願</div>

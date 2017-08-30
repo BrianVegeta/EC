@@ -1,4 +1,7 @@
 import { connect } from 'react-redux';
+import {
+  popupShowWish,
+} from 'modules/popup';
 
 import WishingPond from '../components/WishingPond';
 import {
@@ -6,6 +9,7 @@ import {
   fetchRecords,
   reset,
 } from '../modules/wish';
+
 /* pick dispatch */
 const mapStateToProps = ({ environment, [WISH_REDUCER_KEY]: wish }) => ({
   environment,
@@ -16,6 +20,7 @@ const mapStateToProps = ({ environment, [WISH_REDUCER_KEY]: wish }) => ({
 const mapDispatchToProps = dispatch => ({
   dispatchFetchRecords: () => dispatch(fetchRecords()),
   dispatchReset: () => dispatch(reset()),
+  dispatchShow: options => dispatch(popupShowWish(options)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishingPond);
