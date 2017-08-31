@@ -45,7 +45,8 @@ class Orderdetail extends React.Component {
     dispatchAccept: PropTypes.func.isRequired,
     dispatchCancel: PropTypes.func.isRequired,
     dispatchReject: PropTypes.func.isRequired,
-    dispatchPaymetnCreditCard: PropTypes.func.isRequired,
+    dispatchPaymentInfo: PropTypes.func.isRequired,
+    dispatchPaymentCreditCard: PropTypes.func.isRequired,
     dispatchShipGoods: PropTypes.func.isRequired,
     dispatchReturn: PropTypes.func.isRequired,
     dispatchReceiveConfirm: PropTypes.func.isRequired,
@@ -59,6 +60,17 @@ class Orderdetail extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  getPaymentAction({ paymenttype }) {
+    switch (paymenttype) {
+      case 4:
+        return this.props.dispatchPaymentCreditCard;
+      case 1:
+        return this.props.dispatchPaymentInfo;
+      default:
+        return () => {};
+    }
   }
 
   renderButtonStyle(show, dispatchAction, buttonText) {
@@ -91,7 +103,7 @@ class Orderdetail extends React.Component {
               color: colors.activeColor,
               padding: 0,
               border: 'none',
-              background: 'none'
+              background: 'none',
             }}
             onClick={dispatchAction}
           >
@@ -383,10 +395,10 @@ class Orderdetail extends React.Component {
           />
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
+
   renderMiniMap(order) {
     const { img1, cid_no, pname } = order;
     return (
@@ -399,6 +411,7 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
+
   render() {
     const { orderdetail, dispatch } = this.props;
     const { order } = orderdetail;
@@ -475,7 +488,7 @@ class Orderdetail extends React.Component {
             () => {},
             '修改訂單')}
           {this.renderButtonStyle(display.can_pay,
-            this.props.dispatchPaymetnCreditCard,
+            this.getPaymentAction(order),
             '付款')}
           {this.renderButtonStyle(display.can_camera,
             () => {},

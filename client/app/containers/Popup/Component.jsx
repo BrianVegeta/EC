@@ -12,6 +12,7 @@ import {
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
   // RENDER_TWO_BUTTONS,
+  RENDER_ATM,
   RENDER_SHOW_WISH,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
@@ -21,6 +22,7 @@ import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
 // import TwoButtonsContainer from 'containers/Popup/TwoButtons';
 import ShowWishContainer from 'containers/Popup/ShowWish';
+import ATMBankContainer from 'containers/Popup/ATMBank';
 
 class Popup extends React.Component {
 
@@ -38,6 +40,7 @@ class Popup extends React.Component {
   }
 
   renderModal({ renderType, options }) {
+    console.log(renderType);
     switch (renderType) {
       case RENDER_BANK_SETUP:
         return (
@@ -126,23 +129,20 @@ class Popup extends React.Component {
             />
           </ModalBox>
         );
-      // case RENDER_TWO_BUTTONS:
-      //   return (
-      //     <ModalBox
-      //       width={470}
-      //       onClose={this.props.dispatchCloseModal}
-      //     >
-      //       <TwoButtonsContainer
-      //         title={options.title}
-      //         content={options.content}
-      //         leftBtnContent={options.leftBtnContent}
-      //         onLeftClick={options.onLeftClick}
-      //         rightBtnContent={options.rightBtnContent}
-      //         onRightClick={options.onRightClick}
-      //         onClose={this.props.dispatchCloseModal}
-      //       />
-      //     </ModalBox>
-      //   );
+
+      case RENDER_ATM:
+        return (
+          <ModalBox
+            width={400}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <ATMBankContainer
+              options={options}
+              dispatchClose={this.props.dispatchCloseModal}
+            />
+          </ModalBox>
+        );
+
       default:
         return null;
 

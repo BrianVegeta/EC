@@ -22,7 +22,16 @@ class Ajax::Api::PaymentController < ApplicationController
   def pay_creditcard
     obj = ::Api::Payment::PayCreditcard.new credit_card_params, current_apitoken
     success = obj.request
+    respond success, obj
+  end
 
+  # Get Order
+  def get_order
+    obj = ::Api::Payment::GetOrder.new credit_card_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::SimpleOrder.structure)
+    end
     respond success, obj
   end
 

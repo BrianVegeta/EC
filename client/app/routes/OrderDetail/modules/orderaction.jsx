@@ -1,5 +1,6 @@
 import { forEach } from 'lodash';
-import { asyncXhrAuthedPost, asyncXhrExternalPost } from 'lib/xhr';
+import { asyncXhrAuthedPost } from 'lib/xhr';
+import { popupFetching, popupFetched } from 'modules/popup';
 
 /* =============================================>>>>>
 = userprofile =
@@ -7,6 +8,7 @@ import { asyncXhrAuthedPost, asyncXhrExternalPost } from 'lib/xhr';
 
 const ACTION_PREFIX = 'ORDER.ACTION';
 const REDUCER_KEY = 'orderaction';
+
 
 // =============================================
 // = action type =
@@ -245,13 +247,14 @@ export function doCreditCardPayment(cid) {
     new Promise((resolve, reject) => {
       const requestId = Date.now();
 
-      dispatch(lock(requestId, 'payment'));
+      dispatch(lock(requestId, 'ccPay'));
       const isCatch = true;
       asyncXhrAuthedPost(
         '/ajax/creditcard_payment.json',
         { cid }, getState(), isCatch,
       ).then(({ redirect, ...params }) => {
-        createFormPost(redirect, params);
+        dispatch(success(requestId));
+        resolve();
       }).catch((error) => {
         dispatch(failed('失敗'));
         reject('失敗');
@@ -259,6 +262,27 @@ export function doCreditCardPayment(cid) {
     });
 }
 
+export function doATMPayment(cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'atmPay'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/get_paymentinfo.json',
+        { cid }, getState(), isCatch,
+      ).then((data) => {
+        dispatch(popupFetched(data));
+        dispatch(success(requestId));
+        resolve();
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
 
 // =============================================
 // = reducer =
