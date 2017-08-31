@@ -10,7 +10,7 @@ class Api::Payment::EsunCard
       verify: false,
     }
     response = HTTParty.post(path, options)
-    response
+    response.parsed_response
   end
 
 end

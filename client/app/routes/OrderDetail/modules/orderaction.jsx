@@ -230,16 +230,7 @@ export function doCreditCardPayment(cid) {
         '/ajax/creditcard_payment.json',
         { cid }, getState(), isCatch,
       ).then((data) => {
-        const formData = {
-          data: data.data,
-          ksn: data.ksn,
-          mac: data.mac,
-        };
-        asyncXhrExternalPost(data.redirect, formData).then((esunData) => {
-          console.log(esunData);
-        }).catch((error) => {
-          console.log(error);
-        });
+        console.log(data);
       })
       .catch((error) => {
         dispatch(failed('失敗'));
