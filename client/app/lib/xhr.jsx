@@ -24,6 +24,7 @@ const SETTINGS_PUT_IMAGE = {
 };
 const SETTINGS_EXTERNAL_FORM_POST = {
   method: 'POST',
+  mode: 'cors',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },
