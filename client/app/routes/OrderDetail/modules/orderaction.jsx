@@ -1,4 +1,4 @@
-import { asyncXhrAuthedPost } from 'lib/xhr';
+import { asyncXhrAuthedPost, asyncXhrExternalPost } from 'lib/xhr';
 
 /* =============================================>>>>>
 = userprofile =
@@ -218,6 +218,36 @@ export function doEndOrder(type, cid) {
       });
     });
 }
+
+export function doCreditCardPayment(cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'payment'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/creditcard_payment.json',
+        { cid }, getState(), isCatch,
+      ).then((data) => {
+        const formData = {
+          data: data.data,
+          ksn: data.ksn,
+          mac: data.mac,
+        };
+        asyncXhrExternalPost(data.redirect, formData).then((esunData) => {
+          console.log(esunData);
+        }).catch((error) => {
+          console.log(error);
+        });
+      })
+      .catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
 
 // =============================================
 // = reducer =

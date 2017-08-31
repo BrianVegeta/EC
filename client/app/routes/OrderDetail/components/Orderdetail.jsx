@@ -45,6 +45,7 @@ class Orderdetail extends React.Component {
     dispatchAccept: PropTypes.func.isRequired,
     dispatchCancel: PropTypes.func.isRequired,
     dispatchReject: PropTypes.func.isRequired,
+    dispatchPaymetnCreditCard: PropTypes.func.isRequired,
     dispatchShipGoods: PropTypes.func.isRequired,
     dispatchReturn: PropTypes.func.isRequired,
     dispatchReceiveConfirm: PropTypes.func.isRequired,
@@ -471,7 +472,7 @@ class Orderdetail extends React.Component {
             () => {},
             '修改訂單')}
           {this.renderButtonStyle(display.can_pay,
-            () => {},
+            this.props.dispatchPaymetnCreditCard,
             '付款')}
           {this.renderButtonStyle(display.can_camera,
             () => {},

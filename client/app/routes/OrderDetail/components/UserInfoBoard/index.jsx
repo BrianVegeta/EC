@@ -6,7 +6,7 @@ import FormButton from 'components/FormButton';
 
 import CSS from 'react-css-modules';
 
-import { orderRouter } from 'lib/paths';
+import { orderDetail } from 'lib/paths';
 import { redirectToWithReferrer } from 'lib/redirect';
 
 import styles from './styles.sass';
@@ -32,7 +32,7 @@ class UserInfoBoard extends React.Component {
 
   onSue() {
     const { cid, dispatch } = this.props;
-    const suePath = orderRouter.sueFormPath(cid);
+    const suePath = orderDetail.sueFormPath(cid);
     dispatch(redirectToWithReferrer(suePath));
   }
 
