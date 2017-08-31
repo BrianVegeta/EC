@@ -38,7 +38,7 @@ export function fetchWishList(uid) {
   return (dispatch, getState) => {
     dispatch(fetchingWishList());
     asyncXhrAuthedPost(
-      '/ajax/get_wish.json',
+      '/ajax/get_wish_pond.json',
       {
         uid,
         index: 0,

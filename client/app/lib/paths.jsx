@@ -55,21 +55,17 @@ export const wishRouter = {
 /* =============================================>>>>>
 = 發佈 =
 ===============================================>>>>>*/
-const gPublishGoodsUrl = (step = '', pid = '') => {
-  const paths = ['/p/publish-goods'];
-  if (step) paths.push(step);
-  if (pid) paths.push(`?pid=${pid}`);
+
+export const gPublishWishUrl = (id) => {
+  const paths = ['/p/publish-wish'];
+  if (id) paths.push(`?id=${id}`);
   return paths.join('/');
 };
-export const publishGoodsRouter = {
-  indexPath: pid => gPublishGoodsUrl('', pid),
-  coverPath: pid => gPublishGoodsUrl('', pid),
-  aboutPath: pid => gPublishGoodsUrl('step2-about', pid),
-  deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
-  pricePath: pid => gPublishGoodsUrl('step4-price', pid),
-  regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
-  confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
+
+export const publishWishRouter = {
+  indexPath: id => gPublishWishUrl(id),
 };
+
 const gPublishServiceUrl = (step = '', pid = '') => {
   const paths = ['/p/publish-service'];
   if (step) paths.push(step);
@@ -100,6 +96,22 @@ export const publishSpaceRouter = {
   regulationPath: pid => gPublishSpaceUrl('step4-regulation', pid),
   cancelPolicyPath: pid => gPublishSpaceUrl('step5-cancel-policy', pid),
   confirmPath: pid => gPublishSpaceUrl('step6-confirm', pid),
+};
+
+const gPublishGoodsUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-goods'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishGoodsRouter = {
+  indexPath: pid => gPublishGoodsUrl('', pid),
+  coverPath: pid => gPublishGoodsUrl('', pid),
+  aboutPath: pid => gPublishGoodsUrl('step2-about', pid),
+  deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
+  pricePath: pid => gPublishGoodsUrl('step4-price', pid),
+  regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
+  confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
 };
 
 /* =============================================>>>>>

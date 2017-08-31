@@ -40,7 +40,6 @@ class ApiBase
     self.error_message = ::Response::ErrorCode.localize(self.error_code)
     self.response_data = response['data'] if response.has_key?('data')
     self.response_headers = response.headers
-
     handle_response_error response
   end
 

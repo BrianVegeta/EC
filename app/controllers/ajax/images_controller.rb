@@ -22,9 +22,16 @@ class Ajax::ImagesController < ApplicationController
 
   # PUT /images/avatar/:uid.json
   def avatar
-    avatar = Images::Avatar.new(avatar_params)
+    avatar = Images::Avatar.new(uid_params)
     avatar.save
     render json: { photoUrl: avatar.photo.url }
+  end
+
+  # PUT /images/wish/:uid.json
+  def wish
+    wish = Images::Wish.new(uid_params)
+    wish.save
+    render json: { photoUrl: wish.photo.url }
   end
 
   protected
@@ -32,7 +39,7 @@ class Ajax::ImagesController < ApplicationController
     params.permit(:image)
   end
 
-  def avatar_params
+  def uid_params
     params.permit(:uid).merge(image_params)
   end
 end

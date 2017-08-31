@@ -16,12 +16,11 @@ class WishNote extends React.Component {
 
   static defaultProps = {
     editable: true,
-    onShow: () => console.log('Need onShow'),
   };
 
   static propTypes = {
     editable: PropTypes.bool,
-    onShow: PropTypes.func,
+    onShow: PropTypes.func.isRequired,
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -44,7 +43,7 @@ class WishNote extends React.Component {
   }
 
   render() {
-    const { editable, data } = this.props;
+    const { editable, data, onShow } = this.props;
     const {
       picture,
       description,
@@ -60,24 +59,33 @@ class WishNote extends React.Component {
       <div styleName="container">
         {picture && <div styleName="picture" />}
         {picture &&
-          <div styleName="picture-layer">
-            <Picture
-              src={picture}
-              hasShadow={false}
-              style={{
-                borderTopLeftRadius: 4,
-                borderTopRightRadius: 4,
-              }}
-            />
+          <div
+            styleName="link-on-image"
+            role="button"
+            tabIndex="-1"
+            onClick={onShow}
+          >
+            <div styleName="picture-layer">
+              <Picture
+                src={picture}
+                hasShadow={false}
+                style={{
+                  borderTopLeftRadius: 4,
+                  borderTopRightRadius: 4,
+                }}
+              />
+            </div>
           </div>
         }
         <div styleName="body-container">
-          <button
-            styleName="title-button"
-            onClick={() => this.props.onShow(this.props.data.id)}
+          <div
+            styleName="link-on-title"
+            role="button"
+            tabIndex="-1"
+            onClick={onShow}
           >
-            {pname}
-          </button>
+            <span styleName="title">{pname}</span>
+          </div>
           {description &&
             <div styleName="description">{description}</div>
           }

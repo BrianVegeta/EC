@@ -1,0 +1,51 @@
+// @author: vincent
+@import "~styles/color.sass"
+$signupPanelWidth: 700px
+
+.container
+  background: #fff
+  width: $signupPanelWidth
+  margin: 0 auto
+  padding: 20px
+  position: relative
+  .header
+    padding: 15px 25px
+    text-align: center
+    .headerTitle
+      text-align: center
+      display: inline-block
+      vertical-align: middle
+      font-size: 40px
+      font-weight: 600
+  .photo
+    margin: 40px auto
+    width: 200px
+    height: 200px
+    border: 1px dashed #949494
+    cursor: pointer
+    .photo-dropzone
+      width: 100%
+      height: 100%
+      position: relative
+      .upload-placeholder
+        text-align: center
+        position: absolute
+        left: 0
+        right: 0
+        top: 50%
+  .top-category
+    display: inline-block
+    width: 140px
+    float: left
+  .category
+    display: inline-block
+    width: 480px
+    float: right
+  .price-container
+    display: inline-block
+    width: 260px
+    float: left
+  .address-container
+    display: inline-block
+    width: 360px
+    float: right
