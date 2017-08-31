@@ -9,7 +9,7 @@ class Api::Payment::EsunCard
       body: params,
       verify: false,
     }
-    response = HTTParty.post(path, options)
+    response = HTTParty.post('https://acqtest.esunbank.com.tw/ACQTrans/esuncard/txnf014m', options)
     response.parsed_response
   end
 

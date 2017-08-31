@@ -22,7 +22,7 @@ class Ajax::Api::PaymentController < ApplicationController
   def pay_creditcard
     obj = ::Api::Payment::PayCreditcard.new credit_card_params, current_apitoken
     success = obj.request
-
+    # raise obj.response_data['redirect'].inspect
     esun_card = Api::Payment::EsunCard.new
     html = esun_card.request(obj.response_data['redirect'], obj.response_data.except('redirect'))
     obj = OpenStruct.new
