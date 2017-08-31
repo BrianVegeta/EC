@@ -93,7 +93,7 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 解除FACEBOOK綁定
   def facebook_unbind
-    obj = ::Api::Userprofile::Get.FacebookUnbind.new facebook_params, current_apitoken
+    obj = ::Api::Userprofile::FacebookUnbind.new facebook_params, current_apitoken
     success = obj.request
     respond success, obj
   end

@@ -141,9 +141,7 @@ export const asyncCheckReady = () =>
 
 export const checkReadyAndSet = () =>
   dispatch =>
-    dispatch(asyncCheckReady())
-    .then()
-    .catch();
+    dispatch(asyncCheckReady()).then().catch();
 
 export const validateInfo = () =>
   (dispatch, getState) => {

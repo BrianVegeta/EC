@@ -1,9 +1,4 @@
 import { connect } from 'react-redux';
-import {
-  REDUCER_KEY as MANAGE_REDUCER_KEY,
-  changeData,
-  reset,
-} from '../modules/myManage';
 import Manage from '../components/Manage';
 
 
@@ -12,22 +7,18 @@ import Manage from '../components/Manage';
 ===============================================>>>>>*/
 const mapStateToProps = ({
   environment,
-  [MANAGE_REDUCER_KEY]: manage,
 }) => ({
   environment,
-  manage,
 });
 
 
 /* =============================================>>>>>
 = map dispatch =
 ===============================================>>>>>*/
-const mapDispatchToProps = (dispatch) => {
+// const mapDispatchToProps = (dispatch) => {
+//
+//   return ({
+//   });
+// };
 
-  return ({
-    dispatchChangeData: data => dispatch(changeData(data)),
-    dispatchReset: () => dispatch(reset()),
-  });
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Manage);
+export default connect(mapStateToProps)(Manage);

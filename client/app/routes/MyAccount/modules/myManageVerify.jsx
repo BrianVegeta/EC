@@ -5,8 +5,8 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 // =============================================
 // = settings =
 // =============================================
-export const REDUCER_KEY = 'myManage';
-const prefix = action => (`MY.MANAGE.${action}`);
+export const REDUCER_KEY = 'myManageVerify';
+const prefix = action => (`MY.MANAGE.VERIFY.${action}`);
 
 // =============================================
 // = ACTION TYPE =
@@ -52,8 +52,25 @@ export const connectFacebook = ({ userID, accessToken }) =>
         { fb_id: userID, access_token: accessToken },
         getState(),
         true,
-      ).then(({ user_profile }) => {
-        resolve(user_profile);
+      ).then(() => {
+        dispatch(changeData({ fb_id: userID }));
+        resolve();
+      }).catch(({ message }) => {
+        reject(message);
+      });
+    });
+
+export const disconnectFacebook = ({ userID, accessToken }) =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      asyncXhrAuthedPost(
+        '/ajax/user_unbind_facebook.json',
+        { fb_id: userID, access_token: accessToken },
+        getState(),
+        true,
+      ).then(() => {
+        dispatch(changeData({ fb_id: null }));
+        resolve();
       }).catch(({ message }) => {
         reject(message);
       });

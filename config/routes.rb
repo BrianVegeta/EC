@@ -88,15 +88,9 @@ Rails.application.routes.draw do
 
       #USERPROFILE
       post 'userprofile/search', to: 'userprofile#search' #
-
       post 'userprofile/fb_user_update_name', to: 'userprofile#fb_user_update_name'
-
-      post 'userprofile/update_password', to: 'userprofile#update_password'
-
       post 'userprofile/track_count', to: 'userprofile#track_count' #
       post 'userprofile/get_track_user', to: 'userprofile#get_track_user' #
-
-
       post 'userprofile/bank_info_auto_wire', to: 'userprofile#bank_info_auto_wire' #
       post 'userprofile/bank_info_request_out', to: 'userprofile#bank_info_request_out' #
 
@@ -191,32 +185,30 @@ Rails.application.routes.draw do
         post 'list', to: 'item#search_item_list'
       end
 
-      # USERPROFILE
-      ###### FROM OTHER USER
+      # ======================================
+      # USERPROFILE CONTROLLER
+      # ======================================
       post 'user_info', to: 'userprofile#user_general_info'
       post 'get_userprofile', to: 'userprofile#get'
       post 'save_userprofile', to: 'userprofile#save'
       post 'user_bind_facebook', to: 'userprofile#set_facebook'
       post 'user_unbind_facebook', to: 'userprofile#facebook_unbind'
-      ###### BANK INFO (AUTHED)
       scope :bank do
         post 'bankacc_update', to: 'userprofile#bank_info_update'
         post 'bankacc', to: 'userprofile#bank_info'
         get 'bankacc/ready', to: 'userprofile#bank_info_ready'
         get 'bankacc/info_ready', to: 'userprofile#bank_info_display_ready'
       end
-      ###### PASSWORD CHECK (AUTHED)
       scope :password do
+        post 'update', to: 'userprofile#update_password'
         get 'exist', to: 'userprofile#is_pwd_exist'
         post 'create', to: 'userprofile#create_password'
         post 'check', to: 'userprofile#checkpwd'
       end
-      ###### VERIFY PHONE AND EMAIL UPDATE (AUTHED)
       scope :user do
         post 'update/phone', to: 'userprofile#get_phone_verify_code'
-        post 'update/phone/confirm', to: 'userprofile#update_phone'
-
         post 'update/email', to: 'userprofile#get_email_verify_code'
+        post 'update/phone/confirm', to: 'userprofile#update_phone'
         post 'update/email/confirm', to: 'userprofile#update_email'
       end
     end

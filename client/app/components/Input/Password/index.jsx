@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 // import classnames from 'classnames/bind';
-// import hasError from 'components/inputs/hoc/hasError';
+import hasError from 'components/Input/hoc/hasError';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -60,8 +60,9 @@ class InputText extends React.Component {
   }
 
   onKeyDown(e) {
-    if (e.key === 'Enter') {
-      this.props.onEnter();
+    const { onEnter } = this.props;
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
     }
   }
 
@@ -97,4 +98,4 @@ class InputText extends React.Component {
     );
   }
 }
-export default CSS(InputText, styles);
+export default hasError(CSS(InputText, styles));

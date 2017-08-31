@@ -1,9 +1,12 @@
 import { connect } from 'react-redux';
+import swal, { errorConfig, successConfig } from 'lib/swal';
 import {
-  REDUCER_KEY as MANAGE_REDUCER_KEY,
+  REDUCER_KEY as PASSWORD_CHANGE_REDUCER_KEY,
   changeData,
   reset,
-} from '../modules/myManage';
+  updatePassword,
+  hasDataChanged,
+} from '../modules/myManagePasswordChange';
 import ManagePasswordChange from '../components/ManagePasswordChange';
 
 
@@ -12,10 +15,11 @@ import ManagePasswordChange from '../components/ManagePasswordChange';
 ===============================================>>>>>*/
 const mapStateToProps = ({
   environment,
-  [MANAGE_REDUCER_KEY]: manage,
+  [PASSWORD_CHANGE_REDUCER_KEY]: passwordChange,
 }) => ({
   environment,
-  manage,
+  passwordChange,
+  hasDataChanged: hasDataChanged(passwordChange),
 });
 
 
@@ -23,10 +27,17 @@ const mapStateToProps = ({
 = map dispatch =
 ===============================================>>>>>*/
 const mapDispatchToProps = (dispatch) => {
+  const dispatchUpdatePassword = () =>
+    dispatch(updatePassword()).then(() => {
+      swal(successConfig({ title: '變更密碼成功', text: null }));
+    }).catch((message) => {
+      swal(errorConfig({ title: '變更密碼失敗', text: message }));
+    });
 
   return ({
     dispatchChangeData: data => dispatch(changeData(data)),
     dispatchReset: () => dispatch(reset()),
+    dispatchUpdatePassword,
   });
 };
 

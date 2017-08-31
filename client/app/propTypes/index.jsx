@@ -12,13 +12,23 @@ const category = PropTypes.shape({
   name: PropTypes.string,
   img: PropTypes.string,
 });
+
 const categories = PropTypes.shape({
   goods: PropTypes.arrayOf(category),
   service: PropTypes.arrayOf(category),
   space: PropTypes.arrayOf(category),
 });
+
 const middleCategories = PropTypes.arrayOf(category);
 
+const banks = PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string }));
+
+const personalBankInfo = PropTypes.shape({
+  isChecked: PropTypes.bool,
+  isReady: PropTypes.bool,
+  info: PropTypes.object,
+  password: PropTypes.string.isRequired,
+});
 
 export default {
   environment: PropTypes.shape({
@@ -62,6 +72,8 @@ export default {
   categories,
   middleCategories,
   category,
+  banks,
+  personalBankInfo,
   /* = End of OPTIONS =*/
   /* =============================================<<<<<*/
   itemCard: PropTypes.shape({

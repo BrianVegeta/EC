@@ -1,13 +1,12 @@
 class Api::Userprofile::FacebookUnbind < ApiAuthedBase
-  
-  PATH = '/client/user/facebook/unbind';
-  
+  include HandleError::FacebookBind
+
   def path
-    PATH
+    '/client/user/facebook/unbind'
   end
 
   def request_method
      :post_token
   end
-  
+
 end
