@@ -23,6 +23,10 @@ class Ajax::Api::PaymentController < ApplicationController
     obj = ::Api::Payment::PayCreditcard.new credit_card_params, current_apitoken
     success = obj.request
 
+    esun_card = Api::Payment::EsunCard.new
+    result = esun_card.request(obj.response_data['redirect'], obj.response_data.except('redirect'))
+    raise result.inspect
+
     respond success, obj
   end
 
