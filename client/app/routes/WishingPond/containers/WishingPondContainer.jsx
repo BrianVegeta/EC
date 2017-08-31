@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  popupShowWish,
-} from 'modules/popup';
+import { popupShowWish } from 'modules/popup';
 
 import WishingPond from '../components/WishingPond';
 import {
