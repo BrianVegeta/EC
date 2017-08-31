@@ -4,6 +4,7 @@ import { trim } from 'lodash';
 export const LOGIN = '/p/login';
 export const loginPath = '/p/login';
 export const registrationPath = '/p/registration';
+export const forgotPasswordPath = '/p/forgot-password';
 
 
 const escapeAlias = (alias) => {
