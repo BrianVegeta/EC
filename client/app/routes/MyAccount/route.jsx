@@ -20,6 +20,7 @@ import routeLoSe from './routes/LesseeOrder/LoSe/route';
 import routeLoSp from './routes/LesseeOrder/LoSp/route';
 import routeProfile from './routes/Profile/route';
 import routeManage from './routes/Manage/route';
+import routeBankSetup from './routes/BankSetup/route';
 
 export default store => ({
   path: my.indexPath,
@@ -54,5 +55,6 @@ export default store => ({
     routeLoSp(store),
     routeProfile(store),
     routeManage(store),
+    routeBankSetup(store),
   ],
 });

@@ -173,4 +173,5 @@ export const my = {
   managePath: '/p/my/manage',
   manageVerifyPath: '/p/my/manage/verify',
   managePasswordChangePath: '/p/my/manage/password-change',
+  bankSetupPath: '/p/my/bank-setup',
 };
