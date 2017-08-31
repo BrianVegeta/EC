@@ -11,6 +11,7 @@ import {
   flatMapDeep,
   forEach,
   map,
+  parseInt,
 } from 'lodash';
 
 export const findCategoryNamesByID = (id, middleCategories) => {
@@ -96,17 +97,17 @@ export const findTopCategory = (id, categories) => {
 
     default: {
       let result = null;
-
+      const intId = parseInt(id);
       forEach(categories, (middleCategories, topCategory) => {
         forEach(middleCategories, (middleCategory) => {
-          if (middleCategory.id.toString() === id) {
+          if (middleCategory.id === intId) {
             result = topCategory;
             return false;
           }
 
           if (!middleCategory.children) return true;
           forEach(middleCategory.children, (subCategory) => {
-            if (subCategory.id.toString() === id) {
+            if (subCategory.id === intId) {
               result = topCategory;
               return false;
             }

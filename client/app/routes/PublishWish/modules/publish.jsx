@@ -1,15 +1,17 @@
-import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
-import validate from 'validate.js';
-import { isEmpty } from 'lodash';
-import { now } from 'lib/time';
 import constraints from 'constraints/publish';
-
-import { REDUCER_KEY as COVER_REDUCER_KEY } from './avatarCropper';
+import validate from 'validate.js';
+import { isEmpty, parseInt } from 'lodash';
+import { now } from 'lib/time';
+import { findTopCategory } from 'lib/category';
+import { asyncXhrPost, asyncXhrAuthedPost, asyncXhrPutImage } from 'lib/xhr';
+import { asyncContainBlobTobase64, base64ToBlobData } from 'lib/utils';
+import { REDUCER_KEY as AUTH_REDUCER_KEY } from 'modules/auth';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.WISH';
 export const REDUCER_KEY = 'publishWish';
+const CATEGORY_REDUCER_KEY = 'categories';
 
 // =============================================
 // = action type =
@@ -49,7 +51,7 @@ export const reset = () => ({
 const transformState = ({
   id, pname, description, city, area, expprice,
   expcurrency, expday, picture, cat_id,
-}) => {
+}, topCategory) => {
   return ({
     picture,
     id,
@@ -60,22 +62,30 @@ const transformState = ({
     expprice,
     expcurrency,
     expday,
-    catId: cat_id
+    topCategory,
+    catId: parseInt(cat_id),
   });
 };
 
 export const editPublish = id =>
-  (dispatch) => {
+  (dispatch, getState) => {
     asyncXhrPost(
       '/ajax/get_wish.json',
-      { id },
+      {
+        id,
+        index: 0,
+        size: 1,
+      },
     ).then((data) => {
-      dispatch(fetchedForEdit(transformState(data)));
+      const categories = getState()[CATEGORY_REDUCER_KEY];
+      const topCategory = findTopCategory(parseInt(data.cat_id), categories);
+      dispatch(fetchedForEdit(transformState(data, topCategory)));
     }).catch(error => console.log(error));
   };
 
-const transformParams = (covers, {
+const transformParams = ({
   id,
+  picture,
   pname,
   description,
   city,
@@ -86,8 +96,8 @@ const transformParams = (covers, {
   catId,
 }) => {
   return ({
-    picture: covers[0] && covers[0].s3,
     id,
+    picture,
     pname,
     description,
     city,
@@ -154,16 +164,31 @@ export const savePublish = () =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const publish = getState()[REDUCER_KEY];
-      const covers = getState()[COVER_REDUCER_KEY];
       asyncXhrAuthedPost(
         '/ajax/wish/save.json',
-        transformParams(covers, publish),
+        transformParams(publish),
         getState(),
       ).then((data) => {
         resolve(data);
       }).catch(() => reject());
     });
 
+export const uploadPhoto = blob =>
+  (dispatch, getState) => {
+    dispatch(changeData({ picturePlaceholder: blob }));
+
+    const { currentUser: { uid } } = getState()[AUTH_REDUCER_KEY];
+    asyncContainBlobTobase64(blob, true).then((base64) => {
+      const formData = new FormData();
+      formData.append('image', base64ToBlobData(base64));
+      asyncXhrPutImage(
+        `/ajax/images/wish/${uid}.json`,
+        formData,
+      ).then((url) => {
+        dispatch(changeData({ picture: url }));
+      });
+    });
+  };
 // =============================================
 // = reducer =
 // =============================================
@@ -189,7 +214,7 @@ export default (state = initialState, action) => {
     case CHANGE_TOP_CAT: {
       return Object.assign({}, state, {
         topCategory: action.topCategory,
-        catId: null
+        catId: null,
       });
     }
     case FETCHED_FOR_EDIT: {

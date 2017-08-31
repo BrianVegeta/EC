@@ -88,7 +88,7 @@ export function fetchRecords(recursiveRecords = []) {
     dispatch(fetching(expireFlag));
     /* API REQUEST */
     asyncXhrPost(
-      '/ajax/get_wish.json',
+      '/ajax/get_wish_pond.json',
       requestParams,
     )
     .then((data) => {

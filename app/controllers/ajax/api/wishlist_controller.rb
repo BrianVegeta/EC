@@ -30,8 +30,21 @@ class Ajax::Api::WishlistController < ApplicationController
      respond success, obj
    end
 
+   def get
+     obj = ::Api::Wishlist::Get.new remove_params, current_apitoken
+     success = obj.request
+     if success
+       obj.response_data = reverse_merge(obj.response_data, ResponseJson::WishList.structure)
+     end
+     respond success, obj
+   end
+
    ###################### PARAMS ##################################
    protected
+   def id_params
+      # id : Long => 許願紙條ID，建立新的時候不需要填寫
+     params.permit(:id).merge(current_uid_params);
+   end
 
    def save_wish_params
      # id : Long => 許願紙條ID，建立新的時候不需要填寫

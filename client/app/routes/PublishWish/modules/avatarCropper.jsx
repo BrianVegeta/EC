@@ -2,7 +2,7 @@
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.WISH.CROPPER';
-export const REDUCER_KEY = 'avatarCropper';
+export const REDUCER_KEY = 'wishCoverCropper';
 
 
 // =============================================

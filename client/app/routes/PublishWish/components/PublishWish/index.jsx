@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import CSS from 'react-css-modules';
+import Dropzone from 'react-dropzone';
+import IconAdd from 'react-icons/lib/md/add';
+import colors from 'styles/colorExport.scss';
+import Picture from 'components/Picture';
+import CropperEditor from 'components/Publish/CropperEditor';
 import FormGroup from 'components/Form/Group';
 import FormTitleLimiter from 'components/Form/TitleLimiter';
 import InputText from 'components/Input/Text';
@@ -23,22 +29,30 @@ import styles from './styles.sass';
 class PublishWish extends React.Component {
 
   static propTypes = {
-    // dispatch: PropTypes.func.isRequired,
+    environment: myPropTypes.environment.isRequired,
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func,
     }).isRequired,
     redirectToWish: PropTypes.func.isRequired,
+    dispatchCheckEdit: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchChangeTopCat: PropTypes.func.isRequired,
     dispatchSave: PropTypes.func.isRequired,
+    dispatchReset: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
     publishWish: PropTypes.shape({
       pname: PropTypes.string,
       description: PropTypes.string,
       catId: PropTypes.number,
     }).isRequired,
+    avatarCropper: PropTypes.shape({
+      blob: PropTypes.string,
+      key: PropTypes.string,
+    }).isRequired,
+    dispatchOpenCropper: PropTypes.func.isRequired,
+    dispatchCloseCropper: PropTypes.func.isRequired,
+    dispatchUploadAvatar: PropTypes.func.isRequired,
   };
-
   static topCategoryNav = [
     { value: CATEGORY_GOODS, text: '物品' },
     { value: CATEGORY_SERVICE, text: '服務' },
@@ -48,6 +62,14 @@ class PublishWish extends React.Component {
   constructor(props) {
     super(props);
     this.onSave = this.onSave.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatchCheckEdit();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchReset();
   }
 
   onSave() {
@@ -72,12 +94,20 @@ class PublishWish extends React.Component {
   }
 
   render() {
-    const { publishWish, dispatchChangeData, dispatchChangeTopCat } = this.props;
+    const {
+      publishWish, dispatchChangeData, dispatchChangeTopCat,
+      dispatchOpenCropper, dispatchUploadAvatar, dispatchCloseCropper,
+      avatarCropper, environment,
+    } = this.props;
     const {
       pname, description, topCategory, catId,
-      expprice, city, area,
+      expprice, city, area, picture,
     } = publishWish;
     const { topCategoryNav } = this.constructor;
+    // for upload placeholder
+    const UPLOAD_ICON_SIZE = 70;
+    const UPLOAD_TEXT_HELPER_LINE_HEIGHT = 20;
+    const UPLOAD_MARGIN_ADJUST = -((UPLOAD_TEXT_HELPER_LINE_HEIGHT + UPLOAD_ICON_SIZE) / 2);
 
     // console.log(this.props);
     return (
@@ -86,6 +116,42 @@ class PublishWish extends React.Component {
           <div styleName="headerTitle">建立許願紙條</div>
         </div>
         <div>
+          <div styleName="photo">
+            <Dropzone
+              ref={refAvatar => (this.avatarDropzone = refAvatar)}
+              style={{}}
+              styleName="photo-dropzone"
+              multiple={false}
+              onDrop={([{ preview }]) => dispatchOpenCropper(preview)}
+            >
+              {picture ?
+                <Picture src={picture} /> :
+                <div
+                  styleName="upload-placeholder"
+                  style={{ marginTop: UPLOAD_MARGIN_ADJUST }}
+                >
+                  <IconAdd
+                    size={UPLOAD_ICON_SIZE}
+                    color={colors.placeholder}
+                  />
+                  <div style={{
+                      lineHeight: `${UPLOAD_TEXT_HELPER_LINE_HEIGHT}px`,
+                      color: `${colors.placeholder}` }}
+                  >
+                    上傳一張許願圖片
+                  </div>
+                </div>
+              }
+            </Dropzone>
+          </div>
+          {avatarCropper.blob &&
+            <CropperEditor
+              cropper={avatarCropper}
+              closeCropper={dispatchCloseCropper}
+              uploadCover={(key, blob) => dispatchUploadAvatar(blob)}
+              screenHeight={environment.height}
+            />
+          }
           <FormGroup
             headerText="願望名稱"
             limiter={<FormTitleLimiter limit={30} length={pname.length} />}
@@ -106,6 +172,7 @@ class PublishWish extends React.Component {
             <InputTextArea
               ref={descriptionInput => (this.descriptionInput = descriptionInput)}
               value={description}
+              minHeight={100}
               placeholder="清楚描述您的願望"
               onChange={val => dispatchChangeData({ description: val })}
               constraints={constraints.descript}
@@ -139,7 +206,7 @@ class PublishWish extends React.Component {
             </div>
           </FormGroup>
           <div className="clear">
-            <div style={{ float: 'left', width: 260 }}>
+            <div styleName="price-container">
               <FormGroup
                 headerText="總預算"
               >
@@ -152,7 +219,7 @@ class PublishWish extends React.Component {
                 />
               </FormGroup>
             </div>
-            <div style={{ marginLeft: 280 }}>
+            <div styleName="address-container">
               <FormGroup
                 headerText="所在城市"
               >

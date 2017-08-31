@@ -38,24 +38,6 @@ export function fetchUser(uid) {
   };
 }
 
-// export function fetchWishList(uid) {
-//   return (dispatch, getState) => {
-//     dispatch(fetchingWishList());
-//     asyncXhrAuthedPost(
-//       '/ajax/get_wish.json',
-//       {
-//         uid,
-//         index: 0,
-//         size: 3,
-//       },
-//       getState(),
-//     )
-//     .then((responseData) => {
-//       dispatch(fetchedWishList(responseData));
-//     });
-//   };
-// }
-
 
 // =============================================
 // = reducer =

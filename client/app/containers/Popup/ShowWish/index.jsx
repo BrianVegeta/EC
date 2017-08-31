@@ -8,7 +8,8 @@ import { formatCurrency } from 'lib/currency';
 import { fromNow } from 'lib/time';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
-
+import { browserHistory } from 'react-router';
+import { publishWishRouter } from 'lib/paths';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -17,16 +18,26 @@ class ShowWish extends React.Component {
   static defaultProps = {
     dispatch: '',
     card: '',
+    currentUid: '',
   }
 
   static propTypes = {
     card: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     dispatchClose: PropTypes.func.isRequired,
+    currentUid: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.onClose = this.onClose.bind(this);
+    this.onEdit = this.onEdit.bind(this);
+  }
+
+  onEdit() {
+    const { card } = this.props;
+    const { id } = card;
+    browserHistory.push(publishWishRouter.indexPath(card.id));
+    this.props.dispatchClose();
   }
 
   onClose() {
@@ -34,7 +45,8 @@ class ShowWish extends React.Component {
   }
 
   render() {
-    const { card } = this.props;
+    const { card, currentUid } = this.props;
+    const isOwner = card.uid === currentUid;
 
     return (
       <div styleName="container">
@@ -63,7 +75,21 @@ class ShowWish extends React.Component {
             <div styleName="hour">{fromNow(card.create_time)}</div>
           </div>
           <div styleName="sendMessage">
-            <button className="button" styleName="sendMessageButton">私訊</button>
+            {isOwner ?
+              <button
+                className="button"
+                styleName="editMessageButton"
+                onClick={this.onEdit}
+              >
+                編輯
+              </button> :
+              <button
+                className="button"
+                styleName="sendMessageButton"
+              >
+                私訊
+              </button>
+            }
           </div>
         </div>
       </div>
@@ -72,7 +98,9 @@ class ShowWish extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { schedule } = state;
-  return { schedule };
+  const { schedule, auth } = state;
+  const { currentUser } = auth;
+  const currentUid = currentUser ? currentUser.uid : '';
+  return { schedule, currentUid };
 };
 export default connect(mapStateToProps)(CSS(ShowWish, styles));

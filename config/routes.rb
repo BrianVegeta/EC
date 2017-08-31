@@ -181,7 +181,8 @@ Rails.application.routes.draw do
 
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #
-      post 'get_wish', to: 'wishlist#search' #
+      post 'get_wish_pond', to: 'wishlist#search' #
+      post 'get_wish', to: 'wishlist#get' #
       post 'wish/remove', to: 'wishlist#remove' #
 
       # MARKETING
@@ -273,6 +274,7 @@ Rails.application.routes.draw do
         put 'item_cover'
         put 'sue_picture/:cid_no', action: :sue_picture
         put 'avatar/:uid', action: :avatar
+        put 'wish/:uid', action: :wish
       end
     end
 
