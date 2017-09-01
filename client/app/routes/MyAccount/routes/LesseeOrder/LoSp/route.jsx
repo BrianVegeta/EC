@@ -7,7 +7,7 @@ export default store => ({
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const Container = require('../../../containers/LoSpContainer').default;
+      const Container = require('../../../containers/LoSpaceContainer').default;
       const reducer = require('../../../modules/myOrder').default;
       injectReducer(store, { key, reducer });
       cb(null, Container);
