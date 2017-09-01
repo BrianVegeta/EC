@@ -1,40 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isNull } from 'lodash';
 
 import TextField, {
   ICON_TYPE_VERIFICATION,
 } from 'components/Input/TextField';
 import FormButton from 'components/FormButton';
-import AlertPanel from 'components/Alert/Panel';
-import LoadingOverlay from 'components/Loading/Overlay';
-
 import constraints from 'constraints';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import {
-  REGISTER_BY_EMAIL,
-  REGISTER_BY_PHONE,
-} from '../../modules/registration';
+  REQUEST_BY_PHONE,
+  REQUEST_BY_EMAIL,
+} from '../../../modules/forgotPassword';
 
 
 const cx = classnames.bind(styles);
 class Verifying extends React.Component {
 
   static propTypes = {
-    dispatchResendEmail: PropTypes.func.isRequired,
-    dispatchResendPhone: PropTypes.func.isRequired,
-    dispatchVerifyEmail: PropTypes.func.isRequired,
-    dispatchVerifyPhone: PropTypes.func.isRequired,
+    dispatchResend: PropTypes.func.isRequired,
+    dispatchVerify: PropTypes.func.isRequired,
+    requestBy: PropTypes.oneOf([
+      REQUEST_BY_EMAIL,
+      REQUEST_BY_PHONE,
+    ]).isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    verifyCode: PropTypes.string.isRequired,
     dispatchChangeForm: PropTypes.func.isRequired,
-    registration: PropTypes.shape({
-      registerBy: PropTypes.oneOf([REGISTER_BY_EMAIL, REGISTER_BY_PHONE]).isRequired,
-      email: PropTypes.string.isRequired,
-      phone: PropTypes.string.isRequired,
-      verifyCode: PropTypes.string.isRequired,
-    }).isRequired,
   };
+
+  static renderResendButton({ content, onClick, disabled }) {
+    return (
+      <FormButton
+        colorType="greenBorder"
+        size="lg"
+        content={content}
+        onClick={onClick}
+        disabled={disabled}
+      />
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -50,16 +59,7 @@ class Verifying extends React.Component {
   }
 
   onResend() {
-    const {
-      dispatchResendEmail,
-      dispatchResendPhone,
-      registration: { registerBy },
-    } = this.props;
-    const dispatchResend = {
-      [REGISTER_BY_EMAIL]: dispatchResendEmail,
-      [REGISTER_BY_PHONE]: dispatchResendPhone,
-    }[registerBy];
-    dispatchResend().then(() => {
+    this.props.dispatchResend().then(() => {
       this.setCounter();
     });
   }
@@ -67,16 +67,7 @@ class Verifying extends React.Component {
   onVerify() {
     const isValid = this.verifyInput.valid();
     if (isValid) {
-      const {
-        dispatchVerifyEmail,
-        dispatchVerifyPhone,
-        registration: { registerBy },
-      } = this.props;
-      const dispatchVerify = {
-        [REGISTER_BY_EMAIL]: dispatchVerifyEmail,
-        [REGISTER_BY_PHONE]: dispatchVerifyPhone,
-      }[registerBy];
-      dispatchVerify();
+      this.props.dispatchVerify();
     }
   }
 
@@ -97,62 +88,26 @@ class Verifying extends React.Component {
     this.setState({ resendWait: null });
   }
 
-  renderLoading() {
-    const { registration: { isLoading } } = this.props;
-    if (!isLoading) return null;
-    return <LoadingOverlay />;
-  }
-
-  renderError() {
-    const { registration: { verifyError } } = this.props;
-    if (!verifyError) return null;
-    return <AlertPanel text={verifyError} />;
-  }
-
-  renderResendButton() {
-    const { resendWait } = this.state;
-    const buttonProps = { colorType: 'greenBorder', size: 'lg' };
-    if (resendWait === null) {
-      return (
-        <FormButton
-          {...buttonProps}
-          content="重新傳送驗證碼"
-          onClick={this.onResend}
-        />
-      );
-    }
-    return (
-      <FormButton
-        {...buttonProps}
-        content={`${resendWait}s`}
-        onClick={() => {}}
-        disabled
-      />
-    );
-  }
-
   render() {
+    const { resendWait } = this.state;
     const {
+      requestBy,
+      email,
+      phone,
+      verifyCode,
       dispatchChangeForm,
-      registration: {
-        registerBy,
-        email,
-        phone,
-        verifyCode,
-      },
     } = this.props;
+    const { renderResendButton } = this.constructor;
+    const [textLabel, identityValue] = {
+      [REQUEST_BY_EMAIL]: ['Email', email],
+      [REQUEST_BY_PHONE]: ['簡訊', phone],
+    }[requestBy];
 
-    const label = {
-      [REGISTER_BY_EMAIL]: '信箱',
-      [REGISTER_BY_PHONE]: '電話',
-    }[registerBy];
-
+    const refVerify = input => (this.verifyInput = input);
     return (
       <div styleName="container">
-        {this.renderLoading()}
-        {this.renderError()}
         <TextField
-          ref={input => (this.verifyInput = input)}
+          ref={refVerify}
           icon={ICON_TYPE_VERIFICATION}
           placeholder="請輸入驗證碼"
           value={verifyCode}
@@ -160,25 +115,25 @@ class Verifying extends React.Component {
           onEnter={this.onVerify}
           constraints={constraints.verifyCode}
         />
-        <div styleName="identity">
-          {{
-            [REGISTER_BY_EMAIL]: email,
-            [REGISTER_BY_PHONE]: phone,
-          }[registerBy]}
-        </div>
+        <div styleName="identity">{identityValue}</div>
         <div styleName="notice">
-          <div>請輸入{label}內的驗證碼</div>
-          <div>若您未收到{label}，請嘗試以下方式:</div>
+          <div>請輸入{textLabel}內的驗證碼</div>
+          <div>若您未收到{textLabel}，請嘗試以下方式:</div>
         </div>
         <div className={cx('button')}>
-          {this.renderResendButton()}
+          <FormButton content="驗證" size="lg" onClick={this.onVerify} />
         </div>
         <div className={cx('button', 'bottom')}>
-          <FormButton
-            content="驗證"
-            size="lg"
-            onClick={this.onVerify}
-          />
+          {renderResendButton(
+            isNull(resendWait) ? ({
+              content: '重新傳送驗證碼',
+              onClick: this.onResend,
+            }) : ({
+              content: `${resendWait}s`,
+              onClick: () => {},
+              disabled: true,
+            }),
+          )}
         </div>
       </div>
     );

@@ -143,8 +143,8 @@ class Verifying extends React.Component {
     } = this.props;
 
     const label = {
-      [REGISTER_BY_EMAIL]: '信箱',
-      [REGISTER_BY_PHONE]: '電話',
+      [REGISTER_BY_EMAIL]: 'Email',
+      [REGISTER_BY_PHONE]: '簡訊',
     }[registerBy];
 
     return (

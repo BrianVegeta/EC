@@ -1,23 +1,19 @@
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-
-import { login as authLogin } from 'modules/auth';
+import swal, { successConfig } from 'lib/swal';
 import ForgotPassword from '../components/ForgotPassword';
 import {
   REDUCER_KEY as FORGOT_PASSWORD_REDUCER_KEY,
-  switchRegisterByEmail,
-  switchRegisterByPhone,
-  registerEmail,
-  registerPhone,
-  verifyEmail,
-  verifyPhone,
-  resendEmail,
-  resendPhone,
+  getVerifyCode,
+  resendVerifyCode,
+  toggleRequestBy,
+  verify,
+  resetPassword,
   changeForm,
   reset,
 } from '../modules/forgotPassword';
 
-
+//
+// forgotPassword: PropTypes.shape({
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/
@@ -34,23 +30,24 @@ const mapStateToProps = ({
 = map dispatch =
 ===============================================>>>>>*/
 const mapDispatchToProps = (dispatch) => {
-  const afterVerified = (userProfile) => {
-    dispatch(authLogin(userProfile));
-    browserHistory.push('/');
-  };
-  const dispatchVerifyEmail = () => dispatch(verifyEmail()).then(afterVerified);
-  const dispatchVerifyPhone = () => dispatch(verifyPhone()).then(afterVerified);
+  const dispatchRequest = () => dispatch(getVerifyCode());
+  const dispatchToggleRequestBy = () => dispatch(toggleRequestBy());
+  const dispatchResend = () => dispatch(resendVerifyCode());
+  const dispatchVerify = () => dispatch(verify());
+  const dispatchResetPassword = () => dispatch(resetPassword()).then(() => {
+    swal(successConfig({
+      title: '成功變更密碼',
+      text: '系統將自動登入',
+    }));
+  });
 
   return ({
-    dispatchRegisterEmail: () => dispatch(registerEmail()),
-    dispatchRegisterPhone: () => dispatch(registerPhone()),
-    dispatchSwitchRegisterByEmail: () => dispatch(switchRegisterByEmail()),
-    dispatchSwitchRegisterByPhone: () => dispatch(switchRegisterByPhone()),
-    dispatchVerifyEmail,
-    dispatchVerifyPhone,
-    dispatchResendEmail: () => dispatch(resendEmail()),
-    dispatchResendPhone: () => dispatch(resendPhone()),
     dispatchChangeForm: data => dispatch(changeForm(data)),
+    dispatchRequest,
+    dispatchToggleRequestBy,
+    dispatchResend,
+    dispatchVerify,
+    dispatchResetPassword,
     dispatchReset: () => dispatch(reset()),
   });
 };

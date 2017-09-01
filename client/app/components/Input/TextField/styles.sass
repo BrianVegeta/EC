@@ -15,6 +15,7 @@ $errorTextColor: #ff9800
     font-size: 14px
   .input-group
     padding: 10px 0
+    border-bottom: 1px solid $global-lineColor
     .input-group-inner
       position: relative
       .icon
@@ -58,10 +59,10 @@ $errorTextColor: #ff9800
   .bottomLine
     position: absolute
     bottom: 0
-    height: 1px
-    width: 100%
+    height: 2px
+    width: 0
     background: $global-primaryColor
     transition: all 300ms ease
     &.focusing
-      height: 2px
+      width: 100%
       background: $global-hoverColor

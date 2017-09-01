@@ -52,16 +52,6 @@ Rails.application.routes.draw do
       post 'contract/space_end', to: 'contract#space_end'
       post 'contract/space_update', to: 'contract#space_update'
 
-
-
-      #FORGETPASSWORD
-      post 'forgetpassword/email_resend_verify', to: 'forgetpassword#email_resend_verify'
-      post 'forgetpassword/mail_get_token', to: 'forgetpassword#mail_get_token'
-      post 'forgetpassword/mail_reset', to: 'forgetpassword#mail_reset'
-      post 'forgetpassword/mobile_resend_verify', to: 'forgetpassword#mobile_resend_verify'
-      post 'forgetpassword/mobile_get_token', to: 'forgetpassword#mobile_get_token'
-      post 'forgetpassword/mobile_reset', to: 'forgetpassword#mobile_reset'
-
       #ITEM
       post 'item/item_add', to: 'item#item_add'
       post 'item/item_update', to: 'item#item_update'
@@ -184,6 +174,18 @@ Rails.application.routes.draw do
       # ITEMS
       scope :item do
         post 'list', to: 'item#search_item_list'
+      end
+
+      # ======================================
+      # FORGOT PASSWROD
+      # ======================================
+      scope :forgot_password do
+        post 'email_get_verify', to: 'forgetpassword#email_resend_verify'
+        post 'email_get_token', to: 'forgetpassword#mail_get_token'
+        post 'email_reset_password', to: 'forgetpassword#mail_reset'
+        post 'phone_get_verify', to: 'forgetpassword#mobile_resend_verify'
+        post 'phone_get_token', to: 'forgetpassword#mobile_get_token'
+        post 'phone_reset_password', to: 'forgetpassword#mobile_reset'
       end
 
       # ======================================

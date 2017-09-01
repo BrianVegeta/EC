@@ -1,7 +1,7 @@
 class Api::Forgetpassword::MobileReset < ApiBase
-  
+
   PATH = '/client/fogetpassword/mobile/reset';
-  
+
   def path
     PATH
   end
@@ -9,5 +9,4 @@ class Api::Forgetpassword::MobileReset < ApiBase
   def request_method
      :post
   end
-  
 end

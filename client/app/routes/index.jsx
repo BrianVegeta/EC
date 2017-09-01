@@ -37,6 +37,7 @@ import routePublishWish from './PublishWish/route';
 // import ReleaseSpace from './Release/Space';
 import routeLogin from './AuthLogin/route';
 import routeRegistration from './AuthRegistration/route';
+import routeForgotPassword from './AuthForgotPassword/route';
 /* 預訂商品 */
 // import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
@@ -78,6 +79,7 @@ export default store => ({
       childRoutes: [
         routeLogin(store),
         routeRegistration(store),
+        routeForgotPassword(store),
       ],
     },
     /* Order detail*/
