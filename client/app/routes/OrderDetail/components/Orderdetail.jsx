@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
@@ -441,9 +442,6 @@ class Orderdetail extends React.Component {
 
     return (
       <div>
-        <form action="https://acqtest.esunbank.com.tw/ACQTrans/esuncard/txnf014m">
-          <input type="submit" />
-        </form>
         <div styleName="container">
           <div styleName="header">
             <h1 styleName="title">

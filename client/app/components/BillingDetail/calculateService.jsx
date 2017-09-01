@@ -7,7 +7,7 @@ import {
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_COUNT,
   CHARGE_TYPE_DAY,
-  CHARGE_TYPE_MONTH
+  CHARGE_TYPE_MONTH,
 } from 'constants/publishTypes';
 
 const formatDetail = (text, amount) => ({ text, amount });

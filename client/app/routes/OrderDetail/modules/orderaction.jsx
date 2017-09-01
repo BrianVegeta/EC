@@ -235,6 +235,7 @@ const createFormPost = (path, params) => {
     const inputElement = document.createElement('input');
     inputElement.value = value;
     inputElement.name = key;
+    inputElement.type = 'hidden';
     form.appendChild(inputElement);
   });
 
@@ -254,6 +255,7 @@ export function doCreditCardPayment(cid) {
         { cid }, getState(), isCatch,
       ).then(({ redirect, ...params }) => {
         dispatch(success(requestId));
+        createFormPost(redirect, params);
         resolve();
       }).catch((error) => {
         dispatch(failed('失敗'));
