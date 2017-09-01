@@ -195,7 +195,7 @@ export default (state = initialState, action) => {
           afterShip: action.images.LESSEE_RECEIVE,
           beforeReturn: action.images.LESSEE_SEND,
           afterReturn: action.images.OWNER_RECEIVE,
-        }
+        },
       });
 
     case FETCHED_LOGS:

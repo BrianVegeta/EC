@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import { detail as orderRouter } from 'lib/paths';
+import { orderDetail } from 'lib/paths';
 
 import { sendSueReport } from '../modules/sueAction';
 import { fetchOrder, reset } from '../modules/sueDetail';
@@ -22,7 +22,7 @@ const returnLastPath = cid =>
     if (state && state.referrer && state.referrer !== pathname) {
       browserHistory.push(state.referrer);
     } else {
-      orderRouter.orderPath(cid);
+      orderDetail.indexPath(cid);
     }
   };
 const mapDispatchToProps = (dispatch, { params: { cid } }) => ({

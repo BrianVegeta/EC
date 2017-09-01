@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 
 import { popupScoreRating, popupAccessCheck,
-  popupBankInfoSetup } from 'modules/popup';
+  popupBankInfoSetup, popupATMBank } from 'modules/popup';
 import { doAccept, doCancel, doReject,
   doShipGoods, doReturn, doReceiveConfirm,
-  doScore, doEndOrder, resetAction } from 'modules/orderAction';
+  doScore, doEndOrder, resetAction, doCreditCardPayment,
+  doATMPayment,
+} from '../modules/orderaction';
 
 import Orderdetail from '../components/Orderdetail';
 import { fetchOrder, reset } from '../modules/orderdetail';
@@ -71,6 +73,18 @@ const mapDispatchToProps = (dispatch, { params }) => {
     dispatchReject: () => {
       dispatch(doReject(params.cid))
       .then(() => refetch(dispatch, params))
+      .catch((error) => {
+        alert(error);
+      });
+    },
+    dispatchPaymentInfo: () => {
+      console.log('dispatchPaymentInfo');
+      const options = {};
+      dispatch(popupATMBank(options));
+      dispatch(doATMPayment(params.cid));
+    },
+    dispatchPaymentCreditCard: () => {
+      dispatch(doCreditCardPayment(params.cid))
       .catch((error) => {
         alert(error);
       });

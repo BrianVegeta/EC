@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import ReactOnRails from 'react-on-rails';
+import { forEach } from 'lodash';
 import { browserHistory } from 'react-router';
 import * as paths from 'lib/paths';
 
@@ -19,6 +20,13 @@ const SETTINGS_PUT_IMAGE = {
   method: 'PUT',
   headers: {
     'X-CSRF-Token': ReactOnRails.authenticityToken(),
+  },
+};
+const SETTINGS_EXTERNAL_FORM_POST = {
+  method: 'POST',
+  mode: 'cors',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
   },
 };
 
@@ -200,4 +208,17 @@ export const asyncXhrPutImage = (path, formData) =>
       resolve(json.photoUrl);
     })
     .catch(err => reject(err));
+  });
+
+export const asyncXhrExternalPost = (path, params) =>
+  new Promise((resolve, reject) => {
+    const formData = new FormData();
+    forEach(params, (value, key) => formData.append(key, value));
+
+    fetch(path, {
+      ...SETTINGS_EXTERNAL_FORM_POST,
+      body: formData,
+    }).then((response) => {
+      console.log(response);
+    }).catch(err => reject(err));
   });

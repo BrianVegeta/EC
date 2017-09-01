@@ -60,8 +60,7 @@ export function rangeDiff(startDate, endDate, included) {
 export function monthDiff(startDate, endDate) {
   if (!startDate) throw new Error('startDate null!');
   if (!endDate) throw new Error('endDate null!');
-
-  const diff = endDate.diff((startDate), 'months', true);
+  const diff = getMoment(endDate).diff((startDate), 'months', true);
   return Math.round(diff);
 }
 

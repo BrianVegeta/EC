@@ -237,6 +237,9 @@ class Ajax::Api::ContractController < ApplicationController
   def images
     obj = ::Api::Contract::Images.new cid_params, current_apitoken
     success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ContractImages.structure)
+    end
     respond success, obj
   end
 

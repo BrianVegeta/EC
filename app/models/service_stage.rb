@@ -42,13 +42,12 @@ class ServiceStage < StageBase
 
   def check_contract_end
 
-    if not (self.screen_type >= STAGE_CONTRACT_START && self.screen_type <= STAGE_RETURN_CONFIRM)
-      return
-    end
+    stage_cond = (self.screen_type >= STAGE_CONTRACT_START && self.screen_type <= STAGE_RETURN_CONFIRM)
+    owner_cond = (self.contract['owner_send_time'].nil?) && self.is_owner
+    lessee_cond = (self.contract['lessee_send_time'].nil?) && !self.is_owner
 
-    modify_display_param(KEY_OWNER_END, (self.contract['owner_send_time'].nil?) && self.is_owner)
-
-    modify_display_param(KEY_LESSEE_END, (self.contract['lessee_send_time'].nil?) && !self.is_owner)
+    modify_display_param(KEY_OWNER_END, stage_cond && owner_cond)
+    modify_display_param(KEY_LESSEE_END, stage_cond && lessee_cond)
 
   end
 

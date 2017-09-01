@@ -1,7 +1,8 @@
 import { injectReducer } from 'reducers';
+import { orderDetail } from 'lib/paths';
 
 export default store => ({
-  path: '/p/order_detail/:cid',
+  path: orderDetail.indexPath(':cid'),
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

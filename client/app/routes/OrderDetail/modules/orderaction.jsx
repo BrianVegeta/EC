@@ -1,4 +1,6 @@
+import { forEach } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { popupFetching, popupFetched } from 'modules/popup';
 
 /* =============================================>>>>>
 = userprofile =
@@ -6,6 +8,7 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 
 const ACTION_PREFIX = 'ORDER.ACTION';
 const REDUCER_KEY = 'orderaction';
+
 
 // =============================================
 // = action type =
@@ -17,10 +20,10 @@ const LOCK = prefix('LOCK');
 const SUCCESSS = prefix('REJECT');
 const FAILED = prefix('FAILED');
 const RESET = prefix('RESET');
+const SET_ESUN_FORM = prefix('SET_ESUN_FORM');
 // =============================================
 // = CONSTANT FOR API USAGE =
 // =============================================
-
 
 // =============================================
 // = actions =
@@ -39,6 +42,11 @@ const lock = (requestId, actionName) => ({
   type: LOCK,
   requestId,
   actionName,
+});
+
+const setEsunForm = form => ({
+  type: SET_ESUN_FORM,
+  form,
 });
 
 export const resetAction = () => ({
@@ -219,6 +227,65 @@ export function doEndOrder(type, cid) {
     });
 }
 
+const createFormPost = (path, params) => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = path;
+  forEach(params, (value, key) => {
+    const inputElement = document.createElement('input');
+    inputElement.value = value;
+    inputElement.name = key;
+    inputElement.type = 'hidden';
+    form.appendChild(inputElement);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+};
+
+export function doCreditCardPayment(cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'ccPay'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/creditcard_payment.json',
+        { cid }, getState(), isCatch,
+      ).then(({ redirect, ...params }) => {
+        dispatch(success(requestId));
+        createFormPost(redirect, params);
+        resolve();
+      }).catch((error) => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
+export function doATMPayment(cid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'atmPay'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/get_paymentinfo.json',
+        { cid }, getState(), isCatch,
+      ).then((data) => {
+        dispatch(popupFetched(data));
+        dispatch(success(requestId));
+        resolve();
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
 // =============================================
 // = reducer =
 // =============================================
@@ -230,6 +297,7 @@ const initialState = {
   success: false,
   isErr: false,
   errMsg: '',
+  esunForm: null,
 };
 
 export default (state = initialState, action) => {
@@ -266,6 +334,10 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         lock: false,
         success: true,
+      });
+    case SET_ESUN_FORM:
+      return Object.assign({}, state, {
+        esunForm: action.form,
       });
     case RESET:
       return initialState;

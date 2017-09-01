@@ -4,25 +4,46 @@ class Ajax::Api::PaymentController < ApplicationController
 
   ###################### ACTION ##################################
   # 搜尋
-   def search
-     obj = ::Api::Payment::Search.new search_params, current_apitoken
-     success = obj.request
-     # if success
-     #  obj.response_data = parse_balance_rsp(obj.response_data)
-     #end
-     #if obj.response_data.nil?
-     #   obj.response_data = []
-     #else
-     #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::UserCoupon.structure) }
-     #end
-     respond success, obj
-   end
+  def search
+    obj = ::Api::Payment::Search.new search_params, current_apitoken
+    success = obj.request
+    # if success
+    #  obj.response_data = parse_balance_rsp(obj.response_data)
+    #end
+    #if obj.response_data.nil?
+    #   obj.response_data = []
+    #else
+    #   obj.response_data.map { |item, index| reverse_merge(item, ResponseJson::UserCoupon.structure) }
+    #end
+    respond success, obj
+  end
+
+  # CreditCard Payment
+  def pay_creditcard
+    obj = ::Api::Payment::PayCreditcard.new credit_card_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
+  # Get Order
+  def get_order
+    obj = ::Api::Payment::GetOrder.new credit_card_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::SimpleOrder.structure)
+    end
+    respond success, obj
+  end
 
   ###################### PARAMS ##################################
   protected
   def parse_balance_rsp(response_data)
     response_data = response_data.reverse_merge(response_data, ResponseJson:AccountBalance.structure)
     return response_data
+  end
+
+  def credit_card_params
+    params.permit(:cid).merge(current_uid_params);
   end
 
   def search_params
