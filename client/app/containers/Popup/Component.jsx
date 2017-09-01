@@ -40,7 +40,6 @@ class Popup extends React.Component {
   }
 
   renderModal({ renderType, options }) {
-    console.log(renderType);
     switch (renderType) {
       case RENDER_BANK_SETUP:
         return (
@@ -133,7 +132,7 @@ class Popup extends React.Component {
       case RENDER_ATM:
         return (
           <ModalBox
-            width={400}
+            width={470}
             onClose={this.props.dispatchCloseModal}
           >
             <ATMBankContainer
