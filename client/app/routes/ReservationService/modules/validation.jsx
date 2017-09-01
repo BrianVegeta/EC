@@ -50,13 +50,12 @@ export const validateFormBy = ({
     note,
     unit,
   }, {
-    dates: isFixChargeType ? null : constraints.dates,
+    dates: isFixChargeType ? constraints.dates : null,
     serviceLocationType: serviceLocationTypeValidation,
     serviceCityArea: serviceCityAreaValidation,
     serviceAddress: serviceAddressValidation,
     unit: unitValidation,
   });
-
   return {
     isValid: isEmpty(errors),
     errors,
