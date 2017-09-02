@@ -119,7 +119,7 @@ export const syncCurrentUser = () =>
     ).then((userProfile) => {
       dispatch(login(userProfile));
     }).catch(() => {
-      dispatch(logout());
+      dispatch(doLogout());
     });
 
 // =============================================
