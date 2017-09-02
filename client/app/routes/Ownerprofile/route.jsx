@@ -1,4 +1,4 @@
-import { fetchUser, fetchWishList } from 'connector/Ownerprofile/actions';
+import { fetchUser, fetchWishList } from './modules/actions';
 
 export default ({ dispatch }) => ({
   path: '/p/ownerprofile/:uid',

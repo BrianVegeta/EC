@@ -91,6 +91,11 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+
+      #PROFILE
+      post 'get_track_count', to: 'userprofile#track_count' #
+      post 'get_comments_count', to: 'userprofile#comments_count' #
+
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'
@@ -195,6 +200,7 @@ Rails.application.routes.draw do
       # USERPROFILE CONTROLLER
       # ======================================
       post 'user_info', to: 'userprofile#user_general_info'
+      post 'public_user_info', to: 'userprofile#public_user_info'
       post 'get_userprofile', to: 'userprofile#get'
       post 'save_userprofile', to: 'userprofile#save'
       post 'user_bind_facebook', to: 'userprofile#set_facebook'

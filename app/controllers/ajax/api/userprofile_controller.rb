@@ -34,13 +34,31 @@ class Ajax::Api::UserprofileController < ApplicationController
     respond success, obj
   end
 
-  # 取回使用者公開資訊
+  # 取回個人資訊
   def user_general_info
     obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
     success = obj.request
 
     if success
       obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
+      obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure
+      #if (obj.response_data['items'].nil?)
+      #  obj.response_data['items'] = [];
+      #else
+      #  obj.response_data['items'].map { |item, index| reverse_merge(item, ResponseJson::SimpleItem.structure) }
+      #end
+    end
+    respond success, obj
+  end
+
+  # 取回使用者公開資訊
+  def public_user_info
+    obj = ::Api::Userprofile::UserGeneralInfo.new show_item_params
+    success = obj.request
+
+    if success
+      obj.response_data['user_profile'] = reverse_merge(obj.response_data['user_profile'], ResponseJson::UserProfile.structure)
+      obj.response_data['user_profile'] = removePrivateData(obj.response_data['user_profile']);
       obj.response_data['items'] = map_json_array obj.response_data['items'], ResponseJson::SimpleItem.structure
       #if (obj.response_data['items'].nil?)
       #  obj.response_data['items'] = [];
@@ -179,10 +197,19 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   # 取回追中數量
   def track_count
-    obj = ::Api::Userprofile::TrackCount.new current_uid_params, current_apitoken
+    obj = ::Api::Userprofile::TrackCount.new comments_count_params
     success = obj.request
     if success
       obj.response_data = reverse_merge(obj.response_data, ResponseJson::TrackUserCount.structure)
+    end
+    respond success, obj
+  end
+
+  def comments_count
+    obj = ::Api::Userprofile::CommentsCount.new comments_count_params
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::CommentsCount.structure)
     end
     respond success, obj
   end
@@ -272,6 +299,11 @@ class Ajax::Api::UserprofileController < ApplicationController
     respond success, obj
   end
 
+  ###################### FUNCTIONS ###############################
+  def removePrivateData(response_data)
+    return response_data.except('phone', 'email', 'fb_id')
+  end
+
   ###################### PARAMS ##################################
   protected
 
@@ -347,6 +379,11 @@ class Ajax::Api::UserprofileController < ApplicationController
   def track_params
     # target_uid : String => 追中的UID
     params.permit(:target_uid).merge(current_uid_params)
+  end
+
+  def comments_count_params
+    # uid : String => 追中的UID
+    params.permit(:uid)
   end
 
   def comments_params

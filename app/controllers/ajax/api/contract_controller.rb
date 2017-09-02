@@ -257,7 +257,7 @@ class Ajax::Api::ContractController < ApplicationController
     if current_user['uid'] === response_data['lesseeuid']
       return response_data
     end
-    response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
+    response_data = response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
     if (response_data['contractstage'] < 4)
       response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
       response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);

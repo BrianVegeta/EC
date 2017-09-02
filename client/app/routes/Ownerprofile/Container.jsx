@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 class OwnerprofileContainer extends React.Component {
 
+
   render() {
     const { ownerProfile } = this.props;
     const { items, wishlist, user_profile } = ownerProfile;
@@ -25,19 +26,19 @@ class OwnerprofileContainer extends React.Component {
           {user_profile.autobiography && <div>`{user_profile.autobiography}`</div>}
         </div>
         { items && items.map(item =>
-          <div>
+          (<div>
             <div>`{item.pname}`</div>
             <div>`{item.price}`</div>
             <div>`{item.favorite_count}`</div>
             <div>`{item.in_my_favorite}`</div>
-          </div>,
+          </div>),
         )}
         { wishlist && wishlist.map(wish =>
-          <div>
+          (<div>
             <div>`{wish.pname}`</div>
             <div>`{wish.pname}`</div>
             <div>`{wish.pname}`</div>
-          </div>,
+          </div>),
         )}
       </div>
     );

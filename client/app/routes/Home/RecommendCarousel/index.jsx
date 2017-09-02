@@ -4,14 +4,15 @@ import Header from './Header';
 import Slider from './Slider';
 
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   recommends: PropTypes.object.isRequired,
 };
 class Recommend extends React.Component {
   render() {
     const { type, recommends } = this.props;
-    const { bannerUrl, items } = recommends[type];
+    // const { bannerUrl, items } = recommends[type];
+    const { items } = recommends[type];
     const isFetching = (items.length === 0);
     if (isFetching) {
       return null;
