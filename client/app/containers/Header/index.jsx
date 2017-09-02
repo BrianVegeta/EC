@@ -57,7 +57,7 @@ class Header extends React.Component {
     const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
     const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
     const myCommentsPath = my.commentOwnerPath;
-    const myItemsPath = my.itemPath;
+    const myItemsPath = my.myGoodsPath;
     const myWalletPath = my.walletPath;
     const myCollectionPath = my.collectionPath;
     const notifyIndexPath = notifyPath.contractNotifyPath;
