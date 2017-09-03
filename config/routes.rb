@@ -144,6 +144,7 @@ Rails.application.routes.draw do
       post 'get_order', to: 'contract#get' #
       post 'get_order_images', to: 'contract#images'
       post 'get_order_logs', to: 'contract#logs'
+      post 'send_read', to: 'contract#read'
 
       #COMMENTS
       post 'get_owner_comments', to: 'userprofile#owner_comments' #
