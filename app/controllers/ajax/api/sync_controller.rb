@@ -20,6 +20,11 @@ class Ajax::Api::SyncController < ApplicationController
   def notification_unread
     obj = ::Api::Sync::NotificationUnread.new notification_unread_params, current_apitoken
     success = obj.request
+    if success
+      if obj.response_data.nil?
+        obj.response_data = []
+      end
+    end
     respond success, obj
   end
 

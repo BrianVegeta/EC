@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-import { IndexLink } from 'react-router';
-
+import { IndexLink, Link } from 'react-router';
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
@@ -38,11 +37,30 @@ class Header extends React.Component {
     fixed: PropTypes.bool,
     hasShortcut: PropTypes.bool,
     searchable: PropTypes.bool,
-
     auth: myPropTypes.authOnHeader.isRequired,
     dispatchLogout: PropTypes.func.isRequired,
     dispatchPublish: PropTypes.func.isRequired,
+    dispatchNotify: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    const { auth } = this.props;
+    if (auth.isLogin) {
+      this.props.dispatchNotify();
+    }
+  }
+
+  renderCircle() {
+    const { notification } = this.props;
+    const { notifyData } = notification;
+
+    if (notifyData && (notifyData.length > 0)) {
+      return (
+        <div styleName="notice-circle" />
+      );
+    }
+    return null;
+  }
 
   render() {
     const {
@@ -61,7 +79,7 @@ class Header extends React.Component {
     const myWalletPath = my.walletPath;
     const myCollectionPath = my.collectionPath;
     const notifyIndexPath = notifyPath.contractNotifyPath;
-
+    // <NavItem action={notifyIndexPath} content="通知" />
 
     return (
       <header
@@ -102,7 +120,14 @@ class Header extends React.Component {
                     />
                   </NavItem>
                 }
-                {isLogin && <NavItem action={notifyIndexPath} content="通知" />}
+                {isLogin &&
+                  <li className="nav" >
+                    <Link to={notifyIndexPath}>
+                        通知
+                        {this.renderCircle()}
+                    </Link>
+                  </li>
+                }
                 {isLogin &&
                   <NavItem
                     action={dispatchPublish}
