@@ -108,6 +108,7 @@ Rails.application.routes.draw do
       post 'get_unread_notify', to: 'sync#notification_unread' #
       post 'count_unread_notify', to: 'sync#notification_unread_count' #
       post 'get_notify', to: 'sync#notification_read' #
+      post 'get_notify_contract', to: 'contract#get_unread_contract' #
       #SUE
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'

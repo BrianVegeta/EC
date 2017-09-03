@@ -1,7 +1,7 @@
 class Api::Contract::EndContract < ApiAuthedBase
-  
+
   PATH = '/client/contract/end_contract';
-  
+
   def path
     PATH
   end
@@ -9,5 +9,5 @@ class Api::Contract::EndContract < ApiAuthedBase
   def request_method
      :post_token
   end
-  
+
 end

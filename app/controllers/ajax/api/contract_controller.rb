@@ -243,6 +243,15 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  def get_unread_contract
+    obj = ::Api::Contract::GetUnreadContract.new current_uid_params, current_apitoken
+    success = obj.request
+    if obj.response_data.nil?
+      obj.response_data = []
+    end
+    respond success, obj
+  end
+
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)
