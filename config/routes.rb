@@ -72,7 +72,6 @@ Rails.application.routes.draw do
       # post 'sync/notification_unread', to: 'sync#notification_unread' #
       # post 'sync/notification_unread_count', to: 'sync#notification_unread_count' #
       # post 'sync/notification_read', to: 'sync#notification_read' #
-      post 'sync/chat_rooms', to: 'sync#chat_rooms' #
       post 'sync/chat_logs', to: 'sync#chat_logs' #
 
 
@@ -91,6 +90,8 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      # CHAT ROOM
+      post 'sync_chat_rooms', to: 'sync#chat_rooms'
 
       #PROFILE
       post 'get_track_count', to: 'userprofile#track_count' #

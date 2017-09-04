@@ -5,6 +5,7 @@ import myPropTypes from 'propTypes';
 import { loginPath } from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
 import PopupContainer from 'containers/Popup/Container';
+import ChatRoomContainer from 'containers/ChatRoom/Container';
 import { confirmLeavePage } from 'lib/confirm';
 
 
@@ -108,6 +109,7 @@ export default function layout(Component, {
       return (
         <div>
           <Component {...this.props} />
+          {isLogin && <ChatRoomContainer />}
           <PopupContainer />
         </div>
       );

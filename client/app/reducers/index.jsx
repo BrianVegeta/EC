@@ -12,6 +12,7 @@ import routingHelper from 'modules/routingHelper';
 import auth from 'modules/auth';
 import login from 'modules/login';
 import filter from 'modules/filter';
+import chat from 'modules/chat';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import notification from 'modules/notification';
@@ -44,6 +45,7 @@ const reducers = {
   auth,
   login,
   filter,
+  chat,
 
   banners,
   routesHelper,
