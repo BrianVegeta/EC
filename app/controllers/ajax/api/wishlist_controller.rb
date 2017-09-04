@@ -67,7 +67,7 @@ class Ajax::Api::WishlistController < ApplicationController
      # name : String => 搜尋標題 [option]
      # cat_id : String => 類型Id [option]
      # locations : List<Object> => 地區列表 [option]
-     params.permit(:uid, :last_id, :name, :cat_id, locations: []).merge(paging_params)
+     params.permit(:uid, :last_id, :name, :cat_id, locations: [:city, :area]).merge(paging_params)
    end
    def remove_params
      params.permit(:id).merge(current_uid_params).merge(current_uid_params)

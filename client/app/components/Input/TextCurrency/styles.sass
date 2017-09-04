@@ -2,16 +2,14 @@
 
 $unitWidth: 40px
 
-.inputOuter
+.input-outer
   composes: inputer
   position: relative
-
-.inputOuterFocusing
-  composes: inputOuter
-  border-color: $inputFocusingBorderColor
-  box-shadow: $inputFocusingShadow
-  .unit
-    color: $inputTextColor
+  &.focusing
+    border-color: $inputFocusingBorderColor
+    box-shadow: $inputFocusingShadow
+    .unit
+      color: $inputTextColor
 
 .unit
   user-select: none

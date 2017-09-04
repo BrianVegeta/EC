@@ -23,7 +23,6 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 
-
 class StepPrice extends React.Component {
 
   static propTypes = {

@@ -22,7 +22,6 @@ class SidebarCategories extends React.Component {
     if (isEqual(pickNextProps, pickProps)) {
       return false;
     }
-    console.log(nextProps);
     return true;
   }
 

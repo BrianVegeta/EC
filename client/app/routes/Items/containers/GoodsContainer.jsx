@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { CATEGORY_GOODS_ID } from 'constants/enums';
+import { CATEGORY_GOODS_ID, CATEGORY_GOODS } from 'constants/enums';
 import { mapCategoryNameByID } from 'lib/category';
 
 import Items from '../components/Items';
@@ -12,6 +12,7 @@ const mapStateToProps = ({ environment, items }) => ({
   items,
   categoryName: mapCategoryNameByID(CATEGORY_GOODS_ID),
   categoryID: CATEGORY_GOODS_ID,
+  filterType: CATEGORY_GOODS,
 });
 
 /* pick dispatch */

@@ -84,7 +84,7 @@ export default {
       lessThanOrEqualTo: PRICE_MAX,
       notLessThanOrEqualTo: `^請小於 ${formatCurrency(PRICE_MAX)}`,
       greaterThanOrEqualTo: PRICE_MIN,
-      notGreaterThanOrEqualTo: `^至少要 ${formatCurrency(PRICE_MAX)}元以上的租金`,
+      notGreaterThanOrEqualTo: `^至少要 ${formatCurrency(PRICE_MIN)}元以上的租金`,
     },
   },
   deposit: {
