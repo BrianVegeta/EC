@@ -27,6 +27,10 @@ class ApplicationController < ActionController::Base
   end
 
   def reverse_merge data, format
+    if data.nil?
+      return format
+    end
+
     data.stringify_keys.merge(format.stringify_keys) do |key, v1, v2|
       v1.nil? ? v2 : v1
     end

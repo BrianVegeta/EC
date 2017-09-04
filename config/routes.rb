@@ -91,6 +91,9 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+      #PAYMENT
+      post 'creditcard_payment', to: 'payment#pay_creditcard'
+      post 'get_paymentinfo', to: 'payment#get_order'
       #SEARCH
       post 'multi', to: 'search#multi_search' #
       post 'search_user', to: 'userprofile#search' #

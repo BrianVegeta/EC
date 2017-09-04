@@ -11,11 +11,14 @@ export const RENDER_SCORE_RATING = 'RENDER_SCORE_RATING';
 export const RENDER_SUE_DETAIL = 'RENDER_SUE_DETAIL';
 export const RENDER_LOGIN = 'RENDER_LOGIN';
 export const RENDER_SHOW_WISH = 'RENDER_SHOW_WISH';
+export const RENDER_ATM = 'RENDER_ATM';
 
 // =============================================
 // = action type =
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
+const FETCHING = prefix('FETCHING');
+const FETCHED = prefix('FETCHED');
 const OPEN = prefix('OPEN');
 const CLOSE = prefix('CLOSE');
 
@@ -55,6 +58,18 @@ export const popupLogin = options =>
 export const popupShowWish = options =>
   openPopup({ renderType: RENDER_SHOW_WISH, options });
 
+export const popupATMBank = options =>
+  openPopup({ renderType: RENDER_ATM, options });
+
+export const popupFetching = () => ({
+  type: FETCHING,
+});
+
+export const popupFetched = options => ({
+  type: FETCHED,
+  options,
+});
+
 
 // =============================================
 // = reducer =
@@ -62,6 +77,7 @@ export const popupShowWish = options =>
 const initialState = {
   isOpen: false,
   renderType: null,
+  isFetching: false,
   options: {},
 };
 
@@ -77,6 +93,17 @@ export default (state = initialState, action) => {
 
     case CLOSE:
       return initialState;
+
+    case FETCHING:
+      return Object.assign({}, state, {
+        isFetching: true,
+      });
+
+    case FETCHED:
+      return Object.assign({}, state, {
+        isFetching: false,
+        options: action.options,
+      });
 
     default:
       return state;

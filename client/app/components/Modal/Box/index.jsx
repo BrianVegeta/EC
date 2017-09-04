@@ -15,6 +15,7 @@ const ContentContainer = styled.div`
   box-shadow: 0 0 20px #333;
   margin: 80px auto;
   overflow: hidden;
+  border-radius: 6px;
 `;
 
 const cx = classnames.bind(styles);

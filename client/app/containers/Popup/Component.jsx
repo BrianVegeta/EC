@@ -11,6 +11,8 @@ import {
   RENDER_SCORE_RATING,
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
+  // RENDER_TWO_BUTTONS,
+  RENDER_ATM,
   RENDER_SHOW_WISH,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
@@ -19,6 +21,7 @@ import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
 import ShowWishContainer from 'containers/Popup/ShowWish';
+import ATMBankContainer from 'containers/Popup/ATMBank';
 
 class Popup extends React.Component {
 
@@ -103,6 +106,19 @@ class Popup extends React.Component {
           <ModalBox width={700} onClose={dispatchCloseModal} >
             <ShowWishContainer
               card={options.card}
+              dispatchClose={this.props.dispatchCloseModal}
+            />
+          </ModalBox>
+        );
+
+      case RENDER_ATM:
+        return (
+          <ModalBox
+            width={470}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <ATMBankContainer
+              options={options}
               dispatchClose={this.props.dispatchCloseModal}
             />
           </ModalBox>

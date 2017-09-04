@@ -449,7 +449,7 @@ class StepForm extends React.Component {
         return (
           <div>
             <div styleName="dates-picker-container">
-              {this.renderDatesPicker()}
+              {this.renderDatesPicker(reservation, reservationItem)}
             </div>
           </div>
         );

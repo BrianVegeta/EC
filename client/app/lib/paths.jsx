@@ -52,7 +52,10 @@ export const wishRouter = {
   indexPath: '/p/i/wishing-pond',
 };
 
-
+export const orderDetail = {
+  indexPath: cid => `/p/order-detail/${cid}`,
+  sueFormPath: cid => `/p/sue-form/${cid}`,
+};
 /* =============================================>>>>>
 = 發佈 =
 ===============================================>>>>>*/

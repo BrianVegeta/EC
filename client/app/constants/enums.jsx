@@ -21,3 +21,7 @@ export const mappingIDFromCategory = {
   [CATEGORY_SERVICE]: CATEGORY_SERVICE_ID,
   [CATEGORY_SPACE]: CATEGORY_SPACE_ID,
 };
+
+export const CONTRACT_GOODS_ID = 0;
+export const CONTRACT_SERVICE_ID = 1;
+export const CONTRACT_SPACE_ID = 2;

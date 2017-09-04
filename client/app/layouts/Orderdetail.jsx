@@ -19,7 +19,10 @@ class OrderdetailLayout extends React.Component {
     return (
       <div className="container-gray-bg" style={{ paddingBottom: 20 }}>
         <HeaderContainer />
-        <MainWrapper minHeight={environment.height}>
+        <MainWrapper
+          minHeight={environment.height}
+          style={{ marginBottom: 120, width: 840 }}
+        >
           {children}
         </MainWrapper>
       </div>

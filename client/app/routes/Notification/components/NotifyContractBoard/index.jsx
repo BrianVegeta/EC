@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import BellIcon from 'react-icons/lib/md/notifications';
 import colors from 'styles/colorExport.scss';
 import { formatDate } from 'lib/time';
-import { orderRouter } from 'lib/paths';
+import { orderDetail } from 'lib/paths';
 import styles from './styles.sass';
 
 class NotifyContractBoard extends React.Component {
@@ -33,7 +33,7 @@ class NotifyContractBoard extends React.Component {
         <div styleName="notify-contract-content">
           <Link
             styleName="notify-contract-link"
-            to={orderRouter.orderPath(cid)}
+            to={orderDetail.indexPath(cid)}
           >
             {message}
           </Link>
