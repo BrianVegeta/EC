@@ -135,6 +135,18 @@ export default {
       notGreaterThanOrEqualTo: '^至少一人',
     },
   },
+  goodsUnit: {
+    presence: {
+      message: '^請填庫存數量',
+    },
+    numericality: {
+      notValid: '^請填數字',
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      greaterThanOrEqualTo: SERVICE_UNIT_MIN,
+      notGreaterThanOrEqualTo: '^至少一人',
+    },
+  },
   serviceReservationDays: {
     numericality: {
       notValid: '^請填數字',

@@ -109,6 +109,7 @@ class StepAbout extends React.Component {
             placeholder="清楚介紹您的物品，敘述更多吸引人的細節"
             onChange={value => dispatchChangeData({ descript: value })}
             value={descript}
+            minHeight={100}
             constraints={constraints.descript}
             validateOnBlur
           />

@@ -85,6 +85,33 @@ class StepConfirm extends React.Component {
     });
   }
 
+  renderDiscount() {
+    const { publish } = this.props;
+    const { discounts, chargeType } = publish;
+    console.log(discounts);
+    if (discounts.length <= 0) {
+      return (
+        <tr>
+          <th width={154}>優惠價</th>
+          <td><div>沒有特價方案</div></td>
+        </tr>
+      );
+    }
+    const unitStr = chargeType === CHARGE_TYPE_DAY ? '日' : '月';
+    return (
+      <tr>
+        <th width={154}>優惠價</th>
+        <td>
+          {discounts.map((obj, index) =>
+            (<div key={index + 1}>
+              租滿{obj.param}{unitStr}，每{unitStr}{formatCurrency(obj.discount)}
+            </div>),
+          )}
+        </td>
+      </tr>
+    );
+  }
+
   render() {
     const {
       publish,
@@ -156,7 +183,7 @@ class StepConfirm extends React.Component {
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>所地址</th>
+                <th width={154}>所在地址</th>
                 <td>
                   {cityName}
                   {areaName}
@@ -170,32 +197,32 @@ class StepConfirm extends React.Component {
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>價格</th>
+                <th>計費方式</th>
                 <td>
-                  <div>分享金： {formatCurrency(price)}</div>
-                  <div>押金： {formatCurrency(deposit)}</div>
+                  {{
+                    [CHARGE_TYPE_DAY]: '以日計費',
+                    [CHARGE_TYPE_MONTH]: '以月計費',
+                  }[chargeType]}
                 </td>
               </tr>
               <tr>
-                <th>計費方式</th>
+                <th width={154}>價格</th>
                 <td>
                   <div>
                     {{
-                      [CHARGE_TYPE_DAY]: '以日計費',
-                      [CHARGE_TYPE_MONTH]: '以月計費',
+                      [CHARGE_TYPE_DAY]: `每日${formatCurrency(price)}`,
+                      [CHARGE_TYPE_MONTH]: `每月${formatCurrency(price)}`,
                     }[chargeType]}
                   </div>
                 </td>
               </tr>
-              {
-                discount ?
-                  <tr>
-                    <th width={154}>優惠價</th>
-                    <td>{formatCurrency(discount)}</td>
-                  </tr>
-                  :
-                  null
-              }
+              <tr>
+                <th width={154}>押金</th>
+                <td>
+                  <div>每筆交易{formatCurrency(deposit)}</div>
+                </td>
+              </tr>
+              { this.renderDiscount() }
               {
                 hasCancelPolicy ?
                   <tr>

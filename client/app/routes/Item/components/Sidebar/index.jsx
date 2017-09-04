@@ -51,11 +51,11 @@ class Sidebar extends React.Component {
       case CHARGE_TYPE_DAY:
         return ('天');
       case CHARGE_TYPE_COUNT:
-        return ('個');
+        return ('件');
       case CHARGE_TYPE_MONTH:
         return ('月');
       default:
-        return ('個');
+        return ('件');
     }
   }
   render() {

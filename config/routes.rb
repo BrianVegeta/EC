@@ -91,6 +91,11 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
+
+      #PROFILE
+      post 'get_track_count', to: 'userprofile#track_count' #
+      post 'get_comments_count', to: 'userprofile#comments_count' #
+
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'
@@ -103,6 +108,7 @@ Rails.application.routes.draw do
       post 'get_unread_notify', to: 'sync#notification_unread' #
       post 'count_unread_notify', to: 'sync#notification_unread_count' #
       post 'get_notify', to: 'sync#notification_read' #
+      post 'get_notify_contract', to: 'contract#get_unread_contract' #
       #SUE
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'
@@ -138,6 +144,7 @@ Rails.application.routes.draw do
       post 'get_order', to: 'contract#get' #
       post 'get_order_images', to: 'contract#images'
       post 'get_order_logs', to: 'contract#logs'
+      post 'send_read', to: 'contract#read'
 
       #COMMENTS
       post 'get_owner_comments', to: 'userprofile#owner_comments' #
@@ -195,6 +202,7 @@ Rails.application.routes.draw do
       # USERPROFILE CONTROLLER
       # ======================================
       post 'user_info', to: 'userprofile#user_general_info'
+      post 'public_user_info', to: 'userprofile#public_user_info'
       post 'get_userprofile', to: 'userprofile#get'
       post 'save_userprofile', to: 'userprofile#save'
       post 'user_bind_facebook', to: 'userprofile#set_facebook'

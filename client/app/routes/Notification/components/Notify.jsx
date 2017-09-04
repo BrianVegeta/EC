@@ -14,7 +14,12 @@ class Notify extends React.Component {
   render() {
     const { children } = this.props;
     return (
-      <div>{children}</div>
+      <div style={{
+        backgroundColor: '#FFF',
+        padding: 20 }}
+      >
+        {children}
+      </div>
     );
   }
 }

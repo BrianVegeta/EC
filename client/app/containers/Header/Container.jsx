@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import { logout } from 'modules/auth';
 import { popupPublishEntry } from 'modules/popup';
-
+import { getNotitications } from 'modules/notification';
 import Component from './index';
-
 
 /* pick props */
 const mapStateToProps = ({ environment, auth, notification }, props) => ({
@@ -20,6 +19,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(logout());
   },
   dispatchPublish: () => dispatch(popupPublishEntry()),
+  dispatchNotify: () => dispatch(getNotitications()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

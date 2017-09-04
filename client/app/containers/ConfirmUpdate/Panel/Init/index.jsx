@@ -6,17 +6,19 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class PanelInit extends React.Component {
+  static defaultProps = {
+    value: null,
+  };
 
   static propTypes = {
     valueType: PropTypes.oneOf(['phone', 'email']).isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     actionType: PropTypes.string.isRequired,
     toEdit: PropTypes.func.isRequired,
   };
 
   render() {
     const { valueType, actionType, value, toEdit } = this.props;
-
     switch (actionType) {
       case TO_CREATE:
         return (

@@ -97,6 +97,16 @@ export function fetchOrder(cid) {
       .then((responseUserData) => {
         dispatch(fetchedLessee(responseUserData));
       });
+
+      asyncXhrAuthedPost(
+        '/ajax/send_read.json',
+        {
+          cid,
+          type: 'ME_READ',
+        },
+        getState(),
+      );
+
       if (contractstage < 4) {
         dispatch(asyncCheckReady());
       } else {

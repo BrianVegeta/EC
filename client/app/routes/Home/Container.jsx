@@ -25,7 +25,6 @@ class HomeContainer extends React.Component {
         <SliderContainer
           title={'推薦分類'}
           icon={IconCategory}
-          allLink="/"
           ready={categories.length > 0}
         >
           <Categories {...{ dispatch, categories }} />

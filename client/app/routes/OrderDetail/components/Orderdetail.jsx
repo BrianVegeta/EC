@@ -54,6 +54,7 @@ class Orderdetail extends React.Component {
       create_time: PropTypes.number,
     }),
     dispatch: PropTypes.func.isRequired,
+    dispatchRead: PropTypes.func.isRequired,
     dispatchBankSetup: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,

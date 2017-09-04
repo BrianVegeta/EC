@@ -79,12 +79,12 @@ class StepPrice extends React.Component {
             <InputTextCounter
               ref={unitInput => (this.unitInput = unitInput)}
               value={unit ? String(unit) : ''}
-              suffix="個"
+              suffix="件"
               placeholder="請輸入"
               min={SERVICE_UNIT_MIN}
               max={false}
               onChange={value => dispatchChangeData({ unit: value })}
-              constraints={constraints.serviceUnit}
+              constraints={constraints.goodsUnit}
               validateOnBlur
             />
           </FormGroup>
@@ -169,7 +169,7 @@ class StepPrice extends React.Component {
     return (
       <div styleName="container">
         { this.renderDatesAndUnit(publish) }
-        <FormGroup headerText="價格">
+        <FormGroup headerText="價格（每日價格）">
           <div styleName="currency-block">
             <InputTextCurrency
               ref={priceInput => (this.priceInput = priceInput)}
@@ -180,7 +180,7 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
-        <FormGroup headerText="押金">
+        <FormGroup headerText="押金（每筆交易）">
           <div styleName="currency-block">
             <InputTextCurrency
               ref={depositInput => (this.depositInput = depositInput)}

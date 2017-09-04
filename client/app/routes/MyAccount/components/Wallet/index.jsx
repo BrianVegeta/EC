@@ -38,7 +38,7 @@ class Wallet extends React.Component {
   }
 
   componentDidMount() {
-
+    // this.props.dispatchFetchRecords();
   }
 
   componentWillUnmount() {
@@ -84,7 +84,7 @@ class Wallet extends React.Component {
           </div>
         </div>
         <div styleName="balance-text-style">錢包餘額</div>
-        <div styleName="balance-value-style">NTD $2,000</div>
+        <div styleName="balance-value-style">NTD $0.00</div>
         <div style={{ paddingTop: 40, display: 'inline-block' }}>
           <DatesPicker
             startDate={this.state.startDate}

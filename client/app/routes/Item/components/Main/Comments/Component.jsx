@@ -8,7 +8,9 @@ class Comments extends React.Component {
 
   static propTypes = {
     isPaginable: PropTypes.bool.isRequired,
-    comments: PropTypes.arrayOf(PropTypes.string).isRequired,
+    comments: PropTypes.arrayOf(PropTypes.shape({
+      message: PropTypes.string,
+    })).isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchAddMessage: PropTypes.func.isRequired,
   };

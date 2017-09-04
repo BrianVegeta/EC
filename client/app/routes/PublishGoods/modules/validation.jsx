@@ -180,7 +180,7 @@ export const validatePriceBy = ({
   }, {
     price: constraints.price,
     deposit: constraints.deposit,
-    unit: constraints.serviceUnit,
+    unit: constraints.goodsUnit,
     minimumShippemntDay: constraints.minimumShippemntDay,
   });
   if (!(errors)) {

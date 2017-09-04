@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
+import { fetchCollections, reset } from 'modules/myCollection';
+
 import Container from '../components/Collections';
-import { fetchCollections, reset } from '../modules/myCollection';
 
 const mapStateToProps = (state) => {
   const { environment, myCollections } = state;

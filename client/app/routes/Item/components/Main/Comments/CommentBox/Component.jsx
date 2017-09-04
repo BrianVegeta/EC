@@ -80,12 +80,14 @@ class Comment extends React.Component {
   render() {
     // TODO: commentbox
     const { isFocusing, isControllerVisible, dispatchAddMessage } = this.state;
+    const refTextbox = textbox => (this.textbox = textbox);
     return (
       <div styleName="container">
         <div styleName="title">我要留言</div>
         <div>
           <Textarea
             {...{
+              ref: refTextbox,
               value: this.state.value,
               placeholder: '',
               onChange: this.onChange,

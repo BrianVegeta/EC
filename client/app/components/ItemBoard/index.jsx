@@ -11,6 +11,12 @@ import Avatar from 'components/Avatar';
 
 import { itemPath } from 'lib/paths';
 import { formatCurrency } from 'lib/currency';
+import {
+  CHARGE_TYPE_FIX,
+  CHARGE_TYPE_COUNT,
+  CHARGE_TYPE_DAY,
+  CHARGE_TYPE_MONTH,
+} from 'constants/publishTypes';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -47,6 +53,21 @@ class ItemBoard extends React.Component {
     if (onDelete) onDelete(pid);
   }
 
+  renderUnit(ChargeType) {
+    switch (ChargeType) {
+      case CHARGE_TYPE_FIX:
+        return '/次';
+      case CHARGE_TYPE_COUNT:
+        return '/件';
+      case CHARGE_TYPE_DAY:
+        return '/天';
+      case CHARGE_TYPE_MONTH:
+        return '/月';
+      default:
+        return '';
+    }
+  }
+
   renderDelete() {
     return (
       <div styleName="delete">
@@ -79,6 +100,7 @@ class ItemBoard extends React.Component {
       price,
       owner_name,
       owner_img,
+      calculate_charge_type,
     } = item;
 
     return (
@@ -91,7 +113,7 @@ class ItemBoard extends React.Component {
         <Link to={itemPath(pname, pid)} >
           <div styleName="title">{pname}</div>
         </Link>
-        <div styleName="price">{formatCurrency(price)}</div>
+        <div styleName="price">{formatCurrency(price)}{this.renderUnit(calculate_charge_type)}</div>
         <div styleName="footer">
           <div styleName="owner">
             <div styleName="avatar">

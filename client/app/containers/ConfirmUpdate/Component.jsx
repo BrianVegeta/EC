@@ -34,11 +34,12 @@ class Controller extends React.Component {
   static defaultProps = {
     dispatchCheckPassword: null,
     password: null,
+    value: null,
   };
 
   static propTypes = {
     valueType: PropTypes.oneOf(['phone', 'email']).isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     password: PropTypes.string,
 
     dispatchGetVerifyCode: PropTypes.func.isRequired,
