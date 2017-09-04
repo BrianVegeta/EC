@@ -1,6 +1,10 @@
 import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 import { LEASE } from 'constants/enums';
+import {
+  REDUCER_KEY as FILTER_REDUCER_KEY,
+  mapSortParams,
+} from 'modules/filter';
 
 /* =============================================>>>>>
 = settings =
@@ -74,16 +78,24 @@ export function fetchRecords(categoryID, recursiveRecords = []) {
       records,
       recursiveTimes,
     } = getState()[REDUCER_KEY];
+    const {
+      price: { max, min },
+      sort,
+      sendOption,
+      locations,
+    } = getState()[FILTER_REDUCER_KEY];
 
     const requestParams = {
       type: LEASE,
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       category_id: categoryID,
-      sort: {
-        column: 'time',
-        type: 'desc',
-      },
+
+      price_max: max,
+      price_min: min,
+      sort: mapSortParams(sort),
+      send_option: sendOption,
+      locations: locations.map(city => ({ city, area: '' })),
     };
 
     /* 增加 RECURSIVE 次數 */

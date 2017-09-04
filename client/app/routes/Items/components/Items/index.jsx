@@ -36,6 +36,7 @@ class Items extends React.Component {
     items: PropTypes.shape({
       records: PropTypes.array,
     }).isRequired,
+    filterType: PropTypes.string.isRequired,
   };
 
   static renderTitleIcon(categoryID) {
@@ -56,20 +57,28 @@ class Items extends React.Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.refetch = this.refetch.bind(this);
+  }
+
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchFetchRecords();
+    this.refetch();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.categoryID !== prevProps.categoryID) {
-      this.props.dispatchReset();
-      this.props.dispatchFetchRecords();
+      this.refetch();
     }
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  refetch() {
+    this.props.dispatchReset();
+    this.props.dispatchFetchRecords();
   }
 
   render() {
@@ -79,6 +88,7 @@ class Items extends React.Component {
       topCategoryID,
       items,
       dispatchFetchRecords,
+      filterType,
     } = this.props;
 
     const {
@@ -97,7 +107,10 @@ class Items extends React.Component {
             title={categoryName}
             renderIcon={() => renderTitleIcon(categoryID)}
           />
-          <FilterBarContainer />
+          <FilterBarContainer
+            refetch={this.refetch}
+            filterType={filterType}
+          />
         </PageHeader>
         <div className="clear">
           <SidebarCategoriesContainer categoryID={categoryID} />

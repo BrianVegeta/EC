@@ -45,6 +45,7 @@ class PriceRange extends React.Component {
     };
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
   onCancel() {
@@ -74,6 +75,12 @@ class PriceRange extends React.Component {
     }
   }
 
+  onClear() {
+    const state = { min: null, max: null };
+    this.props.onApplyChange(state);
+    this.setState(state);
+  }
+
   render() {
     const {
       isOpening,
@@ -91,6 +98,7 @@ class PriceRange extends React.Component {
         content={renderButtonContent({ max, min }, '價格範圍')}
         isOpen={isOpening}
         onClick={onButtonToggle}
+        onClickClear={min || max ? this.onClear : null}
       >
         <div styleName="container">
           <div styleName="input">

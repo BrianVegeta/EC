@@ -3,9 +3,19 @@
 .container
   position: relative
   margin-right: 10px
+  button.close-button, button.button
+    vertical-align: middle
+    padding-top: 4px
+    padding-bottom: 4px
+    line-height: 20px
+    &:hover
+      svg
+        color: $global-colorDanger
   button.button
+    vertical-align: middle
     border-radius: 4px
-    padding: 4px 10px
+    padding-left: 10px
+    padding-right: 10px
     .inner-content
       vertical-align: middle
       display: inline-block

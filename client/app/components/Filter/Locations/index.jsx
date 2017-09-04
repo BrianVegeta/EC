@@ -33,6 +33,7 @@ class Locations extends React.Component {
     };
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
+    this.onClear = this.onClear.bind(this);
     this.renderInputCheck = this.renderInputCheck.bind(this);
   }
 
@@ -66,6 +67,11 @@ class Locations extends React.Component {
     onButtonToggle();
   }
 
+  onClear() {
+    this.props.onApplyChange([]);
+    this.setState({ locations: List([]) });
+  }
+
   renderInputCheck(city, i) {
     const { locations } = this.state;
     return (
@@ -96,12 +102,14 @@ class Locations extends React.Component {
       isOpening,
       onButtonToggle,
     } = this.props;
+    const { locations } = this.state;
 
     return (
       <FilterButton
         content={this.renderButtonContent('所在地區')}
         isOpen={isOpening}
         onClick={onButtonToggle}
+        onClickClear={locations.size > 0 ? this.onClear : null}
       >
         <div styleName="container">
           <div styleName="title">北部地區</div>

@@ -11,7 +11,6 @@ export const RENDER_SCORE_RATING = 'RENDER_SCORE_RATING';
 export const RENDER_SUE_DETAIL = 'RENDER_SUE_DETAIL';
 export const RENDER_LOGIN = 'RENDER_LOGIN';
 export const RENDER_SHOW_WISH = 'RENDER_SHOW_WISH';
-export const RENDER_FILTER = 'RENDER_FILTER';
 
 // =============================================
 // = action type =
@@ -55,9 +54,6 @@ export const popupLogin = options =>
 
 export const popupShowWish = options =>
   openPopup({ renderType: RENDER_SHOW_WISH, options });
-
-export const popupFilter = options =>
-  openPopup({ renderType: RENDER_FILTER, options });
 
 
 // =============================================

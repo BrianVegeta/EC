@@ -9,7 +9,9 @@ import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import PageHeader from 'components/PageHeader';
 import PageTitle from 'components/PageTitle';
-import PageFilterBar from 'components/PageFilterBar';
+import FilterBarContainer, {
+  FILTER_TYPE_WISH,
+} from 'containers/FilterBar/Container';
 import AddWish from 'components/Button/AddWish';
 import IconWish from 'react-icons/lib/fa/magic';
 import styles from './styles.sass';
@@ -34,14 +36,20 @@ class WishingPond extends React.Component {
   constructor(props) {
     super(props);
     this.fetchSingleCard = this.fetchSingleCard.bind(this);
+    this.refetch = this.refetch.bind(this);
   }
+
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchFetchRecords();
+    this.refetch();
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  refetch() {
+    this.props.dispatchReset();
+    this.props.dispatchFetchRecords();
   }
 
   fetchSingleCard(id) {
@@ -86,7 +94,6 @@ class WishingPond extends React.Component {
           />
           <div styleName="action-container">
             <div styleName="action-filter-container">
-              <PageFilterBar />
             </div>
             <div styleName="action-filter-container">
               <AddWish
@@ -94,6 +101,10 @@ class WishingPond extends React.Component {
               />
             </div>
           </div>
+          <FilterBarContainer
+            refetch={this.refetch}
+            filterType={FILTER_TYPE_WISH}
+          />
         </PageHeader>
         <div className="clear">
           <ListContainer

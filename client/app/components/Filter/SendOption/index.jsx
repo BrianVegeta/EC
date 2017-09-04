@@ -36,6 +36,7 @@ class SendOption extends React.Component {
     };
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
   onCancel() {
@@ -57,6 +58,12 @@ class SendOption extends React.Component {
     } = this.state;
     onApplyChange({ sendOption });
     onButtonToggle();
+  }
+
+  onClear() {
+    const sendOption = null;
+    this.props.onApplyChange({ sendOption });
+    this.setState({ sendOption });
   }
 
   onRadioToggle(type) {
@@ -82,6 +89,7 @@ class SendOption extends React.Component {
         content={sendOption ? mapSendOption[sendOption] : '交貨方式'}
         isOpen={isOpening}
         onClick={onButtonToggle}
+        onClickClear={sendOption ? this.onClear : null}
       >
         <div styleName="container">
           <div styleName="input">

@@ -24,6 +24,24 @@ export const mapSortType = {
   [SORT_HIGH_PRICE]: '價格由高至低',
 };
 
+export const mapSortParams = (sortType) => {
+  switch (sortType) {
+    case SORT_NEWEST:
+      return { column: 'time', type: 'desc' };
+    case SORT_POPULAR:
+      return { column: 'view', type: 'desc' };
+    case SORT_LOW_PRICE:
+      return { column: 'price', type: 'asc' };
+    case SORT_HIGH_PRICE:
+      return { column: 'price', type: 'desc' };
+    default:
+      return {
+        column: 'time',
+        type: 'desc',
+      };
+  }
+};
+
 export const mapSendOption = {
   [SEND_OPTION_SELF_COORDINATE]: '自行協調',
   [SEND_OPTION_MAIL]: '郵寄',
@@ -62,6 +80,10 @@ export const changeSendOption = sendOption => ({
 export const setLocations = locations => ({
   type: SET_LOCATIONS,
   locations,
+});
+
+export const reset = () => ({
+  type: RESET,
 });
 
 

@@ -10,13 +10,17 @@ const mapStateToProps = ({
   environment, items, categories,
 }, {
   params: { cid },
-}) => ({
-  environment,
-  items,
-  categoryName: mapCategoryNameByID(cid, categories),
-  topCategoryID: mappingIDFromCategory[findTopCategory(cid, categories)],
-  categoryID: cid,
-});
+}) => {
+  const topCategory = findTopCategory(cid, categories);
+  return ({
+    environment,
+    items,
+    categoryName: mapCategoryNameByID(cid, categories),
+    topCategoryID: mappingIDFromCategory[topCategory],
+    categoryID: cid,
+    filterType: topCategory,
+  });
+};
 
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params: { cid } }) => ({

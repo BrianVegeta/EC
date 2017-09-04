@@ -12,7 +12,6 @@ import {
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
   RENDER_SHOW_WISH,
-  RENDER_FILTER,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
@@ -20,7 +19,6 @@ import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
 import ShowWishContainer from 'containers/Popup/ShowWish';
-import FilterPanelContainer from 'containers/Popup/FilterPanel/Container';
 
 class Popup extends React.Component {
 
@@ -107,13 +105,6 @@ class Popup extends React.Component {
               card={options.card}
               dispatchClose={this.props.dispatchCloseModal}
             />
-          </ModalBox>
-        );
-
-      case RENDER_FILTER:
-        return (
-          <ModalBox width={400} onClose={dispatchCloseModal} >
-            <FilterPanelContainer />
           </ModalBox>
         );
 
