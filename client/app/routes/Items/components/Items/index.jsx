@@ -6,10 +6,10 @@ import IconGoods from 'components/Icons/Publish/Goods';
 import IconSpace from 'components/Icons/Publish/Space';
 import PageHeader from 'components/PageHeader';
 import PageTitle from 'components/PageTitle';
-import PageFilterBar from 'components/PageFilterBar';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import ItemList from 'components/ItemList';
+import FilterBarContainer from 'containers/FilterBar/Container';
 import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
@@ -97,7 +97,7 @@ class Items extends React.Component {
             title={categoryName}
             renderIcon={() => renderTitleIcon(categoryID)}
           />
-          <PageFilterBar />
+          <FilterBarContainer />
         </PageHeader>
         <div className="clear">
           <SidebarCategoriesContainer categoryID={categoryID} />

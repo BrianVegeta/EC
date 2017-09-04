@@ -11,6 +11,7 @@ import orderAction from 'modules/orderAction';
 import routingHelper from 'modules/routingHelper';
 import auth from 'modules/auth';
 import login from 'modules/login';
+import filter from 'modules/filter';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import environment from './environmentReducer';
@@ -42,6 +43,8 @@ const reducers = {
   environment,
   auth,
   login,
+  filter,
+
   banners,
   routesHelper,
   recommends,

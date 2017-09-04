@@ -1,0 +1,27 @@
+@import "~styles/color.sass"
+
+.container
+  position: relative
+  margin-right: 10px
+  button.button
+    border-radius: 4px
+    padding: 4px 10px
+    .inner-content
+      vertical-align: middle
+      display: inline-block
+      margin-right: 2px
+      color: $global-middleBlack
+    svg
+      vertical-align: middle
+    &:hover, &.opening
+      background: #e7e7e7
+  .dropdown
+    position: absolute
+    z-index: 2
+    background: #fff
+    right: 0
+    top: 100%
+    margin-top: 10px
+    border: 1px solid $global-lineColor
+    border-radius: 5px
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14)

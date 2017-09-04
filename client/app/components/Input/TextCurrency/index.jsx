@@ -1,29 +1,15 @@
-// <InputCurrency
-//   unit=""
-//   value=""
-//   placeholder=""
-//   width={}
-//   onChange={}
-//   onBlur={}
-// />
-
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
-import {
-  isNumber,
-  parseInt,
-} from 'lodash';
-import numeral from 'numeral';
-
+import { formatCount } from 'lib/currency';
 import hasError from 'components/Input/hoc/hasError';
-
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import { constraintRange } from './helper';
 
-const classbind = classnames.bind(styles);
+
+const cx = classnames.bind(styles);
 class InputCurrency extends React.Component {
 
   static defaultProps = {
@@ -35,7 +21,6 @@ class InputCurrency extends React.Component {
     onBlur: null,
     max: null,
     min: null,
-    allowZero: false,
   };
 
   static propTypes = {
@@ -47,7 +32,6 @@ class InputCurrency extends React.Component {
     onBlur: PropTypes.func,
     max: PropTypes.number,
     min: PropTypes.number,
-    allowZero: PropTypes.bool,
   };
 
   constructor(props) {
@@ -58,71 +42,50 @@ class InputCurrency extends React.Component {
     this.format = this.format.bind(this);
     this.state = { isFocusing: false };
   }
+
   onBlur() {
     const { onBlur } = this.props;
     if (onBlur) { onBlur(); }
     this.setState({ isFocusing: false });
   }
+
   onFocus() {
     this.setState({ isFocusing: true });
   }
+
   onChange(e, value) {
     const { onChange } = this.props;
     if (onChange) {
       onChange(
-        this.typerizeValue(value),
+        value === '' ? null : parseInt(value, 10),
       );
     }
   }
-  typerizeValue(value) {
-    if (isNumber(this.props.value)) return parseInt(value);
-    return value;
-  }
-
-  naturalizeValue(value) {
-    const numbericValue = parseInt(value);
-    const rangedValue = this.valueRanged(numbericValue);
-    return numeral(rangedValue).format('0,000');
-  }
-
-  valueRanged(number) {
-    const { max, min, allowZero } = this.props;
-    if (max && number > max) { return max.toString(); }
-    if (min && number < min) {
-      if (allowZero) {
-        console.log((Math.round(number / min)) * min);
-      }
-      return min.toString();
-    }
-    return number;
-  }
 
   format(value) {
-    return this.naturalizeValue(value);
+    const { max, min } = this.props;
+    return formatCount(constraintRange(value, { max, min }));
   }
 
   render() {
     const { unit, placeholder, value, width } = this.props;
     const { isFocusing } = this.state;
-    const inputOuterClass = classbind({
-      inputOuterFocusing: isFocusing,
-      inputOuter: !isFocusing,
-    });
-    const unitClass = classbind('unit');
-    const inputClass = classbind('input');
-    const numformatProps = {
-      placeholder,
-      value,
-      onFocus: this.onFocus,
-      onBlur: this.onBlur,
-      onChange: this.onChange,
-      format: this.format,
-      allowNegative: false,
-    };
     return (
-      <div className={inputOuterClass} style={{ width }} >
-        <span className={unitClass}>{unit}</span>
-        <NumberFormat className={inputClass} {...numformatProps} />
+      <div
+        className={cx('input-outer', { focusing: isFocusing })}
+        style={{ width }}
+      >
+        <span className={cx('unit')}>{unit}</span>
+        <NumberFormat
+          className={cx('input')}
+          placeholder={placeholder}
+          value={value}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          onChange={this.onChange}
+          format={this.format}
+          allowNegative={false}
+        />
       </div>
     );
   }

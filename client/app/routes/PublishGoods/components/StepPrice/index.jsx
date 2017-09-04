@@ -4,7 +4,6 @@ import myPropTypes from 'propTypes';
 
 import FormContainer from 'components/Publish/FormContainer';
 import FormGroup from 'components/Form/Group';
-import InputRadio from 'components/Input/Radio';
 import InputTextCurrency from 'components/Input/TextCurrency';
 import InputTextCounter from 'components/Input/TextCounter';
 import DiscountGroup from 'components/DiscountGroup';

@@ -11,16 +11,16 @@ import {
   RENDER_SCORE_RATING,
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
-  // RENDER_TWO_BUTTONS,
   RENDER_SHOW_WISH,
+  RENDER_FILTER,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
-// import TwoButtonsContainer from 'containers/Popup/TwoButtons';
 import ShowWishContainer from 'containers/Popup/ShowWish';
+import FilterPanelContainer from 'containers/Popup/FilterPanel/Container';
 
 class Popup extends React.Component {
 
@@ -38,33 +38,25 @@ class Popup extends React.Component {
   }
 
   renderModal({ renderType, options }) {
+    const { dispatchCloseModal } = this.props;
     switch (renderType) {
       case RENDER_BANK_SETUP:
         return (
-          <ModalBox
-            width={600}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={600} onClose={dispatchCloseModal} >
             <BankSetupContainer password={options.password} />
           </ModalBox>
         );
 
       case RENDER_ACCESS_CHECK:
         return (
-          <ModalBox
-            width={500}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={500} onClose={dispatchCloseModal} >
             <AccessCheckContainer onChecked={options.onChecked} />
           </ModalBox>
         );
 
       case RENDER_SCORE_RATING:
         return (
-          <ModalBox
-            width={470}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={470} onClose={dispatchCloseModal} >
             <ScoreRatingContainer
               onScore={options.onScore}
               targetUrl={options.targetUrl}
@@ -84,10 +76,7 @@ class Popup extends React.Component {
 
       case RENDER_SUE_DETAIL:
         return (
-          <ModalBox
-            width={470}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={470} onClose={dispatchCloseModal} >
             <SueDetailContainter
               cid={options.cid}
               u_no={options.u_no}
@@ -106,43 +95,28 @@ class Popup extends React.Component {
 
       case RENDER_LOGIN:
         return (
-          <ModalBox
-            width={470}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={470} onClose={dispatchCloseModal} >
             <LoginContainer onAfterLogin={options.onAfterLogin} />
           </ModalBox>
         );
 
       case RENDER_SHOW_WISH:
         return (
-          <ModalBox
-            width={700}
-            onClose={this.props.dispatchCloseModal}
-          >
+          <ModalBox width={700} onClose={dispatchCloseModal} >
             <ShowWishContainer
               card={options.card}
               dispatchClose={this.props.dispatchCloseModal}
             />
           </ModalBox>
         );
-      // case RENDER_TWO_BUTTONS:
-      //   return (
-      //     <ModalBox
-      //       width={470}
-      //       onClose={this.props.dispatchCloseModal}
-      //     >
-      //       <TwoButtonsContainer
-      //         title={options.title}
-      //         content={options.content}
-      //         leftBtnContent={options.leftBtnContent}
-      //         onLeftClick={options.onLeftClick}
-      //         rightBtnContent={options.rightBtnContent}
-      //         onRightClick={options.onRightClick}
-      //         onClose={this.props.dispatchCloseModal}
-      //       />
-      //     </ModalBox>
-      //   );
+
+      case RENDER_FILTER:
+        return (
+          <ModalBox width={400} onClose={dispatchCloseModal} >
+            <FilterPanelContainer />
+          </ModalBox>
+        );
+
       default:
         return null;
 
