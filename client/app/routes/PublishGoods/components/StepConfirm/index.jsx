@@ -86,7 +86,7 @@ class StepConfirm extends React.Component {
       return (
         <tr>
           <th width={154}>優惠價</th>
-          <td>沒有特價方案</td>
+          <td><div>沒有特價方案</div></td>
         </tr>
       );
     }
@@ -97,7 +97,7 @@ class StepConfirm extends React.Component {
         <td>
           {discounts.map((obj, index) =>
             (<div key={index + 1}>
-              租借滿{obj.param}天，每件{formatCurrency(obj.discount)}
+              租滿{obj.param}日，每件{formatCurrency(obj.discount)}
             </div>),
           )}
         </td>
@@ -220,13 +220,13 @@ class StepConfirm extends React.Component {
               <tr>
                 <th width={154}>價格</th>
                 <td>
-                  每日{formatCurrency(price)}
+                  <div>每日{formatCurrency(price)}</div>
                 </td>
               </tr>
               <tr>
                 <th width={154}>押金</th>
                 <td>
-                  每筆交易{formatCurrency(deposit)}
+                  <div>每筆交易{formatCurrency(deposit)}</div>
                 </td>
               </tr>
               { hasOverduePolicy &&
