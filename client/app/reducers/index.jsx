@@ -13,6 +13,7 @@ import auth from 'modules/auth';
 import login from 'modules/login';
 import filter from 'modules/filter';
 import chat from 'modules/chat';
+import chatRooms from 'modules/chatRooms';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import notification from 'modules/notification';
@@ -46,6 +47,7 @@ const reducers = {
   login,
   filter,
   chat,
+  chatRooms,
 
   banners,
   routesHelper,

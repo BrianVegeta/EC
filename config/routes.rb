@@ -90,9 +90,9 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
-      # CHAT ROOM
+      # =========== CHAT ROOM 聊天室 =================
       post 'sync_chat_rooms', to: 'sync#chat_rooms'
-
+      post 'chat/get_openfire_login_token', to: 'internal#get_openfire_login_token'
       #PROFILE
       post 'get_track_count', to: 'userprofile#track_count' #
       post 'get_comments_count', to: 'userprofile#comments_count' #

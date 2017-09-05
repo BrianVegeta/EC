@@ -12,8 +12,9 @@ class ChatRoom extends React.Component {
 
   static propTypes = {
     dispatchFetchChatRoom: PropTypes.func.isRequired,
-
-    chat: PropTypes.shape({
+    dispatchConnect: PropTypes.func.isRequired,
+    chat: PropTypes.object.isRequired,
+    chatRooms: PropTypes.shape({
       rooms: PropTypes.array.isRequired,
     }).isRequired,
   };
@@ -39,6 +40,7 @@ class ChatRoom extends React.Component {
   componentDidMount() {
     console.log('mount');
     this.props.dispatchFetchChatRoom();
+    this.props.dispatchConnect();
   }
 
   componentWillUnmount() {
@@ -68,7 +70,8 @@ class ChatRoom extends React.Component {
       renderMinus,
     } = this.constructor;
     const {
-      chat: { rooms },
+      dispatchFetchChatRoom,
+      chatRooms,
     } = this.props;
 
     if (false) {
@@ -91,7 +94,10 @@ class ChatRoom extends React.Component {
         </div>
         <div className={cx('body')}>
           <div styleName="user-list">
-            <UserList rooms={rooms} />
+            <UserList
+              chatRooms={chatRooms}
+              fetchRooms={dispatchFetchChatRoom}
+            />
           </div>
         </div>
       </div>
