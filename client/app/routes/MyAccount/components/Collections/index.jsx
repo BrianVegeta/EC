@@ -12,6 +12,9 @@ class Collections extends React.Component {
     // myCollections: PropTypes.shape({
     //  collections: PropTypes.array.isRequired,
     // }).isRequired,
+    myCollections: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
   };
@@ -30,12 +33,12 @@ class Collections extends React.Component {
     if (myCollections == null) {
       return null;
     }
-    const { records } = myCollections
+    const { records } = myCollections;
     return (
       <Container titleText={'收藏'}>
         <ListContainer
           minHeight={500}
-          noDataText={(records.length === 0) ? '沒有收藏' : null }
+          noDataText={(records.length === 0) ? '目前沒有優收藏' : null}
           isInitialFetching={myCollections.isFetching && records.length === 0}
         >
           <ItemList

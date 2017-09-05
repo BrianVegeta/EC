@@ -10,7 +10,6 @@ export const RENDER_PUBLISH_ENTRY = 'RENDER_PUBLISH_ENTRY';
 export const RENDER_SCORE_RATING = 'RENDER_SCORE_RATING';
 export const RENDER_SUE_DETAIL = 'RENDER_SUE_DETAIL';
 export const RENDER_LOGIN = 'RENDER_LOGIN';
-// export const RENDER_TWO_BUTTONS = 'RENDER_TWO_BUTTONS';
 export const RENDER_SHOW_WISH = 'RENDER_SHOW_WISH';
 export const RENDER_ATM = 'RENDER_ATM';
 
@@ -55,9 +54,6 @@ export const popupSueDetail = options =>
 
 export const popupLogin = options =>
   openPopup({ renderType: RENDER_LOGIN, options });
-
-// export const popupTwoButtons = options =>
-//   openPopup({ renderType: RENDER_TWO_BUTTONS, options });
 
 export const popupShowWish = options =>
   openPopup({ renderType: RENDER_SHOW_WISH, options });

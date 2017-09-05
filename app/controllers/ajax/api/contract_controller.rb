@@ -243,6 +243,15 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  def get_unread_contract
+    obj = ::Api::Contract::GetUnreadContract.new current_uid_params, current_apitoken
+    success = obj.request
+    if obj.response_data.nil?
+      obj.response_data = []
+    end
+    respond success, obj
+  end
+
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)
@@ -257,7 +266,7 @@ class Ajax::Api::ContractController < ApplicationController
     if current_user['uid'] === response_data['lesseeuid']
       return response_data
     end
-    response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
+    response_data = response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
     if (response_data['contractstage'] < 4)
       response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
       response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);

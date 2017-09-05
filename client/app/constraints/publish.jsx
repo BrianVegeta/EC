@@ -84,7 +84,7 @@ export default {
       lessThanOrEqualTo: PRICE_MAX,
       notLessThanOrEqualTo: `^請小於 ${formatCurrency(PRICE_MAX)}`,
       greaterThanOrEqualTo: PRICE_MIN,
-      notGreaterThanOrEqualTo: `^至少要 ${formatCurrency(PRICE_MAX)}元以上的租金`,
+      notGreaterThanOrEqualTo: `^至少要 ${formatCurrency(PRICE_MIN)}元以上的租金`,
     },
   },
   deposit: {
@@ -126,6 +126,18 @@ export default {
   serviceUnit: {
     presence: {
       message: '^請填人數',
+    },
+    numericality: {
+      notValid: '^請填數字',
+      onlyInteger: true,
+      notInteger: '^請填數字',
+      greaterThanOrEqualTo: SERVICE_UNIT_MIN,
+      notGreaterThanOrEqualTo: '^至少一人',
+    },
+  },
+  goodsUnit: {
+    presence: {
+      message: '^請填庫存數量',
     },
     numericality: {
       notValid: '^請填數字',

@@ -18,14 +18,12 @@ import {
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_MONTH,
   GREATER_OR_EQUAL_TO_N_DAY,
-  GREATER_OR_EQUAL_TO_N_MONTH
+  GREATER_OR_EQUAL_TO_N_MONTH,
  } from 'constants/publishTypes';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 // import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
-
 
 class StepPrice extends React.Component {
 
@@ -180,7 +178,7 @@ class StepPrice extends React.Component {
     );
   }
 
-  renderAfterChoosed() {
+  renderAfterChoosed(type) {
     const {
       publish,
       dispatchChangeData,
@@ -193,7 +191,7 @@ class StepPrice extends React.Component {
 
     return (
       <div styleName="container">
-        <FormGroup headerText="價格">
+        <FormGroup headerText={type === CHARGE_TYPE_DAY ? '價格（每日價格）' : '價格（每月價格）'}>
           <div styleName="currency-block">
             <InputTextCurrency
               ref={priceInput => (this.priceInput = priceInput)}
@@ -204,7 +202,7 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
-        <FormGroup headerText="押金">
+        <FormGroup headerText="押金（每筆交易）">
           <div styleName="currency-block">
             <InputTextCurrency
               ref={depositInput => (this.depositInput = depositInput)}
@@ -233,8 +231,8 @@ class StepPrice extends React.Component {
         {this.renderRadioInput(chargeType, '以日計費', CHARGE_TYPE_DAY)}
         {this.renderRadioInput(chargeType, '以月計費', CHARGE_TYPE_MONTH)}
         {{
-          [CHARGE_TYPE_DAY]: this.renderAfterChoosed(),
-          [CHARGE_TYPE_MONTH]: this.renderAfterChoosed(),
+          [CHARGE_TYPE_DAY]: this.renderAfterChoosed(CHARGE_TYPE_DAY),
+          [CHARGE_TYPE_MONTH]: this.renderAfterChoosed(CHARGE_TYPE_MONTH),
         }[chargeType]}
       </FormContainer>
     );

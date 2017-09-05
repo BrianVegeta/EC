@@ -6,10 +6,10 @@ import IconGoods from 'components/Icons/Publish/Goods';
 import IconSpace from 'components/Icons/Publish/Space';
 import PageHeader from 'components/PageHeader';
 import PageTitle from 'components/PageTitle';
-import PageFilterBar from 'components/PageFilterBar';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import ItemList from 'components/ItemList';
+import FilterBarContainer from 'containers/FilterBar/Container';
 import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
@@ -36,6 +36,7 @@ class Items extends React.Component {
     items: PropTypes.shape({
       records: PropTypes.array,
     }).isRequired,
+    filterType: PropTypes.string.isRequired,
   };
 
   static renderTitleIcon(categoryID) {
@@ -56,20 +57,28 @@ class Items extends React.Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.refetch = this.refetch.bind(this);
+  }
+
   componentDidMount() {
-    this.props.dispatchReset();
-    this.props.dispatchFetchRecords();
+    this.refetch();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.categoryID !== prevProps.categoryID) {
-      this.props.dispatchReset();
-      this.props.dispatchFetchRecords();
+      this.refetch();
     }
   }
 
   componentWillUnmount() {
     this.props.dispatchReset();
+  }
+
+  refetch() {
+    this.props.dispatchReset();
+    this.props.dispatchFetchRecords();
   }
 
   render() {
@@ -79,6 +88,7 @@ class Items extends React.Component {
       topCategoryID,
       items,
       dispatchFetchRecords,
+      filterType,
     } = this.props;
 
     const {
@@ -97,7 +107,10 @@ class Items extends React.Component {
             title={categoryName}
             renderIcon={() => renderTitleIcon(categoryID)}
           />
-          <PageFilterBar />
+          <FilterBarContainer
+            refetch={this.refetch}
+            filterType={filterType}
+          />
         </PageHeader>
         <div className="clear">
           <SidebarCategoriesContainer categoryID={categoryID} />

@@ -1,5 +1,8 @@
 import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
+import {
+  REDUCER_KEY as FILTER_REDUCER_KEY,
+} from 'modules/filter';
 
 /* =============================================>>>>>
 = settings =
@@ -75,10 +78,14 @@ export function fetchRecords(recursiveRecords = []) {
       recursiveTimes,
       lastId,
     } = getState()[REDUCER_KEY];
+    const {
+      locations,
+    } = getState()[FILTER_REDUCER_KEY];
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       // last_id: lastId,
+      locations: locations.map(city => ({ city, area: '' })),
     };
 
     /* 增加 RECURSIVE 次數 */

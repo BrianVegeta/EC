@@ -11,8 +11,10 @@ import orderAction from 'modules/orderAction';
 import routingHelper from 'modules/routingHelper';
 import auth from 'modules/auth';
 import login from 'modules/login';
+import filter from 'modules/filter';
 
 import myCoupon from 'connector/myCoupon/reducer';
+import notification from 'modules/notification';
 import environment from './environmentReducer';
 // import auth from './authReducer';
 import banners from './bannersReducer';
@@ -21,7 +23,6 @@ import recommends from './recommendsReducer';
 import itemRelease from './itemReleaseReducer';
 // import publish from './publishReducer';
 import search from './searchReducer';
-import notification from './notificationReducer';
 import home from './homeReducer';
 import reservation from './reservationReducer';
 import modal from './modalReducer';
@@ -42,6 +43,8 @@ const reducers = {
   environment,
   auth,
   login,
+  filter,
+
   banners,
   routesHelper,
   recommends,

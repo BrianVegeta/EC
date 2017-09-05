@@ -78,6 +78,33 @@ class StepConfirm extends React.Component {
     });
   }
 
+  renderDiscount() {
+    const { publish } = this.props;
+    const { discounts } = publish;
+    console.log(discounts);
+    if (discounts.length <= 0) {
+      return (
+        <tr>
+          <th width={154}>優惠價</th>
+          <td><div>沒有特價方案</div></td>
+        </tr>
+      );
+    }
+
+    return (
+      <tr>
+        <th width={154}>優惠價</th>
+        <td>
+          {discounts.map((obj, index) =>
+            (<div key={index + 1}>
+              租滿{obj.param}日，每件{formatCurrency(obj.discount)}
+            </div>),
+          )}
+        </td>
+      </tr>
+    );
+  }
+
   render() {
     const {
       publish,
@@ -110,7 +137,6 @@ class StepConfirm extends React.Component {
       price,
       deposit,
       unit,
-      discount,
       hasOverduePolicy,
       overdueRate,
     } = publish;
@@ -120,7 +146,6 @@ class StepConfirm extends React.Component {
     } = publish;
 
     const { renderCovers } = this.constructor;
-
     return (
       <FormContainer title="確認發佈" >
         <ConfirmTitle title="物品照片" >
@@ -163,14 +188,14 @@ class StepConfirm extends React.Component {
               <tr>
                 <th width={154}>可寄件方式</th>
                 <td>
-                  {sendByInPerson && '面交（自行協調取貨地點/'}
+                  {sendByInPerson && '面交（自行協調取貨地點）/'}
                   {sendByOtherShippment && '自行寄件/'}
                 </td>
               </tr>
               <tr>
                 <th width={154}>可寄還方式</th>
                 <td>
-                  {returnByInPerson && '面交（自行協調取貨地點/'}
+                  {returnByInPerson && '面交（自行協調取貨地點）/'}
                   {returnByOtherShippment && '自行寄件/'}
                 </td>
               </tr>
@@ -187,30 +212,32 @@ class StepConfirm extends React.Component {
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>庫存數量：</th>
+                <th width={154}>庫存數量</th>
                 <td>
-                  <div>{unit}個</div>
+                  <div>{unit}件</div>
                 </td>
               </tr>
               <tr>
                 <th width={154}>價格</th>
                 <td>
-                  <div styleName="cell">分享金： {formatCurrency(price)}</div>
-                  <div styleName="cell">押金： {formatCurrency(deposit)}</div>
-                  { hasOverduePolicy &&
-                    <div styleName="cell">逾期金：逾期1天，扣除押金NTD${ Math.ceil((deposit * overdueRate) / 100) }</div>
-                  }
+                  <div>每日{formatCurrency(price)}</div>
                 </td>
               </tr>
-              {
-                discount ?
-                  <tr>
-                    <th width={154}>優惠價</th>
-                    <td>{formatCurrency(discount)}</td>
-                  </tr>
-                  :
-                  null
+              <tr>
+                <th width={154}>押金</th>
+                <td>
+                  <div>每筆交易{formatCurrency(deposit)}</div>
+                </td>
+              </tr>
+              { hasOverduePolicy &&
+                <tr>
+                  <th width={154}>逾期金</th>
+                  <td>
+                    <div styleName="cell">逾期1天，扣除押金NTD${ Math.ceil((deposit * overdueRate) / 100) }</div>
+                  </td>
+                </tr>
               }
+              {this.renderDiscount()}
             </tbody>
           </table>
         </ConfirmTitle>

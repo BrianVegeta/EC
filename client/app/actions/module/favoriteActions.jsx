@@ -8,7 +8,7 @@ export function addFavorite(pid, waiting, done) {
       `/ajax/add_fav.json`,
       { pid: pid },
       (response) => {
-      
+
          done();
       },
     );
@@ -22,7 +22,7 @@ export function removeFavorite(pid, waiting, done) {
         `/ajax/remove_fav.json`,
         { pid: pid },
         (response) => {
-        
+
            done();
         },
       );

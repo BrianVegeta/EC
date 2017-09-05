@@ -20,6 +20,14 @@ class Userprofile extends React.Component {
   static propTypes = {
     userprofile: PropTypes.shape({
       detail: PropTypes.object,
+      track: PropTypes.shape({
+        tracked_user_count: PropTypes.number,
+        fans_count: PropTypes.number,
+      }),
+      comments: PropTypes.shape({
+        owner_comments_count: PropTypes.number,
+        lessee_comments_count: PropTypes.number,
+      }),
     }).isRequired,
     children: myPropTypes.children.isRequired,
     dispatchFetchUser: PropTypes.func.isRequired,
@@ -39,7 +47,7 @@ class Userprofile extends React.Component {
 
   render() {
     const { userprofile: {
-      detail,
+      detail, track, comments,
     } } = this.props;
 
     if (!detail) return null;
@@ -61,12 +69,11 @@ class Userprofile extends React.Component {
       credit,
       phone,
     } = detail;
-
     const {
       renderSubscribeCount,
       renderSidebarDetailTerm,
     } = this.constructor;
-
+    const totalComments = (comments.owner_comments_count + comments.lessee_comments_count);
     return (
       <div styleName="container" className="clear">
         <div styleName="sidebar">
@@ -87,8 +94,10 @@ class Userprofile extends React.Component {
               <div styleName="detail-header">{name}</div>
               <div styleName="subscribe">
                 <div styleName="subscribe-count">
-                  <span style={{ marginRight: 35 }}>粉絲：{renderSubscribeCount(139193)}</span>
-                  <span>追蹤名單{renderSubscribeCount(139193)}</span>
+                  <span style={{ marginRight: 35 }}>
+                    粉絲：{renderSubscribeCount(track.fans_count)}
+                  </span>
+                  <span>追蹤名單：{renderSubscribeCount(track.tracked_user_count)}</span>
                 </div>
                 <div styleName="subscribe-btn" >
                   <FormButton
@@ -110,7 +119,9 @@ class Userprofile extends React.Component {
             <div styleName="score">{Math.floor(credit * 10) / 10}</div>
             <div styleName="stars-container">
               <Stars score={credit} activeColor="#FF9442" size={28} />
-              <div styleName="comment-count">209則評價</div>
+              <div styleName="comment-count">
+                {totalComments}則評價
+              </div>
             </div>
           </div>
           {website && <div styleName="website-container">{website}</div>}

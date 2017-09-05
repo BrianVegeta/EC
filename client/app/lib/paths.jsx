@@ -166,7 +166,7 @@ export const reservationGoods = {
 ===============================================>>>>>*/
 export const my = {
   indexPath: '/p/my',
-  itemPath: '/p/my/item',
+  // itemPath: '/p/my/item',
   myGoodsPath: '/p/my/goods',
   myServicePath: '/p/my/service',
   mySpacePath: '/p/my/space',
