@@ -34,10 +34,8 @@ const {
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
-export const FETCHING = prefix('FETCHING');
-export const FETCHED = prefix('FETCHED');
-export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
-export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
+export const INIT_CONNECTION = prefix('INIT_CONNECTION');
+export const UPDATE_CONNECTION = prefix('UPDATE_CONNECTION');
 export const RESET = prefix('RESET');
 
 // =============================================
@@ -59,20 +57,14 @@ const onMessage = (msg, connection) => {
   const from = msg.getAttribute('from');
   const fromUid = from.substring(0, from.indexOf('share@'));
   const messageType = msg.getAttribute('type');
-  const elems = msg.getElementsByTagName('body');
+  const bodys = msg.getElementsByTagName('body');
 
-  console.log(elems);
-
-
-  console.log(to);
-  console.log(from);
-  console.log(fromUid);
-  console.log(messageType);
-  const sharemsgs = msg.getElementsByTagName('sharemsg');
-  console.log(JSON.parse(unescape(Strophe.getText(sharemsgs[0]))));
-
-  if (messageType === 'chat' && elems.length > 0) {
-    const body = elems[0];
+  if (messageType === 'chat' && bodys.length > 0) {
+    const sharemsgs = msg.getElementsByTagName('sharemsg');
+    const sharemsg = JSON.parse(unescape(Strophe.getText(sharemsgs[0])));
+    const body = bodys[0];
+    console.log(Strophe.getText(body));
+    console.log(sharemsg);
     const reply = $msg({
       to: from,
       from: to,
@@ -91,20 +83,38 @@ const send = (data) => {
 
 };
 
+const initialConnection = () =>
+  (dispatch, getState) => {
+    const {
+      connection,
+    } = getState()[REDUCER_KEY];
+    if (connection) {
+      return connection;
+    }
+    const newConnection = new Strophe.Connection(XMPP_HOST_URL);
+    dispatch({
+      type: INIT_CONNECTION,
+      connection: newConnection,
+    });
+    return newConnection;
+  };
+
 export const connect = () =>
   (dispatch, getState) =>
     dispatch(getOpenfireLoginToken()).then((token) => {
       const {
         currentUser: { uid },
       } = getState()[AUTH_REDUCER_KEY];
-      const connection = new Strophe.Connection(XMPP_HOST_URL);
+      const connection = dispatch(initialConnection());
       connection.rawInput = receive;
       connection.rawOutput = send;
       const CLIENT_FULL_JID = `${uid}share@${XMPP_HOST_IP}/${uid}_${token}`;
       connection.connect(CLIENT_FULL_JID, `${uid.toLowerCase()}@shareid`, (status) => {
         if (status === STROPHE_CONNECTED) {
           console.log('connected');
-          connection.addHandler(msg => onMessage(msg, connection), null, 'message', null, null, null);
+          connection.addHandler((msg) => {
+            onMessage(msg, connection);
+          }, null, 'message', null, null, null);
           connection.send($pres().tree());
         }
       });
@@ -115,11 +125,14 @@ export const connect = () =>
 // = reducer =
 // =============================================
 const initialState = {
-
+  connection: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+
+    case INIT_CONNECTION:
+      return Object.assign({}, state, { connection: action.connection });
 
     case RESET:
       return initialState;

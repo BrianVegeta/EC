@@ -1,0 +1,37 @@
+.container
+  height: 100%
+  overflow-y: auto
+  .message-container
+    position: relative
+    padding: 15px
+    .message-item
+      padding: 15px 0
+      .message-item-inner, .message-item-inner-right
+        .avatar
+          width: 37px
+          height: 37px
+          display: inline-block
+          vertical-align: top
+        .message
+          display: inline-block
+          vertical-align: top
+          max-width: 250px
+          word-break: break-all
+          .inner-text
+            padding: 8px 10px
+            background: #fff
+            border-radius: 5px
+            font-size: 14px
+            box-shadow: 0 1px 1px rgba(0,0,0,.1)
+          .created-at
+            font-size: 10px
+            margin-top: 8px
+      .message-item-inner
+        .message
+          margin-left: 10px
+      .message-item-inner-right
+        float: right
+        .message
+          margin-right: 10px
+          .created-at
+            text-align: right

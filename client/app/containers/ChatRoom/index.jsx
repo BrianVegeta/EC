@@ -5,6 +5,8 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import UserList from './UserList';
+import MessageBox from './MessageBox';
+import InputBox from './InputBox';
 
 
 const cx = classnames.bind(styles);
@@ -13,20 +15,23 @@ class ChatRoom extends React.Component {
   static propTypes = {
     dispatchFetchChatRoom: PropTypes.func.isRequired,
     dispatchConnect: PropTypes.func.isRequired,
+    dispatchFetchLogs: PropTypes.func.isRequired,
+    dispatchChangeChatTarget: PropTypes.func.isRequired,
     chat: PropTypes.object.isRequired,
+    chatBox: PropTypes.shape({
+      currentUser: PropTypes.object,
+      logs: PropTypes.array,
+    }).isRequired,
     chatRooms: PropTypes.shape({
       rooms: PropTypes.array.isRequired,
+    }).isRequired,
+    currentUser: PropTypes.shape({
+      uid: PropTypes.string.isRequired,
     }).isRequired,
   };
 
   static renderMinus(onClick) {
-    return (
-      <IconMinus
-        size={20}
-        className={cx('minus')}
-        onClick={onClick}
-      />
-    );
+    return <IconMinus size={20} className={cx('minus')} onClick={onClick} />;
   }
 
   constructor(props) {
@@ -71,7 +76,10 @@ class ChatRoom extends React.Component {
     } = this.constructor;
     const {
       dispatchFetchChatRoom,
+      dispatchChangeChatTarget,
       chatRooms,
+      chatBox: { currentUser: targetUser, logs },
+      currentUser,
     } = this.props;
 
     if (false) {
@@ -97,7 +105,15 @@ class ChatRoom extends React.Component {
             <UserList
               chatRooms={chatRooms}
               fetchRooms={dispatchFetchChatRoom}
+              currentUser={targetUser}
+              onUserSelect={dispatchChangeChatTarget}
             />
+          </div>
+          <div styleName="chat-box">
+            <div styleName="message-box">
+              <MessageBox logs={logs} currentUser={currentUser} />
+            </div>
+            <div styleName="input-box"><InputBox /></div>
           </div>
         </div>
       </div>

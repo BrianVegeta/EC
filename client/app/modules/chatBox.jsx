@@ -1,16 +1,13 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
-import {
-  changeChatTarget,
-} from 'modules/chatBox';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'CHAT_ROOMS';
-const REDUCER_KEY = 'chatRooms';
+const ACTION_PREFIX = 'CHAT_BOX';
+const REDUCER_KEY = 'chatBox';
 const SIZE = 20;
-const DUPLICATE_KEY = 'room_id';
+const DUPLICATE_KEY = 'id';
 
 
 // =============================================
@@ -22,6 +19,7 @@ export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
 export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
+export const SET_CURRENT_USER = prefix('SET_CURRENT_USER');
 export const RESET = prefix('RESET');
 
 
@@ -34,21 +32,17 @@ const fetching = expireFlag => ({
   expireFlag,
 });
 
-const fetched = rooms => ({
+const fetched = logs => ({
   type: FETCHED,
-  rooms,
+  logs,
 });
 
-function checkExpire(rooms, expireFlag) {
+function checkExpire(logs, expireFlag) {
   return (dispatch, getState) => {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    if (rooms.length > 0) {
-      const [{ members: [{ uid }] }] = rooms;
-      dispatch(changeChatTarget({ uid }));
-    }
-    dispatch(fetched(rooms));
+    dispatch(fetched(logs));
   };
 }
 
@@ -73,10 +67,11 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export function fetchRooms(recursiveRecords = []) {
+export function fetchLogs(targetUid, recursiveRecords = []) {
   return (dispatch, getState) => {
-    const { size, index, rooms, recursiveTimes } = getState()[REDUCER_KEY];
+    const { size, index, logs, recursiveTimes } = getState()[REDUCER_KEY];
     const requestParams = {
+      target_uid: targetUid,
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
     };
@@ -85,17 +80,17 @@ export function fetchRooms(recursiveRecords = []) {
     dispatch(fetching(expireFlag)); /* LOADING FETCH */
     /* API REQUEST */
     asyncXhrAuthedPost(
-      '/ajax/sync_chat_rooms.json',
+      '/ajax/chat/logs.json',
       requestParams,
       getState(),
     ).then((data) => {
-      const reducedRecords = reduceDuplicateRecords(data, rooms, DUPLICATE_KEY);
+      const reducedRecords = reduceDuplicateRecords(data, logs, DUPLICATE_KEY);
       /* RECURSIVE AGAIN */
       if (
         reducedRecords.length < data.length &&
         recursiveTimes <= RECURSIVE_LIMIT
       ) {
-        dispatch(fetchRooms(reducedRecords));
+        dispatch(fetchLogs(targetUid, reducedRecords));
         return;
       }
       dispatch(resetRecursiveTimes()); /* RESET RECURSIVE FREQUENCY */
@@ -105,15 +100,28 @@ export function fetchRooms(recursiveRecords = []) {
   };
 }
 
+const setCurrentUser = ({ uid }) => ({
+  type: SET_CURRENT_USER,
+  uid,
+});
+
+export const changeChatTarget = ({ uid }) =>
+  (dispatch) => {
+    dispatch(setCurrentUser({ uid }));
+    dispatch(fetchLogs(uid));
+  };
+
 
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
+  currentUser: null,
+
   expireFlag: null,
   isPaginable: true,
   isFetching: false,
-  rooms: [],
+  logs: [],
   size: SIZE,
   index: 0,
   recursiveTimes: 0,
@@ -130,9 +138,9 @@ export default (state = initialState, action) => {
     case FETCHED:
       return Object.assign({}, state, {
         isFetching: false,
-        isPaginable: action.rooms.length === state.size,
-        rooms: state.rooms.concat(action.rooms),
-        index: state.index + action.rooms.length,
+        isPaginable: action.logs.length === state.size,
+        logs: state.logs.concat(action.logs),
+        index: state.index + action.logs.length,
       });
 
     case COUNT_RECURSIVE_TIMES:
@@ -143,6 +151,11 @@ export default (state = initialState, action) => {
     case RESET_RECURSIVE_TIMES:
       return Object.assign({}, state, {
         recursiveTimes: 0,
+      });
+
+    case SET_CURRENT_USER:
+      return Object.assign({}, state, {
+        currentUser: { uid: action.uid },
       });
 
     case RESET:

@@ -6,6 +6,8 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+
+const cx = classnames.bind(styles);
 class UserList extends React.Component {
 
   static propTypes = {
@@ -15,13 +17,29 @@ class UserList extends React.Component {
       isFetching: PropTypes.bool.isRequired,
     }).isRequired,
     fetchRooms: PropTypes.func.isRequired,
+    onUserSelect: PropTypes.func.isRequired,
+    currentUser: PropTypes.shape({
+      uid: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
-  renderUser({ members: [{ name, picture }] }, i) {
+  constructor(props) {
+    super(props);
+    this.renderUser = this.renderUser.bind(this);
+  }
+
+  renderUser({ members: [{ uid, name, picture }] }, i) {
+    const {
+      onUserSelect, currentUser: { uid: currentUserId },
+    } = this.props;
     return (
       <div
         key={`${i + 1}`}
         styleName="user-container"
+        className={cx('user-container', { selecting: uid === currentUserId })}
+        role="button"
+        tabIndex="-1"
+        onClick={() => onUserSelect({ uid })}
       >
         <div styleName="avatar">
           <Avatar src={picture} />

@@ -72,8 +72,6 @@ Rails.application.routes.draw do
       # post 'sync/notification_unread', to: 'sync#notification_unread' #
       # post 'sync/notification_unread_count', to: 'sync#notification_unread_count' #
       # post 'sync/notification_read', to: 'sync#notification_read' #
-      post 'sync/chat_logs', to: 'sync#chat_logs' #
-
 
       #USERPROFILE
       post 'userprofile/search', to: 'userprofile#search' #
@@ -92,6 +90,7 @@ Rails.application.routes.draw do
     scope module: :api do
       # =========== CHAT ROOM 聊天室 =================
       post 'sync_chat_rooms', to: 'sync#chat_rooms'
+      post 'chat/logs', to: 'sync#chat_logs'
       post 'chat/get_openfire_login_token', to: 'internal#get_openfire_login_token'
       #PROFILE
       post 'get_track_count', to: 'userprofile#track_count' #
