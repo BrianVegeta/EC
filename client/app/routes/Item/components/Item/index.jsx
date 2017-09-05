@@ -12,6 +12,7 @@ class Item extends React.Component {
   static propTypes = {
     item: myPropTypes.item.isRequired,
     dispatchFetchItem: PropTypes.func.isRequired,
+    dispatchResetMessage: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
   };
@@ -19,7 +20,7 @@ class Item extends React.Component {
   componentDidMount() {
     // console.log('did MOUNT');
     this.props.dispatchFetchItem();
-    this.props.dispatchReset();
+    this.props.dispatchResetMessage();
     this.props.dispatchRecords();
   }
 

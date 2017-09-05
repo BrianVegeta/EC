@@ -1,5 +1,7 @@
 import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
+// import { inCollection, REDUCER_KEY as COLLECTION_KEY } from 'modules/myCollection';
+import { find } from 'lodash';
 import { LEASE } from 'constants/enums';
 import {
   REDUCER_KEY as FILTER_REDUCER_KEY,
@@ -11,6 +13,7 @@ import {
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'ITEMS';
 const REDUCER_KEY = 'items';
+const COLLECTION_KEY = 'myCollection';
 const SIZE = 21;
 const DUPLICATE_KEY = 'pid';
 
@@ -78,6 +81,7 @@ export function fetchRecords(categoryID, recursiveRecords = []) {
       records,
       recursiveTimes,
     } = getState()[REDUCER_KEY];
+    const collection = getState()[COLLECTION_KEY].records;
     const {
       price: { max, min },
       sort,
@@ -109,16 +113,29 @@ export function fetchRecords(categoryID, recursiveRecords = []) {
       requestParams,
     )
     .then((data) => {
+      const resultData = data;
+      resultData.map((opt, i) => {
+        const obj = find(collection, { pid: opt.pid });
+        if (obj) {
+          resultData[i] = Object.assign({}, resultData[i], {
+            in_my_favorite: true,
+          });
+        } else {
+          resultData[i] = Object.assign({}, resultData[i], {
+            in_my_favorite: false,
+          });
+        }
+      });
+
       const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_KEY);
-      if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
+      if (reducedRecords.length < resultData.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
         dispatch(fetchRecords(categoryID, reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */
-      dispatch(resetRecursiveTimes());
       /* CHANGE RECORDS IN REDUCER */
-      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag));
+      dispatch(checkExpire(resultData.concat(recursiveRecords), expireFlag));
     });
   };
 }

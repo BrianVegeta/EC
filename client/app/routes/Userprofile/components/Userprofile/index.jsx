@@ -7,6 +7,8 @@ import PersonIcon from 'react-icons/lib/md/person';
 
 import { formatDate } from 'lib/time';
 import { formatCount } from 'lib/currency';
+import { browserHistory } from 'react-router';
+import { loginPath } from 'lib/paths';
 
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
@@ -28,9 +30,13 @@ class Userprofile extends React.Component {
         owner_comments_count: PropTypes.number,
         lessee_comments_count: PropTypes.number,
       }),
+      isTrack: PropTypes.bool.isRequired,
     }).isRequired,
     children: myPropTypes.children.isRequired,
     dispatchFetchUser: PropTypes.func.isRequired,
+    dispatchAddTrack: PropTypes.func.isRequired,
+    dispatchRemoveTrack: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool.isRequired,
   };
 
   static renderSubscribeCount(count) {
@@ -47,8 +53,8 @@ class Userprofile extends React.Component {
 
   render() {
     const { userprofile: {
-      detail, track, comments,
-    } } = this.props;
+      detail, track, comments, isTrack,
+    }, isLogin, dispatchAddTrack, dispatchRemoveTrack } = this.props;
 
     if (!detail) return null;
     const {
@@ -108,8 +114,18 @@ class Userprofile extends React.Component {
                 </div>
                 <div styleName="subscribe-btn" style={{ marginRight: 20 }}>
                   <FormButton
-                    content="追蹤"
-                    onClick={() => console.log('追蹤')}
+                    content={isTrack ? '取消追蹤' : '追蹤'}
+                    onClick={() => {
+                      if (isLogin) {
+                        if (isTrack) {
+                          dispatchRemoveTrack();
+                        } else {
+                          dispatchAddTrack();
+                        }
+                      } else {
+                        browserHistory.push(loginPath);
+                      }
+                    }}
                   />
                 </div>
               </div>

@@ -3,7 +3,7 @@ import myPropTypes from 'propTypes';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router';
-import FavoriteHeart from 'components/Button/FavoriteHeart';
+import FavoriteHeart from 'containers/FavoriteHeart/Container';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import {

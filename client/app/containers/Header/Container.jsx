@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { logout } from 'modules/auth';
 import { popupPublishEntry } from 'modules/popup';
 import { getNotitications } from 'modules/notification';
+// import { fetchCollections } from 'modules/myCollection';
+
 import Component from './index';
 
 /* pick props */
@@ -20,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchPublish: () => dispatch(popupPublishEntry()),
   dispatchNotify: () => dispatch(getNotitications()),
+  // dispatchCollection: () => dispatch(fetchCollections()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -41,12 +41,14 @@ class Header extends React.Component {
     dispatchLogout: PropTypes.func.isRequired,
     dispatchPublish: PropTypes.func.isRequired,
     dispatchNotify: PropTypes.func.isRequired,
+    // dispatchCollection: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     const { auth } = this.props;
     if (auth.isLogin) {
       this.props.dispatchNotify();
+      // this.props.dispatchCollection();
     }
   }
 

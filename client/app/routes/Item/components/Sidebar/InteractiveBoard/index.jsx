@@ -1,6 +1,8 @@
 // 0author: vincent
 import React from 'react';
 import styled from 'styled-components';
+import { browserHistory } from 'react-router';
+import { loginPath } from 'lib/paths';
 import IconFacebook from 'react-icons/lib/fa/facebook-square';
 import IconLink from 'react-icons/lib/md/insert-link';
 import FavoriteHeart from 'components/FavoriteHeart';
@@ -56,17 +58,52 @@ class InteractiveBoard extends React.Component {
       PropTypes.string,
       PropTypes.number,
     ]).isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+    pid: PropTypes.number.isRequired,
+    isLogin: PropTypes.bool.isRequired,
+    dispatchAddFavorite: PropTypes.func.isRequired,
+    dispatchRemoveFavorite: PropTypes.func.isRequired,
   }
   static defaultProps = {
     favorite: 0,
   }
+
+  constructor(props) {
+    super(props);
+    this.addFavorite = this.addFavorite.bind(this);
+    this.removeFavorite = this.removeFavorite.bind(this);
+  }
+
+  addFavorite() {
+    this.props.dispatchAddFavorite(this.props.pid);
+  }
+
+  removeFavorite() {
+    this.props.dispatchRemoveFavorite(this.props.pid);
+  }
+
+
   render() {
-    const { favorite } = this.props;
+    const { isFavorite, favorite, isLogin } = this.props;
+    const favStr = isFavorite ? '取消收藏' : '收藏';
     return (
       <Container >
-        <CollectButton className="button">
-          <FavoriteHeart size={22} />
-          <ButtonInnerText >收藏</ButtonInnerText>
+        <CollectButton
+          className="button"
+          onClick={() => {
+            if (isLogin) {
+              if (isFavorite) {
+                this.removeFavorite();
+              } else {
+                this.addFavorite();
+              }
+            } else {
+              browserHistory.push(loginPath);
+            }
+          }}
+        >
+          <FavoriteHeart size={22} active={isFavorite} />
+          <ButtonInnerText>{favStr}</ButtonInnerText>
         </CollectButton>
         <BeenCollected >
           <span>{favorite}</span>人已收藏

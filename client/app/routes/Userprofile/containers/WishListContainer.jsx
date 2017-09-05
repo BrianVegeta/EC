@@ -4,8 +4,8 @@ import WishList from '../components/WishList';
 import { fetchRecords, reset } from '../modules/userprofileWishList';
 
 /* pick props */
-const mapStateToProps = ({ environment, userprofileWishList }) => ({
-  environment, userprofileWishList,
+const mapStateToProps = ({ environment, userprofileWishList, auth }) => ({
+  environment, userprofileWishList, isLogin: auth.isLogin,
 });
 
 /* pick dispatch */

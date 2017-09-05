@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { mapCategoryNameByID, findTopCategory } from 'lib/category';
+import { fetchCollections } from 'modules/myCollection';
 import { mappingIDFromCategory } from 'constants/enums';
 import Items from '../components/Items';
 import { fetchRecords, reset } from '../modules/items';
@@ -7,7 +8,7 @@ import { fetchRecords, reset } from '../modules/items';
 
 /* pick props */
 const mapStateToProps = ({
-  environment, items, categories,
+  environment, items, categories, auth,
 }, {
   params: { cid },
 }) => {
@@ -19,6 +20,7 @@ const mapStateToProps = ({
     topCategoryID: mappingIDFromCategory[topCategory],
     categoryID: cid,
     filterType: topCategory,
+    isLogin: auth.isLogin,
   });
 };
 
@@ -26,6 +28,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch, { params: { cid } }) => ({
   dispatchFetchRecords: () => dispatch(fetchRecords(cid)),
   dispatchReset: () => dispatch(reset()),
+  dispatchCollection: () => dispatch(fetchCollections()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Items);

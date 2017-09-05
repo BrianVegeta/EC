@@ -30,6 +30,8 @@ class Items extends React.Component {
   static propTypes = {
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchCollection: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool.isRequired,
     categoryID: PropTypes.string.isRequired,
     topCategoryID: PropTypes.string,
     categoryName: PropTypes.string.isRequired,
@@ -63,7 +65,11 @@ class Items extends React.Component {
   }
 
   componentDidMount() {
-    this.refetch();
+    if (this.props.isLogin) {
+      this.props.dispatchCollection().then(() => this.refetch());
+    } else {
+      this.refetch();
+    }
   }
 
   componentDidUpdate(prevProps) {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import IconDelete from 'react-icons/lib/md/delete';
 import { Link } from 'react-router';
-import FavoriteHeart from 'components/FavoriteHeart';
+import FavoriteHeart from 'containers/FavoriteHeart/Container';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 
@@ -20,6 +20,8 @@ import {
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
+
+
 import styles from './styles.sass';
 import { CoverContainer } from './styles';
 
@@ -80,13 +82,25 @@ class ItemBoard extends React.Component {
   }
 
   renderFavorite() {
-    const { item: { favorite_count } } = this.props;
+    const { item: { favorite_count, in_my_favorite, pid } } = this.props;
+    // return (
+    //   <div styleName="favorite">
+    //     <span styleName="favoriteCount">{favorite_count}</span>
+    //     <button className="button" styleName="favoriteHeart">
+    //       <FavoriteHeart
+    //         size={20}
+    //         active={in_my_favorite}
+    //       />
+    //     </button>
+    //   </div>
+    // );
     return (
       <div styleName="favorite">
-        <span styleName="favoriteCount">{favorite_count}</span>
-        <button className="button" styleName="favoriteHeart">
-          <FavoriteHeart size={20} />
-        </button>
+        <FavoriteHeart
+          pid={pid}
+          count={favorite_count}
+          isActive={in_my_favorite}
+        />
       </div>
     );
   }

@@ -42,6 +42,9 @@ class Sidebar extends React.Component {
   static propTypes = {
     itemDetail: myPropTypes.item.isRequired,
     isMyOwn: PropTypes.bool.isRequired,
+    dispatchAddFavorite: PropTypes.func.isRequired,
+    dispatchRemoveFavorite: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool.isRequired,
   };
 
   renderUnit({ calculate_charge_type }) {
@@ -59,9 +62,9 @@ class Sidebar extends React.Component {
     }
   }
   render() {
-    const { itemDetail, isMyOwn } = this.props;
+    const { itemDetail, isMyOwn, dispatchAddFavorite,
+      dispatchRemoveFavorite, isLogin } = this.props;
     const { price } = itemDetail;
-
     return (
       <StickyContainer style={{ height: 1700 }}>
         <Sticky>
@@ -80,7 +83,14 @@ class Sidebar extends React.Component {
                     model={new BoardModel(itemDetail, isMyOwn)}
                     isSticky={isSticky}
                   />
-                  <InteractiveBoard favorite={itemDetail.favorite_count} />
+                  <InteractiveBoard
+                    pid={itemDetail.pid}
+                    isLogin={isLogin}
+                    dispatchAddFavorite={dispatchAddFavorite}
+                    dispatchRemoveFavorite={dispatchRemoveFavorite}
+                    favorite={itemDetail.favorite_count}
+                    isFavorite={itemDetail.in_my_favorite}
+                  />
                   <ReportLink >
                     <Link to="/" >
                       <IconFlag size={18} />

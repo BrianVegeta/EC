@@ -1,4 +1,5 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { find, parseInt } from 'lodash';
 
 /* =============================================>>>>>
 = userprofile =
@@ -15,8 +16,6 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 export const FETCHED = prefix('FETCHED');
 export const FETCHING = prefix('FETCHING');
-export const ADD_COLLECTION = prefix('ADD_COLLECTION');
-export const REMOVE_COLLECTION = prefix('REMOVE_COLLECTION');
 export const RESET = prefix('RESET');
 
 // =============================================
@@ -32,60 +31,64 @@ const fetched = records => ({
   records,
 });
 
-const addCollection = pid => ({
-  type: ADD_COLLECTION,
-  pid,
-});
-
-const removeCollection = pid => ({
-  type: REMOVE_COLLECTION,
-  pid,
-});
-
-
 export const reset = () => ({
   type: RESET,
 });
 
 export function fetchCollections() {
-  return (dispatch, getState) => {
-    dispatch(fetching());
-    asyncXhrAuthedPost(
-      '/ajax/get_fav.json',
-      {},
-      getState(),
-    )
-    .then((responseData) => {
-      dispatch(fetched(responseData));
+  return (dispatch, getState) =>
+    new Promise((resolve) => {
+      dispatch(fetching());
+      asyncXhrAuthedPost(
+        '/ajax/get_fav.json',
+        {},
+        getState(),
+      )
+      .then((responseData) => {
+        dispatch(fetched(responseData));
+        resolve();
+      });
     });
-  };
 }
 
-export function addToCollection(pid) {
+export function inCollection(pid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const {
+        records,
+      } = getState()[REDUCER_KEY];
+      const pidNumber = parseInt(pid);
+      const record = find(records, { pid: pidNumber });
+      if (record) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+}
+export function addToCollection(pid, waiting, done) {
   return (dispatch, getState) => {
-    dispatch(fetching());
     asyncXhrAuthedPost(
       '/ajax/add_fav.json',
       { pid },
       getState(),
     )
-    .then((responseData) => {
-      dispatch(addCollection(responseData));
+    .then(() => {
+      dispatch(done);
     });
   };
 }
 
 
-export function removeFromCollection(pid) {
+export function removeFromCollection(pid, waiting, done) {
   return (dispatch, getState) => {
-    dispatch(fetching());
     asyncXhrAuthedPost(
       '/ajax/remove_fav.json',
       { pid },
       getState(),
     )
-    .then((responseData) => {
-      dispatch(fetched(responseData));
+    .then(() => {
+      dispatch(done);
     });
   };
 }

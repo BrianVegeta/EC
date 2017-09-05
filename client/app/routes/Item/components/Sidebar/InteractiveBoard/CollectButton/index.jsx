@@ -4,10 +4,16 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class CollectButton extends React.Component {
+
+  static propTypes = {
+    isFavorite: PropTypes.bool.isRequired,
+  }
+
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      btnStatus: 'pending',
+      btnStatus: props.isFavorite ? 'collected' : 'pending',
       isSaving: false,
     };
     this.collecting = this.collecting.bind(this);

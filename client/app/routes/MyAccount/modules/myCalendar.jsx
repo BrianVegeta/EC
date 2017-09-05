@@ -44,7 +44,7 @@ export function fetchCalendar(startDate, endDate) {
       {
         start_date: startDate,
         end_date: endDate,
-        uid: currentUser.uid
+        uid: currentUser.uid,
       },
       getState(),
     )

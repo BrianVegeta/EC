@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { browserHistory } from 'react-router';
+import { loginPath } from 'lib/paths';
 import FavoriteHeartIcon from 'components/FavoriteHeart';
 // import { addFavorite, removeFavorite } from 'actions/module/favoriteActions';
 
@@ -17,7 +18,9 @@ class FavoriteHeart extends React.Component {
     pid: PropTypes.number.isRequired,
     isActive: PropTypes.bool.isRequired,
     count: PropTypes.number.isRequired,
-    dispatch: PropTypes.func.isRequired,
+    dispatchAddFavorite: PropTypes.func.isRequired,
+    dispatchRemoveFavorite: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -35,10 +38,9 @@ class FavoriteHeart extends React.Component {
   }
 
   addFavorite() {
-    this.props.dispatch(
-     addFavorite(this.props.pid, this.waiting, this.addDone),
-    );
+    this.props.dispatchAddFavorite(this.props.pid, this.waiting, this.addDone);
   }
+
   waiting() {
     this.setState({
       isLoading: true,
@@ -54,9 +56,7 @@ class FavoriteHeart extends React.Component {
   }
 
   removeFavorite() {
-    this.props.dispatch(
-      removeFavorite(this.props.pid, this.waiting, this.removeDone),
-    );
+    this.props.dispatchRemoveFavorite(this.props.pid, this.waiting, this.removeDone);
   }
 
   removeDone() {
@@ -68,12 +68,23 @@ class FavoriteHeart extends React.Component {
   }
 
   render() {
+    const { isLogin } = this.props;
     return (
       <div>
         <span styleName="favorite-count-span">{this.state.count}</span>
         <button
           className="button"
-          onClick={this.state.isActive ? this.removeFavorite : this.addFavorite}
+          onClick={() => {
+            if (isLogin) {
+              if (this.state.isActive) {
+                this.removeFavorite();
+              } else {
+                this.addFavorite();
+              }
+            } else {
+              browserHistory.push(loginPath);
+            }
+          }}
         >
           <FavoriteHeartIcon active={this.state.isActive} size={20} />
         </button>

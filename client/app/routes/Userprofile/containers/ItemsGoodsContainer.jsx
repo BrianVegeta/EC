@@ -5,8 +5,8 @@ import Items from '../components/Items';
 import { fetchItems, reset } from '../modules/userprofileItems';
 
 /* pick props */
-const mapStateToProps = ({ environment, userprofileItems }) => ({
-  environment, userprofileItems, category: CATEGORY_GOODS,
+const mapStateToProps = ({ environment, userprofileItems, auth }) => ({
+  environment, userprofileItems, category: CATEGORY_GOODS, isLogin: auth.isLogin,
 });
 
 /* pick dispatch */

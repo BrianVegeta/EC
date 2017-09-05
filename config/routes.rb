@@ -95,7 +95,9 @@ Rails.application.routes.draw do
       #PROFILE
       post 'get_track_count', to: 'userprofile#track_count' #
       post 'get_comments_count', to: 'userprofile#comments_count' #
-
+      post 'check_track', to: 'userprofile#is_tracked' #
+      post 'add_track', to: 'userprofile#track' #
+      post 'remove_track', to: 'userprofile#untrack' #
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'

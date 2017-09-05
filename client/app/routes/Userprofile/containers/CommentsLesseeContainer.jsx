@@ -4,8 +4,8 @@ import Comments from '../components/Comments';
 import { TARGET_LESSEE, fetchRecords, reset } from '../modules/userprofileComments';
 
 /* pick props */
-const mapStateToProps = ({ environment, userprofileComments }) => ({
-  environment, userprofileComments,
+const mapStateToProps = ({ environment, userprofileComments, auth }) => ({
+  environment, userprofileComments, isLogin: auth.isLogin
 });
 
 /* pick dispatch */

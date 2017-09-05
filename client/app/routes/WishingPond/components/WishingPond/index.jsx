@@ -55,7 +55,6 @@ class WishingPond extends React.Component {
   fetchSingleCard(id) {
     const { wish } = this.props;
     const { records } = wish;
-
     const card = find(records, { id });
     this.props.dispatchShow({ card });
   }

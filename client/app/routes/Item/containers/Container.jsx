@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Item from '../components/Item';
 import { fetchRecords, reset, addMessage } from '../modules/messageboard';
-import { editItem } from '../modules/item';
+import { editItem, reset as resetItem } from '../modules/item';
 /* pick dispatch */
 const mapStateToProps = ({ environment, item, messageboard, auth }) => ({
   environment,
@@ -16,7 +16,8 @@ const mapDispatchToProps = (dispatch, { params: { pid } }) => ({
   dispatch,
   dispatchFetchItem: () => dispatch(editItem(pid)),
   dispatchRecords: () => dispatch(fetchRecords(pid)),
-  dispatchReset: () => dispatch(reset()),
+  dispatchResetMessage: () => dispatch(reset()),
+  dispatchReset: () => dispatch(resetItem()),
   dispatchAddMessage: message => dispatch(addMessage(pid, message)),
 });
 

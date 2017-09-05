@@ -5,7 +5,7 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'MY.COLLECTIONS';
-const REDUCER_KEY = 'myCollection';
+export const REDUCER_KEY = 'myCollection';
 
 // =============================================
 // = action type =

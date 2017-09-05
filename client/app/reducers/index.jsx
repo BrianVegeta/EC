@@ -12,6 +12,7 @@ import routingHelper from 'modules/routingHelper';
 import auth from 'modules/auth';
 import login from 'modules/login';
 import filter from 'modules/filter';
+import myCollection from 'modules/myCollection';
 
 import myCoupon from 'connector/myCoupon/reducer';
 import notification from 'modules/notification';
@@ -59,7 +60,7 @@ const reducers = {
   options,
   popupBankSetup,
   access,
-  // myCollection,
+  myCollection,
   // ownerProfile,
   // coupon,
   myCoupon,
