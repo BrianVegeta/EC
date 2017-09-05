@@ -8,6 +8,7 @@ class Comments extends React.Component {
 
   static propTypes = {
     isPaginable: PropTypes.bool.isRequired,
+    isLogin: PropTypes.bool.isRequired,
     comments: PropTypes.arrayOf(PropTypes.string).isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchAddMessage: PropTypes.func.isRequired,
@@ -26,12 +27,12 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { comments, isPaginable, dispatchAddMessage } = this.props;
+    const { comments, isPaginable, dispatchAddMessage, isLogin } = this.props;
     // console.log(this.props);
     return (
       <div styleName="container">
         <h2 styleName="title">公開留言</h2>
-        <CommentBox dispatchAddMessage={dispatchAddMessage} />
+        <CommentBox dispatchAddMessage={dispatchAddMessage} isLogin={isLogin} />
         <div styleName="comments">
           {comments.map((comment, i) => {
             const props = {

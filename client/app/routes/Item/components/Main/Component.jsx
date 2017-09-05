@@ -36,6 +36,9 @@ class Main extends React.Component {
       detail: PropTypes.object.isRequired,
       ownerProfile: PropTypes.object.isRequired,
     }).isRequired,
+    auth: PropTypes.shape({
+      isLogin: PropTypes.bool.isRequired,
+    }).isRequired,
   };
 
   static renderOverdue({ overdue_rate, deposit }) {
@@ -58,13 +61,14 @@ class Main extends React.Component {
     );
   }
 
-  renderComments({ isPaginable, records }, dispatchRecords, dispatchAddMessage) {
+  renderComments({ isPaginable, records }, dispatchRecords, dispatchAddMessage, auth) {
     const id = ITEM_MAIN_COMMENT;
     const ref = comment => (this[ITEM_MAIN_COMMENT] = comment);
     return (
       <div id={id} ref={ref} styleName="nav-anchor" >
         <Comments
           isPaginable={isPaginable}
+          isLogin={auth.isLogin}
           comments={records}
           dispatchRecords={dispatchRecords}
           dispatchAddMessage={dispatchAddMessage}
@@ -162,6 +166,7 @@ class Main extends React.Component {
       dispatch,
       dispatchRecords,
       dispatchAddMessage,
+      auth,
     } = this.props;
     const images = without([detail.img1, detail.img2, detail.img3], null);
     return (
@@ -174,7 +179,7 @@ class Main extends React.Component {
         {this.renderCancelPolicy(detail)}
         {this.constructor.renderOverdue(detail)}
         {this.renderOwner(ownerProfile, dispatch)}
-        {this.renderComments(messageboard, dispatchRecords, dispatchAddMessage)}
+        {this.renderComments(messageboard, dispatchRecords, dispatchAddMessage, auth)}
       </div>
     );
   }

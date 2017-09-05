@@ -6,6 +6,7 @@ import { reduceDuplicateRecords } from 'lib/utils';
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'ITEM.MESSAGEBOARD';
 const REDUCER_KEY = 'messageboard';
+const AUTH_REDUCER_KEY = 'auth';
 const DUPLICATE_KEY = 'id';
 const SIZE = 10;
 
@@ -110,23 +111,52 @@ export function fetchRecords(pid, target = TARGET_OWNER, recursiveRecords = []) 
   };
 }
 
+// export function addMessage(pid, message) {
+//   return (dispatch, getState) => {
+//     const {
+//       isLogin,
+//     } = getState()[AUTH_REDUCER_KEY];
+//     if (!(isLogin)) {
+//       browserHistory.push(loginPath);
+//       return;
+//     }
+//     const expireFlag = Date.now();
+//     dispatch(fetching(expireFlag));
+//
+//     asyncXhrAuthedPost(
+//       '/ajax/add_message.json',
+//       { pid, message },
+//       getState(),
+//     ).then(() => {
+//       dispatch(reset());
+//       dispatch(fetchRecords(pid));
+//     });
+//   };
+// }
+
 export function addMessage(pid, message) {
-  //console.log(targetUid);
-  return (dispatch, getState) => {
-    const expireFlag = Date.now();
-    dispatch(fetching(expireFlag));
+  return (dispatch, getState) =>
+    new Promise((resolve) => {
+      const {
+        isLogin,
+      } = getState()[AUTH_REDUCER_KEY];
+      if (!(isLogin)) {
+        resolve({ redirect: true });
+        return;
+      }
+      const expireFlag = Date.now();
+      dispatch(fetching(expireFlag));
 
-    asyncXhrAuthedPost(
-      '/ajax/add_message.json',
-      { pid, message },
-      getState(),
-    ).then(() => {
-      dispatch(reset());
-      dispatch(fetchRecords(pid));
+      asyncXhrAuthedPost(
+        '/ajax/add_message.json',
+        { pid, message },
+        getState(),
+      ).then(() => {
+        dispatch(reset());
+        dispatch(fetchRecords(pid));
+      });
     });
-  };
 }
-
 
 // =============================================
 // = reducer =

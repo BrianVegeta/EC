@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import { Editor, EditorState } from 'draft-js';
 // import Editable from 'react-plain-editable';
+import { browserHistory } from 'react-router';
+import { loginPath } from 'lib/paths';
 import Textarea from 'components/inputs/Textarea';
 
 class Comment extends React.Component {
 
   static propTypes = {
     dispatchAddMessage: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -16,7 +19,7 @@ class Comment extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onBtnCancel = this.onBtnCancel.bind(this);
-    this.placeholder = '請輸入您想詢問的內容';
+    this.placeholder = props.isLogin ? '請輸入您想詢問的內容' : '請先登入';
     this.state = {
       isControllerVisible: false,
       isFocusing: false,
@@ -26,6 +29,11 @@ class Comment extends React.Component {
   }
 
   onChange(value) {
+    const { isLogin } = this.props;
+    if (isLogin) {
+      browserHistory.push(loginPath);
+      return;
+    }
     this.setState({ value });
   }
 
@@ -61,15 +69,27 @@ class Comment extends React.Component {
     return this.isValueEmpty() && !this.state.isFocusing;
   }
 
-  rController(dispatchAddMessage) {
+  rController() {
+    const { value } = this.state;
+    const { dispatchAddMessage } = this.props;
     return (
       <div styleName="buttons">
-        <button styleName="cancel" onClick={this.onBtnCancel}>
-          取消
-        </button>
+        { (value) &&
+          <button styleName="cancel" onClick={this.onBtnCancel}>
+            取消
+          </button>
+        }
         <button
           styleName="comment"
-          onClick={() => dispatchAddMessage(this.state.value)}
+          onClick={() => {
+            dispatchAddMessage(this.state.value)
+            .then((responseData) => {
+              const { redirect } = responseData;
+              if (redirect) {
+                browserHistory.push(loginPath);
+              }
+            });
+          }}
         >
           留言
         </button>
@@ -79,7 +99,6 @@ class Comment extends React.Component {
 
   render() {
     // TODO: commentbox
-    const { isFocusing, isControllerVisible, dispatchAddMessage } = this.state;
     return (
       <div styleName="container">
         <div styleName="title">我要留言</div>
@@ -87,14 +106,14 @@ class Comment extends React.Component {
           <Textarea
             {...{
               value: this.state.value,
-              placeholder: '',
+              placeholder: this.placeholder,
               onChange: this.onChange,
               minHeight: 100,
             }}
           />
         </div>
         <div styleName="controller">
-          { this.rController(this.props.dispatchAddMessage) }
+          { this.rController() }
         </div>
       </div>
     );
