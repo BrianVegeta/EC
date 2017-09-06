@@ -46,7 +46,7 @@ import routeReservationGoods from './ReservationGoods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
-import notify from './Notification/route';
+import routeNotify from './Notification/route';
 
 
 const requireCates = true;
@@ -116,7 +116,7 @@ export default store => ({
     {
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
-        notify(store),
+        routeNotify(store),
       ],
     },
     {

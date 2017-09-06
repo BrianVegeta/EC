@@ -28,6 +28,7 @@ class Search {
       shouldLoading,
       paginating,
     } = search;
+
     const { handleNoResults } = this.constructor;
     this.query = query;
     this.users = handleNoResults(users);

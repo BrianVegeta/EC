@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { addToCollection, removeFromCollection } from 'modules/myCollection';
+import { popupReport } from 'modules/popup';
 import { setCollection } from '../modules/item';
 
 import Sidebar from '../components/Sidebar';
@@ -18,6 +19,7 @@ const mapStateToProps = ({ environment, item, auth: { currentUser, isLogin } }) 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
   dispatch,
+  dispatchReport: pid => dispatch(popupReport({ pid })),
   dispatchAddFavorite: pid =>
     dispatch(addToCollection(
       pid,

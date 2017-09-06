@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import { Link } from 'react-router';
 import {
   isFunction,
@@ -25,6 +26,7 @@ class NavItem extends React.Component {
     children: null,
     action: null,
     link: null,
+    style: null,
   };
 
   static propTypes = {
@@ -39,6 +41,7 @@ class NavItem extends React.Component {
       PropTypes.string,
     ]),
     link: PropTypes.string,
+    style: myPropTypes.style,
   };
 
   getRenderType() {
@@ -125,9 +128,9 @@ class NavItem extends React.Component {
 
   render() {
     const renderType = this.getRenderType();
-
+    const { style } = this.props;
     return (
-      <li className="nav">
+      <li className="nav" style={style}>
         {this.renderNavContent(renderType)}
       </li>
     );

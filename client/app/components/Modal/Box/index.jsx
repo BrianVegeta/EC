@@ -41,9 +41,15 @@ class Modal extends React.Component {
         className={cx('modal')}
         overlayClassName={cx('overlay')}
       >
-        <ContentContainer width={width}>
-          {children}
-        </ContentContainer>
+        <button
+          style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
+          onClick={onClose}
+          classNames="button"
+        >
+          <ContentContainer width={width}>
+            {children}
+          </ContentContainer>
+        </button>
       </ReactModal>
     );
   }

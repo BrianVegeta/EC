@@ -103,7 +103,7 @@ class Items extends React.Component {
       records,
     } = items;
 
-    const { renderTitleIcon, renderNoDataText } = this.constructor;
+    const { renderNoDataText } = this.constructor;
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
     const noDataText = renderNoDataText(topCategoryID || categoryID);
     return (
@@ -111,7 +111,6 @@ class Items extends React.Component {
         <PageHeader >
           <PageTitle
             title={categoryName}
-            renderIcon={() => renderTitleIcon(categoryID)}
           />
           <FilterBarContainer
             refetch={this.refetch}

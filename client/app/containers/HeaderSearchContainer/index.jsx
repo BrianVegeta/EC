@@ -47,10 +47,9 @@ class Search extends React.Component {
     const { search, dispatch } = this.props;
     const model = new Model(search, dispatch);
     const { users, items, wishs,
-      isUsersPaginating, isItemsPaginating, isWishsPaginating} = model;
+      isUsersPaginating, isItemsPaginating, isWishsPaginating } = model;
     const { isPaginable, isUserFetching,
       isItemFetching, isWishFetching, query } = search;
-    // console.log(this.props);
     return (
       <div styleName="container">
         <Inputer

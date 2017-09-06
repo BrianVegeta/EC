@@ -13,9 +13,7 @@ class Me extends React.Component {
   render() {
     const { currentUser } = this.props;
     return (
-      <span className={cx('avatar')} >
-        <Avatar width={30} src={currentUser.picture} />
-      </span>
+      <Avatar width={30} src={currentUser.picture} />
     );
   }
 }

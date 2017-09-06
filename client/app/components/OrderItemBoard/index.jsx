@@ -2,7 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import { orderDetail } from 'lib/paths';
+import { orderDetail, reservationGoods, reservationService, reservationSpace }
+ from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -13,9 +14,9 @@ import { generateOwnerItemString, generateLesseeItemString }
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
-import { popupScoreRating } from 'modules/popup';
+import { popupScoreRating, popupATMBank } from 'modules/popup';
 
-import { doShipGoods, doScore, resetAction }
+import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment }
   from 'modules/orderAction';
 
 import styles from './styles.sass';
@@ -29,13 +30,17 @@ class OrderItemBoard extends React.Component {
     lesseeReceive: false,
     targetScore: 0,
     targetComment: '',
+    photoHead: '',
   }
 
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
+    pid: PropTypes.number.isRequired,
     cidNo: PropTypes.string.isRequired,
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
@@ -64,6 +69,44 @@ class OrderItemBoard extends React.Component {
     dispatch: PropTypes.func.isRequired,
     dispatchRefresh: PropTypes.func.isRequired,
   };
+
+  generateEditAddress() {
+    const { type, cid, pid } = this.props;
+    switch (type) {
+      case 'ITEM':
+        return () => browserHistory.push(reservationGoods.indexPath(pid, cid));
+      case 'SERVICE':
+        return () => browserHistory.push(reservationService.indexPath(pid, cid));
+      case 'SPACE':
+        return () => browserHistory.push(reservationSpace.indexPath(pid, cid));
+      default:
+        return () => {};
+    }
+  }
+
+  generatePayment() {
+    const { paymenttype, cid, dispatch } = this.props;
+
+    switch (paymenttype) {
+      case 4:
+        return () => {
+          dispatch(doCreditCardPayment(cid))
+          .catch((error) => {
+            alert(error);
+          });
+        };
+      case 1:
+        return () => {
+          const options = {};
+          dispatch(popupATMBank(options));
+          dispatch(doATMPayment(cid));
+        };
+      default:
+        return () => {};
+    }
+
+  }
+
   callScorePanel(isView) {
     this.props.dispatch(popupScoreRating({
       isView,
@@ -83,7 +126,7 @@ class OrderItemBoard extends React.Component {
           alert(error);
         });
       },
-    }))
+    }));
   }
   generateString() {
     const { isOwner, stage, startDate } = this.props;
@@ -91,9 +134,8 @@ class OrderItemBoard extends React.Component {
     if (stage < 1000) {
       if (isOwner) {
         return generateOwnerItemString(stage, startDate);
-      } else {
-        return generateLesseeItemString(stage, startDate);
       }
+      return generateLesseeItemString(stage, startDate);
     } else if (stage > 1000 && stage < 3000) {
       const screenStage = stage % 100;
       if (screenStage < 11) {
@@ -173,7 +215,7 @@ class OrderItemBoard extends React.Component {
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
         />
       </div>
-    )
+    );
   }
 
   renderLesseeActions() {
@@ -195,7 +237,7 @@ class OrderItemBoard extends React.Component {
             colorType={'greenBorder'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={() => {}}
+            onClick={this.generateEditAddress()}
           />
         }
         {can_pay &&
@@ -203,7 +245,7 @@ class OrderItemBoard extends React.Component {
             colorType={'greenBorder'}
             {...buttonConfig}
             content={'付款'}
-            onClick={() => {}}
+            onClick={this.generatePayment()}
           />
         }
         {can_score &&
@@ -229,7 +271,7 @@ class OrderItemBoard extends React.Component {
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
         />
       </div>
-    )
+    );
   }
 
   render() {

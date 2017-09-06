@@ -174,7 +174,7 @@ Rails.application.routes.draw do
       post 'update_service_item', to: 'item#service_update'
       post 'create_space_item', to: 'item#space_add'
       post 'update_space_item', to: 'item#space_update'
-
+      post 'send_report', to: 'item#report' #
       # WISHLIST
       post 'wish/save', to: 'wishlist#save' #
       post 'get_wish_pond', to: 'wishlist#search' #

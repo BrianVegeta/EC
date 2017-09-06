@@ -86,14 +86,15 @@ class WishingPond extends React.Component {
     return (
       <div>
         <PageHeader >
-          <PageTitle
-            title="許願看板"
-            subtitle="有需求卻找不到？快來許願吧！"
-            renderIcon={() => renderTitleIcon()}
-          />
+          <div style={{ marginTop: 30 }}>
+            <PageTitle
+              title="許願看板"
+              subtitle="有需求卻找不到？快來許願吧！"
+              renderIcon={() => renderTitleIcon()}
+            />
+          </div>
           <div styleName="action-container">
-            <div styleName="action-filter-container">
-            </div>
+            <div styleName="action-filter-container" />
             <div styleName="action-filter-container">
               <AddWish
                 onClick={() => browserHistory.push(publishWishRouter.indexPath(''))}

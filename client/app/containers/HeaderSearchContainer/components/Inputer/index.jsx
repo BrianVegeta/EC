@@ -8,6 +8,8 @@ const cx = classnames.bind(styles);
 class Inputer extends React.Component {
   static defaultProps = {
     onChange: null,
+    onFocusCallback: null,
+    onBlurCallback: null,
     style: null,
   };
   static propTypes = {

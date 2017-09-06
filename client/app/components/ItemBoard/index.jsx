@@ -9,7 +9,7 @@ import FavoriteHeart from 'containers/FavoriteHeart/Container';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 
-import { itemPath } from 'lib/paths';
+import { itemPath, userprofilePaths } from 'lib/paths';
 import { formatCurrency } from 'lib/currency';
 import {
   CHARGE_TYPE_FIX,
@@ -115,6 +115,7 @@ class ItemBoard extends React.Component {
       owner_name,
       owner_img,
       calculate_charge_type,
+      uid,
     } = item;
 
     return (
@@ -129,12 +130,15 @@ class ItemBoard extends React.Component {
         </Link>
         <div styleName="price">{formatCurrency(price)}{this.renderUnit(calculate_charge_type)}</div>
         <div styleName="footer">
-          <div styleName="owner">
+          <Link
+            to={userprofilePaths.indexPath(uid)}
+            styleName="owner"
+          >
             <div styleName="avatar">
               <Avatar src={owner_img} />
             </div>
             <span styleName="username">{owner_name}</span>
-          </div>
+          </Link>
           {{
             [CONTROL_TYPE_PUBLIC]: this.renderFavorite(),
             [CONTROL_TYPE_PRIVATE]: this.renderDelete(),

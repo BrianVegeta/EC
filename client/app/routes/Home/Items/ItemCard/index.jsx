@@ -13,7 +13,7 @@ import {
   CHARGE_TYPE_MONTH,
 } from 'constants/publishTypes';
 
-import { itemPath } from 'lib/paths';
+import { itemPath, userprofilePaths } from 'lib/paths';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -52,8 +52,8 @@ class ItemCard extends React.Component {
       ownerName,
       favoriteCount,
       calculate_charge_type,
+      uid,
     } = item;
-
     return (
       <div styleName="container">
         <Link to={itemPath(pname, pid)} >
@@ -66,12 +66,15 @@ class ItemCard extends React.Component {
         </Link>
         <div styleName="price">{priceDesc}{this.renderUnit(calculate_charge_type)}</div>
         <div styleName="footer">
-          <div styleName="owner">
+          <Link
+            to={userprofilePaths.indexPath(uid)}
+            styleName="owner"
+          >
             <div styleName="avatar">
               <Avatar src={avatarUrl} />
             </div>
             <span styleName="username">{ownerName}</span>
-          </div>
+          </Link>
           <div style={{ float: 'right' }}>
             <FavoriteHeart
               pid={pid}

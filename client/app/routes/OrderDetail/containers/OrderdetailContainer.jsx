@@ -78,7 +78,6 @@ const mapDispatchToProps = (dispatch, { params }) => {
       });
     },
     dispatchPaymentInfo: () => {
-      console.log('dispatchPaymentInfo');
       const options = {};
       dispatch(popupATMBank(options));
       dispatch(doATMPayment(params.cid));
