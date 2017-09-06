@@ -38,6 +38,15 @@ class MessageBox extends React.Component {
     this.container.scrollTop = this.container.scrollHeight;
   }
 
+  componentDidUpdate({ logs }) {
+    if (
+      logs.length === 0 &&
+      this.props.logs.length > 0
+    ) {
+      this.container.scrollTop = this.container.scrollHeight;
+    }
+  }
+
   renderMessage(item, i) {
     const { currentUser: { uid } } = this.props;
     const { uid: targetUid } = item;

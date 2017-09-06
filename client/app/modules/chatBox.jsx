@@ -107,6 +107,7 @@ const setCurrentUser = ({ uid }) => ({
 
 export const changeChatTarget = ({ uid }) =>
   (dispatch) => {
+    dispatch(reset());
     dispatch(setCurrentUser({ uid }));
     dispatch(fetchLogs(uid));
   };
