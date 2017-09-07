@@ -42,6 +42,7 @@ class Sidebar extends React.Component {
   static propTypes = {
     itemDetail: myPropTypes.item.isRequired,
     isMyOwn: PropTypes.bool.isRequired,
+    dispatchReport: PropTypes.func.isRequired,
     dispatchAddFavorite: PropTypes.func.isRequired,
     dispatchRemoveFavorite: PropTypes.func.isRequired,
     isLogin: PropTypes.bool.isRequired,
@@ -63,7 +64,7 @@ class Sidebar extends React.Component {
   }
   render() {
     const { itemDetail, isMyOwn, dispatchAddFavorite,
-      dispatchRemoveFavorite, isLogin } = this.props;
+      dispatchRemoveFavorite, dispatchReport, isLogin } = this.props;
     const { price } = itemDetail;
     return (
       <StickyContainer style={{ height: 1700 }}>
@@ -92,10 +93,15 @@ class Sidebar extends React.Component {
                     isFavorite={itemDetail.in_my_favorite}
                   />
                   <ReportLink >
-                    <Link to="/" >
-                      <IconFlag size={18} />
-                      <span>檢舉此物品</span>
-                    </Link>
+                    <button
+                      className="button"
+                      onClick={() => dispatchReport(itemDetail.pid)}
+                    >
+                      <div>
+                        <IconFlag size={18} />
+                        <span style={{ marginLeft: 10 }}>檢舉此物品</span>
+                      </div>
+                    </button>
                   </ReportLink>
                 </div>
               </div>

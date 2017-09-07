@@ -5,7 +5,10 @@ import { fetchUser, addToTrack, removeFromTrack } from '../modules/userprofile';
 
 /* pick props */
 const mapStateToProps = ({ environment, userprofile, auth }) => ({
-  environment, userprofile, isLogin: auth.isLogin,
+  environment,
+  userprofile,
+  isLogin: auth.isLogin,
+  currentUid: auth.currentUser.uid,
 });
 
 /* pick dispatch */

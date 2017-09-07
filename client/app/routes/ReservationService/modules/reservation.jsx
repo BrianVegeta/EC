@@ -62,9 +62,9 @@ const transformState = ({
   leaseend: leaseend ? getMoment(leaseend) : null,
   couponNo: couponNo || null,
   serviceLocationType: service_location_type || null,
-  serviceCity: service_city || '',
-  serviceArea: service_area || '',
-  serviceAddress: service_address || '',
+  serviceCity: service_location_type === ASSIGN_ADDRESS_BY_OWNER ? '' : (service_city || ''),
+  serviceArea: service_location_type === ASSIGN_ADDRESS_BY_OWNER ? '' : (service_area || ''),
+  serviceAddress: service_location_type === ASSIGN_ADDRESS_BY_OWNER ? '' : (service_address || ''),
   note: note || '',
   unit: unit || 1,
   paymenttype: paymenttype || null,
@@ -96,7 +96,7 @@ const transformParams = (pid, assignAddressType, {
 }) => {
   const service_location_type = assignAddressType.length > 1 ?
     serviceLocationType : assignAddressType;
-  const isAssignAddressByOwner = service_location_type === ASSIGN_ADDRESS_BY_OWNER;
+  // const isAssignAddressByOwner = service_location_type === ASSIGN_ADDRESS_BY_OWNER;
   return ({
     pid,
     leasestart: leasestart ? leasestart.valueOf() : null,
@@ -105,9 +105,9 @@ const transformParams = (pid, assignAddressType, {
     note,
     coupon_no: couponNo,
     service_location_type,
-    service_city: isAssignAddressByOwner ? serviceCity : '',
-    service_area: isAssignAddressByOwner ? serviceArea : '',
-    service_address: isAssignAddressByOwner ? serviceAddress : '',
+    service_city: serviceCity,
+    service_area: serviceArea,
+    service_address: serviceAddress,
     paymenttype,
   });
 };

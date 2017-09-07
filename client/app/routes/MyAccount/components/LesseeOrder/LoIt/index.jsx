@@ -111,11 +111,14 @@ class OrderList extends React.Component {
           {records.map((record, index) => (
             <OrderItemBoard
               key={`${index + 1}`}
-              photoHead={record.lessee_img}
-              photoName={record.lessee_nick_name}
+              type="ITEM"
+              photoHead={record.owner_img}
+              photoName={record.owner_nick_name}
               stage={record.contractstage}
               cid={record.cid}
+              pid={record.pid}
               cidNo={record.cid_no}
+              paymenttype={record.paymenttype}
               itemName={record.pname}
               itemImgUrl={record.img1}
               targetName={record.owner_nick_name}

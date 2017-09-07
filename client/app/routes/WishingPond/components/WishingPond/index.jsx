@@ -59,17 +59,6 @@ class WishingPond extends React.Component {
     this.props.dispatchShow({ card });
   }
 
-  // <div styleName="title-container">
-  //   <div styleName="title-icon">
-  //     <IconTemp size={40} />
-  //   </div>
-  //   <span styleName="title">許願看板</span>
-  //   <span styleName="title-hint">有需求卻找不到？快來許願吧！</span>
-  // </div>
-  // <div styleName="action-container">
-  //   <button>篩選</button>
-  //   <button>許願</button>
-  // </div>
   render() {
     const { wish, dispatchFetchRecords } = this.props;
     const { renderTitleIcon } = this.constructor;
@@ -86,14 +75,15 @@ class WishingPond extends React.Component {
     return (
       <div>
         <PageHeader >
-          <PageTitle
-            title="許願看板"
-            subtitle="有需求卻找不到？快來許願吧！"
-            renderIcon={() => renderTitleIcon()}
-          />
+          <div style={{ marginTop: 30 }}>
+            <PageTitle
+              title="許願看板"
+              subtitle="有需求卻找不到？快來許願吧！"
+              renderIcon={() => renderTitleIcon()}
+            />
+          </div>
           <div styleName="action-container">
-            <div styleName="action-filter-container">
-            </div>
+            <div styleName="action-filter-container" />
             <div styleName="action-filter-container">
               <AddWish
                 onClick={() => browserHistory.push(publishWishRouter.indexPath(''))}

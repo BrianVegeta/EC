@@ -9,6 +9,7 @@ import ItemModel from './ItemModel';
 class Items extends React.Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
   render() {
     const { items, dispatch } = this.props;

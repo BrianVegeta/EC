@@ -86,6 +86,7 @@ export default {
     avatarUrl: PropTypes.string,
     ownerName: PropTypes.string,
     in_my_favorite: PropTypes.bool,
+    uid: PropTypes.string,
   }),
   vendorCard: PropTypes.shape({
     uid: PropTypes.string,

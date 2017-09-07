@@ -194,7 +194,7 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
-        <FormGroup headerText="押金">
+        <FormGroup headerText="押金（每筆交易）">
           <div styleName="currency-block">
             <InputTextCurrency
               ref={depositInput => (this.depositInput = depositInput)}

@@ -31,6 +31,26 @@ class Modal extends React.Component {
     children: myPropTypes.children.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, false);
+  }
+
+  handleClickOutside(e) {
+    if (this.contentBox.contains(e.target)) {
+      return;
+    }
+    this.props.onClose();
+  }
+
   render() {
     const { children, width, onClose } = this.props;
     return (
@@ -41,8 +61,12 @@ class Modal extends React.Component {
         className={cx('modal')}
         overlayClassName={cx('overlay')}
       >
-        <ContentContainer width={width}>
-          {children}
+        <ContentContainer
+          width={width}
+        >
+          <div ref={contentBox => (this.contentBox = contentBox)}>
+            {children}
+          </div>
         </ContentContainer>
       </ReactModal>
     );

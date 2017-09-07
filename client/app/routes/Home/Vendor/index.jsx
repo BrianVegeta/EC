@@ -26,13 +26,16 @@ class Vendor extends React.Component {
             </Link>
           </div>
           <div styleName="script">
-            <div styleName="title">
+            <Link
+              to={userprofilePaths.indexPath(item.uid)}
+              styleName="title"
+            >
               <TextTruncate
                 line={1}
                 truncateText="…"
                 text={item.name}
               />
-            </div>
+            </Link>
             <div styleName="biography">
               <div styleName="inner">
                 <TextTruncate

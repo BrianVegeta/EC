@@ -6,7 +6,7 @@ import { reduceDuplicateRecords } from 'lib/utils';
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'USERPROFILE.WISH_LIST';
 const REDUCER_KEY = 'userprofileWishList';
-const SIZE = 3;
+const SIZE = 9;
 const DUPLICATE_ID = 'id';
 
 

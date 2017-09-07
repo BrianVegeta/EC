@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
 import { loginPath } from 'lib/paths';
-import IconFacebook from 'react-icons/lib/fa/facebook-square';
-import IconLink from 'react-icons/lib/md/insert-link';
+import FacebookIcon from 'react-icons/lib/fa/facebook-square';
+import { ShareButtons } from 'react-share';
 import FavoriteHeart from 'components/FavoriteHeart';
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,8 @@ const Container = styled.div`
 `;
 const CollectButton = styled.button`
   border: 1px solid #999;
-  border-radius: 3px;
+  border-radius: 6px;
+  height: 52px
   margin-bottom: 10px;
   width: 100%;
   padding: 15px;
@@ -51,6 +52,10 @@ const ShareGroup = styled.div`
   }
 
 `;
+
+const { FacebookShareButton } = ShareButtons;
+// const FacebookIcon = generateShareIcon('facebook');
+
 class InteractiveBoard extends React.Component {
 
   static propTypes = {
@@ -86,6 +91,7 @@ class InteractiveBoard extends React.Component {
   render() {
     const { isFavorite, favorite, isLogin } = this.props;
     const favStr = isFavorite ? '取消收藏' : '收藏';
+    const url = window.location.href;
     return (
       <Container >
         <CollectButton
@@ -109,8 +115,11 @@ class InteractiveBoard extends React.Component {
           <span>{favorite}</span>人已收藏
         </BeenCollected>
         <ShareGroup >
-          <IconFacebook size={30} />
-          <IconLink size={30} />
+          <button className="button">
+            <FacebookShareButton url={url}>
+              <FacebookIcon size={30} />
+            </FacebookShareButton>
+          </button>
         </ShareGroup>
       </Container>
     );

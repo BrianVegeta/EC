@@ -167,7 +167,10 @@ class Header extends React.Component {
                   />
                 }
                 {isLogin &&
-                  <NavItem content={<Me currentUser={currentUser} />}>
+                  <NavItem
+                    style={{ padding: '20px 0 20px 35px', height: 71 }}
+                    content={<Me currentUser={currentUser} />}
+                  >
                     <DropdownNavs
                       list={[
                         { link: my.profilePath, text: '編輯個人資料' },

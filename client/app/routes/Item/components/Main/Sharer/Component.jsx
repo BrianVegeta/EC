@@ -43,7 +43,8 @@ const Sharer = props => (
       <button
         onClick={() => browserHistory.push(userprofilePaths.indexPath(props.uid))}
         className="button"
-        styleName="store">
+        styleName="store"
+      >
         <Store size={20} />
         <span>查看店家</span>
       </button>

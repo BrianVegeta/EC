@@ -12,6 +12,7 @@ export const RENDER_SUE_DETAIL = 'RENDER_SUE_DETAIL';
 export const RENDER_LOGIN = 'RENDER_LOGIN';
 export const RENDER_SHOW_WISH = 'RENDER_SHOW_WISH';
 export const RENDER_ATM = 'RENDER_ATM';
+export const RENDER_REPORT = 'RENDER_REPORT';
 
 // =============================================
 // = action type =
@@ -61,6 +62,9 @@ export const popupShowWish = options =>
 export const popupATMBank = options =>
   openPopup({ renderType: RENDER_ATM, options });
 
+export const popupReport = options =>
+  openPopup({ renderType: RENDER_REPORT, options });
+
 export const popupFetching = () => ({
   type: FETCHING,
 });
@@ -69,6 +73,14 @@ export const popupFetched = options => ({
   type: FETCHED,
   options,
 });
+
+export function closeCallback() {
+  return (dispatch, getState) =>
+    new Promise((resolve) => {
+      dispatch(closePopup());
+      resolve();
+    });
+}
 
 
 // =============================================

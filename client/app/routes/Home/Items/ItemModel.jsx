@@ -13,6 +13,7 @@ export default class {
       owner_img,
       owner_name,
       in_my_favorite,
+      uid,
     } = props;
     this.pid = pid;
     this.pname = pname;
@@ -25,5 +26,6 @@ export default class {
     this.avatarUrl = owner_img;
     this.ownerName = owner_name;
     this.isMyFavorite = !!in_my_favorite;
+    this.uid = uid;
   }
 }

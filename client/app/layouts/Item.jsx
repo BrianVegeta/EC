@@ -18,7 +18,7 @@ class OrderdetailLayout extends React.Component {
   render() {
     const { children, environment } = this.props;
     return (
-      <div className="container-gray-bg" style={{ paddingBottom: 20 }}>
+      <div className="container-gray-bg">
         <HeaderContainer />
         <MainWrapper minHeight={environment.height}>
           {children}
