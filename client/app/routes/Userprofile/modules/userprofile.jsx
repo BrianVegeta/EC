@@ -75,8 +75,8 @@ export function fetchUser(uid) {
       .then((comments) => {
         dispatch(fetchedComments(comments));
       });
-      const { isLogin } = getState()[AUTH_KEY];
-      if (isLogin) {
+      const { isLogin, currentUser } = getState()[AUTH_KEY];
+      if (isLogin && currentUser !== uid) {
         asyncXhrPost(
           '/ajax/check_track.json',
           { target_uid: uid },

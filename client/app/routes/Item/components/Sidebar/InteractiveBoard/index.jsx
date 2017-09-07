@@ -16,7 +16,8 @@ const Container = styled.div`
 `;
 const CollectButton = styled.button`
   border: 1px solid #999;
-  border-radius: 3px;
+  border-radius: 6px;
+  height: 52px
   margin-bottom: 10px;
   width: 100%;
   padding: 15px;

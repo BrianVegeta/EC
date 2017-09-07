@@ -59,6 +59,7 @@ class OrderBoard extends React.Component {
           <FormButton
             content={isMyOwn ? '編輯商品' : '馬上預訂'}
             colorType={isMyOwn ? 'greenBorder' : 'orange'}
+            style={{ height: 52 }}
             onClick={isMyOwn ? onEdit : onReserve}
             size="md"
           />

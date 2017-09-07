@@ -36,7 +36,11 @@ class Userprofile extends React.Component {
     dispatchFetchUser: PropTypes.func.isRequired,
     dispatchAddTrack: PropTypes.func.isRequired,
     dispatchRemoveTrack: PropTypes.func.isRequired,
+    params: PropTypes.shape({
+      uid: PropTypes.string,
+    }).isRequired,
     isLogin: PropTypes.bool.isRequired,
+    currentUid: PropTypes.string.isRequired,
   };
 
   static renderSubscribeCount(count) {
@@ -47,14 +51,69 @@ class Userprofile extends React.Component {
     return <div styleName="detail-term">{detail}</div>;
   }
 
+  constructor(props) {
+    super(props);
+    const isOwner = props.currentUid === props.params.uid;
+
+    this.state = {
+      isOwner,
+    };
+  }
+
   componentDidMount() {
     this.props.dispatchFetchUser();
   }
 
+  renderChatButton() {
+    const { isOwner } = this.state;
+
+    if (isOwner) {
+      return null;
+    }
+
+    return (
+      <div styleName="subscribe-btn" >
+        <FormButton
+          content="私訊"
+          colorType="greenBorder"
+          onClick={() => console.log('私訊')}
+        />
+      </div>
+
+    );
+  }
+  renderTrackButton() {
+    const { isOwner } = this.state;
+
+    if (isOwner) {
+      return null;
+    }
+
+    const { userprofile: { isTrack },
+      isLogin, dispatchAddTrack, dispatchRemoveTrack } = this.props;
+    return (
+      <div styleName="subscribe-btn" style={{ marginRight: 20 }}>
+        <FormButton
+          content={isTrack ? '取消追蹤' : '追蹤'}
+          onClick={() => {
+            if (isLogin) {
+              if (isTrack) {
+                dispatchRemoveTrack();
+              } else {
+                dispatchAddTrack();
+              }
+            } else {
+              browserHistory.push(loginPath);
+            }
+          }}
+        />
+      </div>
+    );
+  }
   render() {
     const { userprofile: {
-      detail, track, comments, isTrack,
-    }, isLogin, dispatchAddTrack, dispatchRemoveTrack } = this.props;
+      detail, track, comments },
+    } = this.props;
 
     if (!detail) return null;
     const {
@@ -68,12 +127,12 @@ class Userprofile extends React.Component {
       picture,
       name,
       autobiography,
-      email,
-      uid,
-      fb_id,
+      // email,
+      // uid,
+      // fb_id,
       website,
       credit,
-      phone,
+      // phone,
     } = detail;
     const {
       renderSubscribeCount,
@@ -105,29 +164,8 @@ class Userprofile extends React.Component {
                   </span>
                   <span>追蹤名單：{renderSubscribeCount(track.tracked_user_count)}</span>
                 </div>
-                <div styleName="subscribe-btn" >
-                  <FormButton
-                    content="私訊"
-                    colorType="greenBorder"
-                    onClick={() => console.log('私訊')}
-                  />
-                </div>
-                <div styleName="subscribe-btn" style={{ marginRight: 20 }}>
-                  <FormButton
-                    content={isTrack ? '取消追蹤' : '追蹤'}
-                    onClick={() => {
-                      if (isLogin) {
-                        if (isTrack) {
-                          dispatchRemoveTrack();
-                        } else {
-                          dispatchAddTrack();
-                        }
-                      } else {
-                        browserHistory.push(loginPath);
-                      }
-                    }}
-                  />
-                </div>
+                {this.renderChatButton()}
+                {this.renderTrackButton()}
               </div>
             </div>
           </div>

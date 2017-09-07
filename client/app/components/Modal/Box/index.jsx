@@ -37,12 +37,10 @@ class Modal extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount2');
     document.addEventListener('click', this.handleClickOutside, false);
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount2');
     document.removeEventListener('click', this.handleClickOutside, false);
   }
 
@@ -50,7 +48,6 @@ class Modal extends React.Component {
     if (this.contentBox.contains(e.target)) {
       return;
     }
-
     this.props.onClose();
   }
 

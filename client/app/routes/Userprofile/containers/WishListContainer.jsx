@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { popupShowWish } from 'modules/popup';
 import WishList from '../components/WishList';
 import { fetchRecords, reset } from '../modules/userprofileWishList';
 
@@ -12,6 +12,7 @@ const mapStateToProps = ({ environment, userprofileWishList, auth }) => ({
 const mapDispatchToProps = (dispatch, { params }) => ({
   dispatchFetchRecords: () => dispatch(fetchRecords(params.uid)),
   dispatchReset: () => dispatch(reset()),
+  dispatchShow: options => dispatch(popupShowWish(options)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishList);
