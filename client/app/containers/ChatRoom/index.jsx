@@ -17,6 +17,8 @@ class ChatRoom extends React.Component {
     dispatchConnect: PropTypes.func.isRequired,
     dispatchFetchLogs: PropTypes.func.isRequired,
     dispatchChangeChatTarget: PropTypes.func.isRequired,
+    dispatchChangeInput: PropTypes.func.isRequired,
+    dispatchSendMessage: PropTypes.func.isRequired,
     chat: PropTypes.object.isRequired,
     chatBox: PropTypes.shape({
       currentUser: PropTypes.object,
@@ -77,8 +79,10 @@ class ChatRoom extends React.Component {
     const {
       dispatchFetchChatRoom,
       dispatchChangeChatTarget,
+      dispatchChangeInput,
+      dispatchSendMessage,
       chatRooms,
-      chatBox: { currentUser: targetUser, logs },
+      chatBox: { currentUser: targetUser, logs, input },
       currentUser,
     } = this.props;
 
@@ -113,7 +117,13 @@ class ChatRoom extends React.Component {
             <div styleName="message-box">
               <MessageBox logs={logs} currentUser={currentUser} />
             </div>
-            <div styleName="input-box"><InputBox /></div>
+            <div styleName="input-box">
+              <InputBox
+                input={input}
+                changeInput={dispatchChangeInput}
+                sendMessage={dispatchSendMessage}
+              />
+            </div>
           </div>
         </div>
       </div>

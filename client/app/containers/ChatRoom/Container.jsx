@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {
   connect as chatConnect,
+  sendMessage,
 } from 'modules/chat';
 import {
   fetchRooms,
@@ -8,6 +9,7 @@ import {
 import {
   fetchLogs,
   changeChatTarget,
+  changeInput,
 } from 'modules/chatBox';
 import ChatRoom from './index';
 
@@ -30,6 +32,8 @@ const mapDispatchToProps = (dispatch) => {
     dispatchConnect: () => dispatch(chatConnect()),
     dispatchFetchLogs: targetUid => dispatch(fetchLogs(targetUid)),
     dispatchChangeChatTarget: ({ uid }) => dispatch(changeChatTarget({ uid })),
+    dispatchChangeInput: input => dispatch(changeInput(input)),
+    dispatchSendMessage: () => dispatch(sendMessage()),
   });
 };
 

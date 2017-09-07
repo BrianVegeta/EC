@@ -1,9 +1,14 @@
 import { Strophe, $pres, $msg } from 'strophe.js';
 import { unescape } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
+import { now } from 'lib/time';
 import {
   REDUCER_KEY as AUTH_REDUCER_KEY,
 } from 'modules/auth';
+import {
+  REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
+  changeInput,
+} from 'modules/chatBox';
 
 /* =============================================>>>>>
 = settings =
@@ -13,7 +18,6 @@ const REDUCER_KEY = 'chat';
 
 const XMPP_HOST_IP = 'debug.shareapp.com.tw';
 const XMPP_HOST_URL = `http://${XMPP_HOST_IP}:17070/http-bind/`;
-
 const {
   ATTACHED,  // 8
   AUTHENTICATING, // 3
@@ -27,6 +31,10 @@ const {
   ERROR, // 0
   REDIRECT, // 9
 } = Strophe.Status;
+const NUMBER_TYPE_MESSAGE = 1;
+const NUMBER_TYPE_IMAGE = 2;
+const NUMBER_TYPE_ITEM = 3;
+const NUMBER_TYPE_SELECT_ITEM = 6;
 
 
 // =============================================
@@ -34,13 +42,14 @@ const {
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
-export const INIT_CONNECTION = prefix('INIT_CONNECTION');
-export const UPDATE_CONNECTION = prefix('UPDATE_CONNECTION');
-export const RESET = prefix('RESET');
+const INIT_CONNECTION = prefix('INIT_CONNECTION');
+const SET_CLIENT_FULL_JID = prefix('SET_CLIENT_FULL_JID');
+const RESET = prefix('RESET');
 
 // =============================================
 // = actions =
 // =============================================
+
 const getOpenfireLoginToken = () =>
   (dispatch, getState) =>
     new Promise((resolve) => {
@@ -75,22 +84,27 @@ const onMessage = (msg, connection) => {
   return true;
 };
 
-const receive = (data) => {
+const onConnectionRecieve = (data) => {
   // console.log(decodeURI(data));
 };
 
-const send = (data) => {
+const onConnectionSend = (data) => {
 
 };
 
+const setClientFullJid = jid => ({
+  type: SET_CLIENT_FULL_JID,
+  jid,
+});
+
 const initialConnection = () =>
   (dispatch, getState) => {
-    const {
-      connection,
-    } = getState()[REDUCER_KEY];
-    if (connection) {
-      return connection;
-    }
+    // const {
+    //   connection,
+    // } = getState()[REDUCER_KEY];
+    // if (connection) {
+    //   return connection;
+    // }
     const newConnection = new Strophe.Connection(XMPP_HOST_URL);
     dispatch({
       type: INIT_CONNECTION,
@@ -103,22 +117,78 @@ export const connect = () =>
   (dispatch, getState) =>
     dispatch(getOpenfireLoginToken()).then((token) => {
       const {
-        currentUser: { uid },
+        currentUser: { uid: myUid },
       } = getState()[AUTH_REDUCER_KEY];
       const connection = dispatch(initialConnection());
-      connection.rawInput = receive;
-      connection.rawOutput = send;
-      const CLIENT_FULL_JID = `${uid}share@${XMPP_HOST_IP}/${uid}_${token}`;
-      connection.connect(CLIENT_FULL_JID, `${uid.toLowerCase()}@shareid`, (status) => {
-        if (status === STROPHE_CONNECTED) {
-          console.log('connected');
-          connection.addHandler((msg) => {
-            onMessage(msg, connection);
-          }, null, 'message', null, null, null);
-          connection.send($pres().tree());
+      connection.rawInput = onConnectionRecieve;
+      connection.rawOutput = onConnectionSend;
+      const clientFullJid = `${myUid}share@${XMPP_HOST_IP}/${myUid}_${token}`;
+      dispatch(setClientFullJid(
+        clientFullJid,
+      ));
+      const pass = `${myUid.toLowerCase()}@shareid`;
+      connection.connect(clientFullJid, pass, (status) => {
+        switch (status) {
+          case STROPHE_CONNECTED: {
+            console.log('connected');
+            connection.addHandler((msg) => {
+              onMessage(msg, connection);
+            }, null, 'message', null, null, null);
+            connection.send($pres().tree());
+            break;
+          }
+          case DISCONNECTED: {
+            console.log('disconnect');
+            connect();
+            break;
+          }
+          default:
+            console.log(status);
         }
       });
     });
+
+const send = xml =>
+  (dispatch, getState) =>
+    new Promise((resolve) => {
+      const { connection } = getState()[REDUCER_KEY];
+      connection.send(xml);
+      resolve();
+    });
+
+export const sendMessage = () =>
+  (dispatch, getState) => {
+    const {
+      input,
+      currentUser: { uid: targetUid },
+    } = getState()[CHAT_BOX_REDUCER_KEY];
+    const {
+      currentUser: { uid: myUid, name: myName },
+    } = getState()[AUTH_REDUCER_KEY];
+    const { clientFullJid } = getState()[REDUCER_KEY];
+
+    dispatch(changeInput(''));
+    const sharemsg = JSON.stringify({
+      type: NUMBER_TYPE_MESSAGE,
+      uid: myUid,
+      name: myName,
+    });
+    const msg = $msg({
+      to: `${targetUid.toLowerCase()}share@${XMPP_HOST_IP}`,
+      id: `${myUid.toUpperCase()}_${targetUid.toUpperCase()}_${now()}`,
+      type: 'chat',
+      from: clientFullJid,
+    })
+    .c('body', null, input)
+    .c('request', {
+      xmlns: 'urn:xmpp:receipts',
+    }).up()
+    .c('sharemsg', {
+      xmlns: 'urn:xmpp:data',
+    }, sharemsg);
+
+    send(msg.tree());
+  };
 
 
 // =============================================
@@ -126,6 +196,7 @@ export const connect = () =>
 // =============================================
 const initialState = {
   connection: null,
+  clientFullJid: null,
 };
 
 export default (state = initialState, action) => {
@@ -133,6 +204,9 @@ export default (state = initialState, action) => {
 
     case INIT_CONNECTION:
       return Object.assign({}, state, { connection: action.connection });
+
+    case SET_CLIENT_FULL_JID:
+      return Object.assign({}, state, { clientFullJid: action.jid });
 
     case RESET:
       return initialState;

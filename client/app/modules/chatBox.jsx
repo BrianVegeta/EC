@@ -5,7 +5,7 @@ import { reduceDuplicateRecords } from 'lib/utils';
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'CHAT_BOX';
-const REDUCER_KEY = 'chatBox';
+export const REDUCER_KEY = 'chatBox';
 const SIZE = 20;
 const DUPLICATE_KEY = 'id';
 
@@ -15,6 +15,7 @@ const DUPLICATE_KEY = 'id';
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
+export const CHANGE_INPUT = prefix('CHANGE_INPUT');
 export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
@@ -26,6 +27,10 @@ export const RESET = prefix('RESET');
 // =============================================
 // = actions =
 // =============================================
+export const changeInput = input => ({
+  type: CHANGE_INPUT,
+  input,
+});
 
 const fetching = expireFlag => ({
   type: FETCHING,
@@ -118,6 +123,7 @@ export const changeChatTarget = ({ uid }) =>
 // =============================================
 const initialState = {
   currentUser: null,
+  input: '',
 
   expireFlag: null,
   isPaginable: true,
@@ -130,6 +136,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+
+    case CHANGE_INPUT:
+      return Object.assign({}, state, { input: action.input });
+
     case FETCHING:
       return Object.assign({}, state, {
         isFetching: true,

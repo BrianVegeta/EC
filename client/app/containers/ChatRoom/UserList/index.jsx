@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isEqual } from 'lodash';
 import Infinite from 'react-infinite';
 import Avatar from 'components/Avatar';
 import classnames from 'classnames/bind';
@@ -26,6 +27,16 @@ class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.renderUser = this.renderUser.bind(this);
+  }
+
+  shouldComponentUpdate({ currentUser, chatRooms }) {
+    if (
+      isEqual(currentUser, this.props.currentUser) &&
+      isEqual(chatRooms, this.props.chatRooms)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   renderUser({ members: [{ uid, name, picture }] }, i) {
