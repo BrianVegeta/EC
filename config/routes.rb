@@ -98,6 +98,8 @@ Rails.application.routes.draw do
       post 'check_track', to: 'userprofile#is_tracked' #
       post 'add_track', to: 'userprofile#track' #
       post 'remove_track', to: 'userprofile#untrack' #
+      post 'get_track', to: 'userprofile#get_track_user' #
+
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'

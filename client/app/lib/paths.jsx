@@ -33,6 +33,8 @@ export const userprofilePaths = {
   wishListPath: uid => `/p/userprofile/${uid}/wish-list`,
   commentsOwnerPath: uid => `/p/userprofile/${uid}/comments-owner`,
   commentsLesseePath: uid => `/p/userprofile/${uid}/comments-lessee`,
+  fansPath: uid => `/p/userprofile/${uid}/fans`,
+  trackPath: uid => `/p/userprofile/${uid}/track`,
 };
 
 export const notifyPath = {

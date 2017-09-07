@@ -5,7 +5,8 @@ import TableForm, { TableRow } from 'components/TableForm';
 import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 import constraints from 'constraints';
-
+import { Link } from 'react-router';
+import { forgotPasswordPath } from 'lib/paths';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -72,7 +73,12 @@ class Profile extends React.Component {
                   validateOnBlur
                 />
               </div>
-              <span>忘記密碼？</span>
+              <Link
+                styleName="forgot-password"
+                to={forgotPasswordPath}
+              >
+                <span>忘記密碼？</span>
+              </Link>
             </div>
           </TableRow>
           <TableRow>

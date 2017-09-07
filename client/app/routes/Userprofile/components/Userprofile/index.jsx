@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
 import PersonIcon from 'react-icons/lib/md/person';
-
+import { endsWith, isEqual } from 'lodash';
 import { formatDate } from 'lib/time';
 import { formatCount } from 'lib/currency';
-import { browserHistory } from 'react-router';
-import { loginPath } from 'lib/paths';
+import { browserHistory, Link } from 'react-router';
+import { loginPath, my, userprofilePaths } from 'lib/paths';
 
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
@@ -18,7 +18,9 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 class Userprofile extends React.Component {
-
+  static defaultProps = {
+    currentUid: '',
+  }
   static propTypes = {
     userprofile: PropTypes.shape({
       detail: PropTypes.object,
@@ -40,7 +42,10 @@ class Userprofile extends React.Component {
       uid: PropTypes.string,
     }).isRequired,
     isLogin: PropTypes.bool.isRequired,
-    currentUid: PropTypes.string.isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }).isRequired,
+    currentUid: PropTypes.string,
   };
 
   static renderSubscribeCount(count) {
@@ -64,11 +69,71 @@ class Userprofile extends React.Component {
     this.props.dispatchFetchUser();
   }
 
+  componentDidUpdate({ params: { uid } }) {
+    if (!isEqual(uid, this.props.params.uid)) {
+      this.props.dispatchFetchUser();
+      const isOwner = this.props.currentUid === this.props.params.uid;
+      this.state = { isOwner };
+    }
+  }
+
+  replaceWebsite() {
+    const { userprofile: { detail } } = this.props;
+    const { website } = detail;
+
+    if ((!(website)) || website === 'www.') {
+      return '';
+    }
+
+    return website;
+  }
+
+  renderStatic() {
+    const { isOwner } = this.state;
+    const { params, userprofile: { track } } = this.props;
+    const { renderSubscribeCount } = this.constructor;
+
+    if (isOwner) {
+      return (
+        <div styleName="subscribe-count">
+          <Link to={userprofilePaths.fansPath(params.uid)}>
+            <span style={{ marginRight: 35 }}>
+              粉絲：{renderSubscribeCount(track.fans_count)}
+            </span>
+          </Link>
+          <Link to={userprofilePaths.trackPath(params.uid)}>
+            <span>
+              追蹤名單：{renderSubscribeCount(track.tracked_user_count)}
+            </span>
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <div styleName="subscribe-count">
+        <span style={{ marginRight: 35 }}>
+          粉絲：{renderSubscribeCount(track.fans_count)}
+        </span>
+        <span>
+          追蹤名單：{renderSubscribeCount(track.tracked_user_count)}
+        </span>
+      </div>
+    );
+  }
   renderChatButton() {
     const { isOwner } = this.state;
 
     if (isOwner) {
-      return null;
+      return (
+        <div styleName="profile-btn" >
+          <FormButton
+            content="編輯"
+            colorType="greenBorder"
+            onClick={() => browserHistory.push(my.profilePath)}
+          />
+        </div>
+      );
     }
 
     return (
@@ -79,9 +144,9 @@ class Userprofile extends React.Component {
           onClick={() => console.log('私訊')}
         />
       </div>
-
     );
   }
+
   renderTrackButton() {
     const { isOwner } = this.state;
 
@@ -110,11 +175,46 @@ class Userprofile extends React.Component {
       </div>
     );
   }
-  render() {
+
+  renderDetail() {
+    const { location } = this.props;
+    const { pathname } = location;
+    if (endsWith(pathname, '/track') || endsWith(pathname, '/fans')) {
+      return null;
+    }
+
     const { userprofile: {
-      detail, track, comments },
+      detail, comments },
     } = this.props;
 
+    const {
+      autobiography,
+      website,
+      credit,
+    } = detail;
+    const totalComments = (comments.owner_comments_count + comments.lessee_comments_count);
+
+    return (
+      <div>
+        <div styleName="score-container">
+          <div styleName="score">{credit.toFixed(1)}</div>
+          <div styleName="stars-container">
+            <Stars score={credit} activeColor="#FF9442" size={28} />
+            <div styleName="comment-count">
+              {totalComments}則評價
+            </div>
+          </div>
+        </div>
+        {website && <div styleName="website-container">{this.replaceWebsite()}</div>}
+        {autobiography && <div styleName="biography-container">{autobiography}</div>}
+      </div>
+    );
+  }
+
+  render() {
+    const { userprofile: {
+      detail, track }, params,
+    } = this.props;
     if (!detail) return null;
     const {
       city,
@@ -126,19 +226,19 @@ class Userprofile extends React.Component {
     const {
       picture,
       name,
-      autobiography,
+      // autobiography,
       // email,
       // uid,
       // fb_id,
-      website,
-      credit,
+      // website,
+      // credit,
       // phone,
     } = detail;
     const {
       renderSubscribeCount,
       renderSidebarDetailTerm,
     } = this.constructor;
-    const totalComments = (comments.owner_comments_count + comments.lessee_comments_count);
+
     return (
       <div styleName="container" className="clear">
         <div styleName="sidebar">
@@ -158,28 +258,13 @@ class Userprofile extends React.Component {
             <div styleName="detail">
               <div styleName="detail-header">{name}</div>
               <div styleName="subscribe">
-                <div styleName="subscribe-count">
-                  <span style={{ marginRight: 35 }}>
-                    粉絲：{renderSubscribeCount(track.fans_count)}
-                  </span>
-                  <span>追蹤名單：{renderSubscribeCount(track.tracked_user_count)}</span>
-                </div>
+                {this.renderStatic()}
                 {this.renderChatButton()}
                 {this.renderTrackButton()}
               </div>
             </div>
           </div>
-          <div styleName="score-container">
-            <div styleName="score">{Math.floor(credit * 10) / 10}</div>
-            <div styleName="stars-container">
-              <Stars score={credit} activeColor="#FF9442" size={28} />
-              <div styleName="comment-count">
-                {totalComments}則評價
-              </div>
-            </div>
-          </div>
-          {website && <div styleName="website-container">{website}</div>}
-          {autobiography && <div styleName="biography-container">{autobiography}</div>}
+          {this.renderDetail()}
           {this.props.children}
         </div>
       </div>

@@ -1,0 +1,43 @@
+// @author: vincent
+@import "~styles/color.sass"
+.container
+  width: 345px
+  height: 116px
+  position: relative
+  border: 1px solid $global-lineColor
+  .close
+    position: absolute
+    width: 20px
+    height: 20px
+    right: 15px
+    top: 10px
+  .image,
+    position: absolute
+    top: 30px
+    left: 15px
+  .details
+    position: absolute
+    left: 80px
+    .name
+      width: 150px
+      margin-top: 35px
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
+      font-size: 18px
+      color: $global-blackColor
+    .uid
+      width: 150px
+      margin-top: 5px
+      font-size: 16px
+      color: $global-placeholder
+  .action
+    position: absolute
+    right: 15px
+    bottom: 15px
+    .button
+      padding: 10px 15px 10px 15px
+      border-radius: 6px
+      border: 1px solid $global-primaryColor
+      background-color: $global-primaryColor
+      color: white

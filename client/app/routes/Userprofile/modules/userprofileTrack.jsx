@@ -2,11 +2,15 @@ import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 
 /* =============================================>>>>>
-= userprofile =
+= settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'USERPROFILE.COMMENTS';
-const REDUCER_KEY = 'userprofileComments';
-const SIZE = 9;
+const ACTION_PREFIX = 'USERPROFILE.TRACK';
+const REDUCER_KEY = 'userprofileTrack';
+const SIZE = 20;
+const DUPLICATE_ID = 'id';
+
+export const ME_TRACK = 'me_track';
+export const TRACK_ME = 'track_me';
 
 // =============================================
 // = action type =
@@ -19,6 +23,7 @@ export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
 export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
 export const RESET = prefix('RESET');
 
+
 // =============================================
 // = actions =
 // =============================================
@@ -27,17 +32,18 @@ const fetching = expireFlag => ({
   expireFlag,
 });
 
-const fetched = records => ({
+const fetched = (records, lastId) => ({
   type: FETCHED,
   records,
+  lastId,
 });
 
-function checkExpire(records, expireFlag) {
+function checkExpire(records, expireFlag, lastId) {
   return (dispatch, getState) => {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    dispatch(fetched(records));
+    dispatch(fetched(records, lastId));
   };
 }
 
@@ -62,21 +68,21 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export const TARGET_OWNER = 'OWNER';
-export const TARGET_LESSEE = 'LESSEE';
-export function fetchRecords(uid, target, recursiveRecords = []) {
+export function fetchRecords(uid, type, recursiveRecords = []) {
   return (dispatch, getState) => {
     const {
       size,
       index,
       records,
       recursiveTimes,
+      lastId,
     } = getState()[REDUCER_KEY];
 
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       uid,
+      type,
     };
 
     /* 增加 RECURSIVE 次數 */
@@ -86,23 +92,20 @@ export function fetchRecords(uid, target, recursiveRecords = []) {
     dispatch(fetching(expireFlag));
     /* API REQUEST */
     asyncXhrPost(
-      {
-        [TARGET_OWNER]: '/ajax/get_owner_comments.json',
-        [TARGET_LESSEE]: '/ajax/get_lessee_comments.json',
-      }[target],
+      '/ajax/get_track.json',
       requestParams,
     )
     .then((data) => {
-      const reducedRecords = reduceDuplicateRecords(data, records, 'pid');
+      const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_ID);
       if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(uid, target, reducedRecords));
+        dispatch(fetchRecords(uid, reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */
       dispatch(resetRecursiveTimes());
       /* CHANGE RECORDS IN REDUCER */
-      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag));
+      dispatch(checkExpire(data.concat(recursiveRecords), expireFlag, lastId));
     });
   };
 }
@@ -135,6 +138,7 @@ export default (state = initialState, action) => {
         isPaginable: action.records.length === state.size,
         records: state.records.concat(action.records),
         index: state.index + action.records.length,
+        lastId: action.lastId,
       });
 
     case COUNT_RECURSIVE_TIMES:

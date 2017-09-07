@@ -203,12 +203,12 @@ export default (state = initialState, action) => {
 
     case SWITCH_REGISTER_BY_EMAIL:
       return Object.assign({}, state, {
-        registerBy: SWITCH_REGISTER_BY_EMAIL,
+        registerBy: REGISTER_BY_EMAIL,
       });
 
     case SWITCH_REGISTER_BY_PHONE:
       return Object.assign({}, state, {
-        registerBy: SWITCH_REGISTER_BY_PHONE,
+        registerBy: REGISTER_BY_PHONE,
       });
 
     case REGISTER_FAILED:

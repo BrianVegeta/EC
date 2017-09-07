@@ -404,8 +404,7 @@ class Ajax::Api::UserprofileController < ApplicationController
 
   def track_user_params
     #type : String => me_track track_me
-    #target_uid : String => uid
-    params.permit(:type, :target_uid).merge(current_uid_params).merge(paging_params)
+    params.permit(:type, :uid).merge(paging_params)
   end
 
 end

@@ -7,6 +7,8 @@ import routeItemsSpace from './routes/ItemsSpace/route';
 import routeCommentsLessee from './routes/CommentsLessee/route';
 import routeCommentsOwner from './routes/CommentsOwner/route';
 import routeWishList from './routes/WishList/route';
+import routeFans from './routes/Fans/route';
+import routeTrack from './routes/Track/route';
 
 const key = 'userprofile';
 export default store => ({
@@ -32,5 +34,7 @@ export default store => ({
     routeCommentsLessee(store),
     routeCommentsOwner(store),
     routeWishList(store),
+    routeFans(store),
+    routeTrack(store),
   ],
 });
