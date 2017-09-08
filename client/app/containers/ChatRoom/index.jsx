@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconMinus from 'react-icons/lib/ti/minus';
+import IconDetail from 'react-icons/lib/md/description';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import UserList from './UserList';
 import MessageBox from './MessageBox';
 import InputBox from './InputBox';
+import SearchInput from './SearchInput';
 
 
 const cx = classnames.bind(styles);
@@ -32,8 +34,8 @@ class ChatRoom extends React.Component {
     }).isRequired,
   };
 
-  static renderMinus(onClick) {
-    return <IconMinus size={20} className={cx('minus')} onClick={onClick} />;
+  static renderMinus() {
+    return <IconMinus size={20} className={cx('minus')} />;
   }
 
   constructor(props) {
@@ -73,7 +75,7 @@ class ChatRoom extends React.Component {
         tabIndex="-1"
         onClick={this.onRoomToggle}
       >
-        聊聊
+        聊天室
       </div>
     );
   }
@@ -94,8 +96,13 @@ class ChatRoom extends React.Component {
     if (false) {
       return (
         <div styleName="chatroom-container">
-          <div styleName="header">
-            目前還沒任何訊息{renderMinus(this.onRoomToggle)}
+          <div
+            styleName="header-bar"
+            onClick={this.onRoomToggle}
+            role="button"
+            tabIndex="-1"
+          >
+            聊天室{renderMinus()}
           </div>
           <div className={cx('body', 'no-data')}>沒有聊天記錄</div>
         </div>
@@ -103,10 +110,21 @@ class ChatRoom extends React.Component {
     }
     return (
       <div styleName="chatroom-container">
+        <div
+          styleName="header-bar"
+          onClick={this.onRoomToggle}
+          role="button"
+          tabIndex="-1"
+        >
+          聊天室{renderMinus()}
+        </div>
         <div>
-          <div className={cx('header', 'left')}>&nbsp;</div>
+          <div className={cx('header', 'left')}>
+            <SearchInput />
+          </div>
           <div className={cx('header', 'right')}>
-            phyala{renderMinus(this.onRoomToggle)}
+            123456789012345678901234567890
+            <IconDetail size={20} color="#999" styleName="detail" />
           </div>
         </div>
         <div className={cx('body')}>

@@ -34,14 +34,6 @@ class InputBox extends React.Component {
     const { input } = this.props;
     return (
       <div styleName="container">
-        <div styleName="input">
-          <TextareaAutosize
-            styleName="input-text-area"
-            value={input}
-            onChange={this.onInputChange}
-            onKeyDown={this.onEnter}
-          />
-        </div>
         <div styleName="controllers">
           <button
             className="button"
@@ -55,18 +47,14 @@ class InputBox extends React.Component {
           >
             商品
           </button>
-          <button
-            className="button"
-            styleName="button"
-          >
-            發佈
-          </button>
-          <button
-            className="button"
-            styleName="submit-button"
-          >
-            送出
-          </button>
+        </div>
+        <div styleName="input">
+          <TextareaAutosize
+            styleName="input-text-area"
+            value={input}
+            onChange={this.onInputChange}
+            onKeyDown={this.onEnter}
+          />
         </div>
       </div>
     );

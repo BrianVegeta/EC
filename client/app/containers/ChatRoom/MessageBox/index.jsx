@@ -7,7 +7,7 @@ import { truncate, split, isEqual } from 'lodash';
 import IconError from 'react-icons/lib/md/error';
 import Avatar from 'components/Avatar';
 import Picture from 'components/Picture';
-import { formatDate, now, moment } from 'lib/time';
+import { formatDate, now } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
 import { itemPath } from 'lib/paths';
 import CSS from 'react-css-modules';
@@ -35,29 +35,29 @@ class MessageBox extends React.Component {
     }).isRequired,
   };
 
-  static renderSendError({ is_sending, create_time }) {
-    if ((now() - create_time) > 30000) {
-      return <IconError styleName="warning" size={20} color="#F26363" />;
-    }
-    return null;
+  static rSendError({ is_sending, create_time }) {
+    const isTimeout = is_sending && (now() - create_time) > 30000;
+    if (!isTimeout) return null;
+    return <IconError styleName="warning" size={20} color="#F26363" />;
   }
 
-  static renderItemTitle(message) {
+  static rItemTitle(message) {
     return <div styleName="title">{split(message, '，', 1)[0]}</div>;
   }
 
-  static renderCreatedAt(createTime) {
+  static rCreateAt(createTime, read) {
     return (
       <div styleName="created-at">
+        {read && <span styleName="read">已讀 </span>}
         {formatDate(createTime, 'YYYY/MM/DD HH:MM')}
       </div>
     );
   }
 
-  static renderMsgContent({ type, message, create_time, img, ...others }) {
+  static rMsgContent({ type, message, create_time, img, ...others }) {
     switch (type) {
       case TYPE_TEXT:
-        return message;
+        return <div styleName="text">{message}</div>;
 
       case TYPE_IMAGE:
         return (
@@ -93,7 +93,7 @@ class MessageBox extends React.Component {
 
   constructor(props) {
     super(props);
-    this.renderMessage = this.renderMessage.bind(this);
+    this.rMessage = this.rMessage.bind(this);
   }
 
   componentDidMount() {
@@ -122,53 +122,51 @@ class MessageBox extends React.Component {
     }, 200);
   }
 
-  renderMsgContainer({ create_time, ...others }) {
-    const {
-      renderItemTitle,
-      renderCreatedAt,
-      renderMsgContent,
-      renderError,
-    } = this.constructor;
-    const { message, type, is_sending } = others;
-    console.log(others);
-    console.log(create_time, now());
-    return (
-      <div styleName="message">
-        {type === TYPE_ITEM && renderItemTitle(message)}
-        <div styleName="inner-text">
-          {renderMsgContent(others)}
-          {is_sending && renderError()}
-        </div>
-        {renderCreatedAt(create_time)}
-      </div>
-    );
-  }
-
-  renderMessage(item, i) {
+  rMessage(item, i) {
     const { currentUser: { uid } } = this.props;
     const { uid: targetUid } = item;
     const isMine = targetUid === uid;
     return (
       <div key={`${i + 1}`} styleName="message-item" className="clear">
-        {isMine ? this.renderMyMessage(item) : this.renderTargetMessage(item)}
+        {isMine ? this.rMyMessage(item) : this.rTargetMessage(item)}
       </div>
     );
   }
 
-  renderTargetMessage({ user_img, ...others }) {
+  rTargetMessage({ user_img, ...others }) {
     return (
       <div styleName="message-item-inner">
         <div styleName="avatar"><Avatar src={user_img} /></div>
-        {this.renderMsgContainer(others)}
+        {this.rMsgContainer(others)}
       </div>
     );
   }
 
-  renderMyMessage({ user_img, ...others }) {
+  rMyMessage({ user_img, ...others }) {
+    const { is_read } = others;
     return (
       <div styleName="message-item-inner-right">
-        {this.renderMsgContainer(others)}
-        <div styleName="avatar"><Avatar src={user_img} /></div>
+        {this.rMsgContainer(others, is_read)}
+      </div>
+    );
+  }
+
+  rMsgContainer({ create_time, ...others }, read) {
+    const {
+      rItemTitle,
+      rCreateAt,
+      rMsgContent,
+      rSendError,
+    } = this.constructor;
+    const { message, type, is_sending } = others;
+    return (
+      <div styleName="message">
+        {type === TYPE_ITEM && rItemTitle(message)}
+        <div styleName="message-inner">
+          {rMsgContent(others)}
+          {rSendError({ create_time, is_sending })}
+        </div>
+        {rCreateAt(create_time, read)}
       </div>
     );
   }
@@ -181,7 +179,7 @@ class MessageBox extends React.Component {
     return (
       <div ref={refContainer} styleName="container" >
         <div styleName="message-container">
-          {List(logs).reverse().toJS().map(this.renderMessage)}
+          {List(logs).reverse().toJS().map(this.rMessage)}
         </div>
       </div>
     );

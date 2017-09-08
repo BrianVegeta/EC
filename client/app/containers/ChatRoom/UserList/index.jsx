@@ -55,7 +55,16 @@ class UserList extends React.Component {
         <div styleName="avatar">
           <Avatar src={picture} />
         </div>
-        <span styleName="name">{name}</span>
+        <div styleName="content">
+          <div styleName="header">
+            <div styleName="name">{name}</div>
+            <span styleName="time">下午05:25</span>
+          </div>
+          <div styleName="footer">
+            <div styleName="message">message</div>
+            <div styleName="unread">99+</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -73,7 +82,7 @@ class UserList extends React.Component {
       <div styleName="container">
         <Infinite
           elementHeight={51}
-          containerHeight={450}
+          containerHeight={420}
           infiniteLoadBeginEdgeOffset={500}
           onInfiniteLoad={isPaginable ? fetchRooms : () => console.log('enough')}
           loadingSpinnerDelegate={isFetching && <div>loading</div>}

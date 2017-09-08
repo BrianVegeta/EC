@@ -24,52 +24,41 @@
       color: $global-blackColor
       font-size: 12px
       line-height: 20px
-    .inner-text
+    .message-inner
       display: inline-block
-      padding: 8px 10px
-      background: #fff
-      border-radius: 5px
-      font-size: 14px
-      box-shadow: 0 1px 1px rgba(0,0,0,.1)
       position: relative
+      .text
+        padding: 8px 10px
+        border-radius: 5px
+        font-size: 14px
+        box-shadow: 0 1px 1px rgba(0,0,0,.1)
       .image
-        display: inline-block
         width: 130px
         height: 130px
       .item
         padding: 5px
-        .cover
-          display: inline-block
-          width: 70px
-          height: 70px
-          float: left
-        .content
-          position: relative
-          margin-left: 83px
-          min-height: 71px
-          width: 140px
-          .pname
-            font-size: 12px
-            color: $global-blackColor
-          .price
-            position: absolute
-            bottom: 0
-            left: 0
-            font-size: 14px
-            color: $global-colorDanger
+        background: #fff
+        box-shadow: 0 1px 1px rgba(0,0,0,.1)
     .created-at
       font-size: 10px
       margin-top: 8px
+      .read
+        color: #999
 
 .message-item-inner
   .message
     margin-left: 10px
-  .inner-text > .warning
-    position: absolute
-    left: 100%
-    top: 0
-    margin-left: 5px
-    margin-top: 7px
+    .message-inner
+      .text
+        background: #fff
+        color: $global-blackColor
+      & > .warning
+        position: absolute
+        left: 100%
+        top: 0
+        margin-left: 5px
+        margin-top: 7px
+
 .message-item-inner-right
   float: right
   .message
@@ -77,9 +66,34 @@
     text-align: right
     .created-at
       text-align: right
-  .inner-text > .warning
-    position: absolute
-    right: 100%
-    top: 0
-    margin-right: 5px
-    margin-top: 7px
+    .message-inner
+      .text
+        background: $global-primaryColor
+        color: #fff
+      & > .warning
+        position: absolute
+        right: 100%
+        top: 0
+        margin-right: 5px
+        margin-top: 7px
+
+.item
+  .cover
+    display: inline-block
+    width: 70px
+    height: 70px
+    float: left
+  .content
+    position: relative
+    margin-left: 83px
+    min-height: 71px
+    width: 140px
+    .pname
+      font-size: 12px
+      color: $global-blackColor
+    .price
+      position: absolute
+      bottom: 0
+      left: 0
+      font-size: 14px
+      color: $global-blackColor

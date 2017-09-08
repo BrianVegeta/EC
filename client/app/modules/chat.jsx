@@ -87,7 +87,6 @@ const getOpenfireLoginToken = () =>
 
 const handleMessage = msg =>
   (dispatch) => {
-    console.log(msg);
     // const to = msg.getAttribute('id');
     const from = msg.getAttribute('from');
     // const fromUid = from.substring(0, from.indexOf('share@'));
@@ -112,8 +111,23 @@ const handleMessage = msg =>
       dispatch(updateMessageStates(standardId, { is_sending: false }));
       // console.log('offline', from);
     } else {
+      console.log(msg);
+      const fromUserId = from.substring(0, from.indexOf('share@'));
+      const receiveds = msg.getElementsByTagName('received');
+      const reads = msg.getElementsByTagName('shareread');
+      if (receiveds.length > 0) {
+        const standardId = receiveds[0].getAttribute('id');
+        dispatch(updateMessageStates(standardId, { is_sending: false }));
+        console.log('received---');
+      }
+      if (reads.length > 0) {
+        console.log('read---', fromUserId);
+      }
+      if (fromUserId) {
+        console.log(fromUserId);
+      }
       // 收到
-      console.log(from);
+      // dispatch(updateMessageStates(standardId, { is_sending: false, is_read: true }));
       console.log(messageType);
     }
 
@@ -283,6 +297,7 @@ export const sendMessage = () =>
     .c('sharemsg', {
       xmlns: 'urn:xmpp:data',
     }, sharemsg);
+    console.log(message);
     dispatch(send(msg.tree()));
   };
 
