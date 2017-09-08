@@ -42,10 +42,12 @@ class SidebarCategories extends React.Component {
                     category={category}
                     categoryID={categoryID}
                     isActive={category.id.toString() === categoryID}
+                    isUsed={isUsed}
                   /> :
                   <ListItem
                     category={category}
                     isActive={category.id.toString() === categoryID}
+                    isUsed={isUsed}
                   />
               }
             </li>
