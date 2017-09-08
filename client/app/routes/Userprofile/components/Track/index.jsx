@@ -17,6 +17,7 @@ class TrackComponent extends React.Component {
       isPaginable: PropTypes.bool,
     }).isRequired,
     dispatchFetchRecords: PropTypes.func.isRequired,
+    dispatchRemoveTrack: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
   };
@@ -32,7 +33,8 @@ class TrackComponent extends React.Component {
 
 
   render() {
-    const { params, dispatchFetchRecords, userprofileTrack, type } = this.props;
+    const { params, dispatchFetchRecords, dispatchRemoveTrack,
+      userprofileTrack, type } = this.props;
 
     const {
       records,
@@ -57,6 +59,7 @@ class TrackComponent extends React.Component {
           >
             <TrackList
               records={records}
+              onRemove={dispatchRemoveTrack}
               type={type}
             />
           </PaginationContainer>

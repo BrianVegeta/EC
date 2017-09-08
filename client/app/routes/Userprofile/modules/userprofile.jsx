@@ -32,7 +32,7 @@ const fetchedIsTrack = isTrack => ({
   isTrack,
 });
 
-const UpdateTrack = isTrack => ({
+export const UpdateTrack = isTrack => ({
   type: UPDATETRACK,
   isTrack,
 });

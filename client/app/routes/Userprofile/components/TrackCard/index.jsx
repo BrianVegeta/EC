@@ -14,6 +14,7 @@ const propTypes = {
   picture: PropTypes.string.isRequired,
   uid: PropTypes.string.isRequired,
   type: PropTypes.oneOf([TRACK_ME, ME_TRACK]).isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 const TrackCard = props => (
   <div styleName="container">
@@ -21,7 +22,7 @@ const TrackCard = props => (
       <button
         className="button"
         styleName="close"
-        onClick={() => console.log('touch')}
+        onClick={() => props.onRemove(props.uid)}
       >
         <Close size={20} />
       </button>

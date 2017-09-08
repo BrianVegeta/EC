@@ -10,6 +10,7 @@ const mapStateToProps = ({ environment, userprofileTrack, auth }) => ({
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params }) => ({
   dispatchFetchRecords: () => dispatch(fetchRecords(params.uid, TRACK_ME)),
+  dispatchRemoveTrack: () => {},
   dispatchReset: () => dispatch(reset()),
 });
 

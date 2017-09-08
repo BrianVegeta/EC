@@ -14,10 +14,11 @@ class TrackList extends React.Component {
       PropTypes.object.isRequired,
     ).isRequired,
     type: PropTypes.oneOf([TRACK_ME, ME_TRACK]).isRequired,
+    onRemove: PropTypes.func.isRequired,
   };
 
   render() {
-    const { records, type } = this.props;
+    const { records, type, onRemove } = this.props;
     return (
       <div styleName="container">
         <div className="clear">
@@ -31,6 +32,7 @@ class TrackList extends React.Component {
                 name={person.name}
                 picture={person.img}
                 uid={person.uid}
+                onRemove={onRemove}
               />
             </div>
           ))}

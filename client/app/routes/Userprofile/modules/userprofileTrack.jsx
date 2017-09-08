@@ -1,6 +1,6 @@
 import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
-
+import { UpdateTrack } from './userprofile';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
@@ -110,6 +110,21 @@ export function fetchRecords(uid, type, recursiveRecords = []) {
   };
 }
 
+export function removeTrack(targetUid, uid) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      asyncXhrPost(
+        '/ajax/remove_track.json',
+        { target_uid: targetUid },
+        getState,
+      )
+      .then(() => {
+        dispatch(UpdateTrack(false));
+        dispatch(reset());
+        dispatch(fetchRecords(uid, ME_TRACK));
+      }).catch(() => reject());
+    });
+}
 
 // =============================================
 // = reducer =

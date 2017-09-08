@@ -93,7 +93,12 @@ class Ajax::Api::ItemController < ApplicationController
 
   # 篩選商品列表
   def search_item_list
-    obj = ::Api::Item::SearchItemList.new search_item_params
+    params = search_item_params
+    if params['category_id'] === '4'
+      params['category_id'] = '1'
+      params['type'] = 'USED_ITEM'
+    end
+    obj = ::Api::Item::SearchItemList.new params
     success = obj.request
     obj.response_data = map_json_array obj.response_data, ResponseJson::SimpleItem.structure
     #if obj.response_data.nil?
