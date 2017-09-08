@@ -13,6 +13,7 @@ class SidebarCategories extends React.Component {
   static propTypes = {
     categoryID: PropTypes.string.isRequired,
     categories: myPropTypes.middleCategories.isRequired,
+    isUsed: PropTypes.bool.isRequired,
   };
 
   shouldComponentUpdate(nextProps) {
@@ -29,8 +30,8 @@ class SidebarCategories extends React.Component {
     const {
       categories,
       categoryID,
+      isUsed,
     } = this.props;
-    const isUsed = categoryID === '4';
     return (
       <div styleName="container">
         <ul styleName="list-container">

@@ -2,7 +2,7 @@ import { asyncXhrPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 // import { inCollection, REDUCER_KEY as COLLECTION_KEY } from 'modules/myCollection';
 import { find } from 'lodash';
-import { LEASE } from 'constants/enums';
+import { LEASE, USED_ITEM } from 'constants/enums';
 import {
   REDUCER_KEY as FILTER_REDUCER_KEY,
   mapSortParams,
@@ -73,7 +73,7 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export function fetchRecords(categoryID, recursiveRecords = []) {
+export function fetchRecords(categoryID, isUsed, recursiveRecords = []) {
   return (dispatch, getState) => {
     const {
       size,
@@ -90,11 +90,10 @@ export function fetchRecords(categoryID, recursiveRecords = []) {
     } = getState()[FILTER_REDUCER_KEY];
 
     const requestParams = {
-      type: LEASE,
+      type: isUsed ? USED_ITEM : LEASE,
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       category_id: categoryID,
-
       price_max: max,
       price_min: min,
       sort: mapSortParams(sort),
@@ -130,7 +129,7 @@ export function fetchRecords(categoryID, recursiveRecords = []) {
       const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_KEY);
       if (reducedRecords.length < resultData.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(categoryID, reducedRecords));
+        dispatch(fetchRecords(categoryID, isUsed, reducedRecords));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */

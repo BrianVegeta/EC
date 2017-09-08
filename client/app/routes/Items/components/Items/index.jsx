@@ -33,6 +33,7 @@ class Items extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
     dispatchCollection: PropTypes.func.isRequired,
     isLogin: PropTypes.bool.isRequired,
+    isUsed: PropTypes.bool.isRequired,
     categoryID: PropTypes.string.isRequired,
     topCategoryID: PropTypes.string,
     categoryName: PropTypes.string.isRequired,
@@ -86,7 +87,7 @@ class Items extends React.Component {
 
   refetch() {
     this.props.dispatchReset();
-    this.props.dispatchFetchRecords();
+    this.props.dispatchFetchRecords(this.props.isUsed);
   }
 
   render() {
@@ -97,6 +98,7 @@ class Items extends React.Component {
       items,
       dispatchFetchRecords,
       filterType,
+      isUsed,
     } = this.props;
 
     const {
@@ -120,7 +122,7 @@ class Items extends React.Component {
           />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer categoryID={categoryID} />
+          <SidebarCategoriesContainer categoryID={categoryID} isUsed={isUsed} />
           <div style={{ marginLeft: 279 }} styleName="items-container">
             <ListContainer
               minHeight={500}

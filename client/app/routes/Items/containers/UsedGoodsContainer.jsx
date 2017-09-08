@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { fetchCollections } from 'modules/myCollection';
-import { CATEGORY_USED_GOODS_ID, CATEGORY_GOODS_ID, CATEGORY_GOODS } from 'constants/enums';
+import { CATEGORY_GOODS_ID, CATEGORY_GOODS } from 'constants/enums';
 import { mapCategoryNameByID } from 'lib/category';
 
 import Items from '../components/Items';
@@ -11,14 +11,15 @@ const mapStateToProps = ({ environment, items, auth }) => ({
   environment,
   items,
   categoryName: mapCategoryNameByID(CATEGORY_GOODS_ID),
-  categoryID: CATEGORY_USED_GOODS_ID,
+  categoryID: CATEGORY_GOODS_ID,
   filterType: CATEGORY_GOODS,
   isLogin: auth.isLogin,
+  isUsed: true,
 });
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
-  dispatchFetchRecords: () => dispatch(fetchRecords(CATEGORY_USED_GOODS_ID)),
+  dispatchFetchRecords: isUsed => dispatch(fetchRecords(CATEGORY_GOODS_ID, isUsed)),
   dispatchReset: () => dispatch(reset()),
   dispatchCollection: () => dispatch(fetchCollections()),
 });

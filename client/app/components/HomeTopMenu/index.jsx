@@ -31,14 +31,22 @@ class HomeTopMenu extends React.Component {
 
   static defaultProps = {
     topCategory: null,
+    params: {},
   };
 
   static propTypes = {
     topCategory: PropTypes.string,
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
   };
 
   render() {
-    const { topCategory } = this.props;
+    const { topCategory, params } = this.props;
+    let selectTop = topCategory;
+    if (params.type && params.type === 'used') {
+      selectTop = CATEGORY_USED_GOODS;
+    }
     return (
       <div className="container clear">
         <div className={`navbar ${cx('container', 'navbar')}`} >
@@ -49,7 +57,7 @@ class HomeTopMenu extends React.Component {
                 styleName="nav"
               >
                 <Link
-                  className={cx({ active: nav.topCategory === topCategory })}
+                  className={cx({ active: nav.topCategory === selectTop })}
                   activeClassName={cx('active')}
                   styleName="link"
                   to={nav.href}

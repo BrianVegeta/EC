@@ -14,11 +14,12 @@ const mapStateToProps = ({ environment, items, auth }) => ({
   categoryID: CATEGORY_SPACE_ID,
   filterType: CATEGORY_SPACE,
   isLogin: auth.isLogin,
+  isUsed: false,
 });
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
-  dispatchFetchRecords: () => dispatch(fetchRecords(CATEGORY_SPACE_ID)),
+  dispatchFetchRecords: isUsed => dispatch(fetchRecords(CATEGORY_SPACE_ID, isUsed)),
   dispatchReset: () => dispatch(reset()),
   dispatchCollection: () => dispatch(fetchCollections()),
 });

@@ -54,6 +54,7 @@ class ParentCategory extends React.Component {
           <SubCategories
             subCategories={category.children}
             categoryID={categoryID}
+            isUsed={isUsed}
           />
         }
       </div>
