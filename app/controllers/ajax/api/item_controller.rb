@@ -4,6 +4,23 @@ class Ajax::Api::ItemController < ApplicationController
 
   ###################### ACTION ##################################
   # 新增物品
+  def used_item_add
+    obj = ::Api::Item::UsedItemAdd.new used_item_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::Pid.structure)
+    end
+    respond success, obj
+  end
+
+  # 更新物品
+  def used_item_update
+    obj = ::Api::Item::UsedItemUpdate.new usd_editem_update_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
+  # 新增物品
   def item_add
     obj = ::Api::Item::ItemAdd.new item_params, current_apitoken
     success = obj.request
@@ -231,6 +248,51 @@ class Ajax::Api::ItemController < ApplicationController
   def item_update_params
     # pid : Long => 商品ID
     params.permit(:pid).merge(item_params)
+  end
+
+  def used_item_params
+    # pname : String => 商品名稱
+    # img1 : String => 商品圖1 (首頁)
+    # img2 : String => 商品圖2
+    # img3 : String => 商品圖3
+    # pdes : String => 介紹
+
+    # cat_id : String => 商品類型
+    # city : String => 提供需求的城市
+    # area : String => 提供需求的區域
+    # unit : int => 最大數量
+    # price : int => 單件價格
+    # currency : String => NTD
+
+    # return_711_store_id : string 7-11退貨店號
+    # return_711_store_name : string 7-11退貨店名
+    # return_711_store_address: string 7-11退貨店址
+
+    # ship_before_start_days : int => 最低出貨時間  0~99
+    # min_lease_days : int => 最低租期時間 0~999
+
+    # tag1 : String => 標籤1 不可包還#
+    # tag2 : String => 標籤2 不可包還#
+    # tag3 : String => 標籤3 不可包還#
+
+    # discounts : List<Object> => 折扣列表  example [{"type": "x", "param": "N", "discount": "z"},....]
+    # - x = GREATER_OR_EQUAL_TO_N_DAY[天數特價] ,GREATER_OR_EQUAL_TO_N_MONTH[月特價] ,GREATER_OR_EQUAL_TO_N_COUNT[數量特價], FIX[馬上特價]
+    # - N = x的N值
+    # - z = 符合條件後，新的價格
+
+    params.permit(:pname, :img1, :img2, :img2, :pdes,
+      :cat_id, :city, :area, :unit, :price, :currency,
+      :send_option,
+      :return_711_store_id, :return_711_store_name, :return_711_store_address,
+      :ship_before_start_days, :min_lease_days,
+      :tag1, :tag2, :tag3,
+      discounts: [:type, :param, :discount]).merge(current_uid_params)
+
+  end
+
+  def used_item_update_params
+    # pid : Long => 商品ID
+    params.permit(:pid).merge(used_item_params)
   end
 
   def service_params

@@ -33,6 +33,7 @@ import routeItem from './Item/route';
 import routePublishGoods from './PublishGoods/route';
 import routePublishService from './PublishService/route';
 import routePublishSpace from './PublishSpace/route';
+import routePublishUsedGoods from './PublishUsedGoods/route';
 import routePublishWish from './PublishWish/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
@@ -97,6 +98,7 @@ export default store => ({
         routePublishGoods(store),
         routePublishService(store),
         routePublishSpace(store),
+        routePublishUsedGoods(store),
         routeReservationGoods(store),
         routeReservationService(store),
         routeReservationSpace(store),

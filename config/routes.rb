@@ -103,19 +103,23 @@ Rails.application.routes.draw do
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'
+
       #SEARCH
       post 'multi', to: 'search#multi_search' #
       post 'search_user', to: 'userprofile#search' #
       post 'search_item', to: 'item#get_item_by_name' #
       post 'serach_wish', to: 'wishlist#search' #
+
       #NOTIFICATION
       post 'get_unread_notify', to: 'sync#notification_unread' #
       post 'count_unread_notify', to: 'sync#notification_unread_count' #
       post 'get_notify', to: 'sync#notification_read' #
       post 'get_notify_contract', to: 'contract#get_unread_contract' #
+
       #SUE
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'
+
       #CONTRACT
       post 'reserve_space', to: 'contract#space_create'
       post 'reserve_space_update', to: 'contract#space_update'
@@ -172,6 +176,8 @@ Rails.application.routes.draw do
       post 'item_detail', to: 'item#view_item' #
       post 'create_goods_item', to: 'item#item_add'
       post 'update_goods_item', to: 'item#item_update'
+      post 'create_used_goods_item', to: 'item#used_item_add'
+      post 'update_used_goods_item', to: 'item#used_item_update'
       post 'create_service_item', to: 'item#service_add'
       post 'update_service_item', to: 'item#service_update'
       post 'create_space_item', to: 'item#space_add'

@@ -24,9 +24,9 @@ export const itemPath = (name, pid, escape = true) =>
 
 export const categoriedItemPath = (categoryName, cid, used) => {
   if (used) {
-    return (`/p/i/${escapeAlias(categoryName)}-c.${cid}.used`);
+    return (`/p/i/used/${escapeAlias(categoryName)}-c.${cid}`);
   }
-  return (`/p/i/${escapeAlias(categoryName)}-c.${cid}.lease`);
+  return (`/p/i/lease/${escapeAlias(categoryName)}-c.${cid}`);
 };
 
 
@@ -123,7 +123,21 @@ export const publishGoodsRouter = {
   deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
   pricePath: pid => gPublishGoodsUrl('step4-price', pid),
   regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
-  confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
+  confirmPath: pid => gPublishGoodsUrl('step6-confirm', pid),
+};
+
+const gPublishUsedGoodsUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-used-goods'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishUsedGoodsRouter = {
+  indexPath: pid => gPublishUsedGoodsUrl('', pid),
+  coverPath: pid => gPublishUsedGoodsUrl('', pid),
+  aboutPath: pid => gPublishUsedGoodsUrl('step2-about', pid),
+  deliveryPath: pid => gPublishUsedGoodsUrl('step3-delivery', pid),
+  confirmPath: pid => gPublishUsedGoodsUrl('step4-confirm', pid),
 };
 
 /* =============================================>>>>>

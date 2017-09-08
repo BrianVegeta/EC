@@ -78,32 +78,6 @@ class StepConfirm extends React.Component {
     });
   }
 
-  renderDiscount() {
-    const { publish } = this.props;
-    const { discounts } = publish;
-    if (discounts.length <= 0) {
-      return (
-        <tr>
-          <th width={154}>優惠價</th>
-          <td><div>沒有特價方案</div></td>
-        </tr>
-      );
-    }
-
-    return (
-      <tr>
-        <th width={154}>優惠價</th>
-        <td>
-          {discounts.map((obj, index) =>
-            (<div key={index + 1}>
-              租滿{obj.param}日，每件{formatCurrency(obj.discount)}
-            </div>),
-          )}
-        </td>
-      </tr>
-    );
-  }
-
   render() {
     const {
       publish,
@@ -134,14 +108,7 @@ class StepConfirm extends React.Component {
 
     const {
       price,
-      deposit,
       unit,
-      hasOverduePolicy,
-      overdueRate,
-    } = publish;
-
-    const {
-      regulation,
     } = publish;
 
     const { renderCovers } = this.constructor;
@@ -219,34 +186,12 @@ class StepConfirm extends React.Component {
               <tr>
                 <th width={154}>價格</th>
                 <td>
-                  <div>每日{formatCurrency(price)}</div>
+                  <div>每件{formatCurrency(price)}</div>
                 </td>
               </tr>
-              <tr>
-                <th width={154}>押金</th>
-                <td>
-                  <div>每筆交易{formatCurrency(deposit)}</div>
-                </td>
-              </tr>
-              { hasOverduePolicy &&
-                <tr>
-                  <th width={154}>逾期金</th>
-                  <td>
-                    <div styleName="cell">逾期1天，扣除押金NTD${ Math.ceil((deposit * overdueRate) / 100) }</div>
-                  </td>
-                </tr>
-              }
-              {this.renderDiscount()}
             </tbody>
           </table>
         </ConfirmTitle>
-        {regulation &&
-          <ConfirmTitle title="分享人守則">
-            <div styleName="text-block">
-              {htmlNewLineToBreak(regulation)}
-            </div>
-          </ConfirmTitle>
-        }
         <ButtonNextStep
           text="儲存"
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
