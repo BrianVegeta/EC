@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable';
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 
@@ -6,7 +7,7 @@ import { reduceDuplicateRecords } from 'lib/utils';
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'CHAT_BOX';
 export const REDUCER_KEY = 'chatBox';
-const SIZE = 20;
+const SIZE = 60;
 const DUPLICATE_KEY = 'id';
 
 
@@ -21,6 +22,8 @@ export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
 export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
 export const SET_CURRENT_USER = prefix('SET_CURRENT_USER');
+export const ADD_MESSAGE_TO_LOGS = prefix('ADD_MESSAGE_TO_LOGS');
+export const UPDATE_MESSAGE_STATES = prefix('UPDATE_MESSAGE_STATES');
 export const RESET = prefix('RESET');
 
 
@@ -110,6 +113,17 @@ const setCurrentUser = ({ uid }) => ({
   uid,
 });
 
+export const addMessageToLogs = messageJson => ({
+  type: ADD_MESSAGE_TO_LOGS,
+  messageJson,
+});
+
+export const updateMessageStates = (standardId, states) => ({
+  type: UPDATE_MESSAGE_STATES,
+  standardId,
+  states,
+});
+
 export const changeChatTarget = ({ uid }) =>
   (dispatch) => {
     dispatch(reset());
@@ -168,6 +182,21 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         currentUser: { uid: action.uid },
       });
+
+    case ADD_MESSAGE_TO_LOGS:
+      return fromJS(state).updateIn(
+        ['logs'],
+        logs => logs.unshift(action.messageJson),
+      ).toJS();
+
+    case UPDATE_MESSAGE_STATES:
+      return fromJS(state).updateIn(
+        ['logs'],
+        logs => logs.update(
+          logs.findIndex(log => (log.get('standardId') === action.standardId)),
+          log => log.merge(action.states),
+        ),
+      ).toJS();
 
     case RESET:
       return initialState;

@@ -8,6 +8,8 @@ import {
 import {
   REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
   changeInput,
+  addMessageToLogs,
+  updateMessageStates,
 } from 'modules/chatBox';
 
 /* =============================================>>>>>
@@ -35,6 +37,29 @@ const NUMBER_TYPE_MESSAGE = 1;
 const NUMBER_TYPE_IMAGE = 2;
 const NUMBER_TYPE_ITEM = 3;
 const NUMBER_TYPE_SELECT_ITEM = 6;
+const TYPE_MESSAGE = 'TEXT';
+const TYPE_IMAGE = 'IMAGE';
+const TYPE_ITEM = 'ITEM';
+const TYPE_SELECT_ITEM = 'SELECT_ITEM';
+const mapType = {
+  [NUMBER_TYPE_MESSAGE]: TYPE_MESSAGE,
+  [NUMBER_TYPE_IMAGE]: TYPE_IMAGE,
+  [NUMBER_TYPE_ITEM]: TYPE_ITEM,
+  [NUMBER_TYPE_SELECT_ITEM]: TYPE_SELECT_ITEM,
+};
+const mapStatus = {
+  [ERROR]: 'ERROR',
+  [STROPHE_CONNECTING]: 'STROPHE_CONNECTING',
+  [CONNFAIL]: 'CONNFAIL',
+  [AUTHENTICATING]: 'AUTHENTICATING',
+  [AUTHFAIL]: 'AUTHFAIL',
+  [STROPHE_CONNECTED]: 'STROPHE_CONNECTED',
+  [DISCONNECTED]: 'DISCONNECTED',
+  [DISCONNECTING]: 'DISCONNECTING',
+  [ATTACHED]: 'ATTACHED',
+  [REDIRECT]: 'REDIRECT',
+  [CONNTIMEOUT]: 'CONNTIMEOUT',
+};
 
 
 // =============================================
@@ -60,35 +85,77 @@ const getOpenfireLoginToken = () =>
       });
     });
 
-const onMessage = (msg, connection) => {
-  console.log(msg);
-  const to = msg.getAttribute('id');
-  const from = msg.getAttribute('from');
-  const fromUid = from.substring(0, from.indexOf('share@'));
-  const messageType = msg.getAttribute('type');
-  const bodys = msg.getElementsByTagName('body');
+const handleMessage = msg =>
+  (dispatch) => {
+    console.log(msg);
+    // const to = msg.getAttribute('id');
+    const from = msg.getAttribute('from');
+    // const fromUid = from.substring(0, from.indexOf('share@'));
+    const messageType = msg.getAttribute('type');
+    const bodys = msg.getElementsByTagName('body');
 
-  if (messageType === 'chat' && bodys.length > 0) {
-    const sharemsgs = msg.getElementsByTagName('sharemsg');
-    const sharemsg = JSON.parse(unescape(Strophe.getText(sharemsgs[0])));
-    const body = bodys[0];
-    console.log(Strophe.getText(body));
-    console.log(sharemsg);
-    const reply = $msg({
-      to: from,
-      from: to,
-      type: 'chat',
-    }).cnode(Strophe.copyElement(body));
-    connection.send(reply.tree());
-  }
-  return true;
-};
+    if (messageType === 'chat' && bodys.length > 0) {
+      const sharemsgs = msg.getElementsByTagName('sharemsg');
+      const sharemsg = JSON.parse(unescape(Strophe.getText(sharemsgs[0])));
+      const body = bodys[0];
+      console.log(Strophe.getText(body));
+      console.log(sharemsg);
+      // const reply = $msg({
+      //   to: from,
+      //   from: to,
+      //   type: 'chat',
+      // }).cnode(Strophe.copyElement(body));
+      // connection.send(reply.tree());
+    } else if (from.includes('sendofflinemessagenotification')) {
+      // 離線訊息
+      const standardId = msg.getAttribute('id');
+      dispatch(updateMessageStates(standardId, { is_sending: false }));
+      // console.log('offline', from);
+    } else {
+      // 收到
+      console.log(from);
+      console.log(messageType);
+    }
 
-const onConnectionRecieve = (data) => {
+    const receiveds = msg.getElementsByTagName('received');
+    if (receiveds.length > 0) {
+      // console.log('---');
+      // console.log(msg);
+    }
+
+    // const id = received.getAttribute('id');
+    // console.log(id);
+  };
+
+// const onMessage = (msg) => {
+//   console.log(msg);
+//   const to = msg.getAttribute('id');
+//   const from = msg.getAttribute('from');
+//   const fromUid = from.substring(0, from.indexOf('share@'));
+//   const messageType = msg.getAttribute('type');
+//   const bodys = msg.getElementsByTagName('body');
+//
+//   if (messageType === 'chat' && bodys.length > 0) {
+//     const sharemsgs = msg.getElementsByTagName('sharemsg');
+//     const sharemsg = JSON.parse(unescape(Strophe.getText(sharemsgs[0])));
+//     const body = bodys[0];
+//     console.log(Strophe.getText(body));
+//     console.log(sharemsg);
+//     // const reply = $msg({
+//     //   to: from,
+//     //   from: to,
+//     //   type: 'chat',
+//     // }).cnode(Strophe.copyElement(body));
+//     // connection.send(reply.tree());
+//   }
+//   return true;
+// };
+
+const onConnectionRecieve = () => {
   // console.log(decodeURI(data));
 };
 
-const onConnectionSend = (data) => {
+const onConnectionSend = () => {
 
 };
 
@@ -98,7 +165,7 @@ const setClientFullJid = jid => ({
 });
 
 const initialConnection = () =>
-  (dispatch, getState) => {
+  (dispatch) => {
     // const {
     //   connection,
     // } = getState()[REDUCER_KEY];
@@ -120,6 +187,7 @@ export const connect = () =>
         currentUser: { uid: myUid },
       } = getState()[AUTH_REDUCER_KEY];
       const connection = dispatch(initialConnection());
+      // const connection = new Strophe.Connection(XMPP_HOST_URL);
       connection.rawInput = onConnectionRecieve;
       connection.rawOutput = onConnectionSend;
       const clientFullJid = `${myUid}share@${XMPP_HOST_IP}/${myUid}_${token}`;
@@ -131,22 +199,45 @@ export const connect = () =>
         switch (status) {
           case STROPHE_CONNECTED: {
             console.log('connected');
-            connection.addHandler((msg) => {
-              onMessage(msg, connection);
-            }, null, 'message', null, null, null);
+            const onMessage2 = (msg) => {
+              dispatch(handleMessage(msg));
+              return true;
+            };
+            connection.addHandler(onMessage2, null, 'message', null, null, null);
             connection.send($pres().tree());
             break;
           }
           case DISCONNECTED: {
             console.log('disconnect');
             connect();
+            console.log('reconnect');
             break;
           }
           default:
-            console.log(status);
+            console.log(mapStatus[status]);
         }
       });
     });
+
+const createSendTextJson = ({
+  myUid, myName, myPicture, message, standardId,
+}) => ({
+  id: null,
+  type: TYPE_MESSAGE,
+  uid: myUid,
+  user_name: myName,
+  user_img: myPicture,
+  message,
+  arg1: '',
+  arg2: '',
+  arg3: '',
+  img: '',
+  is_receive: false,
+  is_read: false,
+  is_sending: true, // timeout flag
+  standardId, // extra
+  create_time: now(),
+});
 
 const send = xml =>
   (dispatch, getState) =>
@@ -159,11 +250,11 @@ const send = xml =>
 export const sendMessage = () =>
   (dispatch, getState) => {
     const {
-      input,
+      input: message,
       currentUser: { uid: targetUid },
     } = getState()[CHAT_BOX_REDUCER_KEY];
     const {
-      currentUser: { uid: myUid, name: myName },
+      currentUser: { uid: myUid, name: myName, picture: myPicture },
     } = getState()[AUTH_REDUCER_KEY];
     const { clientFullJid } = getState()[REDUCER_KEY];
 
@@ -173,21 +264,26 @@ export const sendMessage = () =>
       uid: myUid,
       name: myName,
     });
+    const standardId =
+      `${myUid.toUpperCase()}_${targetUid.toUpperCase()}_${now()}`;
+    const sendTextMessageJson = createSendTextJson({
+      myUid, myName, myPicture, message, standardId,
+    });
+    dispatch(addMessageToLogs(sendTextMessageJson));
     const msg = $msg({
       to: `${targetUid.toLowerCase()}share@${XMPP_HOST_IP}`,
-      id: `${myUid.toUpperCase()}_${targetUid.toUpperCase()}_${now()}`,
+      id: standardId,
       type: 'chat',
       from: clientFullJid,
     })
-    .c('body', null, input)
+    .c('body', null, message)
     .c('request', {
       xmlns: 'urn:xmpp:receipts',
     }).up()
     .c('sharemsg', {
       xmlns: 'urn:xmpp:data',
     }, sharemsg);
-
-    send(msg.tree());
+    dispatch(send(msg.tree()));
   };
 
 

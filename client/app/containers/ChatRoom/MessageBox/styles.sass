@@ -8,61 +8,78 @@
     padding: 15px
     .message-item
       padding: 15px 0
-      .message-item-inner, .message-item-inner-right
-        .avatar
-          width: 37px
-          height: 37px
+
+.message-item-inner, .message-item-inner-right
+  .avatar
+    width: 37px
+    height: 37px
+    display: inline-block
+    vertical-align: top
+  .message
+    display: inline-block
+    vertical-align: top
+    max-width: 250px
+    word-break: break-all
+    .title
+      color: $global-blackColor
+      font-size: 12px
+      line-height: 20px
+    .inner-text
+      display: inline-block
+      padding: 8px 10px
+      background: #fff
+      border-radius: 5px
+      font-size: 14px
+      box-shadow: 0 1px 1px rgba(0,0,0,.1)
+      position: relative
+      .image
+        display: inline-block
+        width: 130px
+        height: 130px
+      .item
+        padding: 5px
+        .cover
           display: inline-block
-          vertical-align: top
-        .message
-          display: inline-block
-          vertical-align: top
-          max-width: 250px
-          word-break: break-all
-          .title
-            color: $global-blackColor
+          width: 70px
+          height: 70px
+          float: left
+        .content
+          position: relative
+          margin-left: 83px
+          min-height: 71px
+          width: 140px
+          .pname
             font-size: 12px
-            line-height: 20px
-          .inner-text
-            padding: 8px 10px
-            background: #fff
-            border-radius: 5px
+            color: $global-blackColor
+          .price
+            position: absolute
+            bottom: 0
+            left: 0
             font-size: 14px
-            box-shadow: 0 1px 1px rgba(0,0,0,.1)
-            .image
-              display: inline-block
-              width: 130px
-              height: 130px
-            .item
-              padding: 5px
-              .cover
-                display: inline-block
-                width: 70px
-                height: 70px
-                float: left
-              .content
-                position: relative
-                margin-left: 83px
-                min-height: 71px
-                width: 140px
-                .pname
-                  font-size: 12px
-                  color: $global-blackColor
-                .price
-                  position: absolute
-                  bottom: 0
-                  left: 0
-                  font-size: 14px
-                  color: $global-colorDanger
-          .created-at
-            font-size: 10px
-            margin-top: 8px
-      .message-item-inner
-        .message
-          margin-left: 10px
-      .message-item-inner-right
-        float: right
-        .message
-          margin-right: 10px
-          .created-at
-            text-align: right
+            color: $global-colorDanger
+    .created-at
+      font-size: 10px
+      margin-top: 8px
+
+.message-item-inner
+  .message
+    margin-left: 10px
+  .inner-text > .warning
+    position: absolute
+    left: 100%
+    top: 0
+    margin-left: 5px
+    margin-top: 7px
+.message-item-inner-right
+  float: right
+  .message
+    margin-right: 10px
+    text-align: right
+    .created-at
+      text-align: right
+  .inner-text > .warning
+    position: absolute
+    right: 100%
+    top: 0
+    margin-right: 5px
+    margin-top: 7px

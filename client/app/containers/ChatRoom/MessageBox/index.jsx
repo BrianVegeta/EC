@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 import { truncate, split, isEqual } from 'lodash';
+import IconError from 'react-icons/lib/md/error';
 import Avatar from 'components/Avatar';
 import Picture from 'components/Picture';
-import { formatDate } from 'lib/time';
+import { formatDate, now, moment } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
 import { itemPath } from 'lib/paths';
 import CSS from 'react-css-modules';
@@ -34,13 +35,21 @@ class MessageBox extends React.Component {
     }).isRequired,
   };
 
+  static renderSendError({ is_sending, create_time }) {
+    if ((now() - create_time) > 30000) {
+      return <IconError styleName="warning" size={20} color="#F26363" />;
+    }
+    return null;
+  }
+
+  static renderItemTitle(message) {
+    return <div styleName="title">{split(message, '，', 1)[0]}</div>;
+  }
+
   static renderCreatedAt(createTime) {
     return (
       <div styleName="created-at">
-        {formatDate(
-          createTime,
-          'YYYY/MM/DD HH:MM',
-        )}
+        {formatDate(createTime, 'YYYY/MM/DD HH:MM')}
       </div>
     );
   }
@@ -107,15 +116,29 @@ class MessageBox extends React.Component {
     }
   }
 
-  renerMsgContainer({ create_time, ...others }) {
-    const { renderCreatedAt, renderMsgContent } = this.constructor;
-    const { message, type } = others;
+  scrollBottom() {
+    setTimeout(() => {
+      this.container.scrollTop = this.container.scrollHeight;
+    }, 200);
+  }
+
+  renderMsgContainer({ create_time, ...others }) {
+    const {
+      renderItemTitle,
+      renderCreatedAt,
+      renderMsgContent,
+      renderError,
+    } = this.constructor;
+    const { message, type, is_sending } = others;
+    console.log(others);
+    console.log(create_time, now());
     return (
       <div styleName="message">
-        {type === TYPE_ITEM &&
-          <div styleName="title">{split(message, '，', 1)[0]}</div>
-        }
-        <div styleName="inner-text">{renderMsgContent(others)}</div>
+        {type === TYPE_ITEM && renderItemTitle(message)}
+        <div styleName="inner-text">
+          {renderMsgContent(others)}
+          {is_sending && renderError()}
+        </div>
         {renderCreatedAt(create_time)}
       </div>
     );
@@ -124,12 +147,10 @@ class MessageBox extends React.Component {
   renderMessage(item, i) {
     const { currentUser: { uid } } = this.props;
     const { uid: targetUid } = item;
+    const isMine = targetUid === uid;
     return (
       <div key={`${i + 1}`} styleName="message-item" className="clear">
-        {targetUid === uid ?
-          this.renderMyMessage(item, i) :
-          this.renderTargetMessage(item, i)
-        }
+        {isMine ? this.renderMyMessage(item) : this.renderTargetMessage(item)}
       </div>
     );
   }
@@ -138,7 +159,7 @@ class MessageBox extends React.Component {
     return (
       <div styleName="message-item-inner">
         <div styleName="avatar"><Avatar src={user_img} /></div>
-        {this.renerMsgContainer(others)}
+        {this.renderMsgContainer(others)}
       </div>
     );
   }
@@ -146,7 +167,7 @@ class MessageBox extends React.Component {
   renderMyMessage({ user_img, ...others }) {
     return (
       <div styleName="message-item-inner-right">
-        {this.renerMsgContainer(others)}
+        {this.renderMsgContainer(others)}
         <div styleName="avatar"><Avatar src={user_img} /></div>
       </div>
     );

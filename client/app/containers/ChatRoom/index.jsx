@@ -42,6 +42,7 @@ class ChatRoom extends React.Component {
       isOpen: false,
     };
     this.onRoomToggle = this.onRoomToggle.bind(this);
+    this.onMessageSend = this.onMessageSend.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +58,11 @@ class ChatRoom extends React.Component {
   onRoomToggle() {
     const { isOpen } = this.state;
     this.setState({ isOpen: !isOpen });
+  }
+
+  onMessageSend() {
+    this.props.dispatchSendMessage();
+    this.messageBox.scrollBottom();
   }
 
   renderTalkButton() {
@@ -80,7 +86,6 @@ class ChatRoom extends React.Component {
       dispatchFetchChatRoom,
       dispatchChangeChatTarget,
       dispatchChangeInput,
-      dispatchSendMessage,
       chatRooms,
       chatBox: { currentUser: targetUser, logs, input },
       currentUser,
@@ -115,13 +120,17 @@ class ChatRoom extends React.Component {
           </div>
           <div styleName="chat-box">
             <div styleName="message-box">
-              <MessageBox logs={logs} currentUser={currentUser} />
+              <MessageBox
+                ref={messageBox => (this.messageBox = messageBox)}
+                logs={logs}
+                currentUser={currentUser}
+              />
             </div>
             <div styleName="input-box">
               <InputBox
                 input={input}
                 changeInput={dispatchChangeInput}
-                sendMessage={dispatchSendMessage}
+                sendMessage={this.onMessageSend}
               />
             </div>
           </div>
