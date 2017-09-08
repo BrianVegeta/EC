@@ -22,8 +22,13 @@ export const authPath = {
 export const itemPath = (name, pid, escape = true) =>
   `/p/${escape ? escapeAlias(name) : name}-i.${pid}`;
 
-export const categoriedItemPath = (categoryName, cid) =>
-  `/p/i/${escapeAlias(categoryName)}-c.${cid}`;
+export const categoriedItemPath = (categoryName, cid, used) => {
+  if (used) {
+    return (`/p/i/${escapeAlias(categoryName)}-c.${cid}.used`);
+  }
+  return (`/p/i/${escapeAlias(categoryName)}-c.${cid}.lease`);
+};
+
 
 export const userprofilePaths = {
   indexPath: uid => `/p/userprofile/${uid}`,
@@ -48,6 +53,7 @@ export const items = {
   servicePath: '/p/i/service',
   goodsPath: '/p/i/goods',
   spacePath: '/p/i/space',
+  usedGoodsPath: '/p/i/used-goods',
 };
 
 export const wishRouter = {

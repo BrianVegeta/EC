@@ -10,6 +10,7 @@ import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
   CATEGORY_SPACE,
+  CATEGORY_USED_GOODS,
 } from 'constants/enums';
 
 import classnames from 'classnames/bind';
@@ -21,6 +22,7 @@ const navs = [
   { name: '分享服務', href: itemsRouter.servicePath, topCategory: CATEGORY_SERVICE },
   { name: '租借空間', href: itemsRouter.spacePath, topCategory: CATEGORY_SPACE },
   { name: '租借物品', href: itemsRouter.goodsPath, topCategory: CATEGORY_GOODS },
+  { name: '二手出清', href: itemsRouter.usedGoodsPath, topCategory: CATEGORY_USED_GOODS },
   { name: '許願看板', href: wishRouter.indexPath },
 ];
 

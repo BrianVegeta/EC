@@ -15,6 +15,7 @@ import HomeRoute from './Home';
 import routeItemsGoods from './Items/routeGoods';
 import routeItemsService from './Items/routeService';
 import routeItemsSpace from './Items/routeSpace';
+import routeItemsUsedGoods from './Items/routeUsedGoods';
 import routeItemsCategory from './Items/routeCategory';
 import routeWishingPond from './WishingPond/route';
 
@@ -63,6 +64,7 @@ export default store => ({
         routeItemsGoods(store),
         routeItemsService(store),
         routeItemsSpace(store),
+        routeItemsUsedGoods(store),
         routeItemsCategory(store),
         routeWishingPond(store),
       ],

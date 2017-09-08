@@ -14,6 +14,7 @@ import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
   CATEGORY_SPACE_ID,
+  CATEGORY_USED_GOODS_ID,
 } from 'constants/enums';
 
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
@@ -55,6 +56,7 @@ class Items extends React.Component {
       case CATEGORY_GOODS_ID: return '尚無此類物品';
       case CATEGORY_SERVICE_ID: return '尚無此類服務項目';
       case CATEGORY_SPACE_ID: return '尚無此類物件';
+      case CATEGORY_USED_GOODS_ID: return '尚無此類物品';
       default: return '';
     }
   }

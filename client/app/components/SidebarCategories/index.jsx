@@ -30,7 +30,7 @@ class SidebarCategories extends React.Component {
       categories,
       categoryID,
     } = this.props;
-
+    const isUsed = categoryID === '4';
     return (
       <div styleName="container">
         <ul styleName="list-container">
