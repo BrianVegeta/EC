@@ -1,5 +1,5 @@
 import { omit } from 'lodash';
-import { reservationGoods as router } from 'lib/paths';
+import { reservationUsedGoods as router } from 'lib/paths';
 import { injectReducer } from 'reducers';
 import { checkStepsRestart } from 'modules/routingHelper';
 
@@ -17,7 +17,7 @@ export default store => ({
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
-      const Container = require('./containers/ReservationGoodsContainer').default;
+      const Container = require('./containers/ReservationUsedGoodsContainer').default;
       const reservationReducer = require('./modules/reservation').default;
       const itemReducer = require('./modules/reservationItem').default;
       const couponsReducer = require('./modules/reservationCoupons').default;
@@ -27,7 +27,7 @@ export default store => ({
       injectReducer(store, { key: COUPONS_REDUCER_KEY, reducer: couponsReducer });
 
       cb(null, Container);
-    }, 'reservation.goods');
+    }, 'reservation.usedgoods');
   },
 
   indexRoute: omit(routeStepForm(store), ['path']),

@@ -15,7 +15,7 @@ class Ajax::Api::ItemController < ApplicationController
 
   # 更新物品
   def used_item_update
-    obj = ::Api::Item::UsedItemUpdate.new usd_editem_update_params, current_apitoken
+    obj = ::Api::Item::UsedItemUpdate.new used_item_update_params, current_apitoken
     success = obj.request
     respond success, obj
   end

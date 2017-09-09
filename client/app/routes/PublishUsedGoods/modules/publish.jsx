@@ -55,8 +55,7 @@ const transformState = ({
   pname, pdes, city, area, cat_id, tags,
   calculate_charge_type, price, unit,
   ship_before_start_days, discounts,
-  send_option, return_option,
-  return_city, return_area, return_address,
+  send_option,
 }) => {
   const discount = discounts[0] ? discounts[0].discount : '';
   return ({
@@ -71,13 +70,7 @@ const transformState = ({
     sendBy711: (send_option.search('2') !== -1),
     sendByOtherShippment: (send_option.search('1') !== -1),
     sendByInPerson: (send_option.search('0') !== -1),
-    returnBy711: (return_option.search('2') !== -1),
-    returnByOtherShippment: (return_option.search('1') !== -1),
-    returnByInPerson: (return_option.search('0') !== -1),
     minimumShippemntDay: ship_before_start_days,
-    returnCity: return_city,
-    returnArea: return_area,
-    returnAddress: return_address,
     chargeType: calculate_charge_type,
     price,
     unit,
@@ -104,24 +97,16 @@ const transformParams = (covers, {
   cityName, areaName,
   tag1, tag2, tag3,
   unit, price, reservationDays,
-  returnCity, returnArea, returnAddress,
   chargeType,
   sendBy711,
   sendByOtherShippment,
   sendByInPerson,
-  returnBy711,
-  returnByOtherShippment,
-  returnByInPerson,
   minimumShippemntDay,
 }) => {
   let sendOption = '';
-  let returnOption = '';
   if (sendByInPerson) sendOption = sendOption.concat('0');
   if (sendByOtherShippment) sendOption = sendOption.concat('1');
   if (sendBy711) sendOption = sendOption.concat('2');
-  if (returnByInPerson) returnOption = returnOption.concat('0');
-  if (returnByOtherShippment) returnOption = returnOption.concat('1');
-  if (returnBy711) returnOption = returnOption.concat('2');
   return ({
     pname: title,
     img1: covers[0] && covers[0].s3,
@@ -139,11 +124,7 @@ const transformParams = (covers, {
     tag2: (tag2 || null),
     tag3: (tag3 || null),
     send_option: sendOption,
-    return_option: returnOption,
     ship_before_start_days: minimumShippemntDay,
-    return_city: returnCity,
-    return_area: returnArea,
-    return_address: returnAddress,
     calculate_charge_type: chargeType,
     min_lease_days: 0,
   });
@@ -166,6 +147,7 @@ export const savePublish = () =>
 export const updatePublish = pid =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
+      console.log(pid);
       const publish = getState()[REDUCER_KEY];
       const covers = getState()[COVER_REDUCER_KEY];
       asyncXhrAuthedPost(

@@ -48,6 +48,7 @@ class OrderBoard extends React.Component {
       isMyOwn,
       type,
     } = model;
+    console.log(model);
     return (
       <div styleName="container">
         {discounts && discounts.map(({ text, price }, index) => (

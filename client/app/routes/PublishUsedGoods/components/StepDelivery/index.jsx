@@ -63,47 +63,6 @@ class StepDelivery extends React.Component {
       this.addressInput.valid();
     });
   }
-
-  renderReturnAddress(isShow, { returnCity, returnArea, returnAddress }) {
-    if (!isShow) return null;
-
-    const { dispatchChangeData } = this.props;
-
-    return (
-      <FormGroup headerText="收件資訊" large >
-        <div styleName="assign-address">
-          <div>為保護您的個資，您的聯絡資訊只有在您同意預訂單後才會提供給使用人喔！</div>
-          <div styleName="assign-cityarea">
-            <InputSelectionCitiesContainer
-              ref={cityAreaInput => (
-                this.cityAreaInput = (cityAreaInput && cityAreaInput.getWrappedInstance())
-              )}
-              cityName={returnCity}
-              areaName={returnArea}
-              value={`${returnCity}${returnArea}`}
-              onSelect={({ cityName, areaName }) => dispatchChangeData({
-                returnCity: cityName,
-                returnArea: areaName,
-              })}
-              constraints={constraints.cityArea}
-              validateOnBlur
-            />
-          </div>
-          <div styleName="assign-address-detail">
-            <InputText
-              ref={addressInput => (this.addressInput = addressInput)}
-              placeholder="請輸入詳細地址"
-              onChange={value => dispatchChangeData({ returnAddress: value })}
-              value={returnAddress}
-              constraints={constraints.address}
-              validateOnBlur
-            />
-          </div>
-        </div>
-      </FormGroup>
-    );
-  }
-
   render() {
     const { publish, dispatchChangeData, isValid } = this.props;
     const {
@@ -111,8 +70,6 @@ class StepDelivery extends React.Component {
       sendByOtherShippment,
       sendByInPerson,
       // returnBy711,
-      returnByOtherShippment,
-      returnByInPerson,
       minimumShippemntDay,
     } = publish;
 
@@ -155,29 +112,6 @@ class StepDelivery extends React.Component {
             </InputCheckBox>
           </div>
         </FormGroup>
-        <FormGroup headerText="接受寄還方式" multiple large>
-          <div styleName="option">
-            <InputCheckBox
-              checked={!!returnByOtherShippment}
-              onChange={checked =>
-                dispatchChangeData({ returnByOtherShippment: checked })
-              }
-            >
-              <span styleName="option-label">自行寄件</span>
-            </InputCheckBox>
-          </div>
-          <div styleName="option">
-            <InputCheckBox
-              checked={!!returnByInPerson}
-              onChange={checked =>
-                dispatchChangeData({ returnByInPerson: checked })
-              }
-            >
-              <span styleName="option-label">面交（自行協調取貨地點）</span>
-            </InputCheckBox>
-          </div>
-        </FormGroup>
-        { this.renderReturnAddress(returnByOtherShippment, publish) }
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}

@@ -125,6 +125,8 @@ Rails.application.routes.draw do
       post 'reserve_space_update', to: 'contract#space_update'
       post 'reserve_goods', to: 'contract#item_create'
       post 'reserve_goods_update', to: 'contract#item_update'
+      post 'reserve_used_goods', to: 'contract#used_item_create'
+      post 'reserve_used_goods_update', to: 'contract#used_item_update'
       post 'reserve_service', to: 'contract#service_create'
       post 'reserve_service_update', to: 'contract#service_update'
       post 'get_my_order', to: 'contract#get_my_contract' #

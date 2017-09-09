@@ -34,6 +34,7 @@ const mapDispatchToProps = (dispatch, { location: { query } }) => {
   const { pid } = query;
   return ({
     dispatchSavePublish: () => {
+      console.log(pid);
       if (pid) return dispatch(updatePublish(pid));
       return dispatch(savePublish());
     },

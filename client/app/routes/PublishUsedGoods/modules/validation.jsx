@@ -115,39 +115,16 @@ export const validateAbout = () =>
 = Validate Delivery =
 ===============================================>>>>>*/
 export const validateDeliveryBy = ({
-  returnCity,
-  returnArea,
-  returnAddress,
   sendBy711,
   sendByOtherShippment,
   sendByInPerson,
-  returnBy711,
-  returnByOtherShippment,
-  returnByInPerson,
 }) => {
-  let errors = '';
+  const errors = '';
   if (!(sendBy711 || sendByOtherShippment || sendByInPerson)) {
     return {
       isValid: false,
       errors: { optionError: '至少選擇一個出貨選項' },
     };
-  }
-
-  if (!(returnBy711 || returnByOtherShippment || returnByInPerson)) {
-    return {
-      isValid: false,
-      errors: { optionError: '至少選擇一個還貨選項' },
-    };
-  }
-
-  if (returnByOtherShippment) {
-    errors = validate({
-      cityArea: `${returnCity}${returnArea}`,
-      returnAddress,
-    }, {
-      cityArea: constraints.cityArea,
-      returnAddress: constraints.address,
-    });
   }
 
   return {

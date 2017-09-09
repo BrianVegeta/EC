@@ -183,6 +183,19 @@ export const reservationGoods = {
   paymentPath: (pid, cid) => gReservationGoodsUrl('step2-payment', pid, cid),
   confirmPath: (pid, cid) => gReservationGoodsUrl('step3-confirm', pid, cid),
 };
+/* 預訂物品 */
+const gReservationUsedGoodsUrl = (step = '', pid = '', cid = '') => {
+  const paths = [`/p/reservation-used-goods/${pid}`];
+  if (step) paths.push(step);
+  if (cid) paths.push(`?cid=${cid}`);
+  return paths.join('/');
+};
+export const reservationUsedGoods = {
+  indexPath: (pid, cid) => gReservationUsedGoodsUrl('', pid, cid),
+  formPath: (pid, cid) => gReservationUsedGoodsUrl('', pid, cid),
+  paymentPath: (pid, cid) => gReservationUsedGoodsUrl('step2-payment', pid, cid),
+  confirmPath: (pid, cid) => gReservationUsedGoodsUrl('step3-confirm', pid, cid),
+};
 /* =============================================>>>>>
 = 我的帳戶 =
 ===============================================>>>>>*/

@@ -45,6 +45,7 @@ import routeForgotPassword from './AuthForgotPassword/route';
 import routeReservationService from './ReservationService/route';
 import routeReservationSpace from './ReservationSpace/route';
 import routeReservationGoods from './ReservationGoods/route';
+import routeReservationUsedGoods from './ReservationUsedGoods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -102,6 +103,7 @@ export default store => ({
         routeReservationGoods(store),
         routeReservationService(store),
         routeReservationSpace(store),
+        routeReservationUsedGoods(store),
         sueForm(store),
       ],
     },

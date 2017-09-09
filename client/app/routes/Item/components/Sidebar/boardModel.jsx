@@ -6,7 +6,7 @@ import {
   reservationGoods as rsGoodsRouter,
   reservationService as rsServiceRouter,
   reservationSpace as rsSpaceRouter,
-  reservationUsedGood as rsUsedGoodsRouter,
+  reservationUsedGoods as rsUsedGoodsRouter,
   publishGoodsRouter,
   publishServiceRouter,
   publishSpaceRouter,
@@ -40,6 +40,7 @@ export default class {
   }
 
   static redirectToReservation({ top_category, type, pid }) {
+    console.log(type);
     let rsRouter = '/';
     switch (type) {
       case 'LEASE':
@@ -48,14 +49,14 @@ export default class {
           [CATE_SERVICE]: rsServiceRouter,
           [CATE_SPACE]: rsSpaceRouter,
         }[top_category];
-        break;
+        return () => browserHistory.push(rsRouter.indexPath(pid));
       case 'USED_ITEM':
-        rsRouter = publishUsedGoodsRouter;
-        break;
+        rsRouter = rsUsedGoodsRouter;
+        return () => browserHistory.push(rsRouter.indexPath(pid));
       default:
         break;
     }
-    return () => browserHistory.push(rsRouter.indexPath(pid));
+    return () => browserHistory.push(rsRouter);
   }
 
   static editPublish({ top_category, type, pid }) {
@@ -69,7 +70,7 @@ export default class {
         }[top_category];
         break;
       case 'USED_ITEM':
-        publishRouter = rsUsedGoodsRouter;
+        publishRouter = publishUsedGoodsRouter;
         break;
       default:
         break;
