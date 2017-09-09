@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import swal, { confirmConfig } from 'lib/swal';
 // TODO: move to layout
 // import { reset as resetMine } from 'actions/mineActions';
-import Container from '../components/Item/Goods';
+import Container from '../components/Item/UsedGoods';
 import { fetchItems, deleteItem, reset } from '../modules/myItem';
 
 const mapStateToProps = (state) => {
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   };
   return ({
     dispatch,
-    dispatchFetchItem: () => dispatch(fetchItems('1', false)),
+    dispatchFetchItem: () => dispatch(fetchItems('1', true)),
     dispatchReset: () => {
       dispatch(reset());
     },

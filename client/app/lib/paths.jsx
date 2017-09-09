@@ -205,6 +205,7 @@ export const my = {
   myGoodsPath: '/p/my/goods',
   myServicePath: '/p/my/service',
   mySpacePath: '/p/my/space',
+  myUsedGoodsPath: '/p/my/used-goods',
   wishPath: '/p/my/wish',
   ownerOrderItem: tabName => `/p/my/oo-it${tabName}`,
   ownerOrderService: tabName => `/p/my/oo-se${tabName}`,

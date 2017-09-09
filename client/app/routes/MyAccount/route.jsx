@@ -3,6 +3,7 @@ import { my } from 'lib/paths';
 import routeMyGoods from './routes/Item/Goods/route';
 import routeMyService from './routes/Item/Service/route';
 import routeMySpace from './routes/Item/Space/route';
+import routeMyUsedGoods from './routes/Item/UsedGoods/route';
 import routeMyCollection from './routes/Collections/route';
 import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
@@ -38,6 +39,7 @@ export default store => ({
     routeMyGoods(store),
     routeMyService(store),
     routeMySpace(store),
+    routeMyUsedGoods(store),
     routeMyCollection(store),
     routeMyCoupon(store),
     routeMyOwnerComment(store),

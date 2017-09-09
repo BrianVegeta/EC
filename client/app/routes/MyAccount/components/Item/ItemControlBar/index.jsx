@@ -8,6 +8,7 @@ import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
   CATEGORY_SPACE,
+  CATEGORY_USED_GOODS,
 } from 'constants/enums';
 
 import styles from './styles.sass';
@@ -34,6 +35,11 @@ class ControlBar extends React.Component {
           text="空間"
           isActive={getIsActive === CATEGORY_SPACE}
           onClick={() => browserHistory.push(my.mySpacePath)}
+        />
+        <RoundButton
+          text="二手"
+          isActive={getIsActive === CATEGORY_USED_GOODS}
+          onClick={() => browserHistory.push(my.myUsedGoodsPath)}
         />
       </div>
     );

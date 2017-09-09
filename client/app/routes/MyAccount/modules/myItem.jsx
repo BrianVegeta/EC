@@ -1,6 +1,6 @@
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
-import { LEASE } from 'constants/enums';
+import { LEASE, USED_ITEM } from 'constants/enums';
 
 /* =============================================>>>>>
 = userprofile =
@@ -67,7 +67,7 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export function fetchItems(categoryID, recursiveRecords = []) {
+export function fetchItems(categoryID, isUsed, recursiveRecords = []) {
   return (dispatch, getState) => {
     const { currentUser } = getState().auth;
     const {
@@ -78,7 +78,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
     } = getState()[REDUCER_KEY];
 
     const requestParams = {
-      type: LEASE,
+      type: isUsed ? USED_ITEM : LEASE,
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       category_id: categoryID,
@@ -104,7 +104,7 @@ export function fetchItems(categoryID, recursiveRecords = []) {
       if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
         dispatch(fetchItems(
-          categoryID, currentUser.uid, reducedRecords,
+          categoryID, isUsed, reducedRecords,
         ));
         return;
       }
