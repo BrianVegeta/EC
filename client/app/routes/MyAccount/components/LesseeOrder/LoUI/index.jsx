@@ -8,7 +8,7 @@ import { my } from 'lib/paths';
 
 import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
-import OrderNav, { ITEM } from '../../OrderNav';
+import OrderNav, { USED_ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
@@ -52,16 +52,13 @@ class OrderList extends React.Component {
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '提出預訂',
+      { name: '尚未付款',
         href: my.lesseeOrderItem(TAB_REQUEST),
         tabName: TAB_REQUEST },
-      { name: '尚未付款',
-        href: my.lesseeOrderItem(TAB_PAY),
-        tabName: TAB_PAY },
       { name: '待出貨',
         href: my.lesseeOrderItem(TAB_SHIPPING),
         tabName: TAB_SHIPPING },
-      { name: '待收貨',
+      { name: '運送中',
         href: my.lesseeOrderItem(TAB_RETURN),
         tabName: TAB_RETURN },
       { name: '完成',
@@ -70,16 +67,16 @@ class OrderList extends React.Component {
       { name: '取消',
         href: my.lesseeOrderItem(TAB_CANCEL),
         tabName: TAB_CANCEL },
-      { name: '申訴中',
+      { name: '退貨/申訴中',
         href: my.lesseeOrderItem(TAB_SUE),
         tabName: TAB_SUE },
-      { name: '申訴完成',
+      { name: '退貨/申訴完成',
         href: my.lesseeOrderItem(TAB_SUE_COMPLETE),
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
       <Container titleText={'消費狀態'}>
-        <OrderNav activeType={ITEM} />
+        <OrderNav activeType={USED_ITEM} />
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}

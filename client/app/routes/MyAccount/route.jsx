@@ -16,9 +16,11 @@ import routeWalletOut from './routes/Wallet/Out/route';
 import routeOoIt from './routes/OwnerOrder/OoIt/route';
 import routeOoSe from './routes/OwnerOrder/OoSe/route';
 import routeOoSp from './routes/OwnerOrder/OoSp/route';
+import routeOoUI from './routes/OwnerOrder/OoUI/route';
 import routeLoIt from './routes/LesseeOrder/LoIt/route';
 import routeLoSe from './routes/LesseeOrder/LoSe/route';
 import routeLoSp from './routes/LesseeOrder/LoSp/route';
+import routeLoUI from './routes/LesseeOrder/LoUI/route';
 import routeProfile from './routes/Profile/route';
 import routeManage from './routes/Manage/route';
 import routeBankSetup from './routes/BankSetup/route';
@@ -52,9 +54,11 @@ export default store => ({
     routeOoIt(store),
     routeOoSe(store),
     routeOoSp(store),
+    routeOoUI(store),
     routeLoIt(store),
     routeLoSe(store),
     routeLoSp(store),
+    routeLoUI(store),
     routeProfile(store),
     routeManage(store),
     routeBankSetup(store),

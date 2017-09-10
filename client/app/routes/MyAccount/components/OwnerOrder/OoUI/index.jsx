@@ -8,12 +8,12 @@ import { my } from 'lib/paths';
 
 import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
-import OrderNav, { ITEM } from '../../OrderNav';
+import OrderNav, { USED_ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
 import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
-   TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
+   TAB_SHIPPING_CONFIRM, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
 class OrderList extends React.Component {
@@ -45,53 +45,53 @@ class OrderList extends React.Component {
   }
 
   render() {
-    const { myOrder } = this.props;
+    const { myOrder, dispatch } = this.props;
     // console.log(this.props);
     if (myOrder == null) {
       return null;
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '提出預訂',
-        href: my.lesseeOrderItem(TAB_REQUEST),
-        tabName: TAB_REQUEST },
       { name: '尚未付款',
-        href: my.lesseeOrderItem(TAB_PAY),
-        tabName: TAB_PAY },
+        href: my.ownerOrderItem(TAB_REQUEST),
+        tabName: TAB_REQUEST },
       { name: '待出貨',
-        href: my.lesseeOrderItem(TAB_SHIPPING),
+        href: my.ownerOrderItem(TAB_SHIPPING),
         tabName: TAB_SHIPPING },
-      { name: '待收貨',
-        href: my.lesseeOrderItem(TAB_RETURN),
-        tabName: TAB_RETURN },
+      { name: '運送中',
+        href: my.ownerOrderItem(TAB_SHIPPING_CONFIRM),
+        tabName: TAB_SHIPPING_CONFIRM },
       { name: '完成',
-        href: my.lesseeOrderItem(TAB_COMPLETE),
+        href: my.ownerOrderItem(TAB_COMPLETE),
         tabName: TAB_COMPLETE },
       { name: '取消',
-        href: my.lesseeOrderItem(TAB_CANCEL),
+        href: my.ownerOrderItem(TAB_CANCEL),
         tabName: TAB_CANCEL },
-      { name: '申訴中',
-        href: my.lesseeOrderItem(TAB_SUE),
+      { name: '退貨/申訴中',
+        href: my.ownerOrderItem(TAB_SUE),
         tabName: TAB_SUE },
-      { name: '申訴完成',
-        href: my.lesseeOrderItem(TAB_SUE_COMPLETE),
+      { name: '退貨/申訴完成',
+        href: my.ownerOrderItem(TAB_SUE_COMPLETE),
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
-      <Container titleText={'消費狀態'}>
-        <OrderNav activeType={ITEM} />
+      <Container titleText={'廠商訂單'}>
+        <OrderNav
+          activeType={USED_ITEM}
+          isOwner
+        />
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何訂單' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           {records.map((record, index) => (
             <OrderItemBoard
               key={`${index + 1}`}
               type="ITEM"
-              photoHead={record.owner_img}
-              photoName={record.owner_nick_name}
+              photoHead={record.lessee_img}
+              photoName={record.lessee_nick_name}
               stage={record.contractstage}
               cid={record.cid}
               pid={record.pid}
@@ -99,16 +99,17 @@ class OrderList extends React.Component {
               paymenttype={record.paymenttype}
               itemName={record.pname}
               itemImgUrl={record.img1}
-              targetName={record.owner_nick_name}
+              targetName={record.lessee_nick_name}
               targetUrl={''}
-              targetScore={record.ownerscore}
+              targetScore={record.lesseescore}
+              targetComment={record.lessee_comment}
               startDate={record.leasestart}
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}
               unit={record.unit}
-              isOwner={false}
+              isOwner
+              isRead={record.owner_read}
               lesseeReceive={record.lessee_receive}
-              isRead={record.lessee_read}
               display={record.display}
               dispatch={this.props.dispatch}
               dispatchRefresh={this.refreshScreen}
@@ -120,4 +121,4 @@ class OrderList extends React.Component {
   }
 }
 
-export default OrderList;
+export default OrderList
