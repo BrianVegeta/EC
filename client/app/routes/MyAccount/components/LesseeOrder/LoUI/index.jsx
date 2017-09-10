@@ -7,12 +7,12 @@ import { my } from 'lib/paths';
 // import CSS from 'react-css-modules';
 
 import ListContainer from 'components/ListContainer';
-import OrderItemBoard from 'components/OrderItemBoard';
+import UsedItemBoard from 'components/UsedItemBoard';
 import OrderNav, { USED_ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
-import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
+import { TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
    TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
@@ -53,25 +53,25 @@ class OrderList extends React.Component {
     const { records, isFetching, unreads } = myOrder;
     const navs = [
       { name: '尚未付款',
-        href: my.lesseeOrderItem(TAB_REQUEST),
-        tabName: TAB_REQUEST },
+        href: my.lesseeOrderUsedItem(TAB_PAY),
+        tabName: TAB_PAY },
       { name: '待出貨',
-        href: my.lesseeOrderItem(TAB_SHIPPING),
+        href: my.lesseeOrderUsedItem(TAB_SHIPPING),
         tabName: TAB_SHIPPING },
       { name: '運送中',
-        href: my.lesseeOrderItem(TAB_RETURN),
-        tabName: TAB_RETURN },
+        href: my.lesseeOrderUsedItem(TAB_SHIPPING_CONFIRM),
+        tabName: TAB_SHIPPING_CONFIRM },
       { name: '完成',
-        href: my.lesseeOrderItem(TAB_COMPLETE),
+        href: my.lesseeOrderUsedItem(TAB_COMPLETE),
         tabName: TAB_COMPLETE },
       { name: '取消',
-        href: my.lesseeOrderItem(TAB_CANCEL),
+        href: my.lesseeOrderUsedItem(TAB_CANCEL),
         tabName: TAB_CANCEL },
       { name: '退貨/申訴中',
-        href: my.lesseeOrderItem(TAB_SUE),
+        href: my.lesseeOrderUsedItem(TAB_SUE),
         tabName: TAB_SUE },
       { name: '退貨/申訴完成',
-        href: my.lesseeOrderItem(TAB_SUE_COMPLETE),
+        href: my.lesseeOrderUsedItem(TAB_SUE_COMPLETE),
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
@@ -84,7 +84,7 @@ class OrderList extends React.Component {
           isInitialFetching={isFetching && records.length === 0}
         >
           {records.map((record, index) => (
-            <OrderItemBoard
+            <UsedItemBoard
               key={`${index + 1}`}
               type="ITEM"
               photoHead={record.owner_img}
@@ -99,8 +99,7 @@ class OrderList extends React.Component {
               targetName={record.owner_nick_name}
               targetUrl={''}
               targetScore={record.ownerscore}
-              startDate={record.leasestart}
-              endDate={record.leaseend}
+              createTime={record.create_time}
               totalPrice={record.lesseepayfee}
               unit={record.unit}
               isOwner={false}

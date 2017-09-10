@@ -14,7 +14,7 @@ export function generateOwnerItemString(contractstage, startDate) {
       text = '在對方修改後，您才能進行同意。';
       break;
     case 4:
-      title = '待付款';
+      title = '待對方付款';
       text = '完成付款後，您將會收到信箱以及推播通知。';
       break;
     case 5:
@@ -122,7 +122,7 @@ export function generateOwnerServiceString(contractstage, startDate) {
       text = '在對方修改後，您才能進行同意';
       break;
     case 4:
-      title = '待付款';
+      title = '待對方付款';
       text = '完成付款後，您將會收到信箱以及推播通知。';
       break;
     case 5:
@@ -210,7 +210,7 @@ export function generateOwnerSpaceString(contractstage, startDate) {
       text = '在對方修改後，您才能進行同意';
       break;
     case 4:
-      title = '待付款';
+      title = '待對方付款';
       text = '完成付款後，您將會收到信箱以及推播通知。';
       break;
     case 5:
@@ -269,6 +269,84 @@ export function generateLesseeSpaceString(contractstage, startDate) {
       title = '交易進行中';
       text = '';
       break;
+    case 11:
+      title = '已完成';
+      text = '交易完成！請給對方評價吧！';
+      break;
+    case 12:
+    case 13:
+      title = '已評分';
+      text = '您已完成評價，謝謝您使用ShareApp！';
+      break;
+    default:
+      break;
+  }
+
+  return ({ title, text });
+}
+
+export function generateOwnerUsedItemString(contractstage, createTime) {
+  let title = '';
+  let text = '';
+  switch (contractstage) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      title = '待對方付款';
+      text = '完成付款後，您將會收到信箱以及推播通知。';
+      break;
+    case 5:
+      title = '待出貨';
+      text = `請於${formatDateForOrder(createTime)}前安排出貨，為了保障您的權益，出貨前建議先拍下物品的狀態`;
+      break;
+    case 6:
+    case 7:
+      title = '等待對方收貨';
+      text = '';
+      break;
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+      title = '已完成';
+      text = '交易完成！請給對方評價吧！';
+      break;
+    case 12:
+    case 13:
+      title = '已評分';
+      text = '您已完成評價，謝謝您使用ShareApp！';
+      break;
+    default:
+      break;
+  }
+
+  return ({ title, text });
+}
+
+export function generateLesseeUsedItemString(contractstage) {
+  let title = '';
+  let text = '';
+  switch (contractstage) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      title = '尚未付款';
+      text = '請在三天內完成付款，逾時將自動取消。';
+      break;
+    case 5:
+      title = '待對方出貨';
+      text = '您已成功付款，我們會通知對方進行出貨。';
+      break;
+    case 6:
+    case 7:
+      title = '對方已出貨';
+      text = '到貨後，請告訴對方您已收到貨';
+      break;
+    case 8:
+    case 9:
+    case 10:
     case 11:
       title = '已完成';
       text = '交易完成！請給對方評價吧！';

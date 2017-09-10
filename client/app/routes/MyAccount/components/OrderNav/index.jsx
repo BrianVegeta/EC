@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import RoundButton from 'components/RoundButton';
 import { my } from 'lib/paths';
-import { TAB_REQUEST } from '../../modules/myOrder';
+import { TAB_REQUEST, TAB_PAY } from '../../modules/myOrder';
 // import classnames from 'classnames/bind';
 // import CSS from 'react-css-modules';
 export const ITEM = 0;
@@ -32,7 +32,7 @@ class OrderNav extends React.Component {
         case SPACE:
           return browserHistory.push(my.ownerOrderSpace(TAB_REQUEST));
         case USED_ITEM:
-          return browserHistory.push(my.ownerOrderUsedItem(TAB_REQUEST));
+          return browserHistory.push(my.ownerOrderUsedItem(TAB_PAY));
         default:
           return browserHistory.push('/');
       }
@@ -46,7 +46,7 @@ class OrderNav extends React.Component {
       case SPACE:
         return browserHistory.push(my.lesseeOrderSpace(TAB_REQUEST));
       case USED_ITEM:
-        return browserHistory.push(my.lesseeOrderUsedItem(TAB_REQUEST));
+        return browserHistory.push(my.lesseeOrderUsedItem(TAB_PAY));
       default:
         return browserHistory.push('/');
     }

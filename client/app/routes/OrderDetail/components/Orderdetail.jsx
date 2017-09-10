@@ -208,6 +208,9 @@ class Orderdetail extends React.Component {
       service_city, service_area, service_address,
       space_city, space_area, space_address,
      } = order;
+    if (type === 'USED_ITEM') {
+      return null;
+    }
     let titleStr = '';
     let hintStr = '';
     let address = null;
@@ -401,7 +404,8 @@ class Orderdetail extends React.Component {
   renderBanner(isOwner) {
     const { orderdetail, dispatch } = this.props;
     const { sueDetail, order } = orderdetail;
-    const { contractstage, cid, type, leasestart } = order;
+    const { contractstage, cid, type, leasestart, create_time } = order;
+    const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
         <div styleName="banner_style" >
@@ -410,7 +414,7 @@ class Orderdetail extends React.Component {
             type={type}
             contractstage={contractstage}
             isOwner={isOwner}
-            startDate={leasestart}
+            startDate={time}
             dispatch={dispatch}
           />
         </div>

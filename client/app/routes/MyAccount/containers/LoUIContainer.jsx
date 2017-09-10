@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Component from '../components/LesseeOrder/LoUI';
-import { ROLE_LESSEE, TYPE_ITEM, fetchRecords, reset } from '../modules/myOrder';
+import { ROLE_LESSEE, TYPE_USED_ITEM, fetchRecords, reset } from '../modules/myOrder';
 
 
 const mapStateToProps = ({ environment, myOrder, auth }, { params }) => ({
@@ -9,7 +9,7 @@ const mapStateToProps = ({ environment, myOrder, auth }, { params }) => ({
 /* pick dispatch */
 const mapDispatchToProps = (dispatch, { params }) => ({
   dispatch,
-  dispatchRecords: () => dispatch(fetchRecords(ROLE_LESSEE, TYPE_ITEM, params.tabName)),
+  dispatchRecords: () => dispatch(fetchRecords(ROLE_LESSEE, TYPE_USED_ITEM, params.tabName)),
   dispatchReset: () => dispatch(reset()),
 });
 

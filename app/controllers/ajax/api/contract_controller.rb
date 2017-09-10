@@ -322,6 +322,10 @@ class Ajax::Api::ContractController < ApplicationController
       space_stage = ::SpaceStage.new(response_data, uid)
       space_stage.process
       response_data['display'] = space_stage.display
+    when 'USED_ITEM'
+      space_stage = ::UsedItemStage.new(response_data, uid)
+      space_stage.process
+      response_data['display'] = space_stage.display
     else
       raise 'invalid contract type'
     end

@@ -30,6 +30,7 @@ export const ROLE_BOTH = 'BOTH';
 export const TYPE_ITEM = 'ITEM';
 export const TYPE_SERVICE = 'SERVICE';
 export const TYPE_SPACE = 'SPACE';
+export const TYPE_USED_ITEM = 'USED_ITEM';
 
 export const TAB_REQUEST = 'TAB_REQUEST';
 export const TAB_PAY = 'TAB_PAY';
