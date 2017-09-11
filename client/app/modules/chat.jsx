@@ -171,6 +171,26 @@ export const sendXmppRead = () =>
     dispatch(emptyUnreadCount(room_id));
   };
 
+const sendXmppReceived = message_id =>
+  (dispatch, getState) => {
+    const { clientFullJid, connection } = getState()[REDUCER_KEY];
+    const { currentUser: { uid } } = getState()[AUTH_REDUCER_KEY];
+    const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
+    const { uid: targetUid } = currentRoom;
+    const msg = $msg({
+      to: `${targetUid.toLowerCase()}share@${XMPP_HOST_IP}`,
+      type: 'chat',
+      from: clientFullJid,
+    })
+    .c('received', {
+      xmlns: 'urn:xmpp:receipts',
+      id: `${uid.toUpperCase()}_${targetUid.toUpperCase()}_${now()}`,
+    }).up()
+    .c('sharereceive', null)
+    .c('message_id', null, message_id);
+    connection.send(msg.tree());
+  };
+
 const handleLogJsonFromType = ({
   message_id, type, message, uid, name, standardId, img, arg1, arg2, arg3,
 }) => {
@@ -230,12 +250,14 @@ const handleMessage = msg =>
         console.log('duplicate');
       } else if (currentRoom.room_id === sharemsg.room_id) {
         console.log('new message');
+        dispatch(sendXmppReceived(sharemsg.message_id, { read: true }));
         dispatch(addMessageToLogs(handleLogJsonFromType({
           ...sharemsg,
           message,
           standardId,
         })));
       } else {
+        dispatch(sendXmppReceived(sharemsg.message_id, { read: false }));
         console.log('other message');
       }
       dispatch(updateLastMessage(message, sharemsg.room_id));
