@@ -1,5 +1,20 @@
 import { formatDate, formatDateForOrder } from 'lib/time';
 
+export function generateContractLog(contractstage) {
+  switch (contractstage) {
+    case 1:
+      return '建立訂單時間';
+    case 4:
+      return '訂單成立時間';
+    case 5:
+      return '付款時間';
+    case 11:
+      return '完成時間';
+    default:
+      return '';
+  }
+}
+
 export function generateOwnerItemString(contractstage, startDate) {
   let title = '';
   let text = '';

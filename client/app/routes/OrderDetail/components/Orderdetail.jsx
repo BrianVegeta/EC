@@ -8,13 +8,12 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-import ReactStars from 'react-stars';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
 import CoverThreePics from 'components/CoverThreePics';
 import { formatDate, rangeDiff } from 'lib/time';
-
+import { generateContractLog } from 'lib/contractString';
 
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
@@ -30,6 +29,7 @@ class Orderdetail extends React.Component {
   static defaultProps = {
     personalBankInfo: null,
     sueDetail: null,
+    logs: [],
   }
 
   static propTypes = {
@@ -53,6 +53,10 @@ class Orderdetail extends React.Component {
       case_end: PropTypes.number,
       create_time: PropTypes.number,
     }),
+    logs: PropTypes.arrayOf(PropTypes.shape({
+      contractstage: PropTypes.number,
+      create_time: PropTypes.number,
+    })),
     dispatch: PropTypes.func.isRequired,
     dispatchBankSetup: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
@@ -487,7 +491,29 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
+  renderLog() {
+    const { orderdetail: { logs } } = this.props;
+    if (!(logs) || logs.length < 1) {
+      return null;
+    }
 
+    return (
+      <div styleName="log-container">
+        {
+          logs.map((log, i) => {
+            const text = generateContractLog(log.contractstage);
+            if (text === '') {
+              return (null);
+            }
+            return (<div styleName="log-content" key={`${i + 1}`}>
+              <span styleName="log-text">{text}</span>
+              <span styleName="log-time">{formatDate(log.create_time)}</span>
+            </div>);
+          },
+        )}
+      </div>
+    );
+  }
   render() {
     const { orderdetail, dispatch } = this.props;
     const { order } = orderdetail;
@@ -531,6 +557,7 @@ class Orderdetail extends React.Component {
           {this.renderRules(order)}
           {this.renderCancelPolicys(order.renderCancelPolicys)}
           {this.renderOverdueRate(order.overdue_rate, order.deposit)}
+          {this.renderLog()}
         </div>
         <BottomController >
           {this.renderButtonStyle(
