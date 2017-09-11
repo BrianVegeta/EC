@@ -410,6 +410,7 @@ export const sendMessage = () =>
       input: message,
       currentRoom: { uid: targetUid },
     } = getState()[CHAT_BOX_REDUCER_KEY];
+    if (message === '') return;
     const { currentUser: { uid, name } } = getState()[AUTH_REDUCER_KEY];
 
     dispatch(changeInput(''));
