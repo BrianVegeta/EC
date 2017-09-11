@@ -26,6 +26,11 @@ class OrderList extends React.Component {
     dispatch: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.refreshScreen = this.refreshScreen.bind(this);
+  }
+
   componentDidMount() {
     this.refreshScreen();
   }

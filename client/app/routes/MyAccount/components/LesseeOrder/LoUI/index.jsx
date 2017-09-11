@@ -13,7 +13,7 @@ import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
 import { TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
-   TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
+   TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
 class OrderList extends React.Component {
@@ -24,6 +24,11 @@ class OrderList extends React.Component {
     tabName: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.refreshScreen = this.refreshScreen.bind(this);
+  }
 
   componentDidMount() {
     this.refreshScreen();
@@ -86,26 +91,12 @@ class OrderList extends React.Component {
           {records.map((record, index) => (
             <UsedItemBoard
               key={`${index + 1}`}
-              type="ITEM"
+              type="USED_ITEM"
               photoHead={record.owner_img}
               photoName={record.owner_nick_name}
-              stage={record.contractstage}
-              cid={record.cid}
-              pid={record.pid}
-              cidNo={record.cid_no}
-              paymenttype={record.paymenttype}
-              itemName={record.pname}
-              itemImgUrl={record.img1}
-              targetName={record.owner_nick_name}
-              targetUrl={''}
-              targetScore={record.ownerscore}
-              createTime={record.create_time}
-              totalPrice={record.lesseepayfee}
-              unit={record.unit}
               isOwner={false}
-              lesseeReceive={record.lessee_receive}
               isRead={record.lessee_read}
-              display={record.display}
+              order={record}
               dispatch={this.props.dispatch}
               dispatchRefresh={this.refreshScreen}
             />

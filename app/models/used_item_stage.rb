@@ -30,8 +30,10 @@ class UsedItemStage < StageBase
       modify_display_param(KEY_TAB, TAB_PAY)
     when STAGE_SHIPPING
       modify_display_param(KEY_TAB, TAB_SHIPPING)
-    when STAGE_SHIP_CONFIRM, STAGE_CONTRACT_ONGOING, STAGE_CONTRACT_START, STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
+    when STAGE_SHIP_CONFIRM, STAGE_CONTRACT_ONGOING, STAGE_CONTRACT_START,
       check_can_ship_confirm_stage
+    when STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
+      modify_display_param(KEY_TAB, TAB_COMPLETE)
     else
       raise self.screen_type.inspect
       raise 'Exception : screen_type error'
@@ -49,7 +51,8 @@ class UsedItemStage < StageBase
   def check_can_ship_confirm_stage
     if (not self.contract['lessee_receive'])
       modify_display_param(KEY_TAB, TAB_SHIPPING_CONFIRM)
-      return
+      modify_display_param(KEY_SCORE, false)
+      modify_display_param(KEY_VIEW_SCORE, false)
     else
       # raise self.screen_type.inspect
       modify_display_param(KEY_TAB, TAB_COMPLETE)

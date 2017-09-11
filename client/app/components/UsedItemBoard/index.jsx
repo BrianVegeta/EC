@@ -35,46 +35,50 @@ class OrderItemBoard extends React.Component {
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    paymenttype: PropTypes.number.isRequired,
-    stage: PropTypes.number.isRequired,
-    cid: PropTypes.number.isRequired,
-    pid: PropTypes.number.isRequired,
-    cidNo: PropTypes.string.isRequired,
-    itemName: PropTypes.string.isRequired,
-    itemImgUrl: PropTypes.string.isRequired,
-    targetName: PropTypes.string.isRequired,
-    targetUrl: PropTypes.string.isRequired,
-    targetScore: PropTypes.number,
-    targetComment: PropTypes.string,
-    totalPrice: PropTypes.number.isRequired,
-    unit: PropTypes.number.isRequired,
     isOwner: PropTypes.bool,
     isRead: PropTypes.bool.isRequired,
-    lesseeReceive: PropTypes.bool,
-    createTime: PropTypes.number.isRequired,
-    display: PropTypes.shape(
-      {
-        show_detail: PropTypes.bool,
-        can_ship: PropTypes.bool,
-        can_edit: PropTypes.bool,
-        can_pay: PropTypes.bool,
-        can_camera: PropTypes.bool,
-        can_score: PropTypes.bool,
-        view_score: PropTypes.bool,
-      },
-    ).isRequired,
+    order: PropTypes.shape({
+      cid: PropTypes.number,
+    }).isRequired,
+
+    // paymenttype: PropTypes.number.isRequired,
+    // stage: PropTypes.number.isRequired,
+    // cid: PropTypes.number.isRequired,
+    // pid: PropTypes.number.isRequired,
+    // cidNo: PropTypes.string.isRequired,
+    // itemName: PropTypes.string.isRequired,
+    // itemImgUrl: PropTypes.string.isRequired,
+    // targetName: PropTypes.string.isRequired,
+    // targetUrl: PropTypes.string.isRequired,
+    // targetScore: PropTypes.number,
+    // targetComment: PropTypes.string,
+    // totalPrice: PropTypes.number.isRequired,
+    // unit: PropTypes.number.isRequired,
+    //
+    // lesseeReceive: PropTypes.bool,
+    // createTime: PropTypes.number.isRequired,
+    // display: PropTypes.shape(
+    //   {
+    //     show_detail: PropTypes.bool,
+    //     can_ship: PropTypes.bool,
+    //     can_edit: PropTypes.bool,
+    //     can_pay: PropTypes.bool,
+    //     can_camera: PropTypes.bool,
+    //     can_score: PropTypes.bool,
+    //     view_score: PropTypes.bool,
+    //   },
+    // ).isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchRefresh: PropTypes.func.isRequired,
   };
 
   generateEditAddress() {
-    const { cid, pid } = this.props;
+    const { order: { cid, pid } } = this.props;
     return () => browserHistory.push(reservationUsedGoods.indexPath(pid, cid));
   }
 
   generatePayment() {
-    const { paymenttype, cid, dispatch } = this.props;
+    const { order: { paymenttype, cid, dispatch } } = this.props;
 
     switch (paymenttype) {
       case 4:
@@ -93,18 +97,21 @@ class OrderItemBoard extends React.Component {
       default:
         return () => {};
     }
-
   }
 
   callScorePanel(isView) {
+    const { isOwner,
+      order: { cid, owner_comment, lessee_comment, lesseescore, ownerscore } } = this.props;
+    const targetScore = isOwner ? lesseescore : ownerscore;
+    const targetComment = isOwner ? lessee_comment : owner_comment;
     this.props.dispatch(popupScoreRating({
       isView,
-      targetName: this.props.targetName,
-      targetScore: this.props.targetScore,
-      targetComment: this.props.targetComment,
-      targetUrl: this.props.targetUrl,
+      targetName: this.props.photoName,
+      targetScore,
+      targetComment,
+      targetUrl: this.props.photoHead,
       onScore: (score, comment) => {
-        this.props.dispatch(doScore(this.props.cid, score, comment))
+        this.props.dispatch(doScore(cid, score, comment))
         .then(() => {
           this.props.dispatch(resetAction());
           if (this.props.dispatchRefresh) {
@@ -117,16 +124,18 @@ class OrderItemBoard extends React.Component {
       },
     }));
   }
+
   generateString() {
-    const { isOwner, createTime, stage } = this.props;
+    const { isOwner,
+      order: { contractstage, lessee_receive, lesseescore, ownerscore } } = this.props;
     const objString = { title: '', text: '' };
-    if (stage < 1000) {
+    if (contractstage < 1000) {
       if (isOwner) {
-        return generateOwnerUsedItemString(stage, createTime);
+        return generateOwnerUsedItemString(contractstage, lessee_receive, (lesseescore));
       }
-      return generateLesseeUsedItemString(stage, createTime);
-    } else if (stage > 1000 && stage < 3000) {
-      const screenStage = stage % 100;
+      return generateLesseeUsedItemString(contractstage, lessee_receive, (ownerscore));
+    } else if (contractstage > 1000 && contractstage < 3000) {
+      const screenStage = contractstage % 100;
       if (screenStage < 11) {
         objString.title = '申訴中';
       } else {
@@ -143,8 +152,8 @@ class OrderItemBoard extends React.Component {
   }
 
   renderOwnerActions() {
-    const { display } = this.props;
-    const { can_ship, can_camera, can_score, view_score } = display;
+    const { order: { display, cid } } = this.props;
+    const { can_ship, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -162,10 +171,12 @@ class OrderItemBoard extends React.Component {
             {...buttonConfig}
             content={'安排出貨'}
             onClick={() => {
-              this.props.dispatch(doShipGoods(this.props.cid))
+              this.props.dispatch(doShipGoods(cid))
               .then(() => {
                 this.props.dispatch(resetAction());
-                this.props.dispatchRefresh();
+                if (this.props.dispatchRefresh) {
+                  this.props.dispatchRefresh();
+                }
               })
               .catch((error) => {
                 alert(error);
@@ -193,15 +204,15 @@ class OrderItemBoard extends React.Component {
           colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+          onClick={() => browserHistory.push(orderDetail.indexPath(cid))}
         />
       </div>
     );
   }
 
   renderLesseeActions() {
-    const { display } = this.props;
-    const { can_edit, can_pay, can_ship_confirm,  can_score, view_score } = display;
+    const { order: { display, cid } } = this.props;
+    const { can_edit, can_pay, can_ship_confirm, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -235,10 +246,12 @@ class OrderItemBoard extends React.Component {
             {...buttonConfig}
             content={'確認收貨'}
             onClick={() => {
-              this.props.dispatch(doReceiveConfirm(this.props.cid))
+              this.props.dispatch(doReceiveConfirm(cid))
               .then(() => {
                 this.props.dispatch(resetAction());
-                this.props.dispatchRefresh();
+                if (this.props.dispatchRefresh) {
+                  this.props.dispatchRefresh();
+                }
               })
               .catch((error) => {
                 alert(error);
@@ -266,15 +279,16 @@ class OrderItemBoard extends React.Component {
           colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+          onClick={() => browserHistory.push(orderDetail.indexPath(cid))}
         />
       </div>
     );
   }
 
   render() {
-    const { photoHead, photoName, cidNo, unit,
-      itemName, itemImgUrl, totalPrice, display, isRead } = this.props;
+    const { photoHead, photoName, isRead, order: {
+      cid_no, unit,
+      pname, img1, lesseepayfee } } = this.props;
     const objectString = this.generateString();
     return (
       <div
@@ -309,21 +323,21 @@ class OrderItemBoard extends React.Component {
         >
           <div styleName="oib-pic-style">
             <Picture
-              src={itemImgUrl}
+              src={img1}
               width={120}
             />
           </div>
           <div styleName="oib-content-style">
-            <div styleName="oib-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="oib-text-style">{`${itemName}`}</div>
+            <div styleName="oib-hint-style">{`訂單編號：${cid_no}`}</div>
+            <div styleName="oib-text-style">{`${pname}`}</div>
             <div styleName="oib-price-section">
               <div styleName="oib-unit-style">{unit}件</div>
-              <div styleName="oib-price-style">總計 {formatCurrency(totalPrice)}</div>
+              <div styleName="oib-price-style">總計 {formatCurrency(lesseepayfee)}</div>
             </div>
           </div>
         </div>
         <div styleName="oib-hint-section">{objectString.text}</div>
-        {this.renderAction(display)}
+        {this.renderAction()}
       </div>
     );
   }
