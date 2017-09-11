@@ -6,9 +6,11 @@ import {
   reservationGoods as rsGoodsRouter,
   reservationService as rsServiceRouter,
   reservationSpace as rsSpaceRouter,
+  reservationUsedGoods as rsUsedGoodsRouter,
   publishGoodsRouter,
   publishServiceRouter,
   publishSpaceRouter,
+  publishUsedGoodsRouter,
 } from 'lib/paths';
 
 
@@ -37,21 +39,42 @@ export default class {
     }
   }
 
-  static redirectToReservation({ top_category, pid }) {
-    const rsRouter = {
-      [CATE_GOODS]: rsGoodsRouter,
-      [CATE_SERVICE]: rsServiceRouter,
-      [CATE_SPACE]: rsSpaceRouter,
-    }[top_category];
-    return () => browserHistory.push(rsRouter.indexPath(pid));
+  static redirectToReservation({ top_category, type, pid }) {
+    let rsRouter = '/';
+    switch (type) {
+      case 'LEASE':
+        rsRouter = {
+          [CATE_GOODS]: rsGoodsRouter,
+          [CATE_SERVICE]: rsServiceRouter,
+          [CATE_SPACE]: rsSpaceRouter,
+        }[top_category];
+        return () => browserHistory.push(rsRouter.indexPath(pid));
+      case 'USED_ITEM':
+        rsRouter = rsUsedGoodsRouter;
+        return () => browserHistory.push(rsRouter.indexPath(pid));
+      default:
+        break;
+    }
+    return () => browserHistory.push(rsRouter);
   }
 
-  static editPublish({ top_category, pid }) {
-    const publishRouter = {
-      [CATE_GOODS]: publishGoodsRouter,
-      [CATE_SERVICE]: publishServiceRouter,
-      [CATE_SPACE]: publishSpaceRouter,
-    }[top_category];
+  static editPublish({ top_category, type, pid }) {
+    let publishRouter = '/';
+    switch (type) {
+      case 'LEASE':
+        publishRouter = {
+          [CATE_GOODS]: publishGoodsRouter,
+          [CATE_SERVICE]: publishServiceRouter,
+          [CATE_SPACE]: publishSpaceRouter,
+        }[top_category];
+        break;
+      case 'USED_ITEM':
+        publishRouter = publishUsedGoodsRouter;
+        break;
+      default:
+        break;
+    }
+
     return () => browserHistory.push(publishRouter.indexPath(pid));
   }
 

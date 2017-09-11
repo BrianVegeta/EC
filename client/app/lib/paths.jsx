@@ -22,8 +22,13 @@ export const authPath = {
 export const itemPath = (name, pid, escape = true) =>
   `/p/${escape ? escapeAlias(name) : name}-i.${pid}`;
 
-export const categoriedItemPath = (categoryName, cid) =>
-  `/p/i/${escapeAlias(categoryName)}-c.${cid}`;
+export const categoriedItemPath = (categoryName, cid, used) => {
+  if (used) {
+    return (`/p/i/used/${escapeAlias(categoryName)}-c.${cid}`);
+  }
+  return (`/p/i/lease/${escapeAlias(categoryName)}-c.${cid}`);
+};
+
 
 export const userprofilePaths = {
   indexPath: uid => `/p/userprofile/${uid}`,
@@ -48,6 +53,7 @@ export const items = {
   servicePath: '/p/i/service',
   goodsPath: '/p/i/goods',
   spacePath: '/p/i/space',
+  usedGoodsPath: '/p/i/used-goods',
 };
 
 export const wishRouter = {
@@ -117,7 +123,21 @@ export const publishGoodsRouter = {
   deliveryPath: pid => gPublishGoodsUrl('step3-delivery', pid),
   pricePath: pid => gPublishGoodsUrl('step4-price', pid),
   regulationPath: pid => gPublishGoodsUrl('step5-regulation', pid),
-  confirmPath: pid => gPublishGoodsUrl('step7-confirm', pid),
+  confirmPath: pid => gPublishGoodsUrl('step6-confirm', pid),
+};
+
+const gPublishUsedGoodsUrl = (step = '', pid = '') => {
+  const paths = ['/p/publish-used-goods'];
+  if (step) paths.push(step);
+  if (pid) paths.push(`?pid=${pid}`);
+  return paths.join('/');
+};
+export const publishUsedGoodsRouter = {
+  indexPath: pid => gPublishUsedGoodsUrl('', pid),
+  coverPath: pid => gPublishUsedGoodsUrl('', pid),
+  aboutPath: pid => gPublishUsedGoodsUrl('step2-about', pid),
+  deliveryPath: pid => gPublishUsedGoodsUrl('step3-delivery', pid),
+  confirmPath: pid => gPublishUsedGoodsUrl('step4-confirm', pid),
 };
 
 /* =============================================>>>>>
@@ -163,6 +183,19 @@ export const reservationGoods = {
   paymentPath: (pid, cid) => gReservationGoodsUrl('step2-payment', pid, cid),
   confirmPath: (pid, cid) => gReservationGoodsUrl('step3-confirm', pid, cid),
 };
+/* 預訂物品 */
+const gReservationUsedGoodsUrl = (step = '', pid = '', cid = '') => {
+  const paths = [`/p/reservation-used-goods/${pid}`];
+  if (step) paths.push(step);
+  if (cid) paths.push(`?cid=${cid}`);
+  return paths.join('/');
+};
+export const reservationUsedGoods = {
+  indexPath: (pid, cid) => gReservationUsedGoodsUrl('', pid, cid),
+  formPath: (pid, cid) => gReservationUsedGoodsUrl('', pid, cid),
+  paymentPath: (pid, cid) => gReservationUsedGoodsUrl('step2-payment', pid, cid),
+  confirmPath: (pid, cid) => gReservationUsedGoodsUrl('step3-confirm', pid, cid),
+};
 /* =============================================>>>>>
 = 我的帳戶 =
 ===============================================>>>>>*/
@@ -172,13 +205,16 @@ export const my = {
   myGoodsPath: '/p/my/goods',
   myServicePath: '/p/my/service',
   mySpacePath: '/p/my/space',
+  myUsedGoodsPath: '/p/my/used-goods',
   wishPath: '/p/my/wish',
-  ownerOrderItem: tabName => `/p/my/oo-it${tabName}`,
-  ownerOrderService: tabName => `/p/my/oo-se${tabName}`,
-  ownerOrderSpace: tabName => `/p/my/oo-sp${tabName}`,
-  lesseeOrderItem: tabName => `/p/my/lo-it${tabName}`,
-  lesseeOrderService: tabName => `/p/my/lo-se${tabName}`,
-  lesseeOrderSpace: tabName => `/p/my/lo-sp${tabName}`,
+  ownerOrderItem: tabName => `/p/my/oo-it/${tabName}`,
+  ownerOrderService: tabName => `/p/my/oo-se/${tabName}`,
+  ownerOrderSpace: tabName => `/p/my/oo-sp/${tabName}`,
+  ownerOrderUsedItem: tabName => `/p/my/oo-ui/${tabName}`,
+  lesseeOrderItem: tabName => `/p/my/lo-it/${tabName}`,
+  lesseeOrderService: tabName => `/p/my/lo-se/${tabName}`,
+  lesseeOrderSpace: tabName => `/p/my/lo-sp/${tabName}`,
+  lesseeOrderUsedItem: tabName => `/p/my/lo-ui/${tabName}`,
   walletPath: '/p/my/wallet-all',
   walletPathIn: '/p/my/wallet-in',
   walletPathOut: '/p/my/wallet-out',

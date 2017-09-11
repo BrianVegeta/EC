@@ -15,4 +15,14 @@ module RespondHelper
     response.merge!(emailTaken: true) if resource.error_code === Response::ErrorCode::NEW_EMAIL_ALREADY_EXIST
     render json: response, status: status
   end
+
+  def responseHTLM html, status: :ok
+    response = { success: true, data: html, logouted: false }
+    render json: response, status: status
+  end
+
+  def responseSpecial params, status: :ok
+    response = { success: true, data: params, logouted: false }
+    render json: response, status: status
+  end
 end

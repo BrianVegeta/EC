@@ -17,6 +17,7 @@ class ListItem extends React.Component {
     isActive: false,
     isHovering: false,
     isExpanding: false,
+    isUsed: false,
     onSubCategoriesExpand: null,
   };
 
@@ -29,6 +30,7 @@ class ListItem extends React.Component {
       id: PropTypes.number,
     }).isRequired,
     onSubCategoriesExpand: PropTypes.func,
+    isUsed: PropTypes.bool,
   };
 
   constructor(props) {
@@ -47,6 +49,7 @@ class ListItem extends React.Component {
       isExpanding,
       isHovering,
       isActive,
+      isUsed,
     } = this.props;
 
     const iconProps = {
@@ -57,7 +60,7 @@ class ListItem extends React.Component {
 
     return (
       <Link
-        to={categoriedItemPath(category.name, category.id)}
+        to={categoriedItemPath(category.name, category.id, isUsed)}
         activeClassName={cx('active')}
         onlyActiveOnIndex
       >

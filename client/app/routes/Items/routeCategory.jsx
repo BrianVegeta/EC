@@ -2,7 +2,7 @@ import { injectReducer } from 'reducers';
 
 const key = 'items';
 export default store => ({
-  path: '/p/i/:name-c.:cid',
+  path: '/p/i/:type/:name-c.:cid',
 
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {

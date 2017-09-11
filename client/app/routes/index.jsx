@@ -15,6 +15,7 @@ import HomeRoute from './Home';
 import routeItemsGoods from './Items/routeGoods';
 import routeItemsService from './Items/routeService';
 import routeItemsSpace from './Items/routeSpace';
+import routeItemsUsedGoods from './Items/routeUsedGoods';
 import routeItemsCategory from './Items/routeCategory';
 import routeWishingPond from './WishingPond/route';
 
@@ -32,6 +33,7 @@ import routeItem from './Item/route';
 import routePublishGoods from './PublishGoods/route';
 import routePublishService from './PublishService/route';
 import routePublishSpace from './PublishSpace/route';
+import routePublishUsedGoods from './PublishUsedGoods/route';
 import routePublishWish from './PublishWish/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
@@ -43,6 +45,7 @@ import routeForgotPassword from './AuthForgotPassword/route';
 import routeReservationService from './ReservationService/route';
 import routeReservationSpace from './ReservationSpace/route';
 import routeReservationGoods from './ReservationGoods/route';
+import routeReservationUsedGoods from './ReservationUsedGoods/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -63,6 +66,7 @@ export default store => ({
         routeItemsGoods(store),
         routeItemsService(store),
         routeItemsSpace(store),
+        routeItemsUsedGoods(store),
         routeItemsCategory(store),
         routeWishingPond(store),
       ],
@@ -95,9 +99,11 @@ export default store => ({
         routePublishGoods(store),
         routePublishService(store),
         routePublishSpace(store),
+        routePublishUsedGoods(store),
         routeReservationGoods(store),
         routeReservationService(store),
         routeReservationSpace(store),
+        routeReservationUsedGoods(store),
         sueForm(store),
       ],
     },

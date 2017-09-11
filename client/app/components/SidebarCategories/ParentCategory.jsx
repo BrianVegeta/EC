@@ -16,6 +16,7 @@ class ParentCategory extends React.Component {
     category: PropTypes.shape({
       children: PropTypes.array.isRequired,
     }).isRequired,
+    isUsed: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -33,7 +34,7 @@ class ParentCategory extends React.Component {
   }
 
   render() {
-    const { category, isActive, categoryID } = this.props;
+    const { category, isActive, categoryID, isUsed } = this.props;
     const { isExpanding } = this.state;
     const inSubCategories = find(category.children, { id: parseInt(categoryID, 10) });
 
@@ -43,6 +44,7 @@ class ParentCategory extends React.Component {
           <ListItem
             isActive={isActive}
             category={category}
+            isUsed={isUsed}
             isSubCategoryOpen={isExpanding}
             onSubCategoriesExpand={this.onSubCategoriesExpand}
           />
@@ -52,6 +54,7 @@ class ParentCategory extends React.Component {
           <SubCategories
             subCategories={category.children}
             categoryID={categoryID}
+            isUsed={isUsed}
           />
         }
       </div>

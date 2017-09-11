@@ -5,7 +5,8 @@ import CSS from 'react-css-modules';
 
 import { generateOwnerItemString, generateOwnerServiceString,
   generateOwnerSpaceString, generateLesseeItemString,
-  generateLesseeServiceString, generateLesseeSpaceString }
+  generateLesseeServiceString, generateLesseeSpaceString,
+  generateOwnerUsedItemString, generateLesseeUsedItemString }
   from 'lib/contractString'
 import styles from './styles.sass';
 
@@ -28,6 +29,8 @@ class Banner extends React.Component {
           return generateOwnerServiceString(contractstage, startDate);
         case 'SPACE':
           return generateOwnerSpaceString(contractstage, startDate);
+        case 'USED_ITEM':
+          return generateOwnerUsedItemString(contractstage, startDate);
         default:
           return ({ title: '', text: '' });
       }
@@ -39,6 +42,8 @@ class Banner extends React.Component {
           return generateLesseeServiceString(contractstage, startDate);
         case 'SPACE':
           return generateLesseeSpaceString(contractstage, startDate);
+        case 'USED_ITEM':
+          return generateLesseeUsedItemString(contractstage, startDate);
         default:
           return ({ title: '', text: '' });
       }

@@ -24,6 +24,15 @@ class OrderBoard extends React.Component {
     isSticky: PropTypes.bool,
   };
 
+  generateButtonText() {
+    const { model: { isMyOwn, type } } = this.props;
+    if (isMyOwn) {
+      return '編輯商品';
+    } else if (type === 'LEASE') {
+      return '馬上預訂';
+    }
+    return '馬上購買';
+  }
   render() {
     const { model, isSticky } = this.props;
     const {
@@ -37,6 +46,7 @@ class OrderBoard extends React.Component {
       onReserve,
       onEdit,
       isMyOwn,
+      type,
     } = model;
     return (
       <div styleName="container">
@@ -52,12 +62,12 @@ class OrderBoard extends React.Component {
               {amountRemaining}
             </div>
           }
-          {deposit && <Term icon="time" content={deposit} />}
+          {deposit && type === 'LEASE' && <Term icon="time" content={deposit} />}
           {payment && <Term icon="bank" content={payment} />}
         </div>
         <div styleName="reserve-button-container">
           <FormButton
-            content={isMyOwn ? '編輯商品' : '馬上預訂'}
+            content={this.generateButtonText()}
             colorType={isMyOwn ? 'greenBorder' : 'orange'}
             style={{ height: 52 }}
             onClick={isMyOwn ? onEdit : onReserve}

@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   };
   return ({
     dispatch,
-    dispatchFetchItem: () => dispatch(fetchItems('3')),
+    dispatchFetchItem: () => dispatch(fetchItems('3', false)),
     dispatchReset: () => {
       dispatch(reset());
     },

@@ -213,7 +213,7 @@ class Userprofile extends React.Component {
 
   render() {
     const { userprofile: {
-      detail, track }, params,
+      detail },
     } = this.props;
     if (!detail) return null;
     const {
@@ -226,16 +226,8 @@ class Userprofile extends React.Component {
     const {
       picture,
       name,
-      // autobiography,
-      // email,
-      // uid,
-      // fb_id,
-      // website,
-      // credit,
-      // phone,
     } = detail;
     const {
-      renderSubscribeCount,
       renderSidebarDetailTerm,
     } = this.constructor;
 

@@ -14,6 +14,7 @@ import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
   CATEGORY_SPACE_ID,
+  CATEGORY_USED_GOODS_ID,
 } from 'constants/enums';
 
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
@@ -32,6 +33,7 @@ class Items extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
     dispatchCollection: PropTypes.func.isRequired,
     isLogin: PropTypes.bool.isRequired,
+    isUsed: PropTypes.bool.isRequired,
     categoryID: PropTypes.string.isRequired,
     topCategoryID: PropTypes.string,
     categoryName: PropTypes.string.isRequired,
@@ -55,6 +57,7 @@ class Items extends React.Component {
       case CATEGORY_GOODS_ID: return '尚無此類物品';
       case CATEGORY_SERVICE_ID: return '尚無此類服務項目';
       case CATEGORY_SPACE_ID: return '尚無此類物件';
+      case CATEGORY_USED_GOODS_ID: return '尚無此類物品';
       default: return '';
     }
   }
@@ -84,7 +87,7 @@ class Items extends React.Component {
 
   refetch() {
     this.props.dispatchReset();
-    this.props.dispatchFetchRecords();
+    this.props.dispatchFetchRecords(this.props.isUsed);
   }
 
   render() {
@@ -95,6 +98,7 @@ class Items extends React.Component {
       items,
       dispatchFetchRecords,
       filterType,
+      isUsed,
     } = this.props;
 
     const {
@@ -118,7 +122,7 @@ class Items extends React.Component {
           />
         </PageHeader>
         <div className="clear">
-          <SidebarCategoriesContainer categoryID={categoryID} />
+          <SidebarCategoriesContainer categoryID={categoryID} isUsed={isUsed} />
           <div style={{ marginLeft: 279 }} styleName="items-container">
             <ListContainer
               minHeight={500}

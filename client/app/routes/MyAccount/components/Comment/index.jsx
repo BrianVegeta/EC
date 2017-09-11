@@ -70,7 +70,7 @@ class Navigation extends React.Component {
             <div styleName="score">{score.toFixed(1)}</div>
             <div styleName="stars-container">
               <Stars score={score} activeColor="#FF9442" size={28} />
-              <div styleName="comment-count"></div>
+              <div styleName="comment-count" />
             </div>
           </div>
         </div>

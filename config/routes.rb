@@ -103,24 +103,30 @@ Rails.application.routes.draw do
       #PAYMENT
       post 'creditcard_payment', to: 'payment#pay_creditcard'
       post 'get_paymentinfo', to: 'payment#get_order'
+
       #SEARCH
       post 'multi', to: 'search#multi_search' #
       post 'search_user', to: 'userprofile#search' #
       post 'search_item', to: 'item#get_item_by_name' #
       post 'serach_wish', to: 'wishlist#search' #
+
       #NOTIFICATION
       post 'get_unread_notify', to: 'sync#notification_unread' #
       post 'count_unread_notify', to: 'sync#notification_unread_count' #
       post 'get_notify', to: 'sync#notification_read' #
       post 'get_notify_contract', to: 'contract#get_unread_contract' #
+
       #SUE
       post 'send_sue_request', to: 'contract#report'
       post 'get_sue_report', to: 'contract#get_report'
+
       #CONTRACT
       post 'reserve_space', to: 'contract#space_create'
       post 'reserve_space_update', to: 'contract#space_update'
       post 'reserve_goods', to: 'contract#item_create'
       post 'reserve_goods_update', to: 'contract#item_update'
+      post 'reserve_used_goods', to: 'contract#used_item_create'
+      post 'reserve_used_goods_update', to: 'contract#used_item_update'
       post 'reserve_service', to: 'contract#service_create'
       post 'reserve_service_update', to: 'contract#service_update'
       post 'get_my_order', to: 'contract#get_my_contract' #
@@ -133,7 +139,6 @@ Rails.application.routes.draw do
       post 'score_order', to: 'contract#score' #
       post 'end_service', to: 'contract#service_end' #
       post 'end_space', to: 'contract#space_end' #
-
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
 
@@ -172,6 +177,8 @@ Rails.application.routes.draw do
       post 'item_detail', to: 'item#view_item' #
       post 'create_goods_item', to: 'item#item_add'
       post 'update_goods_item', to: 'item#item_update'
+      post 'create_used_goods_item', to: 'item#used_item_add'
+      post 'update_used_goods_item', to: 'item#used_item_update'
       post 'create_service_item', to: 'item#service_add'
       post 'update_service_item', to: 'item#service_update'
       post 'create_space_item', to: 'item#space_add'
@@ -185,6 +192,7 @@ Rails.application.routes.draw do
 
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
+      get 'store_result', to: 'ship#store_result'
       # ITEMS
       scope :item do
         post 'list', to: 'item#search_item_list'
@@ -301,5 +309,6 @@ Rails.application.routes.draw do
         get 'space'
       end
     end
+    resources :store
   end
 end

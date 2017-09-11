@@ -13,7 +13,7 @@ import SortableGallery from 'components/Publish/SortableGallery';
 import CheckBox from 'components/Input/CheckBox';
 import AlertPanel from 'components/Alert/Panel';
 
-import { ItemSueOption, ServiceSueOption, SpaceSueOption }
+import { ItemSueOption, ServiceSueOption, SpaceSueOption, UsedItemSueOption }
   from 'constants/sueOption';
 // import colors from 'styles/colorExport.scss';
 
@@ -89,8 +89,6 @@ class SueForm extends React.Component {
     const { pid, reason, targetUid, type, sueType,
       sueCategory, sueStage } = this.uploadData;
     const targetstage = sueType + sueCategory + sueStage;
-    console.log(this.uploadData);
-    console.log(targetstage);
     this.props.dispatchSend(pid, targetstage, reason, targetUid, type);
 
     return 0;
@@ -107,6 +105,9 @@ class SueForm extends React.Component {
         break;
       case 'SPACE':
         list = SpaceSueOption;
+        break;
+      case 'USED_ITEM':
+        list = ItemSueOption;
         break;
       default:
         break;

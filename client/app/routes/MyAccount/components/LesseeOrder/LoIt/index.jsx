@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 
 import { my } from 'lib/paths';
 
@@ -9,8 +8,7 @@ import { my } from 'lib/paths';
 
 import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
-import RoundButton from 'components/RoundButton';
-
+import OrderNav, { ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
@@ -26,6 +24,11 @@ class OrderList extends React.Component {
     tabName: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.refreshScreen = this.refreshScreen.bind(this);
+  }
 
   componentDidMount() {
     this.refreshScreen();
@@ -81,27 +84,7 @@ class OrderList extends React.Component {
     ];
     return (
       <Container titleText={'消費狀態'}>
-        <div style={{ paddingBottom: 20 }}>
-          <RoundButton
-            text="物品"
-            isActive
-            onClick={
-              () => { browserHistory.push(my.lesseeOrderItem(TAB_REQUEST)); }
-            }
-          />
-          <RoundButton
-            text="服務"
-            onClick={
-              () => { browserHistory.push(my.lesseeOrderService(TAB_REQUEST)); }
-            }
-          />
-          <RoundButton
-            text="空間"
-            onClick={
-              () => { browserHistory.push(my.lesseeOrderSpace(TAB_REQUEST)); }
-            }
-          />
-        </div>
+        <OrderNav activeType={ITEM} />
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer
           minHeight={500}
