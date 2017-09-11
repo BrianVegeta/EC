@@ -32,7 +32,8 @@ const BeenCollected = styled.div`
   line-height: 14px;
   font-size: 14px;
   color: #666;
-  margin-bottom: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 const ShareGroup = styled.div`
   color: #666;

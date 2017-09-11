@@ -147,7 +147,6 @@ export const savePublish = () =>
 export const updatePublish = pid =>
   (dispatch, getState) =>
     new Promise((resolve, reject) => {
-      console.log(pid);
       const publish = getState()[REDUCER_KEY];
       const covers = getState()[COVER_REDUCER_KEY];
       asyncXhrAuthedPost(
@@ -158,6 +157,7 @@ export const updatePublish = pid =>
         resolve(data);
       }).catch(() => reject());
     });
+
 
 // =============================================
 // = reducer =

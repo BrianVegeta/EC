@@ -26,6 +26,7 @@ const Sharer = props => (
     <SharerCard
       name={props.name}
       picture={props.picture}
+      uid={props.uid}
       city={props.city}
       area={props.area}
       owner_credit={props.owner_credit}

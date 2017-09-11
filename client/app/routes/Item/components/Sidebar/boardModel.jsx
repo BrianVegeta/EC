@@ -40,7 +40,6 @@ export default class {
   }
 
   static redirectToReservation({ top_category, type, pid }) {
-    console.log(type);
     let rsRouter = '/';
     switch (type) {
       case 'LEASE':
