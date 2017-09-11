@@ -16,16 +16,17 @@ class SubCategories extends React.Component {
     subCategories: PropTypes.arrayOf(
       PropTypes.object,
     ).isRequired,
+    isUsed: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { props: { subCategories, categoryID } } = this;
+    const { subCategories, categoryID, isUsed } = this.props;
     return (
       <ul styleName="container">
         {subCategories.map(subcategory => (
           <Link
             key={subcategory.id}
-            to={categoriedItemPath(subcategory.name, subcategory.id)}
+            to={categoriedItemPath(subcategory.name, subcategory.id, isUsed)}
             onlyActiveOnIndex
           >
             <li className={cx('list-item', { active: categoryID === subcategory.id.toString() })}>

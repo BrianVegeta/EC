@@ -122,6 +122,20 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  # 建立物品合約
+  def used_item_create
+    obj = ::Api::Contract::UsedItemCreate.new create_item_contract_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
+  # 更新商品類型合約
+  def used_item_update
+    obj = ::Api::Contract::UsedItemUpdate.new update_item_contract_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
   # 問API設計師
   def logs
     obj = ::Api::Contract::Logs.new cid_params, current_apitoken
@@ -306,6 +320,10 @@ class Ajax::Api::ContractController < ApplicationController
       response_data['display'] = service_stage.display
     when 'SPACE'
       space_stage = ::SpaceStage.new(response_data, uid)
+      space_stage.process
+      response_data['display'] = space_stage.display
+    when 'USED_ITEM'
+      space_stage = ::UsedItemStage.new(response_data, uid)
       space_stage.process
       response_data['display'] = space_stage.display
     else

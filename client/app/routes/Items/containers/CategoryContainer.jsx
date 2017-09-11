@@ -10,9 +10,10 @@ import { fetchRecords, reset } from '../modules/items';
 const mapStateToProps = ({
   environment, items, categories, auth,
 }, {
-  params: { cid },
+  params: { cid, type },
 }) => {
   const topCategory = findTopCategory(cid, categories);
+  const isUsed = (type === 'used');
   return ({
     environment,
     items,
@@ -21,12 +22,16 @@ const mapStateToProps = ({
     categoryID: cid,
     filterType: topCategory,
     isLogin: auth.isLogin,
+    isUsed,
   });
 };
 
 /* pick dispatch */
-const mapDispatchToProps = (dispatch, { params: { cid } }) => ({
-  dispatchFetchRecords: () => dispatch(fetchRecords(cid)),
+const mapDispatchToProps = (dispatch, { params: { cid, type } }) => ({
+  dispatchFetchRecords: () => {
+    const isUsed = (type === 'used');
+    dispatch(fetchRecords(cid, isUsed));
+  },
   dispatchReset: () => dispatch(reset()),
   dispatchCollection: () => dispatch(fetchCollections()),
 });

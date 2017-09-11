@@ -3,6 +3,7 @@ import { my } from 'lib/paths';
 import routeMyGoods from './routes/Item/Goods/route';
 import routeMyService from './routes/Item/Service/route';
 import routeMySpace from './routes/Item/Space/route';
+import routeMyUsedGoods from './routes/Item/UsedGoods/route';
 import routeMyCollection from './routes/Collections/route';
 import routeMyCoupon from './routes/Coupon/route';
 import routeMyWishList from './routes/Wish/route';
@@ -15,9 +16,11 @@ import routeWalletOut from './routes/Wallet/Out/route';
 import routeOoIt from './routes/OwnerOrder/OoIt/route';
 import routeOoSe from './routes/OwnerOrder/OoSe/route';
 import routeOoSp from './routes/OwnerOrder/OoSp/route';
+import routeOoUI from './routes/OwnerOrder/OoUI/route';
 import routeLoIt from './routes/LesseeOrder/LoIt/route';
 import routeLoSe from './routes/LesseeOrder/LoSe/route';
 import routeLoSp from './routes/LesseeOrder/LoSp/route';
+import routeLoUI from './routes/LesseeOrder/LoUI/route';
 import routeProfile from './routes/Profile/route';
 import routeManage from './routes/Manage/route';
 import routeBankSetup from './routes/BankSetup/route';
@@ -38,6 +41,7 @@ export default store => ({
     routeMyGoods(store),
     routeMyService(store),
     routeMySpace(store),
+    routeMyUsedGoods(store),
     routeMyCollection(store),
     routeMyCoupon(store),
     routeMyOwnerComment(store),
@@ -50,9 +54,11 @@ export default store => ({
     routeOoIt(store),
     routeOoSe(store),
     routeOoSp(store),
+    routeOoUI(store),
     routeLoIt(store),
     routeLoSe(store),
     routeLoSp(store),
+    routeLoUI(store),
     routeProfile(store),
     routeManage(store),
     routeBankSetup(store),

@@ -159,7 +159,7 @@ const initialState = {
   lesseeProfile: null,
   sueDetail: null,
   order: null,
-  logs: null,
+  logs: [],
   images: null,
 };
 

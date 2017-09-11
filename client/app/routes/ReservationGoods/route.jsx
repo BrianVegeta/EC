@@ -27,7 +27,7 @@ export default store => ({
       injectReducer(store, { key: COUPONS_REDUCER_KEY, reducer: couponsReducer });
 
       cb(null, Container);
-    }, 'reservation.service');
+    }, 'reservation.goods');
   },
 
   indexRoute: omit(routeStepForm(store), ['path']),

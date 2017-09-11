@@ -8,7 +8,8 @@ import CloseIcon from 'react-icons/lib/md/close';
 import GoodsIcon from 'components/Icons/Publish/Goods';
 import ServiceIcon from 'components/Icons/Publish/Service';
 import SpaceIcon from 'components/Icons/Publish/Space';
-import { publishGoodsRouter, publishServiceRouter, publishSpaceRouter,
+import UsedGoodsIcon from 'components/Icons/Publish/UsedGoods';
+import { publishGoodsRouter, publishServiceRouter, publishSpaceRouter, publishUsedGoodsRouter,
  } from 'lib/paths';
 
 import classnames from 'classnames/bind';
@@ -37,14 +38,11 @@ class ModalPublish extends React.Component {
   }
 
   render() {
-    const servicePath = publishServiceRouter.indexPath();
-    const spacePath = publishSpaceRouter.indexPath();
-    const goodsPath = publishGoodsRouter.indexPath();
-
     const shortcuts = [
-      { text: '服務', path: servicePath, Icon: ServiceIcon },
-      { text: '空間', path: spacePath, Icon: SpaceIcon },
-      { text: '物品', path: goodsPath, Icon: GoodsIcon },
+      { text: '服務', path: publishServiceRouter.indexPath(), Icon: ServiceIcon },
+      { text: '空間', path: publishSpaceRouter.indexPath(), Icon: SpaceIcon },
+      { text: '物品', path: publishGoodsRouter.indexPath(), Icon: GoodsIcon },
+      { text: '二手', path: publishUsedGoodsRouter.indexPath(), Icon: UsedGoodsIcon },
     ];
 
     const { isHovering } = this.state;

@@ -9,11 +9,11 @@ import Stars from 'components/Stars';
 const propTypes = {
   name: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
-  city: PropTypes.string.isRequired,
-  area: PropTypes.string.isRequired,
+  // city: PropTypes.string.isRequired,
+  // area: PropTypes.string.isRequired,
   owner_credit: PropTypes.number.isRequired,
   // create_time: PropTypes.number.isRequired,
-  // target_uid: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired,
   // is_follow: PropTypes.bool.isRequired,
   // dispatch: PropTypes.func.isRequired,
 };
@@ -29,11 +29,10 @@ const SharerCard = props => (
       <div styleName="marks">
         <div styleName="star-text">{props.owner_credit.toFixed(1)}</div>
         <div styleName="score">
-          <div styleName="sub-header">
-            {`${props.city}${props.area}`}
-          </div>
+          <div styleName="sub-header">{props.uid}</div>
           <Stars
             size={20}
+            activeColor="#FF9442"
             score={props.owner_credit}
           />
         </div>

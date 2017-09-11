@@ -28,9 +28,11 @@ class ScoreRating extends React.Component {
   }
   constructor(props) {
     super(props);
+    const score = props.targetScore ? props.targetScore : 1;
+    const description = props.targetComment ? props.targetComment : '';
     this.state = {
-      score: props.targetScore,
-      description: props.targetComment,
+      score,
+      description,
     };
     this.onSave = this.onSave.bind(this);
   }
@@ -44,7 +46,39 @@ class ScoreRating extends React.Component {
     }
     alert('請輸入評價！！');
   }
+  renderStar() {
+    const { isView } = this.props;
 
+    if (isView) {
+      return (
+        <div styleName="star-section">
+          <ReactStars
+            count={5}
+            value={this.state.score}
+            half={false}
+            size={30}
+            edit={false}
+            color1={'#DBDBDB'}
+            color2={'#31ABBA'}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div styleName="star-section">
+        <ReactStars
+          count={5}
+          value={this.state.score}
+          onChange={(value) => { this.state.score = value; }}
+          half={false}
+          size={30}
+          color1={'#DBDBDB'}
+          color2={'#31ABBA'}
+        />
+      </div>
+    );
+  }
   render() {
     const { description } = this.state;
     const { targetUrl, targetName } = this.props;
@@ -58,21 +92,11 @@ class ScoreRating extends React.Component {
         </div>
         <div
           className="clear"
-          styleName="name-section">
+          styleName="name-section"
+        >
           {targetName}
         </div>
-        <div styleName="star-section">
-          <ReactStars
-            count={5}
-            value={this.state.score}
-            onChange={(value) => { this.state.score = value; }}
-            half={false}
-            size={30}
-            edit={!(this.props.isView)}
-            color1={'#DBDBDB'}
-            color2={'#31ABBA'}
-          />
-        </div>
+        {this.renderStar()}
         <div styleName="comment-section">
           { this.props.isView ?
             <div styleName="comment-text">{this.state.description}</div>

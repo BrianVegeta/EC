@@ -81,7 +81,6 @@ class StepConfirm extends React.Component {
   renderDiscount() {
     const { publish } = this.props;
     const { discounts } = publish;
-    console.log(discounts);
     if (discounts.length <= 0) {
       return (
         <tr>
@@ -151,11 +150,11 @@ class StepConfirm extends React.Component {
         <ConfirmTitle title="物品照片" >
           {renderCovers(covers)}
         </ConfirmTitle>
-        <ConfirmTitle title="關於服務">
+        <ConfirmTitle title="關於商品">
           <table styleName="table">
             <tbody>
               <tr>
-                <th width={154}>服務名稱</th>
+                <th width={154}>商品名稱</th>
                 <td>{title}</td>
               </tr>
               <tr>

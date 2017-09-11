@@ -12,6 +12,7 @@ const mapStateToProps = (
   return {
     environment,
     topCategory,
+    params,
   };
 };
 

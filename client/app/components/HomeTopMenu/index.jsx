@@ -10,6 +10,7 @@ import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
   CATEGORY_SPACE,
+  CATEGORY_USED_GOODS,
 } from 'constants/enums';
 
 import classnames from 'classnames/bind';
@@ -21,6 +22,7 @@ const navs = [
   { name: '分享服務', href: itemsRouter.servicePath, topCategory: CATEGORY_SERVICE },
   { name: '租借空間', href: itemsRouter.spacePath, topCategory: CATEGORY_SPACE },
   { name: '租借物品', href: itemsRouter.goodsPath, topCategory: CATEGORY_GOODS },
+  { name: '二手出清', href: itemsRouter.usedGoodsPath, topCategory: CATEGORY_USED_GOODS },
   { name: '許願看板', href: wishRouter.indexPath },
 ];
 
@@ -29,14 +31,22 @@ class HomeTopMenu extends React.Component {
 
   static defaultProps = {
     topCategory: null,
+    params: {},
   };
 
   static propTypes = {
     topCategory: PropTypes.string,
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
   };
 
   render() {
-    const { topCategory } = this.props;
+    const { topCategory, params } = this.props;
+    let selectTop = topCategory;
+    if (params.type && params.type === 'used') {
+      selectTop = CATEGORY_USED_GOODS;
+    }
     return (
       <div className="container clear">
         <div className={`navbar ${cx('container', 'navbar')}`} >
@@ -47,7 +57,7 @@ class HomeTopMenu extends React.Component {
                 styleName="nav"
               >
                 <Link
-                  className={cx({ active: nav.topCategory === topCategory })}
+                  className={cx({ active: nav.topCategory === selectTop })}
                   activeClassName={cx('active')}
                   styleName="link"
                   to={nav.href}
