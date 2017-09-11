@@ -8,7 +8,7 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-
+import ReactStars from 'react-stars';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';

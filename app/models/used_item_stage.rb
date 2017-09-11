@@ -30,10 +30,8 @@ class UsedItemStage < StageBase
       modify_display_param(KEY_TAB, TAB_PAY)
     when STAGE_SHIPPING
       modify_display_param(KEY_TAB, TAB_SHIPPING)
-    when STAGE_SHIP_CONFIRM,
+    when STAGE_SHIP_CONFIRM, STAGE_CONTRACT_ONGOING, STAGE_CONTRACT_START, STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
       check_can_ship_confirm_stage
-    when STAGE_CONTRACT_ONGOING, STAGE_CONTRACT_START, STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2
-      modify_display_param(KEY_TAB, TAB_COMPLETE)
     else
       raise self.screen_type.inspect
       raise 'Exception : screen_type error'
@@ -53,7 +51,8 @@ class UsedItemStage < StageBase
       modify_display_param(KEY_TAB, TAB_SHIPPING_CONFIRM)
       return
     else
-      modify_display_param(KEY_TAB, STAGE_SCORE)
+      # raise self.screen_type.inspect
+      modify_display_param(KEY_TAB, TAB_COMPLETE)
       if self.is_owner
         modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
         modify_display_param(KEY_VIEW_SCORE, (not self.contract['lesseescore'].nil?))
