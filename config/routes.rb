@@ -139,7 +139,6 @@ Rails.application.routes.draw do
       post 'score_order', to: 'contract#score' #
       post 'end_service', to: 'contract#service_end' #
       post 'end_space', to: 'contract#space_end' #
-
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
 
@@ -193,6 +192,7 @@ Rails.application.routes.draw do
 
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
+      get 'store_result', to: 'ship#store_result'
       # ITEMS
       scope :item do
         post 'list', to: 'item#search_item_list'
@@ -309,5 +309,6 @@ Rails.application.routes.draw do
         get 'space'
       end
     end
+    resources :store
   end
 end
