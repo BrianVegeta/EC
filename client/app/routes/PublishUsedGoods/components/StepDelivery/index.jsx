@@ -46,9 +46,11 @@ class StepDelivery extends React.Component {
   componentDidMount() {
     this.props.dispatchTouchPath();
     window.addEventListener('storage', this.handleSevenEleven, false);
+    localStorage.clear();
   }
   componentWillUnmount() {
     window.removeEventListener('storage', this.handleSevenEleven, false);
+    localStorage.clear();
   }
 
   onNextStepClick() {
@@ -106,6 +108,13 @@ class StepDelivery extends React.Component {
     form.submit();
   };
 
+  // { sendBy711 &&
+  //   <FormButton
+  //     colorType={'greenBorder'}
+  //     content={'未取件設定'}
+  //     onClick={() => { this.createSevenFormPost(); }}
+  //   />
+  // }
 
   render() {
     const { publish, dispatchChangeData, isValid } = this.props;
@@ -163,13 +172,6 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
-          { sendBy711 &&
-            <FormButton
-              colorType={'greenBorder'}
-              content={'未取件設定'}
-              onClick={() => { this.createSevenFormPost(); }}
-            />
-          }
         </FormGroup>
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}
         <ButtonNextStep
