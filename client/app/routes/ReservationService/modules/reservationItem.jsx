@@ -47,13 +47,10 @@ export const fetchItem = pid =>
       dispatch(setItem(data));
 
       const { uid } = data;
-      asyncXhrPost('/ajax/user_info.json', { uid })
-      .then((userData) => {
+      asyncXhrPost('/ajax/user_info.json', { uid }).then((userData) => {
         dispatch(updateOwner(userData.user_profile));
-      })
-      .catch(error => console.log(error));
-    })
-    .catch(error => console.log(error));
+      }).catch(error => console.log(error));
+    }).catch(error => console.log(error));
   };
 
 

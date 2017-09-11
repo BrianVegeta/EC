@@ -9,8 +9,8 @@ export function getMoment(number) {
   return moment(number);
 }
 
-export function formatDate(number) {
-  return moment(number).format(DATE_FORMAT);
+export function formatDate(number, format = DATE_FORMAT) {
+  return moment(number).format(format);
 }
 
 export function formatDateForOrder(number) {

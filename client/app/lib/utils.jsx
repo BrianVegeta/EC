@@ -79,6 +79,32 @@ export const asyncContainBlobTobase64 = (blob, isContain = true, width = 650, he
     img.src = blob;
   });
 
+export const asyncBlobTobase64 = (blob, maxSize = 1280) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    img.onload = () => {
+      const maxEdge = Math.max(img.width, img.height);
+      let width = 0;
+      let height = 0;
+      if (maxEdge === img.width) {
+        width = Math.min(maxEdge, maxSize);
+        height = (width / img.width) * img.height;
+      } else {
+        height = Math.min(maxEdge, maxSize);
+        width = (height / img.height) * img.width;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
+      resolve(canvas.toDataURL());
+    };
+    img.onerror = e => reject(e);
+    img.src = blob;
+  });
+
 
 /**
  *

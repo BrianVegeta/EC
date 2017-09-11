@@ -99,7 +99,7 @@ class Ajax::Api::SyncController < ApplicationController
     # target_uid : String => 對方UID
     # size: Int
     # index: Int
-    params.permit(:my_uid, :target_uid).merge(paging_params)
+    params.permit(:target_uid).merge(paging_params).merge(my_uid: current_uid_params['uid'])
   end
 
 end

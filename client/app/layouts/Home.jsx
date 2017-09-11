@@ -25,9 +25,7 @@ export default class extends React.Component {
     return (
       <div className="container-gray-bg" style={{ paddingTop: 140 }}>
         <HeaderContainer searchable hasShortcut fixed {...this.props} />
-        <MainWrapper
-          minHeight={environment.height}
-        >
+        <MainWrapper minHeight={environment.height}>
           {main || children}
         </MainWrapper>
         <Footer />

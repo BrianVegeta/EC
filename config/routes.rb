@@ -58,7 +58,6 @@ Rails.application.routes.draw do
       post 'item/space_add', to: 'item#space_add'
       post 'item/space_update', to: 'item#space_update'
       post 'item/get_item', to: 'item#get_item' #
-      post 'item/get_item_by_user', to: 'item#get_item_by_user' #
       post 'item/get_item_by_name', to: 'item#get_item_by_name' #
       post 'item/remove_items', to: 'item#remove_items' #
       post 'item/relative_item', to: 'item#relative_item' #
@@ -72,9 +71,6 @@ Rails.application.routes.draw do
       # post 'sync/notification_unread', to: 'sync#notification_unread' #
       # post 'sync/notification_unread_count', to: 'sync#notification_unread_count' #
       # post 'sync/notification_read', to: 'sync#notification_read' #
-      post 'sync/chat_rooms', to: 'sync#chat_rooms' #
-      post 'sync/chat_logs', to: 'sync#chat_logs' #
-
 
       #USERPROFILE
       post 'userprofile/search', to: 'userprofile#search' #
@@ -91,7 +87,10 @@ Rails.application.routes.draw do
     end
 
     scope module: :api do
-
+      # =========== CHAT ROOM 聊天室 =================
+      post 'sync_chat_rooms', to: 'sync#chat_rooms'
+      post 'chat/logs', to: 'sync#chat_logs'
+      post 'chat/get_openfire_login_token', to: 'internal#get_openfire_login_token'
       #PROFILE
       post 'get_track_count', to: 'userprofile#track_count' #
       post 'get_comments_count', to: 'userprofile#comments_count' #
@@ -168,6 +167,7 @@ Rails.application.routes.draw do
       post 'remove_fav', to: 'favorite#remove' #
 
       # ITEM
+      post 'get_user_items', to: 'item#get_item_by_user' #
       post 'delete_item', to: 'item#remove_items' #
       post 'item_detail', to: 'item#view_item' #
       post 'create_goods_item', to: 'item#item_add'
@@ -284,6 +284,7 @@ Rails.application.routes.draw do
         put 'sue_picture/:cid_no', action: :sue_picture
         put 'avatar/:uid', action: :avatar
         put 'wish/:uid', action: :wish
+        put 'chat_photo/:uid', action: :chat_photo
       end
     end
 
