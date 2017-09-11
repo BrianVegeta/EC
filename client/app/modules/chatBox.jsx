@@ -17,13 +17,15 @@ const DUPLICATE_KEY = 'id';
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 export const CHANGE_INPUT = prefix('CHANGE_INPUT');
+export const SET_ITEMS = prefix('SET_ITEMS');
 export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
 export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
-export const SET_CURRENT_USER = prefix('SET_CURRENT_USER');
+export const SET_CURRENT_ROOM = prefix('SET_CURRENT_ROOM');
 export const ADD_MESSAGE_TO_LOGS = prefix('ADD_MESSAGE_TO_LOGS');
 export const UPDATE_MESSAGE_STATES = prefix('UPDATE_MESSAGE_STATES');
+export const UPDATE_MESSAGES_READ = prefix('UPDATE_MESSAGES_READ');
 export const RESET = prefix('RESET');
 
 
@@ -33,6 +35,11 @@ export const RESET = prefix('RESET');
 export const changeInput = input => ({
   type: CHANGE_INPUT,
   input,
+});
+
+export const setItems = records => ({
+  type: SET_ITEMS,
+  records,
 });
 
 const fetching = expireFlag => ({
@@ -108,9 +115,9 @@ export function fetchLogs(targetUid, recursiveRecords = []) {
   };
 }
 
-const setCurrentUser = ({ uid }) => ({
-  type: SET_CURRENT_USER,
-  uid,
+const setCurrentRoom = roomWithUser => ({
+  type: SET_CURRENT_ROOM,
+  roomWithUser,
 });
 
 export const addMessageToLogs = messageJson => ({
@@ -124,11 +131,18 @@ export const updateMessageStates = (standardId, states) => ({
   states,
 });
 
-export const changeChatTarget = ({ uid }) =>
+export const changeChatTarget = (room, user) =>
   (dispatch) => {
     dispatch(reset());
-    dispatch(setCurrentUser({ uid }));
-    dispatch(fetchLogs(uid));
+    dispatch(setCurrentRoom(Object.assign({}, room, user)));
+    dispatch(fetchLogs(user.uid));
+  };
+
+export const updateMessagesRead = uid =>
+  (dispatch, getState) => {
+    const { currentRoom: { uid: currentUid } } = getState()[REDUCER_KEY];
+    if (currentUid !== uid) return;
+    dispatch({ type: UPDATE_MESSAGES_READ });
   };
 
 
@@ -136,8 +150,11 @@ export const changeChatTarget = ({ uid }) =>
 // = reducer =
 // =============================================
 const initialState = {
-  currentUser: null,
+  currentRoom: null,
   input: '',
+  items: {
+    records: [],
+  },
 
   expireFlag: null,
   isPaginable: true,
@@ -178,10 +195,16 @@ export default (state = initialState, action) => {
         recursiveTimes: 0,
       });
 
-    case SET_CURRENT_USER:
+    case SET_CURRENT_ROOM:
       return Object.assign({}, state, {
-        currentUser: { uid: action.uid },
+        currentRoom: action.roomWithUser,
       });
+
+    case SET_ITEMS:
+      return fromJS(state).updateIn(
+        ['items', 'records'],
+        () => action.records,
+      ).toJS();
 
     case ADD_MESSAGE_TO_LOGS:
       return fromJS(state).updateIn(
@@ -195,6 +218,14 @@ export default (state = initialState, action) => {
         logs => logs.update(
           logs.findIndex(log => (log.get('standardId') === action.standardId)),
           log => log.merge(action.states),
+        ),
+      ).toJS();
+
+    case UPDATE_MESSAGES_READ:
+      return fromJS(state).updateIn(
+        ['logs'],
+        logs => logs.map(
+          log => log.merge({ is_read: true, is_receive: true }),
         ),
       ).toJS();
 

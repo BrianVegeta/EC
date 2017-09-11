@@ -58,7 +58,6 @@ Rails.application.routes.draw do
       post 'item/space_add', to: 'item#space_add'
       post 'item/space_update', to: 'item#space_update'
       post 'item/get_item', to: 'item#get_item' #
-      post 'item/get_item_by_user', to: 'item#get_item_by_user' #
       post 'item/get_item_by_name', to: 'item#get_item_by_name' #
       post 'item/remove_items', to: 'item#remove_items' #
       post 'item/relative_item', to: 'item#relative_item' #
@@ -164,6 +163,7 @@ Rails.application.routes.draw do
       post 'remove_fav', to: 'favorite#remove' #
 
       # ITEM
+      post 'get_user_items', to: 'item#get_item_by_user' #
       post 'delete_item', to: 'item#remove_items' #
       post 'item_detail', to: 'item#view_item' #
       post 'create_goods_item', to: 'item#item_add'
@@ -280,6 +280,7 @@ Rails.application.routes.draw do
         put 'sue_picture/:cid_no', action: :sue_picture
         put 'avatar/:uid', action: :avatar
         put 'wish/:uid', action: :wish
+        put 'chat_photo/:uid', action: :chat_photo
       end
     end
 

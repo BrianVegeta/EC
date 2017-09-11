@@ -21,6 +21,11 @@ class ChatRoom extends React.Component {
     dispatchChangeChatTarget: PropTypes.func.isRequired,
     dispatchChangeInput: PropTypes.func.isRequired,
     dispatchSendMessage: PropTypes.func.isRequired,
+    dispatchUploadPhoto: PropTypes.func.isRequired,
+    dispatchSelectItem: PropTypes.func.isRequired,
+    dispatchFetchMyItems: PropTypes.func.isRequired,
+    dispatchFetchTargetItems: PropTypes.func.isRequired,
+    dispatchSendXmppRead: PropTypes.func.isRequired,
     chat: PropTypes.object.isRequired,
     chatBox: PropTypes.shape({
       currentUser: PropTypes.object,
@@ -45,12 +50,22 @@ class ChatRoom extends React.Component {
     };
     this.onRoomToggle = this.onRoomToggle.bind(this);
     this.onMessageSend = this.onMessageSend.bind(this);
+    this.onPhotoSend = this.onPhotoSend.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
   }
 
   componentDidMount() {
     console.log('mount');
     this.props.dispatchFetchChatRoom();
     this.props.dispatchConnect();
+  }
+
+  componentDidUpdate({ chatBox }) {
+    if (chatBox.logs.length !== this.props.chatBox.logs.length) {
+      if (this.messageBox) {
+        this.messageBox.scrollBottom();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -64,6 +79,16 @@ class ChatRoom extends React.Component {
 
   onMessageSend() {
     this.props.dispatchSendMessage();
+    this.messageBox.scrollBottom();
+  }
+
+  onPhotoSend(blob) {
+    this.props.dispatchUploadPhoto(blob);
+    this.messageBox.scrollBottom();
+  }
+
+  onItemSelect({ pid, pname, price, img }) {
+    this.props.dispatchSelectItem({ pid, pname, price, img });
     this.messageBox.scrollBottom();
   }
 
@@ -88,8 +113,11 @@ class ChatRoom extends React.Component {
       dispatchFetchChatRoom,
       dispatchChangeChatTarget,
       dispatchChangeInput,
+      dispatchFetchMyItems,
+      dispatchFetchTargetItems,
+      dispatchSendXmppRead,
       chatRooms,
-      chatBox: { currentUser: targetUser, logs, input },
+      chatBox: { currentRoom: targetRoom, logs, input, items },
       currentUser,
     } = this.props;
 
@@ -123,7 +151,7 @@ class ChatRoom extends React.Component {
             <SearchInput />
           </div>
           <div className={cx('header', 'right')}>
-            123456789012345678901234567890
+            {targetRoom.name}
             <IconDetail size={20} color="#999" styleName="detail" />
           </div>
         </div>
@@ -132,7 +160,7 @@ class ChatRoom extends React.Component {
             <UserList
               chatRooms={chatRooms}
               fetchRooms={dispatchFetchChatRoom}
-              currentUser={targetUser}
+              currentUser={targetRoom}
               onUserSelect={dispatchChangeChatTarget}
             />
           </div>
@@ -142,13 +170,21 @@ class ChatRoom extends React.Component {
                 ref={messageBox => (this.messageBox = messageBox)}
                 logs={logs}
                 currentUser={currentUser}
+                targetRoom={targetRoom}
+                sendRead={dispatchSendXmppRead}
               />
             </div>
             <div styleName="input-box">
               <InputBox
                 input={input}
                 changeInput={dispatchChangeInput}
+                uploadPhoto={this.onPhotoSend}
                 sendMessage={this.onMessageSend}
+                selectItem={this.onItemSelect}
+                items={items}
+                targetRoom={targetRoom}
+                fetchMyItems={dispatchFetchMyItems}
+                fetchTargetItems={dispatchFetchTargetItems}
               />
             </div>
           </div>
@@ -159,6 +195,8 @@ class ChatRoom extends React.Component {
 
   render() {
     const { isOpen } = this.state;
+    const { chat: { isConnected } } = this.props;
+    if (!isConnected) return null;
     return (
       <div styleName="container">
         {isOpen ? this.renderChatRomm() : this.renderTalkButton()}

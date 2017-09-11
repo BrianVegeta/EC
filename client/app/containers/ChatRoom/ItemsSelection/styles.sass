@@ -1,0 +1,76 @@
+@import "~styles/color.sass"
+
+.wrapper
+  height: 341px
+  width: 405px
+  position: absolute
+  left: 0
+  bottom: 100%
+  background: white
+  box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.3)
+  .container
+    .header
+      border-bottom: 1px solid $global-lineColor
+      height: 41px
+      .nav
+        display: inline-block
+        font-size: 13px
+        font-weight: 400
+        line-height: 16px
+        padding: 12px 24px
+        cursor: pointer
+        outline: 0
+        &.active
+          color: $global-primaryColor
+          padding-bottom: 9px
+          border-bottom: 3px solid $global-primaryColor
+          font-weight: 600
+    .body
+      height: 300px
+      overflow-y: auto
+  .arrow
+    width: 50px
+    height: 15px
+    position: absolute
+    top: 100%
+    left: 62px
+    overflow: hidden
+    &::after
+     content: ""
+     position: absolute
+     width: 15px
+     height: 15px
+     background: white
+     transform: translateX(-50%) translateY(-50%) rotate(45deg)
+     top: 0
+     left: 50%
+     box-shadow: 1px 1px 20px 0px rgba(0,0,0,0.6)
+
+.item-container
+  position: relative
+  padding-top: 9px
+  padding-left: 13px
+  outline: 0
+  cursor: pointer
+  &:hover
+    background-color: #EDF5F6
+  .cover
+    margin-top: 4px
+    display: inline-block
+    float: left
+    .cover-inner
+      width: 48px
+      height: 48px
+      display: inline-block
+  .content
+    margin-left: 60px
+    padding-bottom: 9px
+    padding-right: 13px
+    border-bottom: 1px solid $global-lineColor
+    .title, .price, .time
+      font-size: 13px
+      line-height: 20px
+    .price
+      color: $global-middleBlack
+    .time
+      color: $global-placeholder

@@ -1,6 +1,9 @@
+import { fromJS } from 'immutable';
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
+import { now } from 'lib/time';
 import {
+  REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
   changeChatTarget,
 } from 'modules/chatBox';
 
@@ -23,6 +26,8 @@ export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
 export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
 export const RESET = prefix('RESET');
+const EMPTY_UNREAD_COUNT = prefix('EMPTY_UNREAD_COUNT');
+const UPDATE_LAST_MESSAGE = prefix('UPDATE_LAST_MESSAGE');
 
 
 // =============================================
@@ -45,8 +50,9 @@ function checkExpire(rooms, expireFlag) {
       return;
     }
     if (rooms.length > 0) {
-      const [{ members: [{ uid }] }] = rooms;
-      dispatch(changeChatTarget({ uid }));
+      const [room] = rooms;
+      const { members: [user] } = room;
+      dispatch(changeChatTarget(room, user));
     }
     dispatch(fetched(rooms));
   };
@@ -105,6 +111,24 @@ export function fetchRooms(recursiveRecords = []) {
   };
 }
 
+export const emptyUnreadCount = roomId => ({
+  type: EMPTY_UNREAD_COUNT,
+  roomId,
+});
+
+export const updateLastMessage = (message, roomId) =>
+  (dispatch, getState) => {
+    const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
+    const unreadCount = (currentRoom.room_id === roomId) ? 0 : 1;
+    console.log(unreadCount);
+    dispatch({
+      type: UPDATE_LAST_MESSAGE,
+      message,
+      roomId,
+      unreadCount,
+    });
+  };
+
 
 // =============================================
 // = reducer =
@@ -147,6 +171,28 @@ export default (state = initialState, action) => {
 
     case RESET:
       return initialState;
+
+    case EMPTY_UNREAD_COUNT:
+      return fromJS(state).updateIn(
+        ['rooms'],
+        rooms => rooms.update(
+          rooms.findIndex(room => (room.get('room_id') === action.roomId)),
+          room => room.merge({ unread_message_count: 0 }),
+        ),
+      ).toJS();
+
+    case UPDATE_LAST_MESSAGE:
+      return fromJS(state).updateIn(
+        ['rooms'],
+        rooms => rooms.update(
+          rooms.findIndex(room => (room.get('room_id') === action.roomId)),
+          room => room.merge({
+            last_message: action.message,
+            unread_message_count: (room.get('unread_message_count') + action.unreadCount),
+            last_message_create_time: now(),
+          }),
+        ),
+      ).toJS();
 
     default:
       return state;

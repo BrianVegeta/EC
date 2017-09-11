@@ -24,7 +24,7 @@ class MessageBox extends React.Component {
   static propTypes = {
     logs: PropTypes.arrayOf(
       PropTypes.shape({
-        user_img: PropTypes.string.isRequired,
+        user_img: PropTypes.string,
         user_name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         create_time: PropTypes.number.isRequired,
@@ -32,6 +32,12 @@ class MessageBox extends React.Component {
     ).isRequired,
     currentUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
+    }).isRequired,
+    sendRead: PropTypes.func.isRequired,
+    targetRoom: PropTypes.shape({
+      uid: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
     }).isRequired,
   };
 
@@ -72,7 +78,7 @@ class MessageBox extends React.Component {
       case TYPE_SELECT_ITEM: {
         const { arg1: pname, arg2: pid, arg3: price } = others;
         return (
-          <Link to={itemPath(pname, pid)} >
+          <Link to={itemPath(pname || '', pid)} >
             <div styleName="item">
               <div styleName="cover"><Picture src={img} /></div>
               <div styleName="content">
@@ -98,6 +104,7 @@ class MessageBox extends React.Component {
 
   componentDidMount() {
     this.container.scrollTop = this.container.scrollHeight;
+    this.props.sendRead();
   }
 
   shouldComponentUpdate({ logs, currentUser }) {
@@ -113,6 +120,7 @@ class MessageBox extends React.Component {
   componentDidUpdate({ logs }) {
     if (logs.length === 0 && this.props.logs.length > 0) {
       this.container.scrollTop = this.container.scrollHeight;
+      this.props.sendRead();
     }
   }
 
@@ -134,9 +142,10 @@ class MessageBox extends React.Component {
   }
 
   rTargetMessage({ user_img, ...others }) {
+    const { targetRoom: { picture } } = this.props;
     return (
       <div styleName="message-item-inner">
-        <div styleName="avatar"><Avatar src={user_img} /></div>
+        <div styleName="avatar"><Avatar src={picture} /></div>
         {this.rMsgContainer(others)}
       </div>
     );

@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
 import Infinite from 'react-infinite';
 import Avatar from 'components/Avatar';
+import { formatDate } from 'lib/time';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -24,6 +26,15 @@ class UserList extends React.Component {
     }).isRequired,
   };
 
+  static renderUnreadCount(count) {
+    if (count <= 0) return null;
+    return <div styleName="unread">{count > 99 ? `${99}+` : count}</div>;
+  }
+
+  static renderLastCreateTime(time) {
+    return formatDate(time);
+  }
+
   constructor(props) {
     super(props);
     this.renderUser = this.renderUser.bind(this);
@@ -39,10 +50,18 @@ class UserList extends React.Component {
     return true;
   }
 
-  renderUser({ members: [{ uid, name, picture }] }, i) {
+  renderUser(room, i) {
+    const {
+      last_message,
+      unread_message_count,
+      last_message_create_time,
+      members: [user],
+    } = room;
+    const { uid, name, picture } = user;
     const {
       onUserSelect, currentUser: { uid: currentUserId },
     } = this.props;
+    const { renderUnreadCount, renderLastCreateTime } = this.constructor;
     return (
       <div
         key={`${i + 1}`}
@@ -50,7 +69,7 @@ class UserList extends React.Component {
         className={cx('user-container', { selecting: uid === currentUserId })}
         role="button"
         tabIndex="-1"
-        onClick={() => onUserSelect({ uid })}
+        onClick={() => onUserSelect(room, user)}
       >
         <div styleName="avatar">
           <Avatar src={picture} />
@@ -58,11 +77,13 @@ class UserList extends React.Component {
         <div styleName="content">
           <div styleName="header">
             <div styleName="name">{name}</div>
-            <span styleName="time">下午05:25</span>
+            <span styleName="time">
+              {renderLastCreateTime(last_message_create_time)}
+            </span>
           </div>
           <div styleName="footer">
-            <div styleName="message">message</div>
-            <div styleName="unread">99+</div>
+            <div styleName="message">{last_message}</div>
+            {renderUnreadCount(unread_message_count)}
           </div>
         </div>
       </div>

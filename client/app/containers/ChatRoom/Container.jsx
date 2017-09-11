@@ -2,6 +2,11 @@ import { connect } from 'react-redux';
 import {
   connect as chatConnect,
   sendMessage,
+  uploadPhoto,
+  selectItem,
+  fetchMyItems,
+  fetchTargetItems,
+  sendXmppRead,
 } from 'modules/chat';
 import {
   fetchRooms,
@@ -31,9 +36,16 @@ const mapDispatchToProps = (dispatch) => {
     dispatchFetchChatRoom: () => dispatch(fetchRooms()),
     dispatchConnect: () => dispatch(chatConnect()),
     dispatchFetchLogs: targetUid => dispatch(fetchLogs(targetUid)),
-    dispatchChangeChatTarget: ({ uid }) => dispatch(changeChatTarget({ uid })),
+    dispatchChangeChatTarget: (room, user) =>
+      dispatch(changeChatTarget(room, user)),
     dispatchChangeInput: input => dispatch(changeInput(input)),
     dispatchSendMessage: () => dispatch(sendMessage()),
+    dispatchUploadPhoto: blob => dispatch(uploadPhoto(blob)),
+    dispatchSelectItem: ({ pid, pname, price, img }) =>
+      dispatch(selectItem({ pid, pname, price, img })),
+    dispatchFetchMyItems: () => dispatch(fetchMyItems()),
+    dispatchFetchTargetItems: () => dispatch(fetchTargetItems()),
+    dispatchSendXmppRead: () => dispatch(sendXmppRead()),
   });
 };
 
