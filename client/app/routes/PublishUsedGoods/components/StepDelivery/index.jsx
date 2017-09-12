@@ -45,12 +45,12 @@ class StepDelivery extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
-    window.addEventListener('storage', this.handleSevenEleven, false);
-    localStorage.clear();
+    window.addEventListener('focus', this.handleSevenEleven, false);
+    // localStorage.clear();
   }
   componentWillUnmount() {
-    window.removeEventListener('storage', this.handleSevenEleven, false);
-    localStorage.clear();
+    window.removeEventListener('focus', this.handleSevenEleven, false);
+    // localStorage.clear();
   }
 
   onNextStepClick() {
@@ -75,7 +75,7 @@ class StepDelivery extends React.Component {
   }
 
   handleSevenEleven(e) {
-    console.log('handleSevenEleven called!!!');
+    console.log(document.cookie);
   }
 
 
@@ -98,7 +98,7 @@ class StepDelivery extends React.Component {
     form.appendChild(createInput('eshopparid', '935'));
     form.appendChild(createInput('eshopid', '001'));
     form.appendChild(createInput('eshoppwd', 'presco123'));
-    form.appendChild(createInput('url', 'http://debug.shareapp.com.tw:10380/p/store_result.json'));
+    form.appendChild(createInput('url', 'http://debug.shareapp.com.tw:10380/ajax/store_result.json'));
     form.appendChild(createInput('tempvar', ''));
     form.appendChild(createInput('sid', '1'));
     form.appendChild(createInput('storecategory', '3'));
@@ -108,13 +108,9 @@ class StepDelivery extends React.Component {
     form.submit();
   };
 
-  // { sendBy711 &&
-  //   <FormButton
-  //     colorType={'greenBorder'}
-  //     content={'未取件設定'}
-  //     onClick={() => { this.createSevenFormPost(); }}
-  //   />
-  // }
+  focus() {
+    console.log('onFocus called!!!');
+  }
 
   render() {
     const { publish, dispatchChangeData, isValid } = this.props;
@@ -172,6 +168,13 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
+          { sendBy711 &&
+            <FormButton
+              colorType={'greenBorder'}
+              content={'未取件設定'}
+              onClick={() => { this.createSevenFormPost(); }}
+            />
+          }
         </FormGroup>
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}
         <ButtonNextStep

@@ -14,7 +14,7 @@ class Category extends React.Component {
     const { category } = this.props;
     const { img, name, id } = category;
     return (
-      <Link to={`/p/i/${name}-c.${id}`}>
+      <Link to={`/p/i/lease/${name}-c.${id}`}>
         <div styleName="container">
           <div styleName="cover" >
             <Picture src={img} />
