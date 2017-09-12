@@ -7,6 +7,7 @@ import {
   fetchMyItems,
   fetchTargetItems,
   sendXmppRead,
+  openChat,
 } from 'modules/chat';
 import {
   fetchRooms,
@@ -48,6 +49,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatchFetchMyItems: () => dispatch(fetchMyItems()),
     dispatchFetchTargetItems: () => dispatch(fetchTargetItems()),
     dispatchSendXmppRead: () => dispatch(sendXmppRead()),
+    dispatchOpenChat: open => dispatch(openChat(open)),
   });
 };
 

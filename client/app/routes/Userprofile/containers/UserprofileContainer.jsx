@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { addToChatRoom } from 'modules/chatRooms';
 import Userprofile from '../components/Userprofile';
 import { fetchUser, addToTrack, removeFromTrack } from '../modules/userprofile';
 
@@ -16,6 +16,8 @@ const mapDispatchToProps = (dispatch, { params }) => ({
   dispatchFetchUser: () => dispatch(fetchUser(params.uid)),
   dispatchAddTrack: () => dispatch(addToTrack(params.uid)),
   dispatchRemoveTrack: () => dispatch(removeFromTrack(params.uid)),
+  dispatchAddToChatRoom: ({ uid, name, picture }) =>
+    dispatch(addToChatRoom({ uid, name, picture })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Userprofile);

@@ -79,11 +79,17 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 const INIT_CONNECTION = prefix('INIT_CONNECTION');
 const SET_CONNECTED = prefix('SET_CONNECTED');
 const SET_CLIENT_FULL_JID = prefix('SET_CLIENT_FULL_JID');
+const OPEN_CHAT = prefix('OPEN_CHAT');
 const RESET = prefix('RESET');
 
 // =============================================
 // = actions =
 // =============================================
+
+export const openChat = open => ({
+  type: OPEN_CHAT,
+  open,
+});
 
 // REQUEST TOKEN
 const getOpenfireLoginToken = () =>
@@ -111,7 +117,7 @@ export const sendXmppRead = () =>
     .c('room_id', null, room_id)
     .c('read_ids');
     connection.send(msg.tree());
-    dispatch(emptyUnreadCount(room_id));
+    dispatch(emptyUnreadCount(targetUid));
   };
 
 // SEND XMPP RECEIVED (INCLUDES READ)
@@ -206,7 +212,7 @@ const handleMessage = msg =>
       const { rooms } = getState()[CHAT_ROOMS_REDUCER_KEY];
       console.log(rooms, message);
       if (find(rooms, { room_id: sharemsg.room_id })) {
-        dispatch(updateLastMessage(message, sharemsg.room_id));
+        dispatch(updateLastMessage(message, sharemsg.room_id, sharemsg.uid));
       } else {
         console.log('fetch rooms');
         dispatch(resetRooms());
@@ -428,10 +434,14 @@ const initialState = {
   isConnected: false,
   connection: null,
   clientFullJid: null,
+  isOpen: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+
+    case OPEN_CHAT:
+      return Object.assign({}, state, { isOpen: action.open });
 
     case INIT_CONNECTION:
       return Object.assign({}, state, { connection: action.connection });

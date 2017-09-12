@@ -1,22 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { sumBy } from 'lodash';
-import IconMinus from 'react-icons/lib/ti/minus';
-import IconDetail from 'react-icons/lib/md/description';
-import classnames from 'classnames/bind';
+// import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import UserList from './UserList';
-import MessageBox from './MessageBox';
-import InputBox from './InputBox';
-import SearchInput from './SearchInput';
 import ChatBox from './ChatBox';
 
 
-const cx = classnames.bind(styles);
+// const cx = classnames.bind(styles);
 class ChatRoom extends React.Component {
 
   static propTypes = {
+    dispatchOpenChat: PropTypes.func.isRequired,
     dispatchResetBox: PropTypes.func.isRequired,
     dispatchFetchChatRoom: PropTypes.func.isRequired,
     dispatchConnect: PropTypes.func.isRequired,
@@ -44,17 +39,6 @@ class ChatRoom extends React.Component {
     }).isRequired,
   };
 
-  static renderMinus() {
-    return <IconMinus size={20} className={cx('minus')} />;
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false,
-    };
-  }
-
   componentDidMount() {
     console.log('mount');
     this.props.dispatchFetchChatRoom();
@@ -66,14 +50,17 @@ class ChatRoom extends React.Component {
   }
 
   renderTalkButton() {
-    const { chatRooms: { rooms } } = this.props;
+    const {
+      dispatchOpenChat,
+      chatRooms: { rooms },
+    } = this.props;
     const sumUnreadCount = sumBy(rooms, room => room.unread_message_count);
     return (
       <div
         styleName="talk-button"
         role="button"
         tabIndex="-1"
-        onClick={() => this.setState({ isOpen: true })}
+        onClick={() => dispatchOpenChat(true)}
       >
         聊天室
         {sumUnreadCount > 0 &&
@@ -87,6 +74,7 @@ class ChatRoom extends React.Component {
 
   renderChatRomm() {
     const {
+      dispatchOpenChat,
       dispatchResetBox,
       dispatchSendMessage,
       dispatchUploadPhoto,
@@ -116,14 +104,13 @@ class ChatRoom extends React.Component {
         chatBox={chatBox}
         chatRooms={chatRooms}
         currentUser={currentUser}
-        closeBox={() => this.setState({ isOpen: false })}
+        closeBox={() => dispatchOpenChat(false)}
       />
     );
   }
 
   render() {
-    const { isOpen } = this.state;
-    const { chat: { isConnected } } = this.props;
+    const { chat: { isConnected, isOpen } } = this.props;
     if (!isConnected) return null;
     return (
       <div styleName="container">
