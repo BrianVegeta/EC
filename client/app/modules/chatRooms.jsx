@@ -142,6 +142,7 @@ export const addToChatRoom = ({ uid, name, picture }) =>
     const index = findIndex(rooms, room =>
       room.members[0].uid.toLowerCase() === uid.toLowerCase(),
     );
+    console.log(index);
     if (index >= 0) {
       dispatch({
         type: MOVE_TO_TOP,

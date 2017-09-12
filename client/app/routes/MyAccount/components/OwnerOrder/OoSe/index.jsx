@@ -7,7 +7,7 @@ import { my } from 'lib/paths';
 // import CSS from 'react-css-modules';
 
 import ListContainer from 'components/ListContainer';
-import OrderServiceBoard from 'components/OrderServiceBoard';
+import OrderServiceBoard from 'components/OrderItemBoard';
 
 import OrderNav, { SERVICE } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
@@ -101,6 +101,7 @@ class OrderList extends React.Component {
               type="SERVICE"
               photoHead={record.lessee_img}
               photoName={record.lessee_nick_name}
+              photoUid={record.lesseeuid}
               stage={record.contractstage}
               cid={record.cid}
               pid={record.pid}

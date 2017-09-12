@@ -101,6 +101,7 @@ class OrderList extends React.Component {
               type="ITEM"
               photoHead={record.lessee_img}
               photoName={record.lessee_nick_name}
+              photoUid={record.lesseeuid}
               stage={record.contractstage}
               cid={record.cid}
               pid={record.pid}

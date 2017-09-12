@@ -15,6 +15,7 @@ import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
+import { addToChatRoom } from 'modules/chatRooms';
 
 import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment }
   from 'modules/orderAction';
@@ -36,6 +37,7 @@ class OrderItemBoard extends React.Component {
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
+    photoUid: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
@@ -275,8 +277,9 @@ class OrderItemBoard extends React.Component {
   }
 
   render() {
-    const { photoHead, photoName, cidNo, unit,
-      itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
+    const { photoHead, photoName, photoUid, cidNo, unit,
+      itemName, itemImgUrl, startDate, endDate, totalPrice,
+      display, isRead, dispatch } = this.props;
     const objectString = this.generateString();
     return (
       <div
@@ -300,7 +303,13 @@ class OrderItemBoard extends React.Component {
                 padding: '7px 15px',
               }}
               content={'私訊'}
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(addToChatRoom({
+                  uid: photoUid,
+                  name: photoName,
+                  picture: photoHead,
+                }));
+              }}
             />
           </div>
           <div styleName="oib-mini-note-section">{objectString.title}</div>

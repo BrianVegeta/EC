@@ -58,6 +58,7 @@ class Orderdetail extends React.Component {
       create_time: PropTypes.number,
     })),
     dispatch: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     dispatchBankSetup: PropTypes.func.isRequired,
     dispatchPopupScore: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
@@ -113,6 +114,7 @@ class Orderdetail extends React.Component {
 
     let targetName = display.is_owner ? order.lessee_nick_name : order.owner_nick_name;
     if (!targetName) { targetName = '尚未設定'; }
+    const targetUid = display.is_owner ? order.lesseeuid : order.owneruid;
     let targetRealName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
     if (!targetRealName) { targetRealName = '尚未設定'; }
     let targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
@@ -124,6 +126,7 @@ class Orderdetail extends React.Component {
 
     return ({
       targetName,
+      targetUid,
       targetRealName,
       targetPhone,
       targetUrl,
@@ -515,7 +518,7 @@ class Orderdetail extends React.Component {
     );
   }
   render() {
-    const { orderdetail, dispatch } = this.props;
+    const { orderdetail, dispatch, dispatchAddToChatRoom } = this.props;
     const { order } = orderdetail;
     if (order == null) {
       return null;
@@ -537,7 +540,10 @@ class Orderdetail extends React.Component {
             <div styleName="top_40px_style">
               <UserInfoBoard
                 cid={order.cid}
+                name={target.targetName}
+                uid={target.targetUid}
                 contractstage={order.contractstage}
+                dispatchAddToChatRoom={dispatchAddToChatRoom}
                 dispatch={dispatch}
                 realname={target.targetRealName}
                 imgUrl={target.targetUrl}

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { addToChatRoom } from 'modules/chatRooms';
 import { popupScoreRating, popupAccessCheck,
   popupBankInfoSetup, popupATMBank } from 'modules/popup';
 import { doAccept, doCancel, doReject,
@@ -36,6 +36,8 @@ const mapDispatchToProps = (dispatch, { params }) => {
 
   return ({
     dispatch,
+    dispatchAddToChatRoom: ({ uid, name, picture }) =>
+      dispatch(addToChatRoom({ uid, name, picture })),
     dispatchBankSetup,
     dispatchPopupScore: (isView, targetName, targetScore, targetComment, targetUrl) =>
       dispatch(popupScoreRating({

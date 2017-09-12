@@ -14,7 +14,7 @@ import { generateOwnerUsedItemString, generateLesseeUsedItemString }
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
-
+import { addToChatRoom } from 'modules/chatRooms';
 import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment, doReceiveConfirm }
   from 'modules/orderAction';
 
@@ -35,6 +35,7 @@ class OrderItemBoard extends React.Component {
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
+    photoUid: PropTypes.string.isRequired,
     isOwner: PropTypes.bool,
     isRead: PropTypes.bool.isRequired,
     order: PropTypes.shape({
@@ -286,9 +287,9 @@ class OrderItemBoard extends React.Component {
   }
 
   render() {
-    const { photoHead, photoName, isRead, order: {
+    const { photoHead, photoName, photoUid, isRead, order: {
       cid_no, unit,
-      pname, img1, lesseepayfee } } = this.props;
+      pname, img1, lesseepayfee }, dispatch } = this.props;
     const objectString = this.generateString();
     return (
       <div
@@ -312,7 +313,11 @@ class OrderItemBoard extends React.Component {
                 padding: '7px 15px',
               }}
               content={'私訊'}
-              onClick={() => {}}
+              onClick={() => dispatch(addToChatRoom({
+                uid: photoUid,
+                name: photoName,
+                picture: photoHead,
+              }))}
             />
           </div>
           <div styleName="oib-mini-note-section">{objectString.title}</div>
