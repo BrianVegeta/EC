@@ -1,17 +1,23 @@
 import { fromJS } from 'immutable';
+import { findIndex } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 import { now } from 'lib/time';
 import {
   REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
-  changeChatTarget,
 } from 'modules/chatBox';
+import {
+  REDUCER_KEY as AUTH_REDUCER_KEY,
+} from 'modules/auth';
+import {
+  openChat,
+} from 'modules/chat';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'CHAT_ROOMS';
-const REDUCER_KEY = 'chatRooms';
+export const REDUCER_KEY = 'chatRooms';
 const SIZE = 20;
 const DUPLICATE_KEY = 'room_id';
 
@@ -28,6 +34,8 @@ export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
 export const RESET = prefix('RESET');
 const EMPTY_UNREAD_COUNT = prefix('EMPTY_UNREAD_COUNT');
 const UPDATE_LAST_MESSAGE = prefix('UPDATE_LAST_MESSAGE');
+const ADD_NEW_ROOM = prefix('ADD_NEW_ROOM');
+const MOVE_TO_TOP = prefix('MOVE_TO_TOP');
 
 
 // =============================================
@@ -49,11 +57,11 @@ function checkExpire(rooms, expireFlag) {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    if (rooms.length > 0) {
-      const [room] = rooms;
-      const { members: [user] } = room;
-      dispatch(changeChatTarget(room, user));
-    }
+    // if (rooms.length > 0) {
+    //   const [room] = rooms;
+    //   const { members: [user] } = room;
+    //   dispatch(changeChatTarget(room, user));
+    // }
     dispatch(fetched(rooms));
   };
 }
@@ -111,22 +119,52 @@ export function fetchRooms(recursiveRecords = []) {
   };
 }
 
-export const emptyUnreadCount = roomId => ({
+export const emptyUnreadCount = uid => ({
   type: EMPTY_UNREAD_COUNT,
-  roomId,
+  uid,
 });
 
-export const updateLastMessage = (message, roomId) =>
+export const updateLastMessage = (message, roomId, uid) =>
   (dispatch, getState) => {
     const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
-    const unreadCount = (currentRoom.room_id === roomId) ? 0 : 1;
-    console.log(unreadCount);
+    const unreadCount = (currentRoom && currentRoom.room_id === roomId) ? 0 : 1;
     dispatch({
       type: UPDATE_LAST_MESSAGE,
       message,
-      roomId,
+      uid,
       unreadCount,
     });
+  };
+
+export const addToChatRoom = ({ uid, name, picture }) =>
+  (dispatch, getState) => {
+    const { rooms } = getState()[REDUCER_KEY];
+    const index = findIndex(rooms, room =>
+      room.members[0].uid.toLowerCase() === uid.toLowerCase(),
+    );
+    if (index >= 0) {
+      dispatch({
+        type: MOVE_TO_TOP,
+        index,
+        room: rooms[index],
+      });
+    } else {
+      const room = {
+        last_message: '',
+        last_message_create_time: now(),
+        members: [{
+          uid, name, picture,
+        }],
+        room_id: null,
+        room_type: 'CHAT',
+        unread_message_count: 0,
+      };
+      dispatch({
+        type: ADD_NEW_ROOM,
+        room,
+      });
+    }
+    dispatch(openChat(true));
   };
 
 
@@ -175,23 +213,49 @@ export default (state = initialState, action) => {
     case EMPTY_UNREAD_COUNT:
       return fromJS(state).updateIn(
         ['rooms'],
-        rooms => rooms.update(
-          rooms.findIndex(room => (room.get('room_id') === action.roomId)),
-          room => room.merge({ unread_message_count: 0 }),
-        ),
+        (rooms) => {
+          const updateIndex = rooms.findIndex(room =>
+            room.get('members').get(0).get('uid') === action.uid,
+          );
+          if (updateIndex < 0) return rooms;
+          return rooms.update(
+            updateIndex,
+            room => room.merge({ unread_message_count: 0 }),
+          );
+        },
       ).toJS();
 
     case UPDATE_LAST_MESSAGE:
       return fromJS(state).updateIn(
         ['rooms'],
-        rooms => rooms.update(
-          rooms.findIndex(room => (room.get('room_id') === action.roomId)),
-          room => room.merge({
-            last_message: action.message,
-            unread_message_count: (room.get('unread_message_count') + action.unreadCount),
-            last_message_create_time: now(),
-          }),
-        ),
+        (rooms) => {
+          const updateIndex = rooms.findIndex(room =>
+            room.get('members').get(0).get('uid') === action.uid,
+          );
+          if (updateIndex < 0) return rooms;
+          return rooms.update(
+            updateIndex,
+            room => room.merge({
+              last_message: action.message,
+              unread_message_count: (
+                room.get('unread_message_count') + action.unreadCount
+              ),
+              last_message_create_time: now(),
+            }),
+          );
+        },
+      ).toJS();
+
+    case ADD_NEW_ROOM:
+      return fromJS(state).updateIn(
+        ['rooms'],
+        rooms => rooms.unshift(fromJS(action.room)),
+      ).toJS();
+
+    case MOVE_TO_TOP:
+      return fromJS(state).updateIn(
+        ['rooms'],
+        rooms => rooms.delete(action.index).unshift(action.room),
       ).toJS();
 
     default:

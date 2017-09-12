@@ -7,6 +7,7 @@ import {
   fetchMyItems,
   fetchTargetItems,
   sendXmppRead,
+  openChat,
 } from 'modules/chat';
 import {
   fetchRooms,
@@ -15,6 +16,7 @@ import {
   fetchLogs,
   changeChatTarget,
   changeInput,
+  reset as resetBox,
 } from 'modules/chatBox';
 import ChatRoom from './index';
 
@@ -33,6 +35,7 @@ const mapStateToProps = ({
 /* pick dispatch */
 const mapDispatchToProps = (dispatch) => {
   return ({
+    dispatchResetBox: () => dispatch(resetBox()),
     dispatchFetchChatRoom: () => dispatch(fetchRooms()),
     dispatchConnect: () => dispatch(chatConnect()),
     dispatchFetchLogs: targetUid => dispatch(fetchLogs(targetUid)),
@@ -46,6 +49,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatchFetchMyItems: () => dispatch(fetchMyItems()),
     dispatchFetchTargetItems: () => dispatch(fetchTargetItems()),
     dispatchSendXmppRead: () => dispatch(sendXmppRead()),
+    dispatchOpenChat: open => dispatch(openChat(open)),
   });
 };
 

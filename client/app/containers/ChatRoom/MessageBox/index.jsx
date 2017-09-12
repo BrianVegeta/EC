@@ -78,7 +78,7 @@ class MessageBox extends React.Component {
       case TYPE_SELECT_ITEM: {
         const { arg1: pname, arg2: pid, arg3: price } = others;
         return (
-          <Link to={itemPath(pname || '', pid)} >
+          <a href={itemPath(pname || '', pid)}>
             <div styleName="item">
               <div styleName="cover"><Picture src={img} /></div>
               <div styleName="content">
@@ -88,7 +88,7 @@ class MessageBox extends React.Component {
                 <div styleName="price">{formatCurrency(price)}</div>
               </div>
             </div>
-          </Link>
+          </a>
         );
       }
 

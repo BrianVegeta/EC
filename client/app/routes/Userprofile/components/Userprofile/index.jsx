@@ -38,6 +38,7 @@ class Userprofile extends React.Component {
     dispatchFetchUser: PropTypes.func.isRequired,
     dispatchAddTrack: PropTypes.func.isRequired,
     dispatchRemoveTrack: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     params: PropTypes.shape({
       uid: PropTypes.string,
     }).isRequired,
@@ -135,13 +136,16 @@ class Userprofile extends React.Component {
         </div>
       );
     }
-
+    const {
+      dispatchAddToChatRoom,
+      userprofile: { detail: { uid, name, picture } },
+    } = this.props;
     return (
       <div styleName="subscribe-btn" >
         <FormButton
           content="私訊"
           colorType="greenBorder"
-          onClick={() => console.log('私訊')}
+          onClick={() => dispatchAddToChatRoom({ uid, name, picture })}
         />
       </div>
     );

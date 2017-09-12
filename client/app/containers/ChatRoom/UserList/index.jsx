@@ -20,7 +20,7 @@ class UserList extends React.Component {
       isFetching: PropTypes.bool.isRequired,
     }).isRequired,
     fetchRooms: PropTypes.func.isRequired,
-    onUserSelect: PropTypes.func.isRequired,
+    changeChatTarget: PropTypes.func.isRequired,
     currentUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
     }).isRequired,
@@ -59,7 +59,7 @@ class UserList extends React.Component {
     } = room;
     const { uid, name, picture } = user;
     const {
-      onUserSelect, currentUser: { uid: currentUserId },
+      changeChatTarget, currentUser: { uid: currentUserId },
     } = this.props;
     const { renderUnreadCount, renderLastCreateTime } = this.constructor;
     return (
@@ -69,7 +69,7 @@ class UserList extends React.Component {
         className={cx('user-container', { selecting: uid === currentUserId })}
         role="button"
         tabIndex="-1"
-        onClick={() => onUserSelect(room, user)}
+        onClick={() => changeChatTarget(room, user)}
       >
         <div styleName="avatar">
           <Avatar src={picture} />
