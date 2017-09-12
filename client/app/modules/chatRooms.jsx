@@ -49,11 +49,11 @@ function checkExpire(rooms, expireFlag) {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    if (rooms.length > 0) {
-      const [room] = rooms;
-      const { members: [user] } = room;
-      dispatch(changeChatTarget(room, user));
-    }
+    // if (rooms.length > 0) {
+    //   const [room] = rooms;
+    //   const { members: [user] } = room;
+    //   dispatch(changeChatTarget(room, user));
+    // }
     dispatch(fetched(rooms));
   };
 }
@@ -119,8 +119,7 @@ export const emptyUnreadCount = roomId => ({
 export const updateLastMessage = (message, roomId) =>
   (dispatch, getState) => {
     const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
-    const unreadCount = (currentRoom.room_id === roomId) ? 0 : 1;
-    console.log(unreadCount);
+    const unreadCount = (currentRoom && currentRoom.room_id === roomId) ? 0 : 1;
     dispatch({
       type: UPDATE_LAST_MESSAGE,
       message,
@@ -184,14 +183,22 @@ export default (state = initialState, action) => {
     case UPDATE_LAST_MESSAGE:
       return fromJS(state).updateIn(
         ['rooms'],
-        rooms => rooms.update(
-          rooms.findIndex(room => (room.get('room_id') === action.roomId)),
-          room => room.merge({
-            last_message: action.message,
-            unread_message_count: (room.get('unread_message_count') + action.unreadCount),
-            last_message_create_time: now(),
-          }),
-        ),
+        (rooms) => {
+          const updateIndex = rooms.findIndex(room =>
+            room.get('room_id') === action.roomId,
+          );
+          if (updateIndex < 0) return rooms;
+          return rooms.update(
+            updateIndex,
+            room => room.merge({
+              last_message: action.message,
+              unread_message_count: (
+                room.get('unread_message_count') + action.unreadCount
+              ),
+              last_message_create_time: now(),
+            }),
+          );
+        },
       ).toJS();
 
     default:

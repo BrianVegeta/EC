@@ -1,81 +1,36 @@
 @import "~styles/color.sass"
 
-$chat-container-width: 665px
-$chat-container-height: 420px
-$left-panel-width: 260px
-
+// TODO: z-index
 .container
   position: fixed
+  z-index: 1000
   bottom: 0
   right: 0
   padding-right: 20px
-  .talk-button
-    background: $global-primaryColor
-    width: 220px
-    font-size: 14px
-    line-height: 20px
-    padding: 6px 16px
-    border-top-left-radius: 5px
-    border-top-right-radius: 5px
-    color: #fff
-    cursor: pointer
-    outline: 0
-  .chatroom-container
-    box-shadow: 0 -2px 10px rgba(0,0,0,.25)
-    border-top-left-radius: 5px
-    border-top-right-radius: 5px
-    .header-bar
-      background: $global-primaryColor
-      border-top-left-radius: 5px
-      border-top-right-radius: 5px
-      padding: 6px 16px
-      font-size: 14px
-      line-height: 20px
-      color: #fff
-      cursor: pointer
-      outline: 0
-      .minus
-        float: right
-        cursor: pointer
-    .header
-      background: #fff
-      font-size: 14px
-      line-height: 20px
-      padding: 5px
-      border-bottom: 1px solid $global-lineColor
-      &.left
-        width: $left-panel-width
-        float: left
-        display: inline-block
-        border-right: 1px solid $global-lineColor
-        padding: 10px 16px
-      &.right
-        font-size: 13px
-        margin-left: $left-panel-width
-        padding: 13px 16px
-        line-height: 20px
-        .detail
-          float: right
-          cursor: pointer
-    .body
-      background: #f1f1f1
-      height: $chat-container-height
-      width: $chat-container-width
-      &.no-data
-        height: $chat-container-height
-        width: $chat-container-width
-      .user-list
-        float: left
-        width: $left-panel-width
-        height: 100%
-        border-right: 1px solid $global-lineColor
-        background: #fff
-      .chat-box
-        margin-left: $left-panel-width
-        height: 100%
-        position: relative
-        .message-box
-          height: 70%
-          overflow-y: auto
-        .input-box
-          height: 30%
+
+.talk-button
+  background: $global-primaryColor
+  width: 220px
+  font-size: 14px
+  line-height: 20px
+  padding: 6px 16px
+  border-top-left-radius: 5px
+  border-top-right-radius: 5px
+  color: #fff
+  cursor: pointer
+  outline: 0
+  &:hover
+    background: $global-hoverColor
+  &:active
+    background: $global-activeColor
+  .count
+    display: inline-block
+    line-height: 16px
+    min-width: 16px
+    border-radius: 8px
+    background: #fff
+    margin-left: 16px
+    color: $global-blackColor
+    text-align: center
+    font-weight: 600
+    padding: 0 4px
