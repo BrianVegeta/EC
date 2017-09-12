@@ -88,10 +88,6 @@ class StepDelivery extends React.Component {
       return inputElement;
     };
     const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
-    const meta = myWindow.document.createElement('meta');
-    meta.httpEquiv = 'Content-Type';
-    meta.content = 'text/html; charset=utf-8';
-    myWindow.document.head.appendChild(meta);
     const form = myWindow.document.createElement('form');
     form.method = 'post';
     form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
@@ -104,13 +100,9 @@ class StepDelivery extends React.Component {
     form.appendChild(createInput('storecategory', '3'));
     form.appendChild(createInput('showtype', '1'));
     form.appendChild(createInput('storeid', ''));
-    myWindow.document.body.appendChild(form);
+    myWindow.document.getElementsByTagName('body')[0].appendChild(form);
     form.submit();
   };
-
-  focus() {
-    console.log('onFocus called!!!');
-  }
 
   render() {
     const { publish, dispatchChangeData, isValid } = this.props;
