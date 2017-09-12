@@ -192,7 +192,7 @@ Rails.application.routes.draw do
 
       # MARKETING
       get 'my_coupons', to: 'marketing#coupon_list'
-      get 'store_result', to: 'ship#store_result'
+      post 'store_result', to: 'ship#store_result'
       # ITEMS
       scope :item do
         post 'list', to: 'item#search_item_list'
