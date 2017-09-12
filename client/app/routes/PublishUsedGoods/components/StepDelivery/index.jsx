@@ -45,12 +45,12 @@ class StepDelivery extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
-    window.addEventListener('storage', this.handleSevenEleven, false);
-    localStorage.clear();
+    window.addEventListener('focus', this.handleSevenEleven, false);
+    // localStorage.clear();
   }
   componentWillUnmount() {
-    window.removeEventListener('storage', this.handleSevenEleven, false);
-    localStorage.clear();
+    window.removeEventListener('focus', this.handleSevenEleven, false);
+    // localStorage.clear();
   }
 
   onNextStepClick() {
@@ -75,7 +75,7 @@ class StepDelivery extends React.Component {
   }
 
   handleSevenEleven(e) {
-    console.log('handleSevenEleven called!!!');
+    console.log(document.cookie);
   }
 
 
@@ -87,34 +87,32 @@ class StepDelivery extends React.Component {
       inputElement.type = 'hidden';
       return inputElement;
     };
-    const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
-    const meta = myWindow.document.createElement('meta');
-    meta.httpEquiv = 'Content-Type';
-    meta.content = 'text/html; charset=utf-8';
-    myWindow.document.head.appendChild(meta);
-    const form = myWindow.document.createElement('form');
-    form.method = 'post';
-    form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
-    form.appendChild(createInput('eshopparid', '935'));
-    form.appendChild(createInput('eshopid', '001'));
-    form.appendChild(createInput('eshoppwd', 'presco123'));
-    form.appendChild(createInput('url', 'http://debug.shareapp.com.tw:10380/p/store_result.json'));
-    form.appendChild(createInput('tempvar', ''));
-    form.appendChild(createInput('sid', '1'));
-    form.appendChild(createInput('storecategory', '3'));
-    form.appendChild(createInput('showtype', '1'));
-    form.appendChild(createInput('storeid', ''));
-    myWindow.document.body.appendChild(form);
-    form.submit();
-  };
 
-  // { sendBy711 &&
-  //   <FormButton
-  //     colorType={'greenBorder'}
-  //     content={'未取件設定'}
-  //     onClick={() => { this.createSevenFormPost(); }}
-  //   />
-  // }
+    // Internet Explorer 6-11
+    const isIE = /* @cc_on!@*/false || !!document.documentMode;
+    // Edge 20+
+    const isEdge = !isIE && !!window.StyleMedia;
+    if (isEdge) {
+      console.log('isEdge');
+      window.open('/p/sevenEleven');
+    } else {
+      const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
+      const form = myWindow.document.createElement('form');
+      form.method = 'post';
+      form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
+      form.appendChild(createInput('eshopparid', '935'));
+      form.appendChild(createInput('eshopid', '001'));
+      form.appendChild(createInput('eshoppwd', 'presco123'));
+      form.appendChild(createInput('url', 'http://debug.shareapp.com.tw:10380/ajax/store_result.json'));
+      form.appendChild(createInput('tempvar', ''));
+      form.appendChild(createInput('sid', '1'));
+      form.appendChild(createInput('storecategory', '3'));
+      form.appendChild(createInput('showtype', '1'));
+      form.appendChild(createInput('storeid', ''));
+      myWindow.document.getElementsByTagName('body')[0].appendChild(form);
+      form.submit();
+    }
+  };
 
   render() {
     const { publish, dispatchChangeData, isValid } = this.props;
@@ -172,6 +170,13 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
+          { sendBy711 &&
+            <FormButton
+              colorType={'greenBorder'}
+              content={'未取件設定'}
+              onClick={() => { this.createSevenFormPost(); }}
+            />
+          }
         </FormGroup>
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}
         <ButtonNextStep

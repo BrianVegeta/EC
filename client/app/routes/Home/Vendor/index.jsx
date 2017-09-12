@@ -48,11 +48,11 @@ class Vendor extends React.Component {
           </div>
           <div styleName="gallery">
             {items.map((ownItem, index) =>
-              <div styleName="item" key={`${index + 1}`}>
+              (<div styleName="item" key={`${index + 1}`}>
                 <Link to={itemPath(ownItem.pname, ownItem.pid)}>
                   <Picture src={ownItem.img1} />
                 </Link>
-              </div>,
+              </div>),
             )}
           </div>
         </div>

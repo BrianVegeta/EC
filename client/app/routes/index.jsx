@@ -46,6 +46,7 @@ import routeReservationService from './ReservationService/route';
 import routeReservationSpace from './ReservationSpace/route';
 import routeReservationGoods from './ReservationGoods/route';
 import routeReservationUsedGoods from './ReservationUsedGoods/route';
+import routeSevenEleven from './SevenEleven/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -123,6 +124,7 @@ export default store => ({
       component: layoutHoc(Mine, { requireAuth }),
       childRoutes: [
         routeNotify(store),
+        routeSevenEleven(store),
       ],
     },
     {
