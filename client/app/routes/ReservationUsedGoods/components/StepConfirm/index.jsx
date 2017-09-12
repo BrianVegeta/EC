@@ -296,10 +296,11 @@ class StepConfirm extends React.Component {
                 <AlertPanel text={agreeError} width="auto" />
               </div>
             }
-        </div>
+          </div>
           <ButtonNextStep
             status={isValid ? STATUS_VALID : STATUS_DISABLE}
             onClick={this.onNextStepClick}
+            text="確認提交"
           />
         </div>
       </FormContainer>

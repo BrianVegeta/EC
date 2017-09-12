@@ -56,7 +56,7 @@ const mapDispatchToProps = (
     return dispatch(saveReservation());
   },
 
-  redirectToMyOrder: () => browserHistory.push(my.ownerOrderItem('TAB_REQUEST')),
+  redirectToMyOrder: () => browserHistory.push(my.lesseeOrderItem('TAB_REQUEST')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);

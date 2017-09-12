@@ -12,7 +12,7 @@ import OrderNav, { ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
-import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
+import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
    TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
@@ -60,13 +60,16 @@ class OrderList extends React.Component {
       { name: '提出預訂',
         href: my.lesseeOrderItem(TAB_REQUEST),
         tabName: TAB_REQUEST },
-      { name: '尚未付款',
+      { name: '待付款',
         href: my.lesseeOrderItem(TAB_PAY),
         tabName: TAB_PAY },
       { name: '待出貨',
         href: my.lesseeOrderItem(TAB_SHIPPING),
         tabName: TAB_SHIPPING },
       { name: '待收貨',
+        href: my.lesseeOrderItem(TAB_SHIPPING_CONFIRM),
+        tabName: TAB_RETURN },
+      { name: '待還貨',
         href: my.lesseeOrderItem(TAB_RETURN),
         tabName: TAB_RETURN },
       { name: '完成',

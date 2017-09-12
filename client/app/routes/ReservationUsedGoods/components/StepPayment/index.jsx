@@ -75,7 +75,7 @@ class StepPayment extends React.Component {
     const { paymentTypeError, bankInfoError } = this.state;
 
     return (
-      <FormContainer title="設定價格" >
+      <FormContainer title="支付方式" >
         <div role="form">
           <div styleName="radio-group">
             <div styleName="radio-container">

@@ -30,7 +30,7 @@ class CropperEditor extends React.Component {
     this.enterCroping = this.enterCroping.bind(this);
     this.cancelCropping = this.cancelCropping.bind(this);
     this.completeCropped = this.completeCropped.bind(this);
-
+    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.modalReady = this.modalReady.bind(this);
     this.onComplete = this.onComplete.bind(this);
     this.state = {
@@ -39,6 +39,21 @@ class CropperEditor extends React.Component {
       croppedCanvas: null,
       isModalOpened: false,
     };
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, false);
+  }
+
+  handleClickOutside(e) {
+    if (this.contentBox.contains(e.target)) {
+      return;
+    }
+    this.props.closeCropper();
   }
 
   onComplete() {
@@ -129,7 +144,6 @@ class CropperEditor extends React.Component {
     const {
       closeCropper,
     } = this.props;
-
     return (
       <Modal
         isShow
@@ -140,7 +154,7 @@ class CropperEditor extends React.Component {
         {
           isModalOpened &&
           <div styleName="container">
-            <div styleName="cropper">
+            <div styleName="cropper" ref={contentBox => (this.contentBox = contentBox)}>
               {
                 croppedCanvas &&
                 <CroppedCanvas

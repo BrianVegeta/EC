@@ -460,6 +460,7 @@ class StepForm extends React.Component {
             ref={refGoodsSendInput}
             options={sendOption}
             value={sendType}
+            width={290}
             onSelect={val => dispatchChangeData({ sendType: val.value })}
             validateOnBlur
           />
@@ -475,6 +476,7 @@ class StepForm extends React.Component {
             ref={refGoodsReturnInput}
             options={returnOption}
             value={returnType}
+            width={290}
             onSelect={val => dispatchChangeData({ returnType: val.value })}
             validateOnBlur
           />
@@ -512,7 +514,7 @@ class StepForm extends React.Component {
             {this.renderShippment(reservation, item)}
             <FormButton
               colorType={'greenBorder'}
-              style={{ padding: '7px 7px', display: 'inline-block' }}
+              style={{ lineHeight: '46px', padding: '7px 16px', display: 'inline-block' }}
               size="sm"
               width="auto"
               content={'私訊分享人'}
@@ -533,6 +535,7 @@ class StepForm extends React.Component {
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}
+          text="確認提交"
         />
       </FormContainer>
     );
