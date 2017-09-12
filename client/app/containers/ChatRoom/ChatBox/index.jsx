@@ -74,6 +74,16 @@ class ChatBox extends React.Component {
         this.messageBox.scrollBottom();
       }
     }
+    const {
+      dispatchChangeChatTarget,
+      chatRooms: { rooms },
+      chatBox: { currentRoom },
+    } = this.props;
+    if (rooms.length > 0 && !currentRoom) {
+      const [room] = rooms;
+      const { members: [user] } = room;
+      dispatchChangeChatTarget(room, user);
+    }
   }
 
   componentWillUnmount() {

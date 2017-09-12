@@ -26,8 +26,11 @@ import {
   updateMessagesRead,
 } from 'modules/chatBox';
 import {
+  REDUCER_KEY as CHAT_ROOMS_REDUCER_KEY,
   emptyUnreadCount,
   updateLastMessage,
+  fetchRooms,
+  reset as resetRooms,
 } from 'modules/chatRooms';
 
 
@@ -173,6 +176,7 @@ const handleMessage = msg =>
         console.log('MESSAGE DUPLICATE');
       } else if (!currentRoom) {
         console.log('NEW MESSAGE [ROOM CLOSING]');
+        console.log(sharemsg);
         dispatch(sendXmppReceived(
           sharemsg.message_id,
           sharemsg.room_id,
@@ -191,7 +195,6 @@ const handleMessage = msg =>
           receiveLogFromType({ ...sharemsg, message, standardId }),
         )); // Add new log to chatbox logs
       } else {
-        console.log(sharemsg);
         console.log('NEW MESSAGE [OTHER ROOM]');
         dispatch(sendXmppReceived(
           sharemsg.message_id,
@@ -200,7 +203,15 @@ const handleMessage = msg =>
           { read: false },
         )); // Tell xmpp message received and unread
       }
-      dispatch(updateLastMessage(message, sharemsg.room_id));
+      const { rooms } = getState()[CHAT_ROOMS_REDUCER_KEY];
+      console.log(rooms, message);
+      if (find(rooms, { room_id: sharemsg.room_id })) {
+        dispatch(updateLastMessage(message, sharemsg.room_id));
+      } else {
+        console.log('fetch rooms');
+        dispatch(resetRooms());
+        dispatch(fetchRooms());
+      }
     } else if (from.includes('sendofflinemessagenotification')) {
       // 離線訊息
       const standardId = msg.getAttribute('id');

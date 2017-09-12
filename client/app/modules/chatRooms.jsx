@@ -4,14 +4,13 @@ import { reduceDuplicateRecords } from 'lib/utils';
 import { now } from 'lib/time';
 import {
   REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
-  changeChatTarget,
 } from 'modules/chatBox';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'CHAT_ROOMS';
-const REDUCER_KEY = 'chatRooms';
+export const REDUCER_KEY = 'chatRooms';
 const SIZE = 20;
 const DUPLICATE_KEY = 'room_id';
 
