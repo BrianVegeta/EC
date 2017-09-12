@@ -1,0 +1,59 @@
+@import "~styles/color.sass"
+
+.container
+  position: relative
+  width: 100%
+  .user-container
+    position: relative
+    padding: 17px 14px
+    cursor: pointer
+    background: #fff
+    outline: 0
+    &.selecting
+      background: #EDF5F6
+      &:hover
+        background: #EDF5F6
+    &:hover
+      background: #EDF5F6
+    .avatar
+      width: 40px
+      height: 40px
+      float: left
+    .content
+      margin-left: 40px
+      padding-left: 10px
+      height: 40px
+      .header
+        line-height: 20px
+        height: 20px
+        .name
+          display: inline-block
+          width: 92px
+          font-size: 13px
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+        .time
+          font-size: 12px
+          color: $global-middleBlack
+          float: right
+      .footer
+        line-height: 20px
+        height: 20px
+        .message
+          width: 130px
+          font-size: 13px
+          color: $global-middleBlack
+          display: inline-block
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+        .unread
+          float: right
+          font-size: 12px
+          background: $global-colorDanger
+          color: #fff
+          padding: 0 4px
+          border-radius: 10px
+          min-width: 20px
+          text-align: center

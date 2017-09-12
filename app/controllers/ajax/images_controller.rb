@@ -34,6 +34,12 @@ class Ajax::ImagesController < ApplicationController
     render json: { photoUrl: wish.photo.url }
   end
 
+  def chat_photo
+    chat_photo = Images::ChatPhoto.new(uid_params)
+    chat_photo.save
+    render json: { photoUrl: chat_photo.photo.url }
+  end
+
   protected
   def image_params
     params.permit(:image)

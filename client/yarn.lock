@@ -3641,9 +3641,13 @@ lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
 
-lodash.isarray@^3.0.0:
+lodash.isarray@3.0.4, lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
+
+lodash.isfinite@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.isfinite/-/lodash.isfinite-3.2.0.tgz#aa69ffb93a37e82fab0ce18862655f9174ced339"
 
 lodash.keys@^3.1.2:
   version "3.1.2"
@@ -4132,6 +4136,10 @@ oauth-sign@~0.8.1:
 obj-extend@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/obj-extend/-/obj-extend-0.1.0.tgz#bb448a4775fb95eb34a781f908bbac2df23dbb5b"
+
+object-assign@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.0.1.tgz#99504456c3598b5cad4fc59c26e8a9bb107fe0bd"
 
 object-assign@4.1.0:
   version "4.1.0"
@@ -5282,6 +5290,14 @@ react-img-preload@^2.0.0:
   dependencies:
     react "^0.13.3"
 
+react-infinite@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/react-infinite/-/react-infinite-0.12.1.tgz#74c5981f9ddd23f065f414cbb00c6d204bf7eda1"
+  dependencies:
+    lodash.isarray "3.0.4"
+    lodash.isfinite "3.2.0"
+    object-assign "4.0.1"
+
 react-masonry-component@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-masonry-component/-/react-masonry-component-5.0.5.tgz#7a6e92fc4f67f6e7c1710b4fb90b4d7e81c0719f"
@@ -6349,6 +6365,10 @@ strip-indent@^1.0.1:
 strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+
+strophe.js@^1.2.14:
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/strophe.js/-/strophe.js-1.2.14.tgz#7ceeec51b3272cc5c6c6ae77474780a5840f1aa7"
 
 style-loader@^0.13.2:
   version "0.13.2"
