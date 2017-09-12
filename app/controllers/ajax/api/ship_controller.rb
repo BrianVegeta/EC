@@ -11,7 +11,7 @@ class Ajax::Api::ShipController < ApplicationController
   end
 
   def store_result
-    params = params.permit(:storeid, :storename, :storeaddress)
+    # params = params.permit(:storeid, :storename, :storeaddress)
     render file: 'app/views/ajax/store/index.html.erb'
   end
 
