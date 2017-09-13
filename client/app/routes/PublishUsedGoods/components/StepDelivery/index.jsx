@@ -37,6 +37,7 @@ class StepDelivery extends React.Component {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
+    this.clearCookie = this.clearCookie.bind(this);
     this.handleStorage = this.handleStorage.bind(this);
     this.createSevenFormPost = this.createSevenFormPost.bind(this);
     this.state = {
@@ -48,6 +49,7 @@ class StepDelivery extends React.Component {
     this.props.dispatchTouchPath();
     window.addEventListener('focus', this.handleFocus, false);
     window.addEventListener('storage', this.handleStorage, false);
+    this.clearCookie();
     if (this.windowRef) {
       this.windowRef.close();
     }
@@ -57,6 +59,7 @@ class StepDelivery extends React.Component {
     window.removeEventListener('focus', this.handleFocus, false);
     window.removeEventListener('storage', this.handleStorage, false);
     localStorage.remove('711_callback');
+    this.clearCookie();
     if (this.windowRef) {
       this.windowRef.close();
     }
@@ -84,9 +87,15 @@ class StepDelivery extends React.Component {
     });
   }
 
+  clearCookie() {
+    document.cookie = 'storeid=;max-age=1';
+    document.cookie = 'storename=;max-age=1';
+    document.cookie = 'storeaddress=;max-age=1';
+  }
+
   handleStorage(e) {
     console.log('handleStorage');
-    localStorage.remove('711_callback');
+    localStorage.removeItem('711_callback');
     this.handleFocus(e);
   }
 
@@ -105,6 +114,7 @@ class StepDelivery extends React.Component {
     const storename = getCookie('storename');
     const storeaddress = getCookie('storeaddress');
     dispatchChangeData({ storeid, storename, storeaddress });
+    this.clearCookie();
     if (this.windowRef) {
       this.windowRef.close();
     }
