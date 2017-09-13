@@ -136,8 +136,8 @@ class StepDelivery extends React.Component {
     // Internet Explorer 6-11
     const isIE = /* @cc_on!@*/false || !!document.documentMode;
     // Edge 20+
-    // const isEdge = !isIE && !!window.StyleMedia;
-    if (isIE) {
+    const isEdge = !isIE && !!window.StyleMedia;
+    if (isIE || isEdge) {
       console.log('isEdge');
       const tabWindow = window.open('/p/sevenEleven');
       this.windowRef = tabWindow;
