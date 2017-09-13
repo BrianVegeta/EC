@@ -1,7 +1,7 @@
 class Ajax::Api::ShipController < ApplicationController
   include WardenHelper
   include RespondHelper
-
+  require 'uri'
   ###################### ACTION ##################################
   # 取回7-11地址
   def select_store
@@ -12,9 +12,9 @@ class Ajax::Api::ShipController < ApplicationController
 
   def store_result
     params = store_result_params;
-    @storeid= 'storeid=' + params['storeid'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
-    @storename= 'storename=' + params['storename'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
-    @storeaddress= 'storeaddress=' + params['storeaddress'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
+    @storeid= URI.encode('storeid=' + params['storeid'] + '; max-age=120; path=/; domain=debug.shareapp.com.tw')
+    @storename= URI.encode('storename=' + params['storename'] + '; max-age=120; path=/; domain=debug.shareapp.com.tw')
+    @storeaddress= URI.encode('storeaddress=' + params['storeaddress'] + '; max-age=120; path=/; domain=debug.shareapp.com.tw')
     # @storeid= 'storeid=' + 'a' + '; max-age=120;'
     # @storename= 'storename=' + 'b' + '; max-age=120;'
     # @storeaddress= 'storeaddress=' + 'c' + '; max-age=120;'
