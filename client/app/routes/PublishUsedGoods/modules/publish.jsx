@@ -192,6 +192,9 @@ const initialState = {
   unit: 0,
   reservationDays: 1,
   discount: '',
+  storeid: '',
+  storename: '',
+  storeaddress: '',
 };
 
 export default (state = initialState, action) => {

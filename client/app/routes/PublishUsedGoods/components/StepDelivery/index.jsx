@@ -58,7 +58,7 @@ class StepDelivery extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('focus', this.handleFocus, false);
     window.removeEventListener('storage', this.handleStorage, false);
-    localStorage.remove('711_callback');
+    localStorage.removeItem('711_callback');
     this.clearCookie();
     if (this.windowRef) {
       this.windowRef.close();
@@ -167,6 +167,9 @@ class StepDelivery extends React.Component {
       sendByOtherShippment,
       sendByInPerson,
       minimumShippemntDay,
+      storeid,
+      storename,
+      storeaddress,
     } = publish;
 
     const { optionError } = this.state;
@@ -216,6 +219,9 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
+          { sendBy711 &&
+            <div>門市：{storename}({storeid}) {storeaddress}</div>
+          }
           { sendBy711 &&
             <FormButton
               colorType={'greenBorder'}
