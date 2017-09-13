@@ -3,11 +3,15 @@
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     </head>
     <body>
-      <div>Coming Soon4!!!</div>
+      <div><%= @storeid %></div>
+      <div><%= @storename %></div>
+      <div><%= @storeaddress %></div>
         <script type="text/javascript">
           window.addEventListener('load', function() {
-              document.cookie = "username=John Doe; max-age=120; path=/;domain=debug.shareapp.com.tw";
-          })
+            document.cookie='<%= @storename %>'
+            document.cookie='<%= @storeid %>'
+            document.cookie='<%= @storeaddress %>'
+          });
         </script>
     </body>
 </html>

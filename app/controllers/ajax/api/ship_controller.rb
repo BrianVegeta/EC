@@ -11,10 +11,19 @@ class Ajax::Api::ShipController < ApplicationController
   end
 
   def store_result
-    # params = params.permit(:storeid, :storename, :storeaddress)
+    params = store_result_params;
+    @storeid= 'storeid=' + params['storeid'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
+    @storename= 'storename=' + params['storename'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
+    @storeaddress= 'storeaddress=' + params['storeaddress'] + '; max-age=120; path=/;domain=debug.shareapp.com.tw'
+    # @storeid= 'storeid=' + 'a' + '; max-age=120;'
+    # @storename= 'storename=' + 'b' + '; max-age=120;'
+    # @storeaddress= 'storeaddress=' + 'c' + '; max-age=120;'
     render file: 'app/views/ajax/store/index.html.erb'
   end
 
   ###################### PARAMS ##################################
-
+  protected
+  def store_result_params
+    params.permit(:storeid, :storename, :storeaddress)
+  end
 end

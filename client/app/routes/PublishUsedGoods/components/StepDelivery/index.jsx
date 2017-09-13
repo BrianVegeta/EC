@@ -46,10 +46,16 @@ class StepDelivery extends React.Component {
   componentDidMount() {
     this.props.dispatchTouchPath();
     window.addEventListener('focus', this.handleSevenEleven, false);
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
     // localStorage.clear();
   }
   componentWillUnmount() {
     window.removeEventListener('focus', this.handleSevenEleven, false);
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
     // localStorage.clear();
   }
 
@@ -76,6 +82,9 @@ class StepDelivery extends React.Component {
 
   handleSevenEleven(e) {
     console.log(document.cookie);
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
   }
 
 
@@ -87,16 +96,20 @@ class StepDelivery extends React.Component {
       inputElement.type = 'hidden';
       return inputElement;
     };
-
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
     // Internet Explorer 6-11
     const isIE = /* @cc_on!@*/false || !!document.documentMode;
     // Edge 20+
     const isEdge = !isIE && !!window.StyleMedia;
     if (isEdge) {
       console.log('isEdge');
-      window.open('/p/sevenEleven');
+      const tabWindow = window.open('/p/sevenEleven');
+      this.windowRef = tabWindow;
     } else {
       const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
+      this.windowRef = myWindow;
       const form = myWindow.document.createElement('form');
       form.method = 'post';
       form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
