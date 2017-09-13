@@ -36,7 +36,8 @@ class StepDelivery extends React.Component {
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
-    this.handleSevenEleven = this.handleSevenEleven.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleStorage = this.handleStorage.bind(this);
     this.createSevenFormPost = this.createSevenFormPost.bind(this);
     this.state = {
       optionError: '',
@@ -45,14 +46,17 @@ class StepDelivery extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
-    window.addEventListener('focus', this.handleSevenEleven, false);
+    window.addEventListener('focus', this.handleFocus, false);
+    window.addEventListener('storage', this.handleStorage, false);
     if (this.windowRef) {
       this.windowRef.close();
     }
     // localStorage.clear();
   }
   componentWillUnmount() {
-    window.removeEventListener('focus', this.handleSevenEleven, false);
+    window.removeEventListener('focus', this.handleFocus, false);
+    window.removeEventListener('storage', this.handleStorage, false);
+    localStorage.remove('711_callback');
     if (this.windowRef) {
       this.windowRef.close();
     }
@@ -80,8 +84,27 @@ class StepDelivery extends React.Component {
     });
   }
 
-  handleSevenEleven(e) {
-    console.log(document.cookie);
+  handleStorage(e) {
+    console.log('handleStorage');
+    localStorage.remove('711_callback');
+    this.handleFocus(e);
+  }
+
+  handleFocus(e) {
+    console.log('handleFocus');
+    const { dispatchChangeData } = this.props;
+    const getCookie = (name) => {
+      const match = document.cookie.match(new RegExp(`${name}=([^;]+)`));
+      if (match) return match[1];
+      return '';
+    };
+    const storeid = getCookie('storeid');
+    if (storeid === '') {
+      return;
+    }
+    const storename = getCookie('storename');
+    const storeaddress = getCookie('storeaddress');
+    dispatchChangeData({ storeid, storename, storeaddress });
     if (this.windowRef) {
       this.windowRef.close();
     }
