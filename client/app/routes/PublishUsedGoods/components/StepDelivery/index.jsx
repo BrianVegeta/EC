@@ -112,8 +112,8 @@ class StepDelivery extends React.Component {
     if (storeid === '') {
       return;
     }
-    const storename = getCookie('storename');
-    const storeaddress = getCookie('storeaddress');
+    const storename = decodeURI(getCookie('storename'));
+    const storeaddress = decodeURI(getCookie('storeaddress'));
     dispatchChangeData({ storeid, storename, storeaddress });
     this.clearCookie();
     if (this.windowRef) {
