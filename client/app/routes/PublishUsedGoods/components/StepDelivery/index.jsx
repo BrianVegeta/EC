@@ -47,9 +47,10 @@ class StepDelivery extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
+    this.clearCookie();
+    localStorage.removeItem('711_callback');
     window.addEventListener('focus', this.handleFocus, false);
     window.addEventListener('storage', this.handleStorage, false);
-    this.clearCookie();
     if (this.windowRef) {
       this.windowRef.close();
     }
@@ -135,8 +136,8 @@ class StepDelivery extends React.Component {
     // Internet Explorer 6-11
     const isIE = /* @cc_on!@*/false || !!document.documentMode;
     // Edge 20+
-    const isEdge = !isIE && !!window.StyleMedia;
-    if (isEdge) {
+    // const isEdge = !isIE && !!window.StyleMedia;
+    if (isIE) {
       console.log('isEdge');
       const tabWindow = window.open('/p/sevenEleven');
       this.windowRef = tabWindow;
@@ -219,6 +220,7 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
+          <div>{document.cookie}</div>
           { sendBy711 &&
             <div>門市：{storename}({storeid}) {storeaddress}</div>
           }

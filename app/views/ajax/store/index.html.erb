@@ -8,10 +8,13 @@
       <div><%= @storeaddress %></div>
         <script type="text/javascript">
           window.addEventListener('load', function() {
+            console.log('onLoad called');
             document.cookie='<%= @storename %>'
             document.cookie='<%= @storeid %>'
             document.cookie='<%= @storeaddress %>'
             localStorage.setItem('711_callback','done');
+            console.log(document.cookie);
+            console.log(localStorage);
           });
         </script>
     </body>
