@@ -11,7 +11,7 @@ import { validateAll, validateAllBy } from '../modules/validation';
 
 
 const { confirmPath } = publishGoodsRouter;
-const { servicePath: serviceItemsPath } = itemsRouter;
+const { goodsPath } = itemsRouter;
 
 /* pick props */
 const mapStateToProps = ({
@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch, { location: { query } }) => {
     },
     dispatchValidateAll: () => dispatch(validateAll()),
     dispatchTouchPath: () => dispatch(touchPath(confirmPath(pid))),
-    redirectToItems: () => browserHistory.push(serviceItemsPath),
+    redirectToItems: () => browserHistory.push(goodsPath),
   });
 };
 

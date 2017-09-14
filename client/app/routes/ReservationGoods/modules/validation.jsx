@@ -30,33 +30,32 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 ===============================================>>>>>*/
 export const validateFormBy = ({
   leasestart, leaseend,
+  sendType,
+  storeid,
   // serviceLocationType,
   // serviceCity, serviceArea, serviceAddress,
   // note, unit,
 }) => {
-  // const isFixChargeType = (calculate_charge_type === CHARGE_TYPE_FIX);
-  // const isCustomerAssign = serviceLocationType === ASSIGN_ADDRESS_BY_CUSTOMER;
-  // const isServiceLocationSelectable = assign_address_type.length > 1;
-  // const serviceCityAreaValidation = isCustomerAssign ? constraints.cityArea : null;
-  // const serviceAddressValidation = isCustomerAssign ? constraints.address : null;
-  // const serviceLocationTypeValidation = isServiceLocationSelectable ?
-  //   constraints.serviceLocationType : null;
-  // const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_COUNT);
-  // const unitValidation = isCountChargeType ? constraints.unit(itemUnit) : null;
-  const errors = validate({
+  let errors = validate({
     dates: leasestart && leaseend && 'date',
-    // serviceLocationType,
-    // serviceCityArea: `${serviceCity}${serviceArea}`,
-    // serviceAddress,
-    // note,
-    // unit,
   }, {
     dates: constraints.dates,
-    // serviceLocationType: serviceLocationTypeValidation,
-    // serviceCityArea: serviceCityAreaValidation,
-    // serviceAddress: serviceAddressValidation,
-    // unit: unitValidation,
   });
+
+  if (!isEmpty(errors)) {
+    return {
+      isValid: false,
+      errors,
+    };
+  }
+
+  if (sendType === '2') {
+    errors = validate({
+      storeid,
+    }, {
+      storeid: constraints.storeid,
+    });
+  }
 
   return {
     isValid: isEmpty(errors),

@@ -26,6 +26,7 @@ import styles from './styles.sass';
 import {
   SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
+  SEND_BY_711,
 } from '../../modules/reservationItem';
 import {
   PAYMENT_TYPE_ATM,
@@ -131,7 +132,7 @@ class StepConfirm extends React.Component {
   renderSendType() {
     const { reservation } = this.props;
     const { sendCity, sendArea, sendAddress,
-      sendType } = reservation;
+      sendType, storeid, storename, storeaddress } = reservation;
     switch (sendType) {
       case SEND_BY_IN_PERSON:
         return (
@@ -155,12 +156,25 @@ class StepConfirm extends React.Component {
             </div>
           </div>
         );
+      case SEND_BY_711:
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">到貨方式：</span>
+              <span styleName="return-type-text">7-11交貨便</span>
+            </div>
+            <div styleName="return-type">
+              <span styleName="return-type-title">取貨門市：</span>
+              <span styleName="return-type-text">{storename}({storeid}) {storeaddress}</span>
+            </div>
+          </div>
+        );
       default:
         return null;
     }
   }
   renderReturnType() {
-    const { reservation } = this.props;
+    const { reservation, reservationItem } = this.props;
     const { returnCity, returnArea,
       returnType } = reservation;
     switch (returnType) {
@@ -185,6 +199,22 @@ class StepConfirm extends React.Component {
               <span styleName="return-type-text">{returnCity}{returnArea}</span>
             </div>
             <div styleName="return-hint">當您提交預訂單後，分享人會提供給您寄還的地點</div>
+          </div>
+        );
+      case SEND_BY_711:
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">寄還方式：</span>
+              <span styleName="return-type-text">7-11交貨便</span>
+            </div>
+            <div styleName="return-type">
+              <span styleName="return-type-title">還貨門市：</span>
+              <span styleName="return-type-text">
+                {reservationItem.return_711_store_name}
+                ({reservationItem.return_711_store_id})
+                {reservationItem.return_711_store_address}</span>
+            </div>
           </div>
         );
       default:

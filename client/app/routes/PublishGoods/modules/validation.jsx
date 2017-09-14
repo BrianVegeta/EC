@@ -120,9 +120,9 @@ export const validateDeliveryBy = ({
   }
   if (sendBy711) {
     errors = validate({
-      storeid,
+      Rstoreid,
     }, {
-      storeid: constraints.storeid,
+      Rstoreid: constraints.storeid,
     });
     if (!isEmpty(errors)) {
       return {
@@ -139,9 +139,9 @@ export const validateDeliveryBy = ({
   }
   if (returnBy711) {
     errors = validate({
-      Rstoreid,
+      storeid,
     }, {
-      Rstoreid: constraints.storeid,
+      storeid: constraints.storeid,
     });
     if (!isEmpty(errors)) {
       return {

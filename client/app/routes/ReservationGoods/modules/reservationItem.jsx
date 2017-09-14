@@ -16,9 +16,10 @@ export const ASSIGN_ADDRESS_BY_OWNER = '0';
 export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
 export const SEND_BY_IN_PERSON = '0';
 export const SEND_BY_OTHER_SHIPPMENT = '1';
+export const SEND_BY_711 = '2';
 export const RETURN_BY_IN_PERSON = '0';
 export const RETURN_BY_OTHER_SHIPPMENT = '1';
-
+export const RETURN_BY_711 = '2';
 // =============================================
 // = action type =
 // =============================================
@@ -65,10 +66,14 @@ export const fetchItem = pid =>
         send_option, SEND_BY_IN_PERSON, '面交（自行協調取貨地點）');
       sendOption = appendOption(sendOption,
         send_option, SEND_BY_OTHER_SHIPPMENT, '自行寄送');
+      sendOption = appendOption(sendOption,
+        send_option, SEND_BY_711, '7-11交貨便');
       returnOption = appendOption(returnOption,
         return_option, RETURN_BY_IN_PERSON, '面交（自行協調取貨地點）');
       returnOption = appendOption(returnOption,
         return_option, RETURN_BY_OTHER_SHIPPMENT, '自行寄送');
+      returnOption = appendOption(returnOption,
+        return_option, RETURN_BY_711, '7-11交貨便');
 
       const record = Object.assign({}, data, { sendOption, returnOption });
 
