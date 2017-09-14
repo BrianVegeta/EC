@@ -4,6 +4,7 @@ import {
   reservationUsedGoods as rsRouter,
   my,
 } from 'lib/paths';
+import { addToChatRoom } from 'modules/chatRooms';
 import { fetchCoupons } from '../modules/reservationCoupons';
 import StepConfirm from '../components/StepConfirm';
 import {
@@ -55,7 +56,8 @@ const mapDispatchToProps = (
     if (cid) return dispatch(updateReservation(cid));
     return dispatch(saveReservation());
   },
-
+  dispatchAddToChatRoom: ({ uid, name, picture }) =>
+    dispatch(addToChatRoom({ uid, name, picture })),
   redirectToMyOrder: () => browserHistory.push(my.lesseeOrderUsedItem('TAB_REQUEST')),
 });
 

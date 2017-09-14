@@ -11,7 +11,6 @@ import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
-import SingleDatePicker from 'components/Input/SingleDatePicker';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
@@ -39,6 +38,7 @@ import { DangerText } from './styles';
 import {
   SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
+  SEND_BY_711,
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';
@@ -106,12 +106,35 @@ class StepForm extends React.Component {
     this.serviceAddressInput = null;
     this.serviceLocationTypeInput = null;
     this.noteInput = null;
+    this.windowRef = null;
+    this.handleFocus = this.handleFocus.bind(this);
+    this.clearCookie = this.clearCookie.bind(this);
+    this.handleStorage = this.handleStorage.bind(this);
+    this.createSevenFormPost = this.createSevenFormPost.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatchTouchPath();
     this.props.dpFetchCoupons();
+    this.clearCookie();
+    localStorage.removeItem('711_callback');
+    window.addEventListener('focus', this.handleFocus, false);
+    window.addEventListener('storage', this.handleStorage, false);
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('focus', this.handleFocus, false);
+    window.removeEventListener('storage', this.handleStorage, false);
+    localStorage.removeItem('711_callback');
+    this.clearCookie();
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
+  }
+
 
   onNextStepClick() {
     const { nextStep, dispatchValidate } = this.props;
@@ -128,6 +151,77 @@ class StepForm extends React.Component {
     });
   }
 
+  clearCookie() {
+    document.cookie = 'storeid=;max-age=1';
+    document.cookie = 'storename=;max-age=1';
+    document.cookie = 'storeaddress=;max-age=1';
+  }
+
+  handleStorage() {
+    // console.log('handleStorage');
+    localStorage.removeItem('711_callback');
+    this.handleFocus();
+  }
+
+  handleFocus() {
+    // console.log('handleFocus');
+    const { dispatchChangeData } = this.props;
+    const getCookie = (name) => {
+      const match = document.cookie.match(new RegExp(`${name}=([^;]+)`));
+      if (match) return match[1];
+      return '';
+    };
+    const storeid = getCookie('storeid');
+    if (storeid === '') {
+      return;
+    }
+    const storename = decodeURI(getCookie('storename'));
+    const storeaddress = decodeURI(getCookie('storeaddress'));
+    dispatchChangeData({ storeid, storename, storeaddress });
+    this.clearCookie();
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
+  }
+
+  createSevenFormPost = () => {
+    const createInput = (key, value) => {
+      const inputElement = document.createElement('input');
+      inputElement.value = value;
+      inputElement.name = key;
+      inputElement.type = 'hidden';
+      return inputElement;
+    };
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
+    // Internet Explorer 6-11
+    const isIE = /* @cc_on!@*/false || !!document.documentMode;
+    // Edge 20+
+    const isEdge = !isIE && !!window.StyleMedia;
+    if (isIE || isEdge) {
+      // console.log('isEdge');
+      const tabWindow = window.open('/p/sevenEleven');
+      this.windowRef = tabWindow;
+    } else {
+      const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
+      this.windowRef = myWindow;
+      const form = myWindow.document.createElement('form');
+      form.method = 'post';
+      form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
+      form.appendChild(createInput('eshopparid', '935'));
+      form.appendChild(createInput('eshopid', '001'));
+      form.appendChild(createInput('eshoppwd', 'presco123'));
+      form.appendChild(createInput('url', 'http://debug.shareapp.com.tw:10380/ajax/store_result.json'));
+      form.appendChild(createInput('tempvar', ''));
+      form.appendChild(createInput('sid', '1'));
+      form.appendChild(createInput('storecategory', '3'));
+      form.appendChild(createInput('showtype', '1'));
+      form.appendChild(createInput('storeid', ''));
+      myWindow.document.getElementsByTagName('body')[0].appendChild(form);
+      form.submit();
+    }
+  };
   /**
    *
    * 選擇日期
@@ -160,33 +254,6 @@ class StepForm extends React.Component {
           value={leasestart && leaseend && 'date'}
           constraints={constraints.dates}
           validateOnBlur
-        />
-      </FormGroup>
-    );
-  }
-
-  renderSingleDatesPicker(
-    { leasestart, leaseend },
-    { advance_reservation_days, earliestStart },
-  ) {
-    const { dispatchChangeMonth } = this.props;
-    const advanceDays = <DangerText>提前{advance_reservation_days}天</DangerText>;
-    const helperBottom = advance_reservation_days ?
-        (<span>請{advanceDays}預約</span>) : null;
-
-    const ref = datesInput => (this.datesInput = datesInput);
-    const onMonthDateChange = ({ startDate }) => dispatchChangeMonth(startDate, null);
-
-    return (
-      <FormGroup
-        headerText={'開始時間'}
-        helperBottom={helperBottom}
-      >
-        <SingleDatePicker
-          ref={ref}
-          startDate={leasestart}
-          earliestStart={earliestStart}
-          onDatesChange={onMonthDateChange}
         />
       </FormGroup>
     );
@@ -297,7 +364,28 @@ class StepForm extends React.Component {
       </div>
     );
   }
-
+  renderSeven() {
+    const { reservation: { storeid, storename, storeaddress } } = this.props;
+    return (
+      <div styleName="seven-content">
+        <div styleName="seven-result-content">
+          <span styleName="seven-title">
+            取貨門市：
+          </span>
+          { storeid === '' ?
+            <span styleName="seven-empty">尚未設定</span>
+            :
+            <span styleName="seven-result">{storename}({storeid}){storeaddress}</span>
+          }
+        </div>
+        <button
+          styleName="seven-button"
+          className="button"
+          onClick={() => { this.createSevenFormPost(); }}
+        >選擇門市</button>
+      </div>
+    );
+  }
   /**
    *
    * 指定方式服務
@@ -435,7 +523,7 @@ class StepForm extends React.Component {
   sendAddress }, { sendOption }) {
     const { dispatchChangeData } = this.props;
     const refGoodsSendInput = sendInput => (this.refGoodsSendInput = sendInput);
-
+    console.log(sendOption);
     return (
       <div>
         <FormGroup headerText="到貨方式">
@@ -448,6 +536,9 @@ class StepForm extends React.Component {
           />
           { (sendType === SEND_BY_OTHER_SHIPPMENT) &&
             this.renderAssignAddress(sendCity, sendArea, sendAddress)
+          }
+          { (sendType === SEND_BY_711) &&
+            this.renderSeven()
           }
         </FormGroup>
       </div>
@@ -481,14 +572,6 @@ class StepForm extends React.Component {
         <ConfirmTitle title="交貨方式" >
           <div styleName="detail-container">
             {this.renderShippment(reservation, item)}
-            <FormButton
-              colorType={'greenBorder'}
-              style={{ padding: '7px 7px', display: 'inline-block' }}
-              size="sm"
-              width="auto"
-              content={'私訊分享人'}
-              onClick={() => {}}
-            />
           </div>
         </ConfirmTitle>
         <ConfirmTitle title="交易明細" >

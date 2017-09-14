@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { find, isEmpty } from 'lodash';
-import IconCalendar from 'react-icons/lib/fa/calendar';
 import ReservationItemNote from 'components/ReservationItemNote';
 import OwnerInfoNote from 'components/OwnerInfoNote';
 import InputCheckBox from 'components/Input/CheckBox';
@@ -16,27 +15,17 @@ import ButtonNextStep, {
 import { htmlNewLineToBreak } from 'lib/htmlUtils';
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
-import {
-  CHARGE_TYPE_DAY,
-  CHARGE_TYPE_MONTH,
-} from 'constants/publishTypes';
 
 import styles from './styles.sass';
 
 import {
   SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
-  RETURN_BY_IN_PERSON,
-  RETURN_BY_OTHER_SHIPPMENT,
-  ASSIGN_ADDRESS_BY_OWNER,
-  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';
 import {
   PAYMENT_TYPE_ATM,
   PAYMENT_TYPE_CREDIT_CARD,
 } from '../../modules/reservation';
-import RenderAssignOwner from '../RenderAssign/Owner';
-import RenderAssignCustomer from '../RenderAssign/Customer';
 
 
 // const cx = classnames.bind(styles);
@@ -68,6 +57,7 @@ class StepConfirm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
   };
 
   static getCouponOffset({ couponNo, reservationCoupons }) {
@@ -164,39 +154,6 @@ class StepConfirm extends React.Component {
         return null;
     }
   }
-  renderReturnType() {
-    const { reservation } = this.props;
-    const { returnCity, returnArea,
-      returnType } = reservation;
-    switch (returnType) {
-      case SEND_BY_IN_PERSON:
-        return (
-          <div styleName="return-container">
-            <div styleName="return-type">
-              <span styleName="return-type-title">寄還方式：</span>
-              <span styleName="return-type-text">面交（自行協調取貨地點）</span>
-            </div>
-          </div>
-        );
-      case SEND_BY_OTHER_SHIPPMENT:
-        return (
-          <div styleName="return-container">
-            <div styleName="return-type">
-              <span styleName="return-type-title">寄還方式：</span>
-              <span styleName="return-type-text">自行寄送</span>
-            </div>
-            <div styleName="return-type">
-              <span styleName="return-type-title">地址：</span>
-              <span styleName="return-type-text">{returnCity}{returnArea}</span>
-            </div>
-            <div styleName="return-hint">當您提交預訂單後，分享人會提供給您寄還的地點</div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  }
-
 
   /* 支付方式 */
   renderPaymentType() {
@@ -228,13 +185,13 @@ class StepConfirm extends React.Component {
       reservation,
       isFetched,
       isValid,
+      dispatchAddToChatRoom,
     } = this.props;
     if (!isFetched) return null;
     const {
       pname,
       img1,
       price,
-      calculate_charge_type,
       rules,
       cancel_policys,
       owner: {
@@ -259,7 +216,7 @@ class StepConfirm extends React.Component {
             avatarSrc={picture}
             userId={uid}
             username={name}
-            dispatchChat={() => console.log('chat')}
+            dispatchChat={() => dispatchAddToChatRoom(uid, name, picture)}
           />
           <div styleName="detail">
             <ConfirmTitle title="交易明細" >

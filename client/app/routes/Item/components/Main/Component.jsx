@@ -111,6 +111,7 @@ class Main extends React.Component {
     send_option,
     return_option,
     ship_before_start_days,
+    type,
   }) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
@@ -130,6 +131,7 @@ class Main extends React.Component {
           sendOption={send_option}
           returnOption={return_option}
           shipDay={ship_before_start_days}
+          type={type}
         />
       </div>
     );

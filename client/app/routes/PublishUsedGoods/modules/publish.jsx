@@ -56,6 +56,9 @@ const transformState = ({
   calculate_charge_type, price, unit,
   ship_before_start_days, discounts,
   send_option,
+  return_711_store_id,
+  return_711_store_name,
+  return_711_store_address,
 }) => {
   const discount = discounts[0] ? discounts[0].discount : '';
   return ({
@@ -77,6 +80,9 @@ const transformState = ({
     reservationDays: ship_before_start_days,
     discount,
     discounts,
+    storeid: return_711_store_id,
+    storename: return_711_store_name,
+    storeaddress: return_711_store_address,
   });
 };
 
@@ -102,6 +108,10 @@ const transformParams = (covers, {
   sendByOtherShippment,
   sendByInPerson,
   minimumShippemntDay,
+  storeid,
+  storename,
+  storeaddress,
+
 }) => {
   let sendOption = '';
   if (sendByInPerson) sendOption = sendOption.concat('0');
@@ -127,6 +137,9 @@ const transformParams = (covers, {
     ship_before_start_days: minimumShippemntDay,
     calculate_charge_type: chargeType,
     min_lease_days: 0,
+    return_711_store_id: storeid,
+    return_711_store_name: storename,
+    return_711_store_address: storeaddress,
   });
 };
 

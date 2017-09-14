@@ -40,6 +40,7 @@ class StepDelivery extends React.Component {
     this.clearCookie = this.clearCookie.bind(this);
     this.handleStorage = this.handleStorage.bind(this);
     this.createSevenFormPost = this.createSevenFormPost.bind(this);
+    this.windowRef = null;
     this.state = {
       optionError: '',
     };
@@ -54,8 +55,8 @@ class StepDelivery extends React.Component {
     if (this.windowRef) {
       this.windowRef.close();
     }
-    // localStorage.clear();
   }
+
   componentWillUnmount() {
     window.removeEventListener('focus', this.handleFocus, false);
     window.removeEventListener('storage', this.handleStorage, false);
@@ -64,7 +65,6 @@ class StepDelivery extends React.Component {
     if (this.windowRef) {
       this.windowRef.close();
     }
-    // localStorage.clear();
   }
 
   onNextStepClick() {
@@ -95,13 +95,13 @@ class StepDelivery extends React.Component {
   }
 
   handleStorage(e) {
-    console.log('handleStorage');
+    // console.log('handleStorage');
     localStorage.removeItem('711_callback');
     this.handleFocus(e);
   }
 
   handleFocus(e) {
-    console.log('handleFocus');
+    // console.log('handleFocus');
     const { dispatchChangeData } = this.props;
     const getCookie = (name) => {
       const match = document.cookie.match(new RegExp(`${name}=([^;]+)`));
@@ -138,7 +138,7 @@ class StepDelivery extends React.Component {
     // Edge 20+
     const isEdge = !isIE && !!window.StyleMedia;
     if (isIE || isEdge) {
-      console.log('isEdge');
+      // console.log('isEdge');
       const tabWindow = window.open('/p/sevenEleven');
       this.windowRef = tabWindow;
     } else {
@@ -220,16 +220,17 @@ class StepDelivery extends React.Component {
               <span styleName="option-label">7-11 交貨便</span>
             </InputCheckBox>
           </div>
-          <div>{document.cookie}</div>
           { sendBy711 &&
-            <div>門市：{storename}({storeid}) {storeaddress}</div>
-          }
-          { sendBy711 &&
-            <FormButton
-              colorType={'greenBorder'}
-              content={'未取件設定'}
-              onClick={() => { this.createSevenFormPost(); }}
-            />
+            <div styleName="seven-content">
+              <div styleName="seven-result">
+                退貨門市：{storeid === '' ? '尚未設定' : `${storename}(${storeid}) ${storeaddress}`}
+              </div>
+              <button
+                styleName="seven-button"
+                className="button"
+                onClick={() => { this.createSevenFormPost(); }}
+              >選擇門市</button>
+            </div>
           }
         </FormGroup>
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}

@@ -5995,6 +5995,18 @@ h2.Main_sub-title_vuTAo {
     margin-bottom: 20px; }
   .StepDelivery_assign-address_eMWwH .StepDelivery_assign-address-detail_2qJsF {
     width: 500px; }
+
+.StepDelivery_seven-content_3R2FI {
+  margin-left: 30px; }
+  .StepDelivery_seven-content_3R2FI .StepDelivery_seven-button_33cYf {
+    margin-top: 20px;
+    color: #53BECE;
+    border: 1px solid #53BECE;
+    border-radius: 6px;
+    padding: 10px 20px 10px 20px; }
+  .StepDelivery_seven-content_3R2FI .StepDelivery_seven-result_myEvV {
+    font-weight: 200;
+    margin-top: 10px; }
 .StepConfirm_container_2U5LY {
   position: relative;
   padding-bottom: 100px; }
@@ -6842,6 +6854,27 @@ h2.Main_sub-title_vuTAo {
     .StepForm_assign-container_1tyM1 .StepForm_assign-content__9blp .StepForm_assign-address_3BWAC {
       margin-top: 20px; }
 
+.StepForm_seven-content_3gh5a {
+  margin-top: 20px; }
+  .StepForm_seven-content_3gh5a .StepForm_seven-button_TIAcb {
+    margin-top: 20px;
+    color: #53BECE;
+    border: 1px solid #53BECE;
+    border-radius: 6px;
+    padding: 10px 20px 10px 20px; }
+  .StepForm_seven-content_3gh5a .StepForm_seven-result-content_14foR {
+    margin-top: 10px; }
+  .StepForm_seven-content_3gh5a .StepForm_seven-title_MY_Bv {
+    font-weight: 400;
+    font-size: 16px;
+    color: #666; }
+  .StepForm_seven-content_3gh5a .StepForm_seven-result_3BIZ5 {
+    font-weight: 600;
+    color: #53BECE; }
+  .StepForm_seven-content_3gh5a .StepForm_seven-empty_3PwSb {
+    font-weight: 600;
+    color: #999; }
+
 .StepForm_duration-container_RiCzy {
   font-size: 18px; }
   .StepForm_duration-container_RiCzy .StepForm_label_2_Kj3 {
@@ -6945,25 +6978,6 @@ h2.Main_sub-title_vuTAo {
   .StepConfirm_return-container_kgwKF .StepConfirm_return-hint_Wxzvn {
     margin-top: 5px;
     font-size: 14px; }
-.RenderAssign_assign-container_8RjsA {
-  position: relative;
-  font-size: 18px;
-  padding: 20px 0; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_service-location-container_1tEIe {
-    width: 200px;
-    margin-bottom: 30px; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_city-area-container_mOGts {
-    width: 270px;
-    margin-bottom: 10px; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_assign-type_1acfj {
-    font-weight: 500;
-    margin-bottom: 20px; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_assign-content_1APoZ .RenderAssign_address-label_HMFZL {
-    color: #333; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_assign-content_1APoZ .RenderAssign_address_2TrWX {
-    color: #31ABBA; }
-  .RenderAssign_assign-container_8RjsA .RenderAssign_assign-content_1APoZ .RenderAssign_assign-address_24gwI {
-    margin-top: 20px; }
 .components_sue-form-content-border_1om6K {
   padding: 0px 120px 30px 120px;
   font-weight: 400; }

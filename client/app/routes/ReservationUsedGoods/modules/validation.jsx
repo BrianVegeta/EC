@@ -30,31 +30,44 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 ===============================================>>>>>*/
 export const validateFormBy = ({
   sendType, sendCity, sendArea, sendAddress,
-  note, unit,
+  note, unit, storeid,
 }) => {
   if (!sendType) {
     return { isValid: false };
   }
   let errors = null;
   const unitValidation = constraints.unit(unit);
-  if (sendType === '1') {
-    errors = validate({
-      sendCityArea: `${sendCity}${sendArea}`,
-      sendAddress,
-      note,
-      unit,
-    }, {
-      sendCityArea: constraints.cityArea,
-      sendAddress: constraints.address,
-      unit: unitValidation,
-    });
-  } else {
-    errors = validate({
-      note,
-      unit,
-    }, {
-      unit: unitValidation,
-    });
+  switch (sendType) {
+    case '2':
+      errors = validate({
+        storeid,
+        note,
+        unit,
+      }, {
+        storeid: constraints.storeid,
+        unit: unitValidation,
+      });
+      break;
+    case '1':
+      errors = validate({
+        sendCityArea: `${sendCity}${sendArea}`,
+        sendAddress,
+        note,
+        unit,
+      }, {
+        sendCityArea: constraints.cityArea,
+        sendAddress: constraints.address,
+        unit: unitValidation,
+      });
+      break;
+    default:
+      errors = validate({
+        note,
+        unit,
+      }, {
+        unit: unitValidation,
+      });
+      break;
   }
 
 
