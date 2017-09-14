@@ -108,6 +108,8 @@ export const validateDeliveryBy = ({
   returnBy711,
   returnByOtherShippment,
   returnByInPerson,
+  storeid,
+  Rstoreid,
 }) => {
   let errors = '';
   if (!(sendBy711 || sendByOtherShippment || sendByInPerson)) {
@@ -116,14 +118,38 @@ export const validateDeliveryBy = ({
       errors: { optionError: '至少選擇一個出貨選項' },
     };
   }
-
+  if (sendBy711) {
+    errors = validate({
+      storeid,
+    }, {
+      storeid: constraints.storeid,
+    });
+    if (!isEmpty(errors)) {
+      return {
+        isValid: false,
+        errors,
+      };
+    }
+  }
   if (!(returnBy711 || returnByOtherShippment || returnByInPerson)) {
     return {
       isValid: false,
       errors: { optionError: '至少選擇一個還貨選項' },
     };
   }
-
+  if (returnBy711) {
+    errors = validate({
+      Rstoreid,
+    }, {
+      Rstoreid: constraints.storeid,
+    });
+    if (!isEmpty(errors)) {
+      return {
+        isValid: false,
+        errors,
+      };
+    }
+  }
   if (returnByOtherShippment) {
     errors = validate({
       cityArea: `${returnCity}${returnArea}`,
@@ -132,6 +158,12 @@ export const validateDeliveryBy = ({
       cityArea: constraints.cityArea,
       returnAddress: constraints.address,
     });
+    if (!isEmpty(errors)) {
+      return {
+        isValid: false,
+        errors,
+      };
+    }
   }
 
   return {

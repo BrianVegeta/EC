@@ -261,11 +261,9 @@ class StepDelivery extends React.Component {
     const { publish, dispatchChangeData, isValid } = this.props;
     const {
       sendBy711,
-      Rstoreid, Rstorename, Rstoreaddress,
       sendByOtherShippment,
       sendByInPerson,
       returnBy711,
-      storeid, storename, storeaddress,
       returnByOtherShippment,
       returnByInPerson,
       minimumShippemntDay,
@@ -307,7 +305,7 @@ class StepDelivery extends React.Component {
                 dispatchChangeData({ sendByOtherShippment: checked })
               }
             >
-              <span styleName="option-label">自行寄件</span>
+              <span styleName="option-label">宅配、郵寄</span>
             </InputCheckBox>
           </div>
           <div styleName="option">
@@ -340,7 +338,7 @@ class StepDelivery extends React.Component {
                 dispatchChangeData({ returnByOtherShippment: checked })
               }
             >
-              <span styleName="option-label">自行寄件</span>
+              <span styleName="option-label">宅配、郵寄</span>
             </InputCheckBox>
           </div>
           { this.renderReturnAddress(returnByOtherShippment, publish) }
