@@ -5532,12 +5532,34 @@ h2.Main_sub-title_vuTAo {
   margin-left: 10px; }
 
 .StepDelivery_assign-address_3Plx0 {
-  margin-left: 20px; }
+  margin-left: 30px;
+  margin-bottom: 30px; }
   .StepDelivery_assign-address_3Plx0 .StepDelivery_assign-cityarea_3AKO7 {
     width: 300px;
     margin-bottom: 20px; }
   .StepDelivery_assign-address_3Plx0 .StepDelivery_assign-address-detail_IV-AN {
     width: 500px; }
+
+.StepDelivery_seven-content_3TUgN {
+  margin: 20px 0px 30px 30px; }
+  .StepDelivery_seven-content_3TUgN .StepDelivery_seven-button_1Vh20 {
+    margin-top: 20px;
+    color: #53BECE;
+    border: 1px solid #53BECE;
+    border-radius: 6px;
+    padding: 10px 20px 10px 20px; }
+  .StepDelivery_seven-content_3TUgN .StepDelivery_seven-result-content_JmQDG {
+    margin-top: 10px; }
+  .StepDelivery_seven-content_3TUgN .StepDelivery_seven-title_BrgEB {
+    font-weight: 400;
+    font-size: 16px;
+    color: #666; }
+  .StepDelivery_seven-content_3TUgN .StepDelivery_seven-result_3-bgW {
+    font-weight: 600;
+    color: #53BECE; }
+  .StepDelivery_seven-content_3TUgN .StepDelivery_seven-empty_1ytCb {
+    font-weight: 600;
+    color: #999; }
 .NewDiscountBtn_container_35cNL {
   margin-bottom: 10px; }
   .NewDiscountBtn_container_35cNL .NewDiscountBtn_button_32NOg:disabled {
@@ -6786,25 +6808,6 @@ h2.Main_sub-title_vuTAo {
   .StepConfirm_return-container_FjgNT .StepConfirm_return-hint_2plZA {
     margin-top: 5px;
     font-size: 14px; }
-.RenderAssign_assign-container_3p8sO {
-  position: relative;
-  font-size: 18px;
-  padding: 20px 0; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_service-location-container_CcrHB {
-    width: 200px;
-    margin-bottom: 30px; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_city-area-container_4ax7D {
-    width: 270px;
-    margin-bottom: 10px; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_assign-type_28FqQ {
-    font-weight: 500;
-    margin-bottom: 20px; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_assign-content_17kX_ .RenderAssign_address-label_KOFyt {
-    color: #333; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_assign-content_17kX_ .RenderAssign_address_3Ia9N {
-    color: #31ABBA; }
-  .RenderAssign_assign-container_3p8sO .RenderAssign_assign-content_17kX_ .RenderAssign_assign-address_1AS4R {
-    margin-top: 20px; }
 .StepForm_detail-container_d_DOG {
   padding: 20px 0; }
 

@@ -228,6 +228,12 @@ const initialState = {
   hasCancelPolicy: false,
   advanceDay: null,
   rate: null,
+  storeid: '',
+  storename: '',
+  storeaddress: '',
+  Rstoreid: '',
+  Rstorename: '',
+  Rstoreaddress: '',
 };
 
 export default (state = initialState, action) => {

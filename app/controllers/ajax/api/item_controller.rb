@@ -219,6 +219,12 @@ class Ajax::Api::ItemController < ApplicationController
     # return_city : String => 歸還城市
     # return_area : String => 歸還地區
     # return_address : String => 歸還地址
+    # receive_711_store_id : string 7-11還貨店號
+    # receive_711_store_name : string 7-11還貨店名
+    # receive_711_store_address: string 7-11還貨店址
+    # return_711_store_id : string 7-11退貨店號
+    # return_711_store_name : string 7-11退貨店名
+    # return_711_store_address: string 7-11退貨店址
 
     # overdue_rate : int => 逾期金 每天罰%數 0~100
     # deposit : int => 押金
@@ -241,6 +247,8 @@ class Ajax::Api::ItemController < ApplicationController
       :return_option, :return_city, :return_area, :return_address,
       :overdue_rate, :deposit, :ship_before_start_days, :min_lease_days,
       :tag1, :tag2, :tag3,
+      :receive_711_store_id, :receive_711_store_name, :receive_711_store_address,
+      :return_711_store_id, :return_711_store_name, :return_711_store_address,
       rules: [], discounts: [:type, :param, :discount]).merge(current_uid_params)
 
   end

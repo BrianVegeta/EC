@@ -155,8 +155,8 @@ class StepConfirm extends React.Component {
                 <th width={154}>可寄件方式</th>
                 <td>
                   {sendByInPerson && '面交（自行協調取貨地點）/'}
-                  {sendByOtherShippment && '自行寄件/'}
-                  {sendBy711 && '自行寄件/'}
+                  {sendByOtherShippment && '宅配、郵寄/'}
+                  {sendBy711 && '宅配、郵寄/'}
                 </td>
               </tr>
               { sendBy711 &&

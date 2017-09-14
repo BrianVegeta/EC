@@ -43,6 +43,7 @@ class StepConfirm extends React.Component {
     dispatchValidate: PropTypes.func.isRequired,
     dispatchValidateAll: PropTypes.func.isRequired,
     dispatchSaveReservation: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func.isRequired,
@@ -58,7 +59,6 @@ class StepConfirm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
-    dispatchAddToChatRoom: PropTypes.func.isRequired,
   };
 
   static getCouponOffset({ couponNo, reservationCoupons }) {
@@ -195,11 +195,11 @@ class StepConfirm extends React.Component {
   render() {
     const {
       dispatchChangeData,
+      dispatchAddToChatRoom,
       reservationItem,
       reservation,
       isFetched,
       isValid,
-      dispatchAddToChatRoom,
     } = this.props;
     if (!isFetched) return null;
     const {

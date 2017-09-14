@@ -49,6 +49,7 @@ class StepConfirm extends React.Component {
     dispatchValidate: PropTypes.func.isRequired,
     dispatchValidateAll: PropTypes.func.isRequired,
     dispatchSaveReservation: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func.isRequired,
@@ -189,6 +190,7 @@ class StepConfirm extends React.Component {
   render() {
     const {
       dispatchChangeData,
+      dispatchAddToChatRoom,
       reservationItem,
       reservation,
       isFetched,
@@ -227,7 +229,7 @@ class StepConfirm extends React.Component {
             avatarSrc={picture}
             userId={uid}
             username={name}
-            dispatchChat={() => console.log('chat')}
+            dispatchChat={() => dispatchAddToChatRoom(uid, name, picture)}
           />
           <div styleName="info-item">
             <div styleName="icon-container">

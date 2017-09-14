@@ -112,7 +112,7 @@ class ConfirmContainer extends React.Component {
         ['可寄件方式', (
           <div>
             {!isUndefined(sendOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
-            {!isUndefined(sendOptKeys[OPTION_MAIL]) && <div>自行寄件</div>}
+            {!isUndefined(sendOptKeys[OPTION_MAIL]) && <div>宅配、郵寄</div>}
             {!isUndefined(sendOptKeys[OPTION_IN_PERSON]) && <div>面交（自行協調取貨地點）</div>}
           </div>
         )],
@@ -122,7 +122,7 @@ class ConfirmContainer extends React.Component {
               {!isUndefined(returnOptKeys[OPTION_SEVEN]) && <div>7-11交貨便</div>}
               {!isUndefined(returnOptKeys[OPTION_MAIL]) &&
                 <div>
-                  自行寄件：
+                  宅配、郵寄：
                   <span className={cx('hightlight')}>{returnAddresses.join('')}</span>
                 </div>
               }

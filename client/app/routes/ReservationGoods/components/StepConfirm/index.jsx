@@ -26,17 +26,11 @@ import styles from './styles.sass';
 import {
   SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
-  RETURN_BY_IN_PERSON,
-  RETURN_BY_OTHER_SHIPPMENT,
-  ASSIGN_ADDRESS_BY_OWNER,
-  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';
 import {
   PAYMENT_TYPE_ATM,
   PAYMENT_TYPE_CREDIT_CARD,
 } from '../../modules/reservation';
-import RenderAssignOwner from '../RenderAssign/Owner';
-import RenderAssignCustomer from '../RenderAssign/Customer';
 
 
 // const cx = classnames.bind(styles);
@@ -53,6 +47,7 @@ class StepConfirm extends React.Component {
     dispatchValidate: PropTypes.func.isRequired,
     dispatchValidateAll: PropTypes.func.isRequired,
     dispatchSaveReservation: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func.isRequired,
@@ -224,6 +219,7 @@ class StepConfirm extends React.Component {
   render() {
     const {
       dispatchChangeData,
+      dispatchAddToChatRoom,
       reservationItem,
       reservation,
       isFetched,
@@ -262,7 +258,7 @@ class StepConfirm extends React.Component {
             avatarSrc={picture}
             userId={uid}
             username={name}
-            dispatchChat={() => console.log('chat')}
+            dispatchChat={() => dispatchAddToChatRoom(uid, name, picture)}
           />
           <div styleName="info-item">
             <div styleName="icon-container">

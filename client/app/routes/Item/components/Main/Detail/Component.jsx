@@ -102,7 +102,7 @@ class Detail extends React.Component {
   }
   renderShipmentStr(option) {
     let str = replace(option, '0', '/面交');
-    str = replace(str, '1', '/自行寄件');
+    str = replace(str, '1', '/宅配、郵寄');
     str = replace(str, '2', '/7-11')
     return (str);
   }

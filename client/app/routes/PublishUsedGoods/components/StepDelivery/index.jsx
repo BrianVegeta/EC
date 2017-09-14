@@ -197,7 +197,7 @@ class StepDelivery extends React.Component {
                 dispatchChangeData({ sendByOtherShippment: checked })
               }
             >
-              <span styleName="option-label">自行寄件</span>
+              <span styleName="option-label">宅配、郵寄</span>
             </InputCheckBox>
           </div>
           <div styleName="option">
