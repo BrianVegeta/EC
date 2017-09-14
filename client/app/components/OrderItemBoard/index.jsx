@@ -17,7 +17,7 @@ import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
 import { addToChatRoom } from 'modules/chatRooms';
 
-import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment }
+import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment, doReceiveConfirm }
   from 'modules/orderAction';
 
 import styles from './styles.sass';
@@ -61,6 +61,7 @@ class OrderItemBoard extends React.Component {
       {
         show_detail: PropTypes.bool,
         can_ship: PropTypes.bool,
+        can_ship_confirm: PropTypes.bool,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
         can_camera: PropTypes.bool,
@@ -222,7 +223,7 @@ class OrderItemBoard extends React.Component {
 
   renderLesseeActions() {
     const { display } = this.props;
-    const { can_edit, can_pay, can_score, view_score } = display;
+    const { can_edit, can_pay, can_ship_confirm, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -248,6 +249,23 @@ class OrderItemBoard extends React.Component {
             {...buttonConfig}
             content={'付款'}
             onClick={this.generatePayment()}
+          />
+        }
+        { can_ship_confirm &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'確認收貨'}
+            onClick={() => {
+              this.props.dispatch(doReceiveConfirm(this.props.cid))
+              .then(() => {
+                this.props.dispatch(resetAction());
+                this.props.dispatchRefresh();
+              })
+              .catch((error) => {
+                alert(error);
+              });
+            }}
           />
         }
         {can_score &&
