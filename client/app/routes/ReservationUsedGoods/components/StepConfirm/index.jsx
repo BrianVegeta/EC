@@ -21,6 +21,7 @@ import styles from './styles.sass';
 import {
   SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
+  SEND_BY_711,
 } from '../../modules/reservationItem';
 import {
   PAYMENT_TYPE_ATM,
@@ -126,7 +127,7 @@ class StepConfirm extends React.Component {
   renderSendType() {
     const { reservation } = this.props;
     const { sendCity, sendArea, sendAddress,
-      sendType } = reservation;
+      sendType, storeid, storename, storeaddress } = reservation;
     switch (sendType) {
       case SEND_BY_IN_PERSON:
         return (
@@ -147,6 +148,19 @@ class StepConfirm extends React.Component {
             <div styleName="return-type">
               <span styleName="return-type-title">地址：</span>
               <span styleName="return-type-text">{sendCity}{sendArea}{sendAddress}</span>
+            </div>
+          </div>
+        );
+      case SEND_BY_711:
+        return (
+          <div styleName="return-container">
+            <div styleName="return-type">
+              <span styleName="return-type-title">到貨方式：</span>
+              <span styleName="return-type-text">7-11交貨便</span>
+            </div>
+            <div styleName="return-type">
+              <span styleName="return-type-title">門市：</span>
+              <span styleName="return-type-text">{storename}({storeid}) {storeaddress}</span>
             </div>
           </div>
         );

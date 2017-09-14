@@ -93,7 +93,7 @@ export const editReservation = cid =>
 
 const transformParams = (pid, assignAddressType, {
   paymenttype,
-  sendType, returnType,
+  sendType,
   sendCity, sendArea, sendAddress,
   leasestart, leaseend,
   couponNo, unit,
@@ -106,13 +106,12 @@ const transformParams = (pid, assignAddressType, {
   note,
   coupon_no: couponNo,
   send_type: sendType,
-  return_type: returnType,
-  item_lessee_receive_city: sendCity,
-  item_lessee_receive_area: sendArea,
-  item_lessee_receive_address: sendAddress,
-  lessee_receive_711_store_id: storeid,
-  lessee_receive_711_store_name: storename,
-  lessee_receive_711_store_address: storeaddress,
+  item_lessee_receive_city: sendType === '1' ? sendCity : null,
+  item_lessee_receive_area: sendType === '1' ? sendArea : null,
+  item_lessee_receive_address: sendType === '1' ? sendAddress : null,
+  lessee_receive_711_store_id: sendType === '2' ? storeid : null,
+  lessee_receive_711_store_name: sendType === '2' ? storename : null,
+  lessee_receive_711_store_address: sendType === '2' ? storeaddress : null,
   paymenttype,
 });
 

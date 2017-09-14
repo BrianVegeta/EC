@@ -365,6 +365,9 @@ class Ajax::Api::ContractController < ApplicationController
     # item_lessee_receive_city : String;
     # item_lessee_receive_area : String;
     # item_lessee_receive_address : String;
+    # lessee_receive_711_store_id
+    # lessee_receive_711_store_name
+    # lessee_receive_711_store_address
     # leasestart : Long => 合約開始時間
     # leaseend : Ｌong =>  合約結束時間
     # coupon_no : String => 折價券的代號
@@ -373,7 +376,8 @@ class Ajax::Api::ContractController < ApplicationController
     params.permit(:unit, :paymenttype, :send_b_store_id, :send_type,
      :item_owner_receive_city, :item_owner_receive_area, :item_owner_receive_address,
      :return_type, :item_lessee_receive_city, :item_lessee_receive_area,
-     :item_lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note
+     :item_lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note,
+    :lessee_receive_711_store_id, :lessee_receive_711_store_name, :lessee_receive_711_store_address,
      ).merge(current_uid_params)
 
   end
@@ -395,9 +399,6 @@ class Ajax::Api::ContractController < ApplicationController
      # service_city : String 服務城市
      # service_area : String 服務地區
      # service_address : String 服務地址
-     # lessee_receive_711_store_id
-     # lessee_receive_711_store_name
-     # lessee_receive_711_store_address
      # leasestart : Long => 合約開始時間
      # leaseend : Ｌong =>  合約結束時間
      # coupon_no : String => 折價券的代號
@@ -405,7 +406,6 @@ class Ajax::Api::ContractController < ApplicationController
 
      params.permit(:unit, :paymenttype, :service_location_type, :service_city,
        :service_area, :service_address, :leasestart, :leaseend, :coupon_no, :note,
-       :lessee_receive_711_store_id, :lessee_receive_711_store_name, :lessee_receive_711_store_address,
        ).merge(current_uid_params)
 
   end

@@ -36,7 +36,6 @@ import styles from './styles.sass';
 import { DangerText } from './styles';
 
 import {
-  SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
   SEND_BY_711,
   ASSIGN_ADDRESS_BY_OWNER,
