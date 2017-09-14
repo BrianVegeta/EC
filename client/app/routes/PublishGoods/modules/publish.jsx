@@ -57,6 +57,8 @@ const transformState = ({
   ship_before_start_days, discounts, rules,
   overdue_rate, send_option, return_option,
   return_city, return_area, return_address,
+  receive_711_store_id, receive_711_store_name, receive_711_store_address,
+  return_711_store_id, return_711_store_name, return_711_store_address,
 }) => {
   const discount = discounts[0] ? discounts[0].discount : '';
   return ({
@@ -88,6 +90,12 @@ const transformState = ({
     regulation: rules[0] || '',
     hasOverduePolicy: (overdue_rate > 0),
     overdueRate: overdue_rate,
+    storeid: return_711_store_id,
+    storename: return_711_store_name,
+    storeaddress: return_711_store_address,
+    Rstoreid: receive_711_store_id,
+    Rstorename: receive_711_store_name,
+    Rstoreaddress: receive_711_store_address,
   });
 };
 
@@ -120,6 +128,12 @@ const transformParams = (covers, {
   returnByOtherShippment,
   returnByInPerson,
   minimumShippemntDay,
+  Rstoreid,
+  Rstorename,
+  Rstoreaddress,
+  storeid,
+  storename,
+  storeaddress,
 }) => {
   let sendOption = '';
   let returnOption = '';
@@ -157,6 +171,12 @@ const transformParams = (covers, {
     rules: [regulation],
     min_lease_days: 0,
     overdue_rate: hasOverduePolicy ? overdueRate : 0,
+    receive_711_store_id: Rstoreid,
+    receive_711_store_name: Rstorename,
+    receive_711_store_address: Rstoreaddress,
+    return_711_store_id: storeid,
+    return_711_store_name: storename,
+    return_711_store_address: storeaddress,
   });
 };
 
