@@ -597,8 +597,13 @@ class Orderdetail extends React.Component {
             '確認出貨',
           )}
           {this.renderButtonStyle(
+            display.can_711,
+            this.props.dispatchShipGoods,
+            '寄件代碼',
+          )}
+          {this.renderButtonStyle(
             display.can_ship_confirm,
-            () => this.props.dispatchReceiveConfirm,
+            this.props.dispatchReceiveConfirm,
             '確認收貨',
           )}
           {this.renderButtonStyle(
@@ -608,7 +613,7 @@ class Orderdetail extends React.Component {
           )}
           {this.renderButtonStyle(
             display.can_return_confirm,
-            () => this.props.dispatchReceiveConfirm,
+            this.props.dispatchReceiveConfirm,
             '確認收貨',
           )}
           {this.renderButtonStyle(
