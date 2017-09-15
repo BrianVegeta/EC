@@ -6,7 +6,7 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 import Logo from 'components/Icons/Logo';
-
+import { startsWith } from 'lodash';
 import {
   my,
   notifyPath,
@@ -92,6 +92,7 @@ class Header extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const {
       dispatchLogout,
       dispatchPublish,
@@ -99,6 +100,7 @@ class Header extends React.Component {
       auth: { isLogin, currentUser },
       fixed,
       hasShortcut,
+      pathname,
     } = this.props;
 
     const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
@@ -109,7 +111,7 @@ class Header extends React.Component {
     const myCollectionPath = my.collectionPath;
     const notifyIndexPath = notifyPath.contractNotifyPath;
     // <NavItem action={notifyIndexPath} content="通知" />
-
+    const isPublish = startsWith(pathname, '/p/publish');
     return (
       <header
         className={
@@ -159,7 +161,7 @@ class Header extends React.Component {
                     </Link>
                   </li>
                 }
-                {isLogin &&
+                {isLogin && !isPublish &&
                   <NavItem
                     action={dispatchPublish}
                     content="發佈"

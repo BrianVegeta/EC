@@ -56,7 +56,7 @@ const mapDispatchToProps = (
     if (cid) return dispatch(updateReservation(cid));
     return dispatch(saveReservation());
   },
-  dispatchAddToChatRoom: ({ uid, name, picture }) =>
+  dispatchAddToChatRoom: (uid, name, picture) =>
     dispatch(addToChatRoom({ uid, name, picture })),
   redirectToMyOrder: () => browserHistory.push(my.lesseeOrderItem('TAB_REQUEST')),
 });

@@ -57,7 +57,7 @@ class PublishGoods extends React.Component {
     return (
       <div styleName="container">
         <StickyContainer
-          style={{ height: environment.height }}
+          style={{ height: environment.height, marginTop: 30 }}
           className={cx('sidebar')}
         >
           <Sticky>

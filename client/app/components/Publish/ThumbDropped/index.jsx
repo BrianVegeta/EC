@@ -31,7 +31,7 @@ class ThumbDropped extends React.Component {
         <Picture src={coverUrl} />
         {coverLabel}
         <div styleName="ctrlGroups" >
-          <button className="button" styleName="ctrlIcon" onClick={onEdit} >
+          <button className="button" styleName="ctrlIconEdit" onClick={onEdit} >
             <EditIcon {...iconProps} />
           </button>
           <button className="button" styleName="ctrlIcon" onClick={onRemove} >

@@ -17,7 +17,7 @@ class Search {
   static filterCharacter(string) {
     return string.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9]{0,50}/g, '');
   }
-  constructor(search, dispatch) {
+  constructor(search, dispatch, forceClose) {
     this.dispatch = dispatch;
     const {
       query,
@@ -43,7 +43,7 @@ class Search {
     this.isMultiFetching = isMultiFetching;
 
     this.isPanelOpen = isPanelOpen;
-    this.isPanelShow = !_.isEqual(this.query, '') && this.isPanelOpen;
+    this.isPanelShow = !_.isEqual(this.query, '') && this.isPanelOpen && !forceClose;
     this.isShowingNoResult = this.isShowingNoResult();
 
     this.doSearch = this.doSearch.bind(this);

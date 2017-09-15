@@ -43,7 +43,7 @@ class OwnerInfoNote extends React.Component {
               colorType="greenBorder"
               content="私訊"
               width="auto"
-              style={{ padding: '6px 20px' }}
+              style={{ padding: '5px 16px' }}
               onClick={dispatchChat}
             />
           </div>

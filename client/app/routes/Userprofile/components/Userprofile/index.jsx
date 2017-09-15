@@ -50,7 +50,7 @@ class Userprofile extends React.Component {
   };
 
   static renderSubscribeCount(count) {
-    return <span styleName="count">{formatCount(count)}</span>;
+    return <span>{formatCount(count)}</span>;
   }
 
   static renderSidebarDetailTerm(detail) {
@@ -98,12 +98,12 @@ class Userprofile extends React.Component {
       return (
         <div styleName="subscribe-count">
           <Link to={userprofilePaths.fansPath(params.uid)}>
-            <span style={{ marginRight: 35 }}>
+            <span styleName="count-fans" >
               粉絲：{renderSubscribeCount(track.fans_count)}
             </span>
           </Link>
           <Link to={userprofilePaths.trackPath(params.uid)}>
-            <span>
+            <span styleName="count-track" >
               追蹤名單：{renderSubscribeCount(track.tracked_user_count)}
             </span>
           </Link>

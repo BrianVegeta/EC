@@ -1899,8 +1899,7 @@ ul.DropdownNavs_container_XL8Hv {
     height: 245px;
     margin-bottom: 15px; }
   .ItemCard_container_2_eQw .ItemCard_title_1h94t {
-    min-height: 40px;
-    margin-bottom: 15px;
+    min-height: 30px;
     font-size: 16px;
     color: #333; }
   .ItemCard_container_2_eQw .ItemCard_price_2bK94 {
@@ -1943,7 +1942,7 @@ ul.DropdownNavs_container_XL8Hv {
   .Vendor_container_23lSX .Vendor_card_3HEV1 {
     display: inline-block;
     box-shadow: 0 2px 6px 0 #E5E5E5;
-    border: 1px solid #CECECE;
+    border: 1px solid  #E5E5E5;
     background-color: #FFF;
     width: 336px;
     height: 350px;
@@ -2044,8 +2043,7 @@ ul.DropdownNavs_container_XL8Hv {
   .ItemBoard_container_2ln7H .ItemBoard_cover_2Xhzy {
     margin-bottom: 15px; }
   .ItemBoard_container_2ln7H .ItemBoard_title_5h56m {
-    min-height: 40px;
-    margin-bottom: 15px;
+    min-height: 30px;
     font-size: 16px;
     color: #333; }
   .ItemBoard_container_2ln7H .ItemBoard_price_349pi {
@@ -2541,7 +2539,6 @@ ul.DropdownNavs_container_XL8Hv {
   .BillingDetail_detail-container_1T1DC .BillingDetail_price_2GoQG {
     float: right; }
     .BillingDetail_detail-container_1T1DC .BillingDetail_price_2GoQG .BillingDetail_high-light_rzINI {
-      font-size: 20px;
       color: #31ABBA; }
 .components_container_2uXJ5 {
   font-size: 18px;
@@ -2879,9 +2876,22 @@ ul.DropdownNavs_container_XL8Hv {
           .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC {
             float: left;
             line-height: 46px; }
-            .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count_1YlTF {
+            .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-fans_2ahnW {
+              margin-right: 35px;
               font-weight: 300;
               color: #31ABBA; }
+              .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-fans_2ahnW:hover {
+                color: #53BECE; }
+              .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-fans_2ahnW:active {
+                color: #31ABBA; }
+            .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-track_51zkR {
+              margin-right: 35px;
+              font-weight: 300;
+              color: #31ABBA; }
+              .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-track_51zkR:hover {
+                color: #53BECE; }
+              .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-count_1WZeC .Userprofile_count-track_51zkR:active {
+                color: #31ABBA; }
           .Userprofile_container_-U4Q5 .Userprofile_main-wrapper_GYLhx .Userprofile_profile-header_tyKub .Userprofile_detail_1jGxp .Userprofile_subscribe_1Swkx .Userprofile_subscribe-btn_3lvBt {
             float: right;
             display: inline-block;
@@ -4141,6 +4151,9 @@ body {
 
 .OrderItemBoard_oib-header-name-style_8vL_L {
   display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-left: 10px;
   font-weight: 600;
   font-size: 17px; }
@@ -4151,6 +4164,7 @@ body {
 
 .OrderItemBoard_oib-header-chat-style_20FrU {
   display: inline-block;
+  vertical-align: top;
   padding-left: 10px;
   width: 75px; }
 
@@ -4171,14 +4185,14 @@ body {
 .OrderItemBoard_oib-date-style_11uOK {
   font-size: 16px;
   font-weight: 400;
-  color: #31ABBA; }
+  color: #999; }
 
 .OrderItemBoard_oib-text-style_1SYBP {
   padding-top: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   font-size: 20px;
   font-weight: 400;
   color: #333; }
@@ -4199,6 +4213,8 @@ body {
 .OrderItemBoard_oib-price-style_UChSZ {
   display: inline-block;
   float: right;
+  font-size: 20px;
+  color: #31ABBA;
   font-weight: 600; }
 
 .OrderItemBoard_oib-footer-section_kgkeG {
@@ -4211,7 +4227,7 @@ body {
   margin-Top: 15px;
   margin-left: 40px;
   margin-bottom: 15px;
-  color: #1991A0; }
+  color: #999; }
 
 .OrderItemBoard_oib-action-section_2-xOc {
   margin-right: 40px;
@@ -4274,6 +4290,9 @@ body {
 
 .OrderSpaceBoard_ospb-header-name-style_QYdGl {
   display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-left: 10px;
   font-weight: 600;
   font-size: 17px; }
@@ -4284,6 +4303,7 @@ body {
 
 .OrderSpaceBoard_ospb-header-chat-style_1Zeos {
   display: inline-block;
+  vertical-align: top;
   padding-left: 10px;
   width: 75px; }
 
@@ -4304,14 +4324,14 @@ body {
 .OrderSpaceBoard_ospb-date-style_3YHqT {
   font-size: 16px;
   font-weight: 400;
-  color: #31ABBA; }
+  color: #999; }
 
 .OrderSpaceBoard_ospb-text-style_By8Qp {
   padding-top: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   font-size: 20px;
   font-weight: 400;
   color: #333; }
@@ -4332,6 +4352,8 @@ body {
 .OrderSpaceBoard_ospb-price-style_5NQOU {
   display: inline-block;
   float: right;
+  font-size: 20px;
+  color: #31ABBA;
   font-weight: 600; }
 
 .OrderSpaceBoard_ospb-footer-section_1BdMn {
@@ -4344,7 +4366,7 @@ body {
   margin-Top: 15px;
   margin-left: 40px;
   margin-bottom: 15px;
-  color: #1991A0; }
+  color: #999; }
 
 .OrderSpaceBoard_ospb-action-section_5mfrJ {
   margin-right: 40px;
@@ -4372,6 +4394,9 @@ body {
 
 .UsedItemBoard_oib-header-name-style_1-aaA {
   display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-left: 10px;
   font-weight: 600;
   font-size: 17px; }
@@ -4382,6 +4407,7 @@ body {
 
 .UsedItemBoard_oib-header-chat-style_19e4P {
   display: inline-block;
+  vertical-align: top;
   padding-left: 10px;
   width: 75px; }
 
@@ -4409,7 +4435,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   font-size: 20px;
   font-weight: 400;
   color: #333; }
@@ -4430,6 +4456,8 @@ body {
 .UsedItemBoard_oib-price-style_-xQcj {
   display: inline-block;
   float: right;
+  font-size: 20px;
+  color: #31ABBA;
   font-weight: 600; }
 
 .UsedItemBoard_oib-footer-section_2B6zQ {
@@ -4442,7 +4470,7 @@ body {
   margin-Top: 15px;
   margin-left: 40px;
   margin-bottom: 15px;
-  color: #1991A0; }
+  color: #999; }
 
 .UsedItemBoard_oib-action-section_2FWBP {
   margin-right: 40px;
@@ -4470,6 +4498,9 @@ body {
 
 .OrderServiceBoard_oseb-header-name-style_3w_fU {
   display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-left: 10px;
   font-weight: 600;
   font-size: 17px; }
@@ -4480,6 +4511,7 @@ body {
 
 .OrderServiceBoard_oseb-header-chat-style_3NFEb {
   display: inline-block;
+  vertical-align: top;
   padding-left: 10px;
   width: 75px; }
 
@@ -4507,7 +4539,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   font-size: 20px;
   font-weight: 400;
   color: #333; }
@@ -4528,6 +4560,8 @@ body {
 .OrderServiceBoard_oseb-price-style_2tt_P {
   display: inline-block;
   float: right;
+  font-size: 20px;
+  color: #31abba;
   font-weight: 600; }
 
 .OrderServiceBoard_oseb-footer-section_3ed8j {
@@ -4540,7 +4574,7 @@ body {
   margin-Top: 15px;
   margin-left: 40px;
   margin-bottom: 15px;
-  color: #1991A0; }
+  color: #999; }
 
 .OrderServiceBoard_oseb-action-section_3v2gF {
   margin-right: 40px;
@@ -5175,6 +5209,7 @@ h2.Main_sub-title_vuTAo {
 
 .CommentBox_comment_2nbM8 {
   background-color: #31ABBA;
+  border-width: 0px;
   color: #fff; }
 .Comments_title_1c2fp {
   font-size: 24px;
@@ -5403,6 +5438,19 @@ h2.Main_sub-title_vuTAo {
   padding: 5px;
   right: 0;
   top: 0; }
+  .ThumbDropped_ctrlGroups_1pUGr .ThumbDropped_ctrlIconEdit_3MICp {
+    display: inline-block;
+    text-align: center;
+    background: #333;
+    cursor: pointer;
+    padding: 5px;
+    height: 26px;
+    width: 26px;
+    border-radius: 26px;
+    transition: background-color 200ms ease;
+    margin-right: 5px; }
+    .ThumbDropped_ctrlGroups_1pUGr .ThumbDropped_ctrlIconEdit_3MICp:hover {
+      background: #31abba; }
   .ThumbDropped_ctrlGroups_1pUGr .ThumbDropped_ctrlIcon_1n_cr {
     display: inline-block;
     text-align: center;
@@ -5413,8 +5461,6 @@ h2.Main_sub-title_vuTAo {
     width: 26px;
     border-radius: 26px;
     transition: background-color 200ms ease; }
-    .ThumbDropped_ctrlGroups_1pUGr .ThumbDropped_ctrlIcon_1n_cr:not(:last-child) {
-      margin-right: 5px; }
     .ThumbDropped_ctrlGroups_1pUGr .ThumbDropped_ctrlIcon_1n_cr:hover {
       background: red; }
 .SortableGallery_gallery_1XfhJ {
@@ -6576,6 +6622,8 @@ h2.Main_sub-title_vuTAo {
     line-height: 22px; }
 
 .StepConfirm_payment-type-container_3lmwS {
+  text-align: right;
+  margin-right: 25px;
   font-size: 18px;
   color: #31ABBA; }
 
@@ -6768,6 +6816,8 @@ h2.Main_sub-title_vuTAo {
     line-height: 22px; }
 
 .StepConfirm_payment-type-container_2BO_6 {
+  text-align: right;
+  margin-right: 25px;
   font-size: 18px;
   color: #31ABBA; }
 
@@ -6946,6 +6996,8 @@ h2.Main_sub-title_vuTAo {
     line-height: 22px; }
 
 .StepConfirm_payment-type-container_2x_dN {
+  text-align: right;
+  margin-right: 25px;
   font-size: 18px;
   color: #31ABBA; }
 
@@ -7119,6 +7171,8 @@ h2.Main_sub-title_vuTAo {
     line-height: 22px; }
 
 .StepConfirm_payment-type-container_27Xv9 {
+  text-align: right;
+  margin-right: 25px;
   font-size: 18px;
   color: #31ABBA; }
 

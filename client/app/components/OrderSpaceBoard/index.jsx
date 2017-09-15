@@ -115,6 +115,7 @@ class OrderSpaceBoard extends React.Component {
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
@@ -139,7 +140,7 @@ class OrderSpaceBoard extends React.Component {
           />
         }
         <FormButton
-          colorType={'greenBorder'}
+          colorType={'green'}
           {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}

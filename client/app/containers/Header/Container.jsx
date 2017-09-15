@@ -7,12 +7,18 @@ import { getNotitications } from 'modules/notification';
 import Component from './index';
 
 /* pick props */
-const mapStateToProps = ({ environment, auth, notification }, props) => ({
+const mapStateToProps = ({
   environment,
   auth,
   notification,
-  ...props,
-});
+  routing: { locationBeforeTransitions } },
+  props) => ({
+    environment,
+    auth,
+    notification,
+    pathname: locationBeforeTransitions.pathname,
+    ...props,
+  });
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({

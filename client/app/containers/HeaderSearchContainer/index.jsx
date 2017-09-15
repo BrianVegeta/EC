@@ -67,10 +67,10 @@ class Search extends React.Component {
                 prev={model.prevSearch}
               >
                 {users.map((user, index) =>
-                  <RowUser
+                  (<RowUser
                     key={`${index + 1}`}
                     user={new ModelRowUser(user, dispatch)}
-                  />,
+                  />),
                 )}
                 {
                   this.renderMoreButtion(isPaginable,
@@ -88,10 +88,10 @@ class Search extends React.Component {
                 prev={model.prevSearch}
               >
                 {wishs.map((wish, index) =>
-                  <RowItem
+                  (<RowItem
                     key={`${index + 1}`}
                     source={new ModelRowWish(wish, dispatch)}
-                  />,
+                  />),
                 )}
                 { this.renderMoreButtion(isPaginable,
                   isWishsPaginating,
@@ -108,10 +108,10 @@ class Search extends React.Component {
                 prev={model.prevSearch}
               >
                 {items.map((item, index) =>
-                  <RowItem
+                  (<RowItem
                     key={`${index + 1}`}
                     source={new ModelRowItem(item, dispatch)}
-                  />,
+                  />),
                 )}
                 { this.renderMoreButtion(isPaginable,
                   isItemsPaginating,
