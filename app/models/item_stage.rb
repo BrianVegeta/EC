@@ -3,7 +3,7 @@ class ItemStage < StageBase
   #CONSTANT VALUE
   KEY_SHIP = 'can_ship'
   KEY_711 = 'can_711'
-  KEY_711_LOG = 'can_711_log'
+  KEY_711_RETURN = 'can_711_return'
   KEY_SHIP_CONFIRM = 'can_ship_confirm'
   KEY_RETURN = 'can_return'
   KEY_RETURN_CONFIRM = 'can_return_confirm'
@@ -27,7 +27,6 @@ class ItemStage < StageBase
     #ADDITIONAL PROCESS
     if self.stage_type == NORMAL_CONTRACT
       check_can_ship
-      check_711_log
       check_can_ship_confirm
       check_return_ship
       check_return_confirm
@@ -67,12 +66,6 @@ class ItemStage < StageBase
     modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
-  def check_711_log
-    check_stage = self.screen_type > STAGE_SHIPPING
-    check_condition = self.contract['send_type'] == '2'
-    modify_display_param(KEY_711_LOG, check_stage && check_condition)
-  end
-
   def check_can_ship_confirm
     check_stage = self.screen_type == STAGE_SHIP_CONFIRM || self.screen_type == STAGE_CONTRACT_ONGOING
     check_condition = (self.is_owner == false) && (not self.contract['lessee_receive'])
@@ -83,7 +76,11 @@ class ItemStage < StageBase
   def check_return_ship
     check_stage = self.screen_type == STAGE_CONTRACT_END
     check_condition = (self.is_owner == false)
-    modify_display_param(KEY_RETURN, check_stage && check_condition)
+    if self.contract['send_type'] == '2'
+      modify_display_param(KEY_711_RETURN, check_stage && check_condition)
+    else
+      modify_display_param(KEY_RETURN, check_stage && check_condition)
+    end
     modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 

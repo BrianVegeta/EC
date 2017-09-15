@@ -5,7 +5,7 @@ import Close from 'react-icons/lib/md/close';
 import { formatDate } from 'lib/time';
 import styles from './styles.sass';
 
-class ATMBank extends React.Component {
+class Seven extends React.Component {
 
   static propTypes = {
     dispatchClose: PropTypes.func.isRequired,
@@ -55,4 +55,4 @@ class ATMBank extends React.Component {
   }
 }
 
-export default CSS(ATMBank, styles);
+export default CSS(Seven, styles);

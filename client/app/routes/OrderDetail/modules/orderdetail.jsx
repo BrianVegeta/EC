@@ -65,12 +65,12 @@ const fetchedSueDetail = sueDetail => ({
   sueDetail,
 });
 
-const fetchedSendSeven = ShipOrder => ({
+export const fetchedSendSeven = ShipOrder => ({
   type: FETCHED_SEND_SEVEN,
   ShipOrder,
 });
 
-const fetchedReturnSeven = ShipOrder => ({
+export const fetchedReturnSeven = ShipOrder => ({
   type: FETCHED_RETURN_SEVEN,
   ShipOrder,
 });

@@ -74,6 +74,7 @@ class Orderdetail extends React.Component {
     dispatchEndSpace: PropTypes.func.isRequired,
     dispatchEndService: PropTypes.func.isRequired,
     dispatchSevenOrder: PropTypes.func.isRequired,
+    dispatchSevenLog: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -134,9 +135,6 @@ class Orderdetail extends React.Component {
       targetComment,
       targetScore,
     });
-  }
-  generateSevenAction() {
-    return () => this.props.dispatchSevenOrder('OWNER_SEND');
   }
   generateEditAddress({ type, cid, pid }) {
     switch (type) {
@@ -335,7 +333,7 @@ class Orderdetail extends React.Component {
             style={{ padding: '5px 15px 5px 15px', marginTop: '10px' }}
             width={100}
             content="物流資訊"
-            onClick={() => { console.log(orderNo); }}
+            onClick={() => { this.props.dispatchSevenLog(orderNo); }}
           />
         }
       </div>
@@ -642,12 +640,7 @@ class Orderdetail extends React.Component {
           )}
           {this.renderButtonStyle(
             display.can_711,
-            this.generateSevenAction(order),
-            '寄件代碼',
-          )}
-          {this.renderButtonStyle(
-            display.can_711_log,
-            this.generateSevenAction(order),
+            () => this.props.dispatchSevenOrder('OWNER_SEND'),
             '寄件代碼',
           )}
           {this.renderButtonStyle(
@@ -659,6 +652,11 @@ class Orderdetail extends React.Component {
             display.can_return,
             this.props.dispatchReturn,
             '確認還貨',
+          )}
+          {this.renderButtonStyle(
+            display.can_711_return,
+            () => this.props.dispatchSevenOrder('LESSEE_SEND'),
+            '寄件代碼',
           )}
           {this.renderButtonStyle(
             display.can_return_confirm,

@@ -24,7 +24,6 @@ class Ajax::Api::ShipController < ApplicationController
   def create
     obj = ::Api::Ship::Create.new order_params, current_apitoken
     success = obj.request
-    success = obj.request
     if success
       obj.response_data = reverse_merge(obj.response_data, ResponseJson::ShipOrder.structure)
     end
@@ -40,6 +39,12 @@ class Ajax::Api::ShipController < ApplicationController
     respond success, obj
   end
 
+  def log
+    obj = ::Api::Ship::Log.new log_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
   ###################### PARAMS ##################################
   protected
   def store_result_params
@@ -48,5 +53,9 @@ class Ajax::Api::ShipController < ApplicationController
 
   def order_params
     params.permit(:cid, :send_type).merge(current_uid_params)
+  end
+
+  def log_params
+    params.permit(:order_no).merge(current_uid_params)
   end
 end

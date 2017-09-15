@@ -14,7 +14,7 @@ export const RENDER_SHOW_WISH = 'RENDER_SHOW_WISH';
 export const RENDER_ATM = 'RENDER_ATM';
 export const RENDER_REPORT = 'RENDER_REPORT';
 export const RENDER_SEVEN_NO = 'RENDER_SEVEN_NO';
-
+export const RENDER_SEVEN_LOG = 'RENDER_SEVEN_LOG';
 // =============================================
 // = action type =
 // =============================================
@@ -68,6 +68,10 @@ export const popupReport = options =>
 
 export const popupSevenNo = options =>
   openPopup({ renderType: RENDER_SEVEN_NO, options });
+
+export const popupSevenLog = options =>
+  openPopup({ renderType: RENDER_SEVEN_LOG, options });
+
 
 export const popupFetching = () => ({
   type: FETCHING,
