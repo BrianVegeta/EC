@@ -15,6 +15,7 @@ import {
   RENDER_ATM,
   RENDER_SHOW_WISH,
   RENDER_REPORT,
+  RENDER_SEVEN_NO,
 } from 'modules/popup';
 import BankSetupContainer from 'containers/Popup/BankSetup/Container';
 import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
@@ -24,6 +25,7 @@ import LoginContainer from 'containers/Popup/Login/Container';
 import ShowWishContainer from 'containers/Popup/ShowWish';
 import ATMBankContainer from 'containers/Popup/ATMBank/Container';
 import ReportContainer from 'containers/Popup/Report/Container';
+import SevenNoContainer from 'containers/Popup/Seven/Container';
 
 class Popup extends React.Component {
 
@@ -137,7 +139,18 @@ class Popup extends React.Component {
             />
           </ModalBox>
         );
-
+      case RENDER_SEVEN_NO:
+        return (
+          <ModalBox
+            width={460}
+            onClose={this.props.dispatchCloseModal}
+          >
+            <SevenNoContainer
+              options={options}
+              dispatchClose={this.props.dispatchCloseModal}
+            />
+          </ModalBox>
+        );
       default:
         return null;
 

@@ -987,6 +987,57 @@ body.swal2-shown{overflow-y:hidden}body.swal2-iosfix{position:fixed;left:0;right
       color: white;
       border-radius: 3px;
       padding: 15px 52px 15px 52px; }
+.Seven_container_hKGKS {
+  background: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); }
+  .Seven_container_hKGKS .Seven_nav_1GqxL {
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #CECECE; }
+    .Seven_container_hKGKS .Seven_nav_1GqxL .Seven_title_2RYQg {
+      font-size: 18px;
+      line-height: 40px;
+      font-weight: 600; }
+    .Seven_container_hKGKS .Seven_nav_1GqxL .Seven_close-button_LfLD1 {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 6px;
+      margin-right: 10px;
+      position: absolute;
+      cursor: pointer;
+      color: #999;
+      font-size: 20px; }
+      .Seven_container_hKGKS .Seven_nav_1GqxL .Seven_close-button_LfLD1:hover {
+        color: #333; }
+  .Seven_container_hKGKS .Seven_content_3bk-M {
+    margin-left: 50px;
+    margin-right: 50px;
+    font-weight: 200;
+    font-size: 16px; }
+    .Seven_container_hKGKS .Seven_content_3bk-M .Seven_serial_number_1KBIc {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 600;
+      color: #333; }
+    .Seven_container_hKGKS .Seven_content_3bk-M .Seven_serial_hint_3oaIK {
+      margin-top: 7px;
+      text-align: center;
+      font-size: 14px;
+      color: #999; }
+    .Seven_container_hKGKS .Seven_content_3bk-M .Seven_sub-title_o1_cv {
+      margin-top: 40px;
+      text-align: center; }
+    .Seven_container_hKGKS .Seven_content_3bk-M .Seven_check-content_SJU_z {
+      margin-top: 15px;
+      margin-left: 75px; }
+    .Seven_container_hKGKS .Seven_content_3bk-M .Seven_done_2jJqE {
+      margin: 55px 0px 55px 100px;
+      background-color: #31ABBA;
+      color: white;
+      border-radius: 3px;
+      padding: 15px 52px 15px 52px; }
 .ChatRoom_container_2Wqe7 {
   position: fixed;
   z-index: 1000;
@@ -2459,9 +2510,21 @@ ul.DropdownNavs_container_XL8Hv {
     margin-top: 15px; }
   .components_container_2uXJ5 .components_top_40px_style_372Ri {
     margin-top: 40px; }
-  .components_container_2uXJ5 .components_half-width-style_1GTWu {
-    display: inline-block;
-    width: 50%; }
+  .components_container_2uXJ5 .components_seven-container_3OHjt {
+    margin-top: 0px; }
+    .components_container_2uXJ5 .components_seven-container_3OHjt .components_seven-store_ho-Si {
+      margin-top: 0px; }
+    .components_container_2uXJ5 .components_seven-container_3OHjt .components_seven-no_2g8Tr {
+      margin-top: 10px;
+      color: #53BECE; }
+  .components_container_2uXJ5 .components_shipping-table_2KOWP {
+    width: 100%; }
+    .components_container_2uXJ5 .components_shipping-table_2KOWP .components_shipping-title_pOT9u {
+      text-align: left;
+      padding-bottom: 10px; }
+    .components_container_2uXJ5 .components_shipping-table_2KOWP .components_shipping-content_25WFm {
+      text-align: left;
+      vertical-align: top; }
   .components_container_2uXJ5 .components_log-container_WdOBE {
     margin-top: 30px;
     padding: 20px 20px 20px 20px;

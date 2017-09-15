@@ -138,6 +138,8 @@ Rails.application.routes.draw do
       post 'score_order', to: 'contract#score' #
       post 'end_service', to: 'contract#service_end' #
       post 'end_space', to: 'contract#space_end' #
+      post 'get_ship_order', to: 'ship#order'
+      post 'create_ship_order', to: 'ship#create'
       #PAYMENT
       post 'get_balance_list', to: 'payment#search'
 

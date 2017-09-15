@@ -146,6 +146,24 @@ class ResponseJson::Contract
         #  -Long
         last_update_time: nil,
         #  -Long
+        lessee_receive_711_store_id: nil,
+        #  -String
+        lessee_receive_711_store_name: nil,
+        #  -String
+        lessee_receive_711_store_address: nil,
+        #  -String
+        owner_receive_711_store_id: nil,
+        #  -String
+        owner_receive_711_store_name: nil,
+        #  -String
+        owner_receive_711_store_address: nil,
+        #  -String
+        return_711_store_id: nil,
+        #  -String
+        return_711_store_name: nil,
+        #  -String
+        return_711_store_address: nil,
+        #  -String
         create_time: nil
         #  -Long
       }

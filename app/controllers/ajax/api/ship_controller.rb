@@ -21,9 +21,32 @@ class Ajax::Api::ShipController < ApplicationController
     render file: 'app/views/ajax/store/index.html.erb'
   end
 
+  def create
+    obj = ::Api::Ship::Create.new order_params, current_apitoken
+    success = obj.request
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ShipOrder.structure)
+    end
+    respond success, obj
+  end
+
+  def order
+    obj = ::Api::Ship::Order.new order_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ShipOrder.structure)
+    end
+    respond success, obj
+  end
+
   ###################### PARAMS ##################################
   protected
   def store_result_params
     params.permit(:storeid, :storename, :storeaddress)
+  end
+
+  def order_params
+    params.permit(:cid, :send_type).merge(current_uid_params)
   end
 end

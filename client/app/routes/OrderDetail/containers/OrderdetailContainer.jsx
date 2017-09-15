@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { addToChatRoom } from 'modules/chatRooms';
 import { popupScoreRating, popupAccessCheck,
-  popupBankInfoSetup, popupATMBank } from 'modules/popup';
+  popupBankInfoSetup, popupATMBank, popupSevenNo } from 'modules/popup';
 import { doAccept, doCancel, doReject,
   doShipGoods, doReturn, doReceiveConfirm,
   doScore, doEndOrder, resetAction, doCreditCardPayment,
-  doATMPayment,
+  doATMPayment, getShipOrder
 } from '../modules/orderaction';
 
 import Orderdetail from '../components/Orderdetail';
@@ -83,6 +83,11 @@ const mapDispatchToProps = (dispatch, { params }) => {
       const options = {};
       dispatch(popupATMBank(options));
       dispatch(doATMPayment(params.cid));
+    },
+    dispatchSevenOrder: (type) => {
+      const options = {};
+      dispatch(popupSevenNo(options));
+      dispatch(getShipOrder(params.cid, type));
     },
     dispatchPaymentCreditCard: () => {
       dispatch(doCreditCardPayment(params.cid))

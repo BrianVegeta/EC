@@ -73,6 +73,7 @@ class Orderdetail extends React.Component {
     dispatchReceiveConfirm: PropTypes.func.isRequired,
     dispatchEndSpace: PropTypes.func.isRequired,
     dispatchEndService: PropTypes.func.isRequired,
+    dispatchSevenOrder: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -134,7 +135,9 @@ class Orderdetail extends React.Component {
       targetScore,
     });
   }
-
+  generateSevenAction() {
+    return () => this.props.dispatchSevenOrder('OWNER_SEND');
+  }
   generateEditAddress({ type, cid, pid }) {
     switch (type) {
       case 'ITEM':
@@ -303,63 +306,104 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
-
+  renderSevenDetail(isSend, order) {
+    let storeid = '';
+    let storename = '';
+    let orderNo = '';
+    let showButton = false;
+    if (isSend) {
+      const { orderdetail: { sendSeven } } = this.props;
+      storeid = order.lessee_receive_711_store_id;
+      storename = order.lessee_receive_711_store_name;
+      orderNo = sendSeven ? sendSeven.orderno : '尚未建立';
+      showButton = (sendSeven);
+    } else {
+      const { orderdetail: { returnSeven } } = this.props;
+      storeid = order.return_711_store_id;
+      storename = order.return_711_store_name;
+      orderNo = returnSeven ? returnSeven.orderno : '尚未建立';
+      showButton = (returnSeven);
+    }
+    return (
+      <div styleName="seven-container">
+        <div styleName="seven-store">門市：{storename} ({storeid})</div>
+        <div styleName="seven-no">寄件代碼：{orderNo}</div>
+        { showButton &&
+          <FormButton
+            colorType="greenBorder"
+            size="sm"
+            style={{ padding: '5px 15px 5px 15px', marginTop: '10px' }}
+            width={100}
+            content="物流資訊"
+            onClick={() => { console.log(orderNo); }}
+          />
+        }
+      </div>
+    );
+  }
   renderShippingDetail(order) {
     const { type, send_type, return_type } = order;
-    if (type !== 'ITEM') {
+    if (type !== 'ITEM' && type !== 'USED_ITEM') {
       return null;
     }
 
     let showSecondLine = false;
     let sendTypeName = '';
-    let sendDetail = '';
+    let sendDetail = null;
     let returnTypeName = '';
-    let returnDetail = '';
+    let returnDetail = null;
 
     switch (send_type) {
       case '0':
         sendTypeName = '面交';
-        sendDetail = '';
         break;
       case '1':
-        sendTypeName = '自行寄送';
+        sendTypeName = '宅配、郵寄';
         showSecondLine = true;
         break;
+      case '2':
+        sendTypeName = '7-11交貨便';
+        showSecondLine = true;
+        sendDetail = this.renderSevenDetail(true, order);
+        break;
       default:
-        sendTypeName = '';
-        sendDetail = '';
         break;
     }
 
     switch (return_type) {
       case '0':
         returnTypeName = '面交';
-        returnDetail = '';
+        returnDetail = null;
         break;
       case '1':
-        returnTypeName = '自行寄送';
+        returnTypeName = '宅配、郵寄';
         showSecondLine = true;
         break;
+      case '2':
+        returnTypeName = '7-11交貨便';
+        showSecondLine = true;
+        returnDetail = this.renderSevenDetail(false, order);
+        break;
       default:
-        returnTypeName = '其他';
-        returnDetail = '';
     }
 
     return (
       <div styleName="section-content">
         <div styleName="section-header">物流方式</div>
-        <div>
-          <div style={{ position: 'relative' }}>
-            <div styleName="half-width-style">{ `到貨方式: ${sendTypeName}` }</div>
-            <div styleName="half-width-style">{ `還貨方式: ${returnTypeName}` }</div>
-          </div>
-          { showSecondLine &&
-            <div style={{ position: 'relative', paddingTop: 10 }}>
-              <div styleName="half-width-style">{ sendDetail }</div>
-              <div styleName="half-width-style">{ returnDetail }</div>
-            </div>
-          }
-        </div>
+        <table styleName="shipping-table">
+          <tbody>
+            <tr>
+              <th styleName="shipping-title">{ `到貨方式: ${sendTypeName}` }</th>
+              <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
+            </tr>
+            { showSecondLine &&
+              <tr>
+                <td styleName="shipping-content">{ sendDetail }</td>
+                <td styleName="shipping-content">{ returnDetail }</td>
+              </tr>
+            }
+          </tbody>
+        </table>
         <div styleName="padding-40btm-style" />
       </div>
     );
@@ -598,7 +642,12 @@ class Orderdetail extends React.Component {
           )}
           {this.renderButtonStyle(
             display.can_711,
-            this.props.dispatchShipGoods,
+            this.generateSevenAction(order),
+            '寄件代碼',
+          )}
+          {this.renderButtonStyle(
+            display.can_711_log,
+            this.generateSevenAction(order),
             '寄件代碼',
           )}
           {this.renderButtonStyle(

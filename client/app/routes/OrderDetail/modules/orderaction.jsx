@@ -286,6 +286,45 @@ export function doATMPayment(cid) {
     });
 }
 
+export function getShipOrder(cid, type) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'atmPay'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/get_ship_order.json',
+        {
+          cid,
+          send_type: type,
+        }, getState(), isCatch,
+      ).then((data) => {
+        if (data.orderno) {
+          dispatch(popupFetched(data));
+          dispatch(success(requestId));
+          resolve();
+        } else {
+          asyncXhrAuthedPost(
+            '/ajax/create_ship_order.json',
+            {
+              cid,
+              send_type: type,
+            }, getState(), isCatch,
+          ).then((data2) => {
+            dispatch(popupFetched(data2));
+            dispatch(success(requestId));
+            resolve();
+          });
+        }
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
 // =============================================
 // = reducer =
 // =============================================
