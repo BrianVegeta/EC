@@ -17,8 +17,8 @@ export const SHIPPING_DAYS_MIN = 0;
 export const numberNotInRage = (value, { min, max }) => {
   const numbericValue = parseInt(value);
   if (numbericValue.isNaN) return null;
-  if (numbericValue < max && numbericValue > min) {
-    return `請填 0 或大於 ${max} 以上的數字`;
+  if (numbericValue <= max && numbericValue >= min) {
+    return `請填 ${min - 1} 或大於 ${max + 1} 以上的數字`;
   }
   return null;
 };
@@ -91,7 +91,7 @@ export default {
     presence: {
       message: '^請填押金，如不需要押金請填 0。',
     },
-    numberNotInRage: { min: 1, max: 100 },
+    numberNotInRage: { min: 1, max: 99 },
     numericality: {
       notValid: '^請填數字',
       onlyInteger: true,
