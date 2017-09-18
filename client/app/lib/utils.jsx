@@ -38,6 +38,7 @@ export const asyncS3ToBlob = (s3, type) =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', s3, true);
+    xhr.withCredentials = true;
     xhr.responseType = 'arraybuffer';
     xhr.onload = () => {
       const arrayBufferView = new Uint8Array(xhr.response);
