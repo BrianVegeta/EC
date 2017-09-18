@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { IndexLink, Link } from 'react-router';
+import { isEqual } from 'lodash';
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
@@ -42,7 +43,10 @@ class Header extends React.Component {
     dispatchLogout: PropTypes.func.isRequired,
     dispatchPublish: PropTypes.func.isRequired,
     dispatchNotify: PropTypes.func.isRequired,
-    // dispatchCollection: PropTypes.func.isRequired,
+    notification: PropTypes.shape({
+      notifyData: PropTypes.array.isRequired,
+      notifyCData: PropTypes.object.isRequired,
+    }).isRequired,
   };
 
   componentDidMount() {
@@ -51,6 +55,26 @@ class Header extends React.Component {
       this.props.dispatchNotify();
       // this.props.dispatchCollection();
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      fixed,
+      hasShortcut,
+      searchable,
+      auth,
+      notification,
+    } = this.props;
+    if (
+      isEqual(nextProps.fixed, fixed) &&
+      isEqual(nextProps.hasShortcut, hasShortcut) &&
+      isEqual(nextProps.searchable, searchable) &&
+      isEqual(nextProps.auth, auth) &&
+      isEqual(nextProps.notification, notification)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   renderCircle(type) {
