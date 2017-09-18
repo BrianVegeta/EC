@@ -48,7 +48,6 @@ class Preload extends React.Component {
     this.unbindLoader();
 
     this.image = new Image();
-    this.image.crossOrigin = 'Anonymous';
     this.image.addEventListener('load', this.handleSuccess, false);
     this.image.addEventListener('error', this.handleError, false);
     this.image.src = this.props.imageSrc;
