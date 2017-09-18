@@ -37,7 +37,8 @@ export const base64ToBlobData = (base64, type) => {
 export const asyncS3ToBlob = (s3, type) =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', s3, true);
+    xhr.open('GET', s3);
+    xhr.withCredentials = false;
     xhr.responseType = 'arraybuffer';
     xhr.onload = () => {
       const arrayBufferView = new Uint8Array(xhr.response);
