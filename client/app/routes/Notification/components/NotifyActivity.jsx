@@ -41,7 +41,7 @@ class NotifyActivity extends React.Component {
         tabName: 'SYSTEM' },
     ];
     return (
-      <Container titleText={'活動通知'}>
+      <Container titleText="通知">
         <Navigation navs={navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}

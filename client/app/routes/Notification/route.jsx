@@ -2,7 +2,7 @@
 // import { fetchCoupons } from 'connector/myCoupon/actions';
 // import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 import { omit } from 'lodash';
-import routeActivity from './routes/NotifyActivity/route'
+import routeActivity from './routes/NotifyActivity/route';
 import routeContract from './routes/NotifyContract/route';
 import routeSystem from './routes/NotifySystem/route';
 
