@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 
 import CSS from 'react-css-modules';
 
-import { orderDetail } from 'lib/paths';
+import { orderDetail, userprofilePaths } from 'lib/paths';
 import { redirectToWithReferrer } from 'lib/redirect';
 
 import styles from './styles.sass';
@@ -52,9 +52,12 @@ class UserInfoBoard extends React.Component {
     const showSueForm = (contractstage > 4 && contractstage < 11);
     return (
       <div styleName="boundary">
-        <div styleName="head-style">
+        <Link
+          to={userprofilePaths.indexPath(uid)}
+          styleName="head-style"
+        >
           <Avatar src={imgUrl} />
-        </div>
+        </Link>
         <div styleName="board-style">
           <div styleName="name-style">{`真實姓名：${realname}`}</div>
           <div styleName="phone-style">{`手機號碼：${phone}`}</div>
@@ -65,7 +68,7 @@ class UserInfoBoard extends React.Component {
                 <FormButton
                   colorType="greenBorder"
                   size="sm"
-                  width={100}
+                  style={{ width: 80, fontWeight: 600, padding: '7px 16px' }}
                   content="私訊"
                   onClick={() => dispatchAddToChatRoom({
                     uid,

@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
-import { orderDetail, reservationGoods, reservationService, reservationSpace }
+import { Link, browserHistory } from 'react-router';
+import { userprofilePaths, orderDetail, reservationGoods, reservationService, reservationSpace }
  from 'lib/paths';
 
 import Picture from 'components/Picture';
@@ -174,7 +174,7 @@ class OrderItemBoard extends React.Component {
       <div styleName="oib-action-section">
         {can_camera &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'拍照'}
             onClick={() => {}}
@@ -182,7 +182,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_ship &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'安排出貨'}
             onClick={() => {
@@ -199,7 +199,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_711 &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'寄件代碼'}
             onClick={() => {}}
@@ -207,7 +207,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -215,14 +215,14 @@ class OrderItemBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'green'}
+          colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
@@ -232,12 +232,13 @@ class OrderItemBoard extends React.Component {
   }
 
   renderLesseeActions() {
-    const { display } = this.props;
+    const { display, pid, cid } = this.props;
     const { can_edit, can_pay, can_ship_confirm, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
@@ -247,15 +248,17 @@ class OrderItemBoard extends React.Component {
       <div styleName="oib-action-section">
         {can_edit &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={this.generateEditAddress()}
+            onClick={
+              browserHistory.push(reservationGoods.indexPath(pid, cid))
+            }
           />
         }
         {can_pay &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'付款'}
             onClick={this.generatePayment()}
@@ -263,7 +266,7 @@ class OrderItemBoard extends React.Component {
         }
         { can_ship_confirm &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'確認收貨'}
             onClick={() => {
@@ -280,7 +283,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -288,7 +291,7 @@ class OrderItemBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
@@ -314,13 +317,21 @@ class OrderItemBoard extends React.Component {
         className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
       >
         <div styleName="oib-header-section">
-          <div styleName="oib-header-avatar-style">
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="oib-header-avatar-style"
+          >
             <Avatar
               src={photoHead}
               width={40}
             />
-          </div>
-          <div styleName="oib-header-name-style" >{ photoName }</div>
+          </Link>
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="oib-header-name-style"
+          >
+            { photoName }
+          </Link>
           <div styleName="oib-header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
@@ -357,7 +368,7 @@ class OrderItemBoard extends React.Component {
             <div styleName="oib-text-style">{`${itemName}`}</div>
             <div styleName="oib-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
             <div styleName="oib-price-section">
-              <div styleName="oib-unit-style">使用{rangeDiff(startDate, endDate)}天X{unit}件</div>
+              <div styleName="oib-unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
               <div styleName="oib-price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>

@@ -19,10 +19,15 @@
   display: inline-block
   white-space: nowrap
   overflow: hidden
+  color: $global-middleBlack
   text-overflow: ellipsis
   padding-left: 10px
   font-weight: 600
   font-size: 17px
+    &:hover
+      color: $global-hoverColor
+    &:active
+      color: $global-activeColor
 .oib-mini-note-section
   float: right
   color: $global-primaryColor
@@ -63,6 +68,7 @@
 .oib-price-section
   padding-top: 5px
 .oib-unit-style
+  color: $global-placeholder
   display: inline-block
   float: left
 .oib-price-style

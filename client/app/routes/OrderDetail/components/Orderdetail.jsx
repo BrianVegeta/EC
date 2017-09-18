@@ -407,6 +407,16 @@ class Orderdetail extends React.Component {
     );
   }
 
+  renderBilling(order) {
+    return (
+      <div styleName="section-content">
+        <div styleName="section-header">交易明細</div>
+        <BillingDetail {...calculateService(order, null)} />
+        {this.renderAcceptHint(order)}
+        {this.renderBankInfo(order)}
+      </div>
+    );
+  }
   renderAcceptHint({ contractstage }) {
     if (contractstage !== 1) {
       return null;
@@ -420,7 +430,7 @@ class Orderdetail extends React.Component {
 
   renderBankInfo({ contractstage }) {
     if (contractstage > 4) {
-      return null;
+      return <div styleName="space_padding" />;
     }
     const { personalBankInfo } = this.props;
     const { isReady, isChecked } = personalBankInfo;
@@ -457,16 +467,14 @@ class Orderdetail extends React.Component {
     const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
-        <div styleName="banner_style" >
-          <Banner
-            cid={cid}
-            type={type}
-            contractstage={contractstage}
-            isOwner={isOwner}
-            startDate={time}
-            dispatch={dispatch}
-          />
-        </div>
+        <Banner
+          cid={cid}
+          type={type}
+          contractstage={contractstage}
+          isOwner={isOwner}
+          startDate={time}
+          dispatch={dispatch}
+        />
       );
     } else if (contractstage > 1000 && contractstage < 3000) {
       if (!(sueDetail)) {
@@ -499,14 +507,13 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderButtonStyle(show, dispatchAction, buttonText) {
+  renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
     if (!(show)) return null;
     return (
       <FormButton
-        colorType="greenBorder"
-        size="sm"
+        colorType={buttonColor}
         width="auto"
-        style={{ padding: '15px 28px', marginRight: 20 }}
+        style={{ padding: '15px 28px', marginRight: 20, height: 52, width: 152, fontWeight: 400 }}
         content={buttonText}
         onClick={dispatchAction}
       />
@@ -596,12 +603,7 @@ class Orderdetail extends React.Component {
           {this.renderSchedule()}
           {this.renderImages()}
           {this.renderShippingDetail(order)}
-          <div styleName="section-content">
-            <div styleName="section-header">交易明細</div>
-            <BillingDetail {...calculateService(order, null)} />
-            {this.renderAcceptHint(order)}
-            {this.renderBankInfo(order)}
-          </div>
+          {this.renderBilling(order)}
           {this.renderRules(order)}
           {this.renderCancelPolicys(order.renderCancelPolicys)}
           {this.renderOverdueRate(order.overdue_rate, order.deposit)}
@@ -612,56 +614,67 @@ class Orderdetail extends React.Component {
             display.can_cancel,
             this.props.dispatchCancel,
             display.is_owner ? '目前無法接單' : '取消訂單',
+            'gray',
           )}
           {this.renderButtonStyle(
             display.can_accept,
             this.props.dispatchAccept,
             '我同意此預訂',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_edit,
             this.generateEditAddress(order),
             '修改訂單',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_pay,
             this.getPaymentAction(order),
             '付款',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_camera,
             () => {},
             '拍照',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_ship,
             this.props.dispatchShipGoods,
             '確認出貨',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_711,
             () => this.props.dispatchSevenOrder('OWNER_SEND'),
             '寄件代碼',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_ship_confirm,
             this.props.dispatchReceiveConfirm,
             '確認收貨',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_return,
             this.props.dispatchReturn,
             '確認還貨',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_711_return,
             () => this.props.dispatchSevenOrder('LESSEE_SEND'),
             '寄件代碼',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_return_confirm,
             this.props.dispatchReceiveConfirm,
             '確認收貨',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_owner_end,
@@ -672,12 +685,14 @@ class Orderdetail extends React.Component {
             display.can_lessee_end,
             this.generateDispatch(order),
             '確認結束',
+            'green',
           )}
           {this.renderButtonStyle(
             display.can_score,
             () => this.props.dispatchPopupScore(false, target.targetName,
                null, null, target.targetUrl),
             '評價',
+            'green',
           )}
           {this.renderButtonStyle(
             display.view_score,
@@ -688,6 +703,7 @@ class Orderdetail extends React.Component {
               );
             },
             '查看評價',
+            'green',
           )}
           {this.renderRejectStyle(
             display.can_reject,

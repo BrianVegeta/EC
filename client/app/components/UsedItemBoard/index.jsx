@@ -169,7 +169,7 @@ class OrderItemBoard extends React.Component {
       <div styleName="oib-action-section">
         {can_ship &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'安排出貨'}
             onClick={() => {
@@ -188,7 +188,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -196,14 +196,14 @@ class OrderItemBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'green'}
+          colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(orderDetail.indexPath(cid))}
@@ -219,6 +219,7 @@ class OrderItemBoard extends React.Component {
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
@@ -228,7 +229,7 @@ class OrderItemBoard extends React.Component {
       <div styleName="oib-action-section">
         {can_edit &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
             onClick={this.generateEditAddress()}
@@ -236,7 +237,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_pay &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'付款'}
             onClick={this.generatePayment()}
@@ -244,7 +245,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_ship_confirm &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'確認收貨'}
             onClick={() => {
@@ -263,7 +264,7 @@ class OrderItemBoard extends React.Component {
         }
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -271,7 +272,7 @@ class OrderItemBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
