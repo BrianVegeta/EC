@@ -4,6 +4,7 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+
 const cx = classnames.bind(styles);
 class Inputer extends React.Component {
   static defaultProps = {
@@ -28,10 +29,13 @@ class Inputer extends React.Component {
   }
   componentDidMount() {
     const { setInputRect } = this.props;
-    window.addEventListener('resize', () => {
+    if (this.input) {
+      window.addEventListener('resize', () => {
+        if (!this.input) return;
+        setInputRect(this.input.getBoundingClientRect());
+      });
       setInputRect(this.input.getBoundingClientRect());
-    });
-    setInputRect(this.input.getBoundingClientRect());
+    }
   }
   onFocus() {
     this.focusingState(true);

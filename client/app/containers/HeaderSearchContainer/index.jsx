@@ -32,8 +32,24 @@ class Search extends React.Component {
     search: myPropTypes.search.isRequired,
   };
 
+  static renderMoreButton(
+    isPaginable,
+    isCurrentPage,
+    isFetching,
+    fetchAction,
+  ) {
+    if (!isCurrentPage || !isPaginable || !fetchAction) return null;
+    return (
+      <div styleName="search-more-btn">
+        <ButtonLoadMore isLoading={isFetching} onClick={fetchAction} />
+      </div>
+    );
+  }
+
   constructor(props) {
     super(props);
+    this.renderUserItem = this.renderUserItem.bind(this);
+    this.renderWishItem = this.renderWishItem.bind(this);
     this.renderGoodsItem = this.renderGoodsItem.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.onInputChange = debounce(
@@ -64,20 +80,6 @@ class Search extends React.Component {
     model.closeResultPanel();
   }
 
-  renderMoreButtion(isPaginable, isCurrentPage, isFetching, fetchAction) {
-    if (!isCurrentPage || !isPaginable || !(fetchAction)) {
-      return null;
-    }
-    return (
-      <div styleName="search-more-btn">
-        <ButtonLoadMore
-          isLoading={isFetching}
-          onClick={fetchAction}
-        />
-      </div>
-    );
-  }
-
   renderGoodsItem(item, index) {
     return (
       <RowItem
@@ -87,8 +89,27 @@ class Search extends React.Component {
     );
   }
 
+  renderUserItem(user, index) {
+    return (
+      <RowUser
+        key={`${index + 1}`}
+        user={new ModelRowUser(user, this.props.dispatch)}
+      />
+    );
+  }
+
+  renderWishItem(wish, index) {
+    return (
+      <RowItem
+        key={`${index + 1}`}
+        source={new ModelRowWish(wish, this.props.dispatch)}
+      />
+    );
+  }
+
   render() {
     const { search, dispatch } = this.props;
+    const { renderMoreButton } = this.constructor;
     const model = new Model(search, dispatch);
     const {
       users,
@@ -121,18 +142,13 @@ class Search extends React.Component {
                 isPaginating={isUsersPaginating}
                 prev={model.prevSearch}
               >
-                {users.map((user, index) =>
-                  <RowUser
-                    key={`${index + 1}`}
-                    user={new ModelRowUser(user, dispatch)}
-                  />,
+                {users.map(this.renderUserItem)}
+                {renderMoreButton(
+                  isPaginable,
+                  isUsersPaginating,
+                  isUserFetching,
+                  () => dispatch(searchUserByName(query, true)),
                 )}
-                {
-                  this.renderMoreButtion(isPaginable,
-                    isUsersPaginating,
-                    isUserFetching,
-                    () => dispatch(searchUserByName(query, true)))
-                }
               </Collection>
             }
             {model.wishs &&
@@ -142,17 +158,13 @@ class Search extends React.Component {
                 isPaginating={model.isWishsPaginating}
                 prev={model.prevSearch}
               >
-                {wishs.map((wish, index) =>
-                  <RowItem
-                    key={`${index + 1}`}
-                    source={new ModelRowWish(wish, dispatch)}
-                  />,
-                )}
-                { this.renderMoreButtion(isPaginable,
+                {wishs.map(this.renderWishItem)}
+                {renderMoreButton(
+                  isPaginable,
                   isWishsPaginating,
                   isWishFetching,
-                  () => dispatch(searchWishByName(query, true)))
-                }
+                  () => dispatch(searchWishByName(query, true)),
+                )}
               </Collection>
             }
             {model.items &&
@@ -163,11 +175,11 @@ class Search extends React.Component {
                 prev={model.prevSearch}
               >
                 {items.map(this.renderGoodsItem)}
-                {this.renderMoreButtion(
+                {renderMoreButton(
                   isPaginable,
                   isItemsPaginating,
                   isItemFetching,
-                  () => dispatch(searchItemByName(query, true))
+                  () => dispatch(searchItemByName(query, true)),
                 )}
               </Collection>
             }

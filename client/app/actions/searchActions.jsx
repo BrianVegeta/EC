@@ -3,9 +3,7 @@ import * as TYPES from '../constants/actionTypes';
 import { asyncXhrPost } from '../lib/xhr';
 
 const REDUCER_KEY = 'search';
-
 export const SEARCH_SIZE = 20;
-
 const RECURSIVE_LIMIT = 10;
 
 export const closeResultPanel = () => ({
@@ -190,7 +188,7 @@ export function searchWishByName(name, isMore: false, recursiveRecords = []) {
       last_id: 0,
       index: tIndex + recursiveRecords.length,
       size: (SEARCH_SIZE - recursiveRecords.length),
-    }
+    };
     asyncXhrPost(
       '/ajax/serach_wish.json',
       requestParams,
