@@ -111,7 +111,7 @@ export function searchUserByName(name, isMore: false, recursiveRecords = []) {
       name,
       index: tIndex + recursiveRecords.length,
       size: (SEARCH_SIZE - recursiveRecords.length),
-    }
+    };
     asyncXhrPost(
       '/ajax/search_user.json',
       requestParams,

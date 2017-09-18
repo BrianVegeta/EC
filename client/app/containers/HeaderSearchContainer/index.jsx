@@ -60,11 +60,11 @@ class Search extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.handleClickOutside, false);
+    document.addEventListener('mousedown', this.handleClickOutside, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClickOutside, false);
+    document.removeEventListener('mousedown', this.handleClickOutside, false);
   }
 
   onInputChange(name) {
@@ -127,7 +127,10 @@ class Search extends React.Component {
       query,
     } = search;
     return (
-      <div styleName="container" ref={searcher => (this.searcher = searcher)}>
+      <div
+        ref={searcher => (this.searcher = searcher)}
+        styleName="container"
+      >
         <Inputer
           placeholder="尋找你的好物、服務、空間、分享人名稱"
           onChange={this.onInputChange}
@@ -205,4 +208,4 @@ const mapStateToProps = (state) => {
   const { search } = state;
   return ({ search });
 };
-export default connect(mapStateToProps, null, null, { withRef: true })(CSS(Search, styles));
+export default connect(mapStateToProps)(CSS(Search, styles));
