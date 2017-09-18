@@ -11,20 +11,16 @@ const cx = classnames.bind(styles);
 class Navigation extends React.Component {
 
   static propTypes = {
-    navs: PropTypes.arrayOf(PropTypes.shape(
-      {
-        name: PropTypes.string.isRequired,
-        href: PropTypes.string.isRequired,
-        tabName: PropTypes.string.isRequired,
-      }
-    ).isRequired).isRequired,
-    unreads: PropTypes.shape(
-      {
-        CONTRACT: PropTypes.number.isRequired,
-        ACTIVITY: PropTypes.number.isRequired,
-        SYSTEM: PropTypes.number.isRequired,
-      }
-    ).isRequired,
+    navs: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      href: PropTypes.string.isRequired,
+      tabName: PropTypes.string.isRequired,
+    }).isRequired).isRequired,
+    unreads: PropTypes.shape({
+      CONTRACT: PropTypes.number.isRequired,
+      ACTIVITY: PropTypes.number.isRequired,
+      SYSTEM: PropTypes.number.isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {

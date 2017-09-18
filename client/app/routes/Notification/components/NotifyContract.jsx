@@ -42,7 +42,7 @@ class NotifyContract extends React.Component {
         tabName: 'SYSTEM' },
     ];
     return (
-      <Container titleText={'訂單更新'}>
+      <Container titleText="通知">
         <Navigation navs={navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
