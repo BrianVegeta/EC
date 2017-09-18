@@ -30,9 +30,6 @@ vendor/ruby
 # RVM gemset
 .ruby-gemset
 
-# Generated js bundles
-/app/assets/webpack/
-
 # Rubymine/IntelliJ
 .idea
 
@@ -42,4 +39,7 @@ npm-debug.log*
 node_modules
 
 # Generated js bundles
-/app/assets/webpack/*
+# /app/assets/webpack/*
+
+# Generated js bundles
+# /app/assets/webpack/
