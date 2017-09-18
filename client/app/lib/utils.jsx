@@ -35,20 +35,35 @@ export const base64ToBlobData = (base64, type) => {
  * @type 'image/jpg'...
  */
 export const asyncS3ToBlob = (s3, type) =>
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', s3);
-    xhr.withCredentials = false;
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = () => {
-      const arrayBufferView = new Uint8Array(xhr.response);
-      const blob = new Blob([arrayBufferView], { type: (type || 'image/jpg') });
-      const urlCreator = window.URL || window.webkitURL;
-      resolve(urlCreator.createObjectURL(blob));
-    };
-    xhr.onerror = e => reject(e);
+  new Promise((resolve) => {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-    xhr.send();
+    img.onload = () => {
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => {
+        const urlCreator = window.URL || window.webkitURL;
+        resolve(urlCreator.createObjectURL(blob));
+      }, (type || 'image/jpg'), 0.75);
+    };
+    img.crossOrigin = '';
+    img.src = s3;
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('GET', s3);
+    // xhr.withCredentials = false;
+    // xhr.responseType = 'arraybuffer';
+    // xhr.onload = () => {
+    //   const arrayBufferView = new Uint8Array(xhr.response);
+    //   const blob = new Blob([arrayBufferView], { type: (type || 'image/jpg') });
+    //   const urlCreator = window.URL || window.webkitURL;
+    //   resolve(urlCreator.createObjectURL(blob));
+    // };
+    // xhr.onerror = e => reject(e);
+    //
+    // xhr.send();
   });
 
 /**
