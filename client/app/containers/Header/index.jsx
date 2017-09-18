@@ -7,10 +7,7 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 import Logo from 'components/Icons/Logo';
-<<<<<<< HEAD
-=======
 import { startsWith } from 'lodash';
->>>>>>> feature/add-chat-link
 import {
   my,
   notifyPath,
