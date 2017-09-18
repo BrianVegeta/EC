@@ -235,7 +235,7 @@ class Ajax::Api::ItemController < ApplicationController
     # - z = 符合條件後，新的價格
     # rules : List<String> => 分享人守則
 
-    params.permit(:pname, :img1, :img2, :img2, :pdes,
+    params.permit(:pname, :img1, :img2, :img3, :pdes,
       :cat_id, :city, :area, :unit, :price, :currency,
       :send_option,
       :return_option, :return_city, :return_area, :return_address,
@@ -280,7 +280,7 @@ class Ajax::Api::ItemController < ApplicationController
     # - N = x的N值
     # - z = 符合條件後，新的價格
 
-    params.permit(:pname, :img1, :img2, :img2, :pdes,
+    params.permit(:pname, :img1, :img2, :img3, :pdes,
       :cat_id, :city, :area, :unit, :price, :currency,
       :send_option,
       :return_711_store_id, :return_711_store_name, :return_711_store_address,
@@ -344,7 +344,7 @@ class Ajax::Api::ItemController < ApplicationController
     #        -max:100
     #        -desc:扣除分享金的%數
 
-    params.permit(:pname, :img1, :img2, :img2, :pdes,
+    params.permit(:pname, :img1, :img2, :img3, :pdes,
       :cat_id, :city, :area, :unit, :price,
       :currency, :deposit, :advance_reservation_days, :min_lease_days,
       :tag1, :tag2, :tag3,
@@ -404,7 +404,7 @@ class Ajax::Api::ItemController < ApplicationController
     #        -max:100
     #        -desc:扣除分享金的%數
 
-    params.permit(:pname, :img1, :img2, :img2, :pdes,
+    params.permit(:pname, :img1, :img2, :img3, :pdes,
        :cat_id, :city, :area, :unit, :price,
        :currency, :deposit, :advance_reservation_days, :min_lease_days,
        :tag1, :tag2, :tag3, :assign_address, :calculate_charge_type,
