@@ -18,10 +18,13 @@ class UserInfoBoard extends React.Component {
   }
   static propTypes = {
     cid: PropTypes.number.isRequired,
+    uid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     realname: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     imgUrl: PropTypes.string,
     contractstage: PropTypes.number,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -41,9 +44,11 @@ class UserInfoBoard extends React.Component {
       realname,
       phone,
       imgUrl,
-      contractstage
+      contractstage,
+      uid,
+      name,
+      dispatchAddToChatRoom,
     } = this.props;
-
     const showSueForm = (contractstage > 4 && contractstage < 11);
     return (
       <div styleName="boundary">
@@ -62,7 +67,11 @@ class UserInfoBoard extends React.Component {
                   size="sm"
                   width={100}
                   content="私訊"
-                  onClick={() => {}}
+                  onClick={() => dispatchAddToChatRoom({
+                    uid,
+                    name,
+                    picture: imgUrl,
+                  })}
                 />
               </div>
               { showSueForm &&

@@ -64,6 +64,7 @@ const transformState = ({
   item_lessee_receive_city, item_lessee_receive_area, item_lessee_receive_address,
   item_owner_receive_city, item_owner_receive_area, item_owner_receive_address,
   note, unit, paymenttype,
+  lessee_receive_711_store_id, lessee_receive_711_store_name, lessee_receive_711_store_address,
 }) => ({
   leasestart: leasestart ? getMoment(leasestart) : null,
   leaseend: leaseend ? getMoment(leaseend) : null,
@@ -76,6 +77,9 @@ const transformState = ({
   returnCity: item_owner_receive_city,
   returnArea: item_owner_receive_area,
   returnAddress: item_owner_receive_address,
+  storeid: lessee_receive_711_store_id,
+  storename: lessee_receive_711_store_name,
+  storeaddress: lessee_receive_711_store_address,
   note: note || '',
   unit: unit || 1,
   paymenttype: paymenttype || null,
@@ -106,25 +110,27 @@ const transformParams = (pid, assignAddressType, {
   leasestart, leaseend,
   couponNo, unit,
   note,
-}) => {
-  return ({
-    pid,
-    leasestart: leasestart ? leasestart.valueOf() : null,
-    leaseend: leaseend ? leaseend.valueOf() : null,
-    unit,
-    note,
-    coupon_no: couponNo,
-    send_type: sendType,
-    return_type: returnType,
-    item_lessee_receive_city: sendCity,
-    item_lessee_receive_area: sendArea,
-    item_lessee_receive_address: sendAddress,
-    item_owner_receive_city: returnCity,
-    item_owner_receive_area: returnArea,
-    item_owner_receive_address: returnAddress,
-    paymenttype,
-  });
-};
+  storeid, storename, storeaddress,
+}) => ({
+  pid,
+  leasestart: leasestart ? leasestart.valueOf() : null,
+  leaseend: leaseend ? leaseend.valueOf() : null,
+  unit,
+  note,
+  coupon_no: couponNo,
+  send_type: sendType,
+  return_type: returnType,
+  item_lessee_receive_city: sendCity,
+  item_lessee_receive_area: sendArea,
+  item_lessee_receive_address: sendAddress,
+  item_owner_receive_city: returnCity,
+  item_owner_receive_area: returnArea,
+  item_owner_receive_address: returnAddress,
+  lessee_receive_711_store_id: storeid,
+  lessee_receive_711_store_name: storename,
+  lessee_receive_711_store_address: storeaddress,
+  paymenttype,
+});
 
 export const saveReservation = () =>
   (dispatch, getState) =>
@@ -185,6 +191,9 @@ const initialState = {
   unit: 1,
   paymenttype: null,
   isAgree: false,
+  storeid: '',
+  storename: '',
+  storeaddress: '',
 };
 export const isStateInitial = state =>
   isEqual(state, initialState);

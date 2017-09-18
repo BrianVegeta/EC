@@ -7,7 +7,7 @@ import { my } from 'lib/paths';
 // import CSS from 'react-css-modules';
 
 import ListContainer from 'components/ListContainer';
-import OrderSpaceBoard from 'components/OrderSpaceBoard';
+import OrderSpaceBoard from 'components/OrderItemBoard';
 
 import OrderNav, { SPACE } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
@@ -99,6 +99,7 @@ class OrderList extends React.Component {
               type="SPACE"
               photoHead={record.owner_img}
               photoName={record.owner_nick_name}
+              photoUid={record.owneruid}
               stage={record.contractstage}
               cid={record.cid}
               pid={record.pid}

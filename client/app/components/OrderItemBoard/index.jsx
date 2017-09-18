@@ -15,8 +15,9 @@ import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
+import { addToChatRoom } from 'modules/chatRooms';
 
-import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment }
+import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment, doReceiveConfirm }
   from 'modules/orderAction';
 
 import styles from './styles.sass';
@@ -36,6 +37,7 @@ class OrderItemBoard extends React.Component {
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
+    photoUid: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
@@ -59,6 +61,8 @@ class OrderItemBoard extends React.Component {
       {
         show_detail: PropTypes.bool,
         can_ship: PropTypes.bool,
+        can_711: PropTypes.bool,
+        can_ship_confirm: PropTypes.bool,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
         can_camera: PropTypes.bool,
@@ -155,11 +159,12 @@ class OrderItemBoard extends React.Component {
 
   renderOwnerActions() {
     const { display } = this.props;
-    const { can_ship, can_camera, can_score, view_score } = display;
+    const { can_ship, can_camera, can_score, can_711, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
@@ -182,6 +187,87 @@ class OrderItemBoard extends React.Component {
             content={'安排出貨'}
             onClick={() => {
               this.props.dispatch(doShipGoods(this.props.cid))
+              .then(() => {
+                this.props.dispatch(resetAction());
+                this.props.dispatchRefresh();
+              })
+              .catch((error) => {
+                alert(error);
+              });
+            }}
+          />
+        }
+        {can_711 &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'寄件代碼'}
+            onClick={() => {}}
+          />
+        }
+        {can_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'評分'}
+            onClick={() => this.callScorePanel(false)}
+          />
+        }
+        {view_score &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'查看評價'}
+            onClick={() => this.callScorePanel(true)}
+          />
+        }
+        <FormButton
+          colorType={'green'}
+          {...buttonConfig}
+          content={'查看詳情'}
+          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+        />
+      </div>
+    );
+  }
+
+  renderLesseeActions() {
+    const { display } = this.props;
+    const { can_edit, can_pay, can_ship_confirm, can_score, view_score } = display;
+    const buttonConfig = {
+      size: 'sm',
+      width: 'auto',
+      style: {
+        padding: '7px 7px',
+        marginLeft: 10,
+        display: 'inline-block',
+      },
+    };
+    return (
+      <div styleName="oib-action-section">
+        {can_edit &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'修改預訂單'}
+            onClick={this.generateEditAddress()}
+          />
+        }
+        {can_pay &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'付款'}
+            onClick={this.generatePayment()}
+          />
+        }
+        { can_ship_confirm &&
+          <FormButton
+            colorType={'greenBorder'}
+            {...buttonConfig}
+            content={'確認收貨'}
+            onClick={() => {
+              this.props.dispatch(doReceiveConfirm(this.props.cid))
               .then(() => {
                 this.props.dispatch(resetAction());
                 this.props.dispatchRefresh();
@@ -218,65 +304,10 @@ class OrderItemBoard extends React.Component {
     );
   }
 
-  renderLesseeActions() {
-    const { display } = this.props;
-    const { can_edit, can_pay, can_score, view_score } = display;
-    const buttonConfig = {
-      size: 'sm',
-      width: 'auto',
-      style: {
-        padding: '7px 7px',
-        marginLeft: 10,
-        display: 'inline-block',
-      },
-    };
-    return (
-      <div styleName="oib-action-section">
-        {can_edit &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'修改預訂單'}
-            onClick={this.generateEditAddress()}
-          />
-        }
-        {can_pay &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'付款'}
-            onClick={this.generatePayment()}
-          />
-        }
-        {can_score &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'評分'}
-            onClick={() => this.callScorePanel(false)}
-          />
-        }
-        {view_score &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'查看評價'}
-            onClick={() => this.callScorePanel(true)}
-          />
-        }
-        <FormButton
-          colorType={'greenBorder'}
-          {...buttonConfig}
-          content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
-        />
-      </div>
-    );
-  }
-
   render() {
-    const { photoHead, photoName, cidNo, unit,
-      itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
+    const { photoHead, photoName, photoUid, cidNo, unit,
+      itemName, itemImgUrl, startDate, endDate, totalPrice,
+      display, isRead, dispatch } = this.props;
     const objectString = this.generateString();
     return (
       <div
@@ -300,7 +331,13 @@ class OrderItemBoard extends React.Component {
                 padding: '7px 15px',
               }}
               content={'私訊'}
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(addToChatRoom({
+                  uid: photoUid,
+                  name: photoName,
+                  picture: photoHead,
+                }));
+              }}
             />
           </div>
           <div styleName="oib-mini-note-section">{objectString.title}</div>

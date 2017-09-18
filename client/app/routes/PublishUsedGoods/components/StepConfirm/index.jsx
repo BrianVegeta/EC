@@ -94,15 +94,15 @@ class StepConfirm extends React.Component {
     const categoryNames = findCategoryNamesByID(categoryID, categories);
 
     const {
-      // sendBy711,
+      sendBy711,
       sendByOtherShippment,
       sendByInPerson,
       // returnBy711,
-      returnByOtherShippment,
-      returnByInPerson,
-      returnCity,
-      returnArea,
-      returnAddress,
+      // returnByOtherShippment,
+      // returnByInPerson,
+      storename,
+      storeid,
+      storeaddress,
       minimumShippemntDay,
     } = publish;
 
@@ -155,20 +155,14 @@ class StepConfirm extends React.Component {
                 <th width={154}>可寄件方式</th>
                 <td>
                   {sendByInPerson && '面交（自行協調取貨地點）/'}
-                  {sendByOtherShippment && '自行寄件/'}
+                  {sendByOtherShippment && '宅配、郵寄/'}
+                  {sendBy711 && '7-11交貨便/'}
                 </td>
               </tr>
-              <tr>
-                <th width={154}>可寄還方式</th>
-                <td>
-                  {returnByInPerson && '面交（自行協調取貨地點）/'}
-                  {returnByOtherShippment && '自行寄件/'}
-                </td>
-              </tr>
-              { returnByOtherShippment &&
+              { sendBy711 &&
                 <tr>
-                  <th width={154}>寄還地址</th>
-                  <td>{returnCity}{returnArea}{returnAddress}</td>
+                  <th width={154}>7-11退貨店</th>
+                  <td>{storename}({storeid}){storeaddress}</td>
                 </tr>
               }
             </tbody>

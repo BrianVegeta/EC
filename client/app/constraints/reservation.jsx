@@ -4,12 +4,14 @@ const {
   serviceDates,
   cityArea,
   address,
+  storeid,
 } = publish;
 
 export default {
   dates: serviceDates,
   cityArea,
   address,
+  storeid,
   serviceLocationType: {
     presence: {
       message: '^請選擇服務方式',

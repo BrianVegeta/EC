@@ -145,12 +145,20 @@ class Search extends React.Component {
                 isPaginating={isUsersPaginating}
                 prev={model.prevSearch}
               >
+<<<<<<< HEAD
                 {users.map(this.renderUserItem)}
                 {renderMoreButton(
                   isPaginable,
                   isUsersPaginating,
                   isUserFetching,
                   () => dispatch(searchUserByName(query, true)),
+=======
+                {users.map((user, index) =>
+                  (<RowUser
+                    key={`${index + 1}`}
+                    user={new ModelRowUser(user, dispatch)}
+                  />),
+>>>>>>> feature/add-chat-link
                 )}
               </Collection>
             }
@@ -161,9 +169,19 @@ class Search extends React.Component {
                 isPaginating={model.isWishsPaginating}
                 prev={model.prevSearch}
               >
+<<<<<<< HEAD
                 {wishs.map(this.renderWishItem)}
                 {renderMoreButton(
                   isPaginable,
+=======
+                {wishs.map((wish, index) =>
+                  (<RowItem
+                    key={`${index + 1}`}
+                    source={new ModelRowWish(wish, dispatch)}
+                  />),
+                )}
+                { this.renderMoreButtion(isPaginable,
+>>>>>>> feature/add-chat-link
                   isWishsPaginating,
                   isWishFetching,
                   () => dispatch(searchWishByName(query, true)),
@@ -177,9 +195,19 @@ class Search extends React.Component {
                 isPaginating={model.isItemsPaginating}
                 prev={model.prevSearch}
               >
+<<<<<<< HEAD
                 {items.map(this.renderGoodsItem)}
                 {renderMoreButton(
                   isPaginable,
+=======
+                {items.map((item, index) =>
+                  (<RowItem
+                    key={`${index + 1}`}
+                    source={new ModelRowItem(item, dispatch)}
+                  />),
+                )}
+                { this.renderMoreButtion(isPaginable,
+>>>>>>> feature/add-chat-link
                   isItemsPaginating,
                   isItemFetching,
                   () => dispatch(searchItemByName(query, true)),

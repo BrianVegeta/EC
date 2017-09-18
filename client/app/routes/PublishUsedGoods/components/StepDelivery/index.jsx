@@ -36,8 +36,11 @@ class StepDelivery extends React.Component {
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
-    this.handleSevenEleven = this.handleSevenEleven.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.clearCookie = this.clearCookie.bind(this);
+    this.handleStorage = this.handleStorage.bind(this);
     this.createSevenFormPost = this.createSevenFormPost.bind(this);
+    this.windowRef = null;
     this.state = {
       optionError: '',
     };
@@ -45,12 +48,23 @@ class StepDelivery extends React.Component {
 
   componentDidMount() {
     this.props.dispatchTouchPath();
-    window.addEventListener('focus', this.handleSevenEleven, false);
-    // localStorage.clear();
+    this.clearCookie();
+    localStorage.removeItem('711_callback');
+    window.addEventListener('focus', this.handleFocus, false);
+    window.addEventListener('storage', this.handleStorage, false);
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
   }
+
   componentWillUnmount() {
-    window.removeEventListener('focus', this.handleSevenEleven, false);
-    // localStorage.clear();
+    window.removeEventListener('focus', this.handleFocus, false);
+    window.removeEventListener('storage', this.handleStorage, false);
+    localStorage.removeItem('711_callback');
+    this.clearCookie();
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
   }
 
   onNextStepClick() {
@@ -74,8 +88,37 @@ class StepDelivery extends React.Component {
     });
   }
 
-  handleSevenEleven(e) {
-    console.log(document.cookie);
+  clearCookie() {
+    document.cookie = 'storeid=;max-age=1';
+    document.cookie = 'storename=;max-age=1';
+    document.cookie = 'storeaddress=;max-age=1';
+  }
+
+  handleStorage(e) {
+    // console.log('handleStorage');
+    localStorage.removeItem('711_callback');
+    this.handleFocus(e);
+  }
+
+  handleFocus(e) {
+    // console.log('handleFocus');
+    const { dispatchChangeData } = this.props;
+    const getCookie = (name) => {
+      const match = document.cookie.match(new RegExp(`${name}=([^;]+)`));
+      if (match) return match[1];
+      return '';
+    };
+    const storeid = getCookie('storeid');
+    if (storeid === '') {
+      return;
+    }
+    const storename = decodeURI(getCookie('storename'));
+    const storeaddress = decodeURI(getCookie('storeaddress'));
+    dispatchChangeData({ storeid, storename, storeaddress });
+    this.clearCookie();
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
   }
 
 
@@ -87,16 +130,20 @@ class StepDelivery extends React.Component {
       inputElement.type = 'hidden';
       return inputElement;
     };
-
+    if (this.windowRef) {
+      this.windowRef.close();
+    }
     // Internet Explorer 6-11
     const isIE = /* @cc_on!@*/false || !!document.documentMode;
     // Edge 20+
     const isEdge = !isIE && !!window.StyleMedia;
-    if (isEdge) {
-      console.log('isEdge');
-      window.open('/p/sevenEleven');
+    if (isIE || isEdge) {
+      // console.log('isEdge');
+      const tabWindow = window.open('/p/sevenEleven');
+      this.windowRef = tabWindow;
     } else {
       const myWindow = window.open('temp.html', '', 'width=1000, height=800, left=400, top=200');
+      this.windowRef = myWindow;
       const form = myWindow.document.createElement('form');
       form.method = 'post';
       form.action = 'https://emap.pcsc.com.tw/ecmap/default.aspx';
@@ -121,6 +168,9 @@ class StepDelivery extends React.Component {
       sendByOtherShippment,
       sendByInPerson,
       minimumShippemntDay,
+      storeid,
+      storename,
+      storeaddress,
     } = publish;
 
     const { optionError } = this.state;
@@ -147,7 +197,7 @@ class StepDelivery extends React.Component {
                 dispatchChangeData({ sendByOtherShippment: checked })
               }
             >
-              <span styleName="option-label">自行寄件</span>
+              <span styleName="option-label">宅配、郵寄</span>
             </InputCheckBox>
           </div>
           <div styleName="option">
@@ -171,11 +221,16 @@ class StepDelivery extends React.Component {
             </InputCheckBox>
           </div>
           { sendBy711 &&
-            <FormButton
-              colorType={'greenBorder'}
-              content={'未取件設定'}
-              onClick={() => { this.createSevenFormPost(); }}
-            />
+            <div styleName="seven-content">
+              <div styleName="seven-result">
+                退貨門市：{storeid === '' ? '尚未設定' : `${storename}(${storeid}) ${storeaddress}`}
+              </div>
+              <button
+                styleName="seven-button"
+                className="button"
+                onClick={() => { this.createSevenFormPost(); }}
+              >選擇門市</button>
+            </div>
           }
         </FormGroup>
         {optionError && <AlertPanel message={optionError} marginBottom={40} />}

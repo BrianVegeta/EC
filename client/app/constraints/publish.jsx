@@ -57,6 +57,11 @@ export default {
       message: '^請輸入詳細地址',
     },
   },
+  storeid: {
+    presence: {
+      message: '^請選7-11交貨便門市',
+    },
+  },
   category: {
     presence: {
       message: '請選擇分類',

@@ -94,7 +94,7 @@ class DeliveryOptions extends React.PureComponent {
         </div>
         <div styleName="option">
           <InputCheckbox {...this.getProps('Mail')}>
-            <span styleName="label">自行寄件</span>
+            <span styleName="label">宅配、郵寄</span>
           </InputCheckbox>
           {this.state.addressOpen &&
             <ReturnAddress

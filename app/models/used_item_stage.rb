@@ -2,6 +2,7 @@ class UsedItemStage < StageBase
 
   #CONSTANT VALUE
   KEY_SHIP = 'can_ship'
+  KEY_711 = 'can_711'
   KEY_SHIP_CONFIRM = 'can_ship_confirm'
 
 
@@ -45,7 +46,11 @@ class UsedItemStage < StageBase
   def check_can_ship
     check_stage = self.screen_type == STAGE_SHIPPING
     check_condition = (self.is_owner == true)
-    modify_display_param(KEY_SHIP, check_stage && check_condition)
+    if self.contract['send_type'] == '2'
+      modify_display_param(KEY_711, check_stage && check_condition)
+    else
+      modify_display_param(KEY_SHIP, check_stage && check_condition)
+    end
   end
 
   def check_can_ship_confirm_stage

@@ -118,13 +118,22 @@ export const validateDeliveryBy = ({
   sendBy711,
   sendByOtherShippment,
   sendByInPerson,
+  storeid,
 }) => {
-  const errors = '';
+  let errors = '';
   if (!(sendBy711 || sendByOtherShippment || sendByInPerson)) {
     return {
       isValid: false,
       errors: { optionError: '至少選擇一個出貨選項' },
     };
+  }
+
+  if (sendBy711) {
+    errors = validate({
+      storeid,
+    }, {
+      storeid: constraints.storeid,
+    });
   }
 
   return {

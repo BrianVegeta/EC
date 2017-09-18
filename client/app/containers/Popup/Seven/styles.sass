@@ -1,0 +1,53 @@
+@import "~styles/color.sass"
+
+.container
+  background: white
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.5)
+  .nav
+    text-align: center
+    position: relative
+    border-bottom: 1px solid $global-lineColor
+    .title
+      font-size: 18px
+      line-height: 40px
+      font-weight: 600
+    .close-button
+      position: absolute
+      top: 0
+      right: 0
+      margin-top: 6px
+      margin-right: 10px
+      position: absolute
+      cursor: pointer
+      color: $global-placeholder
+      font-size: 20px
+      &:hover
+        color: $global-blackColor
+  .content
+    margin-left: 50px
+    margin-right: 50px
+    font-weight: 200
+    font-size: 16px
+    .serial_number
+      margin-top: 20px
+      text-align: center
+      font-size: 30px
+      font-weight: 600
+      color: $global-blackColor
+    .serial_hint
+      margin-top: 7px
+      text-align: center
+      font-size: 14px
+      color: $global-placeholder
+    .sub-title
+      margin-top: 40px
+      text-align: center
+    .check-content
+      margin-top: 15px
+      margin-left: 75px
+    .done
+      margin: 55px 0px 55px 100px
+      background-color: $global-primaryColor
+      color: white
+      border-radius: 3px
+      padding: 15px 52px 15px 52px

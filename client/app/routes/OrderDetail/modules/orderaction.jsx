@@ -1,7 +1,7 @@
 import { forEach } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { popupFetching, popupFetched } from 'modules/popup';
-
+import { fetchedSendSeven, fetchedReturnSeven } from './orderdetail';
 /* =============================================>>>>>
 = userprofile =
 ===============================================>>>>>*/
@@ -286,6 +286,72 @@ export function doATMPayment(cid) {
     });
 }
 
+export function getShipOrder(cid, type) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'shipOrder'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/get_ship_order.json',
+        {
+          cid,
+          send_type: type,
+        }, getState(), isCatch,
+      ).then((data) => {
+        if (data.orderno) {
+          dispatch(popupFetched(data));
+          dispatch(success(requestId));
+          resolve();
+        } else {
+          asyncXhrAuthedPost(
+            '/ajax/create_ship_order.json',
+            {
+              cid,
+              send_type: type,
+            }, getState(), isCatch,
+          ).then((data2) => {
+            dispatch(popupFetched(data2));
+            if (type === 'OWNER_SEND') {
+              dispatch(fetchedSendSeven(data2));
+            } else {
+              dispatch(fetchedReturnSeven(data2));
+            }
+            resolve();
+          });
+        }
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
+export function getShipLog(orderNo) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+
+      dispatch(lock(requestId, 'shipLog'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/get_ship_log.json',
+        {
+          order_no: orderNo,
+        }, getState(), isCatch,
+      ).then((data) => {
+        dispatch(popupFetched({ logs: data, orderNo }));
+        dispatch(success(requestId));
+        resolve();
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
 // =============================================
 // = reducer =
 // =============================================

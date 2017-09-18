@@ -18,7 +18,7 @@ const propTypes = {
   create_time: PropTypes.number.isRequired,
   target_uid: PropTypes.string.isRequired,
   is_follow: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  dispatchAddToChatRoom: PropTypes.func.isRequired,
 };
 
 const Sharer = props => (
@@ -33,11 +33,18 @@ const Sharer = props => (
       create_time={props.create_time}
       target_uid={props.target_uid}
       is_follow={props.is_follow}
-      dispatch={props.dispatch}
     />
     <div styleName="description">{props.autobiography}</div>
     <div styleName="controller">
-      <button className="button" styleName="message">
+      <button
+        className="button"
+        styleName="message"
+        onClick={() => props.dispatchAddToChatRoom({
+          name: props.name,
+          uid: props.uid,
+          picture: props.picture,
+        })}
+      >
         <Chat size={20} />
         <span>私訊分享人</span>
       </button>

@@ -94,6 +94,7 @@ class OrderList extends React.Component {
               type="USED_ITEM"
               photoHead={record.owner_img}
               photoName={record.owner_nick_name}
+              photoUid={record.owneruid}
               isOwner={false}
               isRead={record.lessee_read}
               order={record}

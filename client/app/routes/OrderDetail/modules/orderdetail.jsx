@@ -17,6 +17,8 @@ const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
 const FETCHED_ORDER = prefix('FETCHED_ORDER');
 const FETCHED_OWNER = prefix('FETCHED_OWNER');
 const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
+const FETCHED_SEND_SEVEN = prefix('FETCHED_SEND_SEVEN');
+const FETCHED_RETURN_SEVEN = prefix('FETCHED_RETURN_SEVEN');
 const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
 const FETCHED_LOGS = prefix('FETCHED_LOGS');
 const FETCHED_SUE_DETAIL = prefix('FETCHED_SUE_DETAIL');
@@ -63,6 +65,15 @@ const fetchedSueDetail = sueDetail => ({
   sueDetail,
 });
 
+export const fetchedSendSeven = ShipOrder => ({
+  type: FETCHED_SEND_SEVEN,
+  ShipOrder,
+});
+
+export const fetchedReturnSeven = ShipOrder => ({
+  type: FETCHED_RETURN_SEVEN,
+  ShipOrder,
+});
 
 export const reset = () => ({
   type: RESET,
@@ -79,7 +90,7 @@ export function fetchOrder(cid) {
     .then((responseData) => {
       dispatch(fetchedOrder(responseData));
       const { type, owneruid, lesseeuid, contractstage } = responseData;
-
+      const screenStage = contractstage % 100;
       asyncXhrAuthedPost(
         '/ajax/user_info.json',
         { isShowItem: false, uid: owneruid },
@@ -107,9 +118,50 @@ export function fetchOrder(cid) {
         getState(),
       );
 
-      if (contractstage < 4) {
+      if (screenStage < 4) {
         dispatch(asyncCheckReady());
       } else {
+        // 只有物品及二手有圖片
+        if (type === 'ITEM' || type === 'USED_ITEM') {
+          dispatch(fetchingImage());
+          asyncXhrAuthedPost(
+            '/ajax/get_order_images.json',
+            { cid },
+            getState(),
+          )
+          .then((responseImageData) => {
+            dispatch(fetchedImages(responseImageData));
+          });
+
+          if (responseData.send_type === '2') {
+            asyncXhrAuthedPost(
+              '/ajax/get_ship_order.json',
+              {
+                cid,
+                send_type: 'OWNER_SEND',
+              },
+              getState(),
+            )
+            .then((sendSeven) => {
+              dispatch(fetchedSendSeven(sendSeven));
+            });
+          }
+
+          if (screenStage > 8 && responseData.return_type === '2') {
+            asyncXhrAuthedPost(
+              '/ajax/get_ship_order.json',
+              {
+                cid,
+                send_type: 'LESSEE_SEND',
+              },
+              getState(),
+            )
+            .then((returnSeven) => {
+              dispatch(fetchedReturnSeven(returnSeven));
+            });
+          }
+        }
+
         asyncXhrAuthedPost(
           '/ajax/get_order_logs.json',
           { cid },
@@ -129,18 +181,6 @@ export function fetchOrder(cid) {
           dispatch(fetchedSueDetail(sueData));
         });
       }
-      // 只有物品及二手有圖片
-      if (type === 'ITEM') {
-        dispatch(fetchingImage());
-        asyncXhrAuthedPost(
-          '/ajax/get_order_images.json',
-          { cid },
-          getState(),
-        )
-        .then((responseImageData) => {
-          dispatch(fetchedImages(responseImageData));
-        });
-      }
     });
   };
 }
@@ -156,7 +196,9 @@ const initialState = {
   isFetchingLog: false,
   isFetchingSue: false,
   ownerProfile: null,
+  sendSeven: null,
   lesseeProfile: null,
+  returnSeven: null,
   sueDetail: null,
   order: null,
   logs: [],
@@ -218,6 +260,16 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetchingSue: false,
         sueDetail: action.sueDetail,
+      });
+
+    case FETCHED_SEND_SEVEN:
+      return Object.assign({}, state, {
+        sendSeven: action.ShipOrder,
+      });
+
+    case FETCHED_RETURN_SEVEN:
+      return Object.assign({}, state, {
+        returnSeven: action.ShipOrder,
       });
 
     case RESET:

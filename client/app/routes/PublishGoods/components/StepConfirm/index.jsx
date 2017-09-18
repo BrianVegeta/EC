@@ -120,24 +120,27 @@ class StepConfirm extends React.Component {
     const categoryNames = findCategoryNamesByID(categoryID, categories);
 
     const {
-      // sendBy711,
+      sendBy711,
       sendByOtherShippment,
       sendByInPerson,
-      // returnBy711,
+      returnBy711,
       returnByOtherShippment,
       returnByInPerson,
       returnCity,
       returnArea,
       returnAddress,
       minimumShippemntDay,
-    } = publish;
-
-    const {
       price,
       deposit,
       unit,
       hasOverduePolicy,
       overdueRate,
+      storeid,
+      storename,
+      storeaddress,
+      Rstoreid,
+      Rstorename,
+      Rstoreaddress,
     } = publish;
 
     const {
@@ -187,21 +190,35 @@ class StepConfirm extends React.Component {
               <tr>
                 <th width={154}>可寄件方式</th>
                 <td>
+                  {sendBy711 && '7-11交貨便/'}
+                  {sendByOtherShippment && '宅配、郵寄/'}
                   {sendByInPerson && '面交（自行協調取貨地點）/'}
-                  {sendByOtherShippment && '自行寄件/'}
                 </td>
               </tr>
+              { sendBy711 &&
+                <tr>
+                  <th width={154}>退貨門市</th>
+                  <td>{Rstorename}({Rstoreid}) {Rstoreaddress}</td>
+                </tr>
+              }
               <tr>
                 <th width={154}>可寄還方式</th>
                 <td>
+                  {returnBy711 && '7-11交貨便/'}
+                  {returnByOtherShippment && '宅配、郵寄/'}
                   {returnByInPerson && '面交（自行協調取貨地點）/'}
-                  {returnByOtherShippment && '自行寄件/'}
                 </td>
               </tr>
+              { returnBy711 &&
+                <tr>
+                  <th width={154}>還貨門市</th>
+                  <td>{returnCity}({returnArea}) {returnAddress}</td>
+                </tr>
+              }
               { returnByOtherShippment &&
                 <tr>
                   <th width={154}>寄還地址</th>
-                  <td>{returnCity}{returnArea}{returnAddress}</td>
+                  <td>{storename}{storeid}{storeaddress}</td>
                 </tr>
               }
             </tbody>

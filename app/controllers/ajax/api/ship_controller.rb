@@ -1,7 +1,7 @@
 class Ajax::Api::ShipController < ApplicationController
   include WardenHelper
   include RespondHelper
-
+  require 'uri'
   ###################### ACTION ##################################
   # 取回7-11地址
   def select_store
@@ -11,10 +11,51 @@ class Ajax::Api::ShipController < ApplicationController
   end
 
   def store_result
-    # params = params.permit(:storeid, :storename, :storeaddress)
+    params = store_result_params;
+    @storeid= 'storeid=' + params['storeid'] + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
+    @storename= 'storename=' + URI.encode(params['storename']) + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
+    @storeaddress= 'storeaddress=' + URI.encode(params['storeaddress']) + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
+    # @storeid= 'storeid=' + 'a' + '; max-age=120;'
+    # @storename= 'storename=' + 'b' + '; max-age=120;'
+    # @storeaddress= 'storeaddress=' + 'c' + '; max-age=120;'
     render file: 'app/views/ajax/store/index.html.erb'
   end
 
-  ###################### PARAMS ##################################
+  def create
+    obj = ::Api::Ship::Create.new order_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ShipOrder.structure)
+    end
+    respond success, obj
+  end
 
+  def order
+    obj = ::Api::Ship::Order.new order_params, current_apitoken
+    success = obj.request
+    if success
+      obj.response_data = reverse_merge(obj.response_data, ResponseJson::ShipOrder.structure)
+    end
+    respond success, obj
+  end
+
+  def log
+    obj = ::Api::Ship::Log.new log_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
+  ###################### PARAMS ##################################
+  protected
+  def store_result_params
+    params.permit(:storeid, :storename, :storeaddress)
+  end
+
+  def order_params
+    params.permit(:cid, :send_type).merge(current_uid_params)
+  end
+
+  def log_params
+    params.permit(:order_no).merge(current_uid_params)
+  end
 end

@@ -4,6 +4,7 @@ import {
   reservationGoods as rsRouter,
   my,
 } from 'lib/paths';
+import { addToChatRoom } from 'modules/chatRooms';
 import { fetchCoupons } from '../modules/reservationCoupons';
 import StepConfirm from '../components/StepConfirm';
 import {
@@ -55,8 +56,9 @@ const mapDispatchToProps = (
     if (cid) return dispatch(updateReservation(cid));
     return dispatch(saveReservation());
   },
-
-  redirectToMyOrder: () => browserHistory.push(my.ownerOrderItem('TAB_REQUEST')),
+  dispatchAddToChatRoom: (uid, name, picture) =>
+    dispatch(addToChatRoom({ uid, name, picture })),
+  redirectToMyOrder: () => browserHistory.push(my.lesseeOrderItem('TAB_REQUEST')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepConfirm);

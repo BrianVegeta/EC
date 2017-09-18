@@ -17,6 +17,7 @@ import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
 import { popupScoreRating } from 'modules/popup';
 import { doScore, resetAction } from 'modules/orderAction';
+import { addToChatRoom } from 'modules/chatRooms';
 import styles from './styles.sass';
 
 const cx = classnames.bind(styles);
@@ -33,6 +34,7 @@ class OrderServiceBoard extends React.Component {
   static propTypes = {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
+    photoUid: PropTypes.string.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
     pid: PropTypes.number.isRequired,
@@ -154,6 +156,7 @@ class OrderServiceBoard extends React.Component {
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
@@ -196,7 +199,7 @@ class OrderServiceBoard extends React.Component {
           />
         }
         <FormButton
-          colorType={'greenBorder'}
+          colorType={'green'}
           {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
@@ -206,8 +209,9 @@ class OrderServiceBoard extends React.Component {
   }
 
   render() {
-    const { photoHead, photoName, cidNo, unit,
-      itemName, itemImgUrl, startDate, endDate, totalPrice, display, isRead } = this.props;
+    const { photoHead, photoName, photoUid, cidNo, unit,
+      itemName, itemImgUrl, startDate, endDate, totalPrice,
+      display, isRead, dispatch } = this.props;
     const objectString = this.generateString();
     return (
       <div
@@ -231,7 +235,13 @@ class OrderServiceBoard extends React.Component {
                 padding: '7px 15px',
               }}
               content={'私訊'}
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(addToChatRoom({
+                  uid: photoUid,
+                  name: photoName,
+                  picture: photoHead,
+                }));
+              }}
             />
           </div>
           <div styleName="oseb-mini-note-section">{objectString.title}</div>

@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 import { reservationUsedGoods as rsRouter } from 'lib/paths';
-
 import StepForm from '../components/StepForm';
 import { changeData, touchPath } from '../modules/reservation';
 import { fetchCoupons } from '../modules/reservationCoupons';

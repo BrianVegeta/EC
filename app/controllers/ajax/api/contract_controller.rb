@@ -365,6 +365,9 @@ class Ajax::Api::ContractController < ApplicationController
     # item_lessee_receive_city : String;
     # item_lessee_receive_area : String;
     # item_lessee_receive_address : String;
+    # lessee_receive_711_store_id
+    # lessee_receive_711_store_name
+    # lessee_receive_711_store_address
     # leasestart : Long => 合約開始時間
     # leaseend : Ｌong =>  合約結束時間
     # coupon_no : String => 折價券的代號
@@ -373,7 +376,8 @@ class Ajax::Api::ContractController < ApplicationController
     params.permit(:unit, :paymenttype, :send_b_store_id, :send_type,
      :item_owner_receive_city, :item_owner_receive_area, :item_owner_receive_address,
      :return_type, :item_lessee_receive_city, :item_lessee_receive_area,
-     :item_lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note
+     :item_lessee_receive_address, :leasestart, :leaseend, :coupon_no, :note,
+    :lessee_receive_711_store_id, :lessee_receive_711_store_name, :lessee_receive_711_store_address,
      ).merge(current_uid_params)
 
   end
@@ -391,7 +395,7 @@ class Ajax::Api::ContractController < ApplicationController
   def service_contract_params
      # unit : int => 數量;
      # paymenttype : int => 交易類型  1:ATM 4:信用卡;
-     # service_location_type : String => 服務合約時 , 記錄由誰指定服務地址 0:分享人 1:享用人
+     # service_location_type : String => 服務合約時 , 記錄由誰指定服務地址 0:分享人 1:享用人 2:7-11
      # service_city : String 服務城市
      # service_area : String 服務地區
      # service_address : String 服務地址
@@ -401,7 +405,7 @@ class Ajax::Api::ContractController < ApplicationController
      # note : String => 文字
 
      params.permit(:unit, :paymenttype, :service_location_type, :service_city,
-       :service_area, :service_address, :leasestart, :leaseend, :coupon_no, :note
+       :service_area, :service_address, :leasestart, :leaseend, :coupon_no, :note,
        ).merge(current_uid_params)
 
   end

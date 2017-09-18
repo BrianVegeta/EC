@@ -49,6 +49,7 @@ class StepConfirm extends React.Component {
     dispatchValidate: PropTypes.func.isRequired,
     dispatchValidateAll: PropTypes.func.isRequired,
     dispatchSaveReservation: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
     routingHelper: PropTypes.shape({
       removeHook: PropTypes.func.isRequired,
@@ -168,11 +169,11 @@ class StepConfirm extends React.Component {
     const { reservation: { paymenttype } } = this.props;
     switch (paymenttype) {
       case PAYMENT_TYPE_ATM:
-        return (<div styleName="payment-type-container">ATM 銀行轉帳</div>);
+        return (<div styleName="payment-type-container">支付方式：ATM 銀行轉帳</div>);
       case PAYMENT_TYPE_CREDIT_CARD:
-        return (<div styleName="payment-type-container">信用卡</div>);
+        return (<div styleName="payment-type-container">支付方式：信用卡</div>);
       default:
-        return '尚未選擇';
+        return (<div styleName="payment-type-container">支付方式：尚未選擇</div>);
     }
   }
 
@@ -189,6 +190,7 @@ class StepConfirm extends React.Component {
   render() {
     const {
       dispatchChangeData,
+      dispatchAddToChatRoom,
       reservationItem,
       reservation,
       isFetched,
@@ -214,7 +216,7 @@ class StepConfirm extends React.Component {
     } = reservation;
     const { agreeError } = this.state;
     return (
-      <FormContainer title="填寫預訂資訊" >
+      <FormContainer title="確認預訂資訊" >
         <div styleName="header-note-container">
           <ReservationItemNote
             {...{ pname, img1, price }}
@@ -227,7 +229,7 @@ class StepConfirm extends React.Component {
             avatarSrc={picture}
             userId={uid}
             username={name}
-            dispatchChat={() => console.log('chat')}
+            dispatchChat={() => dispatchAddToChatRoom(uid, name, picture)}
           />
           <div styleName="info-item">
             <div styleName="icon-container">
@@ -246,10 +248,10 @@ class StepConfirm extends React.Component {
             <div styleName="price-detail">
               {this.renderBillingDetail(reservation, reservationItem)}
             </div>
+            {this.renderPaymentType()}
             {note && <div styleName="note">備註：{note}</div>}
           </ConfirmTitle>
         </div>
-        <ConfirmTitle title="支付方式" >{this.renderPaymentType()}</ConfirmTitle>
         <ConfirmTitle title="服務方式" >{this.renderAssign()}</ConfirmTitle>
         {!isEmpty(rules) && rules[0] &&
           <ConfirmTitle title="分享人守則" >

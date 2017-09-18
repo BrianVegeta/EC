@@ -3,11 +3,17 @@
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     </head>
     <body>
-      <div>Coming Soon4!!!</div>
+      <div>讀取中...請您耐心等待</div>
         <script type="text/javascript">
           window.addEventListener('load', function() {
-              document.cookie = "username=John Doe; max-age=120; path=/;domain=debug.shareapp.com.tw";
-          })
+            console.log('onLoad called');
+            document.cookie='<%= @storename %>'
+            document.cookie='<%= @storeid %>'
+            document.cookie='<%= @storeaddress %>'
+            localStorage.setItem('711_callback','done');
+            console.log(document.cookie);
+            console.log(localStorage);
+          });
         </script>
     </body>
 </html>

@@ -95,10 +95,11 @@ export default class {
       calculate_charge_type,
       leasestart,
       leaseend,
+      type,
       // assign_address_type,
       unit,
     } = detail;
-
+    this.type = type;
     this.isMyOwn = isMyOwn;
     this.topCategory = top_category;
     this.discounts = discounts && discounts.map(discount =>

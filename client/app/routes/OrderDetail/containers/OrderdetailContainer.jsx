@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-
+import { addToChatRoom } from 'modules/chatRooms';
 import { popupScoreRating, popupAccessCheck,
-  popupBankInfoSetup, popupATMBank } from 'modules/popup';
+  popupBankInfoSetup, popupATMBank, popupSevenNo, popupSevenLog } from 'modules/popup';
 import { doAccept, doCancel, doReject,
   doShipGoods, doReturn, doReceiveConfirm,
   doScore, doEndOrder, resetAction, doCreditCardPayment,
-  doATMPayment,
+  doATMPayment, getShipOrder, getShipLog
 } from '../modules/orderaction';
 
 import Orderdetail from '../components/Orderdetail';
@@ -36,6 +36,8 @@ const mapDispatchToProps = (dispatch, { params }) => {
 
   return ({
     dispatch,
+    dispatchAddToChatRoom: ({ uid, name, picture }) =>
+      dispatch(addToChatRoom({ uid, name, picture })),
     dispatchBankSetup,
     dispatchPopupScore: (isView, targetName, targetScore, targetComment, targetUrl) =>
       dispatch(popupScoreRating({
@@ -81,6 +83,16 @@ const mapDispatchToProps = (dispatch, { params }) => {
       const options = {};
       dispatch(popupATMBank(options));
       dispatch(doATMPayment(params.cid));
+    },
+    dispatchSevenOrder: (type) => {
+      const options = {};
+      dispatch(popupSevenNo(options));
+      dispatch(getShipOrder(params.cid, type));
+    },
+    dispatchSevenLog: (orderNo) => {
+      const options = { orderNo };
+      dispatch(popupSevenLog(options));
+      dispatch(getShipLog(orderNo));
     },
     dispatchPaymentCreditCard: () => {
       dispatch(doCreditCardPayment(params.cid))

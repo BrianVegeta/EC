@@ -6,7 +6,7 @@ const SEVEN = '2';
 
 const LOCALES = {
   [PERSONAL]: '面交（自行協調取貨地點）',
-  [MAIL]: '自行寄件',
+  [MAIL]: '宅配、郵寄',
   [SEVEN]: '7-11交貨便',
 };
 

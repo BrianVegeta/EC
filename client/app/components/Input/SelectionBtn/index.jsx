@@ -59,6 +59,9 @@ class SelectionButton extends React.Component {
     const { isFocusing } = this.state;
     if (!isFocusing) {
       this.openDropdown();
+    } else {
+      this.props.onBlur();
+      this.closeDropdown();
     }
   }
 

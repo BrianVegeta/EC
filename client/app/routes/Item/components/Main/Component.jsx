@@ -28,6 +28,7 @@ class Main extends React.Component {
     dispatch: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchAddMessage: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
     messageboard: PropTypes.shape({
       isPaginable: PropTypes.bool.isRequired,
       records: PropTypes.array.isRequired,
@@ -110,10 +111,10 @@ class Main extends React.Component {
     send_option,
     return_option,
     ship_before_start_days,
+    type,
   }) {
     const id = ITEM_MAIN_INTRODUCTION;
     const ref = intro => (this[ITEM_MAIN_INTRODUCTION] = intro);
-
     return (
       <div id={id} ref={ref} styleName="nav-anchor" >
         <Title title={pname} />
@@ -130,12 +131,13 @@ class Main extends React.Component {
           sendOption={send_option}
           returnOption={return_option}
           shipDay={ship_before_start_days}
+          type={type}
         />
       </div>
     );
   }
 
-  renderOwner(ownerProfile, dispatch) {
+  renderOwner(ownerProfile, dispatchAddToChatRoom) {
     const id = ITEM_MAIN_SHARER;
     const ref = sharer => (this[ITEM_MAIN_SHARER] = sharer);
     const sharerProps = {
@@ -149,7 +151,7 @@ class Main extends React.Component {
       create_time: isEmpty(ownerProfile) ? 0 : ownerProfile.create_time,
       target_uid: isEmpty(ownerProfile) ? '' : ownerProfile.uid,
       is_follow: false,
-      dispatch,
+      dispatchAddToChatRoom,
     };
 
     return (
@@ -163,7 +165,7 @@ class Main extends React.Component {
     const {
       item: { detail, ownerProfile },
       messageboard,
-      dispatch,
+      dispatchAddToChatRoom,
       dispatchRecords,
       dispatchAddMessage,
       auth,
@@ -178,7 +180,7 @@ class Main extends React.Component {
         {this.renderRegulation(detail)}
         {this.renderCancelPolicy(detail)}
         {this.constructor.renderOverdue(detail)}
-        {this.renderOwner(ownerProfile, dispatch)}
+        {this.renderOwner(ownerProfile, dispatchAddToChatRoom)}
         {this.renderComments(messageboard, dispatchRecords, dispatchAddMessage, auth)}
       </div>
     );
