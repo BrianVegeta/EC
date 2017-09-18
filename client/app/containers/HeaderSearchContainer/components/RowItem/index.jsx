@@ -6,6 +6,7 @@ import Picture from 'components/Picture';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+
 class RowItem extends React.Component {
 
   static propTypes = {
@@ -19,10 +20,10 @@ class RowItem extends React.Component {
 
   render() {
     const { source } = this.props;
-    const { pid, title, priceLabel, picture } = source;
+    const { id, title, priceLabel, picture } = source;
     return (
       <div styleName="container">
-        <Link to={itemPath(title, pid)}>
+        <Link to={itemPath(title, id)}>
           <div styleName="avatar">
             <Picture src={picture} width={60} />
           </div>
