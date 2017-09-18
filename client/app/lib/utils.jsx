@@ -49,7 +49,7 @@ export const asyncS3ToBlob = (s3, type) =>
         resolve(urlCreator.createObjectURL(blob));
       }, (type || 'image/jpg'), 0.75);
     };
-    // img.crossOrigin = '';
+    img.crossOrigin = 'anonymous';
     img.src = s3;
     // const xhr = new XMLHttpRequest();
     // xhr.open('GET', s3);
