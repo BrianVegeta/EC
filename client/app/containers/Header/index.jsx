@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
@@ -6,24 +7,24 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 import Logo from 'components/Icons/Logo';
-
 import {
   my,
   notifyPath,
   registrationPath,
   loginPath,
 } from 'lib/paths';
-
 import classnames from 'classnames/bind';
 import cn from 'classnames';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
 import Me from './Me';
 import DropdownNavs from './DropdownNavs';
 import NavItem from './NavItem';
 
 
+const NOTIFY_OWNER_CONTRACT = 'NOTIFY_OWNER_CONTRACT';
+const NOTIFY_LESSEE_CONTRACT = 'NOTIFY_LESSEE_CONTRACT';
+const NOTIFY_OTHER = 'NOTIFY_OTHER';
 const cx = classnames.bind(styles);
 class Header extends React.Component {
 
@@ -55,32 +56,24 @@ class Header extends React.Component {
   renderCircle(type) {
     const { notification } = this.props;
     switch (type) {
-      case 0 : {
-        const { notifyCData } = notification;
-        if (notifyCData.owner_unread_count &&
-          notifyCData.owner_unread_count > 0) {
-          return (
-            <div styleName="notice-circle" />
-          );
+      case NOTIFY_OWNER_CONTRACT : {
+        const { notifyCData: { owner_unread_count } } = notification;
+        if (owner_unread_count && owner_unread_count > 0) {
+          return <div styleName="notice-circle" />;
         }
       }
         break;
-      case 1: {
-        const { notifyCData } = notification;
-        if (notifyCData.lessee_unread_count &&
-          notifyCData.lessee_unread_count > 0) {
-          return (
-            <div styleName="notice-circle" />
-          );
+      case NOTIFY_LESSEE_CONTRACT: {
+        const { notifyCData: lessee_unread_count } = notification;
+        if (lessee_unread_count && lessee_unread_count > 0) {
+          return <div styleName="notice-circle" />;
         }
       }
         break;
-      case 2 : {
+      case NOTIFY_OTHER: {
         const { notifyData } = notification;
         if (notifyData && notifyData.length > 0) {
-          return (
-            <div styleName="notice-circle" />
-          );
+          return <div styleName="notice-circle" />;
         }
       }
         break;
@@ -113,10 +106,8 @@ class Header extends React.Component {
     return (
       <header
         className={
-          cn('navbar', {
-            'navbar-static': !fixed,
-            'navbar-fixed-top': fixed,
-          })}
+          cn('navbar', { 'navbar-static': !fixed, 'navbar-fixed-top': fixed })
+        }
       >
         <div className="navbar-container">
           <div className="container clear">
@@ -128,7 +119,7 @@ class Header extends React.Component {
             <div className="navbar">
               {searchable &&
                 <div className={cx('navs-search')}>
-                  <HeaderSearchContainer />
+                  <HeaderSearchContainer ref={this.refSearch} />
                 </div>
               }
               <ul className="navs navs-right" >
@@ -138,24 +129,21 @@ class Header extends React.Component {
                 {isLogin &&
                   <li className="nav" >
                     <Link to={myLesseeOrdersPath}>
-                        消費狀態
-                        {this.renderCircle(1)}
+                      消費狀態{this.renderCircle(NOTIFY_LESSEE_CONTRACT)}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
                     <Link to={myOrdersPath}>
-                        廠商訂單
-                        {this.renderCircle(0)}
+                      廠商訂單{this.renderCircle(NOTIFY_OWNER_CONTRACT)}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
                     <Link to={notifyIndexPath}>
-                        通知
-                        {this.renderCircle(2)}
+                      通知{this.renderCircle(NOTIFY_OTHER)}
                     </Link>
                   </li>
                 }

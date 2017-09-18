@@ -1,3 +1,5 @@
+$dialog-width: 780px
+
 .backdrop
   position: fixed
   top: 0
@@ -24,9 +26,11 @@
   outline: 0
 
 .dialog
-  position: relative
-  width: 780px
+  position: absolute
+  width: $dialog-width
   margin: auto
+  left: 50%
+  margin-left: -($dialog-width / 2)
 .content
   position: relative
   height: 650px
