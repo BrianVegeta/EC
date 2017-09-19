@@ -12,6 +12,7 @@ class FavoriteHeart extends React.Component {
 
   static defaultProps = {
     isActive: false,
+    onRemoveDone: null,
   };
 
   static propTypes = {
@@ -21,6 +22,7 @@ class FavoriteHeart extends React.Component {
     dispatchAddFavorite: PropTypes.func.isRequired,
     dispatchRemoveFavorite: PropTypes.func.isRequired,
     isLogin: PropTypes.bool.isRequired,
+    onRemoveDone: PropTypes.func,
   };
 
   constructor(props) {
@@ -65,6 +67,10 @@ class FavoriteHeart extends React.Component {
       count: this.state.count - 1,
       isLoading: false,
     });
+
+    if (this.props.onRemoveDone) {
+      this.props.onRemoveDone();
+    }
   }
 
   render() {

@@ -85,18 +85,7 @@ class Orderdetail extends React.Component {
     this.props.dispatchReset();
   }
 
-  getPaymentAction({ paymenttype }) {
-    switch (paymenttype) {
-      case 4:
-        return this.props.dispatchPaymentCreditCard;
-      case 1:
-        return this.props.dispatchPaymentInfo;
-      default:
-        return () => {};
-    }
-  }
-
-  generateDispatch({ type }) {
+  generateEndOrderDispatch({ type }) {
     if (type === 'SERVICE') {
       return this.props.dispatchEndService;
     } else if (type === 'SPACE') {
@@ -118,9 +107,9 @@ class Orderdetail extends React.Component {
     if (!targetName) { targetName = '尚未設定'; }
     const targetUid = display.is_owner ? order.lesseeuid : order.owneruid;
     let targetRealName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
-    if (!targetRealName) { targetRealName = '尚未設定'; }
+    if (!targetRealName) { targetRealName = '同意預定後顯示'; }
     let targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
-    if (!targetPhone) { targetPhone = '尚未設定'; }
+    if (!targetPhone) { targetPhone = '同意預定後顯示'; }
     let targetComment = display.is_owner ? order.lessee_comment : order.owner_comment;
     if (!targetComment) { targetComment = '沒有留言備註'; }
     let targetScore = display.is_owner ? order.lesseescore : order.ownerscore;
@@ -148,7 +137,188 @@ class Orderdetail extends React.Component {
         return () => {};
     }
   }
-
+  renderOrderAction({ can_cancel, can_accept, can_edit, can_reject, is_owner }, order) {
+    return (
+      <div>
+        {this.renderButtonStyle(
+          can_cancel,
+          this.props.dispatchCancel,
+          is_owner ? '目前無法接單' : '取消訂單',
+          'gray',
+        )}
+        {this.renderButtonStyle(
+          can_accept,
+          this.props.dispatchAccept,
+          '我同意此預訂',
+          'green',
+        )}
+        {this.renderButtonStyle(
+          can_edit,
+          this.generateEditAddress(order),
+          '修改訂單',
+          'green',
+        )}
+        {this.renderRejectStyle(
+          can_reject,
+          this.props.dispatchReject,
+        )}
+      </div>
+    );
+  }
+  renderPaymentAction({ can_pay }, { paymenttype }) {
+    switch (paymenttype) {
+      case 4:
+        return this.renderButtonStyle(
+            can_pay,
+            this.props.dispatchPaymentCreditCard,
+            '信用卡付款',
+            'green',
+          );
+      case 1:
+        return this.renderButtonStyle(
+            can_pay,
+            this.props.dispatchPaymentInfo,
+            'ATM付款',
+            'green',
+          );
+      default:
+        return null;
+    }
+  }
+  renderHintText(text) {
+    return (
+      <div style={{ marginLeft: 20, width: 420, display: 'inline-block', verticalAlign: 'middle' }}>
+        {text}
+      </div>
+    );
+  }
+  renderShipmentAction({ can_ship, can_711, can_ship_confirm }, { leasestart, type }) {
+    if (can_ship) {
+      const hint = `請在${formatDate(leasestart)}前出貨。建議在包裝出貨前，拍下並上傳物品狀態，以保障自己的權益喔！`;
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_ship,
+            this.props.dispatchShipGoods,
+            '安排出貨',
+            'green',
+          )}
+          { type === 'ITEM' && this.renderHintText(hint) }
+        </div>
+      );
+    } else if (can_711) {
+      const hint = `請在${formatDate(leasestart)}前出貨。建議在包裝出貨前，拍下並上傳物品狀態，以保障自己的權益喔！`;
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_711,
+            () => this.props.dispatchSevenOrder('OWNER_SEND'),
+            '寄件代碼',
+            'green',
+          )}
+          { type === 'ITEM' && this.renderHintText(hint) }
+        </div>
+      );
+    } else if (can_ship_confirm) {
+      const hint = '建議在收到物品時，拍下並上傳物品狀態，以保障自己的權益喔！';
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_ship_confirm,
+            this.props.dispatchReceiveConfirm,
+            '確認收貨',
+            'green',
+          )}
+          { this.renderHintText(hint) }
+        </div>
+      );
+    }
+    return null;
+  }
+  renderReturnAction({ can_return, can_711_return, can_return_confirm }, order) {
+    if (can_return) {
+      const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_return,
+            this.props.dispatchReturn,
+            '確認還貨',
+            'green',
+          )}
+          { this.renderHintText(hint) }
+        </div>
+      );
+    } else if (can_711_return) {
+      const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_711_return,
+            () => this.props.dispatchSevenOrder('LESSEE_SEND'),
+            '寄件代碼',
+            'green',
+          )}
+          { this.renderHintText(hint) }
+        </div>
+      );
+    } else if (can_return_confirm) {
+      const hint = '建議在收到物品時，拍下並上傳物品狀態，以保障自己的權益喔！';
+      return (
+        <div>
+          {this.renderButtonStyle(
+            can_return_confirm,
+            this.props.dispatchReceiveConfirm,
+            '確認收貨',
+            'green',
+          )}
+          { this.renderHintText(hint) }
+        </div>
+      );
+    }
+    return null;
+  }
+  renderEndOrderAction({ can_owner_end, can_lessee_end }, order) {
+    if (can_owner_end) {
+      return this.renderButtonStyle(
+        can_owner_end,
+        this.generateEndOrderDispatch(order),
+        '確認結束',
+      );
+    } else if (can_lessee_end) {
+      return this.renderButtonStyle(
+        can_lessee_end,
+        this.generateEndOrderDispatch(order),
+        '確認結束',
+      );
+    }
+    return null;
+  }
+  renderScoreAction(
+    { can_score, view_score },
+    { targetName, targetUrl, targetScore, targetComment }) {
+    if (can_score) {
+      return this.renderButtonStyle(
+        can_score,
+        () => this.props.dispatchPopupScore(
+          false, targetName, null, null, targetUrl),
+        '評價',
+        'green',
+      );
+    } else if (view_score) {
+      return this.renderButtonStyle(
+        view_score,
+        () => {
+          this.props.dispatchPopupScore(
+            true, targetName, targetScore, targetComment, targetUrl,
+          );
+        },
+        '查看評價',
+        'green',
+      );
+    }
+    return null;
+  }
   renderOverdueRate(overdueRate, deposit) {
     if (!overdueRate || overdueRate <= 0) {
       return null;
@@ -317,8 +487,8 @@ class Orderdetail extends React.Component {
       showButton = (sendSeven);
     } else {
       const { orderdetail: { returnSeven } } = this.props;
-      storeid = order.return_711_store_id;
-      storename = order.return_711_store_name;
+      storeid = order.owner_receive_711_store_id;
+      storename = order.owner_receive_711_store_name;
       orderNo = returnSeven ? returnSeven.orderno : '尚未建立';
       showButton = (returnSeven);
     }
@@ -407,6 +577,16 @@ class Orderdetail extends React.Component {
     );
   }
 
+  renderBilling(order) {
+    return (
+      <div styleName="section-content">
+        <div styleName="section-header">交易明細</div>
+        <BillingDetail {...calculateService(order, null)} />
+        {this.renderAcceptHint(order)}
+        {this.renderBankInfo(order)}
+      </div>
+    );
+  }
   renderAcceptHint({ contractstage }) {
     if (contractstage !== 1) {
       return null;
@@ -419,8 +599,8 @@ class Orderdetail extends React.Component {
   }
 
   renderBankInfo({ contractstage }) {
-    if (contractstage > 4) {
-      return null;
+    if (contractstage >= 4) {
+      return <div styleName="space_padding" />;
     }
     const { personalBankInfo } = this.props;
     const { isReady, isChecked } = personalBankInfo;
@@ -438,7 +618,7 @@ class Orderdetail extends React.Component {
           <FormButton
             colorType="greenBorder"
             size="sm"
-            width={120}
+            style={{ width: 96 }}
             content="前往設定"
             onClick={this.props.dispatchBankSetup}
           />
@@ -457,16 +637,14 @@ class Orderdetail extends React.Component {
     const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
-        <div styleName="banner_style" >
-          <Banner
-            cid={cid}
-            type={type}
-            contractstage={contractstage}
-            isOwner={isOwner}
-            startDate={time}
-            dispatch={dispatch}
-          />
-        </div>
+        <Banner
+          cid={cid}
+          type={type}
+          contractstage={contractstage}
+          isOwner={isOwner}
+          startDate={time}
+          dispatch={dispatch}
+        />
       );
     } else if (contractstage > 1000 && contractstage < 3000) {
       if (!(sueDetail)) {
@@ -499,14 +677,13 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderButtonStyle(show, dispatchAction, buttonText) {
+  renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
     if (!(show)) return null;
     return (
       <FormButton
-        colorType="greenBorder"
-        size="sm"
+        colorType={buttonColor}
         width="auto"
-        style={{ padding: '15px 28px', marginRight: 20 }}
+        style={{ marginRight: 20, height: 52, width: 152, fontWeight: 400 }}
         content={buttonText}
         onClick={dispatchAction}
       />
@@ -596,103 +773,19 @@ class Orderdetail extends React.Component {
           {this.renderSchedule()}
           {this.renderImages()}
           {this.renderShippingDetail(order)}
-          <div styleName="section-content">
-            <div styleName="section-header">交易明細</div>
-            <BillingDetail {...calculateService(order, null)} />
-            {this.renderAcceptHint(order)}
-            {this.renderBankInfo(order)}
-          </div>
+          {this.renderBilling(order)}
           {this.renderRules(order)}
           {this.renderCancelPolicys(order.renderCancelPolicys)}
           {this.renderOverdueRate(order.overdue_rate, order.deposit)}
           {this.renderLog()}
         </div>
         <BottomController >
-          {this.renderButtonStyle(
-            display.can_cancel,
-            this.props.dispatchCancel,
-            display.is_owner ? '目前無法接單' : '取消訂單',
-          )}
-          {this.renderButtonStyle(
-            display.can_accept,
-            this.props.dispatchAccept,
-            '我同意此預訂',
-          )}
-          {this.renderButtonStyle(
-            display.can_edit,
-            this.generateEditAddress(order),
-            '修改訂單',
-          )}
-          {this.renderButtonStyle(
-            display.can_pay,
-            this.getPaymentAction(order),
-            '付款',
-          )}
-          {this.renderButtonStyle(
-            display.can_camera,
-            () => {},
-            '拍照',
-          )}
-          {this.renderButtonStyle(
-            display.can_ship,
-            this.props.dispatchShipGoods,
-            '確認出貨',
-          )}
-          {this.renderButtonStyle(
-            display.can_711,
-            () => this.props.dispatchSevenOrder('OWNER_SEND'),
-            '寄件代碼',
-          )}
-          {this.renderButtonStyle(
-            display.can_ship_confirm,
-            this.props.dispatchReceiveConfirm,
-            '確認收貨',
-          )}
-          {this.renderButtonStyle(
-            display.can_return,
-            this.props.dispatchReturn,
-            '確認還貨',
-          )}
-          {this.renderButtonStyle(
-            display.can_711_return,
-            () => this.props.dispatchSevenOrder('LESSEE_SEND'),
-            '寄件代碼',
-          )}
-          {this.renderButtonStyle(
-            display.can_return_confirm,
-            this.props.dispatchReceiveConfirm,
-            '確認收貨',
-          )}
-          {this.renderButtonStyle(
-            display.can_owner_end,
-            this.generateDispatch(order),
-            '確認結束',
-          )}
-          {this.renderButtonStyle(
-            display.can_lessee_end,
-            this.generateDispatch(order),
-            '確認結束',
-          )}
-          {this.renderButtonStyle(
-            display.can_score,
-            () => this.props.dispatchPopupScore(false, target.targetName,
-               null, null, target.targetUrl),
-            '評價',
-          )}
-          {this.renderButtonStyle(
-            display.view_score,
-            () => {
-              this.props.dispatchPopupScore(
-                true, target.targetName,
-                target.targetScore, target.targetComment, target.targetUrl,
-              );
-            },
-            '查看評價',
-          )}
-          {this.renderRejectStyle(
-            display.can_reject,
-            this.props.dispatchReject,
-          )}
+          { this.renderOrderAction(display, order)}
+          { this.renderPaymentAction(display, order)}
+          { this.renderShipmentAction(display, order)}
+          { this.renderReturnAction(display, order)}
+          { this.renderEndOrderAction(display, order)}
+          { this.renderScoreAction(display, target)}
         </BottomController>
       </div>
     );

@@ -110,7 +110,6 @@ class Header extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const {
       dispatchLogout,
       dispatchPublish,

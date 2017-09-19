@@ -513,7 +513,6 @@ class StepForm extends React.Component {
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}
-          text="確認提交"
         />
       </FormContainer>
     );

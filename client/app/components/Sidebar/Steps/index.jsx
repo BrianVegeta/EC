@@ -12,11 +12,13 @@ class SidebarSteps extends React.Component {
 
   static defaultProps = {
     touchedPaths: null,
+    marginTop: 0,
   };
 
   static propTypes = {
     touchedPaths: PropTypes.arrayOf(PropTypes.string),
     steps: PropTypes.arrayOf(stepPropType.isRequired).isRequired,
+    marginTop: PropTypes.number,
   };
 
   mapPathsTouched() {
@@ -30,7 +32,7 @@ class SidebarSteps extends React.Component {
   render() {
     const mappedSteps = this.mapPathsTouched();
     return (
-      <div>
+      <div style={{ marginTop: this.props.marginTop }}>
         {mappedSteps.map(({ text, isValid, isTouched, path }, index) => (
           <StepNav
             key={`${index + 1}`}

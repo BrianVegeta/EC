@@ -1,52 +1,59 @@
 @import "~styles/color.sass"
 
-.oseb-board-border
+.board-border
   border: 1px solid $global-lineColor
   margin-bottom: 10px
   &.colored
     background-color: #FFF7F2
-.oseb-header-section
-  line-height: 72px
+.header-section
+  height: 72px
   margin-left: 40px
   margin-right: 40px
   border-bottom: 1px solid $global-lineColor
-.oseb-header-avatar-style
+.header-avatar-style
   display: inline-block
   padding-top: 16px
   padding-bottom: 16px
   float: left
-.oseb-header-name-style
+.header-name-style
   display: inline-block
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
+  color: $global-middleBlack
   padding-left: 10px
+  margin-top: 25px
+  max-width: 400px
   font-weight: 600
   font-size: 17px
-.oseb-mini-note-section
+  &:hover
+    color: $global-hoverColor
+  &:active
+    color: $global-activeColor
+.mini-note-section
   float: right
+  margin-top: 25px
   color: $global-primaryColor
-.oseb-header-chat-style
+.header-chat-style
   display: inline-block
   vertical-align: top
-  padding-left: 10px
-  width: 75px
-.oseb-body-section
+  margin: 20px 0px 0px 10px
+.body-section
   margin-left: 40px
   margin-right: 40px
   border-bottom: 1px solid $global-lineColor
-.oseb-pic-style
+.pic-style
   padding-top: 20px
   float: left
-.oseb-content-style
+.content-style
   margin-left: 140px
   padding-top: 20px
   padding-bottom: 40px
-.oseb-date-style
+.date-style
   font-size: 16px
   font-weight: 400
   color: $global-primaryColor
-.oseb-text-style
+.text-style
   padding-top: 5px
   white-space: nowrap
   overflow: hidden
@@ -55,33 +62,34 @@
   font-size: 20px
   font-weight: 400
   color: $global-blackColor
-.oseb-hint-style
+.hint-style
   padding-top: 10px
   font-size: 14px
   font-weight: 400
   color: $global-placeholder
-.oseb-price-section
+.price-section
   padding-top: 5px
-.oseb-unit-style
+.unit-style
+  color: $global-placeholder
   display: inline-block
   float: left
-.oseb-price-style
+.price-style
   display: inline-block
   float: right
   font-size : 20px
   color : #31abba
   font-weight: 600
-.oseb-footer-section
+.footer-section
   margin-left: 40px
   margin-right: 40px
-.oseb-hint-section
+.hint-section
   float: left
   width: 370px
   margin-Top: 15px
   margin-left: 40px
   margin-bottom: 15px
   color: $global-placeholder
-.oseb-action-section
+.action-section
   margin-right: 40px
   margin-top: 15px
   margin-bottom: 15px

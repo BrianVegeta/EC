@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ListContainer from 'components/ListContainer';
 import ItemList from 'components/ItemList';
 
+import { CONTROL_TYPE_PRIVATE_COLLECTION } from 'components/ItemBoard';
 
 import Container from '../Container';
 
@@ -42,6 +43,8 @@ class Collections extends React.Component {
           isInitialFetching={myCollections.isFetching && records.length === 0}
         >
           <ItemList
+            type={CONTROL_TYPE_PRIVATE_COLLECTION}
+            onDelete={() => { this.componentDidMount(); }}
             records={records}
             eachMargin={26}
           />

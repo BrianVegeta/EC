@@ -136,7 +136,17 @@ class BankSetupContainer extends React.Component {
   changeInfo(key) {
     return value => this.props.dispatchChangeInfo({ [key]: value });
   }
-
+  // <FormBlock title="密碼驗證" hasBottomLine={false}>
+  //   <InputPassword
+  //     placeholder="請輸入8個以上英數字"
+  //     autoComplete="off"
+  //     value={password}
+  //     onChange={value => dispatchChangePassword(value)}
+  //   />
+  //   <div styleName="passwordCheckHelper">
+  //     為了您的帳戶安全，請輸入密碼以協助我們確認您的身份
+  //   </div>
+  // </FormBlock>
   render() {
     const { phoneError, emailError } = this.state;
     const {
@@ -269,24 +279,21 @@ class BankSetupContainer extends React.Component {
               />
             </div>
           </FormBlock>
-          <FormBlock title="密碼驗證" hasBottomLine={false}>
-            <InputPassword
-              placeholder="請輸入8個以上英數字"
-              autoComplete="off"
-              value={password}
-              onChange={value => dispatchChangePassword(value)}
-            />
-            <div styleName="passwordCheckHelper">
-              為了您的帳戶安全，請輸入密碼以協助我們確認您的身份
-            </div>
-          </FormBlock>
         </div>
         <div styleName="footer" className="clear">
+          <span styleName="left">
+            <FormButton
+              width={152}
+              colorType="gray"
+              content="取消"
+              onClick={this.props.dispatchClosePopup}
+            />
+          </span>
           <span styleName="right">
             <FormButton
-              width={170}
+              width={152}
               colorType="orange"
-              content="完成"
+              content="儲存修改"
               onClick={this.onSubmit}
             />
           </span>

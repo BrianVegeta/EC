@@ -57,13 +57,14 @@ class PublishService extends React.Component {
     return (
       <div styleName="container">
         <StickyContainer
-          style={{ height: environment.height, marginTop: 30 }}
+          style={{ height: environment.height }}
           className={cx('sidebar')}
         >
           <Sticky>
             {({ style }) => (
               <div style={{ paddingBottom: 100, ...style }}>
                 <SidebarSteps
+                  marginTop={30}
                   touchedPaths={touchedPaths}
                   steps={steps}
                 />

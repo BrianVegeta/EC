@@ -11,16 +11,16 @@ class OrderdetailLayout extends React.Component {
 
   static propTypes = {
     children: myPropTypes.children.isRequired,
-    environment: myPropTypes.environment.isRequired,
+    // environment: myPropTypes.environment.isRequired,
   };
 
   render() {
-    const { children, environment } = this.props;
+    const { children } = this.props;
     return (
       <div className="container-gray-bg" style={{ paddingBottom: 20 }}>
         <HeaderContainer />
         <MainWrapper
-          minHeight={environment.height}
+          minHeight={1100}
           style={{ marginBottom: 120, width: 840 }}
         >
           {children}

@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
-import { orderDetail, reservationService } from 'lib/paths';
+import { Link, browserHistory } from 'react-router';
+import { userprofilePaths, orderDetail, reservationService } from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -113,19 +113,20 @@ class OrderServiceBoard extends React.Component {
     const { display } = this.props;
     const { can_score, view_score } = display;
     const buttonProps = {
-      colorType: 'greenBorder',
       size: 'sm',
       width: 'auto',
       style: {
+        borderRadius: '100px',
         padding: '7px 7px',
         marginLeft: 10,
         display: 'inline-block',
       },
     };
     return (
-      <div styleName="oseb-action-section">
+      <div styleName="action-section">
         {can_score &&
           <FormButton
+            colorType={'greenBorder'}
             {...buttonProps}
             content="評分"
             onClick={() => this.callScorePanel(false)}
@@ -133,12 +134,14 @@ class OrderServiceBoard extends React.Component {
         }
         {view_score &&
           <FormButton
+            colorType={'greenBorder'}
             {...buttonProps}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
+          colorType={'greenBorder'}
           {...buttonProps}
           content="查看詳情"
           onClick={() => browserHistory.push(
@@ -163,10 +166,10 @@ class OrderServiceBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oseb-action-section">
+      <div styleName="action-section">
         {can_edit &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
             onClick={() => {
@@ -176,7 +179,7 @@ class OrderServiceBoard extends React.Component {
         }
         {can_pay &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'付款'}
             onClick={() => {}}
@@ -184,7 +187,7 @@ class OrderServiceBoard extends React.Component {
         }
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -192,14 +195,14 @@ class OrderServiceBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'green'}
+          colorType={'greenBorder'}
           {...buttonConfig}
           content={'查看詳情'}
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
@@ -215,17 +218,25 @@ class OrderServiceBoard extends React.Component {
     const objectString = this.generateString();
     return (
       <div
-        className={`clear ${cx('oseb-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('board-border', { colored: !isRead })}`}
       >
-        <div styleName="oseb-header-section">
-          <div styleName="oseb-header-avatar-style">
+        <div styleName="header-section">
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="header-avatar-style"
+          >
             <Avatar
               src={photoHead}
               width={40}
             />
-          </div>
-          <div styleName="oseb-header-name-style" >{ photoName }</div>
-          <div styleName="oseb-header-chat-style" >
+          </Link>
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="header-name-style"
+          >
+            { photoName }
+          </Link>
+          <div styleName="header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -244,29 +255,29 @@ class OrderServiceBoard extends React.Component {
               }}
             />
           </div>
-          <div styleName="oseb-mini-note-section">{objectString.title}</div>
+          <div styleName="mini-note-section">{objectString.title}</div>
         </div>
         <div
-          styleName="oseb-body-section"
+          styleName="body-section"
           className="clear"
         >
-          <div styleName="oseb-pic-style">
+          <div styleName="pic-style">
             <Picture
               src={itemImgUrl}
               width={120}
             />
           </div>
-          <div styleName="oseb-content-style">
-            <div styleName="oseb-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="oseb-text-style">{`${itemName}`}</div>
-            <div styleName="oseb-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
-            <div styleName="oseb-price-section">
-              <div styleName="oseb-unit-style">使用{rangeDiff(startDate, endDate)}天X{unit}件</div>
-              <div styleName="oseb-price-style">總計 {formatCurrency(totalPrice)}</div>
+          <div styleName="content-style">
+            <div styleName="hint-style">{`訂單編號：${cidNo}`}</div>
+            <div styleName="text-style">{`${itemName}`}</div>
+            <div styleName="date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="price-section">
+              <div styleName="unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
+              <div styleName="price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
         </div>
-        <div styleName="oseb-hint-section">{objectString.text}</div>
+        <div styleName="hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );

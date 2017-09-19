@@ -61,6 +61,7 @@ class reservationGoods extends React.Component {
     return (
       <StickyStepContainer screenHeight={screenHeight}>
         <SidebarSteps
+          marginTop={30}
           touchedPaths={touchedPaths}
           steps={steps}
         />
