@@ -79,3 +79,48 @@
       .log-time
         width: 100px
         line-height: 30px
+  .image-nav
+    border: 1px solid $global-lineColor
+    color: $global-blackColor
+    margin-bottom: 40px
+    ul
+      list-style: none
+      li
+        float: left
+        cursor: pointer
+        color: $global-blackColor
+        position: relative
+        border-bottom: 8px solid #FFF
+        &:hover, &.active
+          color: $global-primaryColor
+          border-bottom: 8px solid $global-primaryColor
+  .no-image
+    text-align: center
+    margin-bottom: 40px
+    color: #999
+    padding: 50px 0px
+  .gallery
+    position: relative
+    margin-bottom: 40px
+    .imageDropzone
+      float: left
+      &:not(:last-child)
+        margin-right: 18px
+  .imageDropzone
+    position: relative
+    display: -webkit-box
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+    -webkit-box-align: center
+    -webkit-align-items: center
+    -ms-flex-align: center
+    align-items: center
+    background-color: #FFF
+    box-sizing: border-box
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    color: #333
+    font-weight: 500

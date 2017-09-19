@@ -159,8 +159,6 @@ class SueForm extends React.Component {
       dispatchChangeOrders,
     } = this.props;
     const { reason, showNeedCheck, showNeedReason } = this.state;
-    console.log('render');
-    console.log(this.state);
     return (
       <div styleName="sue-form-content-border">
         <div styleName="sue-form-header">申訴</div>

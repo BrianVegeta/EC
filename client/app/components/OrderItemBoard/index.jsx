@@ -65,7 +65,6 @@ class OrderItemBoard extends React.Component {
         can_ship_confirm: PropTypes.bool,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
-        can_camera: PropTypes.bool,
         can_score: PropTypes.bool,
         view_score: PropTypes.bool,
       },
@@ -159,7 +158,7 @@ class OrderItemBoard extends React.Component {
 
   renderOwnerActions() {
     const { display } = this.props;
-    const { can_ship, can_camera, can_score, can_711, view_score } = display;
+    const { can_ship, can_score, can_711, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -172,14 +171,6 @@ class OrderItemBoard extends React.Component {
     };
     return (
       <div styleName="action-section">
-        {can_camera &&
-          <FormButton
-            colorType={'green'}
-            {...buttonConfig}
-            content={'拍照'}
-            onClick={() => {}}
-          />
-        }
         {can_ship &&
           <FormButton
             colorType={'green'}

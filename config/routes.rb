@@ -294,6 +294,8 @@ Rails.application.routes.draw do
       collection do
         put 'item_cover'
         put 'sue_picture/:cid_no', action: :sue_picture
+        put 'return/:cid_no', action: :return
+        put 'ship/:cid_no', action: :ship
         put 'avatar/:uid', action: :avatar
         put 'wish/:uid', action: :wish
         put 'chat_photo/:uid', action: :chat_photo

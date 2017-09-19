@@ -13,11 +13,12 @@ class ThumbDropped extends React.Component {
   static defaultProps = {
     coverLabel: null,
     coverUrl: null,
+    onEdit: null,
   };
   static propTypes = {
     coverLabel: PropTypes.node,
     coverUrl: PropTypes.string,
-    onEdit: PropTypes.func.isRequired,
+    onEdit: PropTypes.func,
     onRemove: PropTypes.func.isRequired,
   };
   render() {
@@ -31,9 +32,11 @@ class ThumbDropped extends React.Component {
         <Picture src={coverUrl} />
         {coverLabel}
         <div styleName="ctrlGroups" >
-          <button className="button" styleName="ctrlIconEdit" onClick={onEdit} >
-            <EditIcon {...iconProps} />
-          </button>
+          { onEdit &&
+            <button className="button" styleName="ctrlIconEdit" onClick={onEdit} >
+              <EditIcon {...iconProps} />
+            </button>
+          }
           <button className="button" styleName="ctrlIcon" onClick={onRemove} >
             <RemoveIcon {...iconProps} />
           </button>

@@ -20,6 +20,26 @@ class Ajax::ImagesController < ApplicationController
     render json: { photoUrl: @uploader.photo.url }
   end
 
+  # PUT /images/return.json
+  def return
+    @uploader = ReturnPicture.new
+    @uploader.cid_no = params[:cid_no]
+    @uploader.timestamp = (Time.now.to_f * 1000).to_i
+    @uploader.photo = params[:croppedImage]
+    @uploader.save
+    render json: { photoUrl: @uploader.photo.url }
+  end
+
+  # PUT /images/ship.json
+  def ship
+    @uploader = ShipPicture.new
+    @uploader.cid_no = params[:cid_no]
+    @uploader.timestamp = (Time.now.to_f * 1000).to_i
+    @uploader.photo = params[:croppedImage]
+    @uploader.save
+    render json: { photoUrl: @uploader.photo.url }
+  end
+
   # PUT /images/avatar/:uid.json
   def avatar
     avatar = Images::Avatar.new(uid_params)

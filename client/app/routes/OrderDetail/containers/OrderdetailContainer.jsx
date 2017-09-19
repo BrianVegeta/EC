@@ -5,15 +5,16 @@ import { popupScoreRating, popupAccessCheck,
 import { doAccept, doCancel, doReject,
   doShipGoods, doReturn, doReceiveConfirm,
   doScore, doEndOrder, resetAction, doCreditCardPayment,
-  doATMPayment, getShipOrder, getShipLog
+  doATMPayment, getShipOrder, getShipLog,
 } from '../modules/orderaction';
-
+import { createCover, deleteCover, processRawCovers }
+  from '../modules/ordergallery';
 import Orderdetail from '../components/Orderdetail';
 import { fetchOrder, reset } from '../modules/orderdetail';
 
 
-const mapStateToProps = ({ environment, orderdetail, auth, personalBankInfo }) => ({
-  environment, orderdetail, auth, personalBankInfo,
+const mapStateToProps = ({ environment, orderdetail, auth, personalBankInfo, ordergallery }) => ({
+  environment, orderdetail, auth, personalBankInfo, ordergallery,
 });
 
 const refetch = (dispatch, { cid }) => {
@@ -135,6 +136,9 @@ const mapDispatchToProps = (dispatch, { params }) => {
         alert(error);
       });
     },
+    dispatchCreateCover: blob => dispatch(createCover(blob, params.cid)),
+    dispatchDeleteCover: key => dispatch(deleteCover(key)),
+    dispatchUploadCover: isShip => dispatch(processRawCovers(isShip)),
   });
 };
 
