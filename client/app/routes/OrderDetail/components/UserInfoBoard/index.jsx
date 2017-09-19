@@ -62,7 +62,6 @@ class UserInfoBoard extends React.Component {
           <div styleName="name-style">{`真實姓名：${realname}`}</div>
           <div styleName="phone-style">{`手機號碼：${phone}`}</div>
           <div styleName="panel-style">
-            <div styleName="hint-style">同意預訂後顯示</div>
             <div styleName="btn-section">
               <div styleName="btn-outer-style">
                 <FormButton

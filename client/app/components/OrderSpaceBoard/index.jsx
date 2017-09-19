@@ -122,7 +122,7 @@ class OrderSpaceBoard extends React.Component {
       },
     };
     return (
-      <div styleName="ospb-action-section">
+      <div styleName="action-section">
         {can_score &&
           <FormButton
             colorType={'greenBorder'}
@@ -163,7 +163,7 @@ class OrderSpaceBoard extends React.Component {
       },
     };
     return (
-      <div styleName="ospb-action-section">
+      <div styleName="action-section">
         {can_edit &&
           <FormButton
             colorType={'green'}
@@ -213,12 +213,12 @@ class OrderSpaceBoard extends React.Component {
     const objectString = this.generateString();
     return (
       <div
-        className={`clear ${cx('ospb-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('board-border', { colored: !isRead })}`}
       >
-        <div styleName="ospb-header-section">
+        <div styleName="header-section">
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="ospb-header-avatar-style"
+            styleName="header-avatar-style"
           >
             <Avatar
               src={photoHead}
@@ -227,11 +227,11 @@ class OrderSpaceBoard extends React.Component {
           </Link>
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="ospb-header-name-style"
+            styleName="header-name-style"
           >
             { photoName }
           </Link>
-          <div styleName="ospb-header-chat-style" >
+          <div styleName="header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -250,29 +250,29 @@ class OrderSpaceBoard extends React.Component {
               }}
             />
           </div>
-          <div styleName="ospb-mini-note-section">{objectString.title}</div>
+          <div styleName="mini-note-section">{objectString.title}</div>
         </div>
         <div
-          styleName="ospb-body-section"
+          styleName="body-section"
           className="clear"
         >
-          <div styleName="ospb-pic-style">
+          <div styleName="pic-style">
             <Picture
               src={itemImgUrl}
               width={120}
             />
           </div>
-          <div styleName="ospb-content-style">
-            <div styleName="ospb-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="ospb-text-style">{`${itemName}`}</div>
-            <div styleName="ospb-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
-            <div styleName="ospb-price-section">
-              <div styleName="ospb-unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
-              <div styleName="ospb-price-style">總計 {formatCurrency(totalPrice)}</div>
+          <div styleName="content-style">
+            <div styleName="hint-style">{`訂單編號：${cidNo}`}</div>
+            <div styleName="text-style">{`${itemName}`}</div>
+            <div styleName="date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="price-section">
+              <div styleName="unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
+              <div styleName="price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
         </div>
-        <div styleName="ospb-hint-section">{objectString.text}</div>
+        <div styleName="hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );

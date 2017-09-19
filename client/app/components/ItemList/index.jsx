@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import ItemBoard, {
   CONTROL_TYPE_PUBLIC,
   CONTROL_TYPE_PRIVATE,
+  CONTROL_TYPE_PRIVATE_COLLECTION,
 } from 'components/ItemBoard';
 
 import classnames from 'classnames/bind';
@@ -20,8 +21,6 @@ class ItemList extends React.Component {
 
   static defaultProps = {
     eachMargin: 26,
-    canFavorite: true,
-    canDelete: false,
     type: CONTROL_TYPE_PUBLIC,
     onDelete: null,
   };
@@ -31,7 +30,10 @@ class ItemList extends React.Component {
       PropTypes.object.isRequired,
     ).isRequired,
     eachMargin: PropTypes.number,
-    type: PropTypes.oneOf([CONTROL_TYPE_PUBLIC, CONTROL_TYPE_PRIVATE]),
+    type: PropTypes.oneOf([
+      CONTROL_TYPE_PUBLIC,
+      CONTROL_TYPE_PRIVATE,
+      CONTROL_TYPE_PRIVATE_COLLECTION]),
     onDelete: PropTypes.func,
   };
 

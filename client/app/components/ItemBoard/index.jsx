@@ -28,6 +28,7 @@ import { CoverContainer } from './styles';
 
 export const CONTROL_TYPE_PUBLIC = 'CONTROL_TYPE_PUBLIC';
 export const CONTROL_TYPE_PRIVATE = 'CONTROL_TYPE_PRIVATE';
+export const CONTROL_TYPE_PRIVATE_COLLECTION = 'CONTROL_TYPE_PRIVATE';
 const cx = classnames.bind(styles);
 class ItemBoard extends React.Component {
 
@@ -81,19 +82,23 @@ class ItemBoard extends React.Component {
     );
   }
 
+  renderCollection() {
+
+    const { item: { favorite_count, pid }, onDelete } = this.props;
+    return (
+      <div styleName="favorite">
+        <FavoriteHeart
+          pid={pid}
+          count={favorite_count}
+          onRemoveDone={() => { onDelete(pid); }}
+          isActive
+        />
+      </div>
+    );
+  }
+
   renderFavorite() {
     const { item: { favorite_count, in_my_favorite, pid } } = this.props;
-    // return (
-    //   <div styleName="favorite">
-    //     <span styleName="favoriteCount">{favorite_count}</span>
-    //     <button className="button" styleName="favoriteHeart">
-    //       <FavoriteHeart
-    //         size={20}
-    //         active={in_my_favorite}
-    //       />
-    //     </button>
-    //   </div>
-    // );
     return (
       <div styleName="favorite">
         <FavoriteHeart
@@ -142,6 +147,7 @@ class ItemBoard extends React.Component {
           {{
             [CONTROL_TYPE_PUBLIC]: this.renderFavorite(),
             [CONTROL_TYPE_PRIVATE]: this.renderDelete(),
+            [CONTROL_TYPE_PRIVATE_COLLECTION]: this.renderCollection(),
           }[type]}
         </div>
       </div>

@@ -166,7 +166,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="action-section">
         {can_ship &&
           <FormButton
             colorType={'green'}
@@ -226,7 +226,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="action-section">
         {can_edit &&
           <FormButton
             colorType={'green'}
@@ -295,17 +295,17 @@ class OrderItemBoard extends React.Component {
     const objectString = this.generateString();
     return (
       <div
-        className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('board-border', { colored: !isRead })}`}
       >
-        <div styleName="oib-header-section">
-          <div styleName="oib-header-avatar-style">
+        <div styleName="header-section">
+          <div styleName="header-avatar-style">
             <Avatar
               src={photoHead}
               width={40}
             />
           </div>
-          <div styleName="oib-header-name-style" >{ photoName }</div>
-          <div styleName="oib-header-chat-style" >
+          <div styleName="header-name-style" >{ photoName }</div>
+          <div styleName="header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -322,28 +322,28 @@ class OrderItemBoard extends React.Component {
               }))}
             />
           </div>
-          <div styleName="oib-mini-note-section">{objectString.title}</div>
+          <div styleName="mini-note-section">{objectString.title}</div>
         </div>
         <div
-          styleName="oib-body-section"
+          styleName="body-section"
           className="clear"
         >
-          <div styleName="oib-pic-style">
+          <div styleName="pic-style">
             <Picture
               src={img1}
               width={120}
             />
           </div>
-          <div styleName="oib-content-style">
-            <div styleName="oib-hint-style">{`訂單編號：${cid_no}`}</div>
-            <div styleName="oib-text-style">{`${pname}`}</div>
-            <div styleName="oib-price-section">
-              <div styleName="oib-unit-style">{unit}件</div>
-              <div styleName="oib-price-style">總計 {formatCurrency(lesseepayfee)}</div>
+          <div styleName="content-style">
+            <div styleName="hint-style">{`訂單編號：${cid_no}`}</div>
+            <div styleName="text-style">{`${pname}`}</div>
+            <div styleName="price-section">
+              <div styleName="unit-style">{unit}件</div>
+              <div styleName="price-style">總計 {formatCurrency(lesseepayfee)}</div>
             </div>
           </div>
         </div>
-        <div styleName="oib-hint-section">{objectString.text}</div>
+        <div styleName="hint-section">{objectString.text}</div>
         {this.renderAction()}
       </div>
     );

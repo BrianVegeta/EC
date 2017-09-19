@@ -123,7 +123,7 @@ class OrderServiceBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oseb-action-section">
+      <div styleName="action-section">
         {can_score &&
           <FormButton
             colorType={'greenBorder'}
@@ -166,7 +166,7 @@ class OrderServiceBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oseb-action-section">
+      <div styleName="action-section">
         {can_edit &&
           <FormButton
             colorType={'green'}
@@ -218,12 +218,12 @@ class OrderServiceBoard extends React.Component {
     const objectString = this.generateString();
     return (
       <div
-        className={`clear ${cx('oseb-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('board-border', { colored: !isRead })}`}
       >
-        <div styleName="oseb-header-section">
+        <div styleName="header-section">
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="oseb-header-avatar-style"
+            styleName="header-avatar-style"
           >
             <Avatar
               src={photoHead}
@@ -232,11 +232,11 @@ class OrderServiceBoard extends React.Component {
           </Link>
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="oseb-header-name-style"
+            styleName="header-name-style"
           >
             { photoName }
           </Link>
-          <div styleName="oseb-header-chat-style" >
+          <div styleName="header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -255,29 +255,29 @@ class OrderServiceBoard extends React.Component {
               }}
             />
           </div>
-          <div styleName="oseb-mini-note-section">{objectString.title}</div>
+          <div styleName="mini-note-section">{objectString.title}</div>
         </div>
         <div
-          styleName="oseb-body-section"
+          styleName="body-section"
           className="clear"
         >
-          <div styleName="oseb-pic-style">
+          <div styleName="pic-style">
             <Picture
               src={itemImgUrl}
               width={120}
             />
           </div>
-          <div styleName="oseb-content-style">
-            <div styleName="oseb-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="oseb-text-style">{`${itemName}`}</div>
-            <div styleName="oseb-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
-            <div styleName="oseb-price-section">
-              <div styleName="oseb-unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
-              <div styleName="oseb-price-style">總計 {formatCurrency(totalPrice)}</div>
+          <div styleName="content-style">
+            <div styleName="hint-style">{`訂單編號：${cidNo}`}</div>
+            <div styleName="text-style">{`${itemName}`}</div>
+            <div styleName="date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="price-section">
+              <div styleName="unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
+              <div styleName="price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
         </div>
-        <div styleName="oseb-hint-section">{objectString.text}</div>
+        <div styleName="hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );

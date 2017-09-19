@@ -107,9 +107,9 @@ class Orderdetail extends React.Component {
     if (!targetName) { targetName = '尚未設定'; }
     const targetUid = display.is_owner ? order.lesseeuid : order.owneruid;
     let targetRealName = display.is_owner ? order.lessee_real_name : order.owner_real_name;
-    if (!targetRealName) { targetRealName = '尚未設定'; }
+    if (!targetRealName) { targetRealName = '同意預定後顯示'; }
     let targetPhone = display.is_owner ? order.lesseephone : order.ownerphone;
-    if (!targetPhone) { targetPhone = '尚未設定'; }
+    if (!targetPhone) { targetPhone = '同意預定後顯示'; }
     let targetComment = display.is_owner ? order.lessee_comment : order.owner_comment;
     if (!targetComment) { targetComment = '沒有留言備註'; }
     let targetScore = display.is_owner ? order.lesseescore : order.ownerscore;
@@ -487,8 +487,8 @@ class Orderdetail extends React.Component {
       showButton = (sendSeven);
     } else {
       const { orderdetail: { returnSeven } } = this.props;
-      storeid = order.return_711_store_id;
-      storename = order.return_711_store_name;
+      storeid = order.owner_receive_711_store_id;
+      storename = order.owner_receive_711_store_name;
       orderNo = returnSeven ? returnSeven.orderno : '尚未建立';
       showButton = (returnSeven);
     }
@@ -599,7 +599,7 @@ class Orderdetail extends React.Component {
   }
 
   renderBankInfo({ contractstage }) {
-    if (contractstage > 4) {
+    if (contractstage >= 4) {
       return <div styleName="space_padding" />;
     }
     const { personalBankInfo } = this.props;

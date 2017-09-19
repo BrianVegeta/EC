@@ -171,7 +171,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="action-section">
         {can_camera &&
           <FormButton
             colorType={'green'}
@@ -245,7 +245,7 @@ class OrderItemBoard extends React.Component {
       },
     };
     return (
-      <div styleName="oib-action-section">
+      <div styleName="action-section">
         {can_edit &&
           <FormButton
             colorType={'green'}
@@ -314,12 +314,12 @@ class OrderItemBoard extends React.Component {
     const objectString = this.generateString();
     return (
       <div
-        className={`clear ${cx('oib-board-border', { colored: !isRead })}`}
+        className={`clear ${cx('board-border', { colored: !isRead })}`}
       >
-        <div styleName="oib-header-section">
+        <div styleName="header-section">
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="oib-header-avatar-style"
+            styleName="header-avatar-style"
           >
             <Avatar
               src={photoHead}
@@ -328,11 +328,11 @@ class OrderItemBoard extends React.Component {
           </Link>
           <Link
             to={userprofilePaths.indexPath(photoUid)}
-            styleName="oib-header-name-style"
+            styleName="header-name-style"
           >
             { photoName }
           </Link>
-          <div styleName="oib-header-chat-style" >
+          <div styleName="header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
               size="sm"
@@ -351,29 +351,29 @@ class OrderItemBoard extends React.Component {
               }}
             />
           </div>
-          <div styleName="oib-mini-note-section">{objectString.title}</div>
+          <div styleName="mini-note-section">{objectString.title}</div>
         </div>
         <div
-          styleName="oib-body-section"
+          styleName="body-section"
           className="clear"
         >
-          <div styleName="oib-pic-style">
+          <div styleName="pic-style">
             <Picture
               src={itemImgUrl}
               width={120}
             />
           </div>
-          <div styleName="oib-content-style">
-            <div styleName="oib-hint-style">{`訂單編號：${cidNo}`}</div>
-            <div styleName="oib-text-style">{`${itemName}`}</div>
-            <div styleName="oib-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
-            <div styleName="oib-price-section">
-              <div styleName="oib-unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
-              <div styleName="oib-price-style">總計 {formatCurrency(totalPrice)}</div>
+          <div styleName="content-style">
+            <div styleName="hint-style">{`訂單編號：${cidNo}`}</div>
+            <div styleName="text-style">{`${itemName}`}</div>
+            <div styleName="date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="price-section">
+              <div styleName="unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
+              <div styleName="price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
         </div>
-        <div styleName="oib-hint-section">{objectString.text}</div>
+        <div styleName="hint-section">{objectString.text}</div>
         {this.renderAction(display)}
       </div>
     );
