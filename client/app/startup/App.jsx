@@ -1,17 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
+import { loginPath, registrationPath } from 'lib/paths';
+import { setReferrerPath } from 'modules/routingHelper';
 import configureStore from '../store/configureStore';
 import customUseScroll from './scroll';
 
 const routes = require('../routes');
-
-const propTypes = {
-  routesHelper: PropTypes.object.isRequired,
-};
 
 /**
  *
@@ -25,7 +23,14 @@ const App = (props) => {
     browserHistory,
     store,
   );
-  // const { routesHelper } = props;
+
+  history.listen((location) => {
+    const { pathname } = location;
+    const exclusion = [loginPath, registrationPath];
+    if (!exclusion.includes(pathname)) {
+      store.dispatch(setReferrerPath(pathname));
+    }
+  });
 
   return (
     <Provider store={store}>
@@ -37,7 +42,7 @@ const App = (props) => {
     </Provider>
   );
 };
-App.propTypes = propTypes;
+// App.propTypes = propTypes;
 export default App;
 
 

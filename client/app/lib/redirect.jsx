@@ -47,6 +47,11 @@ export const refreshRoute = () =>
 
 export const redirectAfterLogin = backupPath =>
   (dispatch, getState) => {
+    const { routingHelper: { referrer } } = getState();
+    if (referrer) {
+      window.location.href = referrer || backupPath;
+      return;
+    }
     const { routing: { locationBeforeTransitions } } = getState();
     const { state } = locationBeforeTransitions;
     // for fire fox
