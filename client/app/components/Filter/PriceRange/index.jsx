@@ -47,6 +47,22 @@ class PriceRange extends Component {
       errorMessage: null,
     };
     this.onApply = this.onApply.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  onOutsideClick(e) {
+    if (!this.container) return;
+    if (this.container.contains(e.target)) return;
+    this.props.closeFilter();
+    this.setState(this.clearState());
   }
 
   onApply() {
@@ -91,50 +107,52 @@ class PriceRange extends Component {
     } = this.constructor;
 
     return (
-      <FilterButton
-        content={renderButtonContent({ max, min }, '價格範圍')}
-        isOpen={isOpening}
-        onClick={this.onButtonToggle}
-        onClickClear={min || max ? this.onClear : null}
-      >
-        <div styleName="container">
-          <div styleName="input">
-            <FormGroup helperText="最低價格" groupStyle={{ marginBottom: 20 }}>
-              <InputTextCurrency
-                max={99999}
-                value={min}
-                onChange={value => this.setState({ min: value })}
-              />
-            </FormGroup>
-          </div>
-          <FormGroup helperText="最高價格" groupStyle={{ marginBottom: 20 }}>
+      <div ref={container => (this.container = container)}>
+        <FilterButton
+          content={renderButtonContent({ max, min }, '價格範圍')}
+          isOpen={isOpening}
+          onClick={this.onButtonToggle}
+          onClickClear={min || max ? this.onClear : null}
+        >
+          <div styleName="container">
             <div styleName="input">
-              <InputTextCurrency
-                max={99999}
-                value={max}
-                onChange={value => this.setState({ max: value })}
-              />
+              <FormGroup helperText="最低價格" groupStyle={{ marginBottom: 20 }}>
+                <InputTextCurrency
+                  max={99999}
+                  value={min}
+                  onChange={value => this.setState({ min: value })}
+                />
+              </FormGroup>
             </div>
-          </FormGroup>
-          {errorMessage && <div styleName="error">{errorMessage}</div>}
-          <div className="clear">
-            <button
-              className="button"
-              styleName="cancel-button"
-              onClick={this.onCancel}
-            >
-              <span>取消</span>
-            </button>
-            <button
-              className="button"
-              styleName="apply-button"
-              onClick={this.onApply}
-            >
-              <span>套用</span>
-            </button>
+            <FormGroup helperText="最高價格" groupStyle={{ marginBottom: 20 }}>
+              <div styleName="input">
+                <InputTextCurrency
+                  max={99999}
+                  value={max}
+                  onChange={value => this.setState({ max: value })}
+                />
+              </div>
+            </FormGroup>
+            {errorMessage && <div styleName="error">{errorMessage}</div>}
+            <div className="clear">
+              <button
+                className="button"
+                styleName="cancel-button"
+                onClick={this.onCancel}
+              >
+                <span>取消</span>
+              </button>
+              <button
+                className="button"
+                styleName="apply-button"
+                onClick={this.onApply}
+              >
+                <span>套用</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </FilterButton>
+        </FilterButton>
+      </div>
     );
   }
 }

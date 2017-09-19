@@ -27,6 +27,7 @@ class SendOption extends Component {
       SEND_OPTION_SEVEN,
     ]),
     isOpening: PropTypes.bool.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -34,6 +35,22 @@ class SendOption extends Component {
     this.state = {
       sendOption: props.sendOption,
     };
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  onOutsideClick(e) {
+    if (!this.container) return;
+    if (this.container.contains(e.target)) return;
+    this.props.closeFilter();
+    this.setState(this.clearState());
   }
 
   onRadioToggle(type) {
@@ -98,40 +115,42 @@ class SendOption extends Component {
     const { sendOption } = this.state;
 
     return (
-      <FilterButton
-        content={sendOption ? mapSendOption[sendOption] : '交貨方式'}
-        isOpen={isOpening}
-        onClick={this.onButtonToggle}
-        onClickClear={sendOption ? this.onClear : null}
-      >
-        <div styleName="container">
-          <div styleName="input">
-            {this.renderOptionSelfCoordinate(sendOption)}
+      <div ref={container => (this.container = container)}>
+        <FilterButton
+          content={sendOption ? mapSendOption[sendOption] : '交貨方式'}
+          isOpen={isOpening}
+          onClick={this.onButtonToggle}
+          onClickClear={sendOption ? this.onClear : null}
+        >
+          <div styleName="container">
+            <div styleName="input">
+              {this.renderOptionSelfCoordinate(sendOption)}
+            </div>
+            <div styleName="input">
+              {this.renderOptionMail(sendOption)}
+            </div>
+            <div styleName="input">
+              {this.renderOptionSeven(sendOption)}
+            </div>
+            <div className="clear" styleName="controller">
+              <button
+                className="button"
+                styleName="cancel-button"
+                onClick={this.onCancel}
+              >
+                <span>取消</span>
+              </button>
+              <button
+                className="button"
+                styleName="apply-button"
+                onClick={this.onApply}
+              >
+                <span>套用</span>
+              </button>
+            </div>
           </div>
-          <div styleName="input">
-            {this.renderOptionMail(sendOption)}
-          </div>
-          <div styleName="input">
-            {this.renderOptionSeven(sendOption)}
-          </div>
-          <div className="clear" styleName="controller">
-            <button
-              className="button"
-              styleName="cancel-button"
-              onClick={this.onCancel}
-            >
-              <span>取消</span>
-            </button>
-            <button
-              className="button"
-              styleName="apply-button"
-              onClick={this.onApply}
-            >
-              <span>套用</span>
-            </button>
-          </div>
-        </div>
-      </FilterButton>
+        </FilterButton>
+      </div>
     );
   }
 }

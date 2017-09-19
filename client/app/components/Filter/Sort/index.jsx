@@ -30,6 +30,7 @@ class Sort extends Component {
       SORT_HIGH_PRICE,
     ]),
     isOpening: PropTypes.bool.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -37,6 +38,22 @@ class Sort extends Component {
     this.state = {
       sort: props.sort,
     };
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  onOutsideClick(e) {
+    if (!this.container) return;
+    if (this.container.contains(e.target)) return;
+    this.props.closeFilter();
+    this.setState(this.clearState());
   }
 
   onRadioToggle(type) {
@@ -71,63 +88,65 @@ class Sort extends Component {
     } = this.state;
 
     return (
-      <FilterButton
-        content={sort ? mapSortType[sort] : '排序'}
-        isOpen={isOpening}
-        onClick={this.onButtonToggle}
-        onClickClear={sort ? this.onClear : null}
-      >
-        <div styleName="container">
-          <div styleName="input">
-            <InputRadio
-              checked={sort === SORT_NEWEST}
-              onChange={() => this.onRadioToggle(SORT_NEWEST)}
-            >
-              最新上架
-            </InputRadio>
+      <div ref={container => (this.container = container)}>
+        <FilterButton
+          content={sort ? mapSortType[sort] : '排序'}
+          isOpen={isOpening}
+          onClick={this.onButtonToggle}
+          onClickClear={sort ? this.onClear : null}
+        >
+          <div styleName="container">
+            <div styleName="input">
+              <InputRadio
+                checked={sort === SORT_NEWEST}
+                onChange={() => this.onRadioToggle(SORT_NEWEST)}
+              >
+                最新上架
+              </InputRadio>
+            </div>
+            <div styleName="input">
+              <InputRadio
+                checked={sort === SORT_POPULAR}
+                onChange={() => this.onRadioToggle(SORT_POPULAR)}
+              >
+                人氣好物
+              </InputRadio>
+            </div>
+            <div styleName="input">
+              <InputRadio
+                checked={sort === SORT_LOW_PRICE}
+                onChange={() => this.onRadioToggle(SORT_LOW_PRICE)}
+              >
+                價格由低至高
+              </InputRadio>
+            </div>
+            <div styleName="input">
+              <InputRadio
+                checked={sort === SORT_HIGH_PRICE}
+                onChange={() => this.onRadioToggle(SORT_HIGH_PRICE)}
+              >
+                價格由高至低
+              </InputRadio>
+            </div>
+            <div className="clear" styleName="controller">
+              <button
+                className="button"
+                styleName="cancel-button"
+                onClick={this.onCancel}
+              >
+                <span>取消</span>
+              </button>
+              <button
+                className="button"
+                styleName="apply-button"
+                onClick={this.onApply}
+              >
+                <span>套用</span>
+              </button>
+            </div>
           </div>
-          <div styleName="input">
-            <InputRadio
-              checked={sort === SORT_POPULAR}
-              onChange={() => this.onRadioToggle(SORT_POPULAR)}
-            >
-              人氣好物
-            </InputRadio>
-          </div>
-          <div styleName="input">
-            <InputRadio
-              checked={sort === SORT_LOW_PRICE}
-              onChange={() => this.onRadioToggle(SORT_LOW_PRICE)}
-            >
-              價格由低至高
-            </InputRadio>
-          </div>
-          <div styleName="input">
-            <InputRadio
-              checked={sort === SORT_HIGH_PRICE}
-              onChange={() => this.onRadioToggle(SORT_HIGH_PRICE)}
-            >
-              價格由高至低
-            </InputRadio>
-          </div>
-          <div className="clear" styleName="controller">
-            <button
-              className="button"
-              styleName="cancel-button"
-              onClick={this.onCancel}
-            >
-              <span>取消</span>
-            </button>
-            <button
-              className="button"
-              styleName="apply-button"
-              onClick={this.onApply}
-            >
-              <span>套用</span>
-            </button>
-          </div>
-        </div>
-      </FilterButton>
+        </FilterButton>
+      </div>
     );
   }
 }
