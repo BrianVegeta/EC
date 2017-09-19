@@ -56,6 +56,7 @@ const CHANGE_PRICE = prefix('CHANGE_PRICE');
 const CHANGE_SORT = prefix('CHANGE_SORT');
 const CHANGE_SEND_OPTION = prefix('CHANGE_SEND_OPTION');
 const SET_LOCATIONS = prefix('SET_LOCATIONS');
+const CHANGE_CATEGORY = prefix('CHANGE_CATEGORY');
 const RESET = prefix('RESET');
 
 // =============================================
@@ -82,6 +83,11 @@ export const setLocations = locations => ({
   locations,
 });
 
+export const changeCategory = categoryId => ({
+  type: CHANGE_CATEGORY,
+  categoryId,
+});
+
 export const reset = () => ({
   type: RESET,
 });
@@ -98,6 +104,7 @@ const initialState = {
   sort: null,
   sendOption: null,
   locations: [],
+  categoryId: null,
 };
 
 export default (state = initialState, action) => {
@@ -117,6 +124,9 @@ export default (state = initialState, action) => {
 
     case SET_LOCATIONS:
       return Object.assign({}, state, { locations: action.locations });
+
+    case CHANGE_CATEGORY:
+      return Object.assign({}, state, { categoryId: action.categoryId });
 
     case RESET:
       return initialState;

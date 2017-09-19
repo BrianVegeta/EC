@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import FilterPriceRange from 'components/Filter/PriceRange';
 import FilterSort from 'components/Filter/Sort';
 import FilterSendOption from 'components/Filter/SendOption';
 import FilterLocations from 'components/Filter/Locations';
+import FilterCategories from 'components/Filter/Categories';
 import {
   CATEGORY_GOODS,
   CATEGORY_SERVICE,
@@ -18,13 +20,16 @@ const PRICE_OPENING = 'PRICE_OPENING';
 const SORT_OPENING = 'SORT_OPENING';
 const SEND_OPTION_OPENING = 'SEND_OPTION_OPENING';
 const LOCATION_OPENING = 'LOCATION_OPENING';
+const CATEGORIES_OPENING = 'CATEGORIES_OPENING';
 class FilterBar extends React.Component {
 
   static propTypes = {
+    dispatchFetchCategories: PropTypes.func.isRequired,
     dispatchChangePrice: PropTypes.func.isRequired,
     dispatchChangeSort: PropTypes.func.isRequired,
     dispatchChangeSendOption: PropTypes.func.isRequired,
     dispatchSetLocations: PropTypes.func.isRequired,
+    dispatchChangeCategory: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
     refetch: PropTypes.func.isRequired,
 
@@ -40,6 +45,7 @@ class FilterBar extends React.Component {
       CATEGORY_SPACE,
       FILTER_TYPE_WISH,
     ]).isRequired,
+    categories: myPropTypes.categories.isRequired,
   };
 
   constructor(props) {
@@ -51,6 +57,7 @@ class FilterBar extends React.Component {
     this.onSortChange = this.onSortChange.bind(this);
     this.onSendOptionChange = this.onSendOptionChange.bind(this);
     this.onLocationsSet = this.onLocationsSet.bind(this);
+    this.onCategoryChange = this.onCategoryChange.bind(this);
   }
 
   componentDidMount() {
@@ -90,6 +97,11 @@ class FilterBar extends React.Component {
 
   onLocationsSet(locations) {
     this.props.dispatchSetLocations(locations);
+    this.props.refetch();
+  }
+
+  onCategoryChange(categoryId) {
+    this.props.dispatchChangeCategory(categoryId);
     this.props.refetch();
   }
 
@@ -161,6 +173,26 @@ class FilterBar extends React.Component {
     );
   }
 
+  renderCategories() {
+    const openTag = CATEGORIES_OPENING;
+    const { filter: { categoryId } } = this.props;
+    const { dispatchFetchCategories, categories } = this.props;
+    const { opening } = this.state;
+    return (
+      <div styleName="filter-btn">
+        <FilterCategories
+          fetchCategories={dispatchFetchCategories}
+          categories={categories}
+          categoryId={categoryId}
+          isOpening={opening === openTag}
+          onApplyChange={this.onCategoryChange}
+          openFilter={() => this.onFilterOpen(openTag)}
+          closeFilter={() => this.onFilterClose(openTag)}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { filterType } = this.props;
     switch (filterType) {
@@ -193,6 +225,7 @@ class FilterBar extends React.Component {
         return (
           <div styleName="container" className="clear">
             {this.renderLocations()}
+            {this.renderCategories()}
           </div>
         );
       default:
