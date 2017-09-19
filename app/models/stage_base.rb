@@ -167,7 +167,9 @@ class StageBase
   end
 
   def check_can_edit
-    modify_display_param(KEY_CAN_EDIT, self.screen_type == STAGE_NEGOTIATING)
+    stage_check = (self.screen_type == STAGE_NEGOTIATING)
+    condition_check = (self.is_owner == false)
+    modify_display_param(KEY_CAN_EDIT, stage_check && condition_check)
   end
 
   def check_can_pay
