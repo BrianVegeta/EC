@@ -80,12 +80,14 @@ export function fetchRecords(recursiveRecords = []) {
     } = getState()[REDUCER_KEY];
     const {
       locations,
+      categoryId,
     } = getState()[FILTER_REDUCER_KEY];
     const requestParams = {
       index: (index + recursiveRecords.length),
       size: (size - recursiveRecords.length),
       // last_id: lastId,
       locations: locations.map(city => ({ city, area: '' })),
+      cat_id: categoryId,
     };
 
     /* 增加 RECURSIVE 次數 */

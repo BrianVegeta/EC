@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputTextCurrency from 'components/Input/TextCurrency';
@@ -6,8 +7,10 @@ import FormGroup from 'components/Form/Group';
 import { formatCurrency } from 'lib/currency';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import Component from '../Component';
 
-class PriceRange extends React.Component {
+
+class PriceRange extends Component {
 
   static propTypes = {
     price: PropTypes.shape({
@@ -16,8 +19,8 @@ class PriceRange extends React.Component {
     }).isRequired,
 
     isOpening: PropTypes.bool.isRequired,
-    onButtonToggle: PropTypes.func.isRequired,
     onApplyChange: PropTypes.func.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   static renderButtonContent({ min, max }, defaultContent) {
@@ -43,48 +46,58 @@ class PriceRange extends React.Component {
       min,
       errorMessage: null,
     };
-    this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
-    this.onClear = this.onClear.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);
   }
 
-  onCancel() {
-    const {
-      price: { min, max },
-      onButtonToggle,
-    } = this.props;
-    this.setState({ min, max });
-    onButtonToggle();
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  onOutsideClick(e) {
+    if (!this.container) return;
+    if (this.container.contains(e.target)) return;
+    this.props.closeFilter();
+    this.setState(this.clearState());
   }
 
   onApply() {
     const {
       onApplyChange,
-      onButtonToggle,
+      closeFilter,
     } = this.props;
-    const {
-      min, max,
-    } = this.state;
+    const { min, max } = this.state;
 
     if (min && max && max < min) {
       this.setState({ errorMessage: '輸入錯誤，最低價格須小於最高價格！' });
     } else {
       this.setState({ errorMessage: null });
-      onApplyChange({ min, max });
-      onButtonToggle();
+      onApplyChange(this.applyState());
+      closeFilter();
     }
   }
 
-  onClear() {
-    const state = { min: null, max: null };
-    this.props.onApplyChange(state);
-    this.setState(state);
+  applyState() {
+    const { min, max } = this.state;
+    return { min, max };
+  }
+
+  clearState() {
+    return { min: null, max: null };
+  }
+
+  backtrack() {
+    const { price: { min, max } } = this.props;
+    this.setState({ min, max });
   }
 
   render() {
     const {
       isOpening,
-      onButtonToggle,
     } = this.props;
     const {
       min, max, errorMessage,
@@ -94,50 +107,52 @@ class PriceRange extends React.Component {
     } = this.constructor;
 
     return (
-      <FilterButton
-        content={renderButtonContent({ max, min }, '價格範圍')}
-        isOpen={isOpening}
-        onClick={onButtonToggle}
-        onClickClear={min || max ? this.onClear : null}
-      >
-        <div styleName="container">
-          <div styleName="input">
-            <FormGroup helperText="最低價格" groupStyle={{ marginBottom: 20 }}>
-              <InputTextCurrency
-                max={99999}
-                value={min}
-                onChange={value => this.setState({ min: value })}
-              />
-            </FormGroup>
-          </div>
-          <FormGroup helperText="最高價格" groupStyle={{ marginBottom: 20 }}>
+      <div ref={container => (this.container = container)}>
+        <FilterButton
+          content={renderButtonContent({ max, min }, '價格範圍')}
+          isOpen={isOpening}
+          onClick={this.onButtonToggle}
+          onClickClear={min || max ? this.onClear : null}
+        >
+          <div styleName="container">
             <div styleName="input">
-              <InputTextCurrency
-                max={99999}
-                value={max}
-                onChange={value => this.setState({ max: value })}
-              />
+              <FormGroup helperText="最低價格" groupStyle={{ marginBottom: 20 }}>
+                <InputTextCurrency
+                  max={99999}
+                  value={min}
+                  onChange={value => this.setState({ min: value })}
+                />
+              </FormGroup>
             </div>
-          </FormGroup>
-          {errorMessage && <div styleName="error">{errorMessage}</div>}
-          <div className="clear">
-            <button
-              className="button"
-              styleName="cancel-button"
-              onClick={this.onCancel}
-            >
-              <span>取消</span>
-            </button>
-            <button
-              className="button"
-              styleName="apply-button"
-              onClick={this.onApply}
-            >
-              <span>套用</span>
-            </button>
+            <FormGroup helperText="最高價格" groupStyle={{ marginBottom: 20 }}>
+              <div styleName="input">
+                <InputTextCurrency
+                  max={99999}
+                  value={max}
+                  onChange={value => this.setState({ max: value })}
+                />
+              </div>
+            </FormGroup>
+            {errorMessage && <div styleName="error">{errorMessage}</div>}
+            <div className="clear">
+              <button
+                className="button"
+                styleName="cancel-button"
+                onClick={this.onCancel}
+              >
+                <span>取消</span>
+              </button>
+              <button
+                className="button"
+                styleName="apply-button"
+                onClick={this.onApply}
+              >
+                <span>套用</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </FilterButton>
+        </FilterButton>
+      </div>
     );
   }
 }
