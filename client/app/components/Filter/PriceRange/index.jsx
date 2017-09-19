@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputTextCurrency from 'components/Input/TextCurrency';
@@ -6,8 +7,10 @@ import FormGroup from 'components/Form/Group';
 import { formatCurrency } from 'lib/currency';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import Component from '../Component';
 
-class PriceRange extends React.Component {
+
+class PriceRange extends Component {
 
   static propTypes = {
     price: PropTypes.shape({
@@ -17,7 +20,6 @@ class PriceRange extends React.Component {
 
     isOpening: PropTypes.bool.isRequired,
     onApplyChange: PropTypes.func.isRequired,
-    openFilter: PropTypes.func.isRequired,
     closeFilter: PropTypes.func.isRequired,
   };
 
@@ -44,34 +46,7 @@ class PriceRange extends React.Component {
       min,
       errorMessage: null,
     };
-    this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
-    this.onClear = this.onClear.bind(this);
-    this.onButtonToggle = this.onButtonToggle.bind(this);
-  }
-
-  onButtonToggle() {
-    const {
-      isOpening,
-      openFilter,
-      closeFilter,
-      price: { min, max },
-    } = this.props;
-    if (isOpening) {
-      closeFilter();
-      this.setState({ min, max });
-    } else {
-      openFilter();
-    }
-  }
-
-  onCancel() {
-    const {
-      price: { min, max },
-      closeFilter,
-    } = this.props;
-    this.setState({ min, max });
-    closeFilter();
   }
 
   onApply() {
@@ -79,23 +54,29 @@ class PriceRange extends React.Component {
       onApplyChange,
       closeFilter,
     } = this.props;
-    const {
-      min, max,
-    } = this.state;
+    const { min, max } = this.state;
 
     if (min && max && max < min) {
       this.setState({ errorMessage: '輸入錯誤，最低價格須小於最高價格！' });
     } else {
       this.setState({ errorMessage: null });
-      onApplyChange({ min, max });
+      onApplyChange(this.applyState());
       closeFilter();
     }
   }
 
-  onClear() {
-    const state = { min: null, max: null };
-    this.props.onApplyChange(state);
-    this.setState(state);
+  applyState() {
+    const { min, max } = this.state;
+    return { min, max };
+  }
+
+  clearState() {
+    return { min: null, max: null };
+  }
+
+  backtrack() {
+    const { price: { min, max } } = this.props;
+    this.setState({ min, max });
   }
 
   render() {

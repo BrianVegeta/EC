@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputRadio from 'components/Input/Radio';
@@ -8,11 +9,12 @@ import {
   SEND_OPTION_MAIL,
   SEND_OPTION_SEVEN,
 } from 'modules/filter';
-
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import Component from '../Component';
 
-class SendOption extends React.Component {
+
+class SendOption extends Component {
 
   static defaultProps = {
     sendOption: null,
@@ -25,9 +27,6 @@ class SendOption extends React.Component {
       SEND_OPTION_SEVEN,
     ]),
     isOpening: PropTypes.bool.isRequired,
-    onApplyChange: PropTypes.func.isRequired,
-    openFilter: PropTypes.func.isRequired,
-    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -35,70 +34,68 @@ class SendOption extends React.Component {
     this.state = {
       sendOption: props.sendOption,
     };
-    this.onCancel = this.onCancel.bind(this);
-    this.onApply = this.onApply.bind(this);
-    this.onClear = this.onClear.bind(this);
-    this.onButtonToggle = this.onButtonToggle.bind(this);
-  }
-
-  onButtonToggle() {
-    const {
-      isOpening,
-      openFilter,
-      closeFilter,
-      sendOption,
-    } = this.props;
-    if (isOpening) {
-      closeFilter();
-      this.setState({ sendOption });
-    } else {
-      openFilter();
-    }
-  }
-
-  onCancel() {
-    const {
-      closeFilter,
-      sendOption,
-    } = this.props;
-    this.setState({ sendOption });
-    closeFilter();
-  }
-
-  onApply() {
-    const {
-      onApplyChange,
-      closeFilter,
-    } = this.props;
-    const {
-      sendOption,
-    } = this.state;
-    onApplyChange({ sendOption });
-    closeFilter();
-  }
-
-  onClear() {
-    const sendOption = null;
-    this.props.onApplyChange({ sendOption });
-    this.setState({ sendOption });
   }
 
   onRadioToggle(type) {
-    const {
-      sendOption,
-    } = this.state;
+    const { sendOption } = this.state;
     this.setState({
       sendOption: sendOption === type ? null : type,
     });
   }
 
+  applyState() {
+    const { sendOption } = this.state;
+    return { sendOption };
+  }
+
+  clearState() {
+    return { sendOption: null };
+  }
+
+  backtrack() {
+    const { sendOption } = this.props;
+    this.setState({ sendOption });
+  }
+
+  renderOptionSelfCoordinate(sendOption) {
+    const optionTag = SEND_OPTION_SELF_COORDINATE;
+    return (
+      <InputRadio
+        checked={sendOption === optionTag}
+        onChange={() => this.onRadioToggle(optionTag)}
+      >
+        {mapSendOption[optionTag]}
+      </InputRadio>
+    );
+  }
+
+  renderOptionMail(sendOption) {
+    const optionTag = SEND_OPTION_MAIL;
+    return (
+      <InputRadio
+        checked={sendOption === optionTag}
+        onChange={() => this.onRadioToggle(optionTag)}
+      >
+        {mapSendOption[optionTag]}
+      </InputRadio>
+    );
+  }
+
+  renderOptionSeven(sendOption) {
+    const optionTag = SEND_OPTION_SEVEN;
+    return (
+      <InputRadio
+        checked={sendOption === optionTag}
+        onChange={() => this.onRadioToggle(optionTag)}
+      >
+        {mapSendOption[optionTag]}
+      </InputRadio>
+    );
+  }
+
   render() {
-    const {
-      isOpening,
-    } = this.props;
-    const {
-      sendOption,
-    } = this.state;
+    const { isOpening } = this.props;
+    const { sendOption } = this.state;
 
     return (
       <FilterButton
@@ -109,28 +106,13 @@ class SendOption extends React.Component {
       >
         <div styleName="container">
           <div styleName="input">
-            <InputRadio
-              checked={sendOption === SEND_OPTION_SELF_COORDINATE}
-              onChange={() => this.onRadioToggle(SEND_OPTION_SELF_COORDINATE)}
-            >
-              {mapSendOption[SEND_OPTION_SELF_COORDINATE]}
-            </InputRadio>
+            {this.renderOptionSelfCoordinate(sendOption)}
           </div>
           <div styleName="input">
-            <InputRadio
-              checked={sendOption === SEND_OPTION_MAIL}
-              onChange={() => this.onRadioToggle(SEND_OPTION_MAIL)}
-            >
-              {mapSendOption[SEND_OPTION_MAIL]}
-            </InputRadio>
+            {this.renderOptionMail(sendOption)}
           </div>
           <div styleName="input">
-            <InputRadio
-              checked={sendOption === SEND_OPTION_SEVEN}
-              onChange={() => this.onRadioToggle(SEND_OPTION_SEVEN)}
-            >
-              {mapSendOption[SEND_OPTION_SEVEN]}
-            </InputRadio>
+            {this.renderOptionSeven(sendOption)}
           </div>
           <div className="clear" styleName="controller">
             <button

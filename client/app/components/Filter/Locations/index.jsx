@@ -3,16 +3,25 @@ import PropTypes from 'prop-types';
 import { List } from 'immutable';
 import InputCheckBox from 'components/Input/CheckBox';
 import FilterButton from 'components/Filter/Button';
-
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 
-const northCities = ['基隆市', '台北市', '新北市', '桃園市', '新竹縣', '新竹市'];
-const centralCities = ['苗栗縣', '臺中市', '彰化縣', '雲林縣', '南投縣', '嘉義縣', '嘉義市'];
-const southCities = ['臺南市', '高雄市', '屏東縣'];
-const eastCities = ['宜蘭縣', '花蓮縣', '臺東縣'];
-const IslandCities = ['金門縣', '連江縣', '澎湖縣'];
+const northCities = [
+  '基隆市', '台北市', '新北市', '桃園市', '新竹縣', '新竹市',
+];
+const centralCities = [
+  '苗栗縣', '臺中市', '彰化縣', '雲林縣', '南投縣', '嘉義縣', '嘉義市',
+];
+const southCities = [
+  '臺南市', '高雄市', '屏東縣',
+];
+const eastCities = [
+  '宜蘭縣', '花蓮縣', '臺東縣',
+];
+const IslandCities = [
+  '金門縣', '連江縣', '澎湖縣',
+];
 class Locations extends React.Component {
 
   static defaultProps = {

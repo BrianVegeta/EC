@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputRadio from 'components/Input/Radio';
@@ -12,8 +13,10 @@ import {
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import Component from '../Component';
 
-class Sort extends React.Component {
+
+class Sort extends Component {
 
   static defaultProps = {
     sort: null,
@@ -27,9 +30,6 @@ class Sort extends React.Component {
       SORT_HIGH_PRICE,
     ]),
     isOpening: PropTypes.bool.isRequired,
-    onApplyChange: PropTypes.func.isRequired,
-    openFilter: PropTypes.func.isRequired,
-    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -37,52 +37,6 @@ class Sort extends React.Component {
     this.state = {
       sort: props.sort,
     };
-    this.onCancel = this.onCancel.bind(this);
-    this.onApply = this.onApply.bind(this);
-    this.onClear = this.onClear.bind(this);
-    this.onButtonToggle = this.onButtonToggle.bind(this);
-  }
-
-  onButtonToggle() {
-    const {
-      isOpening,
-      openFilter,
-      closeFilter,
-      sort,
-    } = this.props;
-    if (isOpening) {
-      closeFilter();
-      this.setState({ sort });
-    } else {
-      openFilter();
-    }
-  }
-
-  onCancel() {
-    const {
-      closeFilter,
-      sort,
-    } = this.props;
-    this.setState({ sort });
-    closeFilter();
-  }
-
-  onApply() {
-    const {
-      onApplyChange,
-      closeFilter,
-    } = this.props;
-    const {
-      sort,
-    } = this.state;
-    onApplyChange({ sort });
-    closeFilter();
-  }
-
-  onClear() {
-    const sort = null;
-    this.props.onApplyChange({ sort });
-    this.setState({ sort });
   }
 
   onRadioToggle(type) {
@@ -92,6 +46,20 @@ class Sort extends React.Component {
     this.setState({
       sort: sort === type ? null : type,
     });
+  }
+
+  applyState() {
+    const { sort } = this.state;
+    return { sort };
+  }
+
+  clearState() {
+    return { sort: null };
+  }
+
+  backtrack() {
+    const { sort } = this.props;
+    this.setState({ sort });
   }
 
   render() {
