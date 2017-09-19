@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
-import { orderDetail } from 'lib/paths';
+import { Link, browserHistory } from 'react-router';
+import { userprofilePaths, orderDetail } from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -133,63 +133,7 @@ class OrderSpaceBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'查看評價'}
-            onClick={() => this.callScorePanel(true)}
-          />
-        }
-        <FormButton
-          colorType={'green'}
-          {...buttonConfig}
-          content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
-        />
-      </div>
-    )
-  }
-
-  renderLesseeActions() {
-    const { display } = this.props;
-    const { can_edit, can_pay, can_score, view_score } = display;
-    const buttonConfig = {
-      size: 'sm',
-      width: 'auto',
-      style: {
-        padding: '7px 7px',
-        marginLeft: 10,
-        display: 'inline-block',
-      },
-    };
-    return (
-      <div styleName="ospb-action-section">
-        {can_edit &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'修改預訂單'}
-            onClick={() => {}}
-          />
-        }
-        {can_pay &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'付款'}
-            onClick={() => {}}
-          />
-        }
-        {can_score &&
-          <FormButton
-            colorType={'greenBorder'}
-            {...buttonConfig}
-            content={'評分'}
-            onClick={() => this.callScorePanel(false)}
-          />
-        }
-        {view_score &&
-          <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
@@ -202,7 +146,64 @@ class OrderSpaceBoard extends React.Component {
           onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
         />
       </div>
-    )
+    );
+  }
+
+  renderLesseeActions() {
+    const { display } = this.props;
+    const { can_edit, can_pay, can_score, view_score } = display;
+    const buttonConfig = {
+      size: 'sm',
+      width: 'auto',
+      style: {
+        borderRadius: '100px',
+        padding: '7px 7px',
+        marginLeft: 10,
+        display: 'inline-block',
+      },
+    };
+    return (
+      <div styleName="ospb-action-section">
+        {can_edit &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'修改預訂單'}
+            onClick={() => {}}
+          />
+        }
+        {can_pay &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'付款'}
+            onClick={() => {}}
+          />
+        }
+        {can_score &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'評分'}
+            onClick={() => this.callScorePanel(false)}
+          />
+        }
+        {view_score &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'查看評價'}
+            onClick={() => this.callScorePanel(true)}
+          />
+        }
+        <FormButton
+          colorType={'greenBorder'}
+          {...buttonConfig}
+          content={'查看詳情'}
+          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -215,13 +216,21 @@ class OrderSpaceBoard extends React.Component {
         className={`clear ${cx('ospb-board-border', { colored: !isRead })}`}
       >
         <div styleName="ospb-header-section">
-          <div styleName="ospb-header-avatar-style">
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="ospb-header-avatar-style"
+          >
             <Avatar
               src={photoHead}
               width={40}
             />
-          </div>
-          <div styleName="ospb-header-name-style" >{ photoName }</div>
+          </Link>
+          <Link
+            to={userprofilePaths.indexPath(photoUid)}
+            styleName="ospb-header-name-style"
+          >
+            { photoName }
+          </Link>
           <div styleName="ospb-header-chat-style" >
             <FormButton
               colorType={'greenBorder'}
@@ -258,7 +267,7 @@ class OrderSpaceBoard extends React.Component {
             <div styleName="ospb-text-style">{`${itemName}`}</div>
             <div styleName="ospb-date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
             <div styleName="ospb-price-section">
-              <div styleName="ospb-unit-style">使用{rangeDiff(startDate, endDate)}天X{unit}件</div>
+              <div styleName="ospb-unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
               <div styleName="ospb-price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>
