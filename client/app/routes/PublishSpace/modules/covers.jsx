@@ -4,8 +4,8 @@ import {
   base64ToBlobData,
   asyncS3ToBlob,
   asyncContainBlobTobase64,
+  generateRandomKey,
 } from 'lib/utils';
-import { now } from 'lib/time';
 
 /* =============================================>>>>>
 = settings =
@@ -38,8 +38,6 @@ const initialThumb = {
   isUploading: false,
   isStored: false,
 };
-
-const generateKey = () => `KEY_${now()}`;
 
 
 // =============================================
@@ -161,7 +159,12 @@ export const setupCoversForEdit = ({ img1, img2, img3 }) =>
   dispatch =>
     new Promise((resolve) => {
       const restoreThumb = (s3, blob) =>
-        Object.assign({}, initialThumb, { s3, blob, isStored: true });
+        Object.assign({}, initialThumb, {
+          key: generateRandomKey(),
+          s3,
+          blob,
+          isStored: true,
+        });
 
       const paddingCovers = [];
       if (img1) paddingCovers.push(restoreThumb(img1, null));
@@ -196,7 +199,7 @@ export default (state = initialState, action) => {
     case CREATE_COVER:
       return state.concat(
         Object.assign({}, initialThumb, {
-          key: generateKey(),
+          key: generateRandomKey(),
           blob: action.blob,
         }),
       );
