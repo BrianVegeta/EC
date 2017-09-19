@@ -25,8 +25,9 @@ class SendOption extends React.Component {
       SEND_OPTION_SEVEN,
     ]),
     isOpening: PropTypes.bool.isRequired,
-    onButtonToggle: PropTypes.func.isRequired,
     onApplyChange: PropTypes.func.isRequired,
+    openFilter: PropTypes.func.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -37,27 +38,43 @@ class SendOption extends React.Component {
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.onButtonToggle = this.onButtonToggle.bind(this);
+  }
+
+  onButtonToggle() {
+    const {
+      isOpening,
+      openFilter,
+      closeFilter,
+      sendOption,
+    } = this.props;
+    if (isOpening) {
+      closeFilter();
+      this.setState({ sendOption });
+    } else {
+      openFilter();
+    }
   }
 
   onCancel() {
     const {
-      onButtonToggle,
+      closeFilter,
       sendOption,
     } = this.props;
     this.setState({ sendOption });
-    onButtonToggle();
+    closeFilter();
   }
 
   onApply() {
     const {
       onApplyChange,
-      onButtonToggle,
+      closeFilter,
     } = this.props;
     const {
       sendOption,
     } = this.state;
     onApplyChange({ sendOption });
-    onButtonToggle();
+    closeFilter();
   }
 
   onClear() {
@@ -78,7 +95,6 @@ class SendOption extends React.Component {
   render() {
     const {
       isOpening,
-      onButtonToggle,
     } = this.props;
     const {
       sendOption,
@@ -88,7 +104,7 @@ class SendOption extends React.Component {
       <FilterButton
         content={sendOption ? mapSendOption[sendOption] : '交貨方式'}
         isOpen={isOpening}
-        onClick={onButtonToggle}
+        onClick={this.onButtonToggle}
         onClickClear={sendOption ? this.onClear : null}
       >
         <div styleName="container">

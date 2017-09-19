@@ -16,8 +16,9 @@ class PriceRange extends React.Component {
     }).isRequired,
 
     isOpening: PropTypes.bool.isRequired,
-    onButtonToggle: PropTypes.func.isRequired,
     onApplyChange: PropTypes.func.isRequired,
+    openFilter: PropTypes.func.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   static renderButtonContent({ min, max }, defaultContent) {
@@ -46,21 +47,37 @@ class PriceRange extends React.Component {
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.onButtonToggle = this.onButtonToggle.bind(this);
+  }
+
+  onButtonToggle() {
+    const {
+      isOpening,
+      openFilter,
+      closeFilter,
+      price: { min, max },
+    } = this.props;
+    if (isOpening) {
+      closeFilter();
+      this.setState({ min, max });
+    } else {
+      openFilter();
+    }
   }
 
   onCancel() {
     const {
       price: { min, max },
-      onButtonToggle,
+      closeFilter,
     } = this.props;
     this.setState({ min, max });
-    onButtonToggle();
+    closeFilter();
   }
 
   onApply() {
     const {
       onApplyChange,
-      onButtonToggle,
+      closeFilter,
     } = this.props;
     const {
       min, max,
@@ -71,7 +88,7 @@ class PriceRange extends React.Component {
     } else {
       this.setState({ errorMessage: null });
       onApplyChange({ min, max });
-      onButtonToggle();
+      closeFilter();
     }
   }
 
@@ -84,7 +101,6 @@ class PriceRange extends React.Component {
   render() {
     const {
       isOpening,
-      onButtonToggle,
     } = this.props;
     const {
       min, max, errorMessage,
@@ -97,7 +113,7 @@ class PriceRange extends React.Component {
       <FilterButton
         content={renderButtonContent({ max, min }, '價格範圍')}
         isOpen={isOpening}
-        onClick={onButtonToggle}
+        onClick={this.onButtonToggle}
         onClickClear={min || max ? this.onClear : null}
       >
         <div styleName="container">

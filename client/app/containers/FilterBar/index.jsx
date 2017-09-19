@@ -61,11 +61,15 @@ class FilterBar extends React.Component {
     this.props.dispatchReset();
   }
 
-  onFilterToggle(opening) {
-    if (opening === this.state.opening) {
+  onFilterClose(OPEN_TAG) {
+    if (OPEN_TAG === this.state.opening) {
       this.setState({ opening: null });
-    } else {
-      this.setState({ opening });
+    }
+  }
+
+  onFilterOpen(OPENING_TAG) {
+    if (OPENING_TAG !== this.state.opening) {
+      this.setState({ opening: OPENING_TAG });
     }
   }
 
@@ -90,62 +94,68 @@ class FilterBar extends React.Component {
   }
 
   renderPrice() {
-    const {
-      filter: { price: { min, max } },
-    } = this.props;
+    const openTag = PRICE_OPENING;
+    const { filter: { price: { min, max } } } = this.props;
     const { opening } = this.state;
     return (
       <div styleName="filter-btn">
         <FilterPriceRange
           price={{ min, max }}
-          isOpening={opening === PRICE_OPENING}
-          onButtonToggle={() => this.onFilterToggle(PRICE_OPENING)}
           onApplyChange={this.onPriceChange}
+          isOpening={opening === openTag}
+          openFilter={() => this.onFilterOpen(openTag)}
+          closeFilter={() => this.onFilterClose(openTag)}
         />
       </div>
     );
   }
 
   renderSort() {
+    const openTag = SORT_OPENING;
     const { filter: { sort } } = this.props;
     const { opening } = this.state;
     return (
       <div styleName="filter-btn">
         <FilterSort
           sort={sort}
-          isOpening={opening === SORT_OPENING}
-          onButtonToggle={() => this.onFilterToggle(SORT_OPENING)}
           onApplyChange={this.onSortChange}
+          isOpening={opening === openTag}
+          openFilter={() => this.onFilterOpen(openTag)}
+          closeFilter={() => this.onFilterClose(openTag)}
         />
       </div>
     );
   }
 
   renderSendOption() {
+    const openTag = SEND_OPTION_OPENING;
     const { filter: { sendOption } } = this.props;
     const { opening } = this.state;
     return (
       <div styleName="filter-btn">
         <FilterSendOption
           sendOption={sendOption}
-          isOpening={opening === SEND_OPTION_OPENING}
-          onButtonToggle={() => this.onFilterToggle(SEND_OPTION_OPENING)}
           onApplyChange={this.onSendOptionChange}
+          isOpening={opening === openTag}
+          openFilter={() => this.onFilterOpen(openTag)}
+          closeFilter={() => this.onFilterClose(openTag)}
         />
       </div>
     );
   }
 
   renderLocations() {
+    const openTag = LOCATION_OPENING;
     const { filter: { locations } } = this.props;
     const { opening } = this.state;
     return (
       <div styleName="filter-btn">
         <FilterLocations
           locations={locations}
-          isOpening={opening === LOCATION_OPENING}
-          onButtonToggle={() => this.onFilterToggle(LOCATION_OPENING)}
           onApplyChange={this.onLocationsSet}
+          isOpening={opening === openTag}
+          openFilter={() => this.onFilterOpen(openTag)}
+          closeFilter={() => this.onFilterClose(openTag)}
         />
       </div>
     );

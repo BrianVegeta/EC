@@ -22,7 +22,8 @@ class Locations extends React.Component {
   static propTypes = {
     locations: PropTypes.arrayOf(PropTypes.string).isRequired,
     isOpening: PropTypes.bool.isRequired,
-    onButtonToggle: PropTypes.func.isRequired,
+    openFilter: PropTypes.func.isRequired,
+    closeFilter: PropTypes.func.isRequired,
     onApplyChange: PropTypes.func.isRequired,
   };
 
@@ -34,7 +35,23 @@ class Locations extends React.Component {
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.onButtonToggle = this.onButtonToggle.bind(this);
     this.renderInputCheck = this.renderInputCheck.bind(this);
+  }
+
+  onButtonToggle() {
+    const {
+      isOpening,
+      openFilter,
+      closeFilter,
+      locations,
+    } = this.props;
+    if (isOpening) {
+      closeFilter();
+      this.setState({ locations: List(locations) });
+    } else {
+      openFilter();
+    }
   }
 
   onCheck(checked, city) {
@@ -48,23 +65,23 @@ class Locations extends React.Component {
 
   onCancel() {
     const {
-      onButtonToggle,
+      closeFilter,
       locations,
     } = this.props;
     this.setState({ locations: List(locations) });
-    onButtonToggle();
+    closeFilter();
   }
 
   onApply() {
     const {
       onApplyChange,
-      onButtonToggle,
+      closeFilter,
     } = this.props;
     const {
       locations,
     } = this.state;
     onApplyChange(locations.toJS());
-    onButtonToggle();
+    closeFilter();
   }
 
   onClear() {
@@ -98,17 +115,14 @@ class Locations extends React.Component {
   }
 
   render() {
-    const {
-      isOpening,
-      onButtonToggle,
-    } = this.props;
+    const { isOpening } = this.props;
     const { locations } = this.state;
 
     return (
       <FilterButton
         content={this.renderButtonContent('所在地區')}
         isOpen={isOpening}
-        onClick={onButtonToggle}
+        onClick={this.onButtonToggle}
         onClickClear={locations.size > 0 ? this.onClear : null}
       >
         <div styleName="container">

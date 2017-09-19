@@ -27,8 +27,9 @@ class Sort extends React.Component {
       SORT_HIGH_PRICE,
     ]),
     isOpening: PropTypes.bool.isRequired,
-    onButtonToggle: PropTypes.func.isRequired,
     onApplyChange: PropTypes.func.isRequired,
+    openFilter: PropTypes.func.isRequired,
+    closeFilter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -39,27 +40,43 @@ class Sort extends React.Component {
     this.onCancel = this.onCancel.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.onButtonToggle = this.onButtonToggle.bind(this);
+  }
+
+  onButtonToggle() {
+    const {
+      isOpening,
+      openFilter,
+      closeFilter,
+      sort,
+    } = this.props;
+    if (isOpening) {
+      closeFilter();
+      this.setState({ sort });
+    } else {
+      openFilter();
+    }
   }
 
   onCancel() {
     const {
-      onButtonToggle,
+      closeFilter,
       sort,
     } = this.props;
     this.setState({ sort });
-    onButtonToggle();
+    closeFilter();
   }
 
   onApply() {
     const {
       onApplyChange,
-      onButtonToggle,
+      closeFilter,
     } = this.props;
     const {
       sort,
     } = this.state;
     onApplyChange({ sort });
-    onButtonToggle();
+    closeFilter();
   }
 
   onClear() {
@@ -80,7 +97,6 @@ class Sort extends React.Component {
   render() {
     const {
       isOpening,
-      onButtonToggle,
     } = this.props;
     const {
       sort,
@@ -90,7 +106,7 @@ class Sort extends React.Component {
       <FilterButton
         content={sort ? mapSortType[sort] : '排序'}
         isOpen={isOpening}
-        onClick={onButtonToggle}
+        onClick={this.onButtonToggle}
         onClickClear={sort ? this.onClear : null}
       >
         <div styleName="container">
