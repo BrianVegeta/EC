@@ -129,3 +129,7 @@ export const asyncBlobTobase64 = (blob, maxSize = 1280) =>
  */
 export const mapSidebarSteps = steps =>
   steps.map(([text, path, isValid]) => ({ text, path, isValid }));
+
+
+export const generateRandomKey = () =>
+  Math.random().toString(36).slice(2);

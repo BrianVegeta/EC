@@ -59,6 +59,7 @@ class Dates extends React.Component {
         <SingleDatePicker
           date={startDate}
           focused={this.state.focused}
+          placeholder="日期"
           onDateChange={this.onDateChanged}
           isDayBlocked={this.onBlockCheck}
           onFocusChange={focused => this.setState(focused)}

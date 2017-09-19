@@ -129,18 +129,28 @@ $react-dates-z-index: 0 !default;
   border-radius: $radius;
   border: 1px solid $borderColor;
 }
-.DateInput {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  padding: 5px;
-  &:first-child {
-    border-right: 1px solid $borderColor;
-    border-top-left-radius: $radius;
-    border-bottom-left-radius: $radius;
+.DateRangePickerInput {
+  .DateInput {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 5px;
+    &:first-child {
+      border-right: 1px solid $borderColor;
+      border-top-left-radius: $radius;
+      border-bottom-left-radius: $radius;
+    }
+    &:last-child {
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
+    }
   }
-  &:last-child {
-    border-top-right-radius: $radius;
-    border-bottom-right-radius: $radius;
+}
+.SingleDatePickerInput {
+  border-radius: 5px;
+  border-color: #cecece !important;
+  .DateInput {
+    border-radius: 5px;
+    padding: 7px;
   }
 }
 

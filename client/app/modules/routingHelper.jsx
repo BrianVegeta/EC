@@ -11,6 +11,7 @@ const ACTION_PREFIX = 'ROUTING_HELPER';
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 const SET_ROUTE_HOOK = prefix('SET_ROUTE_HOOK');
+const SET_REFERRER = prefix('SET_REFERRER');
 
 
 // =============================================
@@ -28,11 +29,17 @@ export const setRouteHook = removeHook => ({
   removeHook,
 });
 
+export const setReferrerPath = path => ({
+  type: SET_REFERRER,
+  path,
+});
+
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
   removeHook: null,
+  referrer: null,
 };
 
 export default (state = initialState, action) => {
@@ -41,6 +48,11 @@ export default (state = initialState, action) => {
     case SET_ROUTE_HOOK:
       return Object.assign({}, state, {
         removeHook: action.removeHook,
+      });
+
+    case SET_REFERRER:
+      return Object.assign({}, state, {
+        referrer: action.path,
       });
 
     default:

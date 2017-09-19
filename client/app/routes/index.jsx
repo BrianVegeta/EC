@@ -59,6 +59,7 @@ const confirmLeave = true;
 
 export default store => ({
   path: '/',
+
   childRoutes: [
     {
       indexRoute: HomeRoute(store.dispatch),

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-
 import cities from 'modules/cities';
 import categories from 'modules/categories';
 import popup from 'modules/popup';
