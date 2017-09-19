@@ -136,7 +136,7 @@ class StepDelivery extends React.Component {
     }
   }
 
-  createSevenFormPost = (chooseType) => {
+  createSevenFormPost(chooseType) {
     this.chooseType = chooseType;
     const createInput = (key, value) => {
       const inputElement = document.createElement('input');
@@ -174,7 +174,7 @@ class StepDelivery extends React.Component {
       myWindow.document.getElementsByTagName('body')[0].appendChild(form);
       form.submit();
     }
-  };
+  }
 
   renderReturnAddress(isShow, { returnCity, returnArea, returnAddress }) {
     if (!isShow) return null;
