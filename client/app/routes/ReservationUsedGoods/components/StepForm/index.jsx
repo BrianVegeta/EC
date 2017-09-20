@@ -1,12 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import myPropTypes from 'propTypes';
-import {
-  find,
-} from 'lodash';
-// import colors from 'styles/colorExport.scss';
-// import IconLocation from 'react-icons/lib/md/location-on';
+import { find } from 'lodash';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
@@ -18,23 +13,18 @@ import BillingDetail, { calculateService } from 'components/BillingDetail';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
-import FormButton from 'components/FormButton';
 import InputTextCounter from 'components/Input/TextCounter';
 import constraints from 'constraints/reservation';
-// import { formatDate, rangeDiff } from 'lib/time';
-
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
-
 import CSS from 'react-css-modules';
 import {
   CHARGE_TYPE_COUNT,
 } from 'constants/publishTypes';
 import styles from './styles.sass';
 import { DangerText } from './styles';
-
 import {
   SEND_BY_OTHER_SHIPPMENT,
   SEND_BY_711,
@@ -141,12 +131,12 @@ class StepForm extends React.Component {
     dispatchValidate()
     .then(() => nextStep())
     .catch(() => {
-      if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
+      if (this.sendTypeInput) this.sendTypeInput.valid();
       if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();
       if (this.serviceAddressInput) this.serviceAddressInput.valid();
       if (this.serviceLocationTypeInput) this.serviceLocationTypeInput.valid();
-      this.noteInput = null;
+      if (this.noteInput) this.noteInput.valid();
     });
   }
 
@@ -521,16 +511,15 @@ class StepForm extends React.Component {
   renderShippment({ sendType, returnType, sendCity, sendArea,
   sendAddress }, { sendOption }) {
     const { dispatchChangeData } = this.props;
-    const refGoodsSendInput = sendInput => (this.refGoodsSendInput = sendInput);
-    console.log(sendOption);
     return (
       <div>
         <FormGroup headerText="到貨方式">
           <InputSelection
-            ref={refGoodsSendInput}
+            ref={sendInput => (this.sendTypeInput = sendInput)}
             options={sendOption}
             value={sendType}
             onSelect={val => dispatchChangeData({ sendType: val.value })}
+            constraints={constraints.sendType}
             validateOnBlur
           />
           { (sendType === SEND_BY_OTHER_SHIPPMENT) &&
