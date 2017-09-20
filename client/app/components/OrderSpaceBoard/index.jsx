@@ -202,7 +202,7 @@ class OrderSpaceBoard extends React.Component {
             colorType={'green'}
             {...buttonConfig}
             content={'付款'}
-            onClick={() => {}}
+            onClick={this.generatePayment()}
           />
         }
         {can_score &&
