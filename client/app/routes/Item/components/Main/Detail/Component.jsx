@@ -37,7 +37,6 @@ class Detail extends React.Component {
       </div>
     );
   }
-
   static renderShipmentStr(option) {
     const optionsTranslate = option.split('').map((optionTag) => {
       switch (optionTag) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AcccountNav from 'constants/myAccountNavs';
 import ListContainer from 'components/ListContainer';
 import ItemList from 'components/ItemList';
 
@@ -7,6 +8,7 @@ import { CONTROL_TYPE_PRIVATE_COLLECTION } from 'components/ItemBoard';
 
 import Container from '../Container';
 
+const titleName = AcccountNav.collection.text;
 class Collections extends React.Component {
 
   static propTypes = {
@@ -36,7 +38,7 @@ class Collections extends React.Component {
     }
     const { records } = myCollections;
     return (
-      <Container titleText={'收藏'}>
+      <Container titleText={titleName}>
         <ListContainer
           minHeight={500}
           noDataText={(records.length === 0) ? '目前沒有優收藏' : null}

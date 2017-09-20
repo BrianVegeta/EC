@@ -7,9 +7,9 @@ const Regulation = props => (
     <h2 styleName="title">分享人守則</h2>
     <ul styleName="rules">
       {props.rules.map((rule, i) =>
-        <li key={`${rule.describe}_${i + 1}`} styleName="rule">
+        (<li key={`${rule.describe}_${i + 1}`} styleName="rule">
           {rule}
-        </li>,
+        </li>),
       )}
     </ul>
   </div>

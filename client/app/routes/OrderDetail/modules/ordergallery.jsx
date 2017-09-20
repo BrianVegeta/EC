@@ -4,17 +4,29 @@ import {
   base64ToBlobData,
   asyncS3ToBlob,
   asyncContainBlobTobase64,
-  generateRandomKey,
 } from 'lib/utils';
 
+import {
+  OWNER_SEND,
+  LESSEE_RECEIVE,
+  LESSEE_SEND,
+  OWNER_RECEIVE,
+} from './orderaction';
 
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'PUBLISH.COVERS.SERVICE';
+const ACTION_PREFIX = 'ORDERDETAIL.COVERS';
 const COVER_PARAM_KEY = 'croppedImage';
-export const REDUCER_KEY = 'covers';
+export const REDUCER_KEY = 'ordergallery';
 
+const initialThumb = {
+  key: '?',
+  blob: null,
+  s3: null,
+  isUploading: false,
+  isStored: false,
+};
 
 // =============================================
 // = action type =
@@ -29,17 +41,6 @@ const UPDATED_COVER = prefix('UPDATED_COVER');
 const CHANGE_ORDERS = prefix('CHANGE_ORDERS');
 const RESET = prefix('RESET');
 
-/* =============================================>>>>>
-= helpers =
-===============================================>>>>>*/
-const initialThumb = {
-  key: '?',
-  blob: null,
-  s3: null,
-  isUploading: false,
-  isStored: false,
-};
-
 
 // =============================================
 // = actions =
@@ -50,9 +51,10 @@ export const setupCovers = covers => ({
   covers,
 });
 
-export const createCover = blob => ({
+export const createCover = (blob, cidNo) => ({
   type: CREATE_COVER,
   blob,
+  cidNo,
 });
 
 export const changeOrders = covers => ({
@@ -82,25 +84,42 @@ export const reset = () => ({
   type: RESET,
 });
 
-export function uploadCover(key, base64) {
-  return (dispatch) => {
-    const blob = base64ToBlobData(base64);
-    dispatch(updatedCover(key, URL.createObjectURL(blob)));
+const generateKey = index => `KEY_${Date.now().toString()}${index}`;
 
-    const formData = new FormData();
-    formData.append(COVER_PARAM_KEY, blob);
+const asyncTransformBlob = ({ img1, img2 }) =>
+  new Promise((resolve) => {
+    const promises = [];
+    if (img1) promises.push(asyncS3ToBlob(img1));
+    if (img2) promises.push(asyncS3ToBlob(img2));
+    Promise.all(promises).then((results) => {
+      resolve(results);
+    }).catch(e => console.log(e));
+  });
 
-    asyncXhrPutImage('/ajax/images/item_cover.json', formData)
-    .then((s3) => {
-      asyncS3ToBlob(s3)
-      .then(responseBlobUrl =>
-        dispatch(updatedCover(key, responseBlobUrl, s3)),
-      );
+export const setupCoversForEdit = ({ img1, img2 }) =>
+  dispatch =>
+    new Promise((resolve) => {
+      const restoreThumb = (s3, blob, key) =>
+        Object.assign({}, initialThumb, { s3, blob, isStored: true, key });
+
+      const paddingCovers = [];
+      if (img1) paddingCovers.push(restoreThumb(img1, null, null));
+      if (img2) paddingCovers.push(restoreThumb(img2, null, null));
+      dispatch(setupCovers(paddingCovers));
+
+      asyncTransformBlob(
+        { img1, img2 },
+      ).then((blobs) => {
+        const covers = [];
+        if (img1) covers.push(restoreThumb(img1, blobs[0], generateKey(0)));
+        if (img2) covers.push(restoreThumb(img2, blobs[1], generateKey(1)));
+        dispatch(setupCovers(covers));
+        resolve();
+      });
     });
-  };
-}
 
-export const asyncUploadCover = (key, base64) =>
+
+export const asyncUploadCover = (key, base64, cidNo, type) =>
   dispatch =>
     new Promise((resolve, reject) => {
       const blobData = base64ToBlobData(base64);
@@ -108,8 +127,21 @@ export const asyncUploadCover = (key, base64) =>
       dispatch(updatedCover(key, URL.createObjectURL(blobData)));
       const formData = new FormData();
       formData.append(COVER_PARAM_KEY, blobData);
-
-      asyncXhrPutImage('/ajax/images/item_cover.json', formData)
+      let url = '';
+      switch (type) {
+        case OWNER_SEND:
+        case LESSEE_RECEIVE:
+          url = `/ajax/images/ship/${cidNo}.json`;
+          break;
+        case LESSEE_SEND:
+        case OWNER_RECEIVE:
+          url = `/ajax/images/return/${cidNo}.json`;
+          break;
+        default:
+          reject('INVALID TYPE');
+          return;
+      }
+      asyncXhrPutImage(url, formData)
       .then((s3) => {
         asyncS3ToBlob(s3)
         .then((responseBlobUrl) => {
@@ -120,71 +152,32 @@ export const asyncUploadCover = (key, base64) =>
       .catch(e => reject(e));
     });
 
-export const asyncUploadBlobCover = (key, blob) =>
+export const asyncUploadBlobCover = ({ key, blob, cidNo, s3, isStored }, type) =>
   dispatch =>
     new Promise((resolve) => {
+      if (isStored) {
+        resolve(s3);
+        return;
+      }
       asyncContainBlobTobase64(blob)
       .then((base64) => {
-        dispatch(asyncUploadCover(key, base64))
-        .then(s3 => resolve(s3))
+        dispatch(asyncUploadCover(key, base64, cidNo, type))
+        .then(newS3 => resolve(newS3))
         .catch(e => console.log(e));
       });
     });
 
-export const processRawCovers = () =>
+export const processRawCovers = type =>
   (dispatch, getState) =>
     new Promise((resolve) => {
       const covers = getState()[REDUCER_KEY];
-      const rawCovers = covers.filter(cover => !cover.isStored);
-      const promises = rawCovers.map(cover =>
-        dispatch(asyncUploadBlobCover(cover.key, cover.blob)),
+      const promises = covers.map(cover =>
+        dispatch(asyncUploadBlobCover(cover, type)),
       );
       Promise.all(promises)
       .then(results => resolve(results))
       .catch(e => console.log(e));
     });
-
-/* restore covers below */
-const asyncTransformBlob = ({ img1, img2, img3 }) =>
-  new Promise((resolve) => {
-    const promises = [];
-    if (img1) promises.push(asyncS3ToBlob(img1));
-    if (img2) promises.push(asyncS3ToBlob(img2));
-    if (img3) promises.push(asyncS3ToBlob(img3));
-    Promise.all(promises).then((results) => {
-      resolve(results);
-    }).catch(e => console.log(e));
-  });
-
-export const setupCoversForEdit = ({ img1, img2, img3 }) =>
-  dispatch =>
-    new Promise((resolve) => {
-      const restoreThumb = (s3, blob) =>
-        Object.assign({}, initialThumb, {
-          key: generateRandomKey(),
-          s3,
-          blob,
-          isStored: true,
-        });
-
-      const paddingCovers = [];
-      if (img1) paddingCovers.push(restoreThumb(img1, null));
-      if (img2) paddingCovers.push(restoreThumb(img2, null));
-      if (img3) paddingCovers.push(restoreThumb(img3, null));
-      dispatch(setupCovers(paddingCovers));
-
-      asyncTransformBlob(
-        { img1, img2, img3 },
-      ).then((blobs) => {
-        const covers = [];
-        if (img1) covers.push(restoreThumb(img1, blobs[0]));
-        if (img2) covers.push(restoreThumb(img2, blobs[1]));
-        if (img3) covers.push(restoreThumb(img3, blobs[2]));
-        dispatch(setupCovers(covers));
-        resolve();
-      });
-    });
-
 
 // =============================================
 // = reducer =
@@ -193,17 +186,19 @@ const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
-
     case SETUP_COVERS:
       return action.covers;
 
-    case CREATE_COVER:
+    case CREATE_COVER: {
+      const index = state.length;
       return state.concat(
         Object.assign({}, initialThumb, {
-          key: generateRandomKey(),
+          key: generateKey(index),
           blob: action.blob,
+          cidNo: action.cidNo,
         }),
       );
+    }
 
     case DELETE_COVER:
       return List(state).delete(

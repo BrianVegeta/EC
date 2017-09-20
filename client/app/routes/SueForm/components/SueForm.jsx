@@ -13,13 +13,16 @@ import SortableGallery from 'components/Publish/SortableGallery';
 import CheckBox from 'components/Input/CheckBox';
 import AlertPanel from 'components/Alert/Panel';
 
-import { ItemSueOption, ServiceSueOption, SpaceSueOption, UsedItemSueOption }
+import { ItemSueOption, ServiceSueOption, SpaceSueOption }
   from 'constants/sueOption';
 // import colors from 'styles/colorExport.scss';
 
 import styles from './styles.sass';
 
 class SueForm extends React.Component {
+  static defaultProps = {
+    currentUser: { uid: null },
+  };
 
   static propTypes = {
     sueGallery: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -30,6 +33,12 @@ class SueForm extends React.Component {
     dispatchDeleteCover: PropTypes.func.isRequired,
     dispatchChangeOrders: PropTypes.func.isRequired,
     dispatchCancel: PropTypes.func.isRequired,
+    sueDetail: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
+    currentUser: PropTypes.shape({
+      uid: PropTypes.string,
+    }),
   };
 
   constructor(props) {
@@ -159,8 +168,6 @@ class SueForm extends React.Component {
       dispatchChangeOrders,
     } = this.props;
     const { reason, showNeedCheck, showNeedReason } = this.state;
-    console.log('render');
-    console.log(this.state);
     return (
       <div styleName="sue-form-content-border">
         <div styleName="sue-form-header">申訴</div>

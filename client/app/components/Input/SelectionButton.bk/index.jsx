@@ -52,12 +52,11 @@ class SelectionButton extends React.Component {
     this.setState({ isFocusing: false, isDropdownOpen: false });
   }
   onFocus() {
-    console.log('focus');
     this.setState({ isFocusing: true });
   }
 
   onButtonPress() {
-    const { isHoverOnButtonInner, isDropdownOpen } = this.state;
+    const { isDropdownOpen } = this.state;
     this.setState({ isDropdownOpen: !isDropdownOpen });
     // if (isHoverOnButtonInner) this.setState({ isDropdownOpen: !isDropdownOpen });
   }

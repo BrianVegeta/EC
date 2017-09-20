@@ -3,8 +3,7 @@
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'PUBLISH.CROPPER';
-
+const ACTION_PREFIX = 'PUBLISH.CROPPER.GOODS';
 
 // =============================================
 // = action type =

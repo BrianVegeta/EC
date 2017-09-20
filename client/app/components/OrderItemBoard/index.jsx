@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, browserHistory } from 'react-router';
 import { userprofilePaths, orderDetail, reservationGoods, reservationService, reservationSpace }
  from 'lib/paths';
-
+import swal, { orderConfig, errorConfig } from 'lib/swal';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
@@ -17,8 +17,9 @@ import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
 import { addToChatRoom } from 'modules/chatRooms';
 
-import { doShipGoods, doScore, resetAction, doCreditCardPayment, doATMPayment, doReceiveConfirm }
-  from 'modules/orderAction';
+import { doShipGoods, doReturn, doScore, resetAction,
+  doCreditCardPayment, doATMPayment, doReceiveConfirm,
+} from 'modules/orderAction';
 
 import styles from './styles.sass';
 
@@ -56,7 +57,7 @@ class OrderItemBoard extends React.Component {
     unit: PropTypes.number.isRequired,
     isOwner: PropTypes.bool,
     isRead: PropTypes.bool.isRequired,
-    lesseeReceive: PropTypes.bool,
+    // lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
         show_detail: PropTypes.bool,
@@ -65,7 +66,6 @@ class OrderItemBoard extends React.Component {
         can_ship_confirm: PropTypes.bool,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
-        can_camera: PropTypes.bool,
         can_score: PropTypes.bool,
         view_score: PropTypes.bool,
       },
@@ -108,7 +108,6 @@ class OrderItemBoard extends React.Component {
       default:
         return () => {};
     }
-
   }
 
   callScorePanel(isView) {
@@ -159,7 +158,7 @@ class OrderItemBoard extends React.Component {
 
   renderOwnerActions() {
     const { display } = this.props;
-    const { can_ship, can_camera, can_score, can_711, view_score } = display;
+    const { can_ship, can_score, can_711, can_return_confirm, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -172,27 +171,23 @@ class OrderItemBoard extends React.Component {
     };
     return (
       <div styleName="action-section">
-        {can_camera &&
-          <FormButton
-            colorType={'green'}
-            {...buttonConfig}
-            content={'拍照'}
-            onClick={() => {}}
-          />
-        }
         {can_ship &&
           <FormButton
             colorType={'green'}
             {...buttonConfig}
             content={'安排出貨'}
             onClick={() => {
-              this.props.dispatch(doShipGoods(this.props.cid))
-              .then(() => {
-                this.props.dispatch(resetAction());
-                this.props.dispatchRefresh();
-              })
-              .catch((error) => {
-                alert(error);
+              swal(orderConfig('出貨前是否要上傳照片紀錄？')).then(() => {
+                this.props.dispatch(doShipGoods(this.props.cid))
+                .then(() => {
+                  this.props.dispatch(resetAction());
+                  this.props.dispatchRefresh();
+                })
+                .catch((error) => {
+                  swal(errorConfig('出貨失敗', error));
+                });
+              }).catch(() => {
+                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />
@@ -203,6 +198,27 @@ class OrderItemBoard extends React.Component {
             {...buttonConfig}
             content={'寄件代碼'}
             onClick={() => {}}
+          />
+        }
+        {can_return_confirm &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'確認還貨'}
+            onClick={() => {
+              swal(orderConfig('確認前是否要上傳照片紀錄？')).then(() => {
+                this.props.dispatch(doReceiveConfirm(this.props.cid))
+                .then(() => {
+                  this.props.dispatch(resetAction());
+                  this.props.dispatchRefresh();
+                })
+                .catch((error) => {
+                  swal(errorConfig('確認還貨失敗', error));
+                });
+              }).catch(() => {
+                browserHistory.push(orderDetail.indexPath(this.props.cid));
+              });
+            }}
           />
         }
         {can_score &&
@@ -233,7 +249,7 @@ class OrderItemBoard extends React.Component {
 
   renderLesseeActions() {
     const { display, pid, cid } = this.props;
-    const { can_edit, can_pay, can_ship_confirm, can_score, view_score } = display;
+    const { can_edit, can_pay, can_ship_confirm, can_return, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
@@ -251,9 +267,7 @@ class OrderItemBoard extends React.Component {
             colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={
-              browserHistory.push(reservationGoods.indexPath(pid, cid))
-            }
+            onClick={() => browserHistory.push(reservationGoods.indexPath(pid, cid))}
           />
         }
         {can_pay &&
@@ -264,19 +278,44 @@ class OrderItemBoard extends React.Component {
             onClick={this.generatePayment()}
           />
         }
-        { can_ship_confirm &&
+        {can_ship_confirm &&
           <FormButton
             colorType={'green'}
             {...buttonConfig}
             content={'確認收貨'}
             onClick={() => {
-              this.props.dispatch(doReceiveConfirm(this.props.cid))
-              .then(() => {
-                this.props.dispatch(resetAction());
-                this.props.dispatchRefresh();
-              })
-              .catch((error) => {
-                alert(error);
+              swal(orderConfig('確認前是否要上傳照片紀錄？')).then(() => {
+                this.props.dispatch(doReceiveConfirm(this.props.cid))
+                .then(() => {
+                  this.props.dispatch(resetAction());
+                  this.props.dispatchRefresh();
+                })
+                .catch((error) => {
+                  swal(errorConfig('確認收貨失敗', error));
+                });
+              }).catch(() => {
+                browserHistory.push(orderDetail.indexPath(this.props.cid));
+              });
+            }}
+          />
+        }
+        {can_return &&
+          <FormButton
+            colorType={'green'}
+            {...buttonConfig}
+            content={'還貨'}
+            onClick={() => {
+              swal(orderConfig('還貨前是否要上傳照片紀錄？')).then(() => {
+                this.props.dispatch(doReturn(this.props.cid))
+                .then(() => {
+                  this.props.dispatch(resetAction());
+                  this.props.dispatchRefresh();
+                })
+                .catch((error) => {
+                  swal(errorConfig('還貨失敗', error));
+                });
+              }).catch(() => {
+                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />

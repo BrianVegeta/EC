@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CSS from 'react-css-modules';
 import ListContainer from 'components/ListContainer';
+import AcccountNav from 'constants/myAccountNavs';
 import styles from './styles.sass';
 import CouponCard from './CouponCard';
 import Container from '../Container';
 
-
+const titleName = AcccountNav.coupon.text;
 class CouponsContainer extends React.Component {
   static propTypes = {
     myCoupon: PropTypes.shape({
@@ -30,7 +31,7 @@ class CouponsContainer extends React.Component {
     const { records } = myCoupon;
     const noRecords = (myCoupon.isFetching === false && records.length === 0);
     return (
-      <Container titleText={'優惠券'}>
+      <Container titleText={titleName}>
         <ListContainer
           minHeight={500}
           noDataText={noRecords ? '目前沒有優惠券' : null}

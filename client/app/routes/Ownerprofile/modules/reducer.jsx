@@ -24,8 +24,6 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { isFetchingWishList: true });
 
     case types.FETCHED_WISHLIST:
-      console.log('fetched_wishlist');
-      console.log(action.wishlist);
       return Object.assign({}, state, {
         isFetchingWishList: false,
         wishlist: action.wishlist,

@@ -6,6 +6,7 @@ import Icon from 'react-icons/lib/md/assignment-ind';
 import Dropzone from 'react-dropzone';
 
 import { userprofilePaths as userprofileRouter } from 'lib/paths';
+import AcccountNav from 'constants/myAccountNavs';
 import TableForm, { TableRow } from 'components/TableForm';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
@@ -21,7 +22,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Container from '../Container';
 
-
+const titleName = AcccountNav.profile.text;
 const cx = classnames.bind(styles);
 class Profile extends React.Component {
 
@@ -89,7 +90,7 @@ class Profile extends React.Component {
     const refAutobiography = input => (this.autobiographyInput = input);
 
     return (
-      <Container titleText="公開資訊" icon={Icon} >
+      <Container titleText={titleName} icon={Icon} >
         <Link
           className="button"
           styleName="userprofile-link"

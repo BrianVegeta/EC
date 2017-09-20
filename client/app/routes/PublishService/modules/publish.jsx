@@ -10,7 +10,7 @@ import {
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'PUBLISH';
+const ACTION_PREFIX = 'PUBLISH.SERVICE';
 export const REDUCER_KEY = 'publish';
 
 /* enums */

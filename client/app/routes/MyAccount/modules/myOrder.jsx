@@ -87,7 +87,7 @@ export function fetchRecords(roleType, orderType, tabName) {
       {
         role_type: roleType,
         type: orderType,
-        uid: currentUser.uid
+        uid: currentUser.uid,
       },
       getState(),
     )

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { parseInt } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now } from 'lib/time';
@@ -9,7 +10,7 @@ import {
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'PUBLISH';
+const ACTION_PREFIX = 'PUBLISH.GOODS';
 export const REDUCER_KEY = 'publish';
 
 /* enums */
@@ -248,9 +249,9 @@ const initialState = {
   hasCancelPolicy: false,
   advanceDay: null,
   rate: null,
-  storeid: '912112',
-  storename: '二崙門市',
-  storeaddress: '雲林縣二崙鄉崙東村中山路一段269號',
+  storeid: '',
+  storename: '',
+  storeaddress: '',
   Rstoreid: '',
   Rstorename: '',
   Rstoreaddress: '',

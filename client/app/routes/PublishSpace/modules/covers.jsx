@@ -10,7 +10,7 @@ import {
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'PUBLISH.COVERS';
+const ACTION_PREFIX = 'PUBLISH.COVERS.SPACE';
 const COVER_PARAM_KEY = 'croppedImage';
 export const REDUCER_KEY = 'covers';
 

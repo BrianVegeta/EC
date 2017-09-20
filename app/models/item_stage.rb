@@ -9,10 +9,8 @@ class ItemStage < StageBase
   KEY_RETURN_CONFIRM = 'can_return_confirm'
   KEY_CAMERA = 'can_camera'
 
-
   def initialize(contract, uid)
     super(contract, uid)
-    modify_display_param(KEY_CANCEL, false)          #可以取消訂單 (true = show, false = hidden)
     modify_display_param(KEY_SHIP, false)            #可以出貨 (true = show, false = hidden)
     modify_display_param(KEY_SHIP_CONFIRM, false)    #可以確認取貨 (true = show, false = hidden)
     modify_display_param(KEY_RETURN, false)          #可以還貨 (true = show, false = hidden)

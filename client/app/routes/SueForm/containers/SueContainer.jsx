@@ -34,8 +34,8 @@ const mapDispatchToProps = (dispatch, { params: { cid } }) => ({
         cid, pid, imgData, targetstage,
         reason, targetUid, type,
       )).then(dispatch(returnLastPath(cid)));
-    }
-  )
+    },
+  );
   },
   dispatchReset: () => dispatch(reset()),
   dispatchCreateCover: (blob, cidNo) => dispatch(createCover(blob, cidNo)),

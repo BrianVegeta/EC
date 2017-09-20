@@ -41,34 +41,6 @@ class OrderItemBoard extends React.Component {
     order: PropTypes.shape({
       cid: PropTypes.number,
     }).isRequired,
-
-    // paymenttype: PropTypes.number.isRequired,
-    // stage: PropTypes.number.isRequired,
-    // cid: PropTypes.number.isRequired,
-    // pid: PropTypes.number.isRequired,
-    // cidNo: PropTypes.string.isRequired,
-    // itemName: PropTypes.string.isRequired,
-    // itemImgUrl: PropTypes.string.isRequired,
-    // targetName: PropTypes.string.isRequired,
-    // targetUrl: PropTypes.string.isRequired,
-    // targetScore: PropTypes.number,
-    // targetComment: PropTypes.string,
-    // totalPrice: PropTypes.number.isRequired,
-    // unit: PropTypes.number.isRequired,
-    //
-    // lesseeReceive: PropTypes.bool,
-    // createTime: PropTypes.number.isRequired,
-    // display: PropTypes.shape(
-    //   {
-    //     show_detail: PropTypes.bool,
-    //     can_ship: PropTypes.bool,
-    //     can_edit: PropTypes.bool,
-    //     can_pay: PropTypes.bool,
-    //     can_camera: PropTypes.bool,
-    //     can_score: PropTypes.bool,
-    //     view_score: PropTypes.bool,
-    //   },
-    // ).isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchRefresh: PropTypes.func.isRequired,
   };

@@ -11,7 +11,6 @@ import {
   RENDER_SCORE_RATING,
   RENDER_SUE_DETAIL,
   RENDER_LOGIN,
-  // RENDER_TWO_BUTTONS,
   RENDER_ATM,
   RENDER_SHOW_WISH,
   RENDER_REPORT,
@@ -85,17 +84,7 @@ class Popup extends React.Component {
         return (
           <ModalBox width={470} onClose={dispatchCloseModal} >
             <SueDetailContainter
-              cid={options.cid}
-              u_no={options.u_no}
-              suer_name={options.suer_name}
-              defender_name={options.defender_name}
-              img1={options.img1}
-              img2={options.img2}
-              img3={options.img3}
-              sue_reason={options.sue_reason}
-              status={options.status}
-              case_end={options.case_end}
-              create_time={options.create_time}
+              options={options}
             />
           </ModalBox>
         );

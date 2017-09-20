@@ -8,13 +8,21 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
+
+import ButtonNextStep, {
+  STATUS_LOADING,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
+
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
 import CoverThreePics from 'components/CoverThreePics';
+import ThumbDropzone from 'components/Publish/ThumbDropzone';
+import ThumbDropped from 'components/Publish/ThumbDropped';
 import { formatDate, rangeDiff } from 'lib/time';
 import { generateContractLog } from 'lib/contractString';
-
+import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
@@ -24,39 +32,39 @@ import SueBanner from './SueBanner';
 import UserInfoBoard from './UserInfoBoard/index';
 import BottomController from './BottomController';
 
+const cx = classnames.bind(styles);
 class Orderdetail extends React.Component {
-
   static defaultProps = {
     personalBankInfo: null,
-    sueDetail: null,
-    logs: [],
   }
 
   static propTypes = {
     orderdetail: PropTypes.shape({
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
+      sueDetail: PropTypes.shape({
+        u_no: PropTypes.string,
+        type: PropTypes.string,
+        status: PropTypes.number,
+        img1: PropTypes.string,
+        img2: PropTypes.string,
+        img3: PropTypes.string,
+        defender_name: PropTypes.string,
+        suer_name: PropTypes.string,
+        case_end: PropTypes.number,
+        create_time: PropTypes.number,
+      }),
+      logs: PropTypes.arrayOf(PropTypes.shape({
+        contractstage: PropTypes.number,
+        create_time: PropTypes.number,
+      })),
+      uploadImgType: PropTypes.string,
     }).isRequired,
     personalBankInfo: PropTypes.shape({
       isReady: PropTypes.bool,
       isChecked: PropTypes.bool,
     }),
-    sueDetail: PropTypes.shape({
-      u_no: PropTypes.string,
-      type: PropTypes.string,
-      status: PropTypes.number,
-      img1: PropTypes.string,
-      img2: PropTypes.string,
-      img3: PropTypes.string,
-      defender_name: PropTypes.string,
-      suer_name: PropTypes.string,
-      case_end: PropTypes.number,
-      create_time: PropTypes.number,
-    }),
-    logs: PropTypes.arrayOf(PropTypes.shape({
-      contractstage: PropTypes.number,
-      create_time: PropTypes.number,
-    })),
+    ordergallery: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchAddToChatRoom: PropTypes.func.isRequired,
     dispatchBankSetup: PropTypes.func.isRequired,
@@ -75,7 +83,17 @@ class Orderdetail extends React.Component {
     dispatchEndService: PropTypes.func.isRequired,
     dispatchSevenOrder: PropTypes.func.isRequired,
     dispatchSevenLog: PropTypes.func.isRequired,
+    dispatchCreateCover: PropTypes.func.isRequired,
+    dispatchDeleteCover: PropTypes.func.isRequired,
+    dispatchUploadCover: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgSelect: 0,
+    };
+  }
 
   componentDidMount() {
     this.props.dispatchRecords();
@@ -136,6 +154,18 @@ class Orderdetail extends React.Component {
       default:
         return () => {};
     }
+  }
+  renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
+    if (!(show)) return null;
+    return (
+      <FormButton
+        colorType={buttonColor}
+        width={152}
+        style={{ marginRight: 20, height: 52, fontWeight: 400, padding: '10px 15px' }}
+        content={buttonText}
+        onClick={dispatchAction}
+      />
+    );
   }
   renderOrderAction({ can_cancel, can_accept, can_edit, can_reject, is_owner }, order) {
     return (
@@ -235,7 +265,7 @@ class Orderdetail extends React.Component {
     }
     return null;
   }
-  renderReturnAction({ can_return, can_711_return, can_return_confirm }, order) {
+  renderReturnAction({ can_return, can_711_return, can_return_confirm }) {
     if (can_return) {
       const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
       return (
@@ -243,7 +273,7 @@ class Orderdetail extends React.Component {
           {this.renderButtonStyle(
             can_return,
             this.props.dispatchReturn,
-            '確認還貨',
+            '還貨',
             'green',
           )}
           { this.renderHintText(hint) }
@@ -319,13 +349,13 @@ class Orderdetail extends React.Component {
     }
     return null;
   }
-  renderOverdueRate(overdueRate, deposit) {
-    if (!overdueRate || overdueRate <= 0) {
+  renderOverdueRate({ overdue_rate, deposit }) {
+    if (!overdue_rate || overdue_rate <= 0) {
       return null;
     }
 
-    const overdueRatePerDay = (overdueRate == null) ? 0 :
-    ((deposit * overdueRate) / 100);
+    const overdueRatePerDay = (overdue_rate == null) ? 0 :
+    ((deposit * overdue_rate) / 100);
 
     return (
       <div styleName="section-content">
@@ -340,8 +370,8 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderCancelPolicys(cancelPolicys) {
-    if (!cancelPolicys || cancelPolicys.length <= 0) {
+  renderCancelPolicys({ cancel_policy }) {
+    if (!cancel_policy || cancel_policy.length <= 0) {
       return null;
     }
     return (
@@ -350,10 +380,10 @@ class Orderdetail extends React.Component {
         <div>
           <span>開始租借前</span>
           <span style={{ color: colors.colorHeart }}>
-            {cancelPolicys[0].advance_day}
+            {cancel_policy[0].advance_day}
           </span>
           <span>天取消訂單，扣除</span>
-          <span style={{ color: colors.colorHeart }}>{`${cancelPolicys[0].rate}%`}</span>
+          <span style={{ color: colors.colorHeart }}>{`${cancel_policy[0].rate}%`}</span>
           <span>金額</span>
         </div>
         <div styleName="padding-40btm-style" />
@@ -435,42 +465,124 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
+  renderImage(images) {
+    const { imgSelect } = this.state;
+    const checkReady = array => (array && array.length > 0);
+    let imagesList = [];
+    switch (imgSelect) {
+      case 0:
+        imagesList = images.beforeShip;
+        break;
+      case 1:
+        imagesList = images.afterShip;
+        break;
+      case 2:
+        imagesList = images.beforeReturn;
+        break;
+      case 3:
+        imagesList = images.afterReturn;
+        break;
+      default:
+        break;
+    }
+    if (checkReady(imagesList)) {
+      return (
+        <CoverThreePics images={imagesList} />
+      );
+    }
+    return (
+      <div styleName="no-image">無拍照記錄</div>
+    );
+  }
 
+  renderButtonStatus() {
+    const { orderdetail: { isUpdatingImages } } = this.props;
+
+    if (isUpdatingImages) {
+      return STATUS_LOADING;
+    }
+    return STATUS_VALID;
+  }
+  renderUploadImage() {
+    const { orderdetail: { uploadImgType } } = this.props;
+    if (uploadImgType) {
+      const {
+        dispatchCreateCover,
+        dispatchDeleteCover,
+        dispatchUploadCover,
+        ordergallery,
+      } = this.props;
+      const emptyCovers = Array((2 - ordergallery.length)).fill(
+        Object.assign({}, { isEmpty: true }),
+      );
+      const items = ordergallery.concat(emptyCovers);
+      return (
+        <div styleName="section-content" className="clear">
+          <div styleName="section-header">上傳圖片</div>
+          <div styleName="gallery" className="clear">
+            {items.map((image, index) => (
+              <div
+                key={`${index + 1}`}
+                styleName="imageDropzone"
+              >
+                { image.isEmpty ?
+                  <ThumbDropzone
+                    onDrop={dispatchCreateCover}
+                  /> :
+                  <ThumbDropped
+                    coverUrl={image.blob}
+                    onRemove={() => dispatchDeleteCover(image.key)}
+                  />
+                }
+              </div>
+            ))}
+          </div>
+          <div styleName="buton-upload">
+            <ButtonNextStep
+              status={this.renderButtonStatus()}
+              text="確認儲存"
+              onClick={() => { dispatchUploadCover(uploadImgType); }}
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }
   renderImages() {
-    const { orderdetail } = this.props;
-    const { images } = orderdetail;
-    if (!(images)) {
+    const { orderdetail: { images } } = this.props;
+    if (images === null) {
       return null;
     }
-    const checkReady = array => (array && array.length > 0);
-    const { beforeShip, afterShip, beforeReturn, afterReturn } = images;
+    const navs = [
+      { name: '出貨前' },
+      { name: '收貨後' },
+      { name: '還貨前' },
+      { name: '還貨後' },
+    ];
+    const { imgSelect } = this.state;
     return (
       <div styleName="section-content" className="clear">
-        <div styleName="section-header">拍照存證</div>
-        { (checkReady(beforeShip)) &&
-          <div style={{ marginLeft: 20 }}>
-            <div>出貨前</div>
-            <CoverThreePics images={beforeShip} />
-          </div>
-        }
-        { (checkReady(afterShip)) &&
-          <div style={{ marginLeft: 20 }}>
-            <div>收貨後</div>
-            <CoverThreePics images={afterShip} />
-          </div>
-        }
-        { (checkReady(beforeReturn)) &&
-          <div style={{ marginLeft: 20 }}>
-            <div>還貨前</div>
-            <CoverThreePics images={beforeReturn} />
-          </div>
-        }
-        { (checkReady(afterReturn)) &&
-          <div style={{ marginLeft: 20 }}>
-            <div>還貨後</div>
-            <CoverThreePics images={afterReturn} />
-          </div>
-        }
+        <div styleName="section-header">物品紀錄</div>
+        <div styleName="image-nav">
+          <ul className="clear">
+            {navs.map((nav, index) => (
+              <li
+                className={cx({ active: (imgSelect === index) })}
+                key={`${index + 1}`}
+              >
+                <button
+                  style={{ height: 50, width: 90 }}
+                  className="button"
+                  onClick={() => this.setState({ imgSelect: index })}
+                >
+                  {nav.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {this.renderImage(images)}
       </div>
     );
   }
@@ -630,20 +742,15 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderBanner(isOwner) {
+  renderBanner() {
     const { orderdetail, dispatch } = this.props;
     const { sueDetail, order } = orderdetail;
-    const { contractstage, cid, type, leasestart, create_time } = order;
-    const time = type === 'USED_ITEM' ? create_time : leasestart;
+    const { contractstage, cid } = order;
+    // const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
         <Banner
-          cid={cid}
-          type={type}
-          contractstage={contractstage}
-          isOwner={isOwner}
-          startDate={time}
-          dispatch={dispatch}
+          order={order}
         />
       );
     } else if (contractstage > 1000 && contractstage < 3000) {
@@ -651,14 +758,12 @@ class Orderdetail extends React.Component {
         return null;
       }
       return (
-        <div styleName="banner_style" >
-          <SueBanner
-            sueDetail={sueDetail}
-            cid={cid}
-            contractstage={contractstage}
-            dispatch={dispatch}
-          />
-        </div>
+        <SueBanner
+          sueDetail={sueDetail}
+          cid={cid}
+          contractstage={contractstage}
+          dispatch={dispatch}
+        />
       );
     }
     return null;
@@ -676,20 +781,6 @@ class Orderdetail extends React.Component {
       </div>
     );
   }
-
-  renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
-    if (!(show)) return null;
-    return (
-      <FormButton
-        colorType={buttonColor}
-        width="auto"
-        style={{ marginRight: 20, height: 52, width: 152, fontWeight: 400 }}
-        content={buttonText}
-        onClick={dispatchAction}
-      />
-    );
-  }
-
   renderRejectStyle(show, dispatchAction) {
     if (!(show)) {
       return null;
@@ -771,12 +862,13 @@ class Orderdetail extends React.Component {
             </div>
           </div>
           {this.renderSchedule()}
+          {this.renderUploadImage()}
           {this.renderImages()}
           {this.renderShippingDetail(order)}
           {this.renderBilling(order)}
           {this.renderRules(order)}
-          {this.renderCancelPolicys(order.renderCancelPolicys)}
-          {this.renderOverdueRate(order.overdue_rate, order.deposit)}
+          {this.renderCancelPolicys(order)}
+          {this.renderOverdueRate(order)}
           {this.renderLog()}
         </div>
         <BottomController >

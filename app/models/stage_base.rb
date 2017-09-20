@@ -19,7 +19,7 @@ class StageBase
   CONTRACT_TYPE_ITEM = 'ITEM'
   CONTRACT_TYPE_SERVICE = 'SERVICE'
   CONTRACT_TYPE_SPACE = 'SPACE'
-
+  CONTRACT_TYPE_USED_ITEM = 'USED_ITEM'
   #合約TAB代號
   TAB_REQUEST = 'TAB_REQUEST'
   TAB_PAY = 'TAB_PAY'
@@ -151,7 +151,7 @@ class StageBase
       modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
     else
       if self.contract['type'] == CONTRACT_TYPE_ITEM
-        modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
+        modify_display_param(KEY_CANCEL, self.screen_type <= STAGE_LESSEE_PAY)
       else
         modify_display_param(KEY_CANCEL, self.screen_type < STAGE_CONTRACT_START)
       end

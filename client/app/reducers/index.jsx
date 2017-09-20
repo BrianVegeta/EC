@@ -16,9 +16,7 @@ import myCollection from 'modules/myCollection';
 import chat from 'modules/chat';
 import chatRooms from 'modules/chatRooms';
 import chatBox from 'modules/chatBox';
-
-
-import myCoupon from 'connector/myCoupon/reducer';
+// import myCoupon from 'connector/myCoupon/reducer';
 import notification from 'modules/notification';
 import environment from './environmentReducer';
 // import auth from './authReducer';
@@ -70,7 +68,7 @@ const reducers = {
   myCollection,
   // ownerProfile,
   // coupon,
-  myCoupon,
+  // myCoupon,
   orderAction,
 };
 

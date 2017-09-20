@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { my } from 'lib/paths';
-
-// import classnames from 'classnames/bind';
-// import CSS from 'react-css-modules';
-
+import AcccountNav from 'constants/myAccountNavs';
 import ListContainer from 'components/ListContainer';
 import UsedItemBoard from 'components/UsedItemBoard';
 import OrderNav, { USED_ITEM } from '../../OrderNav';
@@ -16,6 +13,7 @@ import { TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
    TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
+const titleName = AcccountNav.lesseeOrder.text;
 class OrderList extends React.Component {
 
   static propTypes = {
@@ -23,6 +21,9 @@ class OrderList extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    myOrder: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -80,7 +81,7 @@ class OrderList extends React.Component {
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
-      <Container titleText={'消費狀態'}>
+      <Container titleText={titleName}>
         <OrderNav activeType={USED_ITEM} />
         <Navigation navs={navs} unreads={unreads} />
         <ListContainer

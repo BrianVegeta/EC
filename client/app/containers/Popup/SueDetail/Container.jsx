@@ -4,7 +4,7 @@ import { closePopup } from 'modules/popup';
 import Component from './index';
 
 const mapStateToProps = ({ environment }) => ({
-  environment
+  environment,
 });
 
 /* pick dispatch */

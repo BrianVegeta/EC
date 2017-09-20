@@ -12,7 +12,7 @@ import {
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'RESERVATION.SERVICE';
+const ACTION_PREFIX = 'RESERVATION.GOODS';
 export const REDUCER_KEY = 'reservationGoods';
 export const PAYMENT_TYPE_ATM = 1;
 export const PAYMENT_TYPE_CREDIT_CARD = 4;

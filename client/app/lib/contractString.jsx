@@ -123,7 +123,7 @@ export function generateLesseeItemString(contractstage, startDate) {
   return ({ title, text });
 }
 
-export function generateOwnerServiceString(contractstage, startDate) {
+export function generateOwnerServiceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -149,8 +149,16 @@ export function generateOwnerServiceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else if (isOwnerEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -167,7 +175,7 @@ export function generateOwnerServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeServiceString(contractstage, startDate) {
+export function generateLesseeServiceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -193,8 +201,16 @@ export function generateLesseeServiceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else if (isOwnerEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -211,7 +227,7 @@ export function generateLesseeServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateOwnerSpaceString(contractstage, startDate) {
+export function generateOwnerSpaceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -237,8 +253,16 @@ export function generateOwnerSpaceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else if (isOwnerEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -255,7 +279,7 @@ export function generateOwnerSpaceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeSpaceString(contractstage, startDate) {
+export function generateLesseeSpaceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -281,8 +305,16 @@ export function generateLesseeSpaceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else if (isOwnerEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -390,4 +422,49 @@ export function generateLesseeUsedItemString(contractstage, isReceived, isScored
   }
 
   return ({ title, text });
+}
+
+export function generate711String(action) {
+  switch (action) {
+    case 'ARRIVE_B_STORE':
+      return '物品已配送至取件門市';
+    case 'INSPECT_SHIPMENT_FROM_A_TO_B':
+      return '出貨驗貨';
+    case 'INSPECT_SHIPMENT_FROM_B_TO_C':
+      return '退貨驗貨';
+    case 'CANCEL':
+      return '取消寄貨訂單';
+    case 'COMPENSATE':
+      return '已獲得賠償';
+    case 'CREATE':
+      return '建立寄貨單';
+    case 'LEAVE_A_STORE':
+      return '7-11交貨便運送物品中';
+    case 'READY_RETURN_FROM_B_STORE':
+      return '準備從收貨店退貨';
+    case 'READY_RETURN_FROM_C_STORE':
+      return '未領退貨準備退至物流中心';
+    case 'RECEIVER_PICKUP':
+      return '收件者已取貨';
+    case 'RECEIVER_PAY':
+      return '收件者已付費';
+    case 'RETURN_FROM_B_STORE':
+      return '已從收貨店退貨';
+    case 'RETURN_SENDER_PAY':
+      return '退貨已付款';
+    case 'RETURN_SENDER_PICKUP':
+      return '已領取退貨';
+    case 'RETURN_FROM_C_STORE':
+      return '已離開退貨店';
+    case 'SENDER_SEND':
+      return '寄件者已寄出';
+    case 'SENDER_PAY':
+      return '寄件者已到店寄件';
+    case 'WAITING_FOR_UPDATE_B_STORE':
+      return '等待修改收貨店';
+    case 'WAITING_FOR_UPDATE_C_STORE':
+      return '等待修改退貨店';
+    default:
+      return '';
+  }
 }

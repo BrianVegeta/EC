@@ -2,13 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { my } from 'lib/paths';
-
-// import classnames from 'classnames/bind';
-// import CSS from 'react-css-modules';
-
 import ListContainer from 'components/ListContainer';
 import OrderItemBoard from 'components/OrderItemBoard';
-
+import AcccountNav from 'constants/myAccountNavs';
 import OrderNav, { ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
@@ -17,6 +13,7 @@ import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING,
    TAB_SHIPPING_CONFIRM, TAB_COMPLETE, TAB_CANCEL,
     TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
 
+const titleName = AcccountNav.ownerOrder.text;
 class OrderList extends React.Component {
 
   static propTypes = {
@@ -24,6 +21,9 @@ class OrderList extends React.Component {
     dispatchReset: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    myOrder: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -51,7 +51,7 @@ class OrderList extends React.Component {
   }
 
   render() {
-    const { myOrder, dispatch } = this.props;
+    const { myOrder } = this.props;
     // console.log(this.props);
     if (myOrder == null) {
       return null;
@@ -84,7 +84,7 @@ class OrderList extends React.Component {
         tabName: TAB_SUE_COMPLETE },
     ];
     return (
-      <Container titleText={'廠商訂單'}>
+      <Container titleText={titleName}>
         <OrderNav
           activeType={ITEM}
           isOwner
@@ -131,4 +131,4 @@ class OrderList extends React.Component {
   }
 }
 
-export default OrderList
+export default OrderList;

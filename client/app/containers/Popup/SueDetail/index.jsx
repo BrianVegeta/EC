@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,24 +15,27 @@ class SueDetail extends React.Component {
     type: '與訂單內容不符',
   }
   static propTypes = {
-    cid: PropTypes.number.isRequired,
-    u_no: PropTypes.string,
-    type: PropTypes.string,
-    suer_name: PropTypes.string,
-    defender_name: PropTypes.string,
-    img1: PropTypes.string,
-    img2: PropTypes.string,
-    img3: PropTypes.string,
-    sue_reason: PropTypes.string,
-    case_end: PropTypes.number,
-    create_time: PropTypes.number,
+    options: PropTypes.shape({
+      cid: PropTypes.number,
+      u_no: PropTypes.string,
+      type: PropTypes.string,
+      suer_name: PropTypes.string,
+      defender_name: PropTypes.string,
+      img1: PropTypes.string,
+      img2: PropTypes.string,
+      img3: PropTypes.string,
+      sue_reason: PropTypes.string,
+      case_end: PropTypes.number,
+      create_time: PropTypes.number,
+    }).isRequired,
     dispatchClose: PropTypes.func.isRequired,
   }
 
   render() {
+    const { options } = this.props;
     const { type, sue_reason, defender_name,
       u_no, create_time, case_end, img1,
-      img2, img3 } = this.props;
+      img2, img3 } = options;
     const images = without([img1, img2, img3], null);
     return (
       <div styleName="content-border">

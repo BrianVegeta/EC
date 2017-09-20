@@ -3,6 +3,8 @@ class ServiceStage < StageBase
   #CONSTANT VALUE
   KEY_OWNER_END = 'can_owner_end'
   KEY_LESSEE_END = 'can_lessee_end'
+  IS_OWNER_END = 'is_owner_end'
+  IS_LESSEE_END = 'is_lessee_end'
 
   def initialize(contract, uid)
     super(contract, uid)
@@ -41,14 +43,15 @@ class ServiceStage < StageBase
   ####################### BASE STAGE FUNCTION #####################################
 
   def check_contract_end
-
     stage_cond = (self.screen_type >= STAGE_CONTRACT_START && self.screen_type <= STAGE_RETURN_CONFIRM)
-    owner_cond = (self.contract['owner_send_time'].nil?) && self.is_owner
-    lessee_cond = (self.contract['lessee_send_time'].nil?) && !self.is_owner
-
+    owner_not_end = (self.contract['owner_send_time'].nil?)
+    lessee_not_end = (self.contract['lessee_send_time'].nil?)
+    owner_cond = owner_not_end && self.is_owner
+    lessee_cond = lessee_not_end && !self.is_owner
+    modify_display_param(IS_OWNER_END, !owner_not_end)
+    modify_display_param(IS_LESSEE_END, !lessee_not_end)
     modify_display_param(KEY_OWNER_END, stage_cond && owner_cond)
     modify_display_param(KEY_LESSEE_END, stage_cond && lessee_cond)
-
   end
 
 

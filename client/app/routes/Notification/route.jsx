@@ -1,6 +1,3 @@
-// import { fetchCollections } from 'connector/myCollections/actions';
-// import { fetchCoupons } from 'connector/myCoupon/actions';
-// import { fetchComments, TYPE_OWNER } from 'connector/comment/actions';
 import { omit } from 'lodash';
 import routeActivity from './routes/NotifyActivity/route';
 import routeContract from './routes/NotifyContract/route';

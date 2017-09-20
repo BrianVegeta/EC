@@ -31,9 +31,9 @@ class ItemList extends React.Component {
     ).isRequired,
     eachMargin: PropTypes.number,
     type: PropTypes.oneOf([
+      CONTROL_TYPE_PRIVATE_COLLECTION,
       CONTROL_TYPE_PUBLIC,
-      CONTROL_TYPE_PRIVATE,
-      CONTROL_TYPE_PRIVATE_COLLECTION]),
+      CONTROL_TYPE_PRIVATE]),
     onDelete: PropTypes.func,
   };
 

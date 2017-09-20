@@ -106,7 +106,6 @@ class Dates extends React.Component {
 
   render() {
     moment.locale('zh-tw');
-    console.log('bbb');
     const { startDate, endDate, onDatesChange, isOutsideRange } = this.props;
     return (
       <DateRangePicker

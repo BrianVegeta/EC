@@ -11,6 +11,7 @@ const cx = classnames.bind(styles);
 class Navigation extends React.Component {
 
   static propTypes = {
+
     navs: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       href: PropTypes.string.isRequired,

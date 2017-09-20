@@ -4,12 +4,14 @@ import { PropTypes } from 'prop-types';
 import { forEach } from 'lodash';
 import moment from 'moment';
 import 'moment/locale/zh-tw';
+import AcccountNav from 'constants/myAccountNavs';
 import OrderNote from 'components/OrderNote';
 import SimpleCalendar from 'components/SimpleCalendar';
 import 'styles/react-dates-override.scss';
 
 import Container from '../Container';
 
+const titleName = AcccountNav.calendar.text;
 class Calendar extends React.Component {
 
   static defaultProps = {
@@ -28,18 +30,9 @@ class Calendar extends React.Component {
   static propTypes = {
     dispatchCalendar: PropTypes.func,
     dispatchReset: PropTypes.func,
-    bCode: PropTypes.number,
-
-    navPrev: PropTypes.node,
-    navNext: PropTypes.node,
-
-    onPrevMonthClick: PropTypes.func,
-    onNextMonthClick: PropTypes.func,
-
-    // i18n
-    monthFormat: PropTypes.string,
-
-    //isRTL: PropTypes.bool,
+    myCalendar: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
   };
 
 
@@ -76,7 +69,7 @@ class Calendar extends React.Component {
         <Container titleText={'行事曆'}>
           <div style={{ height: 400 }} />
         </Container>
-      )
+      );
     }
 
     if (isFetching === false) {
@@ -97,7 +90,7 @@ class Calendar extends React.Component {
       });
     }
     return (
-      <Container titleText={'行事曆'}>
+      <Container titleText={titleName}>
         <div className="clear">
           <SimpleCalendar
             date={this.startDate}

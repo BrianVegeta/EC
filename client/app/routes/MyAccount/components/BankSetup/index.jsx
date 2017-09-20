@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { find } from 'lodash';
-
+import AcccountNav from 'constants/myAccountNavs';
 import FormBlock from 'components/Form/Block';
 import InputText from 'components/Input/Text';
 import InputSelection from 'components/Input/Selection';
@@ -14,6 +14,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Container from '../Container';
 
+const titleName = AcccountNav.bankSetUp.text;
 class BankSetupContainer extends React.Component {
 
   static propTypes = {
@@ -134,7 +135,7 @@ class BankSetupContainer extends React.Component {
     );
     const branchOptions = this.constructor.generateBranchOptions(accBankId, banks);
     return (
-      <Container titleText="收款設定" >
+      <Container titleText={titleName} >
         <div styleName="form-container">
           <p styleName="warning">您填寫的資訊必須與身分證一致，以利銀行核對，否則將會影響日後撥款權益。</p>
           <FormBlock title="基本資料" hasBottomLine={false}>

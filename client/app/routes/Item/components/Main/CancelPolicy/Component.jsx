@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-    advance_day: PropTypes.number.isRequired,
-    rate: PropTypes.number.isRequired
+  advance_day: PropTypes.number.isRequired,
+  rate: PropTypes.number.isRequired,
 };
 
 
