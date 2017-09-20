@@ -3,6 +3,8 @@
 import validate from 'validate.js';
 import { isEmpty, includes } from 'lodash';
 import constraints from 'constraints/reservation';
+import publishConstraints from 'constraints/publish';
+import { CHARGE_TYPE_FIX, CHARGE_TYPE_COUNT } from 'constants/publishTypes';
 import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
   PAYMENT_TYPE_ATM,
@@ -10,10 +12,9 @@ import {
 } from './reservation';
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
-  CHARGE_TYPE_FIX,
-  CHARGE_TYPE_COUNT,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
+
 
 const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
 const ERROR_BANK_INFO_READY = '請設定銀行帳戶。';
@@ -43,14 +44,16 @@ export const validateFormBy = ({
   const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_COUNT);
   const unitValidation = isCountChargeType ? constraints.unit(itemUnit) : null;
   const errors = validate({
-    dates: leasestart && leaseend && 'date',
+    leasestart,
+    leaseend,
     serviceLocationType,
     serviceCityArea: `${serviceCity}${serviceArea}`,
     serviceAddress,
     note,
     unit,
   }, {
-    dates: isFixChargeType ? constraints.dates : null,
+    leasestart: isFixChargeType ? {} : publishConstraints.startDate,
+    leaseend: isFixChargeType ? {} : publishConstraints.endDate,
     serviceLocationType: serviceLocationTypeValidation,
     serviceCityArea: serviceCityAreaValidation,
     serviceAddress: serviceAddressValidation,
@@ -67,7 +70,6 @@ export const validateForm = () =>
     new Promise((resolve, reject) => {
       const item = getState()[RESERVATION_ITEM_REDUCER_KEY];
       const reservation = getState()[RESERVATION_REDUCER_KEY];
-
       const { isValid, errors } = validateFormBy(reservation, item);
       if (isValid) {
         resolve();
