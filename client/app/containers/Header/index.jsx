@@ -8,7 +8,6 @@ import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
 import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
 import Logo from 'components/Icons/Logo';
-import { startsWith } from 'lodash';
 import {
   my,
   notifyPath,
@@ -31,12 +30,14 @@ const cx = classnames.bind(styles);
 class Header extends React.Component {
 
   static defaultProps = {
+    hasPublishBtn: true,
     fixed: false,
     hasShortcut: false,
     searchable: false,
   };
 
   static propTypes = {
+    hasPublishBtn: PropTypes.bool,
     fixed: PropTypes.bool,
     hasShortcut: PropTypes.bool,
     searchable: PropTypes.bool,
@@ -49,6 +50,10 @@ class Header extends React.Component {
       notifyCData: PropTypes.object.isRequired,
     }).isRequired,
   };
+
+  static renderCircle() {
+    return <span styleName="notice-circle" />;
+  }
 
   componentDidMount() {
     const { auth } = this.props;
@@ -78,35 +83,24 @@ class Header extends React.Component {
     return true;
   }
 
-  renderCircle(type) {
+  checkNotify(type) {
     const { notification } = this.props;
     switch (type) {
       case NOTIFY_OWNER_CONTRACT : {
         const { notifyCData: { owner_unread_count } } = notification;
-        if (owner_unread_count && owner_unread_count > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return owner_unread_count && owner_unread_count > 0;
       }
-        break;
       case NOTIFY_LESSEE_CONTRACT: {
         const { notifyCData: lessee_unread_count } = notification;
-        if (lessee_unread_count && lessee_unread_count > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return lessee_unread_count && lessee_unread_count > 0;
       }
-        break;
       case NOTIFY_OTHER: {
         const { notifyData } = notification;
-        if (notifyData && notifyData.length > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return notifyData && notifyData.length > 0;
       }
-        break;
       default:
-        return null;
+        return false;
     }
-
-    return null;
   }
 
   render() {
@@ -117,23 +111,15 @@ class Header extends React.Component {
       auth: { isLogin, currentUser },
       fixed,
       hasShortcut,
-      pathname,
+      hasPublishBtn,
     } = this.props;
-
-    const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
-    const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
-    const myCommentsPath = my.commentOwnerPath;
-    const myItemsPath = my.myGoodsPath;
-    const myWalletPath = my.walletPath;
-    const myCollectionPath = my.collectionPath;
-    const notifyIndexPath = notifyPath.contractNotifyPath;
-    // <NavItem action={notifyIndexPath} content="通知" />
-    const isPublish = startsWith(pathname, '/p/publish');
+    const { renderCircle } = this.constructor;
     return (
       <header
-        className={
-          cn('navbar', { 'navbar-static': !fixed, 'navbar-fixed-top': fixed })
-        }
+        className={cn('navbar', {
+          'navbar-static': !fixed,
+          'navbar-fixed-top': fixed,
+        })}
       >
         <div className="navbar-container">
           <div className="container clear">
@@ -154,26 +140,29 @@ class Header extends React.Component {
                 {!isLogin && <NavItem action={loginPath} content="登入" />}
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={myLesseeOrdersPath}>
-                      消費狀態{this.renderCircle(NOTIFY_LESSEE_CONTRACT)}
+                    <Link to={my.lesseeOrderItem('TAB_REQUEST')}>
+                      消費狀態
+                      {this.checkNotify(NOTIFY_LESSEE_CONTRACT) && renderCircle()}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={myOrdersPath}>
-                      廠商訂單{this.renderCircle(NOTIFY_OWNER_CONTRACT)}
+                    <Link to={my.ownerOrderItem('TAB_REQUEST')}>
+                      廠商訂單
+                      {this.checkNotify(NOTIFY_OWNER_CONTRACT) && renderCircle()}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={notifyIndexPath}>
-                      通知{this.renderCircle(NOTIFY_OTHER)}
+                    <Link to={notifyPath.contractNotifyPath}>
+                      通知
+                      {this.checkNotify(NOTIFY_OTHER) && renderCircle()}
                     </Link>
                   </li>
                 }
-                {isLogin && !isPublish &&
+                {isLogin && hasPublishBtn &&
                   <NavItem
                     action={dispatchPublish}
                     content="發佈"
@@ -189,10 +178,10 @@ class Header extends React.Component {
                       list={[
                         { link: my.profilePath, text: '編輯個人資料' },
                         { link: my.manageVerifyPath, text: '帳戶管理' },
-                        { link: myCollectionPath, text: '收藏' },
-                        { link: myItemsPath, text: '分享/發佈' },
-                        { link: myWalletPath, text: '我的錢包' },
-                        { link: myCommentsPath, text: '評價' },
+                        { link: my.collectionPath, text: '收藏' },
+                        { link: my.myGoodsPath, text: '分享/發佈' },
+                        { link: my.walletPath, text: '我的錢包' },
+                        { link: my.commentOwnerPath, text: '評價' },
                         { action: dispatchLogout, text: '登出' },
                       ]}
                     />
