@@ -5,7 +5,7 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'MY.COUPON';
-const REDUCER_KEY = 'myCoupon';
+// const REDUCER_KEY = 'myCoupon';
 
 // =============================================
 // = action type =
@@ -65,7 +65,7 @@ export default (state = initialState, action) => {
     case FETCHED:
       return Object.assign({}, state, {
         isFetching: false,
-        records: action.records
+        records: action.records,
       });
 
     case RESET:

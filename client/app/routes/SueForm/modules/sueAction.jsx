@@ -67,14 +67,14 @@ export function sendSueReport(cid, pid, imgData, targetstage, reason, targetuid,
           reason,
           targetuid,
           type,
-          uid: currentUser.uid
+          uid: currentUser.uid,
         }, getState(), isCatch,
       )
       .then(() => {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });

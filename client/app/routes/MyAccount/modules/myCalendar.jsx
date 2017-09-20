@@ -5,7 +5,7 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'MY.CALENDAR';
-const REDUCER_KEY = 'myCalendar';
+// const REDUCER_KEY = 'myCalendar';
 
 // =============================================
 // = action type =

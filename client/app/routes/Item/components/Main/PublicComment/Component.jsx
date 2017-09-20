@@ -73,7 +73,7 @@ class PublicComment extends React.Component {
     const { rScrollBar } = this.constructor;
     return (
       <div styleName="container">
-        <h2 styleName="title">公開留言 | 86則</h2>
+        <h2 styleName="title">公開留言</h2>
         <div styleName="box-border">
           <Scrollbars
             onUpdate={this.onScrollbarUpdate}

@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
   dispatchReset: () => dispatch(reset()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comment)
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

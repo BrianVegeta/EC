@@ -60,7 +60,7 @@ export function doAccept(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });

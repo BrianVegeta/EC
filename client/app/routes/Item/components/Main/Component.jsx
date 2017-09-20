@@ -25,7 +25,7 @@ import Sharer from './Sharer';
 class Main extends React.Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    // dispatch: PropTypes.func.isRequired,
     dispatchRecords: PropTypes.func.isRequired,
     dispatchAddMessage: PropTypes.func.isRequired,
     dispatchAddToChatRoom: PropTypes.func.isRequired,

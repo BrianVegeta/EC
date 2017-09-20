@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Manage from '../components/Manage';
 
-
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/

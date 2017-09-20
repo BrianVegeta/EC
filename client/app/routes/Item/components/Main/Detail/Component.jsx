@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { calculateUnit } from 'lib/unitHelper';
-import Stuff from 'components/Icons/Stuff';
 import TransportLeft from 'components/Icons/TransportLeft';
-import TransportRight from 'components/Icons/TransportRight';
-import Time from 'components/Icons/Time';
 import { replace } from 'lodash';
 import {
   CATEGORY_GOODS_ID,
   CATEGORY_SERVICE_ID,
   CATEGORY_SPACE_ID,
-  USED_ITEM
+  USED_ITEM,
 } from 'constants/enums';
 
 class Detail extends React.Component {
@@ -31,64 +27,6 @@ class Detail extends React.Component {
     type: PropTypes.string.isRequired,
   };
 
-  // renderIcon() {
-  //   return (
-  //     <div styleName="icon">
-  //       <div styleName="icon-inner" />
-  //     </div>
-  //   );
-  // }
-
-  // renderDeliverMethod() {
-  //   return (
-  //     <div styleName="item">
-  //       <Time size={28} />
-  //       <div styleName="content">
-  //         <div styleName="header">物流時間</div>
-  //         <div styleName="describe">7-11交貨便</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  //
-  // renderUnit(unit, calculate_charge_type) {
-  //   return (
-  //     <div styleName="item">
-  //       <Stuff size={28} />
-  //       <div styleName="content">
-  //         <div styleName="header">件數</div>
-  //         <div styleName="describe">{`${unit}${calculateUnit(calculate_charge_type)}`}</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  //
-  // renderLocation(city, area) {
-  //   return (
-  //     <div styleName="item">
-  //       <TransportRight size={28} />
-  //       <div styleName="content">
-  //         <div styleName="header">到貨方式</div>
-  //         <div styleName="describe">
-  //             {`${city}${area}`}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // renderDeliverTime() {
-  //   return (
-  //     <div styleName="item">
-  //       <TransportLeft size={28} />
-  //       <div styleName="content">
-  //         <div styleName="header">寄還方式</div>
-  //         <div styleName="describe">合約開始的三天前</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   renderItem(title, description) {
     return (
       <div styleName="item">
@@ -103,7 +41,7 @@ class Detail extends React.Component {
   renderShipmentStr(option) {
     let str = replace(option, '0', '/面交');
     str = replace(str, '1', '/宅配、郵寄');
-    str = replace(str, '2', '/7-11')
+    str = replace(str, '2', '/7-11');
     return (str);
   }
 

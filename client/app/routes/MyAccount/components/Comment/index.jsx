@@ -25,6 +25,13 @@ class Navigation extends React.Component {
     myComment: PropTypes.shape({
       isFetching: PropTypes.bool,
     }).isRequired,
+    isOwner: PropTypes.bool.isRequired,
+    auth: PropTypes.shape({
+      currentUser: PropTypes.shape({
+        owner_credit: PropTypes.number,
+        lessee_credit: PropTypes.number,
+      }),
+    }).isRequired,
   };
 
   componentDidMount() {

@@ -742,21 +742,15 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderBanner(isOwner) {
+  renderBanner() {
     const { orderdetail, dispatch } = this.props;
     const { sueDetail, order } = orderdetail;
-    const { contractstage, cid, type } = order;
+    const { contractstage, cid } = order;
     // const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
         <Banner
           order={order}
-          cid={cid}
-          type={type}
-          contractstage={contractstage}
-          isOwner={isOwner}
-          startDate={time}
-          dispatch={dispatch}
         />
       );
     } else if (contractstage > 1000 && contractstage < 3000) {

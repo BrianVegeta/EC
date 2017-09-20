@@ -1,8 +1,5 @@
 import { connect } from 'react-redux';
-// import { popupTwoButtons } from 'modules/popup';
 import swal, { dropConfig } from 'lib/swal';
-// TODO: move to layout
-// import { reset as resetMine } from 'actions/mineActions';
 import Container from '../components/Item/Goods';
 import { fetchItems, deleteItem, reset } from '../modules/myItem';
 

@@ -35,7 +35,6 @@ class ShowWish extends React.Component {
 
   onEdit() {
     const { card } = this.props;
-    const { id } = card;
     browserHistory.push(publishWishRouter.indexPath(card.id));
     this.props.dispatchClose();
   }

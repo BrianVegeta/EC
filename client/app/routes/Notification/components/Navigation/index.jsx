@@ -16,14 +16,14 @@ class Navigation extends React.Component {
         name: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
         tabName: PropTypes.string.isRequired,
-      }
+      },
     ).isRequired).isRequired,
     unreads: PropTypes.shape(
       {
         CONTRACT: PropTypes.number.isRequired,
         ACTIVITY: PropTypes.number.isRequired,
         SYSTEM: PropTypes.number.isRequired,
-      }
+      },
     ).isRequired,
   };
 

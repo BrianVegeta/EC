@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import OoSe from '../components/OwnerOrder/OoSe';
 import { ROLE_OWNER, TYPE_SERVICE, fetchRecords, reset } from '../modules/myOrder';
 
-
 const mapStateToProps = ({ environment, myOrder, auth }, { params }) => ({
   environment, myOrder, currentUser: auth.currentUser, tabName: params.tabName,
 });
