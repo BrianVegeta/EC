@@ -8,17 +8,8 @@ import {
   PAYMENT_TYPE_ATM,
   PAYMENT_TYPE_CREDIT_CARD,
 } from './reservation';
-// import {
-//   CHARGE_TYPE_FIX,
-//   CHARGE_TYPE_DAY,
-//   CHARGE_TYPE_COUNT,
-//   CHARGE_TYPE_MONTH,
-// } from 'constants/publishTypes';
+import { REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY } from './reservationItem';
 
-import {
-  REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
-  // ASSIGN_ADDRESS_BY_CUSTOMER,
-} from './reservationItem';
 
 const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
 const ERROR_BANK_INFO_READY = '請設定銀行帳戶。';
@@ -32,9 +23,6 @@ export const validateFormBy = ({
   leasestart, leaseend,
   sendType,
   storeid,
-  // serviceLocationType,
-  // serviceCity, serviceArea, serviceAddress,
-  // note, unit,
 }) => {
   let errors = validate({
     dates: leasestart && leaseend && 'date',
