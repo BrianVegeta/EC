@@ -88,15 +88,15 @@ class Header extends React.Component {
     switch (type) {
       case NOTIFY_OWNER_CONTRACT : {
         const { notifyCData: { owner_unread_count } } = notification;
-        return owner_unread_count && owner_unread_count > 0;
+        return Boolean(owner_unread_count && owner_unread_count > 0);
       }
       case NOTIFY_LESSEE_CONTRACT: {
         const { notifyCData: lessee_unread_count } = notification;
-        return lessee_unread_count && lessee_unread_count > 0;
+        return Boolean(lessee_unread_count && lessee_unread_count > 0);
       }
       case NOTIFY_OTHER: {
         const { notifyData } = notification;
-        return notifyData && notifyData.length > 0;
+        return Boolean(notifyData && notifyData.length > 0);
       }
       default:
         return false;
@@ -114,6 +114,10 @@ class Header extends React.Component {
       hasPublishBtn,
     } = this.props;
     const { renderCircle } = this.constructor;
+    const hasLesseeNotify = this.checkNotify(NOTIFY_LESSEE_CONTRACT);
+    const hasOwnerNotify = this.checkNotify(NOTIFY_OWNER_CONTRACT);
+    const hasOtherNotify = this.checkNotify(NOTIFY_OTHER);
+
     return (
       <header
         className={cn('navbar', {
@@ -141,24 +145,21 @@ class Header extends React.Component {
                 {isLogin &&
                   <li className="nav" >
                     <Link to={my.lesseeOrderItem('TAB_REQUEST')}>
-                      消費狀態
-                      {this.checkNotify(NOTIFY_LESSEE_CONTRACT) && renderCircle()}
+                      消費狀態{hasLesseeNotify && renderCircle()}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
                     <Link to={my.ownerOrderItem('TAB_REQUEST')}>
-                      廠商訂單
-                      {this.checkNotify(NOTIFY_OWNER_CONTRACT) && renderCircle()}
+                      廠商訂單{hasOwnerNotify && renderCircle()}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
                     <Link to={notifyPath.contractNotifyPath}>
-                      通知
-                      {this.checkNotify(NOTIFY_OTHER) && renderCircle()}
+                      通知{hasOtherNotify && renderCircle()}
                     </Link>
                   </li>
                 }

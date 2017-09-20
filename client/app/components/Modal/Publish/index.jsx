@@ -4,19 +4,28 @@ import { Link } from 'react-router';
 import ReactModal from 'react-modal';
 import ReactHoverObserver from 'react-hover-observer';
 import CloseIcon from 'react-icons/lib/md/close';
-
 import GoodsIcon from 'components/Icons/Publish/Goods';
 import ServiceIcon from 'components/Icons/Publish/Service';
 import SpaceIcon from 'components/Icons/Publish/Space';
 import UsedGoodsIcon from 'components/Icons/Publish/UsedGoods';
-import { publishGoodsRouter, publishServiceRouter, publishSpaceRouter, publishUsedGoodsRouter,
- } from 'lib/paths';
-
+import {
+  publishGoodsRouter,
+  publishServiceRouter,
+  publishSpaceRouter,
+  publishUsedGoodsRouter,
+} from 'lib/paths';
+import { generateRandomKey } from 'lib/utils';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
 
+const shortcuts = [
+  [generateRandomKey(), '服務', publishServiceRouter.indexPath(), ServiceIcon],
+  [generateRandomKey(), '空間', publishSpaceRouter.indexPath(), SpaceIcon],
+  [generateRandomKey(), '物品', publishGoodsRouter.indexPath(), GoodsIcon],
+  [generateRandomKey(), '二手', publishUsedGoodsRouter.indexPath(), UsedGoodsIcon],
+];
 const ICON_SIZE = 50;
 const cx = classnames.bind(styles);
 class ModalPublish extends React.Component {
@@ -27,26 +36,35 @@ class ModalPublish extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onHoverChange = this.onHoverChange.bind(this);
     this.state = {
-      isHovering: false,
+      hoveringTarget: null,
     };
+    this.onOutsideClick = this.onOutsideClick.bind(this);
   }
 
-  onHoverChange({ isHovering }) {
-    this.setState({ isHovering });
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick, false);
+  }
+
+  onOutsideClick(e) {
+    if (!this.shortcutsContainer) return;
+    if (this.shortcutsContainer.contains(e.target)) return;
+    this.props.onClose();
+  }
+
+  onIconHover(isHovering, key) {
+    this.setState({ hoveringTarget: isHovering ? key : null });
   }
 
   render() {
-    const shortcuts = [
-      { text: '服務', path: publishServiceRouter.indexPath(), Icon: ServiceIcon },
-      { text: '空間', path: publishSpaceRouter.indexPath(), Icon: SpaceIcon },
-      { text: '物品', path: publishGoodsRouter.indexPath(), Icon: GoodsIcon },
-      { text: '二手', path: publishUsedGoodsRouter.indexPath(), Icon: UsedGoodsIcon },
-    ];
-
-    const { isHovering } = this.state;
+    const { hoveringTarget } = this.state;
     const { onClose } = this.props;
+    const refShortcuts = shortcutsContainer =>
+      (this.shortcutsContainer = shortcutsContainer);
     return (
       <ReactModal
         isOpen
@@ -61,21 +79,32 @@ class ModalPublish extends React.Component {
               <CloseIcon size={30} />
             </button>
           </div>
-          {shortcuts.map((shortcut, i) => (
-            <div key={`${i + 1}`} styleName="entry-container">
-              <div className={cx('text', { hovering: isHovering })}>
-                {shortcut.text}
-              </div>
-              <Link to={shortcut.path} onClick={onClose}>
-                <ReactHoverObserver
-                  className={cx('icon-container')}
-                  onHoverChang={this.onHoverChange}
+          <div styleName="shortcuts" ref={refShortcuts} >
+            {shortcuts.map(([key, text, path, Icon]) => (
+              <div
+                key={key}
+                styleName="entry-container"
+              >
+                <div
+                  className={cx('text', {
+                    isHovering: hoveringTarget === key })
+                  }
                 >
-                  <shortcut.Icon size={ICON_SIZE} />
-                </ReactHoverObserver>
-              </Link>
-            </div>
-          ))}
+                  {text}
+                </div>
+                <Link to={path} onClick={onClose}>
+                  <ReactHoverObserver
+                    className={cx('icon-container')}
+                    onHoverChanged={
+                      ({ isHovering }) => this.onIconHover(isHovering, key)
+                    }
+                  >
+                    <Icon size={ICON_SIZE} />
+                  </ReactHoverObserver>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </ReactModal>
     );
