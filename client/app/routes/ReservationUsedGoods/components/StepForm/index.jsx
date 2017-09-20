@@ -6,7 +6,6 @@ import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
-import InputDatesPicker from 'components/Input/DatesPicker';
 import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
@@ -24,7 +23,6 @@ import {
   CHARGE_TYPE_COUNT,
 } from 'constants/publishTypes';
 import styles from './styles.sass';
-import { DangerText } from './styles';
 import {
   SEND_BY_OTHER_SHIPPMENT,
   SEND_BY_711,
@@ -93,7 +91,6 @@ class StepForm extends React.Component {
     this.unitInput = null;
     this.serviceCityAreaInput = null;
     this.serviceAddressInput = null;
-    this.serviceLocationTypeInput = null;
     this.noteInput = null;
     this.windowRef = null;
     this.handleFocus = this.handleFocus.bind(this);
@@ -135,7 +132,6 @@ class StepForm extends React.Component {
       if (this.sendTypeInput) this.sendTypeInput.valid();
       if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();
       if (this.serviceAddressInput) this.serviceAddressInput.valid();
-      if (this.serviceLocationTypeInput) this.serviceLocationTypeInput.valid();
       if (this.noteInput) this.noteInput.valid();
     });
   }
@@ -211,42 +207,6 @@ class StepForm extends React.Component {
       form.submit();
     }
   };
-  /**
-   *
-   * 選擇日期
-   *
-   */
-  renderDatesPicker(
-    { leasestart, leaseend },
-    { advance_reservation_days },
-  ) {
-    const { dispatchChangeData } = this.props;
-    const advanceDays = <DangerText>提前{advance_reservation_days}天</DangerText>;
-    const helperBottom = advance_reservation_days ?
-        (<span>請{advanceDays}預約</span>) : null;
-
-    const ref = datesInput => (this.datesInput = datesInput);
-    const onDatesChange = ({ startDate, endDate }) =>
-      dispatchChangeData({ leasestart: startDate, leaseend: endDate });
-
-    return (
-      <FormGroup
-        headerText={'租借時間'}
-        helperBottom={helperBottom}
-      >
-        <InputDatesPicker
-          ref={ref}
-          startDate={leasestart}
-          endDate={leaseend}
-          onDatesChange={onDatesChange}
-          preparation={advance_reservation_days}
-          value={leasestart && leaseend && 'date'}
-          constraints={constraints.dates}
-          validateOnBlur
-        />
-      </FormGroup>
-    );
-  }
 
   /**
    *
@@ -372,68 +332,6 @@ class StepForm extends React.Component {
           className="button"
           onClick={() => { this.createSevenFormPost(); }}
         >選擇門市</button>
-      </div>
-    );
-  }
-  /**
-   *
-   * 指定方式服務
-   *
-   */
-  renderAssign(
-    { assign_address_type, assign_city, assign_area },
-    { serviceLocationType, serviceCity, serviceArea, serviceAddress },
-  ) {
-    const { dispatchChangeData } = this.props;
-
-    const ownerContain = assign_address_type.includes(ASSIGN_ADDRESS_BY_OWNER);
-    const customerContain = assign_address_type.includes(ASSIGN_ADDRESS_BY_CUSTOMER);
-    const storeServiceParams = { assign_city, assign_area };
-    const homeServoceParams = { serviceCity, serviceArea, serviceAddress };
-
-    const byOwner = ownerContain && !customerContain;
-    const byCustomer = !ownerContain && customerContain;
-    const selectable = ownerContain && customerContain;
-
-    const options = [
-      { value: ASSIGN_ADDRESS_BY_OWNER, text: '親自前往' },
-      { value: ASSIGN_ADDRESS_BY_CUSTOMER, text: '到府服務' },
-    ];
-    const onServiceLocatonSelect = ({ value }) =>
-      dispatchChangeData({ serviceLocationType: value });
-    const renderSelectedDetail = () => {
-      switch (serviceLocationType) {
-        case ASSIGN_ADDRESS_BY_OWNER:
-          return this.constructor.renderAssignByOwner(storeServiceParams, false);
-
-        case ASSIGN_ADDRESS_BY_CUSTOMER:
-          return this.renderAssignAddress(homeServoceParams, false);
-
-        default:
-          return null;
-      }
-    };
-    const refServiceLocationType = input => (this.serviceLocationTypeInput = input);
-
-    return (
-      <div styleName="assign-container">
-        {byOwner && this.constructor.renderAssignByOwner(storeServiceParams, true)}
-        {byCustomer && this.renderAssignAddress(homeServoceParams, true)}
-        {selectable &&
-          <div>
-            <div styleName="service-location-container">
-              <InputSelection
-                ref={refServiceLocationType}
-                options={options}
-                value={serviceLocationType}
-                onSelect={onServiceLocatonSelect}
-                constraints={constraints.serviceLocationType}
-                validateOnBlur
-              />
-            </div>
-            {renderSelectedDetail()}
-          </div>
-        }
       </div>
     );
   }

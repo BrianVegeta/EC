@@ -50,7 +50,6 @@ export const validateFormBy = ({
     note: constraints.note,
   };
   const errors = validate(values, validation);
-  console.log(errors);
   return {
     isValid: isEmpty(errors),
     errors,
