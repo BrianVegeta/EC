@@ -1,11 +1,20 @@
+/* eslint-disable camelcase */
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { asyncCheckReady } from 'modules/personalBankInfo';
+import { setupCoversForEdit } from './ordergallery';
+import {
+  OWNER_SEND,
+  LESSEE_RECEIVE,
+  LESSEE_SEND,
+  OWNER_RECEIVE,
+} from './orderaction';
+
 /* =============================================>>>>>
 = orderDetail =
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'ORDER.DETAIL';
-const REDUCER_KEY = 'orderdetail';
+// const REDUCER_KEY = 'orderdetail';
 
 // =============================================
 // = action type =
@@ -14,12 +23,14 @@ const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const FETCHING = prefix('FETCHING');
 const FETCHING_IMAGE = prefix('FETCHING_IMAGES');
+const UPDATING_IMAGE = prefix('UPDATING_IMAGE');
 const FETCHED_ORDER = prefix('FETCHED_ORDER');
 const FETCHED_OWNER = prefix('FETCHED_OWNER');
 const FETCHED_LESSEE = prefix('FETCHED_LESSEE');
 const FETCHED_SEND_SEVEN = prefix('FETCHED_SEND_SEVEN');
 const FETCHED_RETURN_SEVEN = prefix('FETCHED_RETURN_SEVEN');
 const FETCHED_IMAGES = prefix('FETCHED_IMAGES');
+const UPDATE_IMAGES = prefix('UPDATE_IMAGES');
 const FETCHED_LOGS = prefix('FETCHED_LOGS');
 const FETCHED_SUE_DETAIL = prefix('FETCHED_SUE_DETAIL');
 const RESET = prefix('RESET');
@@ -50,9 +61,10 @@ const fetchedLessee = userprofile => ({
   userprofile,
 });
 
-const fetchedImages = images => ({
+const fetchedImages = (images, uploadImgType) => ({
   type: FETCHED_IMAGES,
   images,
+  uploadImgType,
 });
 
 const fetchedLogs = logs => ({
@@ -63,6 +75,16 @@ const fetchedLogs = logs => ({
 const fetchedSueDetail = sueDetail => ({
   type: FETCHED_SUE_DETAIL,
   sueDetail,
+});
+
+export const updatingImage = () => ({
+  type: UPDATING_IMAGE,
+});
+
+export const updateImages = (imgType, images) => ({
+  type: UPDATE_IMAGES,
+  imgType,
+  images,
 });
 
 export const fetchedSendSeven = ShipOrder => ({
@@ -121,8 +143,7 @@ export function fetchOrder(cid) {
       if (screenStage < 4) {
         dispatch(asyncCheckReady());
       } else {
-        // 只有物品及二手有圖片
-        if (type === 'ITEM' || type === 'USED_ITEM') {
+        if (type === 'ITEM') {
           dispatch(fetchingImage());
           asyncXhrAuthedPost(
             '/ajax/get_order_images.json',
@@ -130,36 +151,61 @@ export function fetchOrder(cid) {
             getState(),
           )
           .then((responseImageData) => {
-            dispatch(fetchedImages(responseImageData));
+            const { display } = responseData;
+            const { can_camera, can_ship, can_711, can_ship_confirm,
+              can_return, can_711_return, can_return_confirm } = display;
+            let uploadImgType = null;
+            if (can_camera) {
+              let images = [];
+              if (can_ship_confirm) {
+                uploadImgType = LESSEE_RECEIVE;
+                images = responseImageData.LESSEE_RECEIVE;
+              } else if (can_711 || can_ship) {
+                uploadImgType = OWNER_SEND;
+                images = responseImageData.OWNER_SEND;
+              } else if (can_return_confirm) {
+                uploadImgType = OWNER_RECEIVE;
+                images = responseImageData.OWNER_RECEIVE;
+              } else if (can_711_return || can_return) {
+                uploadImgType = LESSEE_SEND;
+                images = responseImageData.LESSEE_SEND;
+              }
+              if (uploadImgType && images) {
+                const img1 = images.length > 0 ? images[0] : null;
+                const img2 = images.length > 1 ? images[1] : null;
+                dispatch(setupCoversForEdit({ img1, img2 }));
+              }
+            }
+            dispatch(fetchedImages(responseImageData, uploadImgType));
           });
+        }
 
-          if (responseData.send_type === '2') {
-            asyncXhrAuthedPost(
-              '/ajax/get_ship_order.json',
-              {
-                cid,
-                send_type: 'OWNER_SEND',
-              },
-              getState(),
-            )
-            .then((sendSeven) => {
-              dispatch(fetchedSendSeven(sendSeven));
-            });
-          }
+        if (responseData.send_type === '2') {
+          asyncXhrAuthedPost(
+            '/ajax/get_ship_order.json',
+            {
+              cid,
+              send_type: 'OWNER_SEND',
+            },
+            getState(),
+          )
+          .then((sendSeven) => {
+            dispatch(fetchedSendSeven(sendSeven));
+          });
+        }
 
-          if (screenStage > 8 && responseData.return_type === '2') {
-            asyncXhrAuthedPost(
-              '/ajax/get_ship_order.json',
-              {
-                cid,
-                send_type: 'LESSEE_SEND',
-              },
-              getState(),
-            )
-            .then((returnSeven) => {
-              dispatch(fetchedReturnSeven(returnSeven));
-            });
-          }
+        if (screenStage > 8 && responseData.return_type === '2') {
+          asyncXhrAuthedPost(
+            '/ajax/get_ship_order.json',
+            {
+              cid,
+              send_type: 'LESSEE_SEND',
+            },
+            getState(),
+          )
+          .then((returnSeven) => {
+            dispatch(fetchedReturnSeven(returnSeven));
+          });
         }
 
         asyncXhrAuthedPost(
@@ -193,6 +239,7 @@ const initialState = {
   isFetchingLessee: false,
   isFetchingOrder: false,
   isFetchingImages: false,
+  isUpdatingImages: false,
   isFetchingLog: false,
   isFetchingSue: false,
   ownerProfile: null,
@@ -203,6 +250,7 @@ const initialState = {
   order: null,
   logs: [],
   images: null,
+  uploadImgType: null,
 };
 
 export default (state = initialState, action) => {
@@ -241,6 +289,7 @@ export default (state = initialState, action) => {
 
     case FETCHED_IMAGES:
       return Object.assign({}, state, {
+        uploadImgType: action.uploadImgType,
         isFetchingImages: false,
         images: {
           beforeShip: action.images.OWNER_SEND,
@@ -249,6 +298,62 @@ export default (state = initialState, action) => {
           afterReturn: action.images.OWNER_RECEIVE,
         },
       });
+    case UPDATING_IMAGE:
+      return Object.assign({}, state, {
+        isUpdatingImages: true,
+      });
+    case UPDATE_IMAGES:
+      if (!state.images) {
+        return Object.assign({}, state, {
+          isUpdatingImages: false,
+        });
+      }
+      switch (action.imgType) {
+        case OWNER_SEND:
+          return Object.assign({}, state, {
+            isUpdatingImages: false,
+            images: {
+              beforeShip: action.images,
+              afterShip: state.images.LESSEE_RECEIVE,
+              beforeReturn: state.images.LESSEE_SEND,
+              afterReturn: state.images.OWNER_RECEIVE,
+            },
+          });
+        case LESSEE_RECEIVE:
+          return Object.assign({}, state, {
+            isUpdatingImages: false,
+            images: {
+              beforeShip: state.images.OWNER_SEND,
+              afterShip: action.images,
+              beforeReturn: state.images.LESSEE_SEND,
+              afterReturn: state.images.OWNER_RECEIVE,
+            },
+          });
+        case LESSEE_SEND:
+          return Object.assign({}, state, {
+            isUpdatingImages: false,
+            images: {
+              beforeShip: state.images.OWNER_SEND,
+              afterShip: state.images.LESSEE_RECEIVE,
+              beforeReturn: action.images,
+              afterReturn: state.images.OWNER_RECEIVE,
+            },
+          });
+        case OWNER_RECEIVE:
+          return Object.assign({}, state, {
+            isUpdatingImages: false,
+            images: {
+              beforeShip: state.images.OWNER_SEND,
+              afterShip: state.images.LESSEE_RECEIVE,
+              beforeReturn: state.images.LESSEE_SEND,
+              afterReturn: action.images,
+            },
+          });
+        default:
+          return Object.assign({}, state, {
+            isUpdatingImages: false,
+          });
+      }
 
     case FETCHED_LOGS:
       return Object.assign({}, state, {

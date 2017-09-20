@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, browserHistory } from 'react-router';
-import { userprofilePaths, orderDetail } from 'lib/paths';
+import { userprofilePaths, orderDetail, reservationSpace } from 'lib/paths';
 
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
@@ -13,8 +13,8 @@ import { generateOwnerSpaceString, generateLesseeSpaceString }
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
-import { popupScoreRating } from 'modules/popup';
-import { doScore, resetAction } from 'modules/orderAction';
+import { popupScoreRating, popupATMBank } from 'modules/popup';
+import { doScore, resetAction, doCreditCardPayment, doATMPayment } from 'modules/orderAction';
 import { addToChatRoom } from 'modules/chatRooms';
 import styles from './styles.sass';
 
@@ -33,6 +33,7 @@ class OrderSpaceBoard extends React.Component {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
     photoUid: PropTypes.string.isRequired,
+    paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
     cidNo: PropTypes.string.isRequired,
@@ -48,13 +49,16 @@ class OrderSpaceBoard extends React.Component {
     unit: PropTypes.number.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isRead: PropTypes.bool.isRequired,
-    lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
         show_detail: PropTypes.bool.isRequired,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
         can_score: PropTypes.bool,
+        can_lessee_end: PropTypes.bool,
+        can_owner_end: PropTypes.bool,
+        is_owner_end: PropTypes.bool,
+        is_lessee_end: PropTypes.bool,
         view_score: PropTypes.bool,
       },
     ).isRequired,
@@ -80,17 +84,38 @@ class OrderSpaceBoard extends React.Component {
           alert(error);
         });
       },
-    }))
+    }));
+  }
+  generatePayment() {
+    const { paymenttype, cid, dispatch } = this.props;
+
+    switch (paymenttype) {
+      case 4:
+        return () => {
+          dispatch(doCreditCardPayment(cid))
+          .catch((error) => {
+            alert(error);
+          });
+        };
+      case 1:
+        return () => {
+          const options = {};
+          dispatch(popupATMBank(options));
+          dispatch(doATMPayment(cid));
+        };
+      default:
+        return () => {};
+    }
   }
   generateString() {
-    const { isOwner, stage, startDate } = this.props;
+    const { isOwner, stage, startDate,
+      display: { is_owner_end, is_lessee_end } } = this.props;
     const objString = { title: '', text: '' };
     if (stage < 1000) {
       if (isOwner) {
-        return generateOwnerSpaceString(stage, startDate);
-      } else {
-        return generateLesseeSpaceString(stage, startDate);
+        return generateOwnerSpaceString(stage, startDate, is_owner_end, is_lessee_end);
       }
+      return generateLesseeSpaceString(stage, startDate, is_owner_end, is_lessee_end);
     } else if (stage > 1000 && stage < 3000) {
       const screenStage = stage % 100;
       if (screenStage < 11) {
@@ -125,7 +150,7 @@ class OrderSpaceBoard extends React.Component {
       <div styleName="action-section">
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonConfig}
             content={'評分'}
             onClick={() => this.callScorePanel(false)}
@@ -150,7 +175,7 @@ class OrderSpaceBoard extends React.Component {
   }
 
   renderLesseeActions() {
-    const { display } = this.props;
+    const { display, cid, pid } = this.props;
     const { can_edit, can_pay, can_score, view_score } = display;
     const buttonConfig = {
       size: 'sm',
@@ -169,7 +194,7 @@ class OrderSpaceBoard extends React.Component {
             colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={() => {}}
+            onClick={() => browserHistory.push(reservationSpace.indexPath(pid, cid))}
           />
         }
         {can_pay &&

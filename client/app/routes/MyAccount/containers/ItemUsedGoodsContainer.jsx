@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 // import { popupTwoButtons } from 'modules/popup';
-import swal, { confirmConfig } from 'lib/swal';
+import swal, { dropConfig } from 'lib/swal';
 // TODO: move to layout
 // import { reset as resetMine } from 'actions/mineActions';
 import Container from '../components/Item/UsedGoods';
@@ -14,13 +14,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const dispatchDelete = (pid) => {
     // const { showAlert } = swal;
-    swal(confirmConfig({
+    swal(dropConfig({
       title: '確定下架此商品？',
       text: '下架之後即無法還原',
-      confirmButtonText: '下架',
-    })).then(() => {
+      confirmText: '下架',
+    })).then(() => {}).catch(() => {
       dispatch(deleteItem(pid));
-    }, () => {});
+    });
   };
   return ({
     dispatch,

@@ -150,7 +150,7 @@ class StageBase
     if self.is_owner == true
       modify_display_param(KEY_CANCEL, self.screen_type < STAGE_LESSEE_PAY)
     else
-      if self.contract['type'] == CONTRACT_TYPE_ITEM || self.contract['type'] == CONTRACT_TYPE_USED_ITEM
+      if self.contract['type'] == CONTRACT_TYPE_ITEM
         modify_display_param(KEY_CANCEL, self.screen_type <= STAGE_LESSEE_PAY)
       else
         modify_display_param(KEY_CANCEL, self.screen_type < STAGE_CONTRACT_START)

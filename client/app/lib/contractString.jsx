@@ -123,7 +123,7 @@ export function generateLesseeItemString(contractstage, startDate) {
   return ({ title, text });
 }
 
-export function generateOwnerServiceString(contractstage, startDate) {
+export function generateOwnerServiceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -149,8 +149,16 @@ export function generateOwnerServiceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else if (isOwnerEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -167,7 +175,7 @@ export function generateOwnerServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeServiceString(contractstage, startDate) {
+export function generateLesseeServiceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -193,8 +201,16 @@ export function generateLesseeServiceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else if (isOwnerEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -211,7 +227,7 @@ export function generateLesseeServiceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateOwnerSpaceString(contractstage, startDate) {
+export function generateOwnerSpaceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -237,8 +253,16 @@ export function generateOwnerSpaceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else if (isOwnerEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';
@@ -255,7 +279,7 @@ export function generateOwnerSpaceString(contractstage, startDate) {
 
   return ({ title, text });
 }
-export function generateLesseeSpaceString(contractstage, startDate) {
+export function generateLesseeSpaceString(contractstage, startDate, isOwnerEnd, isLesseEnd) {
   let title = '';
   let text = '';
   switch (contractstage) {
@@ -281,8 +305,16 @@ export function generateLesseeSpaceString(contractstage, startDate) {
     case 8:
     case 9:
     case 10:
-      title = '交易進行中';
-      text = '';
+      if (isLesseEnd) {
+        title = '待對方確認結束';
+        text = '您已確認結束，待對方確認後即表示交易完成！';
+      } else if (isOwnerEnd) {
+        title = '對方已確認結束';
+        text = '對方已確認結束，請您儘快確認喔！';
+      } else {
+        title = '交易進行中';
+        text = '';
+      }
       break;
     case 11:
       title = '已完成';

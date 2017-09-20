@@ -8,6 +8,12 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
+
+import ButtonNextStep, {
+  STATUS_LOADING,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
+
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
@@ -28,38 +34,36 @@ import BottomController from './BottomController';
 
 const cx = classnames.bind(styles);
 class Orderdetail extends React.Component {
-
   static defaultProps = {
     personalBankInfo: null,
-    sueDetail: null,
-    logs: [],
   }
 
   static propTypes = {
     orderdetail: PropTypes.shape({
       order: PropTypes.Object,
       userprofile: PropTypes.Object,
+      sueDetail: PropTypes.shape({
+        u_no: PropTypes.string,
+        type: PropTypes.string,
+        status: PropTypes.number,
+        img1: PropTypes.string,
+        img2: PropTypes.string,
+        img3: PropTypes.string,
+        defender_name: PropTypes.string,
+        suer_name: PropTypes.string,
+        case_end: PropTypes.number,
+        create_time: PropTypes.number,
+      }),
+      logs: PropTypes.arrayOf(PropTypes.shape({
+        contractstage: PropTypes.number,
+        create_time: PropTypes.number,
+      })),
+      uploadImgType: PropTypes.string,
     }).isRequired,
     personalBankInfo: PropTypes.shape({
       isReady: PropTypes.bool,
       isChecked: PropTypes.bool,
     }),
-    sueDetail: PropTypes.shape({
-      u_no: PropTypes.string,
-      type: PropTypes.string,
-      status: PropTypes.number,
-      img1: PropTypes.string,
-      img2: PropTypes.string,
-      img3: PropTypes.string,
-      defender_name: PropTypes.string,
-      suer_name: PropTypes.string,
-      case_end: PropTypes.number,
-      create_time: PropTypes.number,
-    }),
-    logs: PropTypes.arrayOf(PropTypes.shape({
-      contractstage: PropTypes.number,
-      create_time: PropTypes.number,
-    })),
     ordergallery: PropTypes.arrayOf(PropTypes.object).isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchAddToChatRoom: PropTypes.func.isRequired,
@@ -156,8 +160,8 @@ class Orderdetail extends React.Component {
     return (
       <FormButton
         colorType={buttonColor}
-        width="auto"
-        style={{ marginRight: 20, height: 52, width: 152, fontWeight: 400 }}
+        width={152}
+        style={{ marginRight: 20, height: 52, fontWeight: 400, padding: '10px 15px' }}
         content={buttonText}
         onClick={dispatchAction}
       />
@@ -269,7 +273,7 @@ class Orderdetail extends React.Component {
           {this.renderButtonStyle(
             can_return,
             this.props.dispatchReturn,
-            '確認還貨',
+            '還貨',
             'green',
           )}
           { this.renderHintText(hint) }
@@ -491,9 +495,17 @@ class Orderdetail extends React.Component {
     );
   }
 
-  renderUploadImage({ can_camera, can_ship, can_711, can_ship_confirm }) {
-    if (can_camera) {
-      const isShip = can_ship || can_711 || can_ship_confirm;
+  renderButtonStatus() {
+    const { orderdetail: { isUpdatingImages } } = this.props;
+
+    if (isUpdatingImages) {
+      return STATUS_LOADING;
+    }
+    return STATUS_VALID;
+  }
+  renderUploadImage() {
+    const { orderdetail: { uploadImgType } } = this.props;
+    if (uploadImgType) {
       const {
         dispatchCreateCover,
         dispatchDeleteCover,
@@ -506,7 +518,7 @@ class Orderdetail extends React.Component {
       const items = ordergallery.concat(emptyCovers);
       return (
         <div styleName="section-content" className="clear">
-          <div styleName="section-header">上傳紀錄</div>
+          <div styleName="section-header">上傳圖片</div>
           <div styleName="gallery" className="clear">
             {items.map((image, index) => (
               <div
@@ -525,12 +537,12 @@ class Orderdetail extends React.Component {
               </div>
             ))}
           </div>
-          <div style={{ margin: '0px 0px 40px 10px' }}>
-            {this.renderButtonStyle(
-              true,
-              () => { dispatchUploadCover(isShip); },
-              '上傳圖片',
-              'greenBorder')}
+          <div styleName="buton-upload">
+            <ButtonNextStep
+              status={this.renderButtonStatus()}
+              text="確認儲存"
+              onClick={() => { dispatchUploadCover(uploadImgType); }}
+            />
           </div>
         </div>
       );
@@ -551,7 +563,7 @@ class Orderdetail extends React.Component {
     const { imgSelect } = this.state;
     return (
       <div styleName="section-content" className="clear">
-        <div styleName="section-header">拍照存證</div>
+        <div styleName="section-header">物品紀錄</div>
         <div styleName="image-nav">
           <ul className="clear">
             {navs.map((nav, index) => (
@@ -733,11 +745,12 @@ class Orderdetail extends React.Component {
   renderBanner(isOwner) {
     const { orderdetail, dispatch } = this.props;
     const { sueDetail, order } = orderdetail;
-    const { contractstage, cid, type, leasestart, create_time } = order;
-    const time = type === 'USED_ITEM' ? create_time : leasestart;
+    const { contractstage, cid, type } = order;
+    // const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
       return (
         <Banner
+          order={order}
           cid={cid}
           type={type}
           contractstage={contractstage}
@@ -855,7 +868,7 @@ class Orderdetail extends React.Component {
             </div>
           </div>
           {this.renderSchedule()}
-          {this.renderUploadImage(display, order)}
+          {this.renderUploadImage()}
           {this.renderImages()}
           {this.renderShippingDetail(order)}
           {this.renderBilling(order)}

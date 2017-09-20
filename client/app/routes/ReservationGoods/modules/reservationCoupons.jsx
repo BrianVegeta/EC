@@ -4,7 +4,7 @@ import { asyncXhrAuthedGet } from 'lib/xhr';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'RESERVATION.COUPONS';
+const ACTION_PREFIX = 'RESERVATION.COUPONS.GOODS';
 export const REDUCER_KEY = 'reservationCoupons';
 
 // =============================================

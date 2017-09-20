@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AcccountNav from 'constants/myAccountNavs';
 import FormButton from 'components/FormButton';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
@@ -17,6 +18,7 @@ import styles from './styles.sass';
 import Container from '../Container';
 
 const cx = classnames.bind(styles);
+const titleName = AcccountNav.wallet.text;
 class Wallet extends React.Component {
   static propTypes = {
     myWallet: PropTypes.shape({
@@ -24,7 +26,6 @@ class Wallet extends React.Component {
     }).isRequired,
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -72,7 +73,7 @@ class Wallet extends React.Component {
 
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
     return (
-      <Container titleText={'我的錢包'}>
+      <Container titleText={titleName}>
         <div styleName="banner">
           <div styleName="background" />
           <div styleName="content" >

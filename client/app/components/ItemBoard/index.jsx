@@ -56,8 +56,9 @@ class ItemBoard extends React.Component {
     if (onDelete) onDelete(pid);
   }
 
-  renderUnit(ChargeType) {
-    switch (ChargeType) {
+  renderUnit() {
+    const { item: { calculate_charge_type } } = this.props;
+    switch (calculate_charge_type) {
       case CHARGE_TYPE_FIX:
         return '/次';
       case CHARGE_TYPE_COUNT:
@@ -83,7 +84,6 @@ class ItemBoard extends React.Component {
   }
 
   renderCollection() {
-
     const { item: { favorite_count, pid }, onDelete } = this.props;
     return (
       <div styleName="favorite">
@@ -109,9 +109,21 @@ class ItemBoard extends React.Component {
       </div>
     );
   }
-
+  renderPanel() {
+    const { type } = this.props;
+    switch (type) {
+      case CONTROL_TYPE_PUBLIC:
+        return this.renderFavorite();
+      case CONTROL_TYPE_PRIVATE:
+        return this.renderDelete();
+      case CONTROL_TYPE_PRIVATE_COLLECTION:
+        return this.renderCollection();
+      default:
+        return null;
+    }
+  }
   render() {
-    const { item, size, type } = this.props;
+    const { item, size } = this.props;
     const {
       pname,
       pid,
@@ -119,10 +131,8 @@ class ItemBoard extends React.Component {
       price,
       owner_name,
       owner_img,
-      calculate_charge_type,
       uid,
     } = item;
-
     return (
       <div styleName="container" >
         <Link to={itemPath(pname, pid)} >
@@ -133,7 +143,7 @@ class ItemBoard extends React.Component {
         <Link to={itemPath(pname, pid)} >
           <div styleName="title">{pname}</div>
         </Link>
-        <div styleName="price">{formatCurrency(price)}{this.renderUnit(calculate_charge_type)}</div>
+        <div styleName="price">{formatCurrency(price)}{this.renderUnit()}</div>
         <div styleName="footer">
           <Link
             to={userprofilePaths.indexPath(uid)}
@@ -144,11 +154,7 @@ class ItemBoard extends React.Component {
             </div>
             <span styleName="username">{owner_name}</span>
           </Link>
-          {{
-            [CONTROL_TYPE_PUBLIC]: this.renderFavorite(),
-            [CONTROL_TYPE_PRIVATE]: this.renderDelete(),
-            [CONTROL_TYPE_PRIVATE_COLLECTION]: this.renderCollection(),
-          }[type]}
+          {this.renderPanel()}
         </div>
       </div>
     );

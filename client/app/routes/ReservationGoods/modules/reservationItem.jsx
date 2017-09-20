@@ -8,7 +8,7 @@ import { changeData } from './reservation';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'RESERVATION.SERVICE.ITEM';
+const ACTION_PREFIX = 'RESERVATION.GOODS.ITEM';
 export const REDUCER_KEY = 'reservationGoodsItem';
 
 /* enums */

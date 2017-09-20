@@ -5,12 +5,12 @@ import { popupScoreRating, popupAccessCheck,
 import { doAccept, doCancel, doReject,
   doShipGoods, doReturn, doReceiveConfirm,
   doScore, doEndOrder, resetAction, doCreditCardPayment,
-  doATMPayment, getShipOrder, getShipLog,
+  doATMPayment, getShipOrder, getShipLog, uploadImage,
 } from '../modules/orderaction';
 import { createCover, deleteCover, processRawCovers }
   from '../modules/ordergallery';
 import Orderdetail from '../components/Orderdetail';
-import { fetchOrder, reset } from '../modules/orderdetail';
+import { fetchOrder, updatingImage, updateImages, reset } from '../modules/orderdetail';
 
 
 const mapStateToProps = ({ environment, orderdetail, auth, personalBankInfo, ordergallery }) => ({
@@ -138,7 +138,12 @@ const mapDispatchToProps = (dispatch, { params }) => {
     },
     dispatchCreateCover: blob => dispatch(createCover(blob, params.cid)),
     dispatchDeleteCover: key => dispatch(deleteCover(key)),
-    dispatchUploadCover: isShip => dispatch(processRawCovers(isShip)),
+    dispatchUploadCover: (type) => {
+      dispatch(updatingImage());
+      dispatch(processRawCovers(type))
+      .then(imageResult => dispatch(uploadImage(params.cid, type, imageResult))
+      .then(() => dispatch(updateImages(type, imageResult))));
+    },
   });
 };
 

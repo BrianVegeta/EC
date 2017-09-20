@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TitleIcon from 'react-icons/lib/md/add-circle';
-
+import AcccountNav from 'constants/myAccountNavs';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import ItemList, { CONTROL_TYPE_PRIVATE } from 'components/ItemList';
@@ -9,7 +9,7 @@ import { CATEGORY_GOODS } from 'constants/enums';
 import ItemControlBar from './ItemControlBar';
 import Container from '../Container';
 
-
+const titleName = AcccountNav.items.text;
 class Goods extends React.Component {
 
   static propTypes = {
@@ -48,7 +48,7 @@ class Goods extends React.Component {
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
 
     return (
-      <Container icon={TitleIcon} titleText="發佈">
+      <Container icon={TitleIcon} titleText={titleName}>
         <ItemControlBar
           getIsActive={CATEGORY_GOODS}
         />

@@ -3,17 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { IndexLink, Link } from 'react-router';
-import { SHAREAPP_HELP_URL } from 'constants/config';
-import HeaderSearchContainer from 'containers/HeaderSearchContainer';
-import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
-import Logo from 'components/Icons/Logo';
-import { startsWith } from 'lodash';
 import {
   my,
   notifyPath,
   registrationPath,
   loginPath,
 } from 'lib/paths';
+import AccountNavs from 'constants/myAccountNavs';
+import { SHAREAPP_HELP_URL } from 'constants/config';
+import HeaderSearchContainer from 'containers/HeaderSearchContainer';
+import HomeTopMenuContainer from 'containers/HomeTopMenuContainer';
+import Logo from 'components/Icons/Logo';
+import { startsWith } from 'lodash';
 import classnames from 'classnames/bind';
 import cn from 'classnames';
 import CSS from 'react-css-modules';
@@ -96,12 +97,12 @@ class Header extends React.Component {
       pathname,
     } = this.props;
 
-    const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
-    const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
-    const myCommentsPath = my.commentOwnerPath;
-    const myItemsPath = my.myGoodsPath;
-    const myWalletPath = my.walletPath;
-    const myCollectionPath = my.collectionPath;
+    // const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
+    // const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
+    // const myCommentsPath = my.commentOwnerPath;
+    // const myItemsPath = my.myGoodsPath;
+    // const myWalletPath = my.walletPath;
+    // const myCollectionPath = my.collectionPath;
     const notifyIndexPath = notifyPath.contractNotifyPath;
     // <NavItem action={notifyIndexPath} content="通知" />
     const isPublish = startsWith(pathname, '/p/publish');
@@ -130,15 +131,17 @@ class Header extends React.Component {
                 {!isLogin && <NavItem action={loginPath} content="登入" />}
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={myLesseeOrdersPath}>
-                      消費狀態{this.renderCircle(NOTIFY_LESSEE_CONTRACT)}
+                    <Link to={AccountNavs.lesseeOrder.path}>
+                      {AccountNavs.lesseeOrder.text}
+                      {this.renderCircle(NOTIFY_LESSEE_CONTRACT)}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={myOrdersPath}>
-                      廠商訂單{this.renderCircle(NOTIFY_OWNER_CONTRACT)}
+                    <Link to={AccountNavs.ownerOrder.path}>
+                      {AccountNavs.ownerOrder.text}
+                      {this.renderCircle(NOTIFY_OWNER_CONTRACT)}
                     </Link>
                   </li>
                 }
@@ -163,12 +166,16 @@ class Header extends React.Component {
                   >
                     <DropdownNavs
                       list={[
-                        { link: my.profilePath, text: '編輯個人資料' },
-                        { link: my.manageVerifyPath, text: '帳戶管理' },
-                        { link: myCollectionPath, text: '收藏' },
-                        { link: myItemsPath, text: '分享/發佈' },
-                        { link: myWalletPath, text: '我的錢包' },
-                        { link: myCommentsPath, text: '評價' },
+                        { link: AccountNavs.profile.path,
+                          text: '編輯個人資料',
+                        },
+                        { link: AccountNavs.manageVerify.path,
+                          text: AccountNavs.manageVerify.text,
+                        },
+                        { link: AccountNavs.collection.path, text: AccountNavs.collection.text },
+                        { link: AccountNavs.items.path, text: AccountNavs.items.text },
+                        { link: AccountNavs.wallet.path, text: AccountNavs.wallet.text },
+                        { link: AccountNavs.comment.path, text: AccountNavs.comment.text },
                         { action: dispatchLogout, text: '登出' },
                       ]}
                     />

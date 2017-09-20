@@ -2,17 +2,25 @@
 import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-export const confirmConfig = ({ title, text, confirmButtonText }) => ({
+export const dropConfig = ({ title, text, confirmText }) => ({
   title,
+  text,
+  showCancelButton: true,
+  cancelButtonColor: '#31ABBA',
+  cancelButtonText: confirmText,
+  confirmButtonColor: '#AAA',
+  confirmButtonText: '取消',
+});
+export const orderConfig = text => ({
+  title: '提示',
   text,
   type: 'warning',
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText,
-  cancelButtonText: '取消',
+  cancelButtonColor: '#31ABBA',
+  cancelButtonText: '是',
+  confirmButtonColor: '#AAA',
+  confirmButtonText: '否',
 });
-
 export const warningConfig = ({ title, text }) => ({
   title,
   text,

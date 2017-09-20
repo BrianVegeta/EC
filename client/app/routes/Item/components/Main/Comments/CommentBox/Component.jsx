@@ -30,7 +30,6 @@ class Comment extends React.Component {
 
   onChange(value) {
     const { isLogin } = this.props;
-    console.log(isLogin);
     if (!(isLogin)) {
       browserHistory.push(loginPath);
       return;

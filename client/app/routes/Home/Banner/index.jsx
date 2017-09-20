@@ -5,9 +5,9 @@ import { Link } from 'react-router';
 import { Preload } from 'react-preload';
 import { userprofilePaths, itemPath } from 'lib/paths';
 import CSS from 'react-css-modules';
+import Spinner from 'components/Spinner';
+import { fetchBanners } from 'actions/bannersActions';
 import styles from './styles.sass';
-import Spinner from '../../../components/Spinner';
-import { fetchBanners } from '../../../actions/bannersActions';
 import DecoratorDots from './DecoratorDots';
 
 class Banner extends React.Component {
@@ -84,7 +84,7 @@ class Banner extends React.Component {
                   />
                 </Link>
               );
-            }
+            },
             )}
           </Carousel>
         </div>

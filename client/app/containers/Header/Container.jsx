@@ -28,7 +28,6 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchPublish: () => dispatch(popupPublishEntry()),
   dispatchNotify: () => dispatch(getNotitications()),
-  // dispatchCollection: () => dispatch(fetchCollections()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -6,6 +6,7 @@ import { my } from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
+import AcccountNav from 'constants/myAccountNavs';
 import ListContainer from 'components/ListContainer';
 import PaginationContainer from 'components/PaginationContainer';
 import CommentNote from 'components/CommentNote';
@@ -15,11 +16,15 @@ import styles from './styles.sass';
 import Container from '../Container';
 
 const cx = classnames.bind(styles);
+const titleName = AcccountNav.comment.text;
 class Navigation extends React.Component {
 
   static propTypes = {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    myComment: PropTypes.shape({
+      isFetching: PropTypes.bool,
+    }).isRequired,
   };
 
   componentDidMount() {
@@ -50,7 +55,7 @@ class Navigation extends React.Component {
     const hasNoData = !isPaginable && !isFetching && records.length === 0;
 
     return (
-      <Container titleText={'評價'}>
+      <Container titleText={titleName}>
         <div styleName="container">
           <ul className="clear">
             {navs.map((nav, index) => (

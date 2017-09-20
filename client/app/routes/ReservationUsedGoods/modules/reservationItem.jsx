@@ -8,7 +8,7 @@ import { today } from 'lib/time';
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
-const ACTION_PREFIX = 'RESERVATION.SERVICE.ITEM';
+const ACTION_PREFIX = 'RESERVATION.USEDGOODS.ITEM';
 export const REDUCER_KEY = 'reservationGoodsItem';
 
 /* enums */

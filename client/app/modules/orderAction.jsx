@@ -82,7 +82,7 @@ export function doShipGoods(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -104,7 +104,7 @@ export function doReturn(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -125,7 +125,7 @@ export function doReceiveConfirm(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -147,11 +147,10 @@ export function doCancel(cid) {
     .then(() => {
       dispatch(success(requestId));
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch(failed('失敗'));
-      reject('失敗');
     });
-  }
+  };
 }
 export function doScore(cid, score, comment) {
   return (dispatch, getState) =>
@@ -168,7 +167,7 @@ export function doScore(cid, score, comment) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -189,7 +188,7 @@ export function doReject(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -212,7 +211,7 @@ export function doEndOrder(type, cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });

@@ -1,6 +1,7 @@
 import React from 'react';
 import myPropTypes from 'propTypes';
 
+import AcccountNav from 'constants/myAccountNavs';
 import InnerNavigation from 'components/InnerNavigation';
 import { my } from 'lib/paths';
 
@@ -8,7 +9,7 @@ import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Container from '../Container';
 
-
+const titleName = AcccountNav.manageVerify.text;
 class Profile extends React.Component {
 
   static defaultProps = {
@@ -25,7 +26,7 @@ class Profile extends React.Component {
     } = this.props;
 
     return (
-      <Container titleText="帳號管理" >
+      <Container titleText={titleName} >
         <div styleName="navigation">
           <InnerNavigation
             navs={[

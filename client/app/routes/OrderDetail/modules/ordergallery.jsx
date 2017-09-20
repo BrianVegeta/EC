@@ -6,6 +6,13 @@ import {
   asyncContainBlobTobase64,
 } from 'lib/utils';
 
+import {
+  OWNER_SEND,
+  LESSEE_RECEIVE,
+  LESSEE_SEND,
+  OWNER_RECEIVE,
+} from './orderaction';
+
 /* =============================================>>>>>
 = settings =
 ===============================================>>>>>*/
@@ -13,12 +20,20 @@ const ACTION_PREFIX = 'ORDERDETAIL.COVERS';
 const COVER_PARAM_KEY = 'croppedImage';
 export const REDUCER_KEY = 'ordergallery';
 
+const initialThumb = {
+  key: '?',
+  blob: null,
+  s3: null,
+  isUploading: false,
+  isStored: false,
+};
 
 // =============================================
 // = action type =
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
+const SETUP_COVERS = prefix('SETUP_COVERS');
 const CREATE_COVER = prefix('CREATE_COVER');
 const DELETE_COVER = prefix('DELETE_COVER');
 const UPDATING_COVER = prefix('UPDATING_COVER');
@@ -30,6 +45,11 @@ const RESET = prefix('RESET');
 // =============================================
 // = actions =
 // =============================================
+
+export const setupCovers = covers => ({
+  type: SETUP_COVERS,
+  covers,
+});
 
 export const createCover = (blob, cidNo) => ({
   type: CREATE_COVER,
@@ -64,25 +84,42 @@ export const reset = () => ({
   type: RESET,
 });
 
-// export function uploadCover(key, base64, cidNo) {
-//   return (dispatch) => {
-//     const blob = base64ToBlobData(base64);
-//     dispatch(updatedCover(key, URL.createObjectURL(blob)));
-//
-//     const formData = new FormData();
-//     formData.append(COVER_PARAM_KEY, blob);
-//
-//     asyncXhrPutImage(`/ajax/images/sue_picture/${cidNo}.json`, formData)
-//     .then((s3) => {
-//       asyncS3ToBlob(s3)
-//       .then(responseBlobUrl =>
-//         dispatch(updatedCover(key, responseBlobUrl, s3)),
-//       );
-//     });
-//   };
-// }
+const generateKey = index => `KEY_${Date.now().toString()}${index}`;
 
-export const asyncUploadCover = (key, base64, cidNo, isShip) =>
+const asyncTransformBlob = ({ img1, img2 }) =>
+  new Promise((resolve) => {
+    const promises = [];
+    if (img1) promises.push(asyncS3ToBlob(img1));
+    if (img2) promises.push(asyncS3ToBlob(img2));
+    Promise.all(promises).then((results) => {
+      resolve(results);
+    }).catch(e => console.log(e));
+  });
+
+export const setupCoversForEdit = ({ img1, img2 }) =>
+  dispatch =>
+    new Promise((resolve) => {
+      const restoreThumb = (s3, blob, key) =>
+        Object.assign({}, initialThumb, { s3, blob, isStored: true, key });
+
+      const paddingCovers = [];
+      if (img1) paddingCovers.push(restoreThumb(img1, null, null));
+      if (img2) paddingCovers.push(restoreThumb(img2, null, null));
+      dispatch(setupCovers(paddingCovers));
+
+      asyncTransformBlob(
+        { img1, img2 },
+      ).then((blobs) => {
+        const covers = [];
+        if (img1) covers.push(restoreThumb(img1, blobs[0], generateKey(0)));
+        if (img2) covers.push(restoreThumb(img2, blobs[1], generateKey(1)));
+        dispatch(setupCovers(covers));
+        resolve();
+      });
+    });
+
+
+export const asyncUploadCover = (key, base64, cidNo, type) =>
   dispatch =>
     new Promise((resolve, reject) => {
       const blobData = base64ToBlobData(base64);
@@ -90,8 +127,20 @@ export const asyncUploadCover = (key, base64, cidNo, isShip) =>
       dispatch(updatedCover(key, URL.createObjectURL(blobData)));
       const formData = new FormData();
       formData.append(COVER_PARAM_KEY, blobData);
-      const url = isShip ? `/ajax/images/ship/${cidNo}.json`
-        : `/ajax/images/return/${cidNo}.json`;
+      let url = '';
+      switch (type) {
+        case OWNER_SEND:
+        case LESSEE_RECEIVE:
+          url = `/ajax/images/ship/${cidNo}.json`;
+          break;
+        case LESSEE_SEND:
+        case OWNER_RECEIVE:
+          url = `/ajax/images/return/${cidNo}.json`;
+          break;
+        default:
+          reject('INVALID TYPE');
+          return;
+      }
       asyncXhrPutImage(url, formData)
       .then((s3) => {
         asyncS3ToBlob(s3)
@@ -103,24 +152,27 @@ export const asyncUploadCover = (key, base64, cidNo, isShip) =>
       .catch(e => reject(e));
     });
 
-export const asyncUploadBlobCover = (key, blob, cidNo, isShip) =>
+export const asyncUploadBlobCover = ({ key, blob, cidNo, s3, isStored }, type) =>
   dispatch =>
     new Promise((resolve) => {
+      if (isStored) {
+        resolve(s3);
+        return;
+      }
       asyncContainBlobTobase64(blob)
       .then((base64) => {
-        dispatch(asyncUploadCover(key, base64, cidNo, isShip))
-        .then(s3 => resolve(s3))
+        dispatch(asyncUploadCover(key, base64, cidNo, type))
+        .then(newS3 => resolve(newS3))
         .catch(e => console.log(e));
       });
     });
 
-export const processRawCovers = isShip =>
+export const processRawCovers = type =>
   (dispatch, getState) =>
     new Promise((resolve) => {
       const covers = getState()[REDUCER_KEY];
-      const rawCovers = covers.filter(cover => !cover.isStored);
-      const promises = rawCovers.map(cover =>
-        dispatch(asyncUploadBlobCover(cover.key, cover.blob, cover.cidNo, isShip)),
+      const promises = covers.map(cover =>
+        dispatch(asyncUploadBlobCover(cover, type)),
       );
       Promise.all(promises)
       .then(results => resolve(results))
@@ -130,27 +182,23 @@ export const processRawCovers = isShip =>
 // =============================================
 // = reducer =
 // =============================================
-const initialThumb = {
-  cidNo: null,
-  key: '?',
-  blob: null,
-  s3: null,
-  isUploading: false,
-  isStored: false,
-};
 const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SETUP_COVERS:
+      return action.covers;
 
-    case CREATE_COVER:
+    case CREATE_COVER: {
+      const index = state.length;
       return state.concat(
         Object.assign({}, initialThumb, {
-          key: `KEY_${Date.now().toString()}`,
+          key: generateKey(index),
           blob: action.blob,
           cidNo: action.cidNo,
         }),
       );
+    }
 
     case DELETE_COVER:
       return List(state).delete(

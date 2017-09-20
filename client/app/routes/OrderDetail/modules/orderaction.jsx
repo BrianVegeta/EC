@@ -7,7 +7,7 @@ import { fetchedSendSeven, fetchedReturnSeven } from './orderdetail';
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'ORDER.ACTION';
-const REDUCER_KEY = 'orderaction';
+// const REDUCER_KEY = 'orderaction';
 
 
 // =============================================
@@ -21,6 +21,12 @@ const SUCCESSS = prefix('REJECT');
 const FAILED = prefix('FAILED');
 const RESET = prefix('RESET');
 const SET_ESUN_FORM = prefix('SET_ESUN_FORM');
+
+export const OWNER_SEND = 'OWNER_SEND';
+export const LESSEE_RECEIVE = 'LESSEE_RECEIVE';
+export const LESSEE_SEND = 'LESSEE_SEND';
+export const OWNER_RECEIVE = 'OWNER_RECEIVE';
+
 // =============================================
 // = CONSTANT FOR API USAGE =
 // =============================================
@@ -44,10 +50,10 @@ const lock = (requestId, actionName) => ({
   actionName,
 });
 
-const setEsunForm = form => ({
-  type: SET_ESUN_FORM,
-  form,
-});
+// const setEsunForm = form => ({
+//   type: SET_ESUN_FORM,
+//   form,
+// });
 
 export const resetAction = () => ({
   type: RESET,
@@ -68,7 +74,7 @@ export function doAccept(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -90,7 +96,7 @@ export function doShipGoods(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -112,7 +118,7 @@ export function doReturn(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -133,7 +139,7 @@ export function doReceiveConfirm(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -155,11 +161,10 @@ export function doCancel(cid) {
     .then(() => {
       dispatch(success(requestId));
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch(failed('失敗'));
-      reject('失敗');
     });
-  }
+  };
 }
 export function doScore(cid, score, comment) {
   return (dispatch, getState) =>
@@ -176,7 +181,7 @@ export function doScore(cid, score, comment) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -197,7 +202,7 @@ export function doReject(cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -220,7 +225,7 @@ export function doEndOrder(type, cid) {
         dispatch(success(requestId));
         resolve();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -257,7 +262,7 @@ export function doCreditCardPayment(cid) {
         dispatch(success(requestId));
         createFormPost(redirect, params);
         resolve();
-      }).catch((error) => {
+      }).catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');
       });
@@ -346,6 +351,30 @@ export function getShipLog(orderNo) {
         dispatch(popupFetched({ logs: data, orderNo }));
         dispatch(success(requestId));
         resolve();
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject('失敗');
+      });
+    });
+}
+
+export function uploadImage(cidNo, type, imgs) {
+  return (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+      dispatch(lock(requestId, 'uploadImage'));
+      dispatch(popupFetching());
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/upload_image_record.json',
+        {
+          cid: cidNo,
+          type,
+          imgs,
+        }, getState(), isCatch,
+      ).then(() => {
+        dispatch(success(requestId));
+        resolve(imgs);
       }).catch(() => {
         dispatch(failed('失敗'));
         reject('失敗');

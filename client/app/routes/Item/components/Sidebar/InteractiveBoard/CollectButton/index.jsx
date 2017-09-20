@@ -11,7 +11,6 @@ class CollectButton extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       btnStatus: props.isFavorite ? 'collected' : 'pending',
       isSaving: false,

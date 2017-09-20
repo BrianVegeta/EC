@@ -15,8 +15,8 @@ import {
 import { formatDate, rangeDiff } from 'lib/time';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
-import { popupScoreRating } from 'modules/popup';
-import { doScore, resetAction } from 'modules/orderAction';
+import { popupScoreRating, popupATMBank } from 'modules/popup';
+import { doScore, resetAction, doCreditCardPayment, doATMPayment } from 'modules/orderAction';
 import { addToChatRoom } from 'modules/chatRooms';
 import styles from './styles.sass';
 
@@ -35,6 +35,7 @@ class OrderServiceBoard extends React.Component {
     photoHead: PropTypes.string,
     photoName: PropTypes.string.isRequired,
     photoUid: PropTypes.string.isRequired,
+    paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
     pid: PropTypes.number.isRequired,
@@ -57,6 +58,10 @@ class OrderServiceBoard extends React.Component {
         show_detail: PropTypes.bool.isRequired,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
+        can_lessee_end: PropTypes.bool,
+        can_owner_end: PropTypes.bool,
+        is_owner_end: PropTypes.bool,
+        is_lessee_end: PropTypes.bool,
         can_score: PropTypes.bool,
         view_score: PropTypes.bool,
       },
@@ -64,6 +69,7 @@ class OrderServiceBoard extends React.Component {
     dispatch: PropTypes.func.isRequired,
     dispatchRefresh: PropTypes.func.isRequired,
   };
+
   callScorePanel(isView) {
     this.props.dispatch(popupScoreRating({
       isView,
@@ -85,13 +91,36 @@ class OrderServiceBoard extends React.Component {
       },
     }));
   }
+  generatePayment() {
+    const { paymenttype, cid, dispatch } = this.props;
+
+    switch (paymenttype) {
+      case 4:
+        return () => {
+          dispatch(doCreditCardPayment(cid))
+          .catch((error) => {
+            alert(error);
+          });
+        };
+      case 1:
+        return () => {
+          const options = {};
+          dispatch(popupATMBank(options));
+          dispatch(doATMPayment(cid));
+        };
+      default:
+        return () => {};
+    }
+  }
   generateString() {
-    const { isOwner, stage, startDate } = this.props;
+    const { isOwner, stage, startDate,
+      display: { is_owner_end, is_lessee_end } } = this.props;
     const objString = { title: '', text: '' };
     if (stage < 1000) {
-      const generateString = isOwner ?
-        generateOwnerServiceString : generateLesseeServiceString;
-      return generateString(stage, startDate);
+      if (isOwner) {
+        return generateOwnerServiceString(stage, startDate, is_owner_end, is_lessee_end);
+      }
+      return generateLesseeServiceString(stage, startDate, is_owner_end, is_lessee_end);
     } else if (stage > 1000 && stage < 3000) {
       const screenStage = stage % 100;
       if (screenStage < 11) {
@@ -126,7 +155,7 @@ class OrderServiceBoard extends React.Component {
       <div styleName="action-section">
         {can_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonProps}
             content="評分"
             onClick={() => this.callScorePanel(false)}
@@ -134,7 +163,7 @@ class OrderServiceBoard extends React.Component {
         }
         {view_score &&
           <FormButton
-            colorType={'greenBorder'}
+            colorType={'green'}
             {...buttonProps}
             content={'查看評價'}
             onClick={() => this.callScorePanel(true)}
@@ -172,9 +201,7 @@ class OrderServiceBoard extends React.Component {
             colorType={'green'}
             {...buttonConfig}
             content={'修改預訂單'}
-            onClick={() => {
-              browserHistory.push(reservationService.indexPath(pid, cid));
-            }}
+            onClick={() => { browserHistory.push(reservationService.indexPath(pid, cid)); }}
           />
         }
         {can_pay &&
