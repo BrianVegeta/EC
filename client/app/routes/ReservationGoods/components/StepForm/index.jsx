@@ -1,12 +1,8 @@
 /* eslint-disable camelcase */
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import myPropTypes from 'propTypes';
-import {
-  find,
-} from 'lodash';
-// import colors from 'styles/colorExport.scss';
-// import IconLocation from 'react-icons/lib/md/location-on';
+import { find } from 'lodash';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
@@ -19,29 +15,22 @@ import BillingDetail, { calculateService } from 'components/BillingDetail';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
-import FormButton from 'components/FormButton';
 import InputTextCounter from 'components/Input/TextCounter';
 import constraints from 'constraints/reservation';
-// import { formatDate, rangeDiff } from 'lib/time';
-
-import ButtonNextStep, {
-  STATUS_DISABLE,
-  STATUS_VALID,
-} from 'components/Button/NextStep';
-
+import publishConstraints from 'constraints/publish';
+import ButtonNextStep, { STATUS_DISABLE, STATUS_VALID } from 'components/Button/NextStep';
 import CSS from 'react-css-modules';
 import {
   CHARGE_TYPE_DAY,
 } from 'constants/publishTypes';
 import styles from './styles.sass';
 import { DangerText } from './styles';
-
 import {
-  SEND_BY_IN_PERSON,
+  // SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
   SEND_BY_711,
   RETURN_BY_IN_PERSON,
-  RETURN_BY_711,
+  // RETURN_BY_711,
   RETURN_BY_OTHER_SHIPPMENT,
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
@@ -142,15 +131,18 @@ class StepForm extends React.Component {
   onNextStepClick() {
     const { nextStep, dispatchValidate } = this.props;
 
-    dispatchValidate()
-    .then(() => nextStep())
-    .catch(() => {
-      if (this.datesInput) this.datesInput.valid();
+    dispatchValidate().then(() => {
+      nextStep();
+    }).catch(() => {
       if (this.unitInput) this.unitInput.valid();
+      if (this.datesInput) this.datesInput.valid();
+      if (this.sendTypeInput) this.sendTypeInput.valid();
+      if (this.returnTypeInput) this.returnTypeInput.valid();
       if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();
       if (this.serviceAddressInput) this.serviceAddressInput.valid();
       if (this.serviceLocationTypeInput) this.serviceLocationTypeInput.valid();
-      this.noteInput = null;
+      if (this.noteInput) this.noteInput.valid();
+      if (this.datesInput) this.datesInput.valid();
     });
   }
 
@@ -255,7 +247,8 @@ class StepForm extends React.Component {
           onDatesChange={onDatesChange}
           preparation={advance_reservation_days}
           value={leasestart && leaseend && 'date'}
-          constraints={constraints.dates}
+          startDateConstraint={publishConstraints.startDate}
+          endDateConstraint={publishConstraints.endDate}
           validateOnBlur
         />
       </FormGroup>
@@ -488,17 +481,14 @@ class StepForm extends React.Component {
 
   renderUnit({ unit }, { unit: itemUnit }) {
     const { dispatchChangeData } = this.props;
-    const refUnitInput = unitInput => (this.unitInput = unitInput);
-    const inputValue = unit ? String(unit) : '';
-
     return (
       <FormGroup
         headerText="數量"
         limiter={`目前數量:${itemUnit}件`}
       >
         <InputTextCounter
-          ref={refUnitInput}
-          value={inputValue}
+          ref={input => (this.unitInput = input)}
+          value={unit ? String(unit) : ''}
           suffix="件"
           placeholder="請輸入"
           min={1}
@@ -558,11 +548,13 @@ class StepForm extends React.Component {
   }
 
 
-  renderShippment({ sendType, returnType, sendCity, sendArea,
-  sendAddress }, { sendOption, returnOption }) {
+  renderShippment({
+    sendType, returnType, sendCity, sendArea,
+    sendAddress,
+  }, {
+    sendOption, returnOption,
+  }) {
     const { dispatchChangeData } = this.props;
-    const refGoodsSendInput = sendInput => (this.refGoodsSendInput = sendInput);
-    const refGoodsReturnInput = returnInput => (this.refGoodsReturnInput = returnInput);
     let returnHint = '';
     switch (returnType) {
       case RETURN_BY_IN_PERSON:
@@ -576,11 +568,12 @@ class StepForm extends React.Component {
       <div>
         <FormGroup headerText="到貨方式">
           <InputSelection
-            ref={refGoodsSendInput}
+            ref={sendInput => (this.sendTypeInput = sendInput)}
             options={sendOption}
             value={sendType}
             width={290}
             onSelect={val => dispatchChangeData({ sendType: val.value })}
+            constraints={constraints.sendType}
             validateOnBlur
           />
           { (sendType === SEND_BY_OTHER_SHIPPMENT) &&
@@ -595,11 +588,12 @@ class StepForm extends React.Component {
           helperBottom={returnHint}
         >
           <InputSelection
-            ref={refGoodsReturnInput}
+            ref={returnInput => (this.returnTypeInput = returnInput)}
             options={returnOption}
             value={returnType}
             width={290}
             onSelect={val => dispatchChangeData({ returnType: val.value })}
+            constraints={constraints.returnType}
             validateOnBlur
           />
         </FormGroup>
@@ -634,14 +628,6 @@ class StepForm extends React.Component {
         <ConfirmTitle title="交貨方式" >
           <div styleName="detail-container">
             {this.renderShippment(reservation, item)}
-            <FormButton
-              colorType={'greenBorder'}
-              style={{ lineHeight: '46px', padding: '7px 16px', display: 'inline-block' }}
-              size="sm"
-              width="auto"
-              content={'私訊分享人'}
-              onClick={() => {}}
-            />
           </div>
         </ConfirmTitle>
         <ConfirmTitle title="交易明細" >

@@ -3,6 +3,11 @@
 import validate from 'validate.js';
 import { isEmpty, includes } from 'lodash';
 import constraints from 'constraints/reservation';
+import publishConstraints from 'constraints/publish';
+import {
+  SEND_TYPE_MAIL,
+  SEND_TYPE_SEVEN,
+} from 'constants/enums';
 import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
   PAYMENT_TYPE_ATM,
@@ -22,29 +27,36 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 export const validateFormBy = ({
   leasestart, leaseend,
   sendType,
+  returnType,
   storeid,
+  sendCity, sendArea, sendAddress,
+  unit,
+}, {
+  unit: itemUnit,
 }) => {
-  let errors = validate({
-    dates: leasestart && leaseend && 'date',
-  }, {
-    dates: constraints.dates,
-  });
-
-  if (!isEmpty(errors)) {
-    return {
-      isValid: false,
-      errors,
-    };
-  }
-
-  if (sendType === '2') {
-    errors = validate({
-      storeid,
-    }, {
-      storeid: constraints.storeid,
-    });
-  }
-
+  const isSevenSend = SEND_TYPE_SEVEN === sendType;
+  const isMailSend = SEND_TYPE_MAIL === sendType;
+  const values = {
+    leasestart,
+    leaseend,
+    storeid,
+    sendCityArea: `${sendCity}${sendArea}`,
+    sendAddress,
+    sendType,
+    returnType,
+    unit,
+  };
+  const validation = {
+    leasestart: publishConstraints.startDate,
+    leaseend: publishConstraints.endDate,
+    storeid: isSevenSend ? constraints.storeid : {},
+    sendCityArea: isMailSend ? publishConstraints.cityArea : {},
+    sendAddress: isMailSend ? publishConstraints.address : {},
+    sendType: constraints.sendType,
+    returnType: constraints.returnType,
+    unit: constraints.unit(itemUnit),
+  };
+  const errors = validate(values, validation);
   return {
     isValid: isEmpty(errors),
     errors,

@@ -18,6 +18,9 @@ export default {
     },
   },
   unit: itemUnit => ({
+    presence: {
+      message: '^請填數量',
+    },
     numericality: {
       notValid: '^請填數字',
       onlyInteger: true,
@@ -29,4 +32,14 @@ export default {
     },
   }),
   note: {},
+  sendType: {
+    presence: {
+      message: '^請選擇到貨方式',
+    },
+  },
+  returnType: {
+    presence: {
+      message: '^請選擇寄還方式',
+    },
+  },
 };

@@ -27,3 +27,7 @@ export const mappingIDFromCategory = {
 export const CONTRACT_GOODS_ID = 0;
 export const CONTRACT_SERVICE_ID = 1;
 export const CONTRACT_SPACE_ID = 2;
+
+export const SEND_TYPE_SELF = '0'; // 面交
+export const SEND_TYPE_MAIL = '1'; // 郵寄
+export const SEND_TYPE_SEVEN = '2'; // 7-11

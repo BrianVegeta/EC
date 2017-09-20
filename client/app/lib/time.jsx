@@ -25,6 +25,10 @@ export function today() {
   return moment();
 }
 
+export function yesterday() {
+  return moment().add(-1, 'days');
+}
+
 /* xxx days(hours, minuts) ago */
 export function fromNow(time) {
   return moment(time).fromNow();
