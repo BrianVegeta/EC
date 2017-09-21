@@ -7,6 +7,7 @@ import Items from '../components/Items';
 import { fetchRecords, reset } from '../modules/items';
 
 /* pick props */
+const isUsed = false;
 const mapStateToProps = ({ environment, items, auth }) => ({
   environment,
   items,
@@ -14,12 +15,12 @@ const mapStateToProps = ({ environment, items, auth }) => ({
   categoryID: CATEGORY_GOODS_ID,
   filterType: CATEGORY_GOODS,
   isLogin: auth.isLogin,
-  isUsed: false,
+  isUsed,
 });
 
 /* pick dispatch */
 const mapDispatchToProps = dispatch => ({
-  dispatchFetchRecords: isUsed => dispatch(fetchRecords(CATEGORY_GOODS_ID, isUsed)),
+  dispatchFetchRecords: () => dispatch(fetchRecords(CATEGORY_GOODS_ID, isUsed)),
   dispatchReset: () => dispatch(reset()),
   dispatchCollection: () => dispatch(fetchCollections()),
 });
