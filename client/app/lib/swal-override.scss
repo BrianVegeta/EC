@@ -1,0 +1,26 @@
+.swal2-buttonswrapper
+  .swal2-styled {
+    &.swal2-confirm {
+      background: #31abba !important;
+      padding: 15px 40px;
+      &:hover {
+        background: #53BECE !important;
+      }
+    }
+    &.swal2-cancel {
+      background: #fff !important;
+      border: 1px solid #aaa;
+      padding: 14px 39px;
+      color: #333;
+      &:hover {
+        border: 1px solid #CECECE;
+      }
+    }
+    &.swal2-confirm, &.swal2-cancel {
+      margin: 15px 10px 0;
+    }
+    &.swal2-confirm:focus, &.swal2-cancel:focus {
+      outline: 0;
+      box-shadow: none;
+    }
+  }

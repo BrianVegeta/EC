@@ -1,16 +1,21 @@
 /* eslint-disable import/prefer-default-export */
 import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import './swal-override.scss';
 
-export const dropConfig = ({ title, text, confirmText }) => ({
-  title,
-  text,
+const commonConfig = {
+  reverseButtons: true,
+  cancelButtonText: '取消',
+  confirmButtonText: '確定',
+};
+
+const dropConfig = {
+  title: '確定下架此商品？',
+  text: '下架之後即無法還原',
   showCancelButton: true,
-  cancelButtonColor: '#31ABBA',
-  cancelButtonText: confirmText,
-  confirmButtonColor: '#AAA',
-  confirmButtonText: '取消',
-});
+  confirmButtonText: '下架',
+};
+
 export const orderConfig = text => ({
   title: '提示',
   text,
@@ -42,11 +47,10 @@ export const errorConfig = ({ title, text }) => ({
   confirmButtonText: '確定',
 });
 
+export const swalDropItem = () =>
+  swal(Object.assign({}, commonConfig, dropConfig));
+
 export const swalNormal = ({ title, text }) =>
-  swal({
-    title,
-    text,
-    confirmButtonText: '確定',
-  });
+  swal(Object.assign({}, commonConfig, { title, text }));
 
 export default swal;

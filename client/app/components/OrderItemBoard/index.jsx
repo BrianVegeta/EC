@@ -153,12 +153,19 @@ class OrderItemBoard extends React.Component {
   }
 
   renderAction() {
-    return this.props.isOwner === true ? this.renderOwnerActions() : this.renderLesseeActions();
+    const { isOwner } = this.props;
+    return isOwner ? this.renderOwnerActions() : this.renderLesseeActions();
   }
 
   renderOwnerActions() {
     const { display } = this.props;
-    const { can_ship, can_score, can_711, can_return_confirm, view_score } = display;
+    const {
+      can_ship,
+      can_score,
+      can_711,
+      can_return_confirm,
+      view_score,
+    } = display;
     const buttonConfig = {
       size: 'sm',
       width: 'auto',
