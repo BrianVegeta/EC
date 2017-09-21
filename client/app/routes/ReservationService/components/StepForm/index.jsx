@@ -360,11 +360,11 @@ class StepForm extends React.Component {
    * 數量設定
    *
    */
-  renderUnit({ unit }, { unit: itemUnit }) {
+  renderUnit({ unit }) {
     const { dispatchChangeData } = this.props;
     const refUnitInput = unitInput => (this.unitInput = unitInput);
     const inputValue = unit ? String(unit) : '';
-
+    const itemUnit = 99;
     return (
       <FormGroup
         headerText="數量"
