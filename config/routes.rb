@@ -120,6 +120,7 @@ Rails.application.routes.draw do
       post 'get_sue_report', to: 'contract#get_report'
 
       #CONTRACT
+      post 'check_item_ongoing', to: 'contract#check_item_ongoing'
       post 'reserve_space', to: 'contract#space_create'
       post 'reserve_space_update', to: 'contract#space_update'
       post 'reserve_goods', to: 'contract#item_create'

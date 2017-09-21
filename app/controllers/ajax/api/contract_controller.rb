@@ -266,6 +266,12 @@ class Ajax::Api::ContractController < ApplicationController
     respond success, obj
   end
 
+  def check_item_ongoing
+    obj = ::Api::Contract::CheckItemOngoing.new check_item_ongoing_params, current_apitoken
+    success = obj.request
+    respond success, obj
+  end
+
   ###################### FUNCTION ################################
   private
   def parse_contract_rsp(response_data)
@@ -465,12 +471,16 @@ class Ajax::Api::ContractController < ApplicationController
   def contract_of_me_params
      #role_type : String =>  BOTH / OWNER / LESSEE
      #type : String => ITEM / SERVICE / SPACE
-     params.permit(:role_type, :type).merge(current_uid_params);
+     params.permit(:role_type, :type).merge(current_uid_params)
   end
 
   def score_params
     # score : Float => 0.0~5.0
     # comment : String => 留言
-    params.permit(:score, :comment).merge(cid_params);
+    params.permit(:score, :comment).merge(cid_params)
+  end
+
+  def check_item_ongoing_params
+    params.permit(:pid).merge(current_uid_params)
   end
 end

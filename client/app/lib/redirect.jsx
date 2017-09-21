@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { browserHistory } from 'react-router';
+import { loginPath } from 'lib/paths';
 
 
 export const redirectToWithReferrer = pathname =>
@@ -13,6 +14,9 @@ export const redirectToWithReferrer = pathname =>
       },
     });
   };
+
+export const redirectToLogin = () =>
+  () => browserHistory.push(loginPath);
 
 export const refreshHard = () =>
   (dispatch, getState) => {

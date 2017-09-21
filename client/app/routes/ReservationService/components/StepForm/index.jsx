@@ -1,11 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import myPropTypes from 'propTypes';
-import {
-  find,
-} from 'lodash';
-
+import { find } from 'lodash';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
@@ -19,13 +15,12 @@ import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputTextCounter from 'components/Input/TextCounter';
 import constraints from 'constraints/reservation';
+import publishConstraints from 'constraints/publish';
 import { formatDate, rangeDiff } from 'lib/time';
-
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
-
 import CSS from 'react-css-modules';
 import {
   CHARGE_TYPE_FIX,
@@ -35,7 +30,6 @@ import {
 import styles from './styles.sass';
 import { DangerText } from './styles';
 import {
-
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from '../../modules/reservationItem';
@@ -140,12 +134,10 @@ class StepForm extends React.Component {
     const { dispatchChangeData } = this.props;
     const advanceDays = <DangerText>提前{advance_reservation_days}天</DangerText>;
     const helperBottom = advance_reservation_days ?
-        (<span>請{advanceDays}預約</span>) : null;
-
+      (<span>請{advanceDays}預約</span>) : null;
     const ref = datesInput => (this.datesInput = datesInput);
     const onDatesChange = ({ startDate, endDate }) =>
       dispatchChangeData({ leasestart: startDate, leaseend: endDate });
-
     return (
       <FormGroup
         headerText={'服務時間'}
@@ -157,8 +149,8 @@ class StepForm extends React.Component {
           endDate={leaseend}
           onDatesChange={onDatesChange}
           preparation={advance_reservation_days}
-          value={leasestart && leaseend && 'date'}
-          constraints={constraints.dates}
+          startDateConstraint={publishConstraints.startDate}
+          endDateConstraint={publishConstraints.endDate}
           validateOnBlur
         />
       </FormGroup>

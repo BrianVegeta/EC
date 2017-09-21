@@ -1,12 +1,10 @@
 import validate from 'validate.js';
-import { now, formatDate } from 'lib/time';
+import { yesterday, formatDate } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
 import { parseInt } from 'lodash';
 
 export const PRICE_MIN = 100;
 export const PRICE_MAX = 99999;
-// export const AMOUNT_MAX = 99;
-// export const AMOUNT_MIN = 1;
 export const SERVICE_UNIT_MIN = 1;
 export const SERVICE_RESERVATION_DAYS_MAX = 30;
 export const SERVICE_RESERVATION_DAYS_MIN = 0;
@@ -110,7 +108,7 @@ export default {
       message: '^請選擇開始日期',
     },
     datetime: {
-      earliest: now(),
+      earliest: yesterday(),
       tooEarly: '^開始日期不得早於%{date}',
     },
   },
@@ -119,7 +117,7 @@ export default {
       message: '^請選擇結束日期',
     },
     datetime: {
-      earliest: now(),
+      earliest: yesterday(),
       tooEarly: '^結束日期不得早於%{date}',
     },
   },

@@ -1,41 +1,27 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import myPropTypes from 'propTypes';
-import {
-  find,
-} from 'lodash';
-// import colors from 'styles/colorExport.scss';
-// import IconLocation from 'react-icons/lib/md/location-on';
+import { find } from 'lodash';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
+import BillingDetail, { calculateService } from 'components/BillingDetail';
 import SingleDatePicker from 'components/Input/SingleDatePicker';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
-import BillingDetail, { calculateService } from 'components/BillingDetail';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputTextCounter from 'components/Input/TextCounter';
 import constraints from 'constraints/reservation';
-// import { formatDate, rangeDiff } from 'lib/time';
-
-import ButtonNextStep, {
-  STATUS_DISABLE,
-  STATUS_VALID,
-} from 'components/Button/NextStep';
-
+import publishConstraints from 'constraints/publish';
+import ButtonNextStep, { STATUS_DISABLE, STATUS_VALID } from 'components/Button/NextStep';
+import { CHARGE_TYPE_DAY, CHARGE_TYPE_MONTH } from 'constants/publishTypes';
 import CSS from 'react-css-modules';
-import {
-  CHARGE_TYPE_DAY,
-  CHARGE_TYPE_MONTH,
-} from 'constants/publishTypes';
 import styles from './styles.sass';
 import { DangerText } from './styles';
-
 import {
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
@@ -71,8 +57,8 @@ class StepForm extends React.Component {
     return coupon ? coupon.amount : null;
   }
 
-  static getUnit(type) {
-    switch (type) {
+  static getUnit({ calculate_charge_type }) {
+    switch (calculate_charge_type) {
       case CHARGE_TYPE_DAY: return '天';
       case CHARGE_TYPE_MONTH: return '月';
       default: return '';
@@ -95,9 +81,18 @@ class StepForm extends React.Component {
     );
   }
 
+  static renderAdvanceDaysDesc(advanceDays) {
+    return (
+      <span>
+        請{<DangerText>提前{advanceDays}天</DangerText>}預約
+      </span>
+    );
+  }
+
   constructor(props) {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
+    this.onDatesChange = this.onDatesChange.bind(this);
 
     this.couponInput = null;
     this.datesInput = null;
@@ -116,9 +111,9 @@ class StepForm extends React.Component {
   onNextStepClick() {
     const { nextStep, dispatchValidate } = this.props;
 
-    dispatchValidate()
-    .then(() => nextStep())
-    .catch(() => {
+    dispatchValidate().then(() => {
+      nextStep();
+    }).catch(() => {
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.serviceCityAreaInput) this.serviceCityAreaInput.valid();
@@ -128,65 +123,54 @@ class StepForm extends React.Component {
     });
   }
 
+  onDatesChange({ startDate, endDate }) {
+    this.props.dispatchChangeData({ leasestart: startDate, leaseend: endDate });
+  }
+
+  onMonthDateChange({ startDate }) {
+    this.props.dispatchChangeMonth(startDate, null);
+  }
+
   /**
    *
    * 選擇日期
    *
    */
-  renderDatesPicker(
-    { leasestart, leaseend },
-    { advance_reservation_days },
-  ) {
-    const { dispatchChangeData } = this.props;
-    const advanceDays = <DangerText>提前{advance_reservation_days}天</DangerText>;
-    const helperBottom = advance_reservation_days ?
-        (<span>請{advanceDays}預約</span>) : null;
-
-    const ref = datesInput => (this.datesInput = datesInput);
-    const onDatesChange = ({ startDate, endDate }) =>
-      dispatchChangeData({ leasestart: startDate, leaseend: endDate });
-
+  renderDatesPicker({ leasestart, leaseend }, { advance_reservation_days: advanceDays }) {
+    const advanceDaysDesc = this.constructor.renderAdvanceDaysDesc(advanceDays);
     return (
       <FormGroup
-        headerText={'租借時間'}
-        helperBottom={helperBottom}
+        headerText="租借時間"
+        helperBottom={advanceDays ? advanceDaysDesc : null}
       >
         <InputDatesPicker
-          ref={ref}
+          ref={input => (this.datesInput = input)}
           startDate={leasestart}
           endDate={leaseend}
-          onDatesChange={onDatesChange}
-          preparation={advance_reservation_days}
-          value={leasestart && leaseend && 'date'}
-          constraints={constraints.dates}
+          onDatesChange={this.onDatesChange}
+          preparation={advanceDays}
+          startDateConstraint={publishConstraints.startDate}
+          endDateConstraint={publishConstraints.endDate}
           validateOnBlur
         />
       </FormGroup>
     );
   }
 
-  renderSingleDatesPicker(
-    { leasestart, leaseend },
-    { advance_reservation_days, earliestStart },
-  ) {
-    const { dispatchChangeMonth } = this.props;
-    const advanceDays = <DangerText>提前{advance_reservation_days}天</DangerText>;
-    const helperBottom = advance_reservation_days ?
-        (<span>請{advanceDays}預約</span>) : null;
-
-    const ref = datesInput => (this.datesInput = datesInput);
-    const onMonthDateChange = ({ startDate }) => dispatchChangeMonth(startDate, null);
-
+  renderSingleDatesPicker(reservation, item) {
+    const { leasestart } = reservation;
+    const { advance_reservation_days: advanceDays, earliestStart } = item;
+    const advanceDaysDesc = this.constructor.renderAdvanceDaysDesc(advanceDays);
     return (
       <FormGroup
         headerText={'開始時間'}
-        helperBottom={helperBottom}
+        helperBottom={advanceDays ? advanceDaysDesc : null}
       >
         <SingleDatePicker
-          ref={ref}
+          ref={input => (this.datesInput = input)}
           startDate={leasestart}
           earliestStart={earliestStart}
-          onDatesChange={onMonthDateChange}
+          onDatesChange={this.onMonthDateChange}
         />
       </FormGroup>
     );
@@ -418,39 +402,14 @@ class StepForm extends React.Component {
     );
   }
 
-  renderDetailDiff(chargeType) {
-    const { reservation, reservationItem } = this.props;
-    switch (chargeType) {
-      // case CHARGE_TYPE_FIX: {
-      //   const { leasestart, leaseend } = reservationItem;
-      //   const totalDays = rangeDiff(leasestart, leaseend, true);
-      //   return (
-      //     <div styleName="duration-container">
-      //       <span styleName="label">活動時間：</span>
-      //       <span styleName="time">
-      //         {
-      //           totalDays > 1 ?
-      //           `${formatDate(leasestart)} - ${formatDate(leaseend)}（共 ${totalDays} 天）` :
-      //           `${formatDate(leasestart)}`
-      //         }
-      //       </span>
-      //     </div>
-      //   );
-      // }
-      //
-      // case CHARGE_TYPE_DAY:
-      //   return (
-      //     <div styleName="dates-picker-container">
-      //       {this.renderDatesPicker(reservation, reservationItem)}
-      //     </div>
-      //   );
-
+  renderDetailDiff() {
+    const { reservation, reservationItem: item } = this.props;
+    const { calculate_charge_type } = item;
+    switch (calculate_charge_type) {
       case CHARGE_TYPE_DAY: {
         return (
-          <div>
-            <div styleName="dates-picker-container">
-              {this.renderDatesPicker(reservation, reservationItem)}
-            </div>
+          <div styleName="dates-picker-container">
+            {this.renderDatesPicker(reservation, item)}
           </div>
         );
       }
@@ -462,7 +421,7 @@ class StepForm extends React.Component {
               {this.renderMonth(reservation)}
             </div>
             <div styleName="dates-picker-container">
-              {this.renderSingleDatesPicker(reservation, reservationItem)}
+              {this.renderSingleDatesPicker(reservation, item)}
             </div>
           </div>
         );
@@ -480,26 +439,23 @@ class StepForm extends React.Component {
       reservationItem: item,
       reservation,
     } = this.props;
-
-    const {
-      pname,
-      img1,
-      price,
-      calculate_charge_type,
-    } = item;
+    const { pname, img1, price } = item;
+    const { getUnit } = this.constructor;
 
     if (!isFetched) return null;
     return (
       <FormContainer title="填寫預訂資訊" >
         <div styleName="header-note-container">
           <ReservationItemNote
-            {...{ pname, img1, price }}
-            unit={this.constructor.getUnit(calculate_charge_type)}
+            pname={pname}
+            img1={img1}
+            price={price}
+            unit={getUnit(item)}
           />
         </div>
         <ConfirmTitle title="交易明細" >
           <div styleName="detail-container">
-            {this.renderDetailDiff(calculate_charge_type)}
+            {this.renderDetailDiff()}
             {this.renderCoupons(reservation)}
             {this.renderBillingDetail(reservation, item)}
           </div>

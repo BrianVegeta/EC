@@ -40,10 +40,11 @@ class Item extends React.Component {
   render() {
     const { item } = this.props;
     if (!item.isFetched) return null;
+    const { detail: { pid } } = item;
     return (
       <div styleName="container" className="clear">
         <div styleName="sidebar-container">
-          <SidebarContainer />
+          <SidebarContainer pid={pid} />
         </div>
         <div styleName="main-container" >
           <Main {...this.props} />

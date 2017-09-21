@@ -4,7 +4,6 @@ import { initEnvironment } from 'actions/environmentActions';
 import { fetchCategories } from 'modules/categories';
 import { setRouteHook } from 'modules/routingHelper';
 import { redirectToWithReferrer } from 'lib/redirect';
-
 import layout from './hoc';
 
 

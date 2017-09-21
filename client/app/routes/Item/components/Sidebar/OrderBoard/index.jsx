@@ -3,11 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import FormButton from 'components/FormButton';
-
+import { swalNormal } from 'lib/swal';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-
 import Discounter from './Discounter';
 import Term from './Term';
 
@@ -22,7 +21,32 @@ class OrderBoard extends React.Component {
   static propTypes = {
     model: myPropTypes.orderBoard.isRequired,
     isSticky: PropTypes.bool,
+    checkItemOngoing: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.onButtonClick = this.onButtonClick.bind(this);
+  }
+
+  onButtonClick() {
+    const {
+      model: { isMyOwn, onReserve, onEdit },
+      checkItemOngoing,
+    } = this.props;
+    checkItemOngoing().then(() => {
+      swalNormal({
+        title: '無法進行此動作',
+        text: '已對此產品提出過需求，正等待對方同意。',
+      });
+    }).catch(() => {
+      if (isMyOwn) {
+        onEdit();
+      } else {
+        onReserve();
+      }
+    });
+  }
 
   generateButtonText() {
     const { model: { isMyOwn, type } } = this.props;
@@ -33,6 +57,7 @@ class OrderBoard extends React.Component {
     }
     return '馬上購買';
   }
+
   render() {
     const { model, isSticky } = this.props;
     const {
@@ -43,8 +68,6 @@ class OrderBoard extends React.Component {
       amountRemaining,
       deposit,
       payment,
-      onReserve,
-      onEdit,
       isMyOwn,
       type,
     } = model;
@@ -70,7 +93,7 @@ class OrderBoard extends React.Component {
             content={this.generateButtonText()}
             colorType={isMyOwn ? 'greenBorder' : 'orange'}
             style={{ height: 52 }}
-            onClick={isMyOwn ? onEdit : onReserve}
+            onClick={this.onButtonClick}
             size="md"
           />
         </div>

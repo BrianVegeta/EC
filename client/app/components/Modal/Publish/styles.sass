@@ -20,28 +20,33 @@
     svg
       color: #f1f1f1
 
-.entry-container
-  margin: 0 45px 20px auto
-  width: 150px
-  transition: background-color .25s ease
-  .icon-container
-    display: inline-block
-    vertical-align: middle
-    border-radius: 50%
-    background: #fff
-    color: #444
-    width: 100px
-    height: 100px
-    padding: 25px
-    &:hover
-      background: #f1f1f1
-    svg
-      polygon, path
-        transition: fill .25s ease
-  .text
-    display: inline-block
-    vertical-align: middle
-    color: #fff
-    width: 50px
-    &.hovering
-      background: #f1f1f1
+.shortcuts
+  margin: 0 45px 0 auto
+  width: 100px
+  .entry-container
+    transition: background-color .25s ease
+    position: relative
+    margin-bottom: 20px
+    .icon-container
+      display: inline-block
+      vertical-align: middle
+      border-radius: 50%
+      background: #fff
+      color: #444
+      width: 100px
+      height: 100px
+      padding: 25px
+      &:hover
+        background: #f1f1f1
+      svg
+        polygon, path
+          transition: fill .25s ease
+    .text
+      position: absolute
+      right: 100%
+      top: 50%
+      display: inline-block
+      color: #fff
+      width: 50px
+      &.isHovering
+        color: #f1f1f1

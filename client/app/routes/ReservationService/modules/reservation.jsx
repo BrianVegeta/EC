@@ -8,7 +8,6 @@ import { redirectWithoutHook } from 'lib/redirect';
 import {
   REDUCER_KEY as ITEM_REDUCER_KEY,
   ASSIGN_ADDRESS_BY_OWNER,
-  ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
 
 /* =============================================>>>>>

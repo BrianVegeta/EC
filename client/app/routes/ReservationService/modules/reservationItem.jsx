@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash';
 import { asyncXhrPost } from 'lib/xhr';
-// import moment from 'moment';
-// import { REDUCER_KEY as COVER_REDUCER_KEY } from './covers';
+import { changeData } from './reservation';
+
 
 /* =============================================>>>>>
 = settings =
@@ -45,6 +45,9 @@ export const fetchItem = pid =>
     asyncXhrPost('/ajax/item_detail.json', { pid })
     .then((data) => {
       dispatch(setItem(data));
+      if (data.assign_address_type.length === 1) {
+        dispatch(changeData({ serviceLocationType: data.assign_address_type }));
+      }
 
       const { uid } = data;
       asyncXhrPost('/ajax/user_info.json', { uid }).then((userData) => {

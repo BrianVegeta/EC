@@ -3,13 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { IndexLink, Link } from 'react-router';
-import { isEqual, startsWith } from 'lodash';
-import {
-  my,
-  notifyPath,
-  registrationPath,
-  loginPath,
-} from 'lib/paths';
+import { isEqual } from 'lodash';
+import { notifyPath, registrationPath, loginPath } from 'lib/paths';
 import AccountNavs from 'constants/myAccountNavs';
 import { SHAREAPP_HELP_URL } from 'constants/config';
 import HeaderSearchContainer from 'containers/HeaderSearchContainer';
@@ -31,12 +26,14 @@ const cx = classnames.bind(styles);
 class Header extends React.Component {
 
   static defaultProps = {
+    hasPublishBtn: true,
     fixed: false,
     hasShortcut: false,
     searchable: false,
   };
 
   static propTypes = {
+    hasPublishBtn: PropTypes.bool,
     fixed: PropTypes.bool,
     hasShortcut: PropTypes.bool,
     searchable: PropTypes.bool,
@@ -50,12 +47,14 @@ class Header extends React.Component {
     }).isRequired,
   };
 
+  static renderCircle() {
+    return <span styleName="notice-circle" />;
+  }
+
   componentDidMount() {
     const { auth } = this.props;
-    if (auth.isLogin) {
-      this.props.dispatchNotify();
-      // this.props.dispatchCollection();
-    }
+    if (!auth.isLogin) return;
+    this.props.dispatchNotify();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -78,35 +77,24 @@ class Header extends React.Component {
     return true;
   }
 
-  renderCircle(type) {
+  checkNotify(type) {
     const { notification } = this.props;
     switch (type) {
       case NOTIFY_OWNER_CONTRACT : {
         const { notifyCData: { owner_unread_count } } = notification;
-        if (owner_unread_count && owner_unread_count > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return Boolean(owner_unread_count && owner_unread_count > 0);
       }
-        break;
       case NOTIFY_LESSEE_CONTRACT: {
         const { notifyCData: lessee_unread_count } = notification;
-        if (lessee_unread_count && lessee_unread_count > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return Boolean(lessee_unread_count && lessee_unread_count > 0);
       }
-        break;
       case NOTIFY_OTHER: {
         const { notifyData } = notification;
-        if (notifyData && notifyData.length > 0) {
-          return <div styleName="notice-circle" />;
-        }
+        return Boolean(notifyData && notifyData.length > 0);
       }
-        break;
       default:
-        return null;
+        return false;
     }
-
-    return null;
   }
 
   render() {
@@ -117,23 +105,19 @@ class Header extends React.Component {
       auth: { isLogin, currentUser },
       fixed,
       hasShortcut,
-      pathname,
+      hasPublishBtn,
     } = this.props;
+    const { renderCircle } = this.constructor;
+    const hasLesseeNotify = this.checkNotify(NOTIFY_LESSEE_CONTRACT);
+    const hasOwnerNotify = this.checkNotify(NOTIFY_OWNER_CONTRACT);
+    const hasOtherNotify = this.checkNotify(NOTIFY_OTHER);
 
-    // const myOrdersPath = my.ownerOrderItem('TAB_REQUEST');
-    // const myLesseeOrdersPath = my.lesseeOrderItem('TAB_REQUEST');
-    // const myCommentsPath = my.commentOwnerPath;
-    // const myItemsPath = my.myGoodsPath;
-    // const myWalletPath = my.walletPath;
-    // const myCollectionPath = my.collectionPath;
-    const notifyIndexPath = notifyPath.contractNotifyPath;
-    // <NavItem action={notifyIndexPath} content="通知" />
-    const isPublish = startsWith(pathname, '/p/publish');
     return (
       <header
-        className={
-          cn('navbar', { 'navbar-static': !fixed, 'navbar-fixed-top': fixed })
-        }
+        className={cn('navbar', {
+          'navbar-static': !fixed,
+          'navbar-fixed-top': fixed,
+        })}
       >
         <div className="navbar-container">
           <div className="container clear">
@@ -156,7 +140,7 @@ class Header extends React.Component {
                   <li className="nav" >
                     <Link to={AccountNavs.lesseeOrder.path}>
                       {AccountNavs.lesseeOrder.text}
-                      {this.renderCircle(NOTIFY_LESSEE_CONTRACT)}
+                      {hasLesseeNotify && renderCircle()}
                     </Link>
                   </li>
                 }
@@ -164,18 +148,18 @@ class Header extends React.Component {
                   <li className="nav" >
                     <Link to={AccountNavs.ownerOrder.path}>
                       {AccountNavs.ownerOrder.text}
-                      {this.renderCircle(NOTIFY_OWNER_CONTRACT)}
+                      {hasOwnerNotify && renderCircle()}
                     </Link>
                   </li>
                 }
                 {isLogin &&
                   <li className="nav" >
-                    <Link to={notifyIndexPath}>
-                      通知{this.renderCircle(NOTIFY_OTHER)}
+                    <Link to={notifyPath.contractNotifyPath}>
+                      通知{hasOtherNotify && renderCircle()}
                     </Link>
                   </li>
                 }
-                {isLogin && !isPublish &&
+                {isLogin && hasPublishBtn &&
                   <NavItem
                     action={dispatchPublish}
                     content="發佈"

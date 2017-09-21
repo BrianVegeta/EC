@@ -2,22 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { Link } from 'react-router';
-import {
-  isFunction,
-} from 'lodash';
+import { isFunction } from 'lodash';
 import ReactHoverObserver from 'react-hover-observer';
-
-import styled from 'styled-components';
 import Dropdown from '../Dropdown';
+
 
 const RENDER_TYPE_BUTTON = 'RENDER_TYPE_BUTTON';
 const RENDER_TYPE_DROPDOWN = 'RENDER_TYPE_DROPDOWN';
 const RENDER_TYPE_URL = 'RENDER_TYPE_URL';
 const RENDER_TYPE_HREF = 'RENDER_TYPE_HREF';
-
-const HoverContainer = styled.div`
-  display: inline-block;
-`;
 
 class NavItem extends React.Component {
 
@@ -66,9 +59,9 @@ class NavItem extends React.Component {
           className="nav-hover"
           onHoverChanged={e => (this.dropdown.triggerClick(e))}
         >
-          <HoverContainer >
+          <div style={{ display: 'inline-block' }}>
             <Link to={link}>{content}</Link>
-          </HoverContainer>
+          </div>
         </ReactHoverObserver>
       );
     }

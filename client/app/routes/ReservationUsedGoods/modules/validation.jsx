@@ -4,21 +4,18 @@ import validate from 'validate.js';
 import { isEmpty, includes } from 'lodash';
 import constraints from 'constraints/reservation';
 import {
+  SEND_TYPE_MAIL,
+  SEND_TYPE_SEVEN,
+} from 'constants/enums';
+import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
   PAYMENT_TYPE_ATM,
   PAYMENT_TYPE_CREDIT_CARD,
 } from './reservation';
-// import {
-//   CHARGE_TYPE_FIX,
-//   CHARGE_TYPE_DAY,
-//   CHARGE_TYPE_COUNT,
-//   CHARGE_TYPE_MONTH,
-// } from 'constants/publishTypes';
-
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
-  // ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
+
 
 const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
 const ERROR_BANK_INFO_READY = '請設定銀行帳戶。';
@@ -31,46 +28,28 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 export const validateFormBy = ({
   sendType, sendCity, sendArea, sendAddress,
   note, unit, storeid,
+}, {
+  unit: itemUnit,
 }) => {
-  if (!sendType) {
-    return { isValid: false };
-  }
-  let errors = null;
-  const unitValidation = constraints.unit(unit);
-  switch (sendType) {
-    case '2':
-      errors = validate({
-        storeid,
-        note,
-        unit,
-      }, {
-        storeid: constraints.storeid,
-        unit: unitValidation,
-      });
-      break;
-    case '1':
-      errors = validate({
-        sendCityArea: `${sendCity}${sendArea}`,
-        sendAddress,
-        note,
-        unit,
-      }, {
-        sendCityArea: constraints.cityArea,
-        sendAddress: constraints.address,
-        unit: unitValidation,
-      });
-      break;
-    default:
-      errors = validate({
-        note,
-        unit,
-      }, {
-        unit: unitValidation,
-      });
-      break;
-  }
-
-
+  const isMailSend = sendType === SEND_TYPE_MAIL;
+  const isSevenSend = sendType === SEND_TYPE_SEVEN;
+  const values = {
+    storeid,
+    sendCityArea: `${sendCity}${sendArea}`,
+    sendAddress,
+    sendType,
+    unit,
+    note,
+  };
+  const validation = {
+    storeid: isSevenSend ? constraints.storeid : {},
+    sendCityArea: isMailSend ? constraints.cityArea : {},
+    sendAddress: isMailSend ? constraints.address : {},
+    sendType: constraints.sendType,
+    unit: constraints.unit(itemUnit),
+    note: constraints.note,
+  };
+  const errors = validate(values, validation);
   return {
     isValid: isEmpty(errors),
     errors,
@@ -82,7 +61,6 @@ export const validateForm = () =>
     new Promise((resolve, reject) => {
       const item = getState()[RESERVATION_ITEM_REDUCER_KEY];
       const reservation = getState()[RESERVATION_REDUCER_KEY];
-      console.log('validateForm');
       const { isValid, errors } = validateFormBy(reservation, item);
       if (isValid) {
         resolve();

@@ -1,8 +1,8 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { Link } from 'react-router';
 import IconFlag from 'react-icons/lib/fa/flag';
 import { formatCurrency } from 'lib/currency';
 import styled from 'styled-components';
@@ -45,26 +45,35 @@ class Sidebar extends React.Component {
     dispatchReport: PropTypes.func.isRequired,
     dispatchAddFavorite: PropTypes.func.isRequired,
     dispatchRemoveFavorite: PropTypes.func.isRequired,
+    dispatchCheckItemOngoing: PropTypes.func.isRequired,
     isLogin: PropTypes.bool.isRequired,
   };
 
-  renderUnit({ calculate_charge_type }) {
+  static renderUnit({ calculate_charge_type }) {
     switch (calculate_charge_type) {
       case CHARGE_TYPE_FIX:
-        return ('次');
+        return '次';
       case CHARGE_TYPE_DAY:
-        return ('天');
+        return '天';
       case CHARGE_TYPE_COUNT:
-        return ('件');
+        return '件';
       case CHARGE_TYPE_MONTH:
-        return ('月');
+        return '月';
       default:
-        return ('件');
+        return '件';
     }
   }
+
   render() {
-    const { itemDetail, isMyOwn, dispatchAddFavorite,
-      dispatchRemoveFavorite, dispatchReport, isLogin } = this.props;
+    const {
+      itemDetail,
+      isMyOwn,
+      dispatchAddFavorite,
+      dispatchRemoveFavorite,
+      dispatchReport,
+      dispatchCheckItemOngoing,
+      isLogin,
+    } = this.props;
     const { price } = itemDetail;
     return (
       <StickyContainer style={{ height: 1700 }}>
@@ -76,13 +85,14 @@ class Sidebar extends React.Component {
                   <div className={cx('price-container')}>
                     <span className={cx('dollar')}>NTD </span>
                     <span className={cx('price')}>{formatCurrency(price, '')}</span>
-                     /{this.renderUnit(itemDetail)}
+                     /{this.constructor.renderUnit(itemDetail)}
                   </div>
                 </div>
                 <div className={cx('body')} >
                   <OrderBoard
                     model={new BoardModel(itemDetail, isMyOwn)}
                     isSticky={isSticky}
+                    checkItemOngoing={dispatchCheckItemOngoing}
                   />
                   <InteractiveBoard
                     pid={itemDetail.pid}

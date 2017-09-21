@@ -1,10 +1,8 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
-import { loginPath, registrationPath } from 'lib/paths';
 import { setReferrerPath } from 'modules/routingHelper';
 import configureStore from '../store/configureStore';
 import customUseScroll from './scroll';
@@ -17,32 +15,33 @@ const routes = require('../routes');
  * @railsContext
  *
  */
-const App = (props) => {
-  const store = configureStore(props);
-  const history = syncHistoryWithStore(
-    browserHistory,
-    store,
-  );
+class App extends React.Component {
 
-  history.listen((location) => {
-    const { pathname } = location;
-    const exclusion = [loginPath, registrationPath];
-    if (!exclusion.includes(pathname)) {
-      store.dispatch(setReferrerPath(pathname));
-    }
-  });
+  constructor(props) {
+    super(props);
+    this.store = configureStore(props);
+    this.history = syncHistoryWithStore(
+      browserHistory,
+      this.store,
+    );
+    this.history.listen((location) => {
+      this.store.dispatch(setReferrerPath(location));
+    });
+  }
 
-  return (
-    <Provider store={store}>
-      <Router
-        history={history}
-        routes={routes.default(store)}
-        render={applyRouterMiddleware(useScroll(customUseScroll))}
-      />
-    </Provider>
-  );
-};
-// App.propTypes = propTypes;
+  render() {
+    return (
+      <Provider store={this.store}>
+        <Router
+          history={this.history}
+          routes={routes.default(this.store)}
+          render={applyRouterMiddleware(useScroll(customUseScroll))}
+        />
+      </Provider>
+    );
+  }
+}
+
 export default App;
 
 
