@@ -42,18 +42,11 @@ class CropperEditor extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.handleClickOutside, false);
+    document.addEventListener('mousedown', this.handleClickOutside, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClickOutside, false);
-  }
-
-  handleClickOutside(e) {
-    if (this.contentBox.contains(e.target)) {
-      return;
-    }
-    this.props.closeCropper();
+    document.removeEventListener('mousedowns', this.handleClickOutside, false);
   }
 
   onComplete() {
@@ -69,6 +62,12 @@ class CropperEditor extends React.Component {
 
     uploadCover(cropper.key, croppedDataUrl);
     closeCropper();
+  }
+
+  handleClickOutside(e) {
+    if (!this.contentBox) return;
+    if (this.contentBox.contains(e.target)) return;
+    this.props.closeCropper();
   }
 
   modalReady() {
@@ -153,8 +152,11 @@ class CropperEditor extends React.Component {
       >
         {
           isModalOpened &&
-          <div styleName="container">
-            <div styleName="cropper" ref={contentBox => (this.contentBox = contentBox)}>
+          <div
+            styleName="container"
+            ref={contentBox => (this.contentBox = contentBox)}
+          >
+            <div styleName="cropper">
               {
                 croppedCanvas &&
                 <CroppedCanvas
