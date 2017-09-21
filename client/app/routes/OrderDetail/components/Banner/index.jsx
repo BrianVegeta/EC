@@ -1,14 +1,18 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-icons/lib/fa/adjust';
+import Icon from 'components/Icons/OrderDetail/Info';
+import {
+  generateOwnerItemString,
+  generateOwnerServiceString,
+  generateOwnerSpaceString,
+  generateLesseeItemString,
+  generateLesseeServiceString,
+  generateLesseeSpaceString,
+  generateOwnerUsedItemString,
+  generateLesseeUsedItemString,
+} from 'lib/contractString';
 import CSS from 'react-css-modules';
-
-import { generateOwnerItemString, generateOwnerServiceString,
-  generateOwnerSpaceString, generateLesseeItemString,
-  generateLesseeServiceString, generateLesseeSpaceString,
-  generateOwnerUsedItemString, generateLesseeUsedItemString }
-  from 'lib/contractString';
 import styles from './styles.sass';
 
 class Banner extends React.Component {
@@ -72,14 +76,12 @@ class Banner extends React.Component {
   render() {
     const objString = this.generateString();
     return (
-      <div styleName="order_banner_bkg" className="clear">
-        <div styleName="order_banner_title_content">
-          <div>
-            <Icon styleName="order_banner_icon" size={35} />
-          </div>
-          <div styleName="order_banner_title">{ objString.title }</div>
+      <div styleName="container" className="clear">
+        <div styleName="title-container">
+          <Icon style={{ float: 'left' }} size={35} />
+          <div styleName="title">{ objString.title }</div>
         </div>
-        <div styleName="order_banner_body_content">
+        <div styleName="body-content">
           <span>{ objString.text }</span>
         </div>
       </div>

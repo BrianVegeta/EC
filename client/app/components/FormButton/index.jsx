@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import myPropTypes from 'propTypes';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -17,10 +18,16 @@ class FormButton extends React.Component {
 
   static propTypes = {
     colorType: PropTypes.oneOf([
-      'green', 'orange', 'greenBorder', 'dangerBlank', 'transparent', 'gray',
+      'green',
+      'orange',
+      'greenBorder',
+      'dangerBlank',
+      'transparent',
+      'gray',
+      'grayBorder',
     ]),
     size: PropTypes.oneOf(['lg', 'md', 'sm']),
-    style: PropTypes.object,
+    style: myPropTypes.style,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
