@@ -3,6 +3,7 @@ import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './swal-override.scss';
 
+
 const commonConfig = {
   reverseButtons: true,
   cancelButtonText: '取消',
@@ -16,36 +17,36 @@ const dropConfig = {
   confirmButtonText: '下架',
 };
 
-export const orderConfig = text => ({
-  title: '提示',
-  text,
-  type: 'warning',
-  showCancelButton: true,
-  cancelButtonColor: '#31ABBA',
-  cancelButtonText: '是',
-  confirmButtonColor: '#AAA',
-  confirmButtonText: '否',
-});
-export const warningConfig = ({ title, text }) => ({
-  title,
-  text,
-  type: 'warning',
-  confirmButtonText: '確定',
-});
+export const orderConfig = text =>
+  Object.assign({}, commonConfig, {
+    title: '提示',
+    text,
+    type: 'warning',
+    showCancelButton: true,
+    cancelButtonText: '否',
+    confirmButtonText: '是',
+  });
 
-export const successConfig = ({ title, text }) => ({
-  title,
-  text,
-  type: 'success',
-  confirmButtonText: '確定',
-});
+export const warningConfig = ({ title, text }) =>
+  Object.assign({}, commonConfig, {
+    title,
+    text,
+    type: 'warning',
+  });
 
-export const errorConfig = ({ title, text }) => ({
-  title,
-  text,
-  type: 'error',
-  confirmButtonText: '確定',
-});
+export const successConfig = ({ title, text }) =>
+  Object.assign({}, commonConfig, {
+    title,
+    text,
+    type: 'success',
+  });
+
+export const errorConfig = ({ title, text }) =>
+  Object.assign({}, commonConfig, {
+    title,
+    text,
+    type: 'error',
+  });
 
 export const swalDropItem = () =>
   swal(Object.assign({}, commonConfig, dropConfig));
