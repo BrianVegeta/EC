@@ -8,13 +8,18 @@ import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down';
 import ArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 import moment from 'moment';
 import 'moment/locale/zh-tw';
-
 import { isToday, inDates } from 'lib/time';
 import hasDatesError from 'components/Input/hoc/hasDatesError';
 import 'styles/react-dates-override.scss';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
+
+const inlineStyle = `
+  .CalendarDay--blocked-calendar, .CalendarDay--blocked-calendar:active  {
+      background: #f1f1f1;
+  }
+`;
 const cx = classnames.bind(styles);
 class Dates extends React.Component {
 
@@ -62,6 +67,14 @@ class Dates extends React.Component {
     this.resetInputs = this.resetInputs.bind(this);
     this.renderCalendarInfo = this.renderCalendarInfo.bind(this);
     this.isDayBlocked = this.isDayBlocked.bind(this);
+    this.onDatesChange = this.onDatesChange.bind(this);
+  }
+
+  onDatesChange({ startDate, endDate }) {
+    this.props.onDatesChange({ startDate, endDate });
+    if (startDate && endDate) {
+      this.setState({ focusedInput: null });
+    }
   }
 
   openCalendar(inputType) {
@@ -77,8 +90,8 @@ class Dates extends React.Component {
   }
 
   resetInputs() {
-    this.setState({ focusedInput: 'startDate' });
     this.props.onDatesChange({ startDate: null, endDate: null });
+    this.setState({ focusedInput: null });
   }
 
   isDayBlocked(day) {
@@ -101,29 +114,21 @@ class Dates extends React.Component {
         >
           清除
         </button>
-        { showHint &&
-          <div className={cx('notice')}>• 最少租用天數</div>
-        }
+        {showHint && <div className={cx('notice')}>• 最少租用天數</div>}
       </div>
     );
   }
 
   render() {
     moment.locale('zh-tw');
-    const { startDate, endDate, onDatesChange, isOutsideRange } = this.props;
-
+    const { startDate, endDate, isOutsideRange } = this.props;
     return (
       <div styleName="container">
-        <style>
-          {`
-            .CalendarDay--blocked-calendar, .CalendarDay--blocked-calendar:active  {
-              background: #f1f1f1;
-            }
-          `}
-        </style>
+        <style>{inlineStyle}</style>
         <DateRangePicker
           ref={dp => (this.dp = dp)}
-          {...{ startDate, endDate, onDatesChange, isOutsideRange }}
+          {...{ startDate, endDate, isOutsideRange }}
+          onDatesChange={this.onDatesChange}
           focusedInput={this.state.focusedInput}
           onFocusChange={focusedInput => this.setState({ focusedInput })}
           numberOfMonths={1}

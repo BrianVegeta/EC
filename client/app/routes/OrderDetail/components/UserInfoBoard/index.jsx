@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
-
-import CSS from 'react-css-modules';
-
 import { orderDetail, userprofilePaths } from 'lib/paths';
 import { redirectToWithReferrer } from 'lib/redirect';
-
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
+
 
 class UserInfoBoard extends React.Component {
   static defaultProps = {
@@ -30,7 +28,13 @@ class UserInfoBoard extends React.Component {
 
   constructor(props) {
     super(props);
+    this.onChat = this.onChat.bind(this);
     this.onSue = this.onSue.bind(this);
+  }
+
+  onChat() {
+    const { imgUrl: picture, uid, name, dispatchAddToChatRoom } = this.props;
+    dispatchAddToChatRoom({ uid, name, picture });
   }
 
   onSue() {
@@ -40,50 +44,40 @@ class UserInfoBoard extends React.Component {
   }
 
   render() {
-    const {
-      realname,
-      phone,
-      imgUrl,
-      contractstage,
-      uid,
-      name,
-      dispatchAddToChatRoom,
-    } = this.props;
+    const { realname, phone, imgUrl, contractstage, uid } = this.props;
     const showSueForm = (contractstage > 4 && contractstage < 11);
+    const buttonProps = {
+      size: 'sm',
+      width: 'auto',
+      style: { fontWeight: 600, padding: '7px 23px' },
+    };
+    const userprofilePath = userprofilePaths.indexPath(uid);
     return (
       <div styleName="boundary">
-        <Link
-          to={userprofilePaths.indexPath(uid)}
-          styleName="head-style"
-        >
+        <Link to={userprofilePath} styleName="head-style">
           <Avatar src={imgUrl} />
         </Link>
         <div styleName="board-style">
-          <div styleName="name-style">{`真實姓名：${realname}`}</div>
-          <div styleName="phone-style">{`手機號碼：${phone}`}</div>
+          <div styleName="name-style">真實姓名：{realname}</div>
+          <div styleName="phone-style">手機號碼：{phone}</div>
           <div styleName="panel-style">
             <div styleName="btn-section">
               <div styleName="btn-outer-style">
                 <FormButton
                   colorType="greenBorder"
-                  size="sm"
-                  style={{ width: 80, fontWeight: 600, padding: '7px 16px' }}
                   content="私訊"
-                  onClick={() => dispatchAddToChatRoom({
-                    uid,
-                    name,
-                    picture: imgUrl,
-                  })}
+                  onClick={this.onChat}
+                  {...buttonProps}
                 />
               </div>
-              { showSueForm &&
+              {
+                showSueForm &&
                 <div styleName="btn-outer-style">
                   <FormButton
-                    colorType={'green'}
-                    size="sm"
-                    width={100}
-                    content={'申訴'}
+                    colorType="grayBorder"
+                    content="申訴"
                     onClick={this.onSue}
+                    {...buttonProps}
                   />
                 </div>
               }

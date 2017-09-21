@@ -55,7 +55,7 @@ export function generateOwnerItemString(contractstage, startDate) {
       break;
     case 11:
       title = '已完成';
-      text = '對方已將物品寄還。';
+      text = '交易完成！請給對方評價吧！';
       break;
     case 12:
     case 13:

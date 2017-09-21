@@ -65,8 +65,10 @@ export const checkPasswordExist = () =>
   (dispatch, getState) => {
     dispatch(existChecking());
 
-    asyncXhrAuthedGet('/ajax/password/exist.json', getState())
-    .then(data => dispatch(existChecked(data)));
+    asyncXhrAuthedGet(
+      '/ajax/password/exist.json',
+      getState(),
+    ).then(data => dispatch(existChecked(data)));
   };
 
 // CREATE PASSWORD

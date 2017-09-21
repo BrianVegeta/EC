@@ -2,29 +2,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, browserHistory } from 'react-router';
-import { userprofilePaths, orderDetail, reservationGoods, reservationService, reservationSpace }
- from 'lib/paths';
+import {
+  userprofilePaths,
+  orderDetail,
+  reservationGoods,
+  reservationService,
+  reservationSpace,
+} from 'lib/paths';
 import swal, { orderConfig, errorConfig } from 'lib/swal';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import FormButton from 'components/FormButton';
 import { formatCurrency } from 'lib/currency';
-import { generateOwnerItemString, generateLesseeItemString }
-  from 'lib/contractString';
+import {
+  generateOwnerItemString, generateLesseeItemString,
+} from 'lib/contractString';
 import { formatDate, rangeDiff } from 'lib/time';
-import CSS from 'react-css-modules';
-import classnames from 'classnames/bind';
 import { popupScoreRating, popupATMBank } from 'modules/popup';
 import { addToChatRoom } from 'modules/chatRooms';
-
-import { doShipGoods, doReturn, doScore, resetAction,
-  doCreditCardPayment, doATMPayment, doReceiveConfirm,
+import {
+  doShipGoods,
+  doReturn,
+  doScore,
+  resetAction,
+  doCreditCardPayment,
+  doATMPayment,
+  doReceiveConfirm,
 } from 'modules/orderAction';
-
+import CSS from 'react-css-modules';
+import classnames from 'classnames/bind';
 import styles from './styles.sass';
 
-const cx = classnames.bind(styles);
 
+const cx = classnames.bind(styles);
+const buttonStyle = {
+  borderRadius: '100px',
+  padding: '7px 16px',
+  marginLeft: 10,
+  display: 'inline-block',
+};
+const buttonConfig = {
+  size: 'sm',
+  width: 'auto',
+  style: buttonStyle,
+};
 class OrderItemBoard extends React.Component {
 
   static defaultProps = {
@@ -153,217 +174,224 @@ class OrderItemBoard extends React.Component {
   }
 
   renderAction() {
-    return this.props.isOwner === true ? this.renderOwnerActions() : this.renderLesseeActions();
+    const { isOwner } = this.props;
+    return isOwner ? this.renderOwnerActions() : this.renderLesseeActions();
   }
 
   renderOwnerActions() {
-    const { display } = this.props;
-    const { can_ship, can_score, can_711, can_return_confirm, view_score } = display;
-    const buttonConfig = {
-      size: 'sm',
-      width: 'auto',
-      style: {
-        borderRadius: '100px',
-        padding: '7px 7px',
-        marginLeft: 10,
-        display: 'inline-block',
-      },
-    };
+    const {
+      cid,
+      display,
+      dispatch,
+      dispatchRefresh,
+    } = this.props;
+    const {
+      can_ship,
+      can_score,
+      can_711,
+      can_return_confirm,
+      view_score,
+    } = display;
     return (
       <div styleName="action-section">
-        {can_ship &&
+        {
+          can_ship &&
           <FormButton
             colorType={'green'}
             {...buttonConfig}
             content={'安排出貨'}
             onClick={() => {
               swal(orderConfig('出貨前是否要上傳照片紀錄？')).then(() => {
-                this.props.dispatch(doShipGoods(this.props.cid))
-                .then(() => {
+                browserHistory.push(orderDetail.indexPath(cid));
+              }).catch(() => {
+                dispatch(doShipGoods(cid)).then(() => {
                   this.props.dispatch(resetAction());
                   this.props.dispatchRefresh();
-                })
-                .catch((error) => {
+                }).catch((error) => {
                   swal(errorConfig('出貨失敗', error));
                 });
-              }).catch(() => {
-                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />
         }
-        {can_711 &&
+        {
+          can_711 &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'寄件代碼'}
+            colorType="green"
+            content="寄件代碼"
             onClick={() => {}}
           />
         }
-        {can_return_confirm &&
+        {
+          can_return_confirm &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'確認還貨'}
+            colorType="green"
+            content="確認還貨"
             onClick={() => {
               swal(orderConfig('確認前是否要上傳照片紀錄？')).then(() => {
-                this.props.dispatch(doReceiveConfirm(this.props.cid))
-                .then(() => {
-                  this.props.dispatch(resetAction());
-                  this.props.dispatchRefresh();
-                })
-                .catch((error) => {
+                browserHistory.push(orderDetail.indexPath(cid));
+              }).catch(() => {
+                dispatch(doReceiveConfirm(cid)).then(() => {
+                  dispatch(resetAction());
+                  dispatchRefresh();
+                }).catch((error) => {
                   swal(errorConfig('確認還貨失敗', error));
                 });
-              }).catch(() => {
-                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />
         }
-        {can_score &&
+        {
+          can_score &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'評分'}
+            colorType="green"
+            content="評分"
             onClick={() => this.callScorePanel(false)}
           />
         }
-        {view_score &&
+        {
+          view_score &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'查看評價'}
+            colorType="green"
+            content="查看評價"
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'greenBorder'}
           {...buttonConfig}
-          content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+          colorType="greenBorder"
+          content="查看詳情"
+          onClick={() => browserHistory.push(orderDetail.indexPath(cid))}
         />
       </div>
     );
   }
 
   renderLesseeActions() {
-    const { display, pid, cid } = this.props;
-    const { can_edit, can_pay, can_ship_confirm, can_return, can_score, view_score } = display;
-    const buttonConfig = {
-      size: 'sm',
-      width: 'auto',
-      style: {
-        borderRadius: '100px',
-        padding: '7px 7px',
-        marginLeft: 10,
-        display: 'inline-block',
-      },
-    };
+    const {
+      display,
+      pid,
+      cid,
+      dispatch,
+      dispatchRefresh,
+    } = this.props;
+    const {
+      can_edit,
+      can_pay,
+      can_ship_confirm,
+      can_return,
+      can_score,
+      view_score,
+    } = display;
     return (
       <div styleName="action-section">
-        {can_edit &&
+        {
+          can_edit &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'修改預訂單'}
-            onClick={() => browserHistory.push(reservationGoods.indexPath(pid, cid))}
+            colorType="green"
+            content="修改預訂單"
+            onClick={() => {
+              browserHistory.push(reservationGoods.indexPath(pid, cid));
+            }}
           />
         }
-        {can_pay &&
+        {
+          can_pay &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'付款'}
+            colorType="green"
+            content="付款"
             onClick={this.generatePayment()}
           />
         }
-        {can_ship_confirm &&
+        {
+          can_ship_confirm &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'確認收貨'}
+            colorType="green"
+            content="確認收貨"
             onClick={() => {
               swal(orderConfig('確認前是否要上傳照片紀錄？')).then(() => {
-                this.props.dispatch(doReceiveConfirm(this.props.cid))
-                .then(() => {
-                  this.props.dispatch(resetAction());
-                  this.props.dispatchRefresh();
-                })
-                .catch((error) => {
+                browserHistory.push(orderDetail.indexPath(cid));
+              }).catch(() => {
+                dispatch(doReceiveConfirm(cid)).then(() => {
+                  dispatch(resetAction());
+                  dispatchRefresh();
+                }).catch((error) => {
                   swal(errorConfig('確認收貨失敗', error));
                 });
-              }).catch(() => {
-                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />
         }
-        {can_return &&
+        {
+          can_return &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'還貨'}
+            colorType="green"
+            content="還貨"
             onClick={() => {
               swal(orderConfig('還貨前是否要上傳照片紀錄？')).then(() => {
-                this.props.dispatch(doReturn(this.props.cid))
-                .then(() => {
-                  this.props.dispatch(resetAction());
-                  this.props.dispatchRefresh();
-                })
-                .catch((error) => {
+                browserHistory.push(orderDetail.indexPath(cid));
+              }).catch(() => {
+                dispatch(doReturn(cid)).then(() => {
+                  dispatch(resetAction());
+                  dispatchRefresh();
+                }).catch((error) => {
                   swal(errorConfig('還貨失敗', error));
                 });
-              }).catch(() => {
-                browserHistory.push(orderDetail.indexPath(this.props.cid));
               });
             }}
           />
         }
-        {can_score &&
+        {
+          can_score &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'評分'}
+            colorType="green"
+            content="評分"
             onClick={() => this.callScorePanel(false)}
           />
         }
-        {view_score &&
+        {
+          view_score &&
           <FormButton
-            colorType={'green'}
             {...buttonConfig}
-            content={'查看評價'}
+            colorType="green"
+            content="查看評價"
             onClick={() => this.callScorePanel(true)}
           />
         }
         <FormButton
-          colorType={'greenBorder'}
           {...buttonConfig}
-          content={'查看詳情'}
-          onClick={() => browserHistory.push(orderDetail.indexPath(this.props.cid))}
+          colorType="greenBorder"
+          content="查看詳情"
+          onClick={() => browserHistory.push(orderDetail.indexPath(cid))}
         />
       </div>
     );
   }
 
   render() {
-    const { photoHead, photoName, photoUid, cidNo, unit,
+    const {
+      photoHead, photoName, photoUid, cidNo, unit,
       itemName, itemImgUrl, startDate, endDate, totalPrice,
-      display, isRead, dispatch } = this.props;
+      display, isRead, dispatch,
+    } = this.props;
     const objectString = this.generateString();
     return (
-      <div
-        className={`clear ${cx('board-border', { colored: !isRead })}`}
-      >
+      <div className={`clear ${cx('board-border', { colored: !isRead })}`}>
         <div styleName="header-section">
           <Link
             to={userprofilePaths.indexPath(photoUid)}
             styleName="header-avatar-style"
           >
-            <Avatar
-              src={photoHead}
-              width={40}
-            />
+            <Avatar src={photoHead} width={40} />
           </Link>
           <Link
             to={userprofilePaths.indexPath(photoUid)}
@@ -373,14 +401,10 @@ class OrderItemBoard extends React.Component {
           </Link>
           <div styleName="header-chat-style" >
             <FormButton
-              colorType={'greenBorder'}
+              colorType="greenBorder"
               size="sm"
-              style={{
-                fontSize: 14,
-                lineHeight: '14px',
-                padding: '7px 15px',
-              }}
-              content={'私訊'}
+              style={{ fontSize: 14, lineHeight: '14px', padding: '7px 15px' }}
+              content="私訊"
               onClick={() => {
                 dispatch(addToChatRoom({
                   uid: photoUid,
@@ -392,22 +416,20 @@ class OrderItemBoard extends React.Component {
           </div>
           <div styleName="mini-note-section">{objectString.title}</div>
         </div>
-        <div
-          styleName="body-section"
-          className="clear"
-        >
+        <div className="clear" styleName="body-section" >
           <div styleName="pic-style">
-            <Picture
-              src={itemImgUrl}
-              width={120}
-            />
+            <Picture src={itemImgUrl} width={120} />
           </div>
           <div styleName="content-style">
             <div styleName="hint-style">{`訂單編號：${cidNo}`}</div>
             <div styleName="text-style">{`${itemName}`}</div>
-            <div styleName="date-style">{`使用期間：${formatDate(startDate)}～${formatDate(endDate)}`}</div>
+            <div styleName="date-style">
+              使用期間：${formatDate(startDate)}～${formatDate(endDate)}
+            </div>
             <div styleName="price-section">
-              <div styleName="unit-style">使用{rangeDiff(startDate, endDate, true)}天X{unit}件</div>
+              <div styleName="unit-style">
+                使用{rangeDiff(startDate, endDate, true)}天X{unit}件
+              </div>
               <div styleName="price-style">總計 {formatCurrency(totalPrice)}</div>
             </div>
           </div>

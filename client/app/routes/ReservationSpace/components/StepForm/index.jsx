@@ -93,6 +93,7 @@ class StepForm extends React.Component {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
     this.onDatesChange = this.onDatesChange.bind(this);
+    this.onMonthDateChange = this.onMonthDateChange.bind(this);
 
     this.couponInput = null;
     this.datesInput = null;

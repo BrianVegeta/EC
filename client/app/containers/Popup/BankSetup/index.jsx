@@ -6,10 +6,8 @@ import FormBlock from 'components/Form/Block';
 import AlertPanel from 'components/Alert/Panel';
 import InputText from 'components/Input/Text';
 import InputSelection from 'components/Input/Selection';
-import InputPassword from 'components/Input/Password';
 import FormButton from 'components/FormButton';
 
-// import ModelPopupBankSetup from 'models/PopupBankSetup';
 import ConfirmUpdatePhoneContainer from 'containers/ConfirmUpdate/PhoneContainer';
 import ConfirmUpdateEmailContainer from 'containers/ConfirmUpdate/EmailContainer';
 
@@ -39,7 +37,6 @@ class BankSetupContainer extends React.Component {
     dispatchResetBankInfo: PropTypes.func.isRequired,
     dispatchChangeInfo: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
-    dispatchChangePassword: PropTypes.func.isRequired,
     dispatchSaveBankInfo: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
 
@@ -136,23 +133,12 @@ class BankSetupContainer extends React.Component {
   changeInfo(key) {
     return value => this.props.dispatchChangeInfo({ [key]: value });
   }
-  // <FormBlock title="密碼驗證" hasBottomLine={false}>
-  //   <InputPassword
-  //     placeholder="請輸入8個以上英數字"
-  //     autoComplete="off"
-  //     value={password}
-  //     onChange={value => dispatchChangePassword(value)}
-  //   />
-  //   <div styleName="passwordCheckHelper">
-  //     為了您的帳戶安全，請輸入密碼以協助我們確認您的身份
-  //   </div>
-  // </FormBlock>
+
   render() {
     const { phoneError, emailError } = this.state;
     const {
       banks,
       personalBankInfo,
-      dispatchChangePassword,
       isReadyToRender,
       checkedPassword,
     } = this.props;
@@ -168,7 +154,6 @@ class BankSetupContainer extends React.Component {
         accName,
         accNo,
       },
-      password,
     } = personalBankInfo;
 
     if (!isReadyToRender) return null;

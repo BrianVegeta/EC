@@ -31,7 +31,7 @@ class PopupAcessCheck extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { dispatchCheckPasswordExist } = this.props;
     dispatchCheckPasswordExist();
   }

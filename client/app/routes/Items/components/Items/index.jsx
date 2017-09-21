@@ -16,7 +16,6 @@ import {
   CATEGORY_SPACE_ID,
   CATEGORY_USED_GOODS_ID,
 } from 'constants/enums';
-
 import SidebarCategoriesContainer from 'containers/SidebarCategoriesContainer';
 
 import CSS from 'react-css-modules';
@@ -87,7 +86,7 @@ class Items extends React.Component {
 
   refetch() {
     this.props.dispatchReset();
-    this.props.dispatchFetchRecords(this.props.isUsed);
+    this.props.dispatchFetchRecords();
   }
 
   render() {

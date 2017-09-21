@@ -8,12 +8,10 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-
 import ButtonNextStep, {
   STATUS_LOADING,
   STATUS_VALID,
 } from 'components/Button/NextStep';
-
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
@@ -26,7 +24,6 @@ import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
 import styles from './styles.sass';
-
 import Banner from './Banner';
 import SueBanner from './SueBanner';
 import UserInfoBoard from './UserInfoBoard/index';
@@ -45,7 +42,9 @@ class Orderdetail extends React.Component {
       sueDetail: PropTypes.shape({
         u_no: PropTypes.string,
         type: PropTypes.string,
-        status: PropTypes.number,
+        status: PropTypes.oneOfType([
+          PropTypes.number, PropTypes.string,
+        ]),
         img1: PropTypes.string,
         img2: PropTypes.string,
         img3: PropTypes.string,
@@ -155,8 +154,9 @@ class Orderdetail extends React.Component {
         return () => {};
     }
   }
+
   renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
-    if (!(show)) return null;
+    if (!show) return null;
     return (
       <FormButton
         colorType={buttonColor}
@@ -746,17 +746,10 @@ class Orderdetail extends React.Component {
     const { orderdetail, dispatch } = this.props;
     const { sueDetail, order } = orderdetail;
     const { contractstage, cid } = order;
-    // const time = type === 'USED_ITEM' ? create_time : leasestart;
     if (contractstage < 1000) {
-      return (
-        <Banner
-          order={order}
-        />
-      );
+      return <Banner order={order} />;
     } else if (contractstage > 1000 && contractstage < 3000) {
-      if (!(sueDetail)) {
-        return null;
-      }
+      if (!(sueDetail)) return null;
       return (
         <SueBanner
           sueDetail={sueDetail}
@@ -773,11 +766,7 @@ class Orderdetail extends React.Component {
     const { img1, cid_no, pname } = order;
     return (
       <div styleName="top_40px_style">
-        <MiniMap
-          cover={`${img1}`}
-          cidNumber={`合約編號：${cid_no}`}
-          itemName={`${pname}`}
-        />
+        <MiniMap cover={img1} cidNumber={`合約編號：${cid_no}`} itemName={pname} />
       </div>
     );
   }

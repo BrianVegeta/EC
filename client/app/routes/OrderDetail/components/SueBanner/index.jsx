@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-icons/lib/fa/adjust';
+import Icon from 'components/Icons/OrderDetail/Appeal';
 import CSS from 'react-css-modules';
 
 import FormButton from 'components/FormButton';
@@ -56,22 +56,20 @@ class SueBanner extends React.Component {
       objString.title = '合約已取消';
     }
     return (
-      <div styleName="sue_banner_bkg" className="clear">
-        <div styleName="sue_banner_title_content">
-          <div>
-            <Icon styleName="sue_banner_icon" size={35} />
-          </div>
-          <div styleName="sue_banner_title">{ objString.title }</div>
+      <div styleName="container" className="clear">
+        <div styleName="title-container">
+          <Icon style={{ float: 'left' }} size={35} />
+          <div styleName="title">{objString.title}</div>
         </div>
-        <div styleName="sue_banner_body_content">
+        <div styleName="body-content">
           <span>{ objString.text }</span>
         </div>
         <div style={{ float: 'right', margin: '15px 20px 15px 0px' }}>
           <FormButton
-            colorType={'transparent'}
+            colorType="transparent"
+            content="申訴詳情"
             size="sm"
             width={130}
-            content={'申訴詳情'}
             onClick={this.onSueDetail}
           />
         </div>

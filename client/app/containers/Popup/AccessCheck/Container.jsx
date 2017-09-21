@@ -7,8 +7,8 @@ import {
   createPassword,
 } from 'modules/access';
 import { closePopup } from 'modules/popup';
-
 import Component from './index';
+
 
 /* pick props */
 const mapStateToProps = ({ environment, access }) => ({

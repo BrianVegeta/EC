@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import swal, { dropConfig } from 'lib/swal';
+import { swalDropItem } from 'lib/swal';
 import Container from '../components/Item/UsedGoods';
 import { fetchItems, deleteItem, reset } from '../modules/myItem';
 
@@ -10,13 +10,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const dispatchDelete = (pid) => {
-    swal(dropConfig({
-      title: '確定下架此商品？',
-      text: '下架之後即無法還原',
-      confirmText: '下架',
-    })).then(() => {}).catch(() => {
+    swalDropItem().then(() => {
       dispatch(deleteItem(pid));
-    });
+    }).catch(() => {});
   };
   return ({
     dispatch,
