@@ -157,3 +157,7 @@ $react-dates-z-index: 0 !default;
 .DateRangePicker__picker, .SingleDatePicker__picker {
   z-index: 2;
 }
+
+.DateInput--with-caret::after {
+  z-index: 3;
+}

@@ -37,7 +37,7 @@ import styles from './styles.sass';
 const cx = classnames.bind(styles);
 const buttonStyle = {
   borderRadius: '100px',
-  padding: '7px 7px',
+  padding: '7px 16px',
   marginLeft: 10,
   display: 'inline-block',
 };
