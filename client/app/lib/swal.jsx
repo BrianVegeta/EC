@@ -17,18 +17,28 @@ export const warningConfig = ({ title, text }) => ({
   title,
   text,
   type: 'warning',
+  confirmButtonText: '確定',
 });
 
 export const successConfig = ({ title, text }) => ({
   title,
   text,
   type: 'success',
+  confirmButtonText: '確定',
 });
 
 export const errorConfig = ({ title, text }) => ({
   title,
   text,
   type: 'error',
+  confirmButtonText: '確定',
 });
+
+export const swalNormal = ({ title, text }) =>
+  swal({
+    title,
+    text,
+    confirmButtonText: '確定',
+  });
 
 export default swal;

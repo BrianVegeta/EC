@@ -1,6 +1,8 @@
 import { isEqual, find, parseInt } from 'lodash';
-import { asyncXhrPost } from 'lib/xhr';
+import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
+import { redirectToLogin } from 'lib/redirect';
 import { fetchCollections } from 'modules/myCollection';
+import { REDUCER_KEY as AUTH_REDUCER_KEY } from 'modules/auth';
 
 /* =============================================>>>>>
 = settings =
@@ -18,7 +20,6 @@ const SET_EDIT = prefix('SET_EDIT');
 const CHANGE_OWNER = prefix('CHANGE_OWNER');
 const SET_COLLECTION = prefix('SET_COLLECTION');
 const RESET = prefix('RESET');
-// const FETCHED = prefix('FETCHED');
 
 /* =============================================>>>>>
 = actions =
@@ -96,6 +97,26 @@ export function editItem(pid) {
   };
 }
 
+export const checkItemOngoing = pid =>
+  (dispatch, getState) => {
+    const { isLogin } = getState()[AUTH_REDUCER_KEY];
+    return new Promise((resolve, reject) => {
+      if (!isLogin) {
+        dispatch(redirectToLogin());
+      } else {
+        asyncXhrAuthedPost(
+          '/ajax/check_item_ongoing.json', { pid }, getState(),
+        ).then((data) => {
+          if (data && data[0].contractstage === 1) {
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      }
+    });
+  };
+
 /* =============================================>>>>>
 = reducers =
 ===============================================>>>>>*/
@@ -140,12 +161,6 @@ export default function (state = initialState, action) {
     case RESET: {
       return initialState;
     }
-
-
-    // case FETCHED:
-    //   return Object.assign({}, state, {
-    //     isFetched: true,
-    //   });
 
     default:
       return state;

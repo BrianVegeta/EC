@@ -1,6 +1,6 @@
 import layoutHoc from 'containers/layout';
+import Root from 'containers/layout/Root';
 
-// import Fixed from 'layouts/Fixed';
 import Home from 'layouts/Home';
 import Publish from 'layouts/Publish';
 import Mine from 'layouts/MyAccount';
@@ -59,7 +59,7 @@ const confirmLeave = true;
 
 export default store => ({
   path: '/',
-
+  component: Root,
   childRoutes: [
     {
       indexRoute: HomeRoute(store.dispatch),

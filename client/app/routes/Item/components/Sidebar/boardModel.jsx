@@ -39,43 +39,38 @@ export default class {
     }
   }
 
-  static redirectToReservation({ top_category, type, pid }) {
-    let rsRouter = '/';
+  static getReservationPath({ top_category, type, pid }) {
     switch (type) {
-      case 'LEASE':
-        rsRouter = {
+      case 'LEASE': {
+        const rsRouter = {
           [CATE_GOODS]: rsGoodsRouter,
           [CATE_SERVICE]: rsServiceRouter,
           [CATE_SPACE]: rsSpaceRouter,
         }[top_category];
-        return () => browserHistory.push(rsRouter.indexPath(pid));
+        return rsRouter.indexPath(pid);
+      }
       case 'USED_ITEM':
-        rsRouter = rsUsedGoodsRouter;
-        return () => browserHistory.push(rsRouter.indexPath(pid));
+        return rsUsedGoodsRouter.indexPath(pid);
       default:
-        break;
+        return '/';
     }
-    return () => browserHistory.push(rsRouter);
   }
 
-  static editPublish({ top_category, type, pid }) {
-    let publishRouter = '/';
+  static getEditPath({ top_category, type, pid }) {
     switch (type) {
-      case 'LEASE':
-        publishRouter = {
+      case 'LEASE': {
+        const publishRouter = {
           [CATE_GOODS]: publishGoodsRouter,
           [CATE_SERVICE]: publishServiceRouter,
           [CATE_SPACE]: publishSpaceRouter,
         }[top_category];
-        break;
+        return publishRouter.indexPath(pid);
+      }
       case 'USED_ITEM':
-        publishRouter = publishUsedGoodsRouter;
-        break;
+        return publishUsedGoodsRouter.indexPath(pid);
       default:
-        break;
+        return '/';
     }
-
-    return () => browserHistory.push(publishRouter.indexPath(pid));
   }
 
   static renderMinLeaseCostDesc({ min_lease_days, price }) {
@@ -109,13 +104,13 @@ export default class {
     this.payment = '第三方安全支付 ，信用卡、ATM轉帳';
 
     const {
-      redirectToReservation,
+      getReservationPath,
+      getEditPath,
       serviceAssignWay,
       renderMinLeaseCostDesc,
-      editPublish,
     } = this.constructor;
-    this.onReserve = redirectToReservation(detail);
-    this.onEdit = editPublish(detail);
+    this.onReserve = () => browserHistory.push(getReservationPath(detail));
+    this.onEdit = () => browserHistory.push(getEditPath(detail));
 
     switch (top_category) {
       case CATE_GOODS:

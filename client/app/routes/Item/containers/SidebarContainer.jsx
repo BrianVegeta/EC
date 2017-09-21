@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import { addToCollection, removeFromCollection } from 'modules/myCollection';
 import { popupReport } from 'modules/popup';
-import { setCollection } from '../modules/item';
-
+import { setCollection, checkItemOngoing } from '../modules/item';
 import Sidebar from '../components/Sidebar';
 
 /* pick props */
-const mapStateToProps = ({ environment, item, auth: { currentUser, isLogin } }) => {
+const mapStateToProps = ({
+  environment, item, auth: { currentUser, isLogin },
+}) => {
   const { detail } = item;
   return ({
     environment,
@@ -17,21 +18,22 @@ const mapStateToProps = ({ environment, item, auth: { currentUser, isLogin } }) 
 };
 
 /* pick dispatch */
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { pid }) => ({
   dispatch,
-  dispatchReport: pid => dispatch(popupReport({ pid })),
-  dispatchAddFavorite: pid =>
+  dispatchReport: () => dispatch(popupReport({ pid })),
+  dispatchAddFavorite: () =>
     dispatch(addToCollection(
       pid,
       () => {},
       () => dispatch(setCollection(true)),
     )),
-  dispatchRemoveFavorite: pid =>
+  dispatchRemoveFavorite: () =>
     dispatch(removeFromCollection(
       pid,
       () => {},
       () => dispatch(setCollection(false)),
     )),
+  dispatchCheckItemOngoing: () => dispatch(checkItemOngoing(pid)),
 });
 
 
