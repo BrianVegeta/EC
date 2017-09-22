@@ -2,6 +2,7 @@ import { omit } from 'lodash';
 import routeActivity from './routes/NotifyActivity/route';
 import routeContract from './routes/NotifyContract/route';
 import routeSystem from './routes/NotifySystem/route';
+import routeItem from './routes/NotifyItem/route';
 
 export default store => ({
   path: '/p/notify',
@@ -17,6 +18,7 @@ export default store => ({
 
   childRoutes: [
     routeActivity(store),
+    routeItem(store),
     routeContract(store),
     routeSystem(store),
   ],

@@ -176,7 +176,7 @@ class StageBase
   def check_score
 
     stage_check = self.screen_type == STAGE_SCORE || self.screen_type == STAGE_RETURN_CONFIRM
-    stage_check2 = (self.screen_type == STAGE_SHIP_CONFIRM && !(self.contract['lessee_receive'].nil?))
+    stage_check2 = (self.contract['type'] === 'USED_ITEM' && !(self.contract['lessee_receive'].nil?))
     if (stage_check || stage_check2)
       if self.is_owner
         modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
@@ -189,8 +189,6 @@ class StageBase
       modify_display_param(KEY_SCORE, false)
       modify_display_param(KEY_VIEW_SCORE, false)
     end
-
-
   end
 
   def prepare_sue_tab

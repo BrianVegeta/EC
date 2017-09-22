@@ -25,6 +25,7 @@ const RECURSIVE_LIMIT = 10;
 
 export const TYPE_CONTRACT = 1;
 export const TYPE_ACTIVITY = 0;
+export const TYPE_ITEM = 4;
 export const TYPE_SYSTEM = 6;
 // =============================================
 // = actions =
@@ -178,6 +179,7 @@ export function fetchUnreadCount(type) {
     .then((responseData) => {
       const newUnread = {
         CONTRACT: responseData.contract_unread_count,
+        ITEM: responseData.instant_info_unread_count,
         ACTIVITY: responseData.marketing_unread_count,
         SYSTEM: responseData.system_unread_count,
       };
@@ -197,6 +199,10 @@ export function fetchUnreadCount(type) {
           size = (size < responseData.system_unread_count) ?
             responseData.system_unread_count : size;
           break;
+        case TYPE_ITEM:
+          size = (size < responseData.instant_info_unread_count) ?
+            responseData.instant_info_unread_count : size;
+          break;
         default:
           break;
       }
@@ -213,6 +219,7 @@ export function fetchUnreadCount(type) {
           case TYPE_CONTRACT:
             records = parseContractNotify(recordData, lastReadTime);
             break;
+          case TYPE_ITEM:
           case TYPE_ACTIVITY:
           case TYPE_SYSTEM:
             records = parseActivityNotify(recordData, lastReadTime);

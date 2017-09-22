@@ -8,10 +8,7 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-<<<<<<< HEAD
-=======
 import swal, { dropConfig } from 'lib/swal';
->>>>>>> feature/debug-test-k039
 import ButtonNextStep, {
   STATUS_LOADING,
   STATUS_VALID,
@@ -652,7 +649,7 @@ class Orderdetail extends React.Component {
     let sendDetail = null;
     let returnTypeName = '';
     let returnDetail = null;
-
+    const showReturn = (type === 'ITEM');
     switch (send_type) {
       case '0':
         sendTypeName = '面交';
@@ -694,7 +691,9 @@ class Orderdetail extends React.Component {
           <tbody>
             <tr>
               <th styleName="shipping-title">{ `到貨方式: ${sendTypeName}` }</th>
-              <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
+              { showReturn &&
+                <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
+              }
             </tr>
             { showSecondLine &&
               <tr>

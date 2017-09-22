@@ -18,6 +18,7 @@ $signupPanelWidth: 700px
       font-size: 40px
       font-weight: 600
   .photo
+    position: relative
     margin: 40px auto
     width: 200px
     height: 200px
@@ -33,6 +34,21 @@ $signupPanelWidth: 700px
         left: 0
         right: 0
         top: 50%
+    .photo-delete
+      position: absolute
+      top: 5px
+      right: 5px
+      display: inline-block
+      text-align: center
+      background: #333
+      cursor: pointer
+      padding: 5px
+      height: 26px
+      width: 26px
+      border-radius: 26px
+      transition: background-color 200ms ease
+      &:hover
+        background: red
   .top-category
     display: inline-block
     width: 140px

@@ -52,18 +52,18 @@ const transformState = ({
   id, pname, description, city, area, expprice,
   expcurrency, expday, picture, cat_id,
 }, topCategory) => ({
-    picture,
-    id,
-    pname,
-    description,
-    city,
-    area,
-    expprice,
-    expcurrency,
-    expday,
-    topCategory,
-    catId: parseInt(cat_id),
-  });
+  picture,
+  id,
+  pname,
+  description,
+  city,
+  area,
+  expprice,
+  expcurrency,
+  expday,
+  topCategory,
+  catId: parseInt(cat_id),
+});
 
 export const editPublish = id =>
   (dispatch, getState) => {
