@@ -4,24 +4,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import {
-  reservationGoods,
-  reservationService,
-  reservationSpace,
-  reservationUsedGoods,
+  reservationGoods, reservationService, reservationSpace,
 } from 'lib/paths';
-import { formatDate, rangeDiff } from 'lib/time';
-import { generateContractLog } from 'lib/contractString';
-import { swalAsk } from 'lib/swal';
-import { PAYMENTTYPE_ATM, PAYMENTTYPE_CREDIT_CARD } from 'constants/enums';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-import ButtonNextStep, { STATUS_LOADING, STATUS_VALID } from 'components/Button/NextStep';
+<<<<<<< HEAD
+=======
+import swal, { dropConfig } from 'lib/swal';
+>>>>>>> feature/debug-test-k039
+import ButtonNextStep, {
+  STATUS_LOADING,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
 import CoverThreePics from 'components/CoverThreePics';
 import ThumbDropzone from 'components/Publish/ThumbDropzone';
 import ThumbDropped from 'components/Publish/ThumbDropped';
+import { formatDate, rangeDiff } from 'lib/time';
+import { generateContractLog } from 'lib/contractString';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import colors from 'styles/colorExport.scss';
@@ -30,12 +32,6 @@ import Banner from './Banner';
 import SueBanner from './SueBanner';
 import UserInfoBoard from './UserInfoBoard/index';
 import BottomController from './BottomController';
-import {
-  ORDER_TYPE_SERVICE,
-  ORDER_TYPE_SPACE,
-  ORDER_TYPE_ITEM,
-  ORDER_TYPE_USED_ITEM,
-} from '../modules/orderdetail';
 
 const cx = classnames.bind(styles);
 class Orderdetail extends React.Component {
@@ -110,15 +106,6 @@ class Orderdetail extends React.Component {
     this.props.dispatchReset();
   }
 
-  getEditPath({ type, cid, pid }) {
-    return {
-      [ORDER_TYPE_ITEM]: reservationGoods.indexPath(pid, cid),
-      [ORDER_TYPE_SERVICE]: reservationService.indexPath(pid, cid),
-      [ORDER_TYPE_SPACE]: reservationSpace.indexPath(pid, cid),
-      [ORDER_TYPE_USED_ITEM]: reservationUsedGoods.indexPath(pid, cid),
-    }[type];
-  }
-
   generateEndOrderDispatch({ type }) {
     if (type === 'SERVICE') {
       return this.props.dispatchEndService;
@@ -159,6 +146,18 @@ class Orderdetail extends React.Component {
       targetScore,
     });
   }
+  generateEditAddress({ type, cid, pid }) {
+    switch (type) {
+      case 'ITEM':
+        return () => browserHistory.push(reservationGoods.indexPath(pid, cid));
+      case 'SERVICE':
+        return () => browserHistory.push(reservationService.indexPath(pid, cid));
+      case 'SPACE':
+        return () => browserHistory.push(reservationSpace.indexPath(pid, cid));
+      default:
+        return () => {};
+    }
+  }
 
   renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
     if (!show) return null;
@@ -177,49 +176,56 @@ class Orderdetail extends React.Component {
       />
     );
   }
-
   renderOrderAction({ can_cancel, can_accept, can_edit, can_reject, is_owner }, order) {
-    const cancelTitle = is_owner ? '目前無法接單?' : '取消訂單?';
-    const {
-      dispatchCancel,
-      dispatchAccept,
-      dispatchReject,
-    } = this.props;
-    const cancelAction = () => swalAsk({
-      title: cancelTitle,
-      text: is_owner ? '一但確認送出後，即無法恢復喔！' : '一旦取消訂單後，即無法恢復喔!',
-    }).then(() => dispatchCancel()).catch(() => {});
-    const editAction = () => browserHistory.push(this.getEditPath(order));
     return (
       <div style={{ display: 'inline-block' }} >
-        {this.renderButtonStyle(can_cancel, cancelAction, cancelTitle, 'gray')}
-        {this.renderButtonStyle(can_accept, dispatchAccept, '我同意此預訂', 'green')}
-        {this.renderButtonStyle(can_edit, editAction, '修改訂單', 'green')}
-        {this.renderRejectStyle(can_reject, dispatchReject)}
+        {this.renderButtonStyle(
+          can_cancel,
+          () => {
+            const text = is_owner ? '一但確認送出後，即無法恢復喔！' : '一旦取消訂單後，即無法恢復喔!';
+            const title = is_owner ? '目前無法接單?' : '取消訂單?';
+            swal(dropConfig({ title, text, confirmText: '確認' })).then(() => {}).catch(() => {
+              this.props.dispatchCancel();
+            });
+          },
+          is_owner ? '目前無法接單' : '取消訂單',
+          'gray',
+        )}
+        {this.renderButtonStyle(
+          can_accept,
+          this.props.dispatchAccept,
+          '我同意此預訂',
+          'green',
+        )}
+        {this.renderButtonStyle(
+          can_edit,
+          this.generateEditAddress(order),
+          '修改訂單',
+          'green',
+        )}
+        {this.renderRejectStyle(
+          can_reject,
+          this.props.dispatchReject,
+        )}
       </div>
     );
   }
-
   renderPaymentAction({ can_pay }, { paymenttype }) {
-    const {
-      dispatchPaymentCreditCard,
-      dispatchPaymentInfo,
-    } = this.props;
     switch (paymenttype) {
-      case PAYMENTTYPE_CREDIT_CARD:
+      case 4:
         return this.renderButtonStyle(
-          can_pay,
-          dispatchPaymentCreditCard,
-          '信用卡付款',
-          'green',
-        );
-      case PAYMENTTYPE_ATM:
+            can_pay,
+            this.props.dispatchPaymentCreditCard,
+            '信用卡付款',
+            'green',
+          );
+      case 1:
         return this.renderButtonStyle(
-          can_pay,
-          dispatchPaymentInfo,
-          'ATM付款',
-          'green',
-        );
+            can_pay,
+            this.props.dispatchPaymentInfo,
+            'ATM付款',
+            'green',
+          );
       default:
         return null;
     }
@@ -279,7 +285,6 @@ class Orderdetail extends React.Component {
     }
     return null;
   }
-
   renderReturnAction({ can_return, can_711_return, can_return_confirm }) {
     if (can_return) {
       const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
@@ -323,7 +328,6 @@ class Orderdetail extends React.Component {
     }
     return null;
   }
-
   renderEndOrderAction({ can_owner_end, can_lessee_end }, order) {
     if (can_owner_end) {
       return this.renderButtonStyle(
@@ -648,7 +652,7 @@ class Orderdetail extends React.Component {
     let sendDetail = null;
     let returnTypeName = '';
     let returnDetail = null;
-    const showReturn = (type === 'ITEM');
+
     switch (send_type) {
       case '0':
         sendTypeName = '面交';
@@ -690,9 +694,7 @@ class Orderdetail extends React.Component {
           <tbody>
             <tr>
               <th styleName="shipping-title">{ `到貨方式: ${sendTypeName}` }</th>
-              { showReturn &&
-                <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
-              }
+              <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
             </tr>
             { showSecondLine &&
               <tr>

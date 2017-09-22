@@ -15,7 +15,15 @@ import { swalAsk } from 'lib/swal';
 import { PAYMENTTYPE_ATM, PAYMENTTYPE_CREDIT_CARD } from 'constants/enums';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
+<<<<<<< HEAD
 import ButtonNextStep, { STATUS_LOADING, STATUS_VALID } from 'components/Button/NextStep';
+=======
+import swal, { dropConfig } from 'lib/swal';
+import ButtonNextStep, {
+  STATUS_LOADING,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
+>>>>>>> feature/debug-test-k040
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormButton from 'components/FormButton';
 import MiniMap from 'components/MiniMap/index';
@@ -110,15 +118,6 @@ class Orderdetail extends React.Component {
     this.props.dispatchReset();
   }
 
-  getEditPath({ type, cid, pid }) {
-    return {
-      [ORDER_TYPE_ITEM]: reservationGoods.indexPath(pid, cid),
-      [ORDER_TYPE_SERVICE]: reservationService.indexPath(pid, cid),
-      [ORDER_TYPE_SPACE]: reservationSpace.indexPath(pid, cid),
-      [ORDER_TYPE_USED_ITEM]: reservationUsedGoods.indexPath(pid, cid),
-    }[type];
-  }
-
   generateEndOrderDispatch({ type }) {
     if (type === 'SERVICE') {
       return this.props.dispatchEndService;
@@ -158,6 +157,15 @@ class Orderdetail extends React.Component {
       targetComment,
       targetScore,
     });
+  }
+
+  getEditPath({ type, cid, pid }) {
+    return {
+      [ORDER_TYPE_ITEM]: reservationGoods.indexPath(pid, cid),
+      [ORDER_TYPE_SERVICE]: reservationService.indexPath(pid, cid),
+      [ORDER_TYPE_SPACE]: reservationSpace.indexPath(pid, cid),
+      [ORDER_TYPE_USED_ITEM]: reservationUsedGoods.indexPath(pid, cid),
+    }[type];
   }
 
   renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {

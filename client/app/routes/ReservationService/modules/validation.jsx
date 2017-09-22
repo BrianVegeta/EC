@@ -41,7 +41,7 @@ export const validateFormBy = ({
   const serviceAddressValidation = isCustomerAssign ? constraints.address : null;
   const serviceLocationTypeValidation = isServiceLocationSelectable ?
     constraints.serviceLocationType : null;
-  const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_COUNT);
+  const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_FIX);
   const unitValidation = isCountChargeType ? constraints.unit(itemUnit) : null;
   const errors = validate({
     leasestart,
@@ -59,6 +59,7 @@ export const validateFormBy = ({
     serviceAddress: serviceAddressValidation,
     unit: unitValidation,
   });
+  console.log(errors);
   return {
     isValid: isEmpty(errors),
     errors,

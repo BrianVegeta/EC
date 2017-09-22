@@ -27,8 +27,8 @@ const calPrice = ({ leasestart, leaseend, unit, price }, chargeType) => {
       const days = (leasestart && leaseend) ?
         rangeDiff(leasestart, leaseend, true) : 1;
       return formatDetail(
-        `價格 ${formatCurrency(price, '')} x ${days}天`,
-        price * days,
+        `價格 ${formatCurrency(price, '')} x ${days}天 x ${unit}件`,
+        price * days * unit,
       );
     }
 

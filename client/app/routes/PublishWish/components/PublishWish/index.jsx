@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import CSS from 'react-css-modules';
 import Dropzone from 'react-dropzone';
-import ThumbDropped from 'components/Publish/ThumbDropped';
+import RemoveIcon from 'react-icons/lib/go/trashcan';
 import IconAdd from 'react-icons/lib/md/add';
 import colors from 'styles/colorExport.scss';
 import Picture from 'components/Picture';
@@ -143,6 +143,16 @@ class PublishWish extends React.Component {
                 </div>
               }
             </Dropzone>
+            { picture &&
+              <button
+                className="button"
+                styleName="photo-delete"
+                onClick={() =>
+                  this.props.dispatchChangeData({ picture: null })}
+              >
+                <RemoveIcon size={16} color="#fff" style={{ display: 'block' }} />
+              </button>
+            }
           </div>
           {avatarCropper.blob &&
             <CropperEditor

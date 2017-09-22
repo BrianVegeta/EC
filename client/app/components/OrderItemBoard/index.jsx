@@ -18,7 +18,7 @@ import {
   generateOwnerItemString, generateLesseeItemString,
 } from 'lib/contractString';
 import { formatDate, rangeDiff } from 'lib/time';
-import { popupScoreRating, popupATMBank } from 'modules/popup';
+import { popupScoreRating, popupATMBank, popupSevenNo } from 'modules/popup';
 import { addToChatRoom } from 'modules/chatRooms';
 import {
   doShipGoods,
@@ -28,6 +28,7 @@ import {
   doCreditCardPayment,
   doATMPayment,
   doReceiveConfirm,
+  getShipOrder,
 } from 'modules/orderAction';
 import CSS from 'react-css-modules';
 import classnames from 'classnames/bind';
@@ -220,7 +221,10 @@ class OrderItemBoard extends React.Component {
             {...buttonConfig}
             colorType="green"
             content="寄件代碼"
-            onClick={() => {}}
+            onClick={() => {
+              dispatch(popupSevenNo({ options: {} }));
+              dispatch(getShipOrder(cid, 'OWNER_SEND'));
+            }}
           />
         }
         {
@@ -240,6 +244,18 @@ class OrderItemBoard extends React.Component {
                   swal(errorConfig('確認還貨失敗', error));
                 });
               });
+            }}
+          />
+        }
+        {
+          can_711 &&
+          <FormButton
+            {...buttonConfig}
+            colorType="green"
+            content="寄件代碼"
+            onClick={() => {
+              dispatch(popupSevenNo({ options: {} }));
+              dispatch(getShipOrder(cid, 'LESSEE_SEND'));
             }}
           />
         }

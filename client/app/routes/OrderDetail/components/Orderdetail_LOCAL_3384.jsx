@@ -110,15 +110,6 @@ class Orderdetail extends React.Component {
     this.props.dispatchReset();
   }
 
-  getEditPath({ type, cid, pid }) {
-    return {
-      [ORDER_TYPE_ITEM]: reservationGoods.indexPath(pid, cid),
-      [ORDER_TYPE_SERVICE]: reservationService.indexPath(pid, cid),
-      [ORDER_TYPE_SPACE]: reservationSpace.indexPath(pid, cid),
-      [ORDER_TYPE_USED_ITEM]: reservationUsedGoods.indexPath(pid, cid),
-    }[type];
-  }
-
   generateEndOrderDispatch({ type }) {
     if (type === 'SERVICE') {
       return this.props.dispatchEndService;
@@ -158,6 +149,15 @@ class Orderdetail extends React.Component {
       targetComment,
       targetScore,
     });
+  }
+
+  getEditPath({ type, cid, pid }) {
+    return {
+      [ORDER_TYPE_ITEM]: reservationGoods.indexPath(pid, cid),
+      [ORDER_TYPE_SERVICE]: reservationService.indexPath(pid, cid),
+      [ORDER_TYPE_SPACE]: reservationSpace.indexPath(pid, cid),
+      [ORDER_TYPE_USED_ITEM]: reservationUsedGoods.indexPath(pid, cid),
+    }[type];
   }
 
   renderButtonStyle(show, dispatchAction, buttonText, buttonColor) {
@@ -648,7 +648,7 @@ class Orderdetail extends React.Component {
     let sendDetail = null;
     let returnTypeName = '';
     let returnDetail = null;
-    const showReturn = (type === 'ITEM');
+
     switch (send_type) {
       case '0':
         sendTypeName = '面交';
@@ -690,9 +690,7 @@ class Orderdetail extends React.Component {
           <tbody>
             <tr>
               <th styleName="shipping-title">{ `到貨方式: ${sendTypeName}` }</th>
-              { showReturn &&
-                <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
-              }
+              <th styleName="shipping-title">{ `還貨方式: ${returnTypeName}` }</th>
             </tr>
             { showSecondLine &&
               <tr>

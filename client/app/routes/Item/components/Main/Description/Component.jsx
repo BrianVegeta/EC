@@ -6,7 +6,7 @@ const propTypes = {
 };
 const Description = props => (
   <div styleName="container">
-    <h2 styleName="title">物品描述</h2>
+    <h2 styleName="title">介紹</h2>
     <div styleName="description">{props.description}</div>
   </div>
 );

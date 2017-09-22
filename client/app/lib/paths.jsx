@@ -44,6 +44,7 @@ export const userprofilePaths = {
 
 export const notifyPath = {
   contractNotifyPath: '/p/notify/contract',
+  itemNotifyPath: '/p/notify/item',
   activityNotifyPath: '/p/notify/activity',
   systemNotifyPath: '/p/notify/system',
 };

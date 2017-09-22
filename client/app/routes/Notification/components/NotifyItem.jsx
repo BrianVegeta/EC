@@ -6,9 +6,9 @@ import PaginationContainer from 'components/PaginationContainer';
 
 import Navigation from './Navigation';
 import Container from './Container';
-import NotifyActivityBoard from './NotifyActivityBoard';
+import NotifyContractBoard from './NotifyContractBoard';
 
-class SystemActivity extends React.Component {
+class NotifyContract extends React.Component {
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
     dispatchUnreadCount: PropTypes.func.isRequired,
@@ -28,16 +28,18 @@ class SystemActivity extends React.Component {
     this.props.dispatchReset();
   }
 
+
   render() {
     // console.log(this.props);
     const { notify } = this.props;
-    const { unreadCount, isFetching, records, isPaginable } = notify;
+    const { unreadCount, isFetching, isPaginable, records } = notify;
+    console.log(records);
     return (
       <Container titleText="通知">
         <Navigation navs={notifyNavs.navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何通知' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
@@ -46,10 +48,9 @@ class SystemActivity extends React.Component {
             loadMore={this.props.dispatchMore}
           >
             {records.map(record => (
-              <NotifyActivityBoard
+              <NotifyContractBoard
                 key={record.id}
-                type={record.type}
-                url={record.url}
+                cid={record.cid}
                 message={record.message}
                 createTime={record.createTime}
                 isRead={record.isRead}
@@ -61,4 +62,4 @@ class SystemActivity extends React.Component {
     );
   }
 }
-export default SystemActivity;
+export default NotifyContract;
