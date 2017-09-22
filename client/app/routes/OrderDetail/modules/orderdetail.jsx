@@ -10,9 +10,12 @@ import {
 } from './orderaction';
 
 /* =============================================>>>>>
-= orderDetail =
+= CONSTANTS =
 ===============================================>>>>>*/
-
+export const ORDER_TYPE_ITEM = 'ITEM';
+export const ORDER_TYPE_SERVICE = 'SERVICE';
+export const ORDER_TYPE_SPACE = 'SPACE';
+export const ORDER_TYPE_USED_ITEM = 'USED_ITEM';
 const ACTION_PREFIX = 'ORDER.DETAIL';
 // const REDUCER_KEY = 'orderdetail';
 

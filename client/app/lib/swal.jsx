@@ -10,13 +10,6 @@ const commonConfig = {
   confirmButtonText: '確定',
 };
 
-const dropConfig = {
-  title: '確定下架此商品？',
-  text: '下架之後即無法還原',
-  showCancelButton: true,
-  confirmButtonText: '下架',
-};
-
 export const orderConfig = text =>
   Object.assign({}, commonConfig, {
     title: '提示',
@@ -49,7 +42,20 @@ export const errorConfig = ({ title, text }) =>
   });
 
 export const swalDropItem = () =>
-  swal(Object.assign({}, commonConfig, dropConfig));
+  swal(Object.assign({}, commonConfig, {
+    title: '確定下架此商品？',
+    text: '下架之後即無法還原',
+    showCancelButton: true,
+    confirmButtonText: '下架',
+  }));
+
+export const swalAsk = ({ title, text }) =>
+  swal(Object.assign({}, commonConfig, {
+    title,
+    text,
+    showCancelButton: true,
+    confirmButtonText: '確認',
+  }));
 
 export const swalNormal = ({ title, text }) =>
   swal(Object.assign({}, commonConfig, { title, text }));
