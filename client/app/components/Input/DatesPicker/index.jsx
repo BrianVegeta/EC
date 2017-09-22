@@ -68,13 +68,19 @@ class Dates extends React.Component {
     this.renderCalendarInfo = this.renderCalendarInfo.bind(this);
     this.isDayBlocked = this.isDayBlocked.bind(this);
     this.onDatesChange = this.onDatesChange.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
   onDatesChange({ startDate, endDate }) {
     this.props.onDatesChange({ startDate, endDate });
     if (startDate && endDate) {
-      this.setState({ focusedInput: null });
+      setTimeout(this.onClose, 150);
     }
+  }
+
+  onClose() {
+    this.setState({ focusedInput: null });
+    this.props.onBlur();
   }
 
   openCalendar(inputType) {
@@ -90,8 +96,10 @@ class Dates extends React.Component {
   }
 
   resetInputs() {
-    this.props.onDatesChange({ startDate: null, endDate: null });
-    this.setState({ focusedInput: null });
+    this.props.onDatesChange({
+      startDate: null, endDate: null,
+    });
+    setTimeout(this.onClose, 150);
   }
 
   isDayBlocked(day) {
@@ -155,7 +163,7 @@ class Dates extends React.Component {
           isDayBlocked={this.isDayBlocked}
           minimumNights={this.props.minPicks}
           renderCalendarInfo={this.renderCalendarInfo}
-          onClose={this.props.onBlur}
+          onClose={this.onClose}
         />
       </div>
     );
