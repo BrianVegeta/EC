@@ -209,4 +209,10 @@ export default {
       message: '^請選擇',
     },
   },
+  priceTotal: {
+    numericality: {
+      lessThanOrEqualTo: parseInt(PRICE_MAX, 10),
+      notLessThanOrEqualTo: `^總金額不得超過 ${formatCurrency(PRICE_MAX)}`,
+    },
+  },
 };
