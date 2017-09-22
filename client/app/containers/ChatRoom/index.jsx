@@ -15,7 +15,6 @@ class ChatRoom extends React.Component {
     dispatchResetBox: PropTypes.func.isRequired,
     dispatchFetchChatRoom: PropTypes.func.isRequired,
     dispatchConnect: PropTypes.func.isRequired,
-    dispatchFetchLogs: PropTypes.func.isRequired,
     dispatchChangeChatTarget: PropTypes.func.isRequired,
     dispatchChangeInput: PropTypes.func.isRequired,
     dispatchSendMessage: PropTypes.func.isRequired,
