@@ -107,8 +107,9 @@ class OrderList extends React.Component {
               itemName={record.pname}
               itemImgUrl={record.img1}
               targetName={record.owner_nick_name}
-              targetUrl={''}
+              targetUrl={record.owner_img}
               targetScore={record.ownerscore}
+              targetComment={record.owner_comment}
               startDate={record.leasestart}
               endDate={record.leaseend}
               totalPrice={record.lesseepayfee}

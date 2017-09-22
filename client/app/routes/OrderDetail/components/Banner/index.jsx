@@ -34,6 +34,9 @@ class Banner extends React.Component {
     const { order } = this.props;
     const { type, contractstage, leasestart, create_time, display } = order;
     const { is_owner } = display;
+    if (contractstage > 5000) {
+      return { title: '取消訂單', text: '' };
+    }
     if (is_owner) {
       switch (type) {
         case 'ITEM':

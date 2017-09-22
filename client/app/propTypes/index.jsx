@@ -59,12 +59,7 @@ export default {
   ),
   /* PUBLISH */
   publish: PropTypes.object,
-  /* PUBLISH END */
-  /* =============================================<<<<<*/
   notification: PropTypes.object,
-  /* =============================================>>>>>
-  = OPTIONS =
-  ===============================================>>>>>*/
   options: PropTypes.shape({
     categories,
     banks: PropTypes.array,
@@ -74,8 +69,6 @@ export default {
   category,
   banks,
   personalBankInfo,
-  /* = End of OPTIONS =*/
-  /* =============================================<<<<<*/
   itemCard: PropTypes.shape({
     id: PropTypes.number,
     pname: PropTypes.string,

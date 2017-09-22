@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import CSS from 'react-css-modules';
 import Dropzone from 'react-dropzone';
+import ThumbDropped from 'components/Publish/ThumbDropped';
 import IconAdd from 'react-icons/lib/md/add';
 import colors from 'styles/colorExport.scss';
 import Picture from 'components/Picture';
@@ -109,7 +110,6 @@ class PublishWish extends React.Component {
     const UPLOAD_TEXT_HELPER_LINE_HEIGHT = 20;
     const UPLOAD_MARGIN_ADJUST = -((UPLOAD_TEXT_HELPER_LINE_HEIGHT + UPLOAD_ICON_SIZE) / 2);
 
-    // console.log(this.props);
     return (
       <div styleName="container">
         <div styleName="header">
@@ -135,8 +135,8 @@ class PublishWish extends React.Component {
                     color={colors.placeholder}
                   />
                   <div style={{
-                      lineHeight: `${UPLOAD_TEXT_HELPER_LINE_HEIGHT}px`,
-                      color: `${colors.placeholder}` }}
+                    lineHeight: `${UPLOAD_TEXT_HELPER_LINE_HEIGHT}px`,
+                    color: `${colors.placeholder}` }}
                   >
                     上傳一張許願圖片
                   </div>

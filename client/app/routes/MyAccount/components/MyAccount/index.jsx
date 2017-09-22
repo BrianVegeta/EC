@@ -15,13 +15,14 @@ class MyAccount extends React.Component {
       name: PropTypes.string.isRequired,
     }).isRequired,
     children: myPropTypes.children,
+    pathname: PropTypes.string.isRequired,
   };
 
   render() {
-    const { currentUser, children } = this.props;
+    const { currentUser, pathname, children } = this.props;
     return (
       <div>
-        <Sidebar user={currentUser} >
+        <Sidebar user={currentUser} pathname={pathname} >
           <div>{children}</div>
         </Sidebar>
       </div>

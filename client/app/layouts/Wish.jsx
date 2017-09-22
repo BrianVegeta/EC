@@ -27,7 +27,7 @@ export default class extends React.Component {
           style={{
             marginBottom: 20,
             marginTop: 10,
-            minHeight: Math.max(minHeight, 500),
+            minHeight: Math.max(minHeight, 1100),
             background: '#f1f1f1',
             position: 'relative',
           }}

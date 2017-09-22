@@ -54,8 +54,6 @@ class Ajax::Api::ContractController < ApplicationController
   def get_my_contract
     obj = ::Api::Contract::GetMyContracts.new contract_of_me_params, current_apitoken
     success = obj.request
-    #obj.response_data = map_json_array obj.response_data, ResponseJson::MyContract.structure
-
     if obj.response_data.nil?
         obj.response_data = []
     else
@@ -470,8 +468,8 @@ class Ajax::Api::ContractController < ApplicationController
 
   def contract_of_me_params
      #role_type : String =>  BOTH / OWNER / LESSEE
-     #type : String => ITEM / SERVICE / SPACE
-     params.permit(:role_type, :type).merge(current_uid_params)
+     #type : String => ITEM / SERVICE / SPACE / USED_GOODS
+     params.permit(:role_type, :type).merge(current_uid_params);
   end
 
   def score_params

@@ -28,7 +28,6 @@ class OrderItemBoard extends React.Component {
     isOwner: false,
     lesseeReceive: false,
     targetScore: 0,
-    targetComment: '',
     photoHead: '',
   }
 
