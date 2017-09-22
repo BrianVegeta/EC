@@ -88,7 +88,6 @@ export function fetchRecords(categoryID, isUsed, recursiveRecords = []) {
       sendOption,
       locations,
     } = getState()[FILTER_REDUCER_KEY];
-
     const requestParams = {
       type: isUsed ? USED_ITEM : LEASE,
       index: (index + recursiveRecords.length),

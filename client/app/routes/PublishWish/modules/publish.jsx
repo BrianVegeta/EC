@@ -51,8 +51,7 @@ export const reset = () => ({
 const transformState = ({
   id, pname, description, city, area, expprice,
   expcurrency, expday, picture, cat_id,
-}, topCategory) => {
-  return ({
+}, topCategory) => ({
     picture,
     id,
     pname,
@@ -65,7 +64,6 @@ const transformState = ({
     topCategory,
     catId: parseInt(cat_id),
   });
-};
 
 export const editPublish = id =>
   (dispatch, getState) => {
@@ -94,20 +92,18 @@ const transformParams = ({
   expcurrency,
   expday,
   catId,
-}) => {
-  return ({
-    id,
-    picture,
-    pname,
-    description,
-    city,
-    area,
-    expprice,
-    expcurrency,
-    expday,
-    cat_id: catId,
-  });
-};
+}) => ({
+  id,
+  picture,
+  pname,
+  description,
+  city,
+  area,
+  expprice,
+  expcurrency,
+  expday,
+  cat_id: catId,
+});
 
 export const validateWishBy = ({
   pname, description,

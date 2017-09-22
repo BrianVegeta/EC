@@ -21,7 +21,7 @@ class CouponCard extends React.Component {
     if (diffInDays > 4) {
       return '';
     } else if (diffInDays > 0) {
-      return "再過$'{diff_in_days}'天即將逾期，逾期後自動失效";
+      return `再過${diffInDays}天即將逾期，逾期後自動失效`;
     } else if (diffInDays === 0) {
       return '只到今天喔～逾期後自動失效';
     }

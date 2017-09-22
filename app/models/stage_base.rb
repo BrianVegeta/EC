@@ -45,12 +45,6 @@ class StageBase
   KEY_SCORE = 'can_score'
   KEY_VIEW_SCORE = 'view_score'
   KEY_SUE = 'can_sue'
-  # KEY_OWNER_SCORE = 'can_owner_score'
-  KEY_OWNER_VISIT_SCORE = 'can_owner_visit_score'
-  # KEY_LESSEE_SCORE = 'can_lessee_score'
-  KEY_LESSEE_VISIT_SCORE = 'can_lessee_visit_score'
-
-
 
   NORMAL_CONTRACT = 0
   SUE_CONTRACT = 1
@@ -92,11 +86,8 @@ class StageBase
       show_detail: false,         #查看按鈕 (true = show, false = hidden)
       can_pay: false,             #可以付款(true = show, false = hidden)
       can_score: false,           #可以評分 (true = show, false = hidden)
+      view_score: false,          #可以查看評分 (true = show, false = hidden)
       can_sue: false,             #可以申訴 (true = show, false = hidden)
-      can_owner_score: false,
-      can_owner_visit_score: false,
-      can_lessee_score: false,
-      can_lesse_visit_score: false,
       can_accept: false,
       can_reject: false,
       can_edit: false,
@@ -184,18 +175,19 @@ class StageBase
 
   def check_score
 
-    if (self.screen_type < STAGE_SCORE)
-      return
-    end
-
-    if self.is_owner
-      modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
-      # modify_display_param(KEY_OWNER_SCORE, (self.contract['ownerscore'].nil?))
-      modify_display_param(KEY_VIEW_SCORE, (not self.contract['lesseescore'].nil?))
+    stage_check = self.screen_type == STAGE_SCORE || self.screen_type == STAGE_RETURN_CONFIRM
+    stage_check2 = (self.screen_type == STAGE_SHIP_CONFIRM && !(self.contract['lessee_receive'].nil?))
+    if (stage_check || stage_check2)
+      if self.is_owner
+        modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
+        modify_display_param(KEY_VIEW_SCORE, (not self.contract['lesseescore'].nil?))
+      else
+        modify_display_param(KEY_SCORE, (self.contract['ownerscore'].nil?))
+        modify_display_param(KEY_VIEW_SCORE, (not self.contract['ownerscore'].nil?))
+      end
     else
-      modify_display_param(KEY_SCORE, (self.contract['ownerscore'].nil?))
-      # modify_display_param(KEY_LESSEE_SCORE, (self.contract['lesseescore'].nil?))
-      modify_display_param(KEY_VIEW_SCORE, (not self.contract['ownerscore'].nil?))
+      modify_display_param(KEY_SCORE, false)
+      modify_display_param(KEY_VIEW_SCORE, false)
     end
 
 

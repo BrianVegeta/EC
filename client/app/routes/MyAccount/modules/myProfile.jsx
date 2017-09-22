@@ -47,6 +47,7 @@ export const fetchUserprofile = () =>
   (dispatch, getState) => {
     asyncXhrAuthedPost(
       '/ajax/get_userprofile.json',
+      {},
       getState(),
     ).then((data) => {
       dispatch(changeData(transformState(data)));

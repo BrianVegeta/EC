@@ -150,7 +150,7 @@ class Profile extends React.Component {
           </TableRow>
           <TableRow>
             <span styleName="label">所在城市</span>
-            <div styleName="input-container">
+            <div styleName="address-container">
               <InputSelectionCitiesContainer
                 ref={refCityArea}
                 cityName={city}

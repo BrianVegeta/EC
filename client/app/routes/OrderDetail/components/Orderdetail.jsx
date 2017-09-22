@@ -8,7 +8,7 @@ import {
 } from 'lib/paths';
 import IconCalendar from 'react-icons/lib/fa/calendar-o';
 import IconLocation from 'react-icons/lib/md/location-on';
-
+import swal, { dropConfig } from 'lib/swal';
 import ButtonNextStep, {
   STATUS_LOADING,
   STATUS_VALID,
@@ -161,7 +161,12 @@ class Orderdetail extends React.Component {
       <FormButton
         colorType={buttonColor}
         width={152}
-        style={{ marginRight: 20, height: 52, fontWeight: 400, padding: '10px 15px' }}
+        style={{
+          marginRight: 20,
+          height: 52,
+          fontWeight: 400,
+          padding: '10px 15px',
+        }}
         content={buttonText}
         onClick={dispatchAction}
       />
@@ -169,10 +174,16 @@ class Orderdetail extends React.Component {
   }
   renderOrderAction({ can_cancel, can_accept, can_edit, can_reject, is_owner }, order) {
     return (
-      <div>
+      <div style={{ display: 'inline-block' }} >
         {this.renderButtonStyle(
           can_cancel,
-          this.props.dispatchCancel,
+          () => {
+            const text = is_owner ? '一但確認送出後，即無法恢復喔！' : '一旦取消訂單後，即無法恢復喔!';
+            const title = is_owner ? '目前無法接單?' : '取消訂單?';
+            swal(dropConfig({ title, text, confirmText: '確認' })).then(() => {}).catch(() => {
+              this.props.dispatchCancel();
+            });
+          },
           is_owner ? '目前無法接單' : '取消訂單',
           'gray',
         )}
@@ -217,7 +228,12 @@ class Orderdetail extends React.Component {
   }
   renderHintText(text) {
     return (
-      <div style={{ marginLeft: 20, width: 420, display: 'inline-block', verticalAlign: 'middle' }}>
+      <div style={{
+        marginLeft: 20,
+        width: 420,
+        display: 'inline-block',
+        verticalAlign: 'middle' }}
+      >
         {text}
       </div>
     );
@@ -226,7 +242,7 @@ class Orderdetail extends React.Component {
     if (can_ship) {
       const hint = `請在${formatDate(leasestart)}前出貨。建議在包裝出貨前，拍下並上傳物品狀態，以保障自己的權益喔！`;
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_ship,
             this.props.dispatchShipGoods,
@@ -239,7 +255,7 @@ class Orderdetail extends React.Component {
     } else if (can_711) {
       const hint = `請在${formatDate(leasestart)}前出貨。建議在包裝出貨前，拍下並上傳物品狀態，以保障自己的權益喔！`;
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_711,
             () => this.props.dispatchSevenOrder('OWNER_SEND'),
@@ -252,7 +268,7 @@ class Orderdetail extends React.Component {
     } else if (can_ship_confirm) {
       const hint = '建議在收到物品時，拍下並上傳物品狀態，以保障自己的權益喔！';
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_ship_confirm,
             this.props.dispatchReceiveConfirm,
@@ -269,7 +285,7 @@ class Orderdetail extends React.Component {
     if (can_return) {
       const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_return,
             this.props.dispatchReturn,
@@ -282,7 +298,7 @@ class Orderdetail extends React.Component {
     } else if (can_711_return) {
       const hint = '請在使用結束當天還貨，以免產生預期金。建議在包裝寄還前，拍下並上傳物品狀態，以保障自己的權益喔！';
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_711_return,
             () => this.props.dispatchSevenOrder('LESSEE_SEND'),
@@ -295,7 +311,7 @@ class Orderdetail extends React.Component {
     } else if (can_return_confirm) {
       const hint = '建議在收到物品時，拍下並上傳物品狀態，以保障自己的權益喔！';
       return (
-        <div>
+        <div style={{ display: 'inline-block' }} >
           {this.renderButtonStyle(
             can_return_confirm,
             this.props.dispatchReceiveConfirm,
@@ -763,6 +779,12 @@ class Orderdetail extends React.Component {
           cid={cid}
           contractstage={contractstage}
           dispatch={dispatch}
+        />
+      );
+    } else if (contractstage > 5000 && contractstage < 6000) {
+      return (
+        <Banner
+          order={order}
         />
       );
     }

@@ -40,7 +40,7 @@ class CouponsContainer extends React.Component {
           { records.map(couponItem => (
             <CouponCard
               key={couponItem.coupon_no}
-              couponNo={couponItem.coupon_id}
+              couponNo={couponItem.coupon_no}
               title={couponItem.name}
               discount={couponItem.amount}
               expireAt={couponItem.expiration_time}
