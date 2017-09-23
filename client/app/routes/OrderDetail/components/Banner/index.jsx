@@ -32,15 +32,7 @@ class Banner extends React.Component {
 
   generateString() {
     const { order } = this.props;
-    const {
-      type,
-      contractstage,
-      leasestart,
-      display,
-      lesseescore,
-      ownerscore,
-      lessee_receive,
-    } = order;
+    const { type, contractstage, leasestart, create_time, display } = order;
     const { is_owner } = display;
     if (contractstage > 5000) {
       return { title: '取消訂單', text: '' };
@@ -58,10 +50,7 @@ class Banner extends React.Component {
           return generateOwnerSpaceString(contractstage, leasestart, is_owner_end, is_lessee_end);
         }
         case 'USED_ITEM':
-          return generateOwnerUsedItemString(
-            contractstage,
-            lessee_receive,
-            (lesseescore));
+          return generateOwnerUsedItemString(contractstage, create_time);
         default:
           return ({ title: '', text: '' });
       }
@@ -80,10 +69,7 @@ class Banner extends React.Component {
             is_owner_end, is_lessee_end);
         }
         case 'USED_ITEM':
-          return generateLesseeUsedItemString(
-            contractstage,
-            lessee_receive,
-            (ownerscore));
+          return generateLesseeUsedItemString(contractstage, create_time);
         default:
           return ({ title: '', text: '' });
       }

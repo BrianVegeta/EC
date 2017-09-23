@@ -88,7 +88,6 @@ class StepConfirm extends React.Component {
   renderDiscount() {
     const { publish } = this.props;
     const { discounts, chargeType } = publish;
-    console.log(discounts);
     if (discounts.length <= 0) {
       return (
         <tr>
@@ -103,7 +102,7 @@ class StepConfirm extends React.Component {
         <th width={154}>優惠價</th>
         <td>
           {discounts.map((obj, index) =>
-            (<div key={index + 1}>
+            (<div key={`${index + 1}`}>
               租滿{obj.param}{unitStr}，每{unitStr}{formatCurrency(obj.discount)}
             </div>),
           )}

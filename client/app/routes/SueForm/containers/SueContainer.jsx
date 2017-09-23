@@ -17,8 +17,12 @@ const mapStateToProps = ({ environment, sueDetail, sueAction, sueGallery, auth }
 /* pick dispatch */
 const returnLastPath = cid =>
   (dispatch, getState) => {
-    const { routing: { locationBeforeTransitions } } = getState();
+    const {
+      routing: { locationBeforeTransitions },
+      routingHelper: { removeHook },
+    } = getState();
     const { state, pathname } = locationBeforeTransitions;
+    if (removeHook) removeHook();
     if (state && state.referrer && state.referrer !== pathname) {
       browserHistory.push(state.referrer);
     } else {

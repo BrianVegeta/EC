@@ -131,4 +131,4 @@ class OrderList extends React.Component {
   }
 }
 
-export default OrderList
+export default OrderList;

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import FormButton from 'components/FormButton';
 import CoverThreePics from 'components/CoverThreePics';
+import { formatDate } from 'lib/time';
 import { without } from 'lodash';
 
 import CSS from 'react-css-modules';
@@ -54,10 +55,10 @@ class SueDetail extends React.Component {
             {`申訴編號：${u_no}`}
           </div>
           <div styleName="info-content">
-            {`申訴時間：${create_time}`}
+            {`申訴時間：${formatDate(create_time)}`}
           </div>
           <div styleName="info-content">
-            {`調解期限：${case_end}`}
+            {`調解期限：${formatDate(case_end)}`}
           </div>
         </div>
         <div style={{ margin: '20px 30px 0px 30px' }}>

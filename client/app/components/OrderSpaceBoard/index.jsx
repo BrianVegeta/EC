@@ -27,6 +27,7 @@ class OrderSpaceBoard extends React.Component {
     lesseeReceive: false,
     targetScore: 0,
     targetComment: '',
+    targetUrl: '',
   }
 
   static propTypes = {
@@ -35,12 +36,13 @@ class OrderSpaceBoard extends React.Component {
     photoUid: PropTypes.string.isRequired,
     paymenttype: PropTypes.number.isRequired,
     stage: PropTypes.number.isRequired,
+    pid: PropTypes.number.isRequired,
     cid: PropTypes.number.isRequired,
     cidNo: PropTypes.string.isRequired,
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
     targetName: PropTypes.string.isRequired,
-    targetUrl: PropTypes.string.isRequired,
+    targetUrl: PropTypes.string,
     targetScore: PropTypes.number,
     targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
@@ -51,7 +53,6 @@ class OrderSpaceBoard extends React.Component {
     isRead: PropTypes.bool.isRequired,
     display: PropTypes.shape(
       {
-        show_detail: PropTypes.bool.isRequired,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
         can_score: PropTypes.bool,

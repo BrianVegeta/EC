@@ -95,7 +95,7 @@ class StepConfirm extends React.Component {
         <th width={154}>優惠價</th>
         <td>
           {discounts.map((obj, index) =>
-            (<div key={index + 1}>
+            (<div key={`${index + 1}`}>
               租滿{obj.param}日，每件{formatCurrency(obj.discount)}
             </div>),
           )}
