@@ -25,7 +25,16 @@ const CHOOSE_RETURN_711 = 2;
 class StepDelivery extends React.Component {
 
   static propTypes = {
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.shape({
+      sendBy711: PropTypes.bool,
+      Rstoreid: PropTypes.string,
+      Rstorename: PropTypes.string,
+      Rstoreaddress: PropTypes.string,
+      returnBy711: PropTypes.bool,
+      storeid: PropTypes.string,
+      storename: PropTypes.string,
+      storeaddress: PropTypes.string,
+    }).isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,

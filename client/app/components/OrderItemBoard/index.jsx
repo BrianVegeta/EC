@@ -55,6 +55,7 @@ class OrderItemBoard extends React.Component {
     targetScore: 0,
     targetComment: '',
     photoHead: '',
+    targetUrl: '',
   }
 
   static propTypes = {
@@ -70,7 +71,7 @@ class OrderItemBoard extends React.Component {
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
     targetName: PropTypes.string.isRequired,
-    targetUrl: PropTypes.string.isRequired,
+    targetUrl: PropTypes.string,
     targetScore: PropTypes.number,
     targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
@@ -82,7 +83,6 @@ class OrderItemBoard extends React.Component {
     // lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
-        show_detail: PropTypes.bool,
         can_ship: PropTypes.bool,
         can_711: PropTypes.bool,
         can_ship_confirm: PropTypes.bool,

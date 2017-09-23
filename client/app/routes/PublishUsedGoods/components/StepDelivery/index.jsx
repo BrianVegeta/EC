@@ -223,7 +223,7 @@ class StepDelivery extends React.Component {
           { sendBy711 &&
             <div styleName="seven-content">
               <div styleName="seven-result">
-                退貨門市：{storeid === '' ? '尚未設定' : `${storename}(${storeid}) ${storeaddress}`}
+                對方未收貨，物品將退回：{storeid === '' ? '尚未設定' : `${storename}(${storeid}) ${storeaddress}`}
               </div>
               <button
                 styleName="seven-button"

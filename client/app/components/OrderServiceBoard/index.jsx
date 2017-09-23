@@ -24,11 +24,12 @@ const cx = classnames.bind(styles);
 
 class OrderServiceBoard extends React.Component {
   static defaultProps = {
-    photoHead: null,
+    photoHead: '',
     isOwner: false,
     lesseeReceive: false,
     targetScore: 0,
     targetComment: '',
+    targetUrl: '',
   }
 
   static propTypes = {
@@ -43,7 +44,7 @@ class OrderServiceBoard extends React.Component {
     itemName: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
     targetName: PropTypes.string.isRequired,
-    targetUrl: PropTypes.string.isRequired,
+    targetUrl: PropTypes.string,
     targetScore: PropTypes.number,
     targetComment: PropTypes.string,
     startDate: PropTypes.number.isRequired,
@@ -55,7 +56,6 @@ class OrderServiceBoard extends React.Component {
     // lesseeReceive: PropTypes.bool,
     display: PropTypes.shape(
       {
-        show_detail: PropTypes.bool.isRequired,
         can_edit: PropTypes.bool,
         can_pay: PropTypes.bool,
         can_lessee_end: PropTypes.bool,
