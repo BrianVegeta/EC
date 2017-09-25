@@ -26,7 +26,7 @@ const {
 /* pick props */
 const mapStateToProps = ({
   environment,
-  reservationCoupons,
+  reservationCoupons: coupons,
   reservationSpace: reservation,
   reservationSpaceItem: item,
   personalBankInfo: { isReady: isBankReady },
@@ -35,7 +35,7 @@ const mapStateToProps = ({
   const touchedPaths = cid ? null : touchedStepPaths;
   const isFetched = Boolean(item.owner);
   const { isValid: isFormValid } = isFetched ?
-    validateFormBy(reservation, item) : { isValid: false };
+    validateFormBy(reservation, item, coupons) : { isValid: false };
   const { isValid: isPaymentValid } = validatePaymentBy(reservation, isBankReady);
 
   const steps = mapSidebarSteps([

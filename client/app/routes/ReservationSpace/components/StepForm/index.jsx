@@ -1,20 +1,20 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { find } from 'lodash';
+import BillingDetail, { calculateService } from 'components/BillingDetail';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
-import BillingDetail, { calculateService } from 'components/BillingDetail';
+import AlertPanel from 'components/Alert/Panel';
 import SingleDatePicker from 'components/Input/SingleDatePicker';
 import InputDatesPicker from 'components/Input/DatesPicker';
-import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';
 import InputTextCounter from 'components/Input/TextCounter';
+import InputCoupons from 'components/Reserve/InputCoupons';
 import constraints from 'constraints/reservation';
 import publishConstraints from 'constraints/publish';
 import ButtonNextStep, { STATUS_DISABLE, STATUS_VALID } from 'components/Button/NextStep';
@@ -30,8 +30,13 @@ import {
 
 class StepForm extends React.Component {
 
+  static defaultProps = {
+    totalError: null,
+  };
+
   static propTypes = {
     dpFetchCoupons: PropTypes.func.isRequired,
+    dispatchGetCouponOffset: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchChangeMonth: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
@@ -49,13 +54,8 @@ class StepForm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
+    totalError: PropTypes.string,
   };
-
-  static getCouponOffset({ couponNo, reservationCoupons: { records } }) {
-    if (!couponNo) return null;
-    const coupon = find(records, { coupon_no: couponNo });
-    return coupon ? coupon.amount : null;
-  }
 
   static getUnit({ calculate_charge_type }) {
     switch (calculate_charge_type) {
@@ -111,7 +111,6 @@ class StepForm extends React.Component {
 
   onNextStepClick() {
     const { nextStep, dispatchValidate } = this.props;
-
     dispatchValidate().then(() => {
       nextStep();
     }).catch(() => {
@@ -183,31 +182,13 @@ class StepForm extends React.Component {
    *
    */
   renderCoupons({ couponNo }) {
-    const {
-      dispatchChangeData,
-      reservationCoupons: { records: myCouponList },
-    } = this.props;
-
+    const { dispatchChangeData, reservationCoupons } = this.props;
     return (
-      <FormGroup>
-        <div styleName="coupons-container">
-          <InputSelectionCoupons
-            couponNo={couponNo}
-            options={myCouponList}
-            onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
-          />
-        </div>
-        {
-          couponNo &&
-            <button
-              className="button"
-              styleName="coupon-cancel"
-              onClick={() => dispatchChangeData({ couponNo: null })}
-            >
-              X 取消折價券
-            </button>
-        }
-      </FormGroup>
+      <InputCoupons
+        couponNo={couponNo}
+        coupons={reservationCoupons}
+        changeData={dispatchChangeData}
+      />
     );
   }
 
@@ -220,21 +201,26 @@ class StepForm extends React.Component {
     { leasestart, leaseend, unit, couponNo },
     { calculate_charge_type, price, deposit, discounts },
   ) {
-    const { reservationCoupons } = this.props;
-    const { getCouponOffset } = this.constructor;
-    const calculateParams = {
+    const { dispatchGetCouponOffset, totalError } = this.props;
+    const couponOffset = dispatchGetCouponOffset(couponNo);
+    const calculation = calculateService({
       calculate_charge_type,
-      price,
-      deposit,
-      discounts,
-      leasestart,
-      leaseend,
-      unit,
-    };
-    const couponOffset = getCouponOffset({ couponNo, reservationCoupons });
-    const props = calculateService(calculateParams, couponOffset);
-
-    return <BillingDetail {...props} />;
+      ...{ price, deposit, discounts, unit },
+      ...{ leasestart, leaseend },
+    }, couponOffset);
+    return (
+      <div>
+        <BillingDetail {...calculation} />
+        {
+          totalError &&
+          <AlertPanel
+            text={totalError}
+            width="auto"
+            outerStyle={{ marginTop: 15 }}
+          />
+        }
+      </div>
+    );
   }
 
   /**

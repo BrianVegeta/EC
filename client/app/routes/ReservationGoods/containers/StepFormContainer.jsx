@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { reservationGoods as rsRouter } from 'lib/paths';
 import StepForm from '../components/StepForm';
 import { changeData, changeMonth, touchPath } from '../modules/reservation';
-import { fetchCoupons } from '../modules/reservationCoupons';
+import { fetchCoupons, getCouponOffset } from '../modules/reservationCoupons';
 import { validateForm, validateFormBy } from '../modules/validation';
 
 /* pick props */
@@ -14,15 +14,20 @@ const mapStateToProps = ({
   reservationGoodsItem: item,
 }) => {
   const isFetched = Boolean(coupons.updatedAt && item.owner);
-  const isValid = isFetched ? validateFormBy(reservation, item).isValid : false;
+  const { isValid, errors } = isFetched ?
+    validateFormBy(reservation, item, coupons) :
+    { isValid: false, errors: undefined };
+  const totalError = (errors && errors.priceTotal && errors.priceTotal[0]) ?
+    errors.priceTotal[0] : null;
 
   return ({
     environment,
     reservationCoupons: coupons,
     reservation,
     reservationItem: item,
-    isFetched: Boolean(coupons.updatedAt && item.owner),
+    isFetched,
     isValid,
+    totalError,
   });
 };
 
@@ -33,6 +38,7 @@ const mapDispatchToProps = (
   { params: { pid }, location: { query: { cid } } },
 ) => ({
   dpFetchCoupons: () => dispatch(fetchCoupons()),
+  dispatchGetCouponOffset: couponNo => dispatch(getCouponOffset(couponNo)),
   dispatchChangeData: data => dispatch(changeData(data)),
   dispatchChangeMonth: (leasestart, month) => dispatch(changeMonth(leasestart, month)),
   dispatchTouchPath: () => dispatch(touchPath(formPath(pid, cid))),

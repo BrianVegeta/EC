@@ -2,11 +2,6 @@ import { omit } from 'lodash';
 import { reservationSpace as router } from 'lib/paths';
 import { injectReducer } from 'reducers';
 import { checkStepsRestart } from 'modules/routingHelper';
-
-import { REDUCER_KEY as RESERVATION_REDUCER_KEY } from './modules/reservation';
-import { REDUCER_KEY as ITEM_REDUCER_KEY } from './modules/reservationItem';
-import { REDUCER_KEY as COUPONS_REDUCER_KEY } from './modules/reservationCoupons';
-
 import routeStepForm from './routes/routeStepForm';
 import routeStepPayment from './routes/routeStepPayment';
 import routeStepConfirm from './routes/routeStepConfirm';
@@ -18,9 +13,19 @@ export default store => ({
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
       const Container = require('./containers/ReservationSpaceContainer').default;
-      const reservationReducer = require('./modules/reservation').default;
-      const itemReducer = require('./modules/reservationItem').default;
-      const couponsReducer = require('./modules/reservationCoupons').default;
+
+      const {
+        REDUCER_KEY: RESERVATION_REDUCER_KEY,
+        default: reservationReducer,
+      } = require('./modules/reservation');
+      const {
+        REDUCER_KEY: ITEM_REDUCER_KEY,
+        default: itemReducer,
+      } = require('./modules/reservationItem');
+      const {
+        REDUCER_KEY: COUPONS_REDUCER_KEY,
+        default: couponsReducer,
+      } = require('./modules/reservationCoupons');
 
       injectReducer(store, { key: RESERVATION_REDUCER_KEY, reducer: reservationReducer });
       injectReducer(store, { key: ITEM_REDUCER_KEY, reducer: itemReducer });

@@ -2,14 +2,14 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { find } from 'lodash';
+import InputCoupons from 'components/Reserve/InputCoupons';
+import AlertPanel from 'components/Alert/Panel';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
 import SingleDatePicker from 'components/Input/SingleDatePicker';
 import InputDatesPicker from 'components/Input/DatesPicker';
-import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
@@ -26,11 +26,9 @@ import {
 import styles from './styles.sass';
 import { DangerText } from './styles';
 import {
-  // SEND_BY_IN_PERSON,
   SEND_BY_OTHER_SHIPPMENT,
   SEND_BY_711,
   RETURN_BY_IN_PERSON,
-  // RETURN_BY_711,
   RETURN_BY_OTHER_SHIPPMENT,
   ASSIGN_ADDRESS_BY_OWNER,
   ASSIGN_ADDRESS_BY_CUSTOMER,
@@ -39,8 +37,13 @@ import {
 
 class StepForm extends React.Component {
 
+  static defaultProps = {
+    totalError: null,
+  };
+
   static propTypes = {
     dpFetchCoupons: PropTypes.func.isRequired,
+    dispatchGetCouponOffset: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchChangeMonth: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
@@ -58,13 +61,8 @@ class StepForm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
+    totalError: PropTypes.string,
   };
-
-  static getCouponOffset({ couponNo, reservationCoupons: { records } }) {
-    if (!couponNo) return null;
-    const coupon = find(records, { coupon_no: couponNo });
-    return coupon ? coupon.amount : null;
-  }
 
   static getUnit(type) {
     switch (type) {
@@ -282,37 +280,14 @@ class StepForm extends React.Component {
     );
   }
 
-  /**
-   *
-   * 選擇折價券
-   *
-   */
   renderCoupons({ couponNo }) {
-    const {
-      dispatchChangeData,
-      reservationCoupons: { records: myCouponList },
-    } = this.props;
-
+    const { dispatchChangeData, reservationCoupons } = this.props;
     return (
-      <FormGroup>
-        <div styleName="coupons-container">
-          <InputSelectionCoupons
-            couponNo={couponNo}
-            options={myCouponList}
-            onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
-          />
-        </div>
-        {
-          couponNo &&
-            <button
-              className="button"
-              styleName="coupon-cancel"
-              onClick={() => dispatchChangeData({ couponNo: null })}
-            >
-              X 取消折價券
-            </button>
-        }
-      </FormGroup>
+      <InputCoupons
+        couponNo={couponNo}
+        coupons={reservationCoupons}
+        changeData={dispatchChangeData}
+      />
     );
   }
 
@@ -325,8 +300,7 @@ class StepForm extends React.Component {
     { leasestart, leaseend, unit, couponNo },
     { calculate_charge_type, price, deposit, discounts },
   ) {
-    const { reservationCoupons } = this.props;
-    const { getCouponOffset } = this.constructor;
+    const { dispatchGetCouponOffset, totalError } = this.props;
     const calculateParams = {
       calculate_charge_type,
       price,
@@ -336,10 +310,22 @@ class StepForm extends React.Component {
       leaseend,
       unit,
     };
-    const couponOffset = getCouponOffset({ couponNo, reservationCoupons });
-    const props = calculateService(calculateParams, couponOffset);
+    const couponOffset = dispatchGetCouponOffset(couponNo);
+    const calculation = calculateService(calculateParams, couponOffset);
 
-    return <BillingDetail {...props} />;
+    return (
+      <div>
+        <BillingDetail {...calculation} />
+        {
+          totalError &&
+          <AlertPanel
+            text={totalError}
+            width="auto"
+            outerStyle={{ marginTop: 15 }}
+          />
+        }
+      </div>
+    );
   }
 
   /**

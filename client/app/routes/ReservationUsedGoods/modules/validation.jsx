@@ -2,7 +2,9 @@
 /* eslint-disable camelcase */
 import validate from 'validate.js';
 import { isEmpty, includes } from 'lodash';
+import { calculateService } from 'components/BillingDetail';
 import constraints from 'constraints/reservation';
+import publishConstraints from 'constraints/publish';
 import {
   SEND_TYPE_MAIL,
   SEND_TYPE_SEVEN,
@@ -15,6 +17,10 @@ import {
 import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
 } from './reservationItem';
+import {
+  REDUCER_KEY as COUPONS_REDUCER_KEY,
+  getCouponOffsetFromRecords,
+} from './reservationCoupons';
 
 
 const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
@@ -25,14 +31,22 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 /* =============================================>>>>>
 = Validate Form =
 ===============================================>>>>>*/
-export const validateFormBy = ({
-  sendType, sendCity, sendArea, sendAddress,
-  note, unit, storeid,
-}, {
-  unit: itemUnit,
-}) => {
+export const validateFormBy = (
+  {
+    sendType, sendCity, sendArea, sendAddress,
+    note, unit, storeid, couponNo,
+    leasestart, leaseend,
+  },
+  { calculate_charge_type, price, deposit, discounts, unit: itemUnit },
+  { records: coupons },
+) => {
   const isMailSend = sendType === SEND_TYPE_MAIL;
   const isSevenSend = sendType === SEND_TYPE_SEVEN;
+  const { total: priceTotal } = calculateService({
+    calculate_charge_type,
+    ...{ price, deposit, discounts, unit },
+    ...{ leasestart, leaseend },
+  }, getCouponOffsetFromRecords(couponNo, coupons));
   const values = {
     storeid,
     sendCityArea: `${sendCity}${sendArea}`,
@@ -40,6 +54,7 @@ export const validateFormBy = ({
     sendType,
     unit,
     note,
+    priceTotal,
   };
   const validation = {
     storeid: isSevenSend ? constraints.storeid : {},
@@ -48,6 +63,7 @@ export const validateFormBy = ({
     sendType: constraints.sendType,
     unit: constraints.unit(itemUnit),
     note: constraints.note,
+    priceTotal: publishConstraints.priceTotal,
   };
   const errors = validate(values, validation);
   return {
@@ -61,7 +77,8 @@ export const validateForm = () =>
     new Promise((resolve, reject) => {
       const item = getState()[RESERVATION_ITEM_REDUCER_KEY];
       const reservation = getState()[RESERVATION_REDUCER_KEY];
-      const { isValid, errors } = validateFormBy(reservation, item);
+      const coupons = getState()[COUPONS_REDUCER_KEY];
+      const { isValid, errors } = validateFormBy(reservation, item, coupons);
       if (isValid) {
         resolve();
       } else {
@@ -125,8 +142,8 @@ export const validateAgree = () =>
 /* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
-export const validateAllBy = (reservation, item, isBankInfoReady) => {
-  const isFormValid = validateFormBy(reservation, item).isValid;
+export const validateAllBy = (reservation, item, coupons, isBankInfoReady) => {
+  const isFormValid = validateFormBy(reservation, item, coupons).isValid;
   const isPaymentValid = validatePaymentBy(reservation, isBankInfoReady).isValid;
   const isAgreeValid = validateAgreeBy(reservation).isValid;
 

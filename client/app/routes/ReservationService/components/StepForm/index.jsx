@@ -2,12 +2,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { find } from 'lodash';
+import AlertPanel from 'components/Alert/Panel';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
 import ReservationItemNote from 'components/ReservationItemNote';
 import FormGroup from 'components/Form/Group';
+import InputCoupons from 'components/Reserve/InputCoupons';
 import InputDatesPicker from 'components/Input/DatesPicker';
-import InputSelectionCoupons from 'components/Input/SelectionCoupons';
 import InputSelection from 'components/Input/Selection';
 import BillingDetail, { calculateService } from 'components/BillingDetail';
 import InputSelectionCitiesContainer from 'components/Input/SelectionCities/Container';
@@ -37,8 +38,13 @@ import {
 
 class StepForm extends React.Component {
 
+  static defaultProps = {
+    totalError: null,
+  };
+
   static propTypes = {
     dpFetchCoupons: PropTypes.func.isRequired,
+    dispatchGetCouponOffset: PropTypes.func.isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
@@ -55,6 +61,7 @@ class StepForm extends React.Component {
     }).isRequired,
     isFetched: PropTypes.bool.isRequired,
     isValid: PropTypes.bool.isRequired,
+    totalError: PropTypes.string,
   };
 
   static getCouponOffset({ couponNo, reservationCoupons: { records } }) {
@@ -163,31 +170,13 @@ class StepForm extends React.Component {
    *
    */
   renderCoupons({ couponNo }) {
-    const {
-      dispatchChangeData,
-      reservationCoupons: { records: myCouponList },
-    } = this.props;
-
+    const { dispatchChangeData, reservationCoupons } = this.props;
     return (
-      <FormGroup>
-        <div styleName="coupons-container">
-          <InputSelectionCoupons
-            couponNo={couponNo}
-            options={myCouponList}
-            onSelect={({ value }) => dispatchChangeData({ couponNo: value })}
-          />
-        </div>
-        {
-          couponNo &&
-            <button
-              className="button"
-              styleName="coupon-cancel"
-              onClick={() => dispatchChangeData({ couponNo: null })}
-            >
-              X 取消折價券
-            </button>
-        }
-      </FormGroup>
+      <InputCoupons
+        couponNo={couponNo}
+        coupons={reservationCoupons}
+        changeData={dispatchChangeData}
+      />
     );
   }
 
@@ -200,8 +189,7 @@ class StepForm extends React.Component {
     { leasestart, leaseend, unit, couponNo },
     { calculate_charge_type, price, deposit, discounts },
   ) {
-    const { reservationCoupons } = this.props;
-    const { getCouponOffset } = this.constructor;
+    const { dispatchGetCouponOffset, totalError } = this.props;
     const calculateParams = {
       calculate_charge_type,
       price,
@@ -211,10 +199,21 @@ class StepForm extends React.Component {
       leaseend,
       unit,
     };
-    const couponOffset = getCouponOffset({ couponNo, reservationCoupons });
-    const props = calculateService(calculateParams, couponOffset);
-
-    return <BillingDetail {...props} />;
+    const couponOffset = dispatchGetCouponOffset(couponNo);
+    const calculation = calculateService(calculateParams, couponOffset);
+    return (
+      <div>
+        <BillingDetail {...calculation} />
+        {
+          totalError &&
+          <AlertPanel
+            text={totalError}
+            width="auto"
+            outerStyle={{ marginTop: 15 }}
+          />
+        }
+      </div>
+    );
   }
 
   /**
