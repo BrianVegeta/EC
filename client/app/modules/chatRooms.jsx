@@ -128,6 +128,7 @@ export const updateLastMessage = (message, roomId, uid) =>
   (dispatch, getState) => {
     const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
     const unreadCount = (currentRoom && currentRoom.room_id === roomId) ? 0 : 1;
+    console.log(message, uid, unreadCount);
     dispatch({
       type: UPDATE_LAST_MESSAGE,
       message,
@@ -231,7 +232,7 @@ export default (state = initialState, action) => {
         ['rooms'],
         (rooms) => {
           const updateIndex = rooms.findIndex(room =>
-            room.get('members').get(0).get('uid') === action.uid,
+            room.get('members').get(0).get('uid') === action.uid.toLowerCase(),
           );
           if (updateIndex < 0) return rooms;
           return rooms.update(
