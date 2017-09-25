@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { fromJS } from 'immutable';
 import { findIndex } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
@@ -5,10 +6,8 @@ import { reduceDuplicateRecords } from 'lib/utils';
 import { now } from 'lib/time';
 import {
   REDUCER_KEY as CHAT_BOX_REDUCER_KEY,
+  changeChatTarget,
 } from 'modules/chatBox';
-import {
-  REDUCER_KEY as AUTH_REDUCER_KEY,
-} from 'modules/auth';
 import {
   openChat,
 } from 'modules/chat';
@@ -124,14 +123,17 @@ export const emptyUnreadCount = uid => ({
   uid,
 });
 
-export const updateLastMessage = (message, roomId, uid) =>
+export const updateLastMessage = (message, standardId, { uid }) =>
   (dispatch, getState) => {
     const { currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
-    const unreadCount = (currentRoom && currentRoom.room_id === roomId) ? 0 : 1;
-    console.log(message, uid, unreadCount);
+    const unreadCount = (
+      currentRoom &&
+      currentRoom.uid.toLowerCase() === uid.toLowerCase()
+    ) ? 0 : 1;
     dispatch({
       type: UPDATE_LAST_MESSAGE,
       message,
+      standardId,
       uid,
       unreadCount,
     });
@@ -143,28 +145,22 @@ export const addToChatRoom = ({ uid, name, picture }) =>
     const index = findIndex(rooms, room =>
       room.members[0].uid.toLowerCase() === uid.toLowerCase(),
     );
-    console.log(index);
+    const user = { uid, name, picture };
     if (index >= 0) {
-      dispatch({
-        type: MOVE_TO_TOP,
-        index,
-        room: rooms[index],
-      });
+      const room = rooms[index];
+      dispatch({ type: MOVE_TO_TOP, index, room });
+      dispatch(changeChatTarget(room, user));
     } else {
       const room = {
         last_message: '',
         last_message_create_time: now(),
-        members: [{
-          uid, name, picture,
-        }],
+        members: [user],
         room_id: null,
         room_type: 'CHAT',
         unread_message_count: 0,
       };
-      dispatch({
-        type: ADD_NEW_ROOM,
-        room,
-      });
+      dispatch({ type: ADD_NEW_ROOM, room });
+      dispatch(changeChatTarget(room, user));
     }
     dispatch(openChat(true));
   };
@@ -216,9 +212,10 @@ export default (state = initialState, action) => {
       return fromJS(state).updateIn(
         ['rooms'],
         (rooms) => {
-          const updateIndex = rooms.findIndex(room =>
-            room.get('members').get(0).get('uid') === action.uid,
-          );
+          const updateIndex = rooms.findIndex((room) => {
+            const member = room.get('members').get(0);
+            return member.get('uid').toLowerCase() === action.uid.toLowerCase();
+          });
           if (updateIndex < 0) return rooms;
           return rooms.update(
             updateIndex,
@@ -231,19 +228,28 @@ export default (state = initialState, action) => {
       return fromJS(state).updateIn(
         ['rooms'],
         (rooms) => {
-          const updateIndex = rooms.findIndex(room =>
-            room.get('members').get(0).get('uid') === action.uid.toLowerCase(),
-          );
+          const { standardId } = action;
+          const updateIndex = rooms.findIndex((room) => {
+            const member = room.get('members').get(0);
+            const standardIds = room.get('standardIds');
+            return (
+              member.get('uid') === action.uid.toLowerCase() &&
+              !(standardIds && standardIds.contains(standardId))
+            );
+          });
           if (updateIndex < 0) return rooms;
           return rooms.update(
             updateIndex,
-            room => room.merge({
-              last_message: action.message,
-              unread_message_count: (
-                room.get('unread_message_count') + action.unreadCount
-              ),
-              last_message_create_time: now(),
-            }),
+            (room) => {
+              const unread_message_count = room.get('unread_message_count');
+              const standardIds = room.get('standardIds');
+              return room.merge({
+                last_message: action.message,
+                unread_message_count: unread_message_count + action.unreadCount,
+                standardIds: standardIds ? standardIds.push(standardId) : [standardId],
+                last_message_create_time: now(),
+              });
+            },
           );
         },
       ).toJS();

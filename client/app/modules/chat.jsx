@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { Strophe, $pres, $msg } from 'strophe.js';
-import { unescape, find } from 'lodash';
+import { unescape, find, findIndex } from 'lodash';
 import { asyncXhrAuthedPost, asyncXhrPost, asyncXhrPutImage } from 'lib/xhr';
 import { asyncBlobTobase64, base64ToBlobData } from 'lib/utils';
 import { now } from 'lib/time';
@@ -186,7 +186,7 @@ const handleMessage = msg =>
         dispatch(
           sendXmppReceived(standardId, sharemsg, { read: false }),
         ); // Tell xmpp message received and unread
-      } else if (currentRoom.room_id === sharemsg.room_id) {
+      } else if (currentRoom.uid.toLowerCase() === sharemsg.uid.toLowerCase()) {
         console.log('NEW MESSAGE [CURRENT ROOM]', msg);
         dispatch(
           sendXmppReceived(standardId, sharemsg, { read: true }),
@@ -202,11 +202,22 @@ const handleMessage = msg =>
       }
       const { rooms } = getState()[CHAT_ROOMS_REDUCER_KEY];
       if (find(rooms, { room_id: sharemsg.room_id })) {
-        dispatch(updateLastMessage(message, sharemsg.room_id, sharemsg.uid));
-      } else {
-        dispatch(resetRooms());
-        dispatch(fetchRooms());
+        console.log('ROOM EXIST');
+        dispatch(updateLastMessage(message, standardId, sharemsg));
+        return;
       }
+      const roomIndex = findIndex(rooms, (room) => {
+        const { members: [user] } = room;
+        return user.uid.toLowerCase() === sharemsg.uid.toLowerCase();
+      });
+      if (roomIndex >= 0) {
+        console.log('ROOM USER EXIST');
+        dispatch(updateLastMessage(message, standardId, sharemsg));
+        return;
+      }
+      console.log('REFETCH', msg);
+      dispatch(resetRooms());
+      dispatch(fetchRooms());
     } else if (from.includes('sendofflinemessagenotification')) {
       // 離線訊息
       const standardId = msg.getAttribute('id');
@@ -224,6 +235,7 @@ const handleMessage = msg =>
       if (reads.length > 0) {
         console.log('READ ---', msg);
         dispatch(updateMessagesRead(fromUserId));
+        dispatch(emptyUnreadCount(fromUserId));
       }
     }
 

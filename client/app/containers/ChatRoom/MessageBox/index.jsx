@@ -130,7 +130,9 @@ class MessageBox extends React.Component {
 
   scrollBottom() {
     setTimeout(() => {
-      this.container.scrollTop = this.container.scrollHeight;
+      if (this.container) {
+        this.container.scrollTop = this.container.scrollHeight;
+      }
     }, 200);
   }
 

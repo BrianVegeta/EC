@@ -142,7 +142,7 @@ export const changeChatTarget = (room, user) =>
 export const updateMessagesRead = uid =>
   (dispatch, getState) => {
     const { currentRoom: { uid: currentUid } } = getState()[REDUCER_KEY];
-    if (currentUid !== uid) return;
+    if (currentUid.toLowerCase() !== uid.toLowerCase()) return;
     dispatch({ type: UPDATE_MESSAGES_READ });
   };
 
