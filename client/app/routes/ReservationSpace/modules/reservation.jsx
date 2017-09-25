@@ -5,9 +5,7 @@ import { asyncXhrAuthedPost } from 'lib/xhr';
 import { now, getMoment } from 'lib/time';
 import { my } from 'lib/paths';
 import { redirectWithoutHook } from 'lib/redirect';
-import {
-  REDUCER_KEY as ITEM_REDUCER_KEY,
-} from './reservationItem';
+import { REDUCER_KEY as ITEM_REDUCER_KEY } from './reservationItem';
 
 /* =============================================>>>>>
 = settings =
@@ -98,24 +96,19 @@ const transformParams = (pid, assignAddressType, {
   leasestart, leaseend,
   couponNo, unit,
   note,
-}) => {
-  // const service_location_type = assignAddressType.length > 1 ?
-  //   serviceLocationType : assignAddressType;
-  // const isAssignAddressByOwner = service_location_type === ASSIGN_ADDRESS_BY_OWNER;
-  return ({
-    pid,
-    leasestart: leasestart ? leasestart.valueOf() : null,
-    leaseend: leaseend ? leaseend.valueOf() : null,
-    unit,
-    note,
-    coupon_no: couponNo,
-    // service_location_type,
-    // service_city: isAssignAddressByOwner ? serviceCity : '',
-    // service_area: isAssignAddressByOwner ? serviceArea : '',
-    // service_address: isAssignAddressByOwner ? serviceAddress : '',
-    paymenttype,
-  });
-};
+}) => ({
+  pid,
+  leasestart: leasestart ? leasestart.valueOf() : null,
+  leaseend: leaseend ? leaseend.valueOf() : null,
+  unit,
+  note,
+  coupon_no: couponNo,
+  // service_location_type,
+  // service_city: isAssignAddressByOwner ? serviceCity : '',
+  // service_area: isAssignAddressByOwner ? serviceArea : '',
+  // service_address: isAssignAddressByOwner ? serviceAddress : '',
+  paymenttype,
+});
 
 export const saveReservation = () =>
   (dispatch, getState) =>

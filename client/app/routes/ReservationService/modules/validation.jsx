@@ -2,9 +2,10 @@
 /* eslint-disable camelcase */
 import validate from 'validate.js';
 import { isEmpty, includes } from 'lodash';
+import { calculateService } from 'components/BillingDetail';
 import constraints from 'constraints/reservation';
 import publishConstraints from 'constraints/publish';
-import { CHARGE_TYPE_FIX, CHARGE_TYPE_COUNT } from 'constants/publishTypes';
+import { CHARGE_TYPE_FIX } from 'constants/publishTypes';
 import {
   REDUCER_KEY as RESERVATION_REDUCER_KEY,
   PAYMENT_TYPE_ATM,
@@ -14,6 +15,10 @@ import {
   REDUCER_KEY as RESERVATION_ITEM_REDUCER_KEY,
   ASSIGN_ADDRESS_BY_CUSTOMER,
 } from './reservationItem';
+import {
+  REDUCER_KEY as COUPONS_REDUCER_KEY,
+  getCouponOffsetFromRecords,
+} from './reservationCoupons';
 
 
 const ERROR_PAYMENT_TYPE = '請選擇付款方式。';
@@ -24,16 +29,21 @@ const ERROR_AGREE = '請確認以上資訊並勾選。';
 /* =============================================>>>>>
 = Validate Form =
 ===============================================>>>>>*/
-export const validateFormBy = ({
-  leasestart, leaseend,
-  serviceLocationType,
-  serviceCity, serviceArea, serviceAddress,
-  note, unit,
-}, {
-  calculate_charge_type,
-  assign_address_type,
-  unit: itemUnit,
-}) => {
+export const validateFormBy = (
+  {
+    leasestart, leaseend,
+    serviceLocationType,
+    serviceCity, serviceArea, serviceAddress,
+    note, unit, couponNo,
+  },
+  {
+    price, deposit, discounts,
+    calculate_charge_type,
+    assign_address_type,
+    unit: itemUnit,
+  },
+  { records: coupons },
+) => {
   const isFixChargeType = (calculate_charge_type === CHARGE_TYPE_FIX);
   const isCustomerAssign = serviceLocationType === ASSIGN_ADDRESS_BY_CUSTOMER;
   const isServiceLocationSelectable = assign_address_type.length > 1;
@@ -43,6 +53,11 @@ export const validateFormBy = ({
     constraints.serviceLocationType : null;
   const isCountChargeType = (calculate_charge_type === CHARGE_TYPE_FIX);
   const unitValidation = isCountChargeType ? constraints.unit(itemUnit) : null;
+  const { total: priceTotal } = calculateService({
+    calculate_charge_type,
+    ...{ price, deposit, discounts, unit },
+    ...{ leasestart, leaseend },
+  }, getCouponOffsetFromRecords(couponNo, coupons));
   const errors = validate({
     leasestart,
     leaseend,
@@ -51,6 +66,7 @@ export const validateFormBy = ({
     serviceAddress,
     note,
     unit,
+    priceTotal,
   }, {
     leasestart: isFixChargeType ? {} : publishConstraints.startDate,
     leaseend: isFixChargeType ? {} : publishConstraints.endDate,
@@ -58,8 +74,8 @@ export const validateFormBy = ({
     serviceCityArea: serviceCityAreaValidation,
     serviceAddress: serviceAddressValidation,
     unit: unitValidation,
+    priceTotal: publishConstraints.priceTotal,
   });
-  console.log(errors);
   return {
     isValid: isEmpty(errors),
     errors,
@@ -71,7 +87,11 @@ export const validateForm = () =>
     new Promise((resolve, reject) => {
       const item = getState()[RESERVATION_ITEM_REDUCER_KEY];
       const reservation = getState()[RESERVATION_REDUCER_KEY];
-      const { isValid, errors } = validateFormBy(reservation, item);
+      const coupons = getState()[COUPONS_REDUCER_KEY];
+      const {
+        isValid,
+        errors,
+      } = validateFormBy(reservation, item, coupons);
       if (isValid) {
         resolve();
       } else {
@@ -135,10 +155,12 @@ export const validateAgree = () =>
 /* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
-export const validateAllBy = (reservation, item, isBankInfoReady) => {
-  const isFormValid = validateFormBy(reservation, item).isValid;
-  const isPaymentValid = validatePaymentBy(reservation, isBankInfoReady).isValid;
-  const isAgreeValid = validateAgreeBy(reservation).isValid;
+export const validateAllBy = (reservation, item, coupons, isBankInfoReady) => {
+  const { isValid: isFormValid } = validateFormBy(reservation, item, coupons);
+  const { isValid: isPaymentValid } = validatePaymentBy(
+    reservation, isBankInfoReady,
+  );
+  const { isValid: isAgreeValid } = validateAgreeBy(reservation).isValid;
 
   return isFormValid && isPaymentValid && isAgreeValid;
 };

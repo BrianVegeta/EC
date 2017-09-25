@@ -27,9 +27,14 @@ const mapStateToProps = ({
   const isFetched = Boolean(
     reservationCoupons.updatedAt && reservationItem.owner,
   );
-  const isValid = isFetched ? validateAllBy(
-    reservation, reservationItem, personalBankInfo.isReady,
-  ) : false;
+  const isValid = isFetched ?
+    validateAllBy(
+      reservation,
+      reservationItem,
+      reservationCoupons,
+      personalBankInfo.isReady,
+    ) :
+    false;
   return ({
     environment,
     routingHelper,

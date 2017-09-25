@@ -165,7 +165,7 @@ class StepConfirm extends React.Component {
           </div>
         );
       default:
-        return null;
+        return <div />;
     }
   }
 
