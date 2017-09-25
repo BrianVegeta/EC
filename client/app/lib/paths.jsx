@@ -65,6 +65,11 @@ export const orderDetail = {
   indexPath: cid => `/p/order-detail/${cid}`,
   sueFormPath: cid => `/p/sue-form/${cid}`,
 };
+
+export const iotPayment = {
+  loginPath: '/p/iot/payment/login',
+  detailPath: '/p/iot/payment/detail',
+};
 /* =============================================>>>>>
 = 發佈 =
 ===============================================>>>>>*/

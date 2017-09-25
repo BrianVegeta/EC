@@ -52,4 +52,5 @@ class Ajax::Api::PaymentController < ApplicationController
     #type : String => ALL, IN, OUT
     params.permit(:start_date, :end_date, :type).merge(current_uid_params).merge(paging_params);
   end
+
 end

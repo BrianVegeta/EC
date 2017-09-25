@@ -10,7 +10,7 @@ defaults: &defaults
 development:
   <<: *defaults
   api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
-
+  api_iot_base_uri: http://211.20.1.240:18080/ShareApiIot
 test:
   <<: *defaults
 

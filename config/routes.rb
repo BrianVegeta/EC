@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root 'index#pages'
   get '/p/(*all)', to: 'index#pages', as: :pages
+  post 'iot', to: 'iot#request_page'
+  post 'iot/do_login', to: 'iot#do_login'
+  get 'test', to: 'iot#test'
 
   namespace :ajax, format: true, constraints: { format: :json } do
     get :startup, to: 'startup#index'

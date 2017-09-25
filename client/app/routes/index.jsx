@@ -10,6 +10,7 @@ import Item from 'layouts/Item';
 // import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
+// import layoutIotPayment from 'layouts/IotPayment';
 
 import HomeRoute from './Home';
 import routeItemsGoods from './Items/routeGoods';
@@ -47,6 +48,7 @@ import routeReservationSpace from './ReservationSpace/route';
 import routeReservationGoods from './ReservationGoods/route';
 import routeReservationUsedGoods from './ReservationUsedGoods/route';
 import routeSevenEleven from './SevenEleven/route';
+import routeIotPayment from './IotPayment/route';
 // import OwnerprofileRoute from './Ownerprofile/route';
 // import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
@@ -134,6 +136,19 @@ export default store => ({
         routePublishWish(store),
       ],
     },
+    {
+      component: layoutHoc(Mine, {}),
+      childRoutes: [
+        routeIotPayment(store),
+      ],
+    },
+    // {
+    //   component: layoutIotPayment(),
+    //   childRoutes: [
+    //     routeIotPayment(store),
+    //   ],
+    // },
+
     // {
     //   component: layoutHoc(Ownerprofile, { }),
     //   childRoutes: [
