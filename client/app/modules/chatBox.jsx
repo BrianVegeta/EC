@@ -25,6 +25,7 @@ export const RESET_RECURSIVE_TIMES = prefix('RESET_RECURSIVE_TIMES');
 export const SET_CURRENT_ROOM = prefix('SET_CURRENT_ROOM');
 export const ADD_MESSAGE_TO_LOGS = prefix('ADD_MESSAGE_TO_LOGS');
 export const UPDATE_MESSAGE_STATES = prefix('UPDATE_MESSAGE_STATES');
+export const UPDATE_MESSAGE_RECEIVED = prefix('UPDATE_MESSAGE_RECEIVED');
 export const UPDATE_MESSAGES_READ = prefix('UPDATE_MESSAGES_READ');
 export const RESET = prefix('RESET');
 

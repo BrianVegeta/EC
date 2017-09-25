@@ -121,11 +121,13 @@ export const sendXmppRead = () =>
   };
 
 // SEND XMPP RECEIVED (INCLUDES READ)
-const sendXmppReceived = (message_id, room_id, targetUid, { read }) =>
+const sendXmppReceived = (
+  standardId,
+  { message_id, room_id, uid: targetUid },
+  { read },
+) =>
   (dispatch, getState) => {
     const { clientFullJid, connection } = getState()[REDUCER_KEY];
-    const { currentUser: { uid } } = getState()[AUTH_REDUCER_KEY];
-    const id = `${uid.toUpperCase()}_${targetUid.toUpperCase()}_${now()}`;
     const msg = $msg({
       to: `${targetUid.toLowerCase()}share@${XMPP_HOST_IP}`,
       type: 'chat',
@@ -138,7 +140,7 @@ const sendXmppReceived = (message_id, room_id, targetUid, { read }) =>
       .c('read_ids', null, message_id)
       .up();
     }
-    msg.c('received', { xmlns: 'urn:xmpp:receipts', id }).up()
+    msg.c('received', { xmlns: 'urn:xmpp:receipts', id: standardId }).up()
     .c('sharereceive', null)
     .c('message_id', null, message_id);
     connection.send(msg.tree());
@@ -171,7 +173,6 @@ const handleMessage = msg =>
     const from = msg.getAttribute('from');
     const messageType = msg.getAttribute('type');
     const bodys = msg.getElementsByTagName('body');
-    console.log(msg);
     if (messageType === 'chat' && bodys.length > 0) {
       const sharemsgs = msg.getElementsByTagName('sharemsg');
       const sharemsg = JSON.parse(unescape(Strophe.getText(sharemsgs[0])));
@@ -179,42 +180,30 @@ const handleMessage = msg =>
       const standardId = msg.getAttribute('id');
       const { logs, currentRoom } = getState()[CHAT_BOX_REDUCER_KEY];
       if (find(logs, { id: sharemsg.message_id })) {
-        console.log('MESSAGE DUPLICATE');
+        console.log('MESSAGE DUPLICATE', msg);
       } else if (!currentRoom) {
-        console.log('NEW MESSAGE [ROOM CLOSING]');
-        console.log(sharemsg);
-        dispatch(sendXmppReceived(
-          sharemsg.message_id,
-          sharemsg.room_id,
-          sharemsg.uid,
-          { read: false },
-        )); // Tell xmpp message received and read
+        console.log('NEW MESSAGE [ROOM CLOSING]', msg, sharemsg);
+        dispatch(
+          sendXmppReceived(standardId, sharemsg, { read: false }),
+        ); // Tell xmpp message received and unread
       } else if (currentRoom.room_id === sharemsg.room_id) {
-        console.log('NEW MESSAGE [CURRENT ROOM]');
-        dispatch(sendXmppReceived(
-          sharemsg.message_id,
-          sharemsg.room_id,
-          sharemsg.uid,
-          { read: true },
-        )); // Tell xmpp message received and read
+        console.log('NEW MESSAGE [CURRENT ROOM]', msg);
+        dispatch(
+          sendXmppReceived(standardId, sharemsg, { read: true }),
+        ); // Tell xmpp message received and read
         dispatch(addMessageToLogs(
           receiveLogFromType({ ...sharemsg, message, standardId }),
         )); // Add new log to chatbox logs
       } else {
-        console.log('NEW MESSAGE [OTHER ROOM]');
-        dispatch(sendXmppReceived(
-          sharemsg.message_id,
-          sharemsg.room_id,
-          sharemsg.uid,
-          { read: false },
-        )); // Tell xmpp message received and unread
+        console.log('NEW MESSAGE [OTHER ROOM]', msg);
+        dispatch(
+          sendXmppReceived(standardId, sharemsg, { read: false }),
+        ); // Tell xmpp message received and unread
       }
       const { rooms } = getState()[CHAT_ROOMS_REDUCER_KEY];
-      console.log(rooms, message);
       if (find(rooms, { room_id: sharemsg.room_id })) {
         dispatch(updateLastMessage(message, sharemsg.room_id, sharemsg.uid));
       } else {
-        console.log('fetch rooms');
         dispatch(resetRooms());
         dispatch(fetchRooms());
       }
@@ -222,7 +211,7 @@ const handleMessage = msg =>
       // 離線訊息
       const standardId = msg.getAttribute('id');
       dispatch(updateMessageStates(standardId, { is_sending: false }));
-      console.log('OFFLINE RESPONSE');
+      console.log('OFFLINE RESPONSE', msg);
     } else {
       const fromUserId = from.substring(0, from.indexOf('share@'));
       const receiveds = msg.getElementsByTagName('received');
@@ -230,11 +219,10 @@ const handleMessage = msg =>
       if (receiveds.length > 0) {
         const standardId = receiveds[0].getAttribute('id');
         dispatch(updateMessageStates(standardId, { is_sending: false }));
-        console.log('RECEIVED ---');
+        console.log('RECEIVED ---', msg);
       }
       if (reads.length > 0) {
-        // const roomId = reads[0].getElementsByTagName('room_id');
-        console.log('READ ---');
+        console.log('READ ---', msg);
         dispatch(updateMessagesRead(fromUserId));
       }
     }
