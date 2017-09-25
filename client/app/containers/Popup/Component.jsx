@@ -22,7 +22,7 @@ import AccessCheckContainer from 'containers/Popup/AccessCheck/Container';
 import ScoreRatingContainer from 'containers/Popup/ScoreRating/Container';
 import SueDetailContainter from 'containers/Popup/SueDetail/Container';
 import LoginContainer from 'containers/Popup/Login/Container';
-import ShowWishContainer from 'containers/Popup/ShowWish';
+import ShowWishContainer from 'containers/Popup/ShowWish/Container';
 import ATMBankContainer from 'containers/Popup/ATMBank/Container';
 import ReportContainer from 'containers/Popup/Report/Container';
 import SevenNoContainer from 'containers/Popup/Seven/Container';
@@ -99,10 +99,7 @@ class Popup extends React.Component {
       case RENDER_SHOW_WISH:
         return (
           <ModalBox width={700} onClose={dispatchCloseModal} >
-            <ShowWishContainer
-              card={options.card}
-              dispatchClose={this.props.dispatchCloseModal}
-            />
+            <ShowWishContainer card={options.card} />
           </ModalBox>
         );
 
