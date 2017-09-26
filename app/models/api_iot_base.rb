@@ -6,7 +6,7 @@ class ApiIotBase
 
   attr_accessor :error_message, :error_code, :response_data, :response_headers
 
-  def initialize params = nil, apitoken = nil
+  def initialize params = nil, iottoken = nil
     self.request_params = params
   end
 
@@ -18,8 +18,10 @@ class ApiIotBase
     case self.request_method.to_sym
     when :post
       response = self.class.post(self.path, body: self.request_params.to_json)
+      headers: HEADERS.merge!({ IoT_Token: self.iottoken })
     when :get
       response = self.class.get(self.path)
+      headers: HEADERS.merge!({ IoT_Token: self.iottoken })
     else
       raise 'Need request method'
     end

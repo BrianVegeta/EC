@@ -11,9 +11,10 @@ development:
   <<: *defaults
   api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
   api_iot_base_uri: http://211.20.1.240:18080/ShareApiIot
+  api_iot_certificate: mYteQnom66OAOYkwnxXcyMSual3bM0qLzWlDGsmr+DrJ6yEpMQBxjTrgoVh8O3lVNqoAb2DY+DpqYZteGLX+WzRUN1SBeF93iCWqNpd7ICg=
 test:
   <<: *defaults
-
+  api_iot_certificate: mYteQnom66OAOYkwnxXcyMSual3bM0qLzWlDGsmr+DrJ6yEpMQBxjTrgoVh8O3lVNqoAb2DY+DpqYZteGLX+WzRUN1SBeF93iCWqNpd7ICg=
 production:
   <<: *defaults
   jwt_secret: 'jwt secret key'

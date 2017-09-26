@@ -9,39 +9,47 @@ class IotController < ApplicationController
   end
   # 搜尋
   def request_page
-    params = request_payment_params
-    if params['client_app_uid'].nil?
+    if request_payment_params['client_app_uid'].nil?
       raise ActionController::RoutingError.new('Not Found')
     end
-    @product_name = params['product_name']
-    @product_desc = params['product_desc']
-    @price = params['price']
-    @order_no = params['order_no']
-    # if is_login?
-    #   @login = ::Iot::Login.new
-    #   render 'login'
-    # else
-    #   render 'detail'
-    # end
-    # redirect_to "/p/iot/payment/login"
-    # render 'request_page'
-
-    # obj = Api::Iot::RegisOrder.new params
-    #
-    # if obj.success
-    #   raise params['store_uid'].inspect
-    # else
-    #   raise ActionController::RoutingError.new('Not Found')
-    # end
+    @login = ::Iot::Login.new(request_payment_params)
+    @create_acount = ::Iot::CreateAccount.new(request_payment_params)
+    @create_acount.syncCreateAccount
   end
 
-  # login post
+
   def do_login
-    # login
     @login = ::Iot::Login.new(login_params)
+    @create_acount = ::Iot::CreateAccount.new(create_params)
     @login.valid?
-    raise @login.errors[:username].first.inspect
-    # render 'detail' if succces
+    if @login.errors.size > 0
+      render 'request_page'
+    else
+      @login.is_login = true
+      render 'request_page'
+    end
+  end
+
+  def do_create
+    @login = ::Iot::Login.new(login_params)
+    @create_acount = ::Iot::CreateAccount.new(create_params)
+    @create_acount.valid?
+    if @login.errors.size > 0
+      render 'request_page'
+    else
+      render 'request_page'
+    end
+  end
+
+  def do_payment
+    @login = ::Iot::Login.new(login_params)
+    @create_acount.valid?
+    if @login.errors.size > 0
+      render 'request_page'
+    else
+      # call api to register
+      
+    end
   end
 
 
@@ -51,8 +59,8 @@ class IotController < ApplicationController
     # client_app_uid
     # resource_app_uid
     # app_user_pk
-    # name
-    # email
+    # user_name
+    # user_email
     # phone
     # order_no
     # price
@@ -62,12 +70,31 @@ class IotController < ApplicationController
     # account
     # password
     # ip
-    params.permit(:client_app_uid, :resouce_app_uid, :app_user_pk, :name, :email,
-      :product_name, :product_desc,
-      :phone, :order_no, :price, :unit, :check_sum, :arg, :account, :password, :ip)
+    params.permit(:client_app_uid, :resource_app_uid, :app_user_pk, :user_name,
+      :user_email, :product_name, :product_desc,
+      :user_phone, :order_no, :price, :unit, :checksum, :arg, :account, :password, :ip)
   end
 
   def login_params
-    params.require(:iot_login).permit(:username)
+    params.require(:iot_login).permit(
+      :username, :password,
+      :client_app_uid, :resource_app_uid, :app_user_pk,
+      :user_email, :product_name, :product_desc,
+      :user_name, :user_email, :user_phone,
+      :order_no, :price, :unit, :checksum,
+      :arg, :account, :password, :ip, :is_login
+    )
+  end
+
+  def create_params
+    params.require(:iot_login).permit(
+      :account_username, :account_pwd, :account_email, :account_phone,
+      :account_name, :account_pwd_verify,
+      :client_app_uid, :resource_app_uid, :app_user_pk,
+      :user_name, :user_email, :user_phone,
+      :product_name, :product_desc,
+      :order_no, :price, :unit, :checksum,
+      :arg, :ip
+    )
   end
 end

@@ -12,10 +12,5 @@
   <input name="user_phone" value="090000000" />
   <input name="checksum" value="1234" />
   <input name="arg" value="{'id':'4', 'bk':'lala'}" />
-  <input type="submit" value="送出"/>
+  <input type="submit" value="送出" class="button" />
 </form>
-
-<%= form_for @login, url: '/iot/do_login', method: 'post' do |f| %>
-  <%= f.text_field :username, class: 'xxx' %>
-  <%= f.submit '登入' %>
-<% end %>
