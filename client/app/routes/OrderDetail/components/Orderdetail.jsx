@@ -428,10 +428,12 @@ class Orderdetail extends React.Component {
   renderSchedule() {
     const { orderdetail } = this.props;
     const { order } = orderdetail;
-    const { type, leasestart, leaseend,
+    const {
+      type, leasestart, leaseend,
       service_city, service_area, service_address,
       space_city, space_area, space_address,
-     } = order;
+      contractstage, address_is_hidden,
+    } = order;
     if (type === 'USED_ITEM') {
       return null;
     }
@@ -445,12 +447,12 @@ class Orderdetail extends React.Component {
       case 'SERVICE':
         titleStr = '服務資訊';
         address = `${service_city}${service_area}${service_address}`;
-        hintStr = '同意預定後才,顯示完整以上資訊';
+        hintStr = address_is_hidden ? '同意預定後才,顯示完整以上資訊' : '';
         break;
       case 'SPACE':
         titleStr = '空間資訊';
         address = `${space_city}${space_area}${space_address}`;
-        hintStr = '同意預定後才,顯示完整以上資訊';
+        hintStr = address_is_hidden ? '同意預定後才,顯示完整以上資訊' : '';
         break;
       default:
         break;

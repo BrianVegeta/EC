@@ -97,7 +97,8 @@ class StageBase
       can_edit: false,
       can_cancel: false,
       is_owner: self.is_owner,
-      }
+      screen_type: self.screen_type,
+    }
   end
 
   def display
