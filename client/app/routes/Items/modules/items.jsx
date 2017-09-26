@@ -48,7 +48,12 @@ function checkExpire(records, expireFlag) {
     if (expireFlag !== getState()[REDUCER_KEY].expireFlag) {
       return;
     }
-    dispatch(fetched(records));
+    const collection = getState()[COLLECTION_KEY].records;
+    dispatch(fetched(records.map(record =>
+      Object.assign({}, record, {
+        in_my_favorite: Boolean(find(collection, { pid: record.pid })),
+      }),
+    )));
   };
 }
 
@@ -81,7 +86,6 @@ export function fetchRecords(categoryID, isUsed, recursiveRecords = []) {
       records,
       recursiveTimes,
     } = getState()[REDUCER_KEY];
-    const collection = getState()[COLLECTION_KEY].records;
     const {
       price: { max, min },
       sort,
@@ -112,18 +116,6 @@ export function fetchRecords(categoryID, isUsed, recursiveRecords = []) {
     )
     .then((data) => {
       const resultData = data;
-      resultData.map((opt, i) => {
-        const obj = find(collection, { pid: opt.pid });
-        if (obj) {
-          resultData[i] = Object.assign({}, resultData[i], {
-            in_my_favorite: true,
-          });
-        } else {
-          resultData[i] = Object.assign({}, resultData[i], {
-            in_my_favorite: false,
-          });
-        }
-      });
 
       const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_KEY);
       if (reducedRecords.length < resultData.length && recursiveTimes <= RECURSIVE_LIMIT) {
@@ -132,6 +124,7 @@ export function fetchRecords(categoryID, isUsed, recursiveRecords = []) {
         return;
       }
       /* RESET RECURSIVE FREQUENCY */
+      dispatch(resetRecursiveTimes());
       /* CHANGE RECORDS IN REDUCER */
       dispatch(checkExpire(resultData.concat(recursiveRecords), expireFlag));
     });
