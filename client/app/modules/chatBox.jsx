@@ -154,7 +154,6 @@ const initialState = {
   currentRoom: null,
   input: '',
   items: {
-    isFetching: false,
     records: [],
   },
 

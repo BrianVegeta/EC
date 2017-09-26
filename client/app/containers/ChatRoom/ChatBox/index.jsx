@@ -29,6 +29,7 @@ class ChatBox extends React.Component {
     chatBox: PropTypes.shape({
       currentRoom: PropTypes.object,
       logs: PropTypes.array,
+      isFetching: PropTypes.bool,
       input: PropTypes.string,
       items: PropTypes.object,
     }).isRequired,
@@ -117,7 +118,13 @@ class ChatBox extends React.Component {
       dispatchFetchTargetItems,
       dispatchSendXmppRead,
       chatRooms,
-      chatBox: { currentRoom: targetRoom, logs, input, items },
+      chatBox: {
+        currentRoom: targetRoom,
+        logs,
+        isFetching,
+        input,
+        items,
+      },
       currentUser,
       closeBox,
     } = this.props;
@@ -178,6 +185,7 @@ class ChatBox extends React.Component {
               <MessageBox
                 ref={messageBox => (this.messageBox = messageBox)}
                 logs={logs}
+                isFetching={isFetching}
                 currentUser={currentUser}
                 targetRoom={targetRoom}
                 sendRead={dispatchSendXmppRead}

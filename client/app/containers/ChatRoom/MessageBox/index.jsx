@@ -6,6 +6,7 @@ import { truncate, split, isEqual } from 'lodash';
 import IconError from 'react-icons/lib/md/error';
 import Avatar from 'components/Avatar';
 import Picture from 'components/Picture';
+import LoadingOverlay from 'components/Loading/Overlay';
 import { formatDate, now } from 'lib/time';
 import { formatCurrency } from 'lib/currency';
 import { itemPath } from 'lib/paths';
@@ -30,6 +31,7 @@ class MessageBox extends React.Component {
         create_time: PropTypes.number.isRequired,
       }).isRequired,
     ).isRequired,
+    isFetching: PropTypes.bool.isRequired,
     currentUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
     }).isRequired,
@@ -187,12 +189,16 @@ class MessageBox extends React.Component {
   }
 
   render() {
-    const { logs } = this.props;
+    const { logs, isFetching } = this.props;
     const refContainer = container => (this.container = container);
     return (
       <div ref={refContainer} styleName="container" >
         <div styleName="message-container">
-          {List(logs).reverse().toJS().map(this.rMessage)}
+          {
+            isFetching ?
+              <LoadingOverlay background="transparent" /> :
+              List(logs).reverse().toJS().map(this.rMessage)
+          }
         </div>
       </div>
     );
