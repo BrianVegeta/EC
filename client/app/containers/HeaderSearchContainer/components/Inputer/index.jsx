@@ -37,6 +37,13 @@ class Inputer extends React.Component {
       setInputRect(this.input.getBoundingClientRect());
     }
   }
+  componentWillUnmount() {
+    const { setInputRect } = this.props;
+    window.removeEventListener('resize', () => {
+      if (!this.input) return;
+      setInputRect(this.input.getBoundingClientRect());
+    });
+  }
   onFocus() {
     this.focusingState(true);
   }

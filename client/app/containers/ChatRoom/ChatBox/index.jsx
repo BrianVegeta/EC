@@ -6,10 +6,10 @@ import IconChat from 'components/Icons/Chat';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import UserList from '../UserList';
-import MessageBox from '../MessageBox';
-import InputBox from '../InputBox';
-import SearchInput from '../SearchInput';
+import SearchInput from './SearchInput';
+import UserList from './UserList';
+import MessageBox from './MessageBox';
+import InputBox from './InputBox';
 
 
 const cx = classnames.bind(styles);
@@ -26,9 +26,11 @@ class ChatBox extends React.Component {
     dispatchFetchMyItems: PropTypes.func.isRequired,
     dispatchFetchTargetItems: PropTypes.func.isRequired,
     dispatchSendXmppRead: PropTypes.func.isRequired,
+    dispatchChangSearchInput: PropTypes.func.isRequired,
     chatBox: PropTypes.shape({
       currentRoom: PropTypes.object,
       logs: PropTypes.array,
+      isFetching: PropTypes.bool,
       input: PropTypes.string,
       items: PropTypes.object,
     }).isRequired,
@@ -106,9 +108,7 @@ class ChatBox extends React.Component {
   }
 
   render() {
-    const {
-      renderMinus,
-    } = this.constructor;
+    const { renderMinus } = this.constructor;
     const {
       dispatchFetchChatRoom,
       dispatchChangeChatTarget,
@@ -116,8 +116,15 @@ class ChatBox extends React.Component {
       dispatchFetchMyItems,
       dispatchFetchTargetItems,
       dispatchSendXmppRead,
+      dispatchChangSearchInput,
       chatRooms,
-      chatBox: { currentRoom: targetRoom, logs, input, items },
+      chatBox: {
+        currentRoom: targetRoom,
+        logs,
+        isFetching,
+        input,
+        items,
+      },
       currentUser,
       closeBox,
     } = this.props;
@@ -157,7 +164,9 @@ class ChatBox extends React.Component {
         </div>
         <div>
           <div className={cx('header', 'left')}>
-            <SearchInput />
+            <SearchInput
+              dispatchChangSearchInput={dispatchChangSearchInput}
+            />
           </div>
           <div className={cx('header', 'right')}>
             {targetRoom.name}
@@ -178,6 +187,7 @@ class ChatBox extends React.Component {
               <MessageBox
                 ref={messageBox => (this.messageBox = messageBox)}
                 logs={logs}
+                isFetching={isFetching}
                 currentUser={currentUser}
                 targetRoom={targetRoom}
                 sendRead={dispatchSendXmppRead}

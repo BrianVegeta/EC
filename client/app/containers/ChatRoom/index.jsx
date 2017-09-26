@@ -23,6 +23,7 @@ class ChatRoom extends React.Component {
     dispatchFetchMyItems: PropTypes.func.isRequired,
     dispatchFetchTargetItems: PropTypes.func.isRequired,
     dispatchSendXmppRead: PropTypes.func.isRequired,
+    dispatchChangSearchInput: PropTypes.func.isRequired,
     chat: PropTypes.shape({
       isConnected: PropTypes.bool.isRequired,
     }).isRequired,
@@ -84,6 +85,7 @@ class ChatRoom extends React.Component {
       dispatchFetchMyItems,
       dispatchFetchTargetItems,
       dispatchSendXmppRead,
+      dispatchChangSearchInput,
       chatRooms,
       chatBox,
       currentUser,
@@ -100,6 +102,7 @@ class ChatRoom extends React.Component {
         dispatchFetchMyItems={dispatchFetchMyItems}
         dispatchFetchTargetItems={dispatchFetchTargetItems}
         dispatchSendXmppRead={dispatchSendXmppRead}
+        dispatchChangSearchInput={dispatchChangSearchInput}
         chatBox={chatBox}
         chatRooms={chatRooms}
         currentUser={currentUser}

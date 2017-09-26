@@ -4,7 +4,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import Dropzone from 'react-dropzone';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import ItemsSelection from '../ItemsSelection';
+import ItemsSelection from './ItemsSelection';
 
 
 class InputBox extends React.Component {

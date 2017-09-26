@@ -16,20 +16,11 @@ const updateStartup = (items, vendors, banners, categories) => ({
 });
 
 function searchFavorite(data, collection) {
-  const resultData = data;
-  resultData.map((opt, i) => {
-    const obj = find(collection, { pid: opt.pid });
-    if (obj) {
-      resultData[i] = Object.assign({}, resultData[i], {
-        in_my_favorite: true,
-      });
-    } else {
-      resultData[i] = Object.assign({}, resultData[i], {
-        in_my_favorite: false,
-      });
-    }
-  });
-  return resultData;
+  return data.map(record =>
+    Object.assign({}, record, {
+      in_my_favorite: Boolean(find(collection, { pid: record.pid })),
+    }),
+  );
 }
 
 function fetchData(dispatch, getState, isLogin) {

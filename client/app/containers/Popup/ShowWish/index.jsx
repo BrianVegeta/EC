@@ -1,7 +1,5 @@
-// @author: vincent
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Close from 'react-icons/lib/md/close';
 import { truncate } from 'lodash';
 import { formatCurrency } from 'lib/currency';
@@ -16,20 +14,22 @@ import styles from './styles.sass';
 
 class ShowWish extends React.Component {
   static defaultProps = {
-    dispatch: '',
     card: '',
-    currentUid: '',
   }
 
   static propTypes = {
     card: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     dispatchClose: PropTypes.func.isRequired,
-    currentUid: PropTypes.string,
+    dispatchRedirectToLogin: PropTypes.func.isRequired,
+    dispatchAddToChatRoom: PropTypes.func.isRequired,
+    auth: PropTypes.shape({
+      isLogin: PropTypes.bool.isRequired,
+      currentUser: PropTypes.object,
+    }).isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.onClose = this.onClose.bind(this);
     this.onEdit = this.onEdit.bind(this);
   }
 
@@ -39,19 +39,22 @@ class ShowWish extends React.Component {
     this.props.dispatchClose();
   }
 
-  onClose() {
-    this.props.dispatchClose();
-  }
-
   render() {
-    const { card, currentUid } = this.props;
-    const isOwner = card.uid === currentUid;
-
+    const {
+      dispatchAddToChatRoom,
+      dispatchRedirectToLogin,
+      card,
+      auth: { isLogin, currentUser },
+    } = this.props;
     return (
       <div styleName="container">
         <div styleName="wishContent">
           <div className="clear">
-            <button className="button" styleName="close" onClick={this.onClose}>
+            <button
+              className="button"
+              styleName="close"
+              onClick={this.props.dispatchClose}
+            >
               <Close />
             </button>
           </div>
@@ -74,7 +77,7 @@ class ShowWish extends React.Component {
             <div styleName="hour">{fromNow(card.create_time)}</div>
           </div>
           <div styleName="sendMessage">
-            {isOwner ?
+            {isLogin && currentUser.uid === card.uid ?
               <button
                 className="button"
                 styleName="editMessageButton"
@@ -85,6 +88,7 @@ class ShowWish extends React.Component {
               <button
                 className="button"
                 styleName="sendMessageButton"
+                onClick={isLogin ? dispatchAddToChatRoom : dispatchRedirectToLogin}
               >
                 私訊
               </button>
@@ -96,10 +100,4 @@ class ShowWish extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { schedule, auth } = state;
-  const { currentUser } = auth;
-  const currentUid = currentUser ? currentUser.uid : '';
-  return { schedule, currentUid };
-};
-export default connect(mapStateToProps)(CSS(ShowWish, styles));
+export default CSS(ShowWish, styles);
