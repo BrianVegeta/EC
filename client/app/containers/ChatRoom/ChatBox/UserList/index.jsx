@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEqual } from 'lodash';
+import { isEqual, filter } from 'lodash';
 import Infinite from 'react-infinite';
 import Avatar from 'components/Avatar';
 import { formatDate } from 'lib/time';
@@ -15,6 +15,7 @@ class UserList extends React.Component {
 
   static propTypes = {
     chatRooms: PropTypes.shape({
+      searchInput: PropTypes.string,
       rooms: PropTypes.array.isRequired,
       isPaginable: PropTypes.bool.isRequired,
       isFetching: PropTypes.bool.isRequired,
@@ -35,9 +36,21 @@ class UserList extends React.Component {
     return formatDate(time);
   }
 
+  static getRooms({ searchInput, rooms }) {
+    if (searchInput) {
+      const results = filter(rooms, (room) => {
+        const { members: [user] } = room;
+        return user.name.indexOf(searchInput) !== -1;
+      });
+      return results;
+    }
+    return rooms;
+  }
+
   constructor(props) {
     super(props);
     this.renderUser = this.renderUser.bind(this);
+    this.onInfiniteLoad = this.onInfiniteLoad.bind(this);
   }
 
   shouldComponentUpdate({ currentUser, chatRooms }) {
@@ -50,6 +63,16 @@ class UserList extends React.Component {
     return true;
   }
 
+  onInfiniteLoad() {
+    const {
+      chatRooms: { isPaginable },
+      fetchRooms,
+    } = this.props;
+    if (isPaginable) {
+      fetchRooms();
+    }
+  }
+
   renderUser(room, i) {
     const {
       last_message,
@@ -58,15 +81,14 @@ class UserList extends React.Component {
       members: [user],
     } = room;
     const { uid, name, picture } = user;
-    const {
-      changeChatTarget, currentUser: { uid: currentUserId },
-    } = this.props;
+    const { changeChatTarget, currentUser } = this.props;
     const { renderUnreadCount, renderLastCreateTime } = this.constructor;
+    const selecting = uid.toLowerCase() === currentUser.uid.toLowerCase();
     return (
       <div
         key={`${i + 1}`}
         styleName="user-container"
-        className={cx('user-container', { selecting: uid === currentUserId })}
+        className={cx('user-container', { selecting })}
         role="button"
         tabIndex="-1"
         onClick={() => changeChatTarget(room, user)}
@@ -90,26 +112,31 @@ class UserList extends React.Component {
     );
   }
 
+  renderNoRoom() {
+    const { chatRooms: { searchInput } } = this.props;
+    if (searchInput) return <div styleName="search-no-result">搜尋沒有結果</div>;
+    return null;
+  }
+
   render() {
-    const {
-      chatRooms: {
-        rooms,
-        isPaginable,
-        isFetching,
-      },
-      fetchRooms,
-    } = this.props;
+    const { chatRooms } = this.props;
+    const { isFetching } = chatRooms;
+    const { getRooms } = this.constructor;
     return (
       <div styleName="container">
         <Infinite
           elementHeight={51}
           containerHeight={420}
           infiniteLoadBeginEdgeOffset={500}
-          onInfiniteLoad={isPaginable ? fetchRooms : () => console.log('enough')}
+          onInfiniteLoad={this.onInfiniteLoad}
           loadingSpinnerDelegate={isFetching && <div>loading</div>}
           isInfiniteLoading={isFetching}
         >
-          {rooms.map(this.renderUser)}
+          {
+            getRooms(chatRooms).length > 0 ?
+              getRooms(chatRooms).map(this.renderUser) :
+              this.renderNoRoom()
+          }
         </Infinite>
       </div>
     );

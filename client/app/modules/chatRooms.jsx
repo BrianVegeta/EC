@@ -35,6 +35,7 @@ const EMPTY_UNREAD_COUNT = prefix('EMPTY_UNREAD_COUNT');
 const UPDATE_LAST_MESSAGE = prefix('UPDATE_LAST_MESSAGE');
 const ADD_NEW_ROOM = prefix('ADD_NEW_ROOM');
 const MOVE_TO_TOP = prefix('MOVE_TO_TOP');
+const CHANGE_SEARCH_INPUT = prefix('CHANGE_SEARCH_INPUT');
 
 
 // =============================================
@@ -165,11 +166,17 @@ export const addToChatRoom = ({ uid, name, picture }) =>
     dispatch(openChat(true));
   };
 
+export const changeSearchInput = value => ({
+  type: CHANGE_SEARCH_INPUT,
+  value,
+});
+
 
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
+  searchInput: null,
   expireFlag: null,
   isPaginable: true,
   isFetching: false,
@@ -265,6 +272,10 @@ export default (state = initialState, action) => {
         ['rooms'],
         rooms => rooms.delete(action.index).unshift(action.room),
       ).toJS();
+
+    case CHANGE_SEARCH_INPUT:
+      return Object.assign({}, state, { searchInput: action.value });
+
 
     default:
       return state;

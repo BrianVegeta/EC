@@ -11,6 +11,7 @@ import {
 } from 'modules/chat';
 import {
   fetchRooms,
+  changeSearchInput,
 } from 'modules/chatRooms';
 import {
   fetchLogs,
@@ -33,24 +34,26 @@ const mapStateToProps = ({
 });
 
 /* pick dispatch */
-const mapDispatchToProps = (dispatch) => {
-  return ({
-    dispatchResetBox: () => dispatch(resetBox()),
-    dispatchFetchChatRoom: () => dispatch(fetchRooms()),
-    dispatchConnect: () => dispatch(chatConnect()),
-    dispatchFetchLogs: targetUid => dispatch(fetchLogs(targetUid)),
-    dispatchChangeChatTarget: (room, user) =>
-      dispatch(changeChatTarget(room, user)),
-    dispatchChangeInput: input => dispatch(changeInput(input)),
-    dispatchSendMessage: () => dispatch(sendMessage()),
-    dispatchUploadPhoto: blob => dispatch(uploadPhoto(blob)),
-    dispatchSelectItem: ({ pid, pname, price, img }) =>
-      dispatch(selectItem({ pid, pname, price, img })),
-    dispatchFetchMyItems: () => dispatch(fetchMyItems()),
-    dispatchFetchTargetItems: () => dispatch(fetchTargetItems()),
-    dispatchSendXmppRead: () => dispatch(sendXmppRead()),
-    dispatchOpenChat: open => dispatch(openChat(open)),
-  });
-};
+const mapDispatchToProps = dispatch => ({
+  dispatchResetBox: () => dispatch(resetBox()),
+  dispatchFetchChatRoom: () => dispatch(fetchRooms()),
+  dispatchConnect: () => dispatch(chatConnect()),
+  dispatchFetchLogs: targetUid => dispatch(fetchLogs(targetUid)),
+  dispatchChangeChatTarget: (room, user) =>
+    dispatch(changeChatTarget(room, user)),
+  dispatchChangeInput: input => dispatch(changeInput(input)),
+  dispatchSendMessage: () => dispatch(sendMessage()),
+  dispatchUploadPhoto: blob => dispatch(uploadPhoto(blob)),
+  dispatchSelectItem: ({ pid, pname, price, img }) =>
+    dispatch(selectItem({ pid, pname, price, img })),
+  dispatchFetchMyItems: () => dispatch(fetchMyItems()),
+  dispatchFetchTargetItems: () => dispatch(fetchTargetItems()),
+  dispatchSendXmppRead: () => dispatch(sendXmppRead()),
+  dispatchOpenChat: (open) => {
+    dispatch(changeSearchInput(''));
+    dispatch(openChat(open));
+  },
+  dispatchChangSearchInput: value => dispatch(changeSearchInput(value)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);
