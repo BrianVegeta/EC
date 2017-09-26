@@ -1,4 +1,5 @@
 import { isEqual, find, parseInt } from 'lodash';
+import { fromJS } from 'immutable';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { redirectToLogin } from 'lib/redirect';
 import { fetchCollections } from 'modules/myCollection';
@@ -25,6 +26,13 @@ const RESET = prefix('RESET');
 = actions =
 ===============================================>>>>>*/
 
+const checkInFavorite = (detail, favorites) => {
+  const inFavorites = find(favorites, { pid: parseInt(detail.pid) });
+  return Object.assign({}, detail, {
+    in_my_favorite: Boolean(inFavorites),
+  });
+};
+
 const setEdit = detail => ({
   type: SET_EDIT,
   detail,
@@ -49,51 +57,51 @@ export const setCollection = isFavorite => ({
   isFavorite,
 });
 
-function fetchData(dispatch, getState, isLogin, pid) {
-  asyncXhrPost(
-    '/ajax/item_detail.json',
-    { pid },
-  ).then((data) => {
-    let resultData = data;
-    const { uid } = resultData;
-    if (isLogin) {
-      const { records } = getState()[COLLECTION_KEY];
-      const obj = find(records, { pid: parseInt(pid) });
-      if (obj) {
-        resultData = Object.assign({}, resultData, {
-          in_my_favorite: true,
+const fetchItem = pid =>
+  dispatch =>
+    new Promise((resolve) => {
+      asyncXhrPost(
+        '/ajax/item_detail.json', { pid },
+      ).then((data) => {
+        const { uid } = data;
+        dispatch(setEdit(data));
+        resolve(data);
+        asyncXhrPost(
+          '/ajax/user_info.json', { uid },
+        ).then(({ user_profile }) => {
+          dispatch(changeOwner(user_profile));
         });
-      } else {
-        resultData = Object.assign({}, resultData, {
-          in_my_favorite: false,
-        });
-      }
-    } else {
-      resultData = Object.assign({}, resultData, {
-        in_my_favorite: false,
       });
-    }
-    dispatch(setEdit(resultData));
-
-    asyncXhrPost(
-      '/ajax/user_info.json',
-      { uid },
-    ).then(({ user_profile }) => {
-      dispatch(changeOwner(user_profile));
     });
-  });
-}
+
 
 export function editItem(pid) {
   return (dispatch, getState) => {
     const { isLogin } = getState()[AUTH_KEY];
-    if (isLogin) {
-      dispatch(fetchCollections()).then(() => {
-        fetchData(dispatch, getState, isLogin, pid);
+    dispatch(
+      fetchItem(pid),
+    ).then((data) => {
+      if (!isLogin) {
+        dispatch(setEdit(
+          checkInFavorite(data, []),
+        ));
+        return;
+      }
+      const { records: collection } = getState()[COLLECTION_KEY];
+      if (collection.length > 0) {
+        dispatch(setEdit(
+          checkInFavorite(data, collection),
+        ));
+        return;
+      }
+      dispatch(
+        fetchCollections(),
+      ).then((newCollection) => {
+        dispatch(setEdit(
+          checkInFavorite(data, newCollection),
+        ));
       });
-    } else {
-      fetchData(dispatch, getState, isLogin, pid);
-    }
+    });
   };
 }
 
@@ -135,9 +143,10 @@ export default function (state = initialState, action) {
   switch (action.type) {
 
     case SET_EDIT:
-      return Object.assign({}, state, {
-        detail: action.detail,
-      });
+      return fromJS(state).updateIn(
+        ['detail'],
+        detail => detail.merge(action.detail),
+      ).toJS();
 
     case CHANGE_OWNER:
       return Object.assign({}, state, {

@@ -86,10 +86,10 @@ export const loginPhone = ({ phone, password }) =>
     });
 
 // facebook login
-export const loginFacebook = ({ userID, accessToken }) =>
+export const loginFacebook = ({ userID, accessToken, name }) =>
   dispatch =>
     new Promise((resolve) => {
-      postLoginFacebook({ userID, accessToken }).then((userProfile) => {
+      postLoginFacebook({ userID, accessToken, name }).then((userProfile) => {
         resolve(userProfile);
       }).catch((message) => {
         dispatch(loginFail(message));

@@ -45,11 +45,11 @@ const mapDispatchToProps = (dispatch) => {
       loginPhone({ phone, password }),
     ).then(afterLogin);
   };
-  const dispatchLoginFB = ({ userID, accessToken }) => {
+  const dispatchLoginFB = ({ userID, accessToken, name }) =>
     dispatch(
-      loginFacebook({ userID, accessToken }),
+      loginFacebook({ userID, accessToken, name }),
     ).then(afterLogin);
-  };
+
   return ({
     dispatchChangeForm: data => dispatch(changeForm(data)),
     dispatchSwitchEmailLogin: () => dispatch(switchLoginByEmail()),

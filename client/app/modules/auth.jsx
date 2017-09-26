@@ -56,10 +56,10 @@ export const postLogin = ({ email, phone, password }) =>
   });
 
 // 登入 Facebook
-export const postLoginFacebook = ({ userID, accessToken }) =>
+export const postLoginFacebook = ({ userID, accessToken, name }) =>
   new Promise((resolve, reject) => {
     const path = '/ajax/facebook_login_callback.json';
-    const params = { fb_id: userID, access_token: accessToken };
+    const params = { fb_id: userID, access_token: accessToken, name };
     asyncXhrPost(path, params, true).then(({ user_profile }) => {
       resolve(user_profile);
     }).catch(({ message }) => {
