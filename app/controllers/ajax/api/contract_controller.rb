@@ -290,30 +290,40 @@ class Ajax::Api::ContractController < ApplicationController
     response_data = response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
 
     if (response_data['contractstage'] < 4)
-      response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
-      response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);
+      response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2, '訂單確認後顯示');
+      response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6, '訂單確認後顯示');
       response_data['lessee_real_name'] = replaceString(response_data['lessee_real_name'], 0, 2);
       response_data['lesseephone'] = replaceString(response_data['lesseephone'], 3, 6);
       if current_user['uid'] === response_data['lesseeuid']
-        if response_data['service_location_type'] === '0'
-          response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+        case response_data['type']
+        when 'SERVICE'
+          if response_data['service_location_type'] === '0'
+            response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+            response_data['address_is_hidden'] = true;
+          end
+        when 'SPACE'
+          response_data['space_address'] = replaceString(response_data['space_address'], 0, 5);
           response_data['address_is_hidden'] = true;
         end
-        response_data['space_address'] = replaceString(response_data['space_address'], 0, 5);
       elsif current_user['uid'] === response_data['owneruid']
-        if response_data['service_location_type'] === '1'
-          response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+        case response_data['type']
+        when 'ITEM'
+          response_data['item_lessee_receive_address'] = replaceString(response_data['item_lessee_receive_address'], 0, 5);
           response_data['address_is_hidden'] = true;
+        when 'SERVICE'
+          if response_data['service_location_type'] === '1'
+            response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+            response_data['address_is_hidden'] = true;
+          end
         end
-        return response_data
       end
     end
     return response_data
   end
 
-  def replaceString(string, remainIndex, replaceNumber)
+  def replaceString(string, remainIndex, replaceNumber, replaceStr = '未公開')
     if string.nil?
-      return '未公開'
+      return replaceStr
     end
     if (string.to_s.length > remainIndex)
       string[0..remainIndex] + ('*' * replaceNumber)
