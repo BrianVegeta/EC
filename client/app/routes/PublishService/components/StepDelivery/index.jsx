@@ -22,7 +22,9 @@ import styles from './styles.sass';
 class StepDelivery extends React.Component {
 
   static propTypes = {
-    publish: PropTypes.object.isRequired,
+    publish: PropTypes.shape({
+      assignAddressByCustomer: PropTypes.bool,
+    }).isRequired,
     dispatchChangeData: PropTypes.func.isRequired,
     dispatchValidate: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,

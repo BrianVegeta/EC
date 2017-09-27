@@ -9,13 +9,15 @@ import {
   uploadCover,
   processRawCovers,
 } from '../modules/covers';
-import { touchPath } from '../modules/publish';
+import { REDUCER_KEY, touchPath } from '../modules/publish';
 import { openCropper, closeCropper } from '../modules/cropper';
 
 
 const { coverPath, aboutPath } = publishServiceRouter;
 /* pick props */
-const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
+const mapStateToProps = ({
+  environment, [REDUCER_KEY]: publish, covers, cropper,
+}) => ({
   environment, publish, covers, cropper,
 });
 

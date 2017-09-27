@@ -10,7 +10,7 @@ import {
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.SPACE';
-export const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publishSpace';
 
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { publishServiceRouter } from 'lib/paths';
 import StepCancelPolicy from '../components/StepCancelPolicy';
-import { changeData, touchPath } from '../modules/publish';
+import { REDUCER_KEY, changeData, touchPath } from '../modules/publish';
 import {
   validateCancelPolicy,
   validateCancelPolicyBy,
@@ -12,7 +12,7 @@ import {
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/
-const mapStateToProps = ({ environment, publish }) => {
+const mapStateToProps = ({ environment, [REDUCER_KEY]: publish }) => {
   const { isValid } = validateCancelPolicyBy(publish);
   return ({
     environment,

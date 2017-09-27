@@ -11,7 +11,7 @@ import {
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.GOODS';
-export const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publishGoods';
 
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { publishSpaceRouter } from 'lib/paths';
 import StepPrice from '../components/StepPrice';
-import { changeData, changePaidData, touchPath } from '../modules/publish';
+import { REDUCER_KEY, changeData, changePaidData, touchPath } from '../modules/publish';
 import { validatePrice, validatePriceBy } from '../modules/validation';
 
 
@@ -13,7 +13,7 @@ const {
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/
-const mapStateToProps = ({ environment, publish }) => ({
+const mapStateToProps = ({ environment, [REDUCER_KEY]: publish }) => ({
   environment,
   publish,
   isValid: validatePriceBy(publish).isValid,

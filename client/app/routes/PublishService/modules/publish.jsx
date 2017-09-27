@@ -11,7 +11,7 @@ import {
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.SERVICE';
-export const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publishService';
 
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0'; // 親自

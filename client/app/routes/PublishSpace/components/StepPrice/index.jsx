@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
-
 import FormContainer from 'components/Publish/FormContainer';
 import FormGroup from 'components/Form/Group';
 import InputRadio from 'components/Input/Radio';
@@ -9,11 +8,11 @@ import InputTextCurrency from 'components/Input/TextCurrency';
 import InputDatesPicker from 'components/Input/DatesPicker';
 import InputTextCounter from 'components/Input/TextCounter';
 import DiscountGroup from 'components/DiscountGroup';
-
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import AlertTotalError from 'components/Publish/AlertTotalError';
 import {
   CHARGE_TYPE_DAY,
   CHARGE_TYPE_MONTH,
@@ -21,7 +20,6 @@ import {
   GREATER_OR_EQUAL_TO_N_MONTH,
  } from 'constants/publishTypes';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
-// import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -35,7 +33,6 @@ class StepPrice extends React.Component {
     dispatchTouchPath: PropTypes.func.isRequired,
     nextStep: PropTypes.func.isRequired,
     isValid: PropTypes.bool.isRequired,
-
   };
 
   constructor(props) {
@@ -56,23 +53,20 @@ class StepPrice extends React.Component {
       dispatchValidate,
       nextStep,
     } = this.props;
-    dispatchValidate()
-    .then(() => {
+    dispatchValidate().then(() => {
       nextStep();
-    })
-    .catch((errors) => {
-      const { chargeTypeError, totalError } = errors;
-
-      this.setState({ chargeTypeError: chargeTypeError || '' });
-      if (chargeTypeError) return;
-
-      this.setState({ totalError: totalError || '' });
+    }).catch((errors) => {
+      if (errors.chargeTypeError) return false;
+      return errors;
+    }).then((errors) => {
+      if (!errors) return;
+      this.setState({ totalError: errors.totalError || '' });
       this.priceInput.valid();
       this.depositInput.valid();
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.reservationDaysInput) this.reservationDaysInput.valid();
-      this.discountInput.valid();
+      if (this.discountInput) this.discountInput.valid();
     });
   }
 
@@ -179,8 +173,9 @@ class StepPrice extends React.Component {
   }
 
   renderAfterChoosed(type) {
+    const { publish } = this.props;
+    if (!publish.chargeType) return null;
     const {
-      publish,
       dispatchChangeData,
       isValid,
     } = this.props;
@@ -213,6 +208,7 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
+        <AlertTotalError totalError={this.state.totalError} />
         {this.renderReservationDays(publish)}
         {this.renderDiscount(publish)}
         <ButtonNextStep

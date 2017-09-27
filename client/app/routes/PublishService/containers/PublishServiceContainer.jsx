@@ -8,6 +8,7 @@ import PublishService from '../components/PublishService';
 import { reset as resetCovers } from '../modules/covers';
 import { reset as resetCropper } from '../modules/cropper';
 import {
+  REDUCER_KEY,
   reset as resetPublish,
   editPublish,
   touchPath,
@@ -33,7 +34,7 @@ const {
 = map props =
 ===============================================>>>>>*/
 const mapStateToProps = (
-  { environment, publish, covers },
+  { environment, [REDUCER_KEY]: publish, covers },
   { location: { query } },
 ) => {
   /* edit */
