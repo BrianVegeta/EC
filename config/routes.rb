@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   root 'index#pages'
   get '/p/(*all)', to: 'index#pages', as: :pages
-  post 'iot', to: 'iot#request_page'
-  post 'iot/do_login', to: 'iot#do_login'
+  post 'iot/sharepay/login', to: 'iot#payment_login'
+  post 'iot/sharepay/request', to: 'iot#payment_request'
+  post 'iot/sharepay/do/login', to: 'iot#do_login'
+  post 'iot/sharepay/do/create', to: 'iot#do_create'
+  post 'iot/sharepay/do/payment', to: 'iot#do_request_page'
   get 'test', to: 'iot#test'
 
   namespace :ajax, format: true, constraints: { format: :json } do

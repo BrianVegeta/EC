@@ -40,7 +40,7 @@
         <tbody>
           <tr>
             <th width=100 >聯絡帳號：</td>
-            <td><%= @login.username %></td>
+            <td><%= @login.account %></td>
           </tr>
           <tr>
             <th width=100 >聯絡人：</td>
@@ -48,31 +48,19 @@
           </tr>
           <tr>
             <th width=100 >聯絡信箱：</td>
-            <td><%= @login.user_email %></td>
+            <td><%= @login.email %></td>
           </tr>
           <tr>
             <th width=100 >聯絡手機：</td>
-            <td><%= @login.user_phone %><</td>
+            <td><%= @login.phone %><</td>
           </tr>
         </tbody>
       </table>
       <%= form_for @login, url: '/iot/do_payment', method: 'post' do |f| %>
         <%= f.submit '付款', class: 'button form-button' %>
-        <%= f.text_field :username, class: 'hidden' %>
+        <%= f.text_field :account, class: 'hidden' %>
         <%= f.text_field :password, class: 'hidden' %>
-        <%= f.text_field :client_app_uid, class: 'hidden' %>
-        <%= f.text_field :resource_app_uid, class: 'hidden' %>
-        <%= f.text_field :order_no, class: 'hidden' %>
-        <%= f.text_field :product_name, class: 'hidden' %>
-        <%= f.text_field :product_desc, class: 'hidden' %>
-        <%= f.text_field :price, class: 'hidden' %>
-        <%= f.text_field :unit, class: 'hidden' %>
-        <%= f.text_field :app_user_pk, class: 'hidden' %>
-        <%= f.text_field :user_name, class: 'hidden' %>
-        <%= f.text_field :user_email, class: 'hidden' %>
-        <%= f.text_field :user_phone, class: 'hidden' %>
-        <%= f.text_field :checksum, class: 'hidden' %>
-        <%= f.text_field :arg, class: 'hidden' %>
+        <%= render partial: 'payment', locals: { f: f } %>
       <% end %>
     <% else %>
       <div class="board-radio">
@@ -83,7 +71,7 @@
         <%= form_for @login, url: '/iot/do_login', method: 'post' do |f| %>
           <div>
             <div class="form-text">帳號：</div>
-            <%= f.text_field :username, class: 'board-input' %>
+            <%= f.text_field :account, class: 'board-input' %>
           </div>
           <div>
             <div class="form-text">密碼：</div>
@@ -99,8 +87,8 @@
           <%= f.text_field :unit, class: 'hidden' %>
           <%= f.text_field :app_user_pk, class: 'hidden' %>
           <%= f.text_field :user_name, class: 'hidden' %>
-          <%= f.text_field :user_email, class: 'hidden' %>
-          <%= f.text_field :user_phone, class: 'hidden' %>
+          <%= f.text_field :email, class: 'hidden' %>
+          <%= f.text_field :phone, class: 'hidden' %>
           <%= f.text_field :checksum, class: 'hidden' %>
           <%= f.text_field :arg, class: 'hidden' %>
         <% end %>
@@ -141,8 +129,8 @@
           <%= f.text_field :unit, class: 'hidden' %>
           <%= f.text_field :app_user_pk, class: 'hidden' %>
           <%= f.text_field :user_name, class: 'hidden' %>
-          <%= f.text_field :user_email, class: 'hidden' %>
-          <%= f.text_field :user_phone, class: 'hidden' %>
+          <%= f.text_field :email, class: 'hidden' %>
+          <%= f.text_field :phone, class: 'hidden' %>
           <%= f.text_field :checksum, class: 'hidden' %>
           <%= f.text_field :arg, class: 'hidden' %>
         <% end %>

@@ -1,24 +1,22 @@
-class Iot::Login
-  include ActiveModel::Model
-  include ActiveModel::Validations
-  include ActionView::Helpers::NumberHelper
-  attr_accessor :client_app_uid, :resource_app_uid, :order_no, :username, :password,
-                :product_name,  :product_desc, :price, :unit, :app_user_pk,
-                :user_name, :user_email, :user_phone, :checksum, :arg,
-                :is_login
+class Iot::Login < Iot::Payment
+  attr_accessor :account, :password, :login_response, :ip
 
-  validates :client_app_uid, presence: true
-  validates :resource_app_uid, presence: true
-  validates :order_no, presence: true
-  validates :username, presence: true
-  validates :password, presence: true
-  validates :price, presence: true, numericality: true
-  validates :app_user_pk, presence: true
-  validates :user_name, presence: true
-  validates :checksum, presence: true
-
-  def price_formatter
-    'NTD ' + number_to_currency(self.price)
+  def login_success?
+    self.login_response.present?
   end
 
+  def signin
+    raise 'error' if !self.valid?
+
+    login_params = {
+      client_app_uid: self.client_app_uid,
+      account: self.account,
+      password: self.password,
+      ip: self.ip,
+    }
+    obj = ::Api::Iot::Login.new login_params, '02ac89b2-68dd-422b-8534-5b4c9019a32a'
+    success = obj.request
+    self.login_response = obj.response_data
+    self.login_response.present?
+  end
 end

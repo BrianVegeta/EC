@@ -4,10 +4,13 @@ class ApiIotBase
   HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
   headers HEADERS
 
-  attr_accessor :error_message, :error_code, :response_data, :response_headers
+  attr_accessor :error_message, :error_code,
+                :response_data, :response_result, :response_headers,
+                :iottoken
 
-  def initialize params = nil, iottoken = nil
+  def initialize params = nil, token = nil
     self.request_params = params
+    self.iottoken = token
   end
 
   def request_method
@@ -17,11 +20,13 @@ class ApiIotBase
   def request_api
     case self.request_method.to_sym
     when :post
-      response = self.class.post(self.path, body: self.request_params.to_json)
-      headers: HEADERS.merge!({ IoT_Token: self.iottoken })
+      response = self.class.post(
+        self.path,
+        body: self.request_params.to_json,
+        headers: HEADERS.merge!({ IoT_Token: self.iottoken })
+      )
     when :get
-      response = self.class.get(self.path)
-      headers: HEADERS.merge!({ IoT_Token: self.iottoken })
+      response = self.class.get(self.path, headers: HEADERS.merge!({ IoT_Token: self.iottoken }))
     else
       raise 'Need request method'
     end
@@ -38,16 +43,15 @@ class ApiIotBase
 
   def request
     response = self.request_api
-    self.error_code = response['error']['code']
-    self.error_message = ::Response::ErrorCode.localize(self.error_code)
+    self.response_result = response['result'] if response.has_key?('result')
     self.response_data = response['data'] if response.has_key?('data')
     self.response_headers = response.headers
     handle_response_error response
   end
 
   def handle_response_error response
-    case self.error_code
-    when ::Response::ErrorCode::SUCCESS, ::Response::ErrorCode::ALL_CONFIRM
+    case response.code
+    when 200
       true
     else
       false

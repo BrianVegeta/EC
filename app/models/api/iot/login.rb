@@ -1,6 +1,6 @@
 class Api::Iot::Login < ApiIotBase
 
-  PATH = '/session/IoTAccountLogin';
+  PATH = '/session/IoTAccount/login';
 
   def path
     PATH
@@ -9,5 +9,4 @@ class Api::Iot::Login < ApiIotBase
   def request_method
      :post
   end
-
 end
