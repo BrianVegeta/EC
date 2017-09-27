@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { browserHistory } from 'react-router';
 import { formatCurrency } from 'lib/currency';
-import { formatDate } from 'lib/time';
+import { formatDate, now } from 'lib/time';
 import {
   reservationGoods as rsGoodsRouter,
   reservationService as rsServiceRouter,
@@ -78,20 +78,23 @@ export default class {
     return `最少租借${min_lease_days}天，共計${total}`;
   }
 
+  static checkReserveExpired({ leasestart, leaseend }) {
+    return {
+      isStartExpired: now() > leasestart,
+      isEndExpired: now() > leaseend,
+    };
+  }
+
   constructor(detail, isMyOwn) {
     const {
-      // uid,
-      // pid,
       discounts,
       top_category,
       min_lease_days,
-      // price,
       deposit,
       calculate_charge_type,
       leasestart,
       leaseend,
       type,
-      // assign_address_type,
       unit,
     } = detail;
     this.type = type;
@@ -102,6 +105,12 @@ export default class {
     );
     this.deposit = `押金：${formatCurrency(deposit)}`;
     this.payment = '第三方安全支付 ，信用卡、ATM轉帳';
+    const {
+      isStartExpired, isEndExpired,
+    } = this.constructor.checkReserveExpired(detail);
+    this.isStartExpired = isStartExpired;
+    this.isEndExpired = isEndExpired;
+    this.isFixChargeType = calculate_charge_type === FIX_CHARGE_TYPE;
 
     const {
       getReservationPath,
