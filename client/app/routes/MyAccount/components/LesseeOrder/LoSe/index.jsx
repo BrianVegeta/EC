@@ -52,42 +52,26 @@ class OrderList extends React.Component {
 
   render() {
     const { myOrder } = this.props;
-    // console.log(this.props);
-    if (myOrder == null) {
-      return null;
-    }
+    if (myOrder == null) return null;
     const { records, isFetching, unreads } = myOrder;
 
     const navs = [
-      { name: '提出預訂',
-        href: my.lesseeOrderService(TAB_REQUEST),
-        tabName: TAB_REQUEST },
-      { name: '尚未付款',
-        href: my.lesseeOrderService(TAB_PAY),
-        tabName: TAB_PAY },
-      { name: '待開始',
-        href: my.lesseeOrderService(TAB_WAITING_TO_GO),
-        tabName: TAB_WAITING_TO_GO },
-      { name: '執行中',
-        href: my.lesseeOrderService(TAB_ONGOING),
-        tabName: TAB_ONGOING },
-      { name: '完成',
-        href: my.lesseeOrderService(TAB_COMPLETE),
-        tabName: TAB_COMPLETE },
-      { name: '取消',
-        href: my.lesseeOrderService(TAB_CANCEL),
-        tabName: TAB_CANCEL },
-      { name: '申訴中',
-        href: my.lesseeOrderService(TAB_SUE),
-        tabName: TAB_SUE },
-      { name: '申訴完成',
-        href: my.lesseeOrderService(TAB_SUE_COMPLETE),
-        tabName: TAB_SUE_COMPLETE },
+      ['提出預訂', my.lesseeOrderService(TAB_REQUEST), TAB_REQUEST],
+      ['尚未付款', my.lesseeOrderService(TAB_PAY), TAB_PAY],
+      ['待開始', my.lesseeOrderService(TAB_WAITING_TO_GO), TAB_WAITING_TO_GO],
+      ['執行中', my.lesseeOrderService(TAB_ONGOING), TAB_ONGOING],
+      ['完成', my.lesseeOrderService(TAB_COMPLETE), TAB_COMPLETE],
+      ['取消', my.lesseeOrderService(TAB_CANCEL), TAB_CANCEL],
+      ['申訴中', my.lesseeOrderService(TAB_SUE), TAB_SUE],
+      ['申訴完成', my.lesseeOrderService(TAB_SUE_COMPLETE), TAB_SUE_COMPLETE],
     ];
     return (
       <Container titleText={titleName}>
         <OrderNav activeType={SERVICE} />
-        <Navigation navs={navs} unreads={unreads} />
+        <Navigation
+          navs={navs.map(([name, href, tabName]) => ({ name, href, tabName }))}
+          unreads={unreads}
+        />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}

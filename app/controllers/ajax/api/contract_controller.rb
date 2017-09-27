@@ -4,6 +4,12 @@ class Ajax::Api::ContractController < ApplicationController
 
   ###################### ACTION ##################################
 
+  def get_my_unread_count
+    api = ::Api::Contract::GetMyUnreadCount.new current_uid_params, current_apitoken
+    success = api.request
+    respond success, api
+  end
+
   # 取回行事曆範圍內的合約
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken

@@ -58,32 +58,21 @@ class OrderList extends React.Component {
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '尚未付款',
-        href: my.lesseeOrderUsedItem(TAB_PAY),
-        tabName: TAB_PAY },
-      { name: '待出貨',
-        href: my.lesseeOrderUsedItem(TAB_SHIPPING),
-        tabName: TAB_SHIPPING },
-      { name: '運送中',
-        href: my.lesseeOrderUsedItem(TAB_SHIPPING_CONFIRM),
-        tabName: TAB_SHIPPING_CONFIRM },
-      { name: '完成',
-        href: my.lesseeOrderUsedItem(TAB_COMPLETE),
-        tabName: TAB_COMPLETE },
-      { name: '取消',
-        href: my.lesseeOrderUsedItem(TAB_CANCEL),
-        tabName: TAB_CANCEL },
-      { name: '退貨/申訴中',
-        href: my.lesseeOrderUsedItem(TAB_SUE),
-        tabName: TAB_SUE },
-      { name: '退貨/申訴完成',
-        href: my.lesseeOrderUsedItem(TAB_SUE_COMPLETE),
-        tabName: TAB_SUE_COMPLETE },
+      ['尚未付款', my.lesseeOrderUsedItem(TAB_PAY), TAB_PAY],
+      ['待出貨', my.lesseeOrderUsedItem(TAB_SHIPPING), TAB_SHIPPING],
+      ['運送中', my.lesseeOrderUsedItem(TAB_SHIPPING_CONFIRM), TAB_SHIPPING_CONFIRM],
+      ['完成', my.lesseeOrderUsedItem(TAB_COMPLETE), TAB_COMPLETE],
+      ['取消', my.lesseeOrderUsedItem(TAB_CANCEL), TAB_CANCEL],
+      ['退貨/申訴中', my.lesseeOrderUsedItem(TAB_SUE), TAB_SUE],
+      ['退貨/申訴完成', my.lesseeOrderUsedItem(TAB_SUE_COMPLETE), TAB_SUE_COMPLETE],
     ];
     return (
       <Container titleText={titleName}>
         <OrderNav activeType={USED_ITEM} />
-        <Navigation navs={navs} unreads={unreads} />
+        <Navigation
+          navs={navs.map(([name, href, tabName]) => ({ name, href, tabName }))}
+          unreads={unreads}
+        />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}

@@ -9,9 +9,11 @@ import OrderNav, { ITEM } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
 
-import { TAB_REQUEST, TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
-   TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
-    TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
+import {
+  TAB_REQUEST, TAB_PAY, TAB_SHIPPING, TAB_SHIPPING_CONFIRM,
+  TAB_RETURN, TAB_COMPLETE, TAB_CANCEL,
+  TAB_SUE, TAB_SUE_COMPLETE,
+} from '../../../modules/myOrder';
 
 const titleName = AcccountNav.lesseeOrder.text;
 class OrderList extends React.Component {
@@ -52,41 +54,26 @@ class OrderList extends React.Component {
 
   render() {
     const { myOrder } = this.props;
-    // console.log(this.props);
-    if (myOrder == null) {
-      return null;
-    }
+    if (myOrder == null) return null;
+
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '提出預訂',
-        href: my.lesseeOrderItem(TAB_REQUEST),
-        tabName: TAB_REQUEST },
-      { name: '待付款',
-        href: my.lesseeOrderItem(TAB_PAY),
-        tabName: TAB_PAY },
-      { name: '待收貨',
-        href: my.lesseeOrderItem(TAB_SHIPPING_CONFIRM),
-        tabName: TAB_SHIPPING },
-      { name: '待還貨',
-        href: my.lesseeOrderItem(TAB_RETURN),
-        tabName: TAB_RETURN },
-      { name: '完成',
-        href: my.lesseeOrderItem(TAB_COMPLETE),
-        tabName: TAB_COMPLETE },
-      { name: '取消',
-        href: my.lesseeOrderItem(TAB_CANCEL),
-        tabName: TAB_CANCEL },
-      { name: '申訴中',
-        href: my.lesseeOrderItem(TAB_SUE),
-        tabName: TAB_SUE },
-      { name: '申訴完成',
-        href: my.lesseeOrderItem(TAB_SUE_COMPLETE),
-        tabName: TAB_SUE_COMPLETE },
+      ['提出預訂', my.lesseeOrderItem(TAB_REQUEST), TAB_REQUEST],
+      ['待付款', my.lesseeOrderItem(TAB_PAY), TAB_PAY],
+      ['待收貨', my.lesseeOrderItem(TAB_SHIPPING_CONFIRM), TAB_SHIPPING],
+      ['待還貨', my.lesseeOrderItem(TAB_RETURN), TAB_RETURN],
+      ['完成', my.lesseeOrderItem(TAB_COMPLETE), TAB_COMPLETE],
+      ['取消', my.lesseeOrderItem(TAB_CANCEL), TAB_CANCEL],
+      ['申訴中', my.lesseeOrderItem(TAB_SUE), TAB_SUE],
+      ['申訴完成', my.lesseeOrderItem(TAB_SUE_COMPLETE), TAB_SUE_COMPLETE],
     ];
     return (
       <Container titleText={titleName}>
         <OrderNav activeType={ITEM} />
-        <Navigation navs={navs} unreads={unreads} />
+        <Navigation
+          navs={navs.map(([name, href, tabName]) => ({ name, href, tabName }))}
+          unreads={unreads}
+        />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}
