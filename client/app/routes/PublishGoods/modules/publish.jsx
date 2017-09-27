@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { parseInt } from 'lodash';
+import { parseInt, trim } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now } from 'lib/time';
 import {
@@ -144,6 +144,7 @@ const transformParams = (covers, {
   if (returnByInPerson) returnOption = returnOption.concat('0');
   if (returnByOtherShippment) returnOption = returnOption.concat('1');
   if (returnBy711) returnOption = returnOption.concat('2');
+  const rules = trim(regulation) === '' ? [] : [trim(regulation)];
   return ({
     pname: title,
     img1: covers[0] && covers[0].s3,
@@ -169,7 +170,7 @@ const transformParams = (covers, {
     return_address: returnAddress,
     calculate_charge_type: chargeType,
     discounts,
-    rules: [regulation],
+    rules,
     min_lease_days: 0,
     overdue_rate: hasOverduePolicy ? overdueRate : 0,
     receive_711_store_id: Rstoreid,

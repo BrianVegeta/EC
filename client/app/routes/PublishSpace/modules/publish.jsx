@@ -1,4 +1,4 @@
-import { parseInt } from 'lodash';
+import { parseInt, trim } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now } from 'lib/time';
 import {
@@ -105,29 +105,32 @@ const transformParams = (covers, {
   hasCancelPolicy,
   advanceDay,
   rate,
-}) => ({
-  pname: title,
-  img1: covers[0] && covers[0].s3,
-  img2: covers[1] && covers[1].s3,
-  img3: covers[2] && covers[2].s3,
-  pdes: descript,
-  cat_id: categoryID,
-  city: cityName,
-  area: areaName,
-  price,
-  deposit,
-  currency: 'NTD',
-  advance_reservation_days: reservationDays || 0,
-  tag1: (tag1 || null),
-  tag2: (tag2 || null),
-  tag3: (tag3 || null),
-  assign_address: assignAddress,
-  calculate_charge_type: chargeType,
-  discounts,
-  rules: [regulation],
-  min_lease_days: 0,
-  cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
-});
+}) => {
+  const rules = trim(regulation) === '' ? [] : [trim(regulation)];
+  return {
+    pname: title,
+    img1: covers[0] && covers[0].s3,
+    img2: covers[1] && covers[1].s3,
+    img3: covers[2] && covers[2].s3,
+    pdes: descript,
+    cat_id: categoryID,
+    city: cityName,
+    area: areaName,
+    price,
+    deposit,
+    currency: 'NTD',
+    advance_reservation_days: reservationDays || 0,
+    tag1: (tag1 || null),
+    tag2: (tag2 || null),
+    tag3: (tag3 || null),
+    assign_address: assignAddress,
+    calculate_charge_type: chargeType,
+    discounts,
+    rules,
+    min_lease_days: 0,
+    cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
+  };
+};
 
 export const savePublish = () =>
   (dispatch, getState) =>
