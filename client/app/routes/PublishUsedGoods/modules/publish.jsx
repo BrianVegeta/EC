@@ -10,7 +10,7 @@ import {
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.USEDGOODS';
-export const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publishUsedGoods';
 
 /* enums */
 export const ASSIGN_ADDRESS_BY_OWNER = '0';

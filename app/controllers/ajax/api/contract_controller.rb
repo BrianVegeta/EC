@@ -4,6 +4,12 @@ class Ajax::Api::ContractController < ApplicationController
 
   ###################### ACTION ##################################
 
+  def get_my_unread_count
+    api = ::Api::Contract::GetMyUnreadCount.new current_uid_params, current_apitoken
+    success = api.request
+    respond success, api
+  end
+
   # 取回行事曆範圍內的合約
   def calendar
     obj = ::Api::Contract::Calendar.new calendar_params, current_apitoken
@@ -281,17 +287,26 @@ class Ajax::Api::ContractController < ApplicationController
   end
 
   def removePrivateData(response_data)
-    if current_user['uid'] === response_data['lesseeuid']
-      return response_data
-    end
     response_data = response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
+
     if (response_data['contractstage'] < 4)
       response_data['owner_real_name'] = replaceString(response_data['owner_real_name'], 0, 2);
       response_data['ownerphone'] = replaceString(response_data['ownerphone'], 3, 6);
       response_data['lessee_real_name'] = replaceString(response_data['lessee_real_name'], 0, 2);
       response_data['lesseephone'] = replaceString(response_data['lesseephone'], 3, 6);
-      response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
-      response_data['space_address'] = replaceString(response_data['space_address'], 0, 5);
+      if current_user['uid'] === response_data['lesseeuid']
+        if response_data['service_location_type'] === '0'
+          response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+          response_data['address_is_hidden'] = true;
+        end
+        response_data['space_address'] = replaceString(response_data['space_address'], 0, 5);
+      elsif current_user['uid'] === response_data['owneruid']
+        if response_data['service_location_type'] === '1'
+          response_data['service_address'] = replaceString(response_data['service_address'], 0, 5);
+          response_data['address_is_hidden'] = true;
+        end
+        return response_data
+      end
     end
     return response_data
   end

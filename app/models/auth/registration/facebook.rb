@@ -1,12 +1,14 @@
 class Auth::Registration::Facebook < ApiBase
 
-  attr_accessor :picture
+  attr_accessor :picture, :name
 
   def path
     '/client/register/fb/regist'
   end
 
   def initialize params, browser_info
+    self.picture = params['picture']
+    self.name = params['name']
     self.request_params = params.merge browser_info
   end
 

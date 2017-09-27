@@ -7,7 +7,9 @@ import { CHARGE_TYPE_FIX } from 'constants/publishTypes';
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
 } from './publish';
-import { REDUCER_KEY as COVERS_REDUCER_KEY } from './covers';
+import {
+  REDUCER_KEY as COVERS_REDUCER_KEY,
+} from './covers';
 
 
 /* =============================================>>>>>

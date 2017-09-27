@@ -43,10 +43,9 @@ export function fetchCollections() {
         '/ajax/get_fav.json',
         {},
         getState(),
-      )
-      .then((responseData) => {
+      ).then((responseData) => {
         dispatch(fetched(responseData));
-        resolve();
+        resolve(responseData);
       });
     });
 }

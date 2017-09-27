@@ -12,13 +12,13 @@ import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
 } from 'components/Button/NextStep';
+import AlertTotalError from 'components/Publish/AlertTotalError';
 import constraints, { SERVICE_UNIT_MIN } from 'constraints/publish';
 import {
   CHARGE_TYPE_FIX,
   CHARGE_TYPE_COUNT,
   CHARGE_TYPE_DAY,
 } from 'constants/publishTypes';
-// import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -38,7 +38,6 @@ class StepPrice extends React.Component {
     super(props);
     this.onNextStepClick = this.onNextStepClick.bind(this);
     this.state = {
-      chargeTypeError: '',
       totalError: '',
     };
   }
@@ -57,18 +56,17 @@ class StepPrice extends React.Component {
       nextStep();
     })
     .catch((errors) => {
-      const { chargeTypeError, totalError } = errors;
-
-      this.setState({ chargeTypeError: chargeTypeError || '' });
-      if (chargeTypeError) return;
-
-      this.setState({ totalError: totalError || '' });
+      if (errors.chargeTypeError) return false;
+      return errors;
+    }).then((errors) => {
+      if (!errors) return;
+      this.setState({ totalError: errors.totalError || '' });
       this.priceInput.valid();
       this.depositInput.valid();
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.reservationDaysInput) this.reservationDaysInput.valid();
-      this.discountInput.valid();
+      if (this.discountInput) this.discountInput.valid();
     });
   }
 
@@ -78,7 +76,10 @@ class StepPrice extends React.Component {
       <div styleName="charge-type">
         <InputRadio
           checked={state === CHARGE_TYPE}
-          onChange={() => dispatchChangeData({ chargeType: CHARGE_TYPE })}
+          onChange={() => {
+            dispatchChangeData({ chargeType: CHARGE_TYPE });
+            console.log(`change ${CHARGE_TYPE}`);
+          }}
         >
           {text}
         </InputRadio>
@@ -177,10 +178,12 @@ class StepPrice extends React.Component {
       isValid,
     } = this.props;
     const {
+      chargeType,
       price,
       deposit,
     } = publish;
-
+    const { totalError } = this.state;
+    if (!chargeType) return null;
     return (
       <div styleName="container">
         <FormGroup headerText="價格">
@@ -205,6 +208,7 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
+        <AlertTotalError totalError={totalError} />
         {
           isChargeFix ?
           this.renderDatesAndUnit(publish) :

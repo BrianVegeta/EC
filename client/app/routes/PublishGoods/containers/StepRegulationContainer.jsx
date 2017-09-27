@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { publishGoodsRouter } from 'lib/paths';
 import StepRegulation from '../components/StepRegulation';
-import { changeData, touchPath } from '../modules/publish';
+import { REDUCER_KEY, changeData, touchPath } from '../modules/publish';
 import { validateRegulation, validateRegulationBy } from '../modules/validation';
 
 /* =============================================>>>>>
 = map props =
 ===============================================>>>>>*/
 const { regulationPath, confirmPath } = publishGoodsRouter;
-const mapStateToProps = ({ environment, publish }) => ({
+const mapStateToProps = ({ environment, [REDUCER_KEY]: publish }) => ({
   environment,
   publish,
   isValid: validateRegulationBy(publish).isValid,

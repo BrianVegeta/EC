@@ -30,22 +30,24 @@ class OrderBoard extends React.Component {
   }
 
   onButtonClick() {
-    const {
-      model: { isMyOwn, onReserve, onEdit },
-      checkItemOngoing,
-    } = this.props;
-    checkItemOngoing().then(() => {
+    const { model } = this.props;
+    if (model.isMyOwn) {
+      model.onEdit();
+    } else if (model.isFixChargeType && model.isStartExpired) {
       swalNormal({
         title: '無法進行此動作',
-        text: '已對此產品提出過需求，正等待對方同意。',
+        text: model.isEndExpired ? '此服務已結束' : '此服務已開始',
       });
-    }).catch(() => {
-      if (isMyOwn) {
-        onEdit();
-      } else {
-        onReserve();
-      }
-    });
+    } else {
+      this.props.checkItemOngoing().then(() => {
+        swalNormal({
+          title: '無法進行此動作',
+          text: '已對此產品提出過需求，正等待對方同意。',
+        });
+      }).catch(() => {
+        model.onReserve();
+      });
+    }
   }
 
   generateButtonText() {

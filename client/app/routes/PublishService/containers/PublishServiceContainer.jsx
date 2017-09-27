@@ -5,9 +5,13 @@ import { fetchCities } from 'modules/cities';
 import { publishServiceRouter } from 'lib/paths';
 import { mapSidebarSteps } from 'lib/utils';
 import PublishService from '../components/PublishService';
-import { reset as resetCovers } from '../modules/covers';
+import {
+  REDUCER_KEY as COVERS_REDUCER_KEY,
+  reset as resetCovers,
+} from '../modules/covers';
 import { reset as resetCropper } from '../modules/cropper';
 import {
+  REDUCER_KEY,
   reset as resetPublish,
   editPublish,
   touchPath,
@@ -33,7 +37,11 @@ const {
 = map props =
 ===============================================>>>>>*/
 const mapStateToProps = (
-  { environment, publish, covers },
+  {
+    environment,
+    [REDUCER_KEY]: publish,
+    [COVERS_REDUCER_KEY]: covers,
+  },
   { location: { query } },
 ) => {
   /* edit */

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { my } from 'lib/paths';
 import AcccountNav from 'constants/myAccountNavs';
 import ListContainer from 'components/ListContainer';
@@ -8,10 +7,16 @@ import OrderSpaceBoard from 'components/OrderItemBoard';
 import OrderNav, { SPACE } from '../../OrderNav';
 import Navigation from '../../OrderNavigation';
 import Container from '../../Container';
-
-import { TAB_REQUEST, TAB_PAY, TAB_WAITING_TO_GO,
-   TAB_ONGOING, TAB_COMPLETE, TAB_CANCEL,
-    TAB_SUE, TAB_SUE_COMPLETE } from '../../../modules/myOrder';
+import {
+  TAB_REQUEST,
+  TAB_PAY,
+  TAB_WAITING_TO_GO,
+  TAB_ONGOING,
+  TAB_COMPLETE,
+  TAB_CANCEL,
+  TAB_SUE,
+  TAB_SUE_COMPLETE,
+} from '../../../modules/myOrder';
 
 const titleName = AcccountNav.lesseeOrder.text;
 class OrderList extends React.Component {
@@ -58,35 +63,22 @@ class OrderList extends React.Component {
     }
     const { records, isFetching, unreads } = myOrder;
     const navs = [
-      { name: '提出預訂',
-        href: my.lesseeOrderSpace(TAB_REQUEST),
-        tabName: TAB_REQUEST },
-      { name: '尚未付款',
-        href: my.lesseeOrderSpace(TAB_PAY),
-        tabName: TAB_PAY },
-      { name: '待開始',
-        href: my.lesseeOrderSpace(TAB_WAITING_TO_GO),
-        tabName: TAB_WAITING_TO_GO },
-      { name: '執行中',
-        href: my.lesseeOrderSpace(TAB_ONGOING),
-        tabName: TAB_ONGOING },
-      { name: '完成',
-        href: my.lesseeOrderSpace(TAB_COMPLETE),
-        tabName: TAB_COMPLETE },
-      { name: '取消',
-        href: my.lesseeOrderSpace(TAB_CANCEL),
-        tabName: TAB_CANCEL },
-      { name: '申訴中',
-        href: my.lesseeOrderSpace(TAB_SUE),
-        tabName: TAB_SUE },
-      { name: '申訴完成',
-        href: my.lesseeOrderSpace(TAB_SUE_COMPLETE),
-        tabName: TAB_SUE_COMPLETE },
+      ['提出預訂', my.lesseeOrderSpace(TAB_REQUEST), TAB_REQUEST],
+      ['尚未付款', my.lesseeOrderSpace(TAB_PAY), TAB_PAY],
+      ['待開始', my.lesseeOrderSpace(TAB_WAITING_TO_GO), TAB_WAITING_TO_GO],
+      ['執行中', my.lesseeOrderSpace(TAB_ONGOING), TAB_ONGOING],
+      ['完成', my.lesseeOrderSpace(TAB_COMPLETE), TAB_COMPLETE],
+      ['取消', my.lesseeOrderSpace(TAB_CANCEL), TAB_CANCEL],
+      ['申訴中', my.lesseeOrderSpace(TAB_SUE), TAB_SUE],
+      ['申訴完成', my.lesseeOrderSpace(TAB_SUE_COMPLETE), TAB_SUE_COMPLETE],
     ];
     return (
       <Container titleText={titleName}>
         <OrderNav activeType={SPACE} />
-        <Navigation navs={navs} unreads={unreads} />
+        <Navigation
+          navs={navs.map(([name, href, tabName]) => ({ name, href, tabName }))}
+          unreads={unreads}
+        />
         <ListContainer
           minHeight={500}
           noDataText={(isFetching === false && records.length === 0) ? '尚無任何預定' : null}

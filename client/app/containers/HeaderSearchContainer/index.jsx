@@ -183,7 +183,8 @@ class Search extends React.Component {
                     source={new ModelRowItem(item, dispatch)}
                   />),
                 )}
-                { this.renderMoreButtion(isPaginable,
+                {renderMoreButton(
+                  isPaginable,
                   isItemsPaginating,
                   isItemFetching,
                   () => dispatch(searchItemByName(query, true)),

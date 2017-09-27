@@ -52,7 +52,7 @@ class StepConfirm extends React.Component {
     dispatchAddToChatRoom: PropTypes.func.isRequired,
     redirectToMyOrder: PropTypes.func.isRequired,
     routingHelper: PropTypes.shape({
-      removeHook: PropTypes.func.isRequired,
+      removeHook: PropTypes.func,
     }).isRequired,
     reservation: PropTypes.shape({
       title: PropTypes.string,

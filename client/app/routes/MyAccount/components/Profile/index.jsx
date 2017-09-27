@@ -1,4 +1,5 @@
 import React from 'react';
+import validate from 'validate.js';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 import { Link } from 'react-router';
@@ -47,6 +48,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.onUploadClick = this.onUploadClick.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -57,13 +59,30 @@ class Profile extends React.Component {
     this.avatarDropzone.open();
   }
 
+  onUpdate() {
+    const {
+      dispatchUpdateUserprofile,
+      profile: {
+        data: { name },
+      },
+    } = this.props;
+    const errors = validate(
+      { name },
+      { name: constraints.nickname },
+    );
+    if (errors && errors.name) {
+      this.nameInput.valid();
+    } else {
+      dispatchUpdateUserprofile();
+    }
+  }
+
   render() {
     const {
       dispatchOpenCropper,
       dispatchCloseCropper,
       dispatchUploadAvatar,
       dispatchChangeData,
-      dispatchUpdateUserprofile,
       currentUser: { uid },
       environment,
       cropper,
@@ -219,7 +238,7 @@ class Profile extends React.Component {
           colorType="orange"
           style={{ padding: '12px 50px' }}
           width="auto"
-          onClick={dispatchUpdateUserprofile}
+          onClick={this.onUpdate}
         />
       </Container>
     );

@@ -6,7 +6,7 @@ import {
   items as itemsRouter,
 } from 'lib/paths';
 import StepConfirm from '../components/StepConfirm';
-import { savePublish, updatePublish, touchPath } from '../modules/publish';
+import { REDUCER_KEY, savePublish, updatePublish, touchPath } from '../modules/publish';
 import { validateAll, validateAllBy } from '../modules/validation';
 
 
@@ -17,7 +17,7 @@ const { usedGoodsPath } = itemsRouter;
 const mapStateToProps = ({
   environment,
   routingHelper,
-  publish,
+  [REDUCER_KEY]: publish,
   covers,
   categories,
 }) => ({

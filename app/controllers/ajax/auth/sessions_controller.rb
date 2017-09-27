@@ -39,12 +39,12 @@ class Ajax::Auth::SessionsController < ApplicationController
         apitoken = @new_user.warden_session['apitoken']
 
         fb_avatar_url = "https://graph.facebook.com/#{params_facebook[:fb_id]}/picture?type=large"
-        # params[:avatar_url]
         @avatar = Images::Avatar.new(uid: uid, image_from_url: fb_avatar_url)
         @avatar.save
 
         @new_user.picture = @avatar.photo.url
-        @userprofile = ::Api::Userprofile::Save.new({ uid: uid, picture: @new_user.picture }, apitoken)
+        update_params = { uid: uid, picture: @new_user.picture, name: @new_user.name }
+        @userprofile = ::Api::Userprofile::Save.new(update_params, apitoken)
         @userprofile.request
 
         @new_user.response_data['user_profile'].merge!({ picture: @new_user.picture })
@@ -76,6 +76,6 @@ class Ajax::Auth::SessionsController < ApplicationController
   end
 
   def params_facebook
-    params.permit(:access_token, :fb_id)
+    params.permit(:access_token, :fb_id, :name)
   end
 end

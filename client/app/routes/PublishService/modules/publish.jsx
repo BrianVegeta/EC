@@ -1,4 +1,4 @@
-import { parseInt } from 'lodash';
+import { parseInt, trim } from 'lodash';
 import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { now, getMoment } from 'lib/time';
 import { CHARGE_TYPE_FIX } from 'constants/publishTypes';
@@ -11,11 +11,11 @@ import {
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.SERVICE';
-export const REDUCER_KEY = 'publish';
+export const REDUCER_KEY = 'publishService';
 
 /* enums */
-export const ASSIGN_ADDRESS_BY_OWNER = '0';
-export const ASSIGN_ADDRESS_BY_CUSTOMER = '1';
+export const ASSIGN_ADDRESS_BY_OWNER = '0'; // 親自
+export const ASSIGN_ADDRESS_BY_CUSTOMER = '1'; // 到府
 
 // =============================================
 // = action type =
@@ -121,6 +121,7 @@ const transformParams = (covers, {
   const assignTypes = [];
   if (assignAddressByOwner) assignTypes.push(ASSIGN_ADDRESS_BY_OWNER);
   if (assignAddressByCustomer) assignTypes.push(ASSIGN_ADDRESS_BY_CUSTOMER);
+  const rules = trim(regulation) === '' ? [] : [trim(regulation)];
   return ({
     pname: title,
     img1: covers[0] && covers[0].s3,
@@ -147,7 +148,7 @@ const transformParams = (covers, {
     end_date: (endDate ? endDate.valueOf() : null),
     discounts: (chargeType === CHARGE_TYPE_FIX) && discount ?
       [{ type: 'FIX', param: 0, discount }] : [],
-    rules: [regulation],
+    rules,
     min_lease_days: 0,
     cancel_policys: hasCancelPolicy ? [{ advance_day: advanceDay, rate }] : null,
   });

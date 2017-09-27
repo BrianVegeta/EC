@@ -1,5 +1,5 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
-import { forEach } from 'lodash';
+import { forEach, has } from 'lodash';
 
 /* =============================================>>>>>
 = userprofile =
@@ -97,6 +97,9 @@ export function fetchRecords(roleType, orderType, tabName) {
   };
 }
 
+export const checkUnreadCount = () => {
+  const path = '/ajax/get_my_unread_count.json';
+};
 
 // =============================================
 // = reducer =
@@ -106,7 +109,7 @@ const initialState = {
   expireFlag: null,
   isFetching: false,
   records: [],
-  unreads: [],
+  unreads: {},
 };
 
 export default (state = initialState, action) => {
@@ -118,7 +121,7 @@ export default (state = initialState, action) => {
       newRecords = [];
       return Object.assign({}, state, {
         records: [],
-        unreads: [],
+        unreads: {},
         isFetching: true,
         expireFlag: action.expireFlag,
       });
@@ -130,7 +133,7 @@ export default (state = initialState, action) => {
         if (targetTabName === action.tabName) {
           newRecords.push(order);
         }
-        if (targetTabName in newUnreads) {
+        if (has(newUnreads, targetTabName)) {
           if (action.roleType === ROLE_OWNER) {
             newUnreads[targetTabName] += (order.owner_read ? 0 : 1);
           } else if (action.roleType === ROLE_LESSEE) {

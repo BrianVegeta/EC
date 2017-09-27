@@ -3,19 +3,29 @@ import { browserHistory } from 'react-router';
 import { publishGoodsRouter } from 'lib/paths';
 import Step1Cover from '../components/StepCover';
 import {
+  REDUCER_KEY as COVERS_REDUCER_KEY,
   createCover,
   deleteCover,
   changeOrders,
   uploadCover,
   processRawCovers,
 } from '../modules/covers';
-import { touchPath } from '../modules/publish';
-import { openCropper, closeCropper } from '../modules/cropper';
+import { REDUCER_KEY, touchPath } from '../modules/publish';
+import {
+  REDUCER_KEY as CROPPER_REDUCER_KEY,
+  openCropper,
+  closeCropper,
+} from '../modules/cropper';
 
 
 const { coverPath, aboutPath } = publishGoodsRouter;
 /* pick props */
-const mapStateToProps = ({ environment, publish, covers, cropper }) => ({
+const mapStateToProps = ({
+  environment,
+  [REDUCER_KEY]: publish,
+  [COVERS_REDUCER_KEY]: covers,
+  [CROPPER_REDUCER_KEY]: cropper,
+}) => ({
   environment, publish, covers, cropper,
 });
 

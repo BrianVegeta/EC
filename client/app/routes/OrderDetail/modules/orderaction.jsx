@@ -145,27 +145,26 @@ export function doReceiveConfirm(cid) {
       });
     });
 }
-export function doCancel(cid) {
-  return (dispatch, getState) => {
-    const requestId = Date.now();
-    dispatch(lock(requestId, 'cancel'));
-    const isCatch = true;
-    asyncXhrAuthedPost(
-      '/ajax/cancel_order.json',
-      {
-        cid,
-      },
-      getState(),
-      isCatch,
-    )
-    .then(() => {
-      dispatch(success(requestId));
-    })
-    .catch(() => {
-      dispatch(failed('失敗'));
+export const doCancel = cid =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const requestId = Date.now();
+      dispatch(lock(requestId, 'cancel'));
+      const isCatch = true;
+      asyncXhrAuthedPost(
+        '/ajax/cancel_order.json',
+        { cid },
+        getState(),
+        isCatch,
+      ).then(() => {
+        dispatch(success(requestId));
+        resolve();
+      }).catch(() => {
+        dispatch(failed('失敗'));
+        reject();
+      });
     });
-  };
-}
+
 export function doScore(cid, score, comment) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {

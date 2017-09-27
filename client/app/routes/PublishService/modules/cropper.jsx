@@ -4,7 +4,7 @@
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.CROPPER.SERVICE';
-
+export const REDUCER_KEY = 'publishServiceCropper';
 // =============================================
 // = action type =
 // =============================================

@@ -97,7 +97,8 @@ class StageBase
       can_edit: false,
       can_cancel: false,
       is_owner: self.is_owner,
-      }
+      screen_type: self.screen_type,
+    }
   end
 
   def display
@@ -188,7 +189,7 @@ class StageBase
     elsif self.contract['type'] === CONTRACT_TYPE_ITEM && self.screen_type == STAGE_RETURN_CONFIRM && !(self.is_owner)
       #如果其他租借商品還貨後，買方可以評價
       set_score_check
-    elsif self.screen_type == STAGE_SCORE
+    elsif [STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2].include? self.screen_type
       #評分階段
       set_score_check
     else
@@ -215,10 +216,10 @@ class StageBase
   def set_score_check
     if self.is_owner
       modify_display_param(KEY_SCORE, (self.contract['lesseescore'].nil?))
-      modify_display_param(KEY_VIEW_SCORE, (not self.contract['lesseescore'].nil?))
+      modify_display_param(KEY_VIEW_SCORE, self.contract['lesseescore'].present?)
     else
       modify_display_param(KEY_SCORE, (self.contract['ownerscore'].nil?))
-      modify_display_param(KEY_VIEW_SCORE, (not self.contract['ownerscore'].nil?))
+      modify_display_param(KEY_VIEW_SCORE, self.contract['ownerscore'].present?)
     end
   end
 

@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import { addToChatRoom } from 'modules/chatRooms';
 import { popupScoreRating, popupAccessCheck,
   popupBankInfoSetup, popupATMBank, popupSevenNo, popupSevenLog } from 'modules/popup';
-import { doAccept, doCancel, doReject,
+import {
+  doAccept,
+  doCancel,
+  doReject,
   doShipGoods, doReturn, doReceiveConfirm,
   doScore, doEndOrder, resetAction, doCreditCardPayment,
   doATMPayment, getShipOrder, getShipLog, uploadImage,
@@ -67,8 +70,7 @@ const mapDispatchToProps = (dispatch, { params }) => {
       });
     },
     dispatchCancel: () => {
-      dispatch(doCancel(params.cid))
-      .then(() => refetch(dispatch, params))
+      dispatch(doCancel(params.cid)).then(() => refetch(dispatch, params))
       .catch((error) => {
         alert(error);
       });

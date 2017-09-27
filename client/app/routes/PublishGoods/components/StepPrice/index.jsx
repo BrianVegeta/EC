@@ -7,7 +7,7 @@ import FormGroup from 'components/Form/Group';
 import InputTextCurrency from 'components/Input/TextCurrency';
 import InputTextCounter from 'components/Input/TextCounter';
 import DiscountGroup from 'components/DiscountGroup';
-
+import AlertTotalError from 'components/Publish/AlertTotalError';
 import ButtonNextStep, {
   STATUS_DISABLE,
   STATUS_VALID,
@@ -60,13 +60,12 @@ class StepPrice extends React.Component {
       if (chargeTypeError) return;
 
       this.setState({ totalError: totalError || '' });
-      this.priceInput.valid();
-      this.depositInput.valid();
-      this.discountInput.valid();
+      if (this.priceInput) this.priceInput.valid();
+      if (this.depositInput) this.depositInput.valid();
+      if (this.discountInput) this.discountInput.valid();
       if (this.datesInput) this.datesInput.valid();
       if (this.unitInput) this.unitInput.valid();
       if (this.reservationDaysInput) this.reservationDaysInput.valid();
-      this.discountInput.valid();
     });
   }
 
@@ -161,14 +160,12 @@ class StepPrice extends React.Component {
       dispatchChangeData,
       isValid,
     } = this.props;
-    const {
-      price,
-      deposit,
-    } = publish;
+    const { price, deposit } = publish;
+    const { totalError } = this.state;
 
     return (
       <div styleName="container">
-        { this.renderDatesAndUnit(publish) }
+        {this.renderDatesAndUnit(publish)}
         <FormGroup headerText="價格（每日價格）">
           <div styleName="currency-block">
             <InputTextCurrency
@@ -191,9 +188,9 @@ class StepPrice extends React.Component {
             />
           </div>
         </FormGroup>
-
-        { this.renderOverduePolicy(publish) }
-        { this.renderDiscount(publish)}
+        <AlertTotalError totalError={totalError} />
+        {this.renderOverduePolicy(publish)}
+        {this.renderDiscount(publish)}
         <ButtonNextStep
           status={isValid ? STATUS_VALID : STATUS_DISABLE}
           onClick={this.onNextStepClick}

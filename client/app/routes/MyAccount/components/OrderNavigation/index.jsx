@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-
+import { has } from 'lodash';
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -18,19 +18,16 @@ class Navigation extends React.Component {
         tabName: PropTypes.string.isRequired,
       },
     ).isRequired).isRequired,
-    unreads: PropTypes.arrayOf(PropTypes.number.isRequired),
+    unreads: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     unreads: [],
   }
   renderCircle(tabName) {
-    if (tabName in this.props.unreads && (this.props.unreads[tabName] > 0)) {
-      return (
-        <div styleName="notice-circle">{this.props.unreads[tabName]}</div>
-      );
-    }
-    return null;
+    const { unreads } = this.props;
+    if (!has(unreads, tabName) || unreads[tabName] <= 0) return null;
+    return <div styleName="notice-circle">{unreads[tabName]}</div>;
   }
   render() {
     const { navs } = this.props;

@@ -4,7 +4,7 @@
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.CROPPER.USEDGOODS';
-
+export const REDUCER_KEY = 'publishUsedgoodsCropper';
 
 // =============================================
 // = action type =

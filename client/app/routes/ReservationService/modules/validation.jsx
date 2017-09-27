@@ -160,7 +160,7 @@ export const validateAllBy = (reservation, item, coupons, isBankInfoReady) => {
   const { isValid: isPaymentValid } = validatePaymentBy(
     reservation, isBankInfoReady,
   );
-  const { isValid: isAgreeValid } = validateAgreeBy(reservation).isValid;
+  const { isValid: isAgreeValid } = validateAgreeBy(reservation);
 
   return isFormValid && isPaymentValid && isAgreeValid;
 };

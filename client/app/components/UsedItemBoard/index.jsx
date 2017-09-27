@@ -131,7 +131,7 @@ class OrderItemBoard extends React.Component {
       width: 'auto',
       style: {
         borderRadius: '100px',
-        padding: '7px 7px',
+        padding: '7px 16px',
         marginLeft: 10,
         display: 'inline-block',
       },
@@ -191,7 +191,7 @@ class OrderItemBoard extends React.Component {
       width: 'auto',
       style: {
         borderRadius: '100px',
-        padding: '7px 7px',
+        padding: '7px 16px',
         marginLeft: 10,
         display: 'inline-block',
       },

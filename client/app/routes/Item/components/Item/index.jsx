@@ -18,7 +18,6 @@ class Item extends React.Component {
   };
 
   componentDidMount() {
-    // console.log('did MOUNT');
     this.props.dispatchFetchItem();
     this.props.dispatchResetMessage();
     this.props.dispatchRecords();
