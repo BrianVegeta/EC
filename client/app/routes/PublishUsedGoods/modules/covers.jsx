@@ -13,7 +13,7 @@ import {
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.COVERS.USEDGOODS';
 const COVER_PARAM_KEY = 'croppedImage';
-export const REDUCER_KEY = 'covers';
+export const REDUCER_KEY = 'publishUsedgoodsCovers';
 
 
 // =============================================

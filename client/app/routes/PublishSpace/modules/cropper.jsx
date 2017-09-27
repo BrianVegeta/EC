@@ -4,7 +4,7 @@
 = settings =
 ===============================================>>>>>*/
 const ACTION_PREFIX = 'PUBLISH.CROPPER.SPACE';
-
+export const REDUCER_KEY = 'publishSpaceCropper';
 
 // =============================================
 // = action type =

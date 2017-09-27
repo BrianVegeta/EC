@@ -8,11 +8,12 @@ export default store => ({
   getComponent(_nextState, cb) {
     require.ensure([], (require) => {
       const Container = require('../containers/StepCoverContainer').default;
-      const cropperReducer = require('../modules/cropper').default;
-      const coversReducer = require('../modules/covers').default;
+      const {
+        default: cropperReducer,
+        REDUCER_KEY: CROPPER_REDUCER_KEY,
+      } = require('../modules/cropper');
 
-      injectReducer(store, { key: 'covers', reducer: coversReducer });
-      injectReducer(store, { key: 'cropper', reducer: cropperReducer });
+      injectReducer(store, { key: CROPPER_REDUCER_KEY, reducer: cropperReducer });
 
       cb(null, Container);
     }, 'publish.space.cover');

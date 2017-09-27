@@ -5,8 +5,13 @@ import { fetchCities } from 'modules/cities';
 import { publishSpaceRouter } from 'lib/paths';
 import { mapSidebarSteps } from 'lib/utils';
 import PublishSpace from '../components/PublishSpace';
-import { reset as resetCovers } from '../modules/covers';
-import { reset as resetCropper } from '../modules/cropper';
+import {
+  REDUCER_KEY as COVERS_REDUCER_KEY,
+  reset as resetCovers,
+} from '../modules/covers';
+import {
+  reset as resetCropper,
+} from '../modules/cropper';
 import {
   REDUCER_KEY,
   reset as resetPublish,
@@ -33,7 +38,11 @@ const {
 = map props =
 ===============================================>>>>>*/
 const mapStateToProps = (
-  { environment, [REDUCER_KEY]: publish, covers },
+  {
+    environment,
+    [REDUCER_KEY]: publish,
+    [COVERS_REDUCER_KEY]: covers,
+  },
   { location: { query } },
 ) => {
   /* edit */
