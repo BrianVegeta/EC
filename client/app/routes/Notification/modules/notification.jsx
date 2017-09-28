@@ -1,6 +1,6 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
-
+import { itemPath } from 'lib/paths';
 /* =============================================>>>>>
 = orderDetail =
 ===============================================>>>>>*/
@@ -117,6 +117,32 @@ export function parseContractNotify(recordData, lastReadTime) {
   return records;
 }
 
+export function parseItemNotify(recordData, lastReadTime) {
+  const records = [];
+  recordData.notifications.map((val) => {
+    const json = JSON.parse(val.content);
+    const type = json.type ? json.type : 0;
+    // const id = (val.type === 4) ? json.pid : json.id;
+    const image = (val.type === 4) ? json.item_img : json.user_img;
+    let url = '';
+    if (val.type === 4 && type === 2) {
+      url = itemPath('a', json.pid);
+    }
+    const data = {
+      type,
+      url,
+      image,
+      message: json.content,
+      createTime: val.create_time,
+      isRead: (val.create_time <= lastReadTime),
+    };
+    records.push(data);
+    return records;
+  });
+  return records;
+}
+
+
 export function fetchMoreData() {
   return (dispatch, getState) => {
     const {
@@ -147,6 +173,9 @@ export function fetchMoreData() {
         case TYPE_ACTIVITY:
         case TYPE_SYSTEM:
           newRecord = parseActivityNotify(recordData, lastReadTime);
+          break;
+        case TYPE_ITEM:
+          newRecord = parseItemNotify(recordData, lastReadTime);
           break;
         default:
           break;
@@ -219,10 +248,12 @@ export function fetchUnreadCount(type) {
           case TYPE_CONTRACT:
             records = parseContractNotify(recordData, lastReadTime);
             break;
-          case TYPE_ITEM:
           case TYPE_ACTIVITY:
           case TYPE_SYSTEM:
             records = parseActivityNotify(recordData, lastReadTime);
+            break;
+          case TYPE_ITEM:
+            records = parseItemNotify(recordData, lastReadTime);
             break;
           default:
             break;
@@ -250,6 +281,7 @@ const initialState = {
     CONTRACT: 0,
     ACTIVITY: 0,
     SYSTEM: 0,
+    ITEM: 0,
   },
   size: SIZE,
   records: [],

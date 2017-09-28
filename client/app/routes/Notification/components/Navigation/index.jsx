@@ -21,6 +21,7 @@ class Navigation extends React.Component {
       CONTRACT: PropTypes.number.isRequired,
       ACTIVITY: PropTypes.number.isRequired,
       SYSTEM: PropTypes.number.isRequired,
+      ITEM: PropTypes.number.isRequired,
     }).isRequired,
   };
 
@@ -29,6 +30,7 @@ class Navigation extends React.Component {
       CONTRACT: 0,
       ACTIVITY: 0,
       SYSTEM: 0,
+      ITEM: 0,
     },
   }
   renderCircle(tabName) {

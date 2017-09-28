@@ -9,30 +9,30 @@ import styles from './styles.sass';
 
 class NotifyActivityBoard extends React.Component {
   static defaultProps = {
-    url: '/',
+    image: null,
   }
   static propTypes = {
-    type: PropTypes.number.isRequired,
-    url: PropTypes.string,
+    // type: PropTypes.number.isRequired,
+    url: PropTypes.string.isRequired,
+    // image: PropTypes.number,
     message: PropTypes.string.isRequired,
     createTime: PropTypes.number.isRequired,
     isRead: PropTypes.bool.isRequired,
-  };
+  }
   renderMessage() {
-    const { type, url, message } = this.props;
-    switch (type) {
-      case 1:
-        return (
-          <Link
-            styleName="notify-activity-link"
-            to={url}
-          >
-            {message}
-          </Link>
-        );
-      default:
-        return (<div>{message}</div>);
+    const { url, message } = this.props;
+
+    if (url === '') {
+      return (<div>{message}</div>);
     }
+    return (
+      <Link
+        styleName="notify-activity-link"
+        to={url}
+      >
+        {message}
+      </Link>
+    );
   }
   render() {
     const { createTime, isRead } = this.props;
