@@ -76,4 +76,11 @@ class UsedItemStage < StageBase
     modify_display_param(KEY_SHIP_CONFIRM, check_stage && check_condition)
   end
 
+  def check_score
+    #   #如果是二手,只要商品收到貨就可以評分
+    if self.screen_type >= STAGE_SHIP_CONFIRM && !(self.contract['lessee_receive'].nil?)
+      set_score_check
+    end
+  end
+
 end

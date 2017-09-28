@@ -282,11 +282,11 @@ class Ajax::Api::ContractController < ApplicationController
     response_data['discounts'] = map_json_array response_data['discounts'], ResponseJson::ItemDiscount.structure
     response_data['cancel_policys'] = map_json_array response_data['cancel_policys'], ResponseJson::ItemCancelPolicy.structure
     response_data = reverse_merge(response_data, ResponseJson::Contract.structure)
-    response_data = removePrivateData(response_data)
+    response_data = remove_private_data(response_data)
     return response_data
   end
 
-  def removePrivateData(response_data)
+  def remove_private_data(response_data)
     response_data = response_data.except('lesseecountryid', 'ownercountryid', 'owneremail', 'lesseeemail')
 
     if (response_data['contractstage'] < 4)

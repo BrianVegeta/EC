@@ -13,4 +13,12 @@ export default {
   profile: { text: '公開資訊', path: mineRouter.profilePath },
   manageVerify: { text: '帳號管理', path: mineRouter.manageVerifyPath },
   bankSetUp: { text: '收款設定', path: mineRouter.bankSetupPath },
+  ownerOrderItemPage: { text: '物品', path: mineRouter.ownerOrderItem('TAB_REQUEST') },
+  ownerOrderServicePage: { text: '服務', path: mineRouter.ownerOrderService('TAB_REQUEST') },
+  ownerOrderSpacePage: { text: '空間', path: mineRouter.ownerOrderSpace('TAB_REQUEST') },
+  ownerOrderUsedItemPage: { text: '二手', path: mineRouter.ownerOrderUsedItem('TAB_PAY') },
+  lesseeOrderItemPage: { text: '物品', path: mineRouter.lesseeOrderItem('TAB_REQUEST') },
+  lesseeOrderServicePage: { text: '服務', path: mineRouter.lesseeOrderService('TAB_REQUEST') },
+  lesseeOrderSpacePage: { text: '空間', path: mineRouter.lesseeOrderSpace('TAB_REQUEST') },
+  lesseeOrderUsedItemPage: { text: '二手', path: mineRouter.lesseeOrderUsedItem('TAB_PAY') },
 };

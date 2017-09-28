@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
-import RoundButton from 'components/RoundButton';
-import { my } from 'lib/paths';
-import { TAB_REQUEST, TAB_PAY } from '../../modules/myOrder';
-// import classnames from 'classnames/bind';
-// import CSS from 'react-css-modules';
+import { Link } from 'react-router';
+import accountNav from 'constants/myAccountNavs';
+import classnames from 'classnames/bind';
+import CSS from 'react-css-modules';
+import styles from './styles.sass';
+
 export const ITEM = 0;
 export const SERVICE = 1;
 export const SPACE = 2;
 export const USED_ITEM = 3;
 
+const cx = classnames.bind(styles);
 class OrderNav extends React.Component {
   static defaultProps = {
     isOwner: false,
@@ -19,73 +20,95 @@ class OrderNav extends React.Component {
   static propTypes = {
     isOwner: PropTypes.bool,
     activeType: PropTypes.number.isRequired,
+    unreadCount: PropTypes.shape({
+      item: PropTypes.number,
+      service: PropTypes.number,
+      space: PropTypes.number,
+      used_item: PropTypes.number,
+    }).isRequired,
   };
 
-  redirect(type) {
-    const { isOwner } = this.props;
+  renderButtton(type) {
+    const { activeType, unreadCount, isOwner } = this.props;
+    const isActive = (activeType === type);
+    let text = '';
+    let redirecPath = '/';
+    let colored = false;
     if (isOwner) {
       switch (type) {
         case ITEM:
-          return browserHistory.push(my.ownerOrderItem(TAB_REQUEST));
+          text = accountNav.ownerOrderItemPage.text;
+          redirecPath = accountNav.ownerOrderItemPage.path;
+          colored = (unreadCount.item > 0);
+          break;
         case SERVICE:
-          return browserHistory.push(my.ownerOrderService(TAB_REQUEST));
+          text = accountNav.ownerOrderServicePage.text;
+          redirecPath = accountNav.ownerOrderServicePage.path;
+          colored = (unreadCount.service > 0);
+          break;
         case SPACE:
-          return browserHistory.push(my.ownerOrderSpace(TAB_REQUEST));
+          text = accountNav.ownerOrderSpacePage.text;
+          redirecPath = accountNav.ownerOrderSpacePage.path;
+          colored = (unreadCount.space > 0);
+          break;
         case USED_ITEM:
-          return browserHistory.push(my.ownerOrderUsedItem(TAB_PAY));
+          text = accountNav.ownerOrderUsedItemPage.text;
+          redirecPath = accountNav.ownerOrderUsedItemPage.path;
+          colored = (unreadCount.used_item > 0);
+          break;
         default:
-          return browserHistory.push('/');
+          break;
+      }
+    } else {
+      switch (type) {
+        case ITEM:
+          text = accountNav.lesseeOrderItemPage.text;
+          redirecPath = accountNav.lesseeOrderItemPage.path;
+          colored = (unreadCount.item > 0);
+          break;
+        case SERVICE:
+          text = accountNav.lesseeOrderServicePage.text;
+          redirecPath = accountNav.lesseeOrderServicePage.path;
+          colored = (unreadCount.service > 0);
+          break;
+        case SPACE:
+          text = accountNav.lesseeOrderSpacePage.text;
+          redirecPath = accountNav.lesseeOrderSpacePage.path;
+          colored = (unreadCount.space > 0);
+          break;
+        case USED_ITEM:
+          text = accountNav.lesseeOrderUsedItemPage.text;
+          redirecPath = accountNav.lesseeOrderUsedItemPage.path;
+          colored = (unreadCount.used_item > 0);
+          break;
+        default:
+          break;
       }
     }
-
-    switch (type) {
-      case ITEM:
-        return browserHistory.push(my.lesseeOrderItem(TAB_REQUEST));
-      case SERVICE:
-        return browserHistory.push(my.lesseeOrderService(TAB_REQUEST));
-      case SPACE:
-        return browserHistory.push(my.lesseeOrderSpace(TAB_REQUEST));
-      case USED_ITEM:
-        return browserHistory.push(my.lesseeOrderUsedItem(TAB_PAY));
-      default:
-        return browserHistory.push('/');
-    }
+    return (
+      <div
+        className={cx('linker', { selected: isActive })}
+      >
+        <Link
+          to={redirecPath}
+        >
+          <div styleName="text">{text}</div>
+          <div className={cx('count', { colored })} />
+        </Link>
+      </div>
+    );
   }
   render() {
-    const { activeType } = this.props;
+    // const { activeType } = this.props;
     return (
-      <div style={{ paddingBottom: 20 }}>
-        <RoundButton
-          text="物品"
-          isActive={activeType === ITEM}
-          onClick={
-            () => { this.redirect(ITEM); }
-          }
-        />
-        <RoundButton
-          text="服務"
-          isActive={activeType === SERVICE}
-          onClick={
-            () => { this.redirect(SERVICE); }
-          }
-        />
-        <RoundButton
-          text="空間"
-          isActive={activeType === SPACE}
-          onClick={
-            () => { this.redirect(SPACE); }
-          }
-        />
-        <RoundButton
-          text="二手"
-          isActive={activeType === USED_ITEM}
-          onClick={
-            () => { this.redirect(USED_ITEM); }
-          }
-        />
+      <div styleName="container">
+        {this.renderButtton(ITEM)}
+        {this.renderButtton(SERVICE)}
+        {this.renderButtton(SPACE)}
+        {this.renderButtton(USED_ITEM)}
       </div>
     );
   }
 }
 
-export default OrderNav;
+export default CSS(OrderNav, styles);
