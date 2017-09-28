@@ -1,5 +1,6 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { forEach } from 'lodash';
+import { REDUCER_KEY as personalBankInfoKey } from 'modules/personalBankInfo';
 import { popupFetching, popupFetched } from 'modules/popup';
 /* =============================================>>>>>
 = userprofile =
@@ -49,7 +50,11 @@ export function doAccept(cid) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {
       const requestId = Date.now();
-
+      const { isReady } = getState()[personalBankInfoKey];
+      if (!isReady) {
+        reject('銀行帳戶尚未設定');
+        return;
+      }
       dispatch(lock(requestId, 'accept'));
       const isCatch = true;
       asyncXhrAuthedPost(

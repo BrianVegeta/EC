@@ -18,7 +18,6 @@ import {
 export const validateCoversBy = (covers) => {
   const storedCount = filter(covers, { isStored: true }).length;
   const isValid = storedCount > 0;
-
   return {
     isValid,
     errors: [covers.length, storedCount],

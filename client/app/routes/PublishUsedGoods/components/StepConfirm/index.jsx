@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
+import colors from 'styles/colorExport.scss';
+import FormButton from 'components/FormButton';
 import Picture from 'components/Picture';
 import FormContainer from 'components/Publish/FormContainer';
 import ConfirmTitle from 'components/Publish/ConfirmTitle';
@@ -31,11 +33,15 @@ class StepConfirm extends React.Component {
     categories: myPropTypes.middleCategories,
     publish: myPropTypes.publish.isRequired,
     isValid: PropTypes.bool.isRequired,
-
+    dispatchBankSetup: PropTypes.func.isRequired,
+    dispatchCheckReady: PropTypes.func.isRequired,
     dispatchTouchPath: PropTypes.func.isRequired,
     dispatchSavePublish: PropTypes.func.isRequired,
     dispatchValidateAll: PropTypes.func.isRequired,
     redirectToItems: PropTypes.func.isRequired,
+    personalBankInfo: PropTypes.shape({
+      isReady: PropTypes.bool,
+    }).isRequired,
   };
 
   static renderCovers(covers) {
@@ -57,6 +63,7 @@ class StepConfirm extends React.Component {
   }
 
   componentDidMount() {
+    this.props.dispatchCheckReady();
     this.props.dispatchTouchPath();
   }
 
@@ -84,7 +91,9 @@ class StepConfirm extends React.Component {
       isValid,
       covers,
       categories,
+      personalBankInfo,
     } = this.props;
+    const { isReady } = personalBankInfo;
     const {
       title,
       descript,
@@ -185,6 +194,21 @@ class StepConfirm extends React.Component {
               </tr>
             </tbody>
           </table>
+        </ConfirmTitle>
+        <ConfirmTitle title="收款帳戶">
+          { (isReady) ?
+            <div style={{ display: 'inline-block', color: colors.blackColor }}>設定銀行帳戶</div> :
+            <div style={{ display: 'inline-block', color: colors.colorHeart }}>您尚未設定銀行帳戶喔！</div>
+          }
+          <div style={{ display: 'inline-block', marginLeft: 20 }}>
+            <FormButton
+              colorType="greenBorder"
+              size="sm"
+              style={{ width: 96 }}
+              content="前往設定"
+              onClick={this.props.dispatchBankSetup}
+            />
+          </div>
         </ConfirmTitle>
         <ButtonNextStep
           text="儲存"

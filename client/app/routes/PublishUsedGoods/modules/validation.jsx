@@ -3,6 +3,7 @@ import validate from 'validate.js';
 import { isEmpty, filter } from 'lodash';
 import { formatCurrency } from 'lib/currency';
 import constraints, { PRICE_MAX } from 'constraints/publish';
+import { REDUCER_KEY as PERSONAL_BANK_KEY } from 'modules/personalBankInfo'
 import {
   REDUCER_KEY as PUBLISH_REDUCER_KEY,
 } from './publish';
@@ -155,18 +156,31 @@ export const validateDelivery = () =>
       }
     });
 
+export const validateAccountBank = () =>
+  (dispatch, getState) =>
+    new Promise((resolve, reject) => {
+      const { isReady } = getState()[PERSONAL_BANK_KEY];
+      if (isReady) {
+        resolve();
+      } else {
+        reject({
+          optionError: '銀行帳戶未設定',
+        });
+      }
+    });
 
 /* =============================================>>>>>
 = Validate all =
 ===============================================>>>>>*/
-export const validateAllBy = (publish, covers) => {
+export const validateAllBy = (publish, covers, isReady) => {
   const { isValid: isCoversValid } = validateCoversBy(covers);
   const { isValid: isAboutValid } = validateAboutBy(publish);
   const { isValid: isDeliveryValid } = validateDeliveryBy(publish);
   return (
     isCoversValid &&
     isAboutValid &&
-    isDeliveryValid
+    isDeliveryValid &&
+    isReady
   );
 };
 
@@ -177,6 +191,7 @@ export const validateAll = () =>
         dispatch(validateCovers()),
         dispatch(validateAbout()),
         dispatch(validateDelivery()),
+        dispatch(validateAccountBank()),
       ];
 
       Promise.all(promises)

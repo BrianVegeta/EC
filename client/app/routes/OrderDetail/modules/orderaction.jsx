@@ -1,14 +1,15 @@
 import { forEach } from 'lodash';
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { popupFetching, popupFetched } from 'modules/popup';
+import { REDUCER_KEY as personalBankInfoKey } from 'modules/personalBankInfo';
 import { fetchedSendSeven, fetchedReturnSeven } from './orderdetail';
+
 /* =============================================>>>>>
 = userprofile =
 ===============================================>>>>>*/
 
 const ACTION_PREFIX = 'ORDER.ACTION';
 // const REDUCER_KEY = 'orderaction';
-
 
 // =============================================
 // = action type =
@@ -62,6 +63,11 @@ export const resetAction = () => ({
 export function doAccept(cid) {
   return (dispatch, getState) =>
     new Promise((resolve, reject) => {
+      const { isReady } = getState()[personalBankInfoKey];
+      if (!isReady) {
+        reject('銀行帳戶尚未設定');
+        return;
+      }
       const requestId = Date.now();
 
       dispatch(lock(requestId, 'accept'));

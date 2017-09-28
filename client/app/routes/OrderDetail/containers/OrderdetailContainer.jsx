@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { addToChatRoom } from 'modules/chatRooms';
 import { popupScoreRating, popupAccessCheck,
   popupBankInfoSetup, popupATMBank, popupSevenNo, popupSevenLog } from 'modules/popup';
+import swal, { errorConfig } from 'lib/swal';
 import {
   doAccept,
   doCancel,
@@ -66,7 +67,7 @@ const mapDispatchToProps = (dispatch, { params }) => {
       dispatch(doAccept(params.cid))
       .then(() => refetch(dispatch, params))
       .catch((error) => {
-        alert(error);
+        swal(errorConfig({ title: '失敗', text: error }));
       });
     },
     dispatchCancel: () => {

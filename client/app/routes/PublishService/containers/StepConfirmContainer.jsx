@@ -7,6 +7,7 @@ import {
 } from 'lib/paths';
 import StepConfirm from '../components/StepConfirm';
 import { REDUCER_KEY, savePublish, updatePublish, touchPath } from '../modules/publish';
+import { REDUCER_KEY as COVERS_REDUCER_KEY } from '../modules/covers';
 import { validateAll, validateAllBy } from '../modules/validation';
 
 
@@ -18,7 +19,7 @@ const mapStateToProps = ({
   environment,
   routingHelper,
   [REDUCER_KEY]: publish,
-  covers,
+  [COVERS_REDUCER_KEY]: covers,
   categories,
 }) => ({
   environment,
