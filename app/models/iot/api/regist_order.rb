@@ -1,4 +1,4 @@
-class Api::Iot::RegisOrder < ApiIotBase
+class Iot::Api::RegisOrder < ApiIotBase
 
   PATH = '/regist/order';
 

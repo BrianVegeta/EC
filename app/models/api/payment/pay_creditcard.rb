@@ -9,5 +9,4 @@ class Api::Payment::PayCreditcard < ApiAuthedBase
   def request_method
      :post_token
   end
-
 end

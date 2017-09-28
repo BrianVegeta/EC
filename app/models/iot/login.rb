@@ -1,22 +1,40 @@
-class Iot::Login < Iot::Payment
-  attr_accessor :account, :password, :login_response, :ip
+module Iot
+  class Login < Payment
+    include InitializeParams
 
-  def login_success?
-    self.login_response.present?
-  end
+    attr_accessor :account, :password, :ip,
+                  :login_error
 
-  def signin
-    raise 'error' if !self.valid?
+    def build_payment
+      self
+    end
 
-    login_params = {
-      client_app_uid: self.client_app_uid,
-      account: self.account,
-      password: self.password,
-      ip: self.ip,
-    }
-    obj = ::Api::Iot::Login.new login_params, '02ac89b2-68dd-422b-8534-5b4c9019a32a'
-    success = obj.request
-    self.login_response = obj.response_data
-    self.login_response.present?
+    def signin
+      raise self.errors.inspect if !self.valid?
+
+      server_token = ServerToken.new
+      do_signin server_token.token
+    end
+
+    protected
+    def do_signin token
+      api_login = Api::Login.new initial_params, token
+      api_login.request
+
+      case api_login.error_code
+      when Errors::CLIENT_APP_SESSION_404, Errors::CLIENT_APP_SESSION_498
+        server_token = ServerToken.new
+        server_token.request
+        do_signin server_token.token
+      when Errors::SUCCESS_200
+        true
+      when Errors::IOT_ACCOUNT_498
+        self.login_error = '帳號停權'
+        false
+      else
+        self.login_error = '帳號或密碼錯誤'
+        false
+      end
+    end
   end
 end

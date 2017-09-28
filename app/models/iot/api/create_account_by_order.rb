@@ -1,4 +1,4 @@
-class Api::Iot::CreateAccountByOrder < ApiIotBase
+class Iot::Api::CreateAccountByOrder < ApiIotBase
 
   PATH = '/register/regist/payment/order';
 
@@ -7,7 +7,7 @@ class Api::Iot::CreateAccountByOrder < ApiIotBase
   end
 
   def request_method
-     :post
+    :post
   end
 
 end
