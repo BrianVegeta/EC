@@ -24,10 +24,17 @@ class OrderList extends React.Component {
   static propTypes = {
     dispatchRecords: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchUnreadCount: PropTypes.func.isRequired,
     tabName: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     myOrder: PropTypes.shape({
       isFetching: PropTypes.bool,
+      unreadCount: PropTypes.shape({
+        item: PropTypes.number,
+        service: PropTypes.number,
+        space: PropTypes.number,
+        used_item: PropTypes.number,
+      }),
     }).isRequired,
   };
 
@@ -53,6 +60,7 @@ class OrderList extends React.Component {
   refreshScreen() {
     this.props.dispatchReset();
     this.props.dispatchRecords();
+    this.props.dispatchUnreadCount();
   }
 
   render() {
@@ -61,7 +69,7 @@ class OrderList extends React.Component {
     if (myOrder == null) {
       return null;
     }
-    const { records, isFetching, unreads } = myOrder;
+    const { records, isFetching, unreads, unreadCount } = myOrder;
     const navs = [
       ['提出預訂', my.lesseeOrderSpace(TAB_REQUEST), TAB_REQUEST],
       ['尚未付款', my.lesseeOrderSpace(TAB_PAY), TAB_PAY],
@@ -74,7 +82,10 @@ class OrderList extends React.Component {
     ];
     return (
       <Container titleText={titleName}>
-        <OrderNav activeType={SPACE} />
+        <OrderNav
+          activeType={SPACE}
+          unreadCount={unreadCount}
+        />
         <Navigation
           navs={navs.map(([name, href, tabName]) => ({ name, href, tabName }))}
           unreads={unreads}

@@ -53,4 +53,11 @@ class SpaceStage < StageBase
     modify_display_param(KEY_OWNER_END, stage_cond && owner_cond)
     modify_display_param(KEY_LESSEE_END, stage_cond && lessee_cond)
   end
+
+  def check_score
+    if (self.screen_type >= STAGE_SCORE)
+      set_score_check
+    end
+  end
+
 end

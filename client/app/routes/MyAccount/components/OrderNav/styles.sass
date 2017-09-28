@@ -1,0 +1,41 @@
+@import "~styles/color.sass"
+.container
+  margin-bottom: 20px
+  .linker
+    display: inline-block
+    width: 100px
+    height: 50px
+    position: relative
+    font-size: 20px
+    .text
+      position: absolute
+      top: 13px
+      width: 100px
+      text-align: center
+      color: $global-placeholder
+    .count
+      position: absolute
+      top: 18px
+      right: 14px
+      width: 8px
+      height: 8px
+      border-radius: 4px
+      background-color: white
+      &.colored
+        background-color: $global-hoverColor
+    &.selected
+      border-radius: 30px
+      border: 1px solid $global-hoverColor
+      .text
+        position: absolute
+        top: 13px
+        width: 100px
+        color: $global-hoverColor
+        text-align: center
+    &.hover
+      .text
+        position: absolute
+        top: 13px
+        width: 100px
+        color: $global-hoverColor
+        text-align: center

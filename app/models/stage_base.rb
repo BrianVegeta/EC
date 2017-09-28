@@ -183,20 +183,21 @@ class StageBase
   end
 
   def check_score
-    if self.contract['type'] === CONTRACT_TYPE_USED_ITEM && !(self.contract['lessee_receive'].nil?)
-      #如果是二手,只要商品收到貨就可以評分
-      set_score_check
-    elsif self.contract['type'] === CONTRACT_TYPE_ITEM && self.screen_type == STAGE_RETURN_CONFIRM && !(self.is_owner)
-      #如果其他租借商品還貨後，買方可以評價
-      set_score_check
-    elsif [STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2].include? self.screen_type
-      #評分階段
-      set_score_check
-    else
-      #其他階段不可以評分
-      modify_display_param(KEY_SCORE, false)
-      modify_display_param(KEY_VIEW_SCORE, false)
-    end
+    raise 'check_score not implemented'
+    # if self.contract['type'] === CONTRACT_TYPE_USED_ITEM && !(self.contract['lessee_receive'].nil?)
+    #   #如果是二手,只要商品收到貨就可以評分
+    #   set_score_check
+    # elsif self.contract['type'] === CONTRACT_TYPE_ITEM && self.screen_type == STAGE_RETURN_CONFIRM && !(self.is_owner)
+    #   #如果其他租借商品還貨後，買方可以評價
+    #   set_score_check
+    # elsif [STAGE_SCORE, STAGE_COMPLETE, STAGE_COMPLETE2].include? self.screen_type
+    #   #評分階段
+    #   set_score_check
+    # else
+    #   #其他階段不可以評分
+    #   modify_display_param(KEY_SCORE, false)
+    #   modify_display_param(KEY_VIEW_SCORE, false)
+    # end
     #stage_check = self.screen_type == STAGE_SCORE || self.screen_type == STAGE_RETURN_CONFIRM
     #stage_check2 = (self.contract['type'] === 'USED_ITEM' && !(self.contract['lessee_receive'].nil?))
     #if (stage_check || stage_check2)

@@ -15,6 +15,7 @@ const REDUCER_KEY = 'myOrder';
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
 const FETCHED = prefix('FETCHED');
+const FETCHED_UNREAD = prefix('FETCHED_UNDREAD');
 const FETCHING = prefix('FETCHING');
 const RESET = prefix('RESET');
 
@@ -62,6 +63,11 @@ const fetched = (records, roleType, tabName) => ({
   tabName,
 });
 
+const fetchedUnread = unreadCount => ({
+  type: FETCHED_UNREAD,
+  unreadCount,
+});
+
 export const reset = () => ({
   type: RESET,
 });
@@ -97,8 +103,30 @@ export function fetchRecords(roleType, orderType, tabName) {
   };
 }
 
-export const checkUnreadCount = () => {
+export const checkUnreadCount = ({ isOwnerPage }) => (dispatch, getState) => {
   const path = '/ajax/get_my_unread_count.json';
+  asyncXhrAuthedPost(
+    path,
+    {},
+    getState(),
+  )
+  .then((responseData) => {
+    if (isOwnerPage) {
+      dispatch(fetchedUnread({
+        item: responseData.owner_item_unread_count,
+        service: responseData.owner_service_unread_count,
+        space: responseData.owner_space_unread_count,
+        used_item: responseData.owner_used_item_unread_count,
+      }));
+    } else {
+      dispatch(fetchedUnread({
+        item: responseData.lessee_item_unread_count,
+        service: responseData.lessee_service_unread_count,
+        space: responseData.lessee_space_unread_count,
+        used_item: responseData.lessee_used_item_unread_count,
+      }));
+    }
+  });
 };
 
 // =============================================
@@ -110,6 +138,12 @@ const initialState = {
   isFetching: false,
   records: [],
   unreads: {},
+  unreadCount: {
+    item: 0,
+    service: 0,
+    space: 0,
+    used_item: 0,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -155,6 +189,11 @@ export default (state = initialState, action) => {
         isFetching: false,
         records: newRecords,
         unreads: newUnreads,
+      });
+
+    case FETCHED_UNREAD:
+      return Object.assign({}, state, {
+        unreadCount: action.unreadCount,
       });
 
     case RESET:

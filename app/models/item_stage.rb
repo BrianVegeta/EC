@@ -89,4 +89,16 @@ class ItemStage < StageBase
     modify_display_param(KEY_CAMERA, display[KEY_CAMERA] || (check_stage && check_condition))
   end
 
+  def check_score
+    if self.is_owner
+      if self.screen_type >= STAGE_SCORE
+        set_score_check
+      end
+    else
+      if self.screen_type >= STAGE_RETURN_CONFIRM
+        set_score_check
+      end
+    end
+  end
+
 end

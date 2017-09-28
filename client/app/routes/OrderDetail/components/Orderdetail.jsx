@@ -432,7 +432,7 @@ class Orderdetail extends React.Component {
       type, leasestart, leaseend,
       service_city, service_area, service_address,
       space_city, space_area, space_address,
-      contractstage, address_is_hidden,
+      address_is_hidden,
     } = order;
     if (type === 'USED_ITEM') {
       return null;
@@ -640,7 +640,17 @@ class Orderdetail extends React.Component {
     );
   }
   renderShippingDetail(order) {
-    const { type, send_type, return_type } = order;
+    const {
+      type,
+      send_type,
+      return_type,
+      item_owner_receive_city,
+      item_owner_receive_area,
+      item_owner_receive_address,
+      item_lessee_receive_city,
+      item_lessee_receive_area,
+      item_lessee_receive_address,
+    } = order;
     if (type !== 'ITEM' && type !== 'USED_ITEM') {
       return null;
     }
@@ -658,6 +668,7 @@ class Orderdetail extends React.Component {
       case '1':
         sendTypeName = '宅配、郵寄';
         showSecondLine = true;
+        sendDetail = `${item_lessee_receive_city}${item_lessee_receive_area}${item_lessee_receive_address}`;
         break;
       case '2':
         sendTypeName = '7-11交貨便';
@@ -676,6 +687,7 @@ class Orderdetail extends React.Component {
       case '1':
         returnTypeName = '宅配、郵寄';
         showSecondLine = true;
+        returnDetail = `${item_owner_receive_city}${item_owner_receive_area}${item_owner_receive_address}`;
         break;
       case '2':
         returnTypeName = '7-11交貨便';
