@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
 import { formatCurrency } from 'lib/currency';
-import { userprofilePaths } from 'lib/paths';
+import { userprofilePaths, wishRouter } from 'lib/paths';
 
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
@@ -20,7 +20,7 @@ class WishNote extends React.Component {
 
   static propTypes = {
     editable: PropTypes.bool,
-    onShow: PropTypes.func.isRequired,
+    // onShow: PropTypes.func.isRequired,
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -33,21 +33,21 @@ class WishNote extends React.Component {
     }).isRequired,
   };
 
-  renderDeleteButton() {
-    return (
-      <div styleName="delete">
-        <IconDelete />
-        <span styleName="delete-text">刪除</span>
-      </div>
-    );
-  }
+  // renderDeleteButton() {
+  //   return (
+  //     <div styleName="delete">
+  //       <IconDelete />
+  //       <span styleName="delete-text">刪除</span>
+  //     </div>
+  //   );
+  // }
 
   render() {
-    const { editable, data, onShow } = this.props;
+    const { editable, data } = this.props;
     const {
       picture,
       description,
-      // id,
+      id,
       pname,
       expprice,
       uid,
@@ -59,33 +59,26 @@ class WishNote extends React.Component {
       <div styleName="container">
         {picture && <div styleName="picture" />}
         {picture &&
-          <div
-            styleName="link-on-image"
-            role="button"
-            tabIndex="-1"
-            onClick={onShow}
+          <Link
+            to={wishRouter.detailPath(id)}
+            styleName="picture-layer"
           >
-            <div styleName="picture-layer">
-              <Picture
-                src={picture}
-                hasShadow={false}
-                style={{
-                  borderTopLeftRadius: 4,
-                  borderTopRightRadius: 4,
-                }}
-              />
-            </div>
-          </div>
+            <Picture
+              src={picture}
+              hasShadow={false}
+              style={{
+                borderTopLeftRadius: 4,
+                borderTopRightRadius: 4,
+              }}
+            />
+          </Link>
         }
         <div styleName="body-container">
-          <div
-            styleName="link-on-title"
-            role="button"
-            tabIndex="-1"
-            onClick={onShow}
+          <Link
+            to={wishRouter.detailPath(id)}
           >
             <span styleName="title">{pname}</span>
-          </div>
+          </Link>
           {description &&
             <div styleName="description">{description}</div>
           }
@@ -102,7 +95,12 @@ class WishNote extends React.Component {
                 {user_name}
               </Link>
             </div>
-            { editable && this.renderDeleteButton() }
+            { editable &&
+              <div styleName="delete">
+                <IconDelete />
+                <span styleName="delete-text">刪除</span>
+              </div>
+            }
           </div>
         </div>
       </div>

@@ -6,9 +6,9 @@ import PaginationContainer from 'components/PaginationContainer';
 
 import Navigation from './Navigation';
 import Container from './Container';
-import NotifyContractBoard from './NotifyContractBoard';
+import NotifyItemBoard from './NotifyItemBoard';
 
-class NotifyContract extends React.Component {
+class NotifyItem extends React.Component {
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
     dispatchUnreadCount: PropTypes.func.isRequired,
@@ -33,7 +33,6 @@ class NotifyContract extends React.Component {
     // console.log(this.props);
     const { notify } = this.props;
     const { unreadCount, isFetching, isPaginable, records } = notify;
-    console.log(records);
     return (
       <Container titleText="通知">
         <Navigation navs={notifyNavs.navs} unreads={unreadCount} />
@@ -47,10 +46,12 @@ class NotifyContract extends React.Component {
             isFetching={isFetching}
             loadMore={this.props.dispatchMore}
           >
-            {records.map(record => (
-              <NotifyContractBoard
-                key={record.id}
-                cid={record.cid}
+            {records.map((record, index) => (
+              <NotifyItemBoard
+                key={`${index + 1}`}
+                type={record.type}
+                url={record.url}
+                image={record.image}
                 message={record.message}
                 createTime={record.createTime}
                 isRead={record.isRead}
@@ -62,4 +63,4 @@ class NotifyContract extends React.Component {
     );
   }
 }
-export default NotifyContract;
+export default NotifyItem;

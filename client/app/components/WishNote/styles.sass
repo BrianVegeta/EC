@@ -17,22 +17,16 @@
     cursor: pointer
   .body-container
     padding: 15px
-    .link-on-image, .link-on-title
-      outline: 0
-      display: inline
-      cursor: pointer
-    .link-on-title
+    .title
+      color: $global-blackColor
+      font-weight: 600
+      margin-top: 15px
+      word-wrap: break-word
       &:hover
         border-bottom: 1px solid $global-primaryColor
-        .title
-          color: $global-primaryColor
+        color: $global-primaryColor
       &:active
         color: $global-blackColor
-      .title
-        color: $global-blackColor
-        font-weight: 600
-        margin-top: 15px
-        word-wrap: break-word
     .description
       color: #888
       font-size: 14px

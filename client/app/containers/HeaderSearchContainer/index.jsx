@@ -18,6 +18,7 @@ import Collection from './components/Collection';
 import Inputer from './components/Inputer';
 import RowUser from './components/RowUser';
 import RowItem from './components/RowItem';
+import RowWish from './components/RowWish';
 import Model from './Model';
 import ModelRowUser from './Model/RowUser';
 import ModelRowWish from './Model/RowWish';
@@ -100,7 +101,7 @@ class Search extends React.Component {
 
   renderWishItem(wish, index) {
     return (
-      <RowItem
+      <RowWish
         key={`${index + 1}`}
         source={new ModelRowWish(wish, this.props.dispatch)}
       />
