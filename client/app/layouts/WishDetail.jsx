@@ -19,20 +19,24 @@ export default class extends React.Component {
   render() {
     const { children, environment } = this.props;
     const minHeight = environment.height - 81;
-    const centerWidth = (environment.width / 2) - 245;
     return (
       <div>
         <HeaderContainer />
         <div
           style={{
             marginBottom: 20,
-            marginTop: 10,
+            marginTop: 70,
             minHeight: Math.max(minHeight, 1100),
             background: '#f1f1f1',
             position: 'relative',
           }}
         >
-          <div style={{ position: 'absolute', left: centerWidth, top: 40 }}>
+          <div
+            style={{
+              margin: '0 auto',
+              width: 585,
+            }}
+          >
             {children}
           </div>
         </div>
