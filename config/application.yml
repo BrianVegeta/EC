@@ -13,7 +13,7 @@ development:
   s3_bucket:
     wish: wish_debug
     return: return_debug
-    shipt: ship_debug
+    ship: ship_debug
     sue: sue_debug
 test:
   <<: *defaults
@@ -25,5 +25,5 @@ production:
   s3_bucket:
     wish: wish
     return: return
-    shipt: ship
+    ship: ship
     sue: sue

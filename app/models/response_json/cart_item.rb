@@ -20,7 +20,7 @@ class ResponseJson::CartItem
         # -Integer
         img1: nil,
         # -String
-        create_time : nil,
+        create_time: nil,
         # - Long (millisecond)
       }
     end
