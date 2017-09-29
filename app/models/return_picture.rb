@@ -27,8 +27,8 @@ class ReturnPicture
                       original: '-background white -alpha remove',
                     },
                     bucket: 'shareappimg',
-                    url: 'return_debug/:cidnoxtimestamp:style.:extension',
-                    path: 'return_debug/:cidnoxtimestamp:style.:extension',
+                    url: "#{Settings.s3_bucket.return}/:cidnoxtimestamp:style.:extension",
+                    path: "#{Settings.s3_bucket.return}/:cidnoxtimestamp:style.:extension",
                     use_timestamp: false
   do_not_validate_attachment_file_type :photo
 

@@ -14,8 +14,8 @@ class Images::Wish < Images::Base
                     :convert_options => {
                       original: '-background white -alpha remove',
                     },
-                    url: 'wish_debug/:useridxtimestamp:style.:extension',
-                    path: 'wish_debug/:useridxtimestamp:style.:extension',
+                    url: "#{Settings.s3_bucket.wish}/:useridxtimestamp:style.:extension",
+                    path: "#{Settings.s3_bucket.wish}/:useridxtimestamp:style.:extension",
                     use_timestamp: false
 
   def initialize params

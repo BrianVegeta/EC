@@ -10,10 +10,20 @@ defaults: &defaults
 development:
   <<: *defaults
   api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
-
+  s3_bucket:
+    wish: wish_debug
+    return: return_debug
+    shipt: ship_debug
+    sue: sue_debug
 test:
   <<: *defaults
 
 production:
   <<: *defaults
   jwt_secret: 'jwt secret key'
+  api_base_uri: https://api.shareapp.com.tw/ShareAPI
+  s3_bucket:
+    wish: wish
+    return: return
+    shipt: ship
+    sue: sue

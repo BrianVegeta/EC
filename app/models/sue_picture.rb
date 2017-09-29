@@ -27,8 +27,8 @@ class SuePicture
                       original: '-background white -alpha remove',
                     },
                     bucket: 'shareappimg',
-                    url: 'sue_debug/:cidnoxtimestamp:style.:extension',
-                    path: 'sue_debug/:cidnoxtimestamp:style.:extension',
+                    url: "#{Settings.s3_bucket.sue}/:cidnoxtimestamp:style.:extension",
+                    path: "#{Settings.s3_bucket.sue}/:cidnoxtimestamp:style.:extension",
                     use_timestamp: false
   do_not_validate_attachment_file_type :photo
 

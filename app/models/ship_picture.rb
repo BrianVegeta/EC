@@ -27,8 +27,8 @@ class ShipPicture
                       original: '-background white -alpha remove',
                     },
                     bucket: 'shareappimg',
-                    url: 'ship_debug/:cidnoxtimestamp:style.:extension',
-                    path: 'ship_debug/:cidnoxtimestamp:style.:extension',
+                    url: "#{Settings.s3_bucket.ship}/:cidnoxtimestamp:style.:extension",
+                    path: "#{Settings.s3_bucket.ship}/:cidnoxtimestamp:style.:extension",
                     use_timestamp: false
   do_not_validate_attachment_file_type :photo
 
