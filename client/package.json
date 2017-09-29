@@ -33,6 +33,7 @@
     "es6-promise": "^4.1.1",
     "es6-shim": "^0.35.3",
     "eslint-import-resolver-alias": "^1.0.3",
+    "history": "^2.0.0",
     "icheck": "^1.0.2",
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
