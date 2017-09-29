@@ -12,9 +12,10 @@ class Ajax::Api::ShipController < ApplicationController
 
   def store_result
     params = store_result_params;
-    @storeid= 'storeid=' + params['storeid'] + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
-    @storename= 'storename=' + URI.encode(params['storename']) + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
-    @storeaddress= 'storeaddress=' + URI.encode(params['storeaddress']) + '; max-age=120; path=/; domain=debug.shareapp.com.tw'
+    max_age = "max-age=120; path=/; domain=#{Settings.domain}"
+    @storeid= "storeid=#{params['storeid']}; #{max_age}"
+    @storename= "storename=#{URI.encode(params['storename'])}; #{max_age}"
+    @storeaddress= "storeaddress=#{URI.encode(params['storeaddress'])}; #{max_age}"
     # @storeid= 'storeid=' + 'a' + '; max-age=120;'
     # @storename= 'storename=' + 'b' + '; max-age=120;'
     # @storeaddress= 'storeaddress=' + 'c' + '; max-age=120;'
