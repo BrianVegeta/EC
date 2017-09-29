@@ -37,7 +37,7 @@ class Footer extends React.Component {
                 <div styleName="google" />
               </Link>
               <div styleName="copyright-text">
-                © 2018 ShareApp. All rights reserved
+                © 2017 ShareApp. All rights reserved
               </div>
             </div>
           </div>
