@@ -71,8 +71,6 @@ export const editPublish = id =>
       '/ajax/get_wish.json',
       {
         id,
-        index: 0,
-        size: 1,
       },
     ).then((data) => {
       const categories = getState()[CATEGORY_REDUCER_KEY];

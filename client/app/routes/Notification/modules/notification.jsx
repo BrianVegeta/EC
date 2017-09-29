@@ -1,6 +1,6 @@
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
-import { itemPath } from 'lib/paths';
+import { itemPath, wishRouter } from 'lib/paths';
 /* =============================================>>>>>
 = orderDetail =
 ===============================================>>>>>*/
@@ -126,7 +126,9 @@ export function parseItemNotify(recordData, lastReadTime) {
     const image = (val.type === 4) ? json.item_img : json.user_img;
     let url = '';
     if (val.type === 4 && type === 2) {
-      url = itemPath('a', json.pid);
+      url = itemPath('', json.pid);
+    } else if (val.type === 7) {
+      url = wishRouter.detailPath(json.id);
     }
     const data = {
       type,

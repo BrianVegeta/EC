@@ -6,6 +6,7 @@ import Publish from 'layouts/Publish';
 import Mine from 'layouts/MyAccount';
 import Signinup from 'layouts/Signinup';
 import Wish from 'layouts/Wish';
+import WishDetail from 'layouts/WishDetail';
 import Item from 'layouts/Item';
 // import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
@@ -35,6 +36,7 @@ import routePublishService from './PublishService/route';
 import routePublishSpace from './PublishSpace/route';
 import routePublishUsedGoods from './PublishUsedGoods/route';
 import routePublishWish from './PublishWish/route';
+import routeWishDetail from './WishDetail/route';
 // import ReleaseService from './Release/Service';
 // import ReleaseSpace from './Release/Space';
 import routeLogin from './AuthLogin/route';
@@ -132,6 +134,12 @@ export default store => ({
       component: layoutHoc(Wish, { requireAuth, confirmLeave, requireCates }),
       childRoutes: [
         routePublishWish(store),
+      ],
+    },
+    {
+      component: layoutHoc(WishDetail, { requireCates }),
+      childRoutes: [
+        routeWishDetail(store),
       ],
     },
     // {

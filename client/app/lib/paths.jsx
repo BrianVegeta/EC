@@ -59,6 +59,7 @@ export const items = {
 
 export const wishRouter = {
   indexPath: '/p/i/wishing-pond',
+  detailPath: id => `/p/i/wish-detail/${id}`,
 };
 
 export const orderDetail = {
