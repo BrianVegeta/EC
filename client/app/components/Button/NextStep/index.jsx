@@ -30,9 +30,11 @@ class NextStep extends React.Component {
   };
 
   static renderDisable({ onClick, text }) {
-    const className = `button ${cx('button', 'disabled')}`;
     return (
-      <button className={className} onClick={onClick}>
+      <button
+        className={`button ${cx('button', 'disabled')}`}
+        onClick={onClick}
+      >
         {text}
       </button>
     );
@@ -44,31 +46,49 @@ class NextStep extends React.Component {
         <ThreeBounce size={9} color="#B8B8B8" />
       </div>
     );
-    const className = `button ${cx('button', 'disabled')}`;
     return (
-      <button className={className}>
+      <button className={`button ${cx('button', 'disabled')}`}>
         {loadingIcon}儲存中
       </button>
     );
   }
 
   static renderValid({ onClick, text }) {
-    const className = `button ${cx('button', 'active')}`;
     return (
-      <button className={className} onClick={onClick} >
+      <button
+        className={`button ${cx('button', 'active')}`}
+        onClick={onClick}
+      >
         {text}
       </button>
     );
   }
 
-  render() {
-    const { status, onClick, text } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: null,
+    };
+    this.onClickNext = this.onClickNext.bind(this);
+  }
 
+  onClickNext() {
+    const callback = this.props.onClick;
+    this.setState({ status: STATUS_LOADING }, callback);
+  }
+
+  render() {
+    const {
+      renderDisable,
+      renderLoading,
+      renderValid,
+    } = this.constructor;
+    const { text } = this.props;
     return {
-      [STATUS_DISABLE]: this.constructor.renderDisable({ onClick, text }),
-      [STATUS_LOADING]: this.constructor.renderLoading(),
-      [STATUS_VALID]: this.constructor.renderValid({ onClick, text }),
-    }[status];
+      [STATUS_DISABLE]: renderDisable({ onClick: this.onClickNext, text }),
+      [STATUS_LOADING]: renderLoading(),
+      [STATUS_VALID]: renderValid({ onClick: this.onClickNext, text }),
+    }[this.state.status || this.props.status];
   }
 }
 
