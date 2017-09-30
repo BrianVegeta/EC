@@ -33,6 +33,7 @@ export const validateFormBy = (
   const { total: priceTotal } = calculateService({
     calculate_charge_type,
     ...{ price, deposit, discounts, unit },
+    ...{ leasestart, leaseend },
   }, getCouponOffsetFromRecords(couponNo, coupons));
   const values = {
     leasestart,

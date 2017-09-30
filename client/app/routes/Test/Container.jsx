@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { sample } from 'lodash';
 import Hover from 'react-hover-observer';
 import IconPublishGoods from 'components/Icons/Publish/Goods';
 import IconPublishSpace from 'components/Icons/Publish/Space';
@@ -16,6 +16,10 @@ import Stuff from 'components/Icons/Stuff';
 import Time from 'components/Icons/Time';
 import TransportRight from 'components/Icons/TransportRight';
 import TransportLeft from 'components/Icons/TransportLeft';
+import ButtonNextStep, {
+  STATUS_DISABLE,
+  STATUS_VALID,
+} from 'components/Button/NextStep';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -28,6 +32,10 @@ class Test extends React.Component {
   render() {
     return (
       <div styleName="container">
+        <ButtonNextStep
+          status={sample([true, false]) ? STATUS_VALID : STATUS_DISABLE}
+          onClick={() => console.log('next step')}
+        />
         <Hover className={cx('publish-icon')}>
           <IconPublishGoods />
         </Hover>

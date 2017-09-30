@@ -8,7 +8,6 @@ import Signinup from 'layouts/Signinup';
 import Wish from 'layouts/Wish';
 import WishDetail from 'layouts/WishDetail';
 import Item from 'layouts/Item';
-// import Ownerprofile from 'layouts/Ownerprofile';
 import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
 
@@ -19,40 +18,34 @@ import routeItemsSpace from './Items/routeSpace';
 import routeItemsUsedGoods from './Items/routeUsedGoods';
 import routeItemsCategory from './Items/routeCategory';
 import routeWishingPond from './WishingPond/route';
-
-// import routeItemsCategory from './ItemListCategory/route';
-
 import routeOrderdetail from './OrderDetail/route';
 import routeUserprofile from './Userprofile/route';
 /* 我的帳戶 */
 import routeMyAccount from './MyAccount/route';
-// import Categories from './Categories';
 /* 商品細節 */
 import routeItem from './Item/route';
-// import Tanzaku from './Tanzaku';
 /* 發佈服務 */
 import routePublishGoods from './PublishGoods/route';
 import routePublishService from './PublishService/route';
 import routePublishSpace from './PublishSpace/route';
 import routePublishUsedGoods from './PublishUsedGoods/route';
+
 import routePublishWish from './PublishWish/route';
 import routeWishDetail from './WishDetail/route';
-// import ReleaseService from './Release/Service';
-// import ReleaseSpace from './Release/Space';
+/* 登入，註冊，忘記密碼 */
 import routeLogin from './AuthLogin/route';
 import routeRegistration from './AuthRegistration/route';
 import routeForgotPassword from './AuthForgotPassword/route';
 /* 預訂商品 */
-// import ReservationGoods from './Reservation/Goods/route';
 import routeReservationService from './ReservationService/route';
 import routeReservationSpace from './ReservationSpace/route';
 import routeReservationGoods from './ReservationGoods/route';
 import routeReservationUsedGoods from './ReservationUsedGoods/route';
+
 import routeSevenEleven from './SevenEleven/route';
-// import OwnerprofileRoute from './Ownerprofile/route';
-// import TestLayout from './Test/Container';
 import sueForm from './SueForm/route';
 import routeNotify from './Notification/route';
+// import test from './Test/route';
 
 
 const requireCates = true;
@@ -63,6 +56,7 @@ export default store => ({
   path: '/',
   component: Root,
   childRoutes: [
+    // test(),
     {
       indexRoute: HomeRoute(store.dispatch),
       component: layoutHoc(Home, { requireCates }),
@@ -142,26 +136,5 @@ export default store => ({
         routeWishDetail(store),
       ],
     },
-    // {
-    //   component: layoutHoc(Ownerprofile, { }),
-    //   childRoutes: [
-    //     OwnerprofileRoute({ dispatch }),
-    //   ],
-    // },
-    // {
-    //   component: TestLayout,
-    //   childRoutes: [
-    //     {
-    //       path: '/p/test',
-    //       getComponent(_nextState, callback) {
-    //         require.ensure([], (require) => {
-    //           callback(null, {
-    //             main: require('./Test/Container').default,
-    //           });
-    //         }, 'test');
-    //       },
-    //     },
-    //   ],
-    // },
   ],
 });

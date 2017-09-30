@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-// import myPropTypes from 'propTypes';
 import FormContainer from 'components/Publish/FormContainer';
 import InputText from 'components/Input/Text';
 import InputTextArea from 'components/Input/TextArea';

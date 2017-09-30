@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { browserHistory } from 'react-router';
-import { loginPath, registrationPath } from 'lib/paths';
+import { loginPath, registrationPath, forgotPasswordPath } from 'lib/paths';
 
 /* =============================================>>>>>
 = settings =
@@ -33,7 +33,7 @@ export const setRouteHook = removeHook => ({
 export const setReferrerPath = location =>
   (dispatch) => {
     const { pathname } = location;
-    const exclusion = [loginPath, registrationPath];
+    const exclusion = [loginPath, registrationPath, forgotPasswordPath];
     if (exclusion.includes(pathname)) return;
     dispatch({
       type: SET_REFERRER,

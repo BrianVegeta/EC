@@ -1,3 +1,4 @@
+@import "~styles/color.sass"
 $signupPanelWidth: 400px
 
 .container
@@ -6,17 +7,30 @@ $signupPanelWidth: 400px
   margin: 0 auto
   padding: 10px
   position: relative
-  .alert, .button
+  .border-top-line
+    position: relative
+    padding-top: 10px
+    &::before
+      content: ""
+      border-top: 1px solid #dce0e0
+      position: absolute
+      left: 0
+      right: 0
+      top: 0
+  .alert, .row
     margin: 10px
-  .button
-    &.bottom
-      margin-top: 10px
-      padding-top: 10px
-      position: relative
-      &::before
-        content: ""
-        border-top: 1px solid #dce0e0
-        position: absolute
-        left: 0
-        right: 0
-        top: 0
+  .forgot-password
+    text-align: center
+    font-weight: 600
+    font-size: 16px
+    padding: 10px 0
+    & > a
+      color: $global-primaryColor
+  .regist-suggest
+    text-align: center
+    font-size: 20px
+    padding: 20px
+    margin-bottom: 0
+    & > a
+      color: $global-primaryColor
+      font-weight: 600
