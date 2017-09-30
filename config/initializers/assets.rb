@@ -22,6 +22,7 @@ Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpa
 
 Rails.application.config.assets.precompile << "vender-bundle.js"
 Rails.application.config.assets.precompile << "app-bundle.js"
+Rails.application.config.assets.precompile << "application_iot.scss"
 
 # type = ENV["REACT_ON_RAILS_ENV"] == "HOT" ? "non_webpack" : "static"
 # Rails.application.config.assets.precompile +=

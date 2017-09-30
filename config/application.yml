@@ -16,9 +16,12 @@ development:
     return: return_debug
     ship: ship_debug
     sue: sue_debug
+  api_iot_base_uri: http://211.20.1.240:18080/ShareApiIoT
+  api_iot_certificate: mYteQnom66OAOYkwnxXcyMSual3bM0qLzWlDGsmr+DrJ6yEpMQBxjTrgoVh8O3lVNqoAb2DY+DpqYZteGLX+WzRUN1SBeF93iCWqNpd7ICg=
+
 test:
   <<: *defaults
-
+  api_iot_certificate: mYteQnom66OAOYkwnxXcyMSual3bM0qLzWlDGsmr+DrJ6yEpMQBxjTrgoVh8O3lVNqoAb2DY+DpqYZteGLX+WzRUN1SBeF93iCWqNpd7ICg=
 production:
   <<: *defaults
   jwt_secret: 'jwt secret key'

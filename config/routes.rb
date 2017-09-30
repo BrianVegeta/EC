@@ -2,6 +2,19 @@ Rails.application.routes.draw do
   root 'index#pages'
   get '/p/(*all)', to: 'index#pages', as: :pages
 
+  namespace :iot do
+    post 'sharepay', to: 'sharepay#index'
+    get 'sharepay/login', to: 'sharepay#login'
+    post 'sharepay/do_login', to: 'sharepay#do_login'
+    get 'sharepay/continue_as', to: 'sharepay#continue_as'
+
+    post 'sharepay/request', to: 'sharepay#payment_request'
+    post 'sharepay/signin', to: 'sharepay#signin'
+    post 'sharepay/signup', to: 'sharepay#signup'
+    post 'sharepay/do/payment', to: 'sharepay#do_request_page'
+    get 'test', to: 'sharepay#test'
+  end
+
   namespace :ajax, format: true, constraints: { format: :json } do
     get :startup, to: 'startup#index'
 

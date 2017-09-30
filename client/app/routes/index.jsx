@@ -10,6 +10,7 @@ import WishDetail from 'layouts/WishDetail';
 import Item from 'layouts/Item';
 import layoutOrderdetail from 'layouts/Orderdetail';
 import layoutUserprofile from 'layouts/Userprofile';
+// import layoutIotPayment from 'layouts/IotPayment';
 
 import HomeRoute from './Home';
 import routeItemsGoods from './Items/routeGoods';

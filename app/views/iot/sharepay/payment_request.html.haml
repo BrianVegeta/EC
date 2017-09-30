@@ -1,0 +1,49 @@
+#request_page
+  .board
+    .title 線上繳款
+    .blue-background
+      .subtitle
+        %span.subtitle-text 付款資訊
+        %span.subtitle-hint 請先確認已下資訊是否正確再進行付款
+      %table.table
+        %tbody
+          %tr
+            %th{:width => "100"} 訂單編號：
+            %td= @payment.resource_app_order_no
+          %tr
+            %th{:width => "100"} 商品名稱：
+            %td= @payment.product_desc
+          %tr
+            %th{:width => "100"} 商品介紹：
+            %td= @payment.product_desc
+          %tr
+            %th{:width => "100"} 付款商店：
+            %td 收多易
+          %tr
+            %th{:width => "100"} 付款總金額：
+            %td= @payment.formatted_price
+    .subtitle
+      %span.subtitle-text 聯絡資訊
+      %span.subtitle-hint 為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式
+      %table.table
+        %tbody
+          %tr
+            %th{:width => "100"} 聯絡帳號：
+            %td= @payment.account
+          %tr
+            %th{:width => "100"} 聯絡人：
+            %td= @payment.user_name
+          %tr
+            %th{:width => "100"} 聯絡信箱：
+            %td= @payment.email
+          %tr
+            %th{:width => "100"} 聯絡手機：
+            %td= @payment.phone
+      = form_for @payment, as: :request, url: '/iot/sharepay/pay', method: 'post' do |f|
+        = f.text_field :account, class: 'board-input'
+        = f.text_field :password, class: 'board-input'
+        = f.text_field :user_name, class: 'board-input'
+        = f.text_field :phone, class: 'board-input'
+        = f.text_field :email, class: 'board-input'
+        = f.submit '付款', class: 'form-button'
+        = render partial: 'payment', locals: { f: f }

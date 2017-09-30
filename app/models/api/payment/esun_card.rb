@@ -1,6 +1,5 @@
 class Api::Payment::EsunCard
   include HTTParty
-  # HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
   HEADERS = { 'Content-Type' => 'application/x-www-form-urlencoded'}
   headers HEADERS
 
@@ -12,5 +11,4 @@ class Api::Payment::EsunCard
     response = HTTParty.post('https://acqtest.esunbank.com.tw/ACQTrans/esuncard/txnf014m', options)
     response.parsed_response
   end
-
 end

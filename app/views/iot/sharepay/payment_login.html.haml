@@ -1,0 +1,84 @@
+#request_page
+  .board
+    .title 線上繳款
+    .blue-background
+      .subtitle
+        %span.subtitle-text 付款資訊
+        %span.subtitle-hint 請先確認已下資訊是否正確再進行付款
+      %table.table
+        %tbody
+          %tr
+            %th{:width => "100"} 訂單編號：
+            %td= @request.order_no
+          %tr
+            %th{:width => "100"} 商品名稱：
+            %td= @request.product_desc
+          %tr
+            %th{:width => "100"} 商品介紹：
+            %td= @request.product_desc
+          %tr
+            %th{:width => "100"} 付款商店：
+            %td 收多易
+          %tr
+            %th{:width => "100"} 付款總金額：
+            %td= @request.price_formatter
+    .subtitle
+      %span.subtitle-text 聯絡資訊
+      %span.subtitle-hint 為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式
+      .board-radio
+        %input{:checked => "checked", :name => "login_type", :onchange => "onLoginChg(0)", :type => "radio", :value => "account"}/
+        我已經有帳號了
+        %br/
+        %input{:name => "login_type", :onchange => "onLoginChg(1)", :type => "radio", :value => "create"}/
+        建立帳號
+        %br/
+      #login-board.board-visible
+        - unless @login_request.login_success?
+          .errors= '帳號或密碼錯誤'
+        = form_for @login_request, as: :request, url: '/iot/sharepay/do/login', method: 'post' do |f|
+          %div
+            .form-text 帳號：
+            = f.text_field :account, class: 'board-input'
+          %div
+            .form-text 密碼：
+            = f.text_field :password, class: 'board-input'
+          = f.submit '登入', class: 'button form-button'
+          = render partial: 'payment', locals: { f: f }
+      #create-board.board-hidden
+        = form_for @create_request, as: :request, url: '/iot/sharepay/do/create', method: 'post' do |f|
+          %div
+            .form-text 帳號名稱：
+            = f.text_field :account_username, class: 'board-input'
+          %div
+            .form-text 設定密碼：
+            = f.text_field :account_pwd, class: 'board-input'
+          %div
+            .form-text 再輸一次密碼：
+            = f.text_field :account_pwd_verify, class: 'board-input'
+          .form-top-space
+            .form-text 付款人名稱：
+            = f.text_field :account_name, class: 'board-input'
+          %div
+            .form-text 聯絡電話：
+            = f.text_field :account_phone, class: 'board-input'
+          %div
+            .form-text 聯絡信箱：
+            = f.text_field :account_email, class: 'board-input'
+          = f.submit '建立帳號', class: 'button form-button'
+          = render partial: 'payment', locals: { f: f }
+:javascript
+  function onLoginChg(selected) {
+    var loginBoard = document.getElementById("login-board").classList;
+    var createBoard = document.getElementById("create-board").classList;
+    if (selected) {
+      loginBoard.remove("board-visible");
+      loginBoard.add("board-hidden");
+      createBoard.remove("board-hidden");
+      createBoard.add("board-visible");
+    } else {
+      loginBoard.remove("board-hidden");
+      loginBoard.add("board-visible");
+      createBoard.remove("board-visible");
+      createBoard.add("board-hidden");
+    }
+  }

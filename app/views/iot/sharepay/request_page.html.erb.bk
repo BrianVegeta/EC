@@ -1,0 +1,139 @@
+<div id="request_page">
+  <div class="board">
+    <div class="title">線上繳款</div>
+    <div class="blue-background">
+      <div class="subtitle">
+        <span class="subtitle-text">付款資訊</span>
+        <span class="subtitle-hint">請先確認已下資訊是否正確再進行付款</span>
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th width=100 >訂單編號：</th>
+            <td><%= @request_page.order_no %></td>
+          </tr>
+          <tr>
+            <th width=100 >商品名稱：</th>
+            <td><%= @request_page.product_desc %></td>
+          </tr>
+          <tr>
+            <th width=100 >商品介紹：</th>
+            <td><%= @request_page.product_desc %></td>
+          </tr>
+          <tr>
+            <th width=100 >付款商店：</th>
+            <td>收多易</td>
+          </tr>
+          <tr>
+            <th width=100 >付款總金額：</th>
+            <td><%= @request_page.price_formatter %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="subtitle">
+      <span class="subtitle-text">聯絡資訊</span>
+      <span class="subtitle-hint">為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式</span>
+    </div>
+    <%= form_for @request_page, as: :iot, url: '/iot/do_request_page', method: 'post' do |f| %>
+      <% if @request_page.is_login %>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th width=100 >聯絡帳號：</th>
+              <td><%= @request_page.account %></td>
+            </tr>
+            <tr>
+              <th width=100 >聯絡人：</th>
+              <td><%= @request_page.user_name %></td>
+            </tr>
+            <tr>
+              <th width=100 >聯絡信箱：</th>
+              <td><%= @request_page.email %></td>
+            </tr>
+            <tr>
+              <th width=100 >聯絡手機：</th>
+              <td><%= @request_page.phone %></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="button form-button" onclick="sendRequest(1)">付款</button>
+        <%= f.text_field :account, class: 'hidden' %>
+        <%= f.text_field :password, class: 'hidden' %>
+        <%= f.text_field :account_username, class: 'board-input' %>
+        <%= f.text_field :account_pwd, class: 'board-input' %>
+        <%= f.text_field :account_pwd_verify, class: 'board-input' %>
+        <%= f.text_field :account_name, class: 'board-input' %>
+        <%= f.text_field :account_phone, class: 'board-input' %>
+        <%= f.text_field :account_email, class: 'board-input' %>
+      <% else %>
+        <div class="board-radio">
+          <input type="radio" name="login_type" value="account" onchange="onLoginChg(0)" checked> 我已經有帳號了<br>
+          <input type="radio" name="login_type" value="create" onchange="onLoginChg(1)"> 建立帳號<br>
+        </div>
+        <div id="login-board" class="board-visible">
+            <div>
+              <div class="form-text">帳號：</div>
+              <%= f.text_field :account, class: 'board-input' %>
+            </div>
+            <div>
+              <div class="form-text">密碼：</div>
+              <%= f.text_field :password, class: 'board-input' %>
+            </div>
+            <button class="button form-button" onclick="sendRequest(3)">登入</button>
+        </div>
+        <div id="create-board" class="board-hidden">
+          <div>
+            <div class="form-text">帳號名稱：</div>
+            <%= f.text_field :account_username, class: 'board-input' %>
+          </div>
+          <div>
+            <div class="form-text">設定密碼：</div>
+            <%= f.text_field :account_pwd, class: 'board-input' %>
+          </div>
+          <div>
+            <div class="form-text">再輸一次密碼：</div>
+            <%= f.text_field :account_pwd_verify, class: 'board-input' %>
+          </div>
+          <div class="form-top-space">
+            <div class="form-text">付款人名稱：</div>
+            <%= f.text_field :account_name, class: 'board-input' %>
+          </div>
+          <div>
+            <div class="form-text">聯絡電話：</div>
+            <%= f.text_field :account_phone, class: 'board-input' %>
+          </div>
+          <div>
+            <div class="form-text">聯絡信箱：</div>
+            <%= f.text_field :account_email, class: 'board-input' %>
+          </div>
+          <button class="button form-button" onclick="sendRequest(2)">登入</button>
+        </div>
+      <% end %>
+      <%= f.text_field :request_type, class: 'hidden' %>
+      <%= render partial: 'payment', locals: { f: f } %>
+    <% end %>
+  </div>
+</div>
+<script>
+  function sendRequest(type){
+    console.log(type);
+    document.getElementById("iot_request_page_request_type").value = type;
+    document.getElementById("new_iot_request_page").submit();
+  }
+  function onLoginChg(selected) {
+    var loginBoard = document.getElementById("login-board").classList;
+    var createBoard = document.getElementById("create-board").classList;
+    if (selected) {
+      loginBoard.remove("board-visible");
+      loginBoard.add("board-hidden");
+      createBoard.remove("board-hidden");
+      createBoard.add("board-visible");
+    } else {
+      loginBoard.remove("board-hidden");
+      loginBoard.add("board-visible");
+      createBoard.remove("board-visible");
+      createBoard.add("board-hidden");
+    }
+  }
+</script>
