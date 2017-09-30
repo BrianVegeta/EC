@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router';
 import FacebookLogin from 'react-facebook-login';
 import TextField, {
   ICON_TYPE_PHONE,
@@ -13,6 +13,7 @@ import LoadingOverlay from 'components/Loading/Overlay';
 import { FACEBOOK_APP_ID } from 'constants/config';
 import constraints from 'constraints';
 import { LOGIN_BY_EMAIL, LOGIN_BY_PHONE } from 'modules/login';
+import { registrationPath, forgotPasswordPath } from 'lib/paths';
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
@@ -128,7 +129,7 @@ class Login extends React.Component {
           value={password}
           constraints={constraints.password}
         />
-        <div className={cx('button')}>
+        <div className={cx('row')}>
           <FormButton
             content="登入"
             size="lg"
@@ -136,7 +137,7 @@ class Login extends React.Component {
             onClick={this.login}
           />
         </div>
-        <div className={cx('button', 'bottom')}>
+        <div className={cx('row', 'border-top-line')}>
           <FormButton
             content={{
               [LOGIN_BY_EMAIL]: '使用手機號碼登入',
@@ -151,13 +152,20 @@ class Login extends React.Component {
             }[loginBy]}
           />
         </div>
-        <div className={cx('button')}>
+        <div className={cx('row')}>
           <FacebookLogin
             appId={FACEBOOK_APP_ID}
             textButton="Facebook 登入"
             fields="name,email,picture"
             callback={dispatchLoginFB}
           />
+        </div>
+        <div className={cx('row', 'forgot-password')}>
+          <Link to={forgotPasswordPath}>忘記密碼？</Link>
+        </div>
+        <div className={cx('row', 'regist-suggest', 'border-top-line')}>
+          還沒有帳號嗎?
+          &nbsp;<Link to={registrationPath}>註冊</Link>
         </div>
       </div>
     );
