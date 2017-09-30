@@ -73,8 +73,11 @@ class NextStep extends React.Component {
   }
 
   onClickNext() {
-    const callback = this.props.onClick;
-    this.setState({ status: STATUS_LOADING }, callback);
+    const { onClick, status } = this.props;
+    const callback = onClick;
+    this.setState({
+      status: (status === STATUS_VALID) ? STATUS_LOADING : null,
+    }, callback);
   }
 
   render() {
