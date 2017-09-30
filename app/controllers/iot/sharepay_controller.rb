@@ -5,15 +5,44 @@ class Iot::SharepayController < ApplicationController
 
   ###################### ACTION ##################################
   def test
-    @login = Iot::Login.new
+
   end
 
   # POST
   def index
     @payment = Iot::Payment.new(payment_external_source_params)
     raise ActionController::RoutingError.new(@payment.errors.messages.inspect) unless @payment.valid?
-    @login =        @payment.build_login
-    @registration = @payment.build_registration
+
+    @check = ::Api::Register::AccountIsExist.new(external_payment_params.slice(:email, :phone))
+    response = @check.request
+    if current_user
+      raise '1'
+    else
+      
+    end
+    raise current_user['password'].inspect
+    raise @check.response_data.inspect
+    raise response.inspect
+
+
+    redirect_to iot_sharepay_login_path(payment_external_source_params)
+    # @payment = Iot::Payment.new(payment_external_source_params)
+    # raise ActionController::RoutingError.new(@payment.errors.messages.inspect) unless @payment.valid?
+    # @login =        @payment.build_login
+    # @registration = @payment.build_registration
+  end
+
+  # GET
+  def login
+    @login = Iot::ShareappLogin.new external_payment_params.slice(:email, :phone)
+    @login.payment.assign_attributes external_payment_params
+  end
+
+  # POST
+  def do_login
+    @login = Iot::ShareappLogin.new login_params
+    @login.payment.assign_attributes payment_params(login_params_require)
+    @login.request
   end
 
   # POST
@@ -83,6 +112,24 @@ class Iot::SharepayController < ApplicationController
 
   def login_with_payment_params
     params.require(:request).permit([:account, :password] << request_param_keys)
+  end
+
+
+
+  def login_params_require
+    params.require(:login)
+  end
+
+  def login_params
+    login_params_require.permit([:email, :phone, :password])
+  end
+
+  def payment_params required_params = nil
+    (required_params || params).require('payment').permit(request_param_keys)
+  end
+
+  def external_payment_params
+    params.permit(request_param_keys)
   end
 
   def create_params require_name = :iot_create_account

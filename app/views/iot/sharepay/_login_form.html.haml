@@ -1,0 +1,7 @@
+= form_for @login, url: iot_sharepay_do_login_path, method: :post, as: :login do |f|
+  = f.text_field :email
+  = f.text_field :phone
+  = f.text_field :password
+  = f.fields_for :payment, @login.payment do |nf|
+    = render partial: 'payment', locals: { f: nf }
+  = f.submit '登入', class: 'button'

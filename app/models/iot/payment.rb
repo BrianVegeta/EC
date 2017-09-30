@@ -3,13 +3,16 @@ module Iot
     include ActiveModel::Model
     include ActiveModel::Validations
     include ActionView::Helpers::NumberHelper
-    include InitializeParams
+    # include InitializeParams
 
     attr_accessor :client_app_uid, :resource_app_uid, :resource_app_order_no,
-                  :product_name, :product_desc, :price, :unit, :checksum, :arg,
-                  :app_user_pk, :user_name, :email, :phone
+                  :app_user_pk,
+                  :user_name,
+                  :email, :phone,
+                  :product_name, :product_desc, :price, :unit, :checksum, :arg
 
     validates :client_app_uid, presence: true
+    validates :product_name, presence: true
     validates :resource_app_uid, presence: true
     validates :resource_app_order_no, presence: true
     validates :price, presence: true, numericality: true
@@ -17,6 +20,7 @@ module Iot
     validates :user_name, presence: true
     validates :checksum, presence: true
 
+    validate :email_or_phone
     def formatted_price
       'NTD ' + number_to_currency(self.price)
     end
@@ -35,20 +39,12 @@ module Iot
 
     def bind_order
       raise initial_params.slice('client_app_uid')
-      # Api::OrderBindWithUser.new()
-      # client_app_uid
-      # resource_app_uid
-      # iot_account_uid
-      # iot_account_token
-      # resource_app_order_no
-      # product_name
-      # price
-      # unit
-      # app_user_pk
-      # user_name
-      # email
-      # checksum
-      # arg
+    end
+
+    def email_or_phone
+      if email.blank? && phone.blank?
+        errors.add(:email_or_phone, 'At least email or phone.')
+      end
     end
   end
 end
