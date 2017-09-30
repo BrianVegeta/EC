@@ -62,7 +62,7 @@ class Banner extends React.Component {
             }}
           >
             {banners.map(item => (
-              <BannerAction item={item} >
+              <BannerAction item={item} key={item.id} >
                 <div
                   styleName="banner"
                   style={{
