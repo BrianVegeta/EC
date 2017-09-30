@@ -1,0 +1,8 @@
+%h1 continue as
+.row
+  - if @user['email'].present?
+    %span= @user['email']
+  - else
+    %span= @user['phone']
+.row
+  %button= "continue as #{@user['name']}?"

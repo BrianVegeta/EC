@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     post 'sharepay', to: 'sharepay#index'
     get 'sharepay/login', to: 'sharepay#login'
     post 'sharepay/do_login', to: 'sharepay#do_login'
+    get 'sharepay/continue_as', to: 'sharepay#continue_as'
 
     post 'sharepay/request', to: 'sharepay#payment_request'
     post 'sharepay/signin', to: 'sharepay#signin'

@@ -13,23 +13,25 @@ class Iot::SharepayController < ApplicationController
     @payment = Iot::Payment.new(payment_external_source_params)
     raise ActionController::RoutingError.new(@payment.errors.messages.inspect) unless @payment.valid?
 
-    @check = ::Api::Register::AccountIsExist.new(external_payment_params.slice(:email, :phone))
-    response = @check.request
-    if current_user
-      raise '1'
+    if current_user && (current_user['email'] || current_user['phone'])
+      @user = current_user
+      render 'continue_as' and return
     else
-      
+      @check = ::Api::Register::AccountIsExist.new(external_payment_params.slice(:email, :phone))
+      response = @check.request
+
+      raise @check.response_data.inspect
+      raise response.inspect
     end
-    raise current_user['password'].inspect
-    raise @check.response_data.inspect
-    raise response.inspect
 
 
     redirect_to iot_sharepay_login_path(payment_external_source_params)
-    # @payment = Iot::Payment.new(payment_external_source_params)
-    # raise ActionController::RoutingError.new(@payment.errors.messages.inspect) unless @payment.valid?
-    # @login =        @payment.build_login
-    # @registration = @payment.build_registration
+  end
+
+  def continue_as
+    raise 'test'
+    @user = current_user
+    @login_type = current_user['email'] ? 'email' : 'phone'
   end
 
   # GET
