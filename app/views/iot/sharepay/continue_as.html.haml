@@ -1,8 +1,13 @@
 %h1 continue as
 .row
-  - if @user['email'].present?
-    %span= @user['email']
-  - else
-    %span= @user['phone']
+  %div= @payment.user.inspect
+  - if @payment.user.picture.present?
+    = image_tag @payment.user.picture
+  %div= @payment.user_login_as
 .row
-  %button= "continue as #{@user['name']}?"
+  = form_for @payment, as: :payment, url: iot_sharepay_continue_as_path do |f|
+    = render partial: 'payment', locals: { f: f }
+    = f.submit "繼續使用[#{@payment.user.name}]付款?"
+  = form_for @payment, as: :payment, url: iot_sharepay_switch_login_path do |f|
+    = render partial: 'payment', locals: { f: f }
+    = f.submit '使用別的帳號登入'

@@ -1,0 +1,42 @@
+%h1 線上繳款
+%div 付款資訊
+%div 請先確認已下資訊是否正確再進行付款
+%table
+  %tbody
+    %tr
+      %th{width: 100} 訂單編號：
+      %td= @payment.resource_app_order_no
+    %tr
+      %th 商品名稱：
+      %td= @payment.product_desc
+    %tr
+      %th 商品介紹：
+      %td= @payment.product_desc
+    %tr
+      %th 付款商店：
+      %td 收多易
+    %tr
+      %th 付款總金額：
+      %td= @payment.formatted_price
+%div 聯絡資訊
+%div 為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式
+%table
+  %tbody
+    %tr
+      %th{width: 100} 聯絡帳號：
+      %td= @payment.user_login_as
+    %tr
+      %th 聯絡人：
+      %td= @payment.current_user['name']
+    %tr
+      %th 聯絡信箱：
+      %td= @payment.email
+    %tr
+      %th 聯絡手機：
+      %td= @payment.phone
+
+= form_tag @form.redirect, method: :post do |f|
+  = hidden_field_tag :data, @form.data
+  = hidden_field_tag :mac, @form.mac
+  = hidden_field_tag :ksn, @form.ksn
+  = button_tag '確認付款', type: 'submit'

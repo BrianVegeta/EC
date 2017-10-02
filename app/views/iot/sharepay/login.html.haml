@@ -1,2 +1,7 @@
 %h1 login
-= render 'login_form'
+= form_for @login, url: iot_sharepay_login_path, method: :post, as: :payment do |f|
+  = f.text_field :email
+  = f.text_field :phone
+  = f.text_field :password
+  = render partial: 'payment', locals: { f: f }
+  = f.submit '登入', class: 'button'

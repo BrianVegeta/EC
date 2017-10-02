@@ -4,9 +4,11 @@ Rails.application.routes.draw do
 
   namespace :iot do
     post 'sharepay', to: 'sharepay#index'
-    get 'sharepay/login', to: 'sharepay#login'
-    post 'sharepay/do_login', to: 'sharepay#do_login'
-    get 'sharepay/continue_as', to: 'sharepay#continue_as'
+    post 'sharepay/switch_login', to: 'sharepay#switch_login'
+    post 'sharepay/continue_as', to: 'sharepay#continue_as'
+    post 'sharepay/login', to: 'sharepay#login'
+    post 'sharepay/pay', to: 'sharepay#pay'
+
 
     post 'sharepay/request', to: 'sharepay#payment_request'
     post 'sharepay/signin', to: 'sharepay#signin'
