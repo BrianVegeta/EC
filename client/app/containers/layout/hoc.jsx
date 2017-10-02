@@ -5,7 +5,7 @@ import myPropTypes from 'propTypes';
 import { loginPath } from 'lib/paths';
 import { isCategoriesReady } from 'lib/reducerHelpers';
 import PopupContainer from 'containers/Popup/Container';
-// import ChatRoomContainer from 'containers/ChatRoom/Container';
+import ChatRoomContainer from 'containers/ChatRoom/Container';
 import { confirmLeavePage } from 'lib/confirm';
 
 
@@ -107,19 +107,19 @@ export default function layout(Component, {
       if (requireAuth && !isLogin) return null;
       if (requireCates && !isCategoriesReady(categories)) return null;
 
-      // return (
-      //   <div>
-      //     <Component {...this.props} />
-      //     {isLogin && <ChatRoomContainer />}
-      //     <PopupContainer />
-      //   </div>
-      // );
       return (
         <div>
           <Component {...this.props} />
+          {isLogin && <ChatRoomContainer />}
           <PopupContainer />
         </div>
       );
+      // return (
+      //   <div>
+      //     <Component {...this.props} />
+      //     <PopupContainer />
+      //   </div>
+      // );
     }
   };
 }
