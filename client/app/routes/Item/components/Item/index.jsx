@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import myPropTypes from 'propTypes';
 
+import { setTitle } from 'lib/utils';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 import Main from '../Main';
@@ -32,7 +33,12 @@ class Item extends React.Component {
     return true;
   }
 
+  componentWillUpdate({ item: { detail } }) {
+    setTitle(detail.pname);
+  }
+
   componentWillUnmount() {
+    setTitle();
     this.props.dispatchReset();
   }
 

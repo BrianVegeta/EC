@@ -46,6 +46,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_path
+    request.path
+  end
+
+  def current_path_is? path
+    view_context.current_page? path
+  end
+
 
   protected
   # common params for uid request 20170705 KUAN

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root 'index#pages'
+  get '/p/:pname-i.:pid', to: 'index#item_page', as: :item_page, constraints: {
+    pid: /\d*/,
+  }
   get '/p/(*all)', to: 'index#pages', as: :pages
 
   namespace :iot do

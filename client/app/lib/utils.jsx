@@ -144,3 +144,10 @@ export const mapSidebarSteps = steps =>
 
 export const generateRandomKey = () =>
   Math.random().toString(36).slice(2);
+
+export const setTitle = (lastTitle) => {
+  const title = `Share共享/${lastTitle || '閒置資源 綠色消費'}`;
+  if (document.title !== title) {
+    document.title = title;
+  }
+};

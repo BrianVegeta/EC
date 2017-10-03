@@ -1,12 +1,16 @@
 class IndexController < ApplicationController
   include WardenHelper
 
+
   def index
 
   end
 
   def pages
+    set_page_title '閒置資源 綠色消費'
+
     auth = { isLogin: user_signed_in? }
+
     if user_signed_in?
       auth_current_user = current_user
 
@@ -49,6 +53,17 @@ class IndexController < ApplicationController
         }
       }
     }
+  end
+
+  def item_page
+    # raise params.inspect
+    api_item = ::Api::Item::ViewItem.new pid: params[:pid]
+    if api_item.request
+      set_page_title api_item.response_data['pname']
+      render 'pages'
+    else
+      raise 'Not found'
+    end
   end
 
   def test
