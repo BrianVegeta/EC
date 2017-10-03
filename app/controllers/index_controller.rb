@@ -7,15 +7,19 @@ class IndexController < ApplicationController
   end
 
   def pages
-    set_page_title '閒置資源 綠色消費'
+    set_page_title '共享閒置資源 綠色消費'
+    set_page_image view_context.asset_path 'app_logo'
     page_process
   end
 
   def item_page
-    # raise params.inspect
     api_item = ::Api::Item::ViewItem.new pid: params[:pid]
     if api_item.request
-      set_page_title api_item.response_data['pname']
+      data = api_item.response_data
+      price = view_context.number_to_currency data['price'], precision: 0
+      set_page_title data['pname']
+      set_page_description "價格#{price}, #{data['pdes']}"
+      set_page_image api_item.response_data['img1']
     else
       raise 'Not found'
     end
