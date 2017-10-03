@@ -3,45 +3,6 @@ class ResponseJson::Sample
     def structure
       {
         pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil,
-        #  -String
-        pid: nil
-        #  -String
       }
     end
   end
