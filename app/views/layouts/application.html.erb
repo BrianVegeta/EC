@@ -7,9 +7,13 @@
     <%= favicon_link_tag 'app_logo.png' %>
     <%= render_page_title_tag %>
     <%= render_page_image_link_tag %>
+
     <meta property="og:title"       content="<%= page_title %>"/>
     <meta property="og:description" content="<%= page_description %>"/>
     <meta property="og:image"       content="<%= page_image %>"/>
+    <% @images.each do |img_url| %>
+      <meta property="og:image" content="<%= img_url %>"/>
+    <% end %>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>

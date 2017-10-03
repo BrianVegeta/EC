@@ -19,7 +19,11 @@ class IndexController < ApplicationController
       price = view_context.number_to_currency data['price'], precision: 0
       set_page_title data['pname']
       set_page_description "價格#{price}, #{data['pdes']}"
-      set_page_image api_item.response_data['img1']
+      set_page_image data['img1']
+
+      @images = []
+      @images.push data['img2'] if data['img2'].present?
+      @images.push data['img3'] if data['img3'].present?
     else
       raise 'Not found'
     end
