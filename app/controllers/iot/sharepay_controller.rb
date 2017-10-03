@@ -51,11 +51,7 @@ module Iot
       end
 
       if @payment.login_user browser_info
-        warden_set_user @payment.current_user
-
-        @checkout = Iot::Pay::Checkout.new payment_params, current_user
-        @checkout.checkout
-        @form = Iot::EsunForm.new(@checkout.esun_form)
+        process_after_login @payment
         render 'pay' and return
       else
         raise 'error'
@@ -84,13 +80,25 @@ module Iot
 
     # POST
     def login
-      @login = Iot::ShareappLogin.new external_payment_params.slice(:email, :phone)
-      @login.payment.assign_attributes external_payment_params
+      @login = Iot::Pay::Login.new login_params, current_user
+      if @login.login_user browser_info
+        process_after_login @login
+        render 'pay' and return
+      else
+
+      end
     end
 
 
     ###################### PARAMS ##################################
     protected
+    def process_after_login payment
+      warden_set_user payment.current_user
+      @payment = payment
+      @checkout = Iot::Pay::Checkout.new payment_params, current_user
+      @checkout.checkout
+      @form = Iot::EsunForm.new(@checkout.esun_form)
+    end
     # client_app_uid
     # resource_app_uid
     # app_user_pk
@@ -117,6 +125,10 @@ module Iot
 
     def payment_params
       params.require(:payment).permit(request_param_keys)
+    end
+
+    def login_params
+      payment_params.merge params.require(:payment).permit(:password, :login_by)
     end
 
     def external_payment_params

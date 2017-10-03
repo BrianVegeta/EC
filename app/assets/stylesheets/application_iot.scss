@@ -11,3 +11,9 @@ body, button, input, optgroup, select, textarea {
 body {
   background: #DDD;
 }
+
+
+input[disabled] {
+  background-color: #eee;
+  opacity: 1;
+}
