@@ -36,7 +36,8 @@ module Iot
 
       elsif @payment.is_user_exist?
         @login = Pay::Login.new entry.payment_params, current_user
-        @login.sync_payment_info
+        @login.sync_auth_email if @payment.email_exist?
+        @login.sync_auth_phone if @payment.phone_exist?
         render VIEW_LOGIN
 
       else
@@ -202,9 +203,7 @@ module Iot
 
     def verify_params
       verifycation = params.require(:payment).permit(
-        :register_email, :register_phone,
-        :password, :name, :identify_by,
-        :verify_code
+        auth_params_keys, :password, :name, :identify_by, :verify_code
       )
       payment_params.merge verifycation
     end

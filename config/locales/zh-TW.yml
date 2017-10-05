@@ -7,10 +7,10 @@ zh-TW:
             identify_by:
               blank: 請選擇email或手機註冊
               inclusion: 請選擇email或手機註冊
-            register_email:
+            auth_email:
               blank: 請填 email
               email: 請填正確格式的 email
-            register_phone:
+            auth_phone:
               blank: 請填手機
               email: 格式錯誤（09XXXXXXXX）
             password:
@@ -21,6 +21,17 @@ zh-TW:
               confirmation: 確認密碼不相符
             name:
               blank: 請填姓名
+        iot/pay/login:
+          attributes:
+            identify_by:
+              blank: 請選擇email或手機註冊
+              inclusion: 請選擇email或手機註冊
+            auth_email:
+              blank: 請填 email
+              email: 請填正確格式的 email
+            auth_phone:
+              blank: 請填手機
+              email: 格式錯誤（09XXXXXXXX）
         iot/pay/verification:
           attributes:
             verify_code:

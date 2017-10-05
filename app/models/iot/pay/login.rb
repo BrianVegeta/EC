@@ -1,42 +1,30 @@
 module Iot
   module Pay
     class Login < Base
-      attr_accessor :auth_email,
-                    :auth_phone,
-                    :password,
-                    :identify_by
-
-      validates :identify_by, presence: true, inclusion: { in: %w(email phone) }
-      validates :auth_email, presence: true, email: true, if: :identify_by_email?
-      validates :auth_phone, presence: true, phone: true, if: :identify_by_phone?
+      include Concerns::Auth
+      attr_accessor :password
 
 
       def login_user browser_info
+        return false if not self.valid?
         case identify_by.to_sym
         when :phone
-          self.user_login_as = phone
           api = ::Auth::Session::LoginMobile.new phone_params, browser_info
         when :email
-          self.user_login_as = email
           api = ::Auth::Session::LoginEmail.new email_params, browser_info
         else
           raise 'invalid auth by'
         end
+        set_user_login_as
         handle_response(api) || handle_response_error(api.error_message)
       end
 
-
-      def identify_by_email?
-        identify_by.present? && identify_by.to_sym == :email
+      def sync_auth_email
+        self.auth_email = email if self.auth_email.nil?
       end
 
-      def identify_by_phone?
-        identify_by.present? && identify_by.to_sym == :phone
-      end
-
-      def sync_payment_info
-        self.auth_email = email
-        self.auth_phone = phone
+      def sync_auth_phone
+        self.auth_phone = phone if self.auth_phone.nil?
       end
 
       private

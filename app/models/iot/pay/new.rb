@@ -7,7 +7,7 @@ module Iot
                     :email_exist, :phone_exist
 
       def api_check_user_exist
-        params = initial_params.slice :email, :phone
+        params = initial_params.slice('email', 'phone')
         check = ::Api::Register::AccountIsExist.new params
         if not check.request
           raise 'connection error'
@@ -67,11 +67,6 @@ module Iot
         request_status
       end
 
-      protected
-      def user_been_checked_exist?
-        !email_exist.nil? && !phone_exist.nil?
-      end
-
       def email_exist?
         email_exist || false
       end
@@ -79,6 +74,12 @@ module Iot
       def phone_exist?
         phone_exist || false
       end
+
+      protected
+      def user_been_checked_exist?
+        !email_exist.nil? && !phone_exist.nil?
+      end
+
     end
   end
 end

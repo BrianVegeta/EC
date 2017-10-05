@@ -17,6 +17,7 @@ module Iot
         when :phone
           api = ::Auth::Registration::PhoneByIotOrder.new(phone_params)
         end
+        set_user_login_as
         handle_response(api) || handle_response_error(api.error_message)
       end
 

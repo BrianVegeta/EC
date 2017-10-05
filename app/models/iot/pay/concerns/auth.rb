@@ -21,6 +21,17 @@ module Iot
             identify_by.present? && identify_by.to_sym == :phone
           end
 
+          def set_user_login_as
+            case identify_by.to_sym
+            when :email
+              self.user_login_as = auth_email
+            when :phone
+              self.user_login_as = auth_phone
+            else
+              raise 'invalid auth by'
+            end
+          end
+
         end
       end
     end
