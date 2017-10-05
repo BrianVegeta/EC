@@ -1,15 +1,14 @@
 %h1 login
-- if @login.login_error
-  = @login.login_error
-- form_url = iot_sharepay_login_path
-= form_for @login,  url: form_url, method: :post, as: :payment,
+= @login.errors.messages.inspect
+= form_for @login,  url: iot_sharepay_login_path,
+                    method: :post, as: :payment,
                     html: { id: :login_form } do |f|
   .input-group
-    = f.radio_button "login_by", "email"
-    = f.text_field :email, disabled: !@login.login_by_email?
+    = f.radio_button :identify_by, :email
+    = f.text_field :auth_email, disabled: !@login.identify_by_email?
   .input-group
-    = f.radio_button "login_by", "phone"
-    = f.text_field :phone, disabled: !@login.login_by_phone?
+    = f.radio_button :identify_by, :phone
+    = f.text_field :auth_phone, disabled: !@login.identify_by_phone?
   .input-group
     = f.text_field :password
   = render partial: 'payment', locals: { f: f }
@@ -21,17 +20,15 @@
   }
 
 :javascript
-  var $loginByEmail = document.getElementById('payment_login_by_email');
-  var $loginByPhone = document.getElementById('payment_login_by_phone');
-  var $emailInput = document.getElementById('payment_email');
-  var $phoneInput = document.getElementById('payment_phone');
+  var $loginByEmail = document.getElementById('payment_identify_by_email');
+  var $loginByPhone = document.getElementById('payment_identify_by_phone');
+  var $emailInput = document.getElementById('payment_auth_email');
+  var $phoneInput = document.getElementById('payment_auth_phone');
   $loginByEmail.addEventListener('change', function(e) {
     $phoneInput.setAttribute('disabled', 'disabled');
     $emailInput.removeAttribute('disabled');
-    console.log('login by email seleted');
   });
   $loginByPhone.addEventListener('change', function(e) {
     $emailInput.setAttribute('disabled', 'disabled');
     $phoneInput.removeAttribute('disabled');
-    console.log('login by phone seleted');
   });

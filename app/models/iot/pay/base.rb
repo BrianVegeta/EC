@@ -5,15 +5,15 @@ module Iot
       include ActiveModel::Validations
       include ActionView::Helpers::NumberHelper
 
-      attr_accessor :client_app_uid,
-                    :resource_app_uid,
+      attr_accessor :resource_app_uid,
                     :resource_app_order_no,
                     :app_user_pk,
                     :user_name,
                     :email, :phone,
                     :product_name, :product_desc, :price, :unit, :checksum, :arg,
                     :return_url,
-                    :current_user
+                    :current_user,
+                    :user_login_as
 
 
       validate :email_or_phone_present

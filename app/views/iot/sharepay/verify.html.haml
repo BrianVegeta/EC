@@ -1,8 +1,10 @@
 %h1 VERIFYCATION
+= @verification.errors.inspect
 = form_for @verification,  url: iot_sharepay_verify_path,
                     method: :post, as: :payment,
                     html: { id: :verifycation_form } do |f|
   .input-group
     = f.text_field :verify_code
+  = render partial: 'verify_hidden', locals: { f: f }
   = render partial: 'payment', locals: { f: f }
   = f.submit '驗證', class: 'button'

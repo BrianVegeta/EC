@@ -8,7 +8,7 @@ module Iot
     VIEW_CONTINUE_AS = 'continue_as'
     VIEW_LOGIN = 'login'
     VIEW_REGISTER = 'register'
-    VIEW_VERIFICATION = 'verification'
+    VIEW_VERIFY = 'verify'
 
     PAYMENT_NOT_VALID = 'Payment not valid.'
     USER_NOT_LOGIN = 'User is not login.'
@@ -21,24 +21,29 @@ module Iot
 
     # POST
     def index
-      @payment = Iot::Pay::New.new external_payment_params, current_user
-      if not @payment.valid?
+      entry = Pay::Entry.new entry_params
+      if not entry.valid?
         raise ActionController::RoutingError.new PAYMENT_NOT_VALID
       end
 
+      @payment = Iot::Pay::New.new entry.payment_params, current_user
       @payment.api_check_user_exist
       @payment.match_current_user
 
       if @payment.is_user_login?
         @payment.api_user_profile
         render VIEW_CONTINUE_AS
+
       elsif @payment.is_user_exist?
-        @login = Pay::Login.new external_payment_params, current_user
+        @login = Pay::Login.new entry.payment_params, current_user
+        @login.sync_payment_info
         render VIEW_LOGIN
+
       else
-        @registration = Pay::Registration.new external_payment_params, current_user
+        @registration = Pay::Registration.new entry.payment_params, current_user
         @registration.sync_payment_info
         render VIEW_REGISTER
+
       end
     end
 
@@ -97,9 +102,10 @@ module Iot
     # POST
     def register
       @registration = Iot::Pay::Registration.new register_params, current_user
+      @registration.sync_payment_info
       if @registration.register
         init_verification
-        render VIEW_VERIFICATION
+        render VIEW_VERIFY
       else
 
       end
@@ -108,8 +114,16 @@ module Iot
     # POST
     def verify
       init_verification
-      if @verification.verify
+      if @verification.verify browser_info
+        warden_set_user @verification.current_user
+        @verification.update_name current_apitoken
 
+        @payment = @verification
+        @checkout = Iot::Pay::Checkout.new payment_params, current_user
+        @checkout.checkout
+        @form = Iot::EsunForm.new(@checkout.esun_form)
+
+        render VIEW_PAY
       else
 
       end
@@ -146,7 +160,7 @@ module Iot
     # ip
     def request_param_keys
       [
-        :client_app_uid, :resource_app_uid,
+        :resource_app_uid,
         :app_user_pk, :user_name,
         :product_name, :product_desc, :phone, :email,
         :resource_app_order_no, :price, :unit, :checksum, :arg, :ip,
@@ -154,19 +168,34 @@ module Iot
       ]
     end
 
+    def auth_params_keys
+      [ :auth_email, :auth_phone, :identify_by ]
+    end
+
+    def entry_params
+      params.permit(
+        :client_app_uid, :order_no,
+        :app_user_pk, :user_name,
+        :product_name, :description, :price, :unit,
+        :phone, :email,
+        :checksum, :arg, :return_url,
+      )
+    end
+
     def payment_params
       params.require(:payment).permit(request_param_keys)
     end
 
     def login_params
-      payment_params.merge params.require(:payment).permit(:password, :login_by)
+      login = params.require(:payment).permit(
+        auth_params_keys, :password
+      )
+      payment_params.merge login
     end
 
     def register_params
       registration = params.require(:payment).permit(
-        :register_email, :register_phone,
-        :password, :password_confirmation,
-        :name, :identify_by
+        auth_params_keys, :password, :password_confirmation, :name,
       )
       payment_params.merge registration
     end
@@ -174,7 +203,8 @@ module Iot
     def verify_params
       verifycation = params.require(:payment).permit(
         :register_email, :register_phone,
-        :password, :name, :identify_by
+        :password, :name, :identify_by,
+        :verify_code
       )
       payment_params.merge verifycation
     end
@@ -182,10 +212,6 @@ module Iot
     def external_payment_params
       params.permit(request_param_keys)
     end
-
-    # def payment_params required_params = nil
-    #   (required_params || params).require('payment').permit(request_param_keys)
-    # end
 
     def external_payment_params
       params.permit(request_param_keys)

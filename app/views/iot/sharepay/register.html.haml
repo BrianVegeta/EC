@@ -1,14 +1,14 @@
 %h1 REGISTRATION
-= @registration.errors.inspect
-= form_for @registration,  url: iot_sharepay_register_path,
-                    method: :post, as: :payment,
-                    html: { id: :register_form } do |f|
+= @registration.errors.messages.inspect
+= form_for @registration, url: iot_sharepay_register_path,
+                          method: :post, as: :payment,
+                          html: { id: :register_form } do |f|
   .input-group
     = f.radio_button :identify_by, :email
-    = f.text_field :register_email, disabled: !@registration.identify_by_email?
+    = f.text_field :auth_email, disabled: !@registration.identify_by_email?
   .input-group
     = f.radio_button :identify_by, :phone
-    = f.text_field :register_phone, disabled: !@registration.identify_by_phone?
+    = f.text_field :auth_phone, disabled: !@registration.identify_by_phone?
   .input-group
     = f.text_field :password
   .input-group
@@ -21,8 +21,8 @@
 :javascript
   var $identifyByEmail = document.getElementById('payment_identify_by_email');
   var $identifyByPhone = document.getElementById('payment_identify_by_phone');
-  var $emailInput = document.getElementById('payment_register_email');
-  var $phoneInput = document.getElementById('payment_register_phone');
+  var $emailInput = document.getElementById('payment_auth_email');
+  var $phoneInput = document.getElementById('payment_auth_phone');
   var switchOnEmail = function() {
     $phoneInput.setAttribute('disabled', 'disabled');
     $emailInput.removeAttribute('disabled');

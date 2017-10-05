@@ -1,8 +1,7 @@
 module Iot
   module Pay
     class New < Base
-      attr_accessor :user_login_as,
-                    :user_profile,
+      attr_accessor :user_profile,
                     :current_user,
                     :user_being_checked,
                     :email_exist, :phone_exist
@@ -22,9 +21,9 @@ module Iot
         raise 'need check user exist first' if not user_been_checked_exist?
         return if current_user.nil?
 
-        if phone_exist? && phone === current_user['phone']
+        if phone_exist? && phone == current_user['phone']
           self.user_login_as = phone
-        elsif email_exist? && email === current_user['email']
+        elsif email_exist? && email == current_user['email']
           self.user_login_as = email
         else
           return
