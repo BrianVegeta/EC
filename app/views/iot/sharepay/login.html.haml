@@ -6,10 +6,10 @@
                     html: { id: :login_form } do |f|
   .input-group
     = f.radio_button "login_by", "email"
-    = f.text_field :email, disabled: @login.login_by_phone?
+    = f.text_field :email, disabled: !@login.login_by_email?
   .input-group
     = f.radio_button "login_by", "phone"
-    = f.text_field :phone, disabled: @login.login_by_email?
+    = f.text_field :phone, disabled: !@login.login_by_phone?
   .input-group
     = f.text_field :password
   = render partial: 'payment', locals: { f: f }

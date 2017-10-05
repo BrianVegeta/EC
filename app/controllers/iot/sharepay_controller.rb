@@ -7,6 +7,8 @@ module Iot
     VIEW_PAY = 'pay'
     VIEW_CONTINUE_AS = 'continue_as'
     VIEW_LOGIN = 'login'
+    VIEW_REGISTER = 'register'
+    VIEW_VERIFICATION = 'verification'
 
     PAYMENT_NOT_VALID = 'Payment not valid.'
     USER_NOT_LOGIN = 'User is not login.'
@@ -34,8 +36,9 @@ module Iot
         @login = Pay::Login.new external_payment_params, current_user
         render VIEW_LOGIN
       else
-        # registration
-        raise 'registration'
+        @registration = Pay::Registration.new external_payment_params, current_user
+        @registration.sync_payment_info
+        render VIEW_REGISTER
       end
     end
 
@@ -52,7 +55,7 @@ module Iot
 
       if @payment.login_user browser_info
         process_after_login @payment
-        render 'pay' and return
+        render VIEW_PAY and return
       else
         raise 'error'
       end
@@ -77,7 +80,7 @@ module Iot
       raise params.inspect
       @login = Iot::ShareappLogin.new payment_params
       @login.payment.assign_attributes external_payment_params
-      render 'login'
+      render VIEW_LOGIN
     end
 
     # POST
@@ -85,7 +88,28 @@ module Iot
       @login = Iot::Pay::Login.new login_params, current_user
       if @login.login_user browser_info
         process_after_login @login
-        render 'pay' and return
+        render VIEW_PAY and return
+      else
+
+      end
+    end
+
+    # POST
+    def register
+      @registration = Iot::Pay::Registration.new register_params, current_user
+      if @registration.register
+        init_verification
+        render VIEW_VERIFICATION
+      else
+
+      end
+    end
+
+    # POST
+    def verify
+      init_verification
+      if @verification.verify
+
       else
 
       end
@@ -93,7 +117,12 @@ module Iot
 
 
     ###################### PARAMS ##################################
-    protected
+    private
+
+    def init_verification
+      @verification = Iot::Pay::Verification.new verify_params, current_user
+    end
+
     def process_after_login payment
       warden_set_user payment.current_user
       @payment = payment
@@ -131,6 +160,23 @@ module Iot
 
     def login_params
       payment_params.merge params.require(:payment).permit(:password, :login_by)
+    end
+
+    def register_params
+      registration = params.require(:payment).permit(
+        :register_email, :register_phone,
+        :password, :password_confirmation,
+        :name, :identify_by
+      )
+      payment_params.merge registration
+    end
+
+    def verify_params
+      verifycation = params.require(:payment).permit(
+        :register_email, :register_phone,
+        :password, :name, :identify_by
+      )
+      payment_params.merge verifycation
     end
 
     def external_payment_params

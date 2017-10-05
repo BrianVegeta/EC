@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     post 'sharepay/switch_login', to: 'sharepay#switch_login'
     post 'sharepay/continue_as', to: 'sharepay#continue_as'
     post 'sharepay/login', to: 'sharepay#login'
+    post 'sharepay/register', to: 'sharepay#register'
+    post 'sharepay/verify', to: 'sharepay#verify'
     post 'sharepay/pay', to: 'sharepay#pay'
 
 
@@ -21,7 +23,7 @@ Rails.application.routes.draw do
     get :startup, to: 'startup#index'
 
     scope module: :auth do
-      # registeration
+      # registration
       post 'phone_register', to: 'registration#phone'
       post 'email_register', to: 'registration#email'
       # verification

@@ -14,8 +14,8 @@ module Iot
           raise 'connection error'
         end
 
-        self.email_exist = check.response_data['email_exist']
-        self.phone_exist = check.response_data['phone_exist']
+        self.email_exist = email.present? && check.response_data['email_exist']
+        self.phone_exist = phone.present? && check.response_data['phone_exist']
       end
 
       def match_current_user
