@@ -65,7 +65,9 @@ module Iot
       end
 
       @payment = Iot::Pay::Checkout.new payment_params, current_user
-      raise 'User not login' unless @payment.is_user_login?
+      if not @payment.is_user_login?
+        raise ActionController::RoutingError.new USER_NOT_LOGIN
+      end
       raise (esun_params current_user['uid']).inspect
     end
 

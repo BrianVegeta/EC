@@ -26,7 +26,6 @@ module Iot
         end
       end
 
-      protected
       def login_by_email?
         login_by.to_s === 'email'
       end
