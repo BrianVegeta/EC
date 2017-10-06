@@ -43,9 +43,11 @@
           %tr
             %th 聯絡手機：
             %td= @payment.phone
-
-    = form_tag @form.redirect, method: :post do |f|
-      = hidden_field_tag :data, @form.data
-      = hidden_field_tag :mac, @form.mac
-      = hidden_field_tag :ksn, @form.ksn
-      = button_tag '確認付款', type: 'submit', class: 'button primary-button'
+    - if @checkout.esun_form.present?
+      = form_tag @form.redirect, method: :post do |f|
+        = hidden_field_tag :data, @form.data
+        = hidden_field_tag :mac, @form.mac
+        = hidden_field_tag :ksn, @form.ksn
+        = button_tag '確認付款', type: 'submit', class: 'button primary-button'
+    - else
+      .payed-error.text-center.danger-color 此訂單已付款!
