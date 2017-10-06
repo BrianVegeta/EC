@@ -9,7 +9,7 @@ module Iot
         api.request
         case api.error_code
         when Response::ErrorCode::SUCCESS
-          self.esun_form = @esun.response_data
+          self.esun_form = api.response_data
         when Response::ErrorCode::CONSTRACT_STAGE_ERROR
           self.esun_form = nil
         else
