@@ -150,48 +150,55 @@
 }
 
 /* line 1, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
-html, body {
+html {
   height: 100%;
 }
 
 /* line 4, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+body {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 130px;
+}
+
+/* line 9, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 *, :after, :before {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
-/* line 7, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 12, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot.container {
   width: 700px;
   margin: 80px auto;
   background: #fff;
   padding: 40px 20px;
 }
-/* line 12, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 17, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .text-center {
   text-align: center;
 }
-/* line 14, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 19, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .primary-button {
   border-radius: 5px;
   color: #fff;
   background-color: #31ABBA;
   padding: 15px 60px;
 }
-/* line 19, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 24, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .primary-button:disabled {
   background-color: #E9E9E9;
   cursor: default;
 }
-/* line 23, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 28, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot table th, .iot table td {
   padding: 5px;
 }
-/* line 25, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 30, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot table th {
   text-align: right;
 }
-/* line 27, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 32, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot input.input {
   width: auto;
   font-size: 16px;
@@ -203,16 +210,16 @@ html, body {
   background-color: #fff;
   padding: 13px;
 }
-/* line 28, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 33, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot input.input[disabled] {
   background-color: #eee;
   opacity: 1;
 }
-/* line 40, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 45, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .input-group {
   margin-bottom: 10px;
 }
-/* line 42, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 47, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .input-group .radio-container {
   width: 22px;
   display: inline-block;
@@ -220,39 +227,39 @@ html, body {
   position: relative;
   vertical-align: middle;
 }
-/* line 54, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 59, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .input-group .radio-container input[type="radio"] {
   position: absolute;
   top: 2px;
   left: 4px;
 }
-/* line 58, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 63, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .input-group label.label {
   width: auto;
   display: inline-block;
   text-align: right;
 }
-/* line 62, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 67, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .input-group input.input, .iot .input-group input[type="submit"], .iot .input-group .button {
   margin-left: 10px;
 }
-/* line 64, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 69, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .field_with_errors {
   display: inline-block;
 }
-/* line 66, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 71, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .field_with_errors label.label {
   color: #bd4147;
 }
-/* line 68, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 73, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .field_with_errors input {
   border-color: #bd4147;
 }
-/* line 70, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 75, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .error-messages {
   padding: 20px;
 }
-/* line 72, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
+/* line 77, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/container.sass */
 .iot .error-messages .error-message {
   color: #bd4147;
   margin-bottom: 5px;
@@ -317,6 +324,10 @@ html, body {
 
 /* line 1, /Users/vegeta/Project_Shareapp/shareec2/app/assets/stylesheets/iot/footer.sass */
 .iot.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: #fff;
   padding: 25px 0;
 }
