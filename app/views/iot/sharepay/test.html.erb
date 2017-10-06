@@ -1,16 +1,16 @@
 <form action="/iot/sharepay" method="post">
-  <input name="client_app_uid" value="SAI_CA_B0009E2O" />
-  <input name="resource_app_uid" value="SAI_CA_C0004FQJ" />
-  <input name="resource_app_order_no" value="000433" />
+  <input name="client_app_uid" value="SAI_CA_C0004FQJ" />
+  <input name="order_no" value="000433" />
   <input name="product_name" value="收多易 200m2 空間" />
-  <input name="product_desc" value="一個月3200" />
+  <input name="description" value="一個月3200" />
   <input name="price" value="3200" />
   <input name="unit" value="1" />
-  <input name="app_user_pk" value="app_user_pk" />
+  <input name="app_user_pk" value="<%= Time.now.to_i %>" />
   <input name="user_name" value="巧克力" />
-  <input name="email" value="chocolate@gmail.com" />
-  <input name="phone" value="090000000" />
+  <input name="email" value="iot1@mailnesia.com" />
+  <input name="phone" value="0910000000" />
   <input name="checksum" value="1234" />
   <input name="arg" value="{'id':'4', 'bk':'lala'}" />
+  <input name="return_url" value="http://localhost:3000" />
   <input type="submit" value="送出" class="button" />
 </form>

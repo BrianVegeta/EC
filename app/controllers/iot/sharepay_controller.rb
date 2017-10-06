@@ -1,151 +1,230 @@
-class Iot::SharepayController < ApplicationController
-  include WardenHelper
-  include RespondHelper
-  layout 'iot'
+module Iot
+  class SharepayController < ApplicationController
+    include WardenHelper
+    include RespondHelper
+    layout 'iot'
 
-  ###################### ACTION ##################################
-  def test
+    VIEW_PAY = 'pay'
+    VIEW_CONTINUE_AS = 'continue_as'
+    VIEW_LOGIN = 'login'
+    VIEW_REGISTER = 'register'
+    VIEW_VERIFY = 'verify'
 
-  end
+    PAYMENT_NOT_VALID = 'Payment not valid.'
+    USER_NOT_LOGIN = 'User is not login.'
 
-  # POST
-  def index
-    @payment = Iot::Payment.new(payment_external_source_params)
-    raise ActionController::RoutingError.new(@payment.errors.messages.inspect) unless @payment.valid?
 
-    if current_user && (current_user['email'] || current_user['phone'])
-      @user = current_user
-      render 'continue_as' and return
-    else
-      @check = ::Api::Register::AccountIsExist.new(external_payment_params.slice(:email, :phone))
-      response = @check.request
+    ###################### ACTION ##################################
+    def test
 
-      raise @check.response_data.inspect
-      raise response.inspect
+    end
+
+    # POST
+    def index
+      entry = Pay::Entry.new entry_params
+      if not entry.valid?
+        raise ActionController::RoutingError.new PAYMENT_NOT_VALID
+      end
+
+      @payment = Iot::Pay::New.new entry.payment_params, current_user
+      @payment.api_check_user_exist
+      @payment.match_current_user
+
+      if @payment.is_user_login?
+        @payment.api_user_profile
+        render VIEW_CONTINUE_AS
+
+      elsif @payment.is_user_exist?
+        @login = Pay::Login.new entry.payment_params, current_user
+        @login.sync_auth_email if @payment.email_exist?
+        @login.sync_auth_phone if @payment.phone_exist?
+        render VIEW_LOGIN
+
+      else
+        @registration = Pay::Registration.new entry.payment_params, current_user
+        @registration.sync_payment_info
+        render VIEW_REGISTER
+
+      end
+    end
+
+    # POST
+    # do continue_as account
+    def continue_as
+      @payment = Iot::Pay::New.new payment_params, current_user
+      @payment.api_check_user_exist
+      @payment.match_current_user
+
+      if not @payment.is_user_login?
+        raise ActionController::RoutingError.new USER_NOT_LOGIN
+      end
+
+      if @payment.login_user browser_info
+        process_after_login @payment
+        render VIEW_PAY and return
+      else
+        raise 'error'
+      end
+    end
+
+    # POST
+    def pay
+      if current_user.nil?
+        raise ActionController::RoutingError.new USER_NOT_LOGIN
+      end
+
+      @payment = Iot::Pay::Checkout.new payment_params, current_user
+      if not @payment.is_user_login?
+        raise ActionController::RoutingError.new USER_NOT_LOGIN
+      end
+      raise (esun_params current_user['uid']).inspect
+    end
+
+    # POST
+    # use other account to login
+    def switch_login
+      @login = Iot::Pay::Login.new login_params, current_user
+      @login.sync_auth_email
+      @login.sync_auth_phone
+      @payment = Iot::Pay::New.new payment_params, current_user
+      render VIEW_LOGIN
+    end
+
+    def switch_register
+      @registration = Pay::Registration.new payment_params, current_user
+      @registration.sync_payment_info
+      @payment = Iot::Pay::New.new payment_params, current_user
+      render VIEW_REGISTER
+    end
+
+    # POST
+    def login
+      @login = Iot::Pay::Login.new login_params, current_user
+      @login.sync_auth_email
+      @login.sync_auth_phone
+      @payment = Iot::Pay::New.new payment_params, current_user
+      if @login.login_user browser_info
+        process_after_login @login
+        render VIEW_PAY and return
+      else
+
+      end
+    end
+
+    # POST
+    def register
+      @registration = Iot::Pay::Registration.new register_params, current_user
+      @registration.sync_payment_info
+      @payment = Iot::Pay::New.new payment_params, current_user
+      if @registration.register
+        init_verification
+        render VIEW_VERIFY
+      else
+
+      end
+    end
+
+    # POST
+    def verify
+      init_verification
+
+      if @verification.verify browser_info
+        @verification.update_name current_apitoken
+        warden_set_user @verification.current_user
+        @payment = @verification
+        @checkout = Iot::Pay::Checkout.new payment_params, current_user
+        @checkout.checkout
+        @form = Iot::EsunForm.new(@checkout.esun_form)
+        render VIEW_PAY
+      else
+        @payment = @verification
+      end
     end
 
 
-    redirect_to iot_sharepay_login_path(payment_external_source_params)
-  end
+    ###################### PARAMS ##################################
+    private
 
-  def continue_as
-    raise 'test'
-    @user = current_user
-    @login_type = current_user['email'] ? 'email' : 'phone'
-  end
-
-  # GET
-  def login
-    @login = Iot::ShareappLogin.new external_payment_params.slice(:email, :phone)
-    @login.payment.assign_attributes external_payment_params
-  end
-
-  # POST
-  def do_login
-    @login = Iot::ShareappLogin.new login_params
-    @login.payment.assign_attributes payment_params(login_params_require)
-    @login.request
-  end
-
-  # POST
-  def signin
-    @login = ::Iot::Login.new login_with_payment_params
-
-    if @login.signin
-      @payment = @login.build_payment
-      render 'payment_request'
-    else
-      @payment =      @login.build_payment
-      @registration = @payment.build_registration
-      render 'index'
+    def init_verification
+      @verification = Iot::Pay::Verification.new verify_params, current_user
     end
-  end
 
-  def signup
-
-  end
-
-  def method_name
-
-  end
-
-  def payment_request
-    @request = ::Iot::Payment.new(payment_request_params(:request))
-    if !@request.valid?
-      raise ActionController::RoutingError.new('Not Found')
+    def process_after_login payment
+      warden_set_user payment.current_user
+      @payment = payment
+      @checkout = Iot::Pay::Checkout.new payment_params, current_user
+      @checkout.checkout
+      @form = Iot::EsunForm.new(@checkout.esun_form)
     end
-    @login_request = ::Iot::Login.new(payment_request_params(:request))
-    @create_request = ::Iot::CreateAccount.new(payment_request_params(:request))
-  end
+    # client_app_uid
+    # resource_app_uid
+    # app_user_pk
+    # user_name
+    # user_email
+    # phone
+    # resource_app_order_no
+    # price
+    # unit
+    # check_sum
+    # arg
+    # account
+    # password
+    # ip
+    def request_param_keys
+      [
+        :resource_app_uid,
+        :app_user_pk, :user_name,
+        :product_name, :product_desc, :phone, :email,
+        :resource_app_order_no, :price, :unit, :checksum, :arg, :ip,
+        :return_url,
+      ]
+    end
 
+    def auth_params_keys
+      [ :auth_email, :auth_phone, :identify_by ]
+    end
 
-  ###################### PARAMS ##################################
-  protected
-  # client_app_uid
-  # resource_app_uid
-  # app_user_pk
-  # user_name
-  # user_email
-  # phone
-  # resource_app_order_no
-  # price
-  # unit
-  # check_sum
-  # arg
-  # account
-  # password
-  # ip
-  def request_param_keys
-    [
-      :client_app_uid, :resource_app_uid,
-      :app_user_pk, :user_name,
-      :product_name, :product_desc, :phone, :email,
-      :resource_app_order_no, :price, :unit, :checksum, :arg, :ip
-    ]
-  end
-
-  def payment_external_source_params
-    params.permit(request_param_keys)
-  end
-
-  def payment_request_params
-    params.require(:request).permit(request_param_keys)
-  end
-
-  def login_with_payment_params
-    params.require(:request).permit([:account, :password] << request_param_keys)
-  end
-
-
-
-  def login_params_require
-    params.require(:login)
-  end
-
-  def login_params
-    login_params_require.permit([:email, :phone, :password])
-  end
-
-  def payment_params required_params = nil
-    (required_params || params).require('payment').permit(request_param_keys)
-  end
-
-  def external_payment_params
-    params.permit(request_param_keys)
-  end
-
-  def create_params require_name = :iot_create_account
-    if require_name.nil?
+    def entry_params
       params.permit(
-        :account_username, :account_pwd, :account_email, :account_phone,
-        :account_name, :account_pwd_verify,
-      ).merge(payment_request_params(require_name))
-    else
-      params.require(require_name).permit(
-        :account_username, :account_pwd, :account_email, :account_phone,
-        :account_name, :account_pwd_verify
-      ).merge(payment_request_params(require_name))
+        :client_app_uid, :order_no,
+        :app_user_pk, :user_name,
+        :product_name, :description, :price, :unit,
+        :phone, :email,
+        :checksum, :arg, :return_url,
+      )
+    end
+
+    def payment_params
+      params.require(:payment).permit(request_param_keys)
+    end
+
+    def login_params
+      login = params.require(:payment).permit(
+        auth_params_keys, :password
+      )
+      payment_params.merge login
+    end
+
+    def register_params
+      registration = params.require(:payment).permit(
+        auth_params_keys, :password, :password_confirmation, :name,
+      )
+      payment_params.merge registration
+    end
+
+    def verify_params
+      verifycation = params.require(:payment).permit(
+        auth_params_keys, :password, :name, :identify_by, :verify_code
+      )
+      payment_params.merge verifycation
+    end
+
+    def external_payment_params
+      params.permit(request_param_keys)
+    end
+
+    def external_payment_params
+      params.permit(request_param_keys)
     end
   end
-
 end

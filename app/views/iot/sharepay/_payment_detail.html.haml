@@ -1,0 +1,24 @@
+%h1.title.text-center 線上繳款
+.row-header
+  .title.black-color
+    付款資訊
+    %span.helper.danger-color 請先確認以下資訊再進行付款
+.row-body
+  .payment-detail.bg.light-blue
+    %table
+      %tbody
+        %tr
+          %th 訂單編號：
+          %td= @payment.resource_app_order_no
+        %tr
+          %th 商品名稱：
+          %td= @payment.product_name
+        %tr
+          %th 商品介紹：
+          %td= @payment.product_desc
+        %tr
+          %th 商店名稱：
+          %td 收多易
+        %tr
+          %th 應付金額：
+          %td= @payment.formatted_price

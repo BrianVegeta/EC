@@ -1,12 +1,44 @@
 class IndexController < ApplicationController
   include WardenHelper
 
+
   def index
 
   end
 
   def pages
+    set_page_title '共享閒置資源 綠色消費'
+    set_page_image view_context.asset_path 'app_logo'
+    page_process
+  end
+
+  def item_page
+    api_item = ::Api::Item::ViewItem.new pid: params[:pid]
+    if api_item.request
+      data = api_item.response_data
+      price = view_context.number_to_currency data['price'], precision: 0
+      set_page_title data['pname']
+      set_page_description "價格#{price}, #{data['pdes']}"
+      set_page_image data['img1']
+
+      @images = []
+      @images.push data['img2'] if data['img2'].present?
+      @images.push data['img3'] if data['img3'].present?
+    else
+      raise 'Not found'
+    end
+    page_process
+    render 'pages'
+  end
+
+  def test
+    raise 'test page'
+  end
+
+  protected
+  def page_process
     auth = { isLogin: user_signed_in? }
+
     if user_signed_in?
       auth_current_user = current_user
 
@@ -49,9 +81,5 @@ class IndexController < ApplicationController
         }
       }
     }
-  end
-
-  def test
-    raise 'test page'
   end
 end

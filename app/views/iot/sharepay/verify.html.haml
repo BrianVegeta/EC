@@ -1,0 +1,20 @@
+.iot.container.pay
+  = render 'payment_detail'
+  .row-header
+    .title.black-color
+      帳號驗證
+      %span.helper.danger-color= "請至您的#{@verification.identify_name}收取驗證碼"
+  .row-body
+    - if @verification.errors.messages.length > 0
+      .error-messages
+        - @verification.errors.messages.each do |key, message|
+          .error-message= message.first
+    = form_for @verification,  url: iot_sharepay_verify_path, method: :post, as: :payment, html: { id: :verify_form } do |f|
+      = render partial: 'verify_hidden', locals: { f: f }
+      = render partial: 'payment', locals: { f: f }
+      .input-group
+        = f.label :verify_code, '驗證碼(4碼)', class: 'label'
+        = f.text_field :verify_code, class: 'input'
+      .input-group
+        %label.label
+        = f.submit '驗證', class: 'button primary-button'

@@ -9,7 +9,8 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
+  # api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
+  api_base_uri: https://debug.shareapp.com.tw:18443/ShareAPI
   domain: debug.shareapp.com.tw
   s3_bucket:
     wish: wish_debug
@@ -32,3 +33,5 @@ production:
     return: return
     ship: ship
     sue: sue
+  api_iot_base_uri: http://211.20.1.240:18080/ShareApiIoT
+  api_iot_certificate: mYteQnom66OAOYkwnxXcyMSual3bM0qLzWlDGsmr+DrJ6yEpMQBxjTrgoVh8O3lVNqoAb2DY+DpqYZteGLX+WzRUN1SBeF93iCWqNpd7ICg=
