@@ -15,4 +15,8 @@ class Auth::Session::Login < ApiBase
   def warden_session
     response_data['user_profile'].merge private_session_data
   end
+
+  def success?
+    error_code === ::Response::ErrorCode::SUCCESS
+  end
 end

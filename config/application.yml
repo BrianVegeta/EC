@@ -9,7 +9,8 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
+  # api_base_uri: http://debug.shareapp.com.tw:18080/ShareAPI
+  api_base_uri: https://debug.shareapp.com.tw:18443/ShareAPI
   domain: debug.shareapp.com.tw
   s3_bucket:
     wish: wish_debug
