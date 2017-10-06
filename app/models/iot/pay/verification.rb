@@ -72,9 +72,10 @@ module Iot
       def handle_request api
         if api.request
           self.current_user = api.warden_session
-          true
-        elsif Response::ErrorCode::USER_EXIST
-          # self.current_user = api.warden_session
+          return true
+        end
+        case api.error_code
+        when Response::ErrorCode::USER_EXIST
           true
         else
           false

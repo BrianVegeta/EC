@@ -18,7 +18,7 @@ module Iot
           api = ::Auth::Registration::PhoneByIotOrder.new(phone_params)
         end
         set_user_login_as
-        handle_response(api) || handle_response_error(api.error_message)
+        result = handle_response(api) || handle_response_error(api.error_message)
       end
 
       def sync_payment_info
@@ -64,12 +64,12 @@ module Iot
       end
 
       def handle_response api
-        if api.request
-          true
-        elsif Response::ErrorCode::USER_EMAIL_NOT_VERIFY
+        return true if api.request
+        case api.error_code
+        when Response::ErrorCode::USER_EMAIL_NOT_VERIFY
           resend_email_verification
           true
-        elsif Response::ErrorCode::USER_MOBILE_NOT_VERIFY
+        when Response::ErrorCode::USER_MOBILE_NOT_VERIFY
           resend_phone_verification
           true
         else
