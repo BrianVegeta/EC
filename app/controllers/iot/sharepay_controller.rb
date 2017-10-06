@@ -129,7 +129,7 @@ module Iot
       init_verification
 
       if @verification.verify browser_info
-        @verification.update_name current_apitoken
+        @verification.update_name
         warden_set_user @verification.current_user
         @payment = @verification
         @checkout = Iot::Pay::Checkout.new payment_params, current_user

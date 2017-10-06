@@ -22,15 +22,19 @@ module Iot
         handle_request(api) || handle_request_error(api.error_message)
       end
 
-      def update_name apitoken
+      def update_name
         return unless name.present?
         return if current_user.nil?
+
         begin
-          api = ::Api::Userprofile::Save.new username_params, apitoken
-          api.request
-          updated_user = current_user
-          updated_user['name'] = name
-          self.current_user = updated_user
+          api = ::Api::Userprofile::Save.new username_params, current_user['apitoken']
+          if api.request
+            updated_user = current_user
+            updated_user['name'] = name
+            self.current_user = updated_user
+          else
+            raise api.inspect
+          end
         rescue Exception => e
           raise e.inspect
         end
