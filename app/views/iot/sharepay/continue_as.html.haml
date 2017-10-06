@@ -1,13 +1,19 @@
-%h1 continue as
-.row
-  %div= @payment.user.inspect
-  - if @payment.user.picture.present?
-    = image_tag @payment.user.picture
-  %div= @payment.user_login_as
-.row
-  = form_for @payment, as: :payment, url: iot_sharepay_continue_as_path do |f|
-    = render partial: 'payment', locals: { f: f }
-    = f.submit "繼續使用[#{@payment.user.name}]付款?"
-  = form_for @payment, as: :payment, url: iot_sharepay_switch_login_path do |f|
-    = render partial: 'payment', locals: { f: f }
-    = f.submit '使用別的帳號登入'
+#continue_as.iot.container
+  .row.profile
+    .avatar
+      - if @payment.user.picture.present?
+        = image_tag @payment.user.picture
+    .login-as.main-color.text-center
+      = @payment.user.name
+      %br
+      = @payment.user_login_as
+  .row.controls.text-center
+    = form_for @payment, as: :payment, url: iot_sharepay_continue_as_path do |f|
+      = render partial: 'payment', locals: { f: f }
+      = f.submit "繼續使用此帳號付款?", class: 'button primary-button continue'
+    = form_for @payment, as: :payment, url: iot_sharepay_switch_login_path do |f|
+      = render partial: 'payment', locals: { f: f }
+      = f.submit '使用別的帳號登入', class: 'button primary-button switch'
+    = form_for @payment, as: :payment, url: iot_sharepay_switch_register_path do |f|
+      = render partial: 'payment', locals: { f: f }
+      = f.submit '建立新帳號', class: 'button primary-button switch'

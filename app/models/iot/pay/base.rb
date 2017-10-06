@@ -30,7 +30,7 @@ module Iot
 
 
       def formatted_price
-        "NTD #{number_to_currency price}"
+        "NTD #{number_to_currency(price, precision: 0)}"
       end
 
       protected

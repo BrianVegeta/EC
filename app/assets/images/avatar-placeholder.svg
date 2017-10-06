@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_account_circle_100px</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="7.-account-個人帳戶" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="setting01" transform="translate(-249.000000, -116.000000)">
+            <g id="ic_account_circle_100px" transform="translate(249.000000, 116.000000)">
+                <path d="M50,0 C22.375,0 0,22.375 0,50 C0,77.625 22.375,100 50,100 C77.625,100 100,77.625 100,50 C100,22.375 77.625,0 50,0 Z" id="Shape" fill="#CECECE" fill-rule="nonzero"></path>
+                <path d="M50,15 C58.275,15 65,21.725 65,30 C65,38.3 58.275,45 50,45 C41.725,45 35,38.3 35,30 C35,21.725 41.725,15 50,15 Z" id="Path" fill="#999999"></path>
+                <path d="M50,86 C37.475,86 26.475,79.6 20,69.9 C20.125,59.975 40.025,54.5 50,54.5 C59.975,54.5 79.85,59.975 80,69.9 C73.525,79.6 62.525,86 50,86 Z" id="Path" fill="#999999"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,22 +1,38 @@
-%h1 REGISTRATION
-= @registration.errors.messages.inspect
-= form_for @registration, url: iot_sharepay_register_path,
-                          method: :post, as: :payment,
-                          html: { id: :register_form } do |f|
-  .input-group
-    = f.radio_button :identify_by, :email
-    = f.text_field :auth_email, disabled: !@registration.identify_by_email?
-  .input-group
-    = f.radio_button :identify_by, :phone
-    = f.text_field :auth_phone, disabled: !@registration.identify_by_phone?
-  .input-group
-    = f.text_field :password
-  .input-group
-    = f.text_field :password_confirmation
-  .input-group
-    = f.text_field :name
-  = render partial: 'payment', locals: { f: f }
-  = f.submit '註冊', class: 'button'
+.iot.container.pay
+  = render 'payment_detail'
+  .row-header
+    .title.black-color
+      聯絡資訊
+      %span.helper.danger-color 為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式
+  .row-body
+    - if @registration.errors.messages.length > 0
+      .error-messages
+        - @registration.errors.messages.each do |key, message|
+          .error-message= message.first
+    = form_for @registration, url: iot_sharepay_register_path, method: :post, as: :payment, html: { id: :register_form } do |f|
+      .input-group
+        = f.label :auth_email, class: 'label' do
+          Email 註冊
+          .radio-container= f.radio_button :identify_by, :email
+        = f.text_field :auth_email, class: 'input', disabled: !@registration.identify_by_email?
+      .input-group
+        = f.label :auth_phone, class: 'label' do
+          手機註冊
+          .radio-container= f.radio_button :identify_by, :phone
+        = f.text_field :auth_phone, class: 'input', disabled: !@registration.identify_by_phone?
+      .input-group
+        = f.label :password, '密碼', class: 'label'
+        = f.password_field :password, class: 'input'
+      .input-group
+        = f.label :password_confirmation, '確認密碼', class: 'label'
+        = f.password_field :password_confirmation, class: 'input'
+      .input-group
+        = f.label :name, '姓名', class: 'label'
+        = f.text_field :name, class: 'input'
+      = render partial: 'payment', locals: { f: f }
+      .input-group
+        %label.label
+        = f.submit '註冊', class: 'button primary-button'
 
 :javascript
   var $identifyByEmail = document.getElementById('payment_identify_by_email');

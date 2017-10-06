@@ -1,7 +1,12 @@
-@import "normalize";
+@import "normalize.css";
 @import "font";
-@import "default.scss";
-@import "iot/request_page";
+@import "default";
+@import "iot/continue_as";
+@import "iot/pay";
+@import "iot/container";
+@import "iot/colors";
+@import "iot/login";
+@import "iot/registration";
 
 body, button, input, optgroup, select, textarea {
   color: #333;

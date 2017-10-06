@@ -1,18 +1,55 @@
-%h1 login
-= @login.errors.messages.inspect
-= form_for @login,  url: iot_sharepay_login_path,
-                    method: :post, as: :payment,
-                    html: { id: :login_form } do |f|
-  .input-group
-    = f.radio_button :identify_by, :email
-    = f.text_field :auth_email, disabled: !@login.identify_by_email?
-  .input-group
-    = f.radio_button :identify_by, :phone
-    = f.text_field :auth_phone, disabled: !@login.identify_by_phone?
-  .input-group
-    = f.text_field :password
-  = render partial: 'payment', locals: { f: f }
-  = f.submit '登入', class: 'button'
+.iot.container.pay
+  %h1.title.text-center 線上繳款
+  .row-header
+    .title.black-color
+      付款資訊
+      %span.helper.danger-color 請先確認以下資訊再進行付款
+  .row-body
+    .payment-detail.bg.light-blue
+      %table
+        %tbody
+          %tr
+            %th 訂單編號：
+            %td= @payment.resource_app_order_no
+          %tr
+            %th 商品名稱：
+            %td= @payment.product_name
+          %tr
+            %th 商品介紹：
+            %td= @payment.product_desc
+          %tr
+            %th 商店名稱：
+            %td 收多易
+          %tr
+            %th 應付金額：
+            %td= @payment.formatted_price
+  .row-header
+    .title.black-color
+      聯絡資訊
+      %span.helper.danger-color 為了避免日後交易問題，我們需要請您註冊帳號，留下聯絡方式
+  .row-body
+    - if @login.errors.messages.length > 0
+      .error-messages
+        - @login.errors.messages.each do |key, message|
+          .error-message= message.first
+    = form_for @login, url: iot_sharepay_login_path, method: :post, as: :payment, html: { id: :login_form } do |f|
+      .input-group
+        = f.label :auth_email, class: 'label' do
+          Email 登入
+          .radio-container= f.radio_button :identify_by, :email
+        = f.text_field :auth_email, class: 'input', disabled: !@login.identify_by_email?
+      .input-group
+        = f.label :auth_phone, class: 'label' do
+          手機登入
+          .radio-container= f.radio_button :identify_by, :phone
+        = f.text_field :auth_phone, class: 'input', disabled: !@login.identify_by_phone?
+      .input-group
+        = f.label :password, '密碼', class: 'label'
+        = f.password_field :password, class: 'input'
+      = render partial: 'payment', locals: { f: f }
+      .input-group
+        %label.label
+        = f.submit '登入', class: 'button primary-button'
 
 :css
   .input-group {

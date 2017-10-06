@@ -23,11 +23,14 @@ module Iot
       end
 
       def update_name apitoken
-        return if name.present?
+        return unless name.present?
         return if current_user.nil?
         begin
           api = ::Api::Userprofile::Save.new username_params, apitoken
           api.request
+          updated_user = current_user
+          updated_user['name'] = name
+          self.current_user = updated_user
         rescue Exception => e
           raise e.inspect
         end

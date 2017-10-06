@@ -83,15 +83,26 @@ module Iot
     # POST
     # use other account to login
     def switch_login
-      raise params.inspect
-      @login = Iot::ShareappLogin.new payment_params
-      @login.payment.assign_attributes external_payment_params
+      @login = Iot::Pay::Login.new login_params, current_user
+      @login.sync_auth_email
+      @login.sync_auth_phone
+      @payment = Iot::Pay::New.new payment_params, current_user
       render VIEW_LOGIN
+    end
+
+    def switch_register
+      @registration = Pay::Registration.new payment_params, current_user
+      @registration.sync_payment_info
+      @payment = Iot::Pay::New.new payment_params, current_user
+      render VIEW_REGISTER
     end
 
     # POST
     def login
       @login = Iot::Pay::Login.new login_params, current_user
+      @login.sync_auth_email
+      @login.sync_auth_phone
+      @payment = Iot::Pay::New.new payment_params, current_user
       if @login.login_user browser_info
         process_after_login @login
         render VIEW_PAY and return
@@ -104,6 +115,7 @@ module Iot
     def register
       @registration = Iot::Pay::Registration.new register_params, current_user
       @registration.sync_payment_info
+      @payment = Iot::Pay::New.new payment_params, current_user
       if @registration.register
         init_verification
         render VIEW_VERIFY
@@ -115,18 +127,17 @@ module Iot
     # POST
     def verify
       init_verification
-      if @verification.verify browser_info
-        warden_set_user @verification.current_user
-        @verification.update_name current_apitoken
 
+      if @verification.verify browser_info
+        @verification.update_name current_apitoken
+        warden_set_user @verification.current_user
         @payment = @verification
         @checkout = Iot::Pay::Checkout.new payment_params, current_user
         @checkout.checkout
         @form = Iot::EsunForm.new(@checkout.esun_form)
-
         render VIEW_PAY
       else
-
+        @payment = @verification
       end
     end
 
