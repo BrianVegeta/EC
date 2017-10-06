@@ -12,13 +12,13 @@ class WalletNote extends React.Component {
   static propTypes = {
     transactionDate: PropTypes.number.isRequired,
     cidNo: PropTypes.string.isRequired,
-    itemName: PropTypes.string.isRequired,
+    remark: PropTypes.string.isRequired,
     itemImgUrl: PropTypes.string.isRequired,
-    transactionPrice: PropTypes.number.isRequired,
+    amount: PropTypes.number.isRequired,
   };
 
   render() {
-    const { transactionDate, cidNo, itemName, itemImgUrl, transactionPrice } = this.props;
+    const { transactionDate, cidNo, remark, itemImgUrl, amount } = this.props;
     return (
       <div styleName="walletnote-top-padding-style" className="clear">
         <div styleName="walletnote-pic-style">
@@ -29,8 +29,8 @@ class WalletNote extends React.Component {
         </div>
         <div styleName="walletnote-content-style">
           <div styleName="walletnote-date-style">{`${formatDate(transactionDate)}`}</div>
-          <div styleName="walletnote-text-style">{`${itemName}`}</div>
-          <div styleName="walletnote-text-style">{`總計：${formatCurrency(transactionPrice)}`}</div>
+          <div styleName="walletnote-text-style">{`${remark}`}</div>
+          <div styleName="walletnote-text-style">{`總計：${formatCurrency(amount)}`}</div>
           <div styleName="walletnote-hint-style">{`訂單編號：${cidNo}`}</div>
         </div>
       </div>
