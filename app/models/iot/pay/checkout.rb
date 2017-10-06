@@ -5,11 +5,15 @@ module Iot
 
       def checkout
         apitoken = self.current_user['apitoken']
-        @esun = ::Api::Payment::IotCreditcardEsun.new esun_params, apitoken
-        if @esun.request
+        api = ::Api::Payment::IotCreditcardEsun.new esun_params, apitoken
+        api.request
+        case api.error_code
+        when Response::ErrorCode::SUCCESS
           self.esun_form = @esun.response_data
+        when Response::ErrorCode::CONSTRACT_STAGE_ERROR
+          self.esun_form = nil
         else
-
+          raise 'ESUN REQUEST FORM ERROR.'
         end
       end
 
