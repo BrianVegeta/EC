@@ -6,8 +6,11 @@ module Iot
       def checkout
         apitoken = self.current_user['apitoken']
         @esun = ::Api::Payment::IotCreditcardEsun.new esun_params, apitoken
-        @esun.request
-        self.esun_form = @esun.response_data
+        if @esun.request
+          self.esun_form = @esun.response_data
+        else
+
+        end
       end
 
       def esun_params

@@ -1,3 +1,6 @@
+html, body
+  height: 100%
+
 *, :after, :before
   box-sizing: border-box
 .iot
@@ -13,6 +16,9 @@
     color: #fff
     background-color: #31ABBA
     padding: 15px 60px
+    &:disabled
+      background-color: #E9E9E9
+      cursor: default
   table
     th, td
       padding: 5px

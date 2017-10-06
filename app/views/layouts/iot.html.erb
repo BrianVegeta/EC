@@ -10,6 +10,9 @@
     <%= stylesheet_link_tag 'application_iot' %>
   </head>
   <body>
-    <%= yield %>
+    <div style="min-height:100%;">
+      <%= yield %>
+    </div>
+    <%= render 'footer' %>
   </body>
 </html>
