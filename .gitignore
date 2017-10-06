@@ -18,7 +18,7 @@ npm-debug.log
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/public/assets
+#/public/assets
 .env
 node_modules
 npm-debug.log*
