@@ -3,3 +3,7 @@
 <![endif]-->
 = react_component("App", props: @props)
 #fixed-container-modal
+
+- if @open_app_pid.present?
+  :javascript
+    alert(1);

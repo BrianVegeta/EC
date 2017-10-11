@@ -24,6 +24,7 @@ class IndexController < ApplicationController
       @images = []
       @images.push data['img2'] if data['img2'].present?
       @images.push data['img3'] if data['img3'].present?
+      @open_app_pid = params[:pid]
     else
       raise 'Not found'
     end
