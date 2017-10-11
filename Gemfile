@@ -51,6 +51,7 @@ gem 'rack-parser', :require => 'rack/parser'
 gem 'browser'
 gem 'omniauth-facebook'
 gem 'seo_helper', '~> 1.0'
+gem 'sitemap_generator'
 
 
 
