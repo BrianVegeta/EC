@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
     <%= favicon_link_tag 'app_logo.png' %>
     <%= render_page_title_tag %>
     <%= render_page_image_link_tag %>
-
     <meta property="og:title"       content="<%= page_title %>"/>
     <meta property="og:description" content="<%= page_description %>"/>
     <meta property="og:image"       content="<%= page_image %>"/>
@@ -16,13 +16,25 @@
         <meta property="og:image" content="<%= img_url %>"/>
       <% end %>
     <% end %>
-    <%= csrf_meta_tags %>
 
+    <meta name="apple-itunes-app" content="app-id=1168506467">
+    <meta name="google-play-app" content="com.app.dragondrum.shareapp">
+    <link rel="apple-touch-icon" href="touch_icon_ios.png">
+    <link rel="android-touch-icon" href="touch_icon_android_72.png" />
+
+    <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= env_javascript_include_tag(hot: ['vendor-bundle.js', 'app-bundle.js']) %>
   </head>
   <body>
+    <style>
+      .smartbanner {
+        z-index: 10000;
+        position: absolute !important;
+        width: 100vw;
+      }
+    </style>
     <%= yield %>
   </body>
 </html>
