@@ -131,7 +131,7 @@ class Wallet extends React.Component {
               <WalletNote
                 key={`${index + 1}`}
                 transactionDate={record.transaction_time}
-                transactionPrice={record.price}
+                amount={record.amount}
                 cidNo={record.args_no}
                 remark={record.remark}
               />
