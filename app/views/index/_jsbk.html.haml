@@ -17,6 +17,7 @@
   } else if (UA.match(/Android/i) !== null) {
     type = 'android';
   }
+
   if (type && type !== 'ios_chrome') {
     try {
       var pid = #{@open_app_pid},
@@ -26,11 +27,17 @@
             googleplay: 'https://play.google.com/store/apps/details?id=com.app.dragondrum.shareapp',
           },
           originURI = window.location.href;
-
-      // window.location = url.openapp.replace('{?}', pid);
-      setTimeout(function() {
-        window.location = url.appstore;
-      }, 25);
+      if (type === 'android') {
+        window.location = url.openapp.replace('{?}', pid);
+        setTimeout(function() {
+          window.location = url.googleplay;
+        }, 25);
+      } else if (type === 'ios') {
+        window.location = url.openapp.replace('{?}', pid);
+        setTimeout(function() {
+          window.location = url.appstore;
+        }, 25);
+      }
     } catch(err) {
 
     }
