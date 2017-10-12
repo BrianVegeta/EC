@@ -23,9 +23,9 @@
           },
           originURI = window.location.href;
 
-      window.open(url.openapp.replace('{?}', pid), '_blank');
+      window.location = url.openapp.replace('{?}', pid);
       setTimeout(function() {
-        window.open(url.appstore, '_blank');
+        window.location = url.appstore;
       }, 25);
     } catch(err) {
 
