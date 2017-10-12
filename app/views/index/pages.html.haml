@@ -4,6 +4,5 @@
 = react_component("App", props: @props)
 #fixed-container-modal
 
-- if @open_app_pid.present?
-  :javascript
-    alert(1);
+- if @open_app_pid.present? && @open_app_pid.match(/^\d+$/)
+  = render 'js'

@@ -1,11 +1,6 @@
 class IndexController < ApplicationController
   include WardenHelper
 
-
-  def index
-
-  end
-
   def pages
     set_page_title '共享閒置資源 綠色消費'
     set_page_image view_context.asset_path 'app_logo'
@@ -30,10 +25,6 @@ class IndexController < ApplicationController
     end
     page_process
     render 'pages'
-  end
-
-  def test
-    raise 'test page'
   end
 
   protected
