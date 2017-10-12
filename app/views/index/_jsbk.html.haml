@@ -1,19 +1,23 @@
 :javascript
   var UA = navigator.userAgent,
       type = null;
-  console.log(UA);
   if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
     type = 'windows';
-  } else if (UA.match(/iPhone|iPod/i) !== null || UA.match(/iPad/)) {
-    if (UA.match(/Safari/i) !== null) {
-      type = 'ios';
-    }
-  } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
+  } else if (
+    (UA.match(/iPhone|iPod/i) !== null || UA.match(/iPad/)) &&
+    UA.match(/Safari/i) !== null
+  ) {
+    type = UA.match(/CriOS/i) ? 'ios_chrome' : 'ios';
+  } else if (
+    UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) ||
+    UA.match(/\bKF\w/) ||
+    UA.match('Kindle Fire')
+  ) {
     type = 'kindle';
   } else if (UA.match(/Android/i) !== null) {
     type = 'android';
   }
-  if (type) {
+  if (type && type !== 'ios_chrome') {
     try {
       var pid = #{@open_app_pid},
           url = {
@@ -23,7 +27,7 @@
           },
           originURI = window.location.href;
 
-      window.location = url.openapp.replace('{?}', pid);
+      // window.location = url.openapp.replace('{?}', pid);
       setTimeout(function() {
         window.location = url.appstore;
       }, 25);
