@@ -1,0 +1,29 @@
+:javascript
+  var UA = navigator.userAgent,
+      type = null;
+  if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
+    type = 'windows';
+  } else if (UA.match(/iPhone|iPod/i) !== null || UA.match(/iPad/)) {
+    if (UA.match(/Safari/i) !== null) {
+      type = 'ios';
+    }
+  } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
+    type = 'kindle';
+  } else if (UA.match(/Android/i) !== null) {
+    type = 'android';
+  }
+
+  if (type) {
+    var pid = #{@open_app_pid},
+        url = {
+          openapp: 'shareapp://item?pid={?}',
+          appstore: 'itms-apps://itunes.apple.com/tw/app/id1168506467',
+          googleplay: 'https://play.google.com/store/apps/details?id=com.app.dragondrum.shareapp',
+        },
+        originURI = window.location.href;
+
+    window.open(url.openapp.replace('{?}', pid), '_blank');
+    setTimeout(function() {
+      window.location = url.appstore;
+    }, 25);
+  };
