@@ -1,6 +1,7 @@
 :javascript
   var UA = navigator.userAgent,
       type = null;
+  console.log(UA);
   if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
     type = 'windows';
   } else if (UA.match(/iPhone|iPod/i) !== null || UA.match(/iPad/)) {
@@ -12,7 +13,6 @@
   } else if (UA.match(/Android/i) !== null) {
     type = 'android';
   }
-
   if (type) {
     try {
       var pid = #{@open_app_pid},
@@ -28,6 +28,6 @@
         window.open(url.appstore, '_blank');
       }, 25);
     } catch(err) {
-      
+
     }
   };
