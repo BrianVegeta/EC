@@ -14,16 +14,20 @@
   }
 
   if (type) {
-    var pid = #{@open_app_pid},
-        url = {
-          openapp: 'shareapp://item?pid={?}',
-          appstore: 'itms-apps://itunes.apple.com/tw/app/id1168506467',
-          googleplay: 'https://play.google.com/store/apps/details?id=com.app.dragondrum.shareapp',
-        },
-        originURI = window.location.href;
+    try {
+      var pid = #{@open_app_pid},
+          url = {
+            openapp: 'shareapp://item?pid={?}',
+            appstore: 'itms-apps://itunes.apple.com/tw/app/id1168506467',
+            googleplay: 'https://play.google.com/store/apps/details?id=com.app.dragondrum.shareapp',
+          },
+          originURI = window.location.href;
 
-    window.open(url.openapp.replace('{?}', pid), '_blank');
-    setTimeout(function() {
-      window.location = url.appstore;
-    }, 25);
+      window.open(url.openapp.replace('{?}', pid), '_blank');
+      setTimeout(function() {
+        window.open(url.appstore, '_blank');
+      }, 25);
+    } catch(err) {
+      
+    }
   };
