@@ -49,6 +49,14 @@ export const swalDropItem = () =>
     confirmButtonText: '下架',
   }));
 
+export const swalDropWish = () =>
+  swal(Object.assign({}, commonConfig, {
+    title: '確定刪除此許願紙條？',
+    text: '刪除之後即無法還原',
+    showCancelButton: true,
+    confirmButtonText: '刪除',
+  }));
+
 export const swalAsk = ({ title, text }) =>
   swal(Object.assign({}, commonConfig, {
     title,

@@ -7,7 +7,7 @@ class Api::Wishlist::Remove < ApiAuthedBase
   end
 
   def request_method
-     :post
+     :post_token
   end
 
 end

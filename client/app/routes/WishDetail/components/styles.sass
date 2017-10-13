@@ -46,25 +46,27 @@ $fontWeight: 600
   .wishFooter
     padding: 15px 20px
     border-top: 1px solid $global-lineColor
-    .image
+    .avatar
       display: inline-block
       vertical-align: middle
       width: 70px
       height: 70px
       border-radius: 100%
-    .content
+    .profile
       display: inline-block
       vertical-align: middle
       white-space: nowrap
       overflow: hidden
       max-width: 60%
       margin: 0px 25px
-      .title
+      .username
         color: $global-blackColor
         font-size: 22px
         margin-bottom: 10px
         font-weight: $fontWeight
-      .hour
+        &:hover
+          text-decoration: underline
+      .publish-at
         color: $global-middleBlack
         font-size: 12px
     .sendMessage

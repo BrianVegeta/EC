@@ -15,12 +15,14 @@ import styles from './styles.sass';
 class WishNote extends React.Component {
 
   static defaultProps = {
-    editable: true,
+    deletable: null,
   };
 
   static propTypes = {
-    editable: PropTypes.bool,
-    // onShow: PropTypes.func.isRequired,
+    deletable: PropTypes.shape({
+      isDeleting: PropTypes.bool.isRequired,
+      onDelete: PropTypes.func.isRequired,
+    }),
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -33,17 +35,30 @@ class WishNote extends React.Component {
     }).isRequired,
   };
 
-  // renderDeleteButton() {
-  //   return (
-  //     <div styleName="delete">
-  //       <IconDelete />
-  //       <span styleName="delete-text">刪除</span>
-  //     </div>
-  //   );
-  // }
+  renderDelete() {
+    const {
+      deletable: {
+        onDelete,
+        isDeleting,
+      },
+      data: {
+        id,
+      },
+    } = this.props;
+    return (
+      <button
+        className="button"
+        styleName="delete"
+        onClick={isDeleting ? null : () => onDelete(id)}
+      >
+        <IconDelete />
+        <span styleName="text">刪除</span>
+      </button>
+    );
+  }
 
   render() {
-    const { editable, data } = this.props;
+    const { deletable, data } = this.props;
     const {
       picture,
       description,
@@ -74,19 +89,30 @@ class WishNote extends React.Component {
           </Link>
         }
         <div styleName="body-container">
-          <Link
-            to={wishRouter.detailPath(id)}
-          >
+          <Link to={wishRouter.detailPath(id)} >
             <span styleName="title">{pname}</span>
           </Link>
-          {description &&
-            <div styleName="description">{description}</div>
-          }
-          <div styleName="expect-price">預算 {formatCurrency(expprice)}</div>
+          {description && <div styleName="description">{description}</div>}
+          <div styleName="price-desc">
+            <div styleName="label">
+              預算:
+            </div>
+            <div>
+              <span styleName="dollar">
+                NTD
+              </span>
+              &nbsp;
+              <span styleName="price">
+                {expprice > 0 ? formatCurrency(expprice, '') : '議價'}
+              </span>
+            </div>
+          </div>
           <div styleName="footer">
             <div styleName="userprofile">
               <div styleName="avatar">
-                <Avatar src={user_img} />
+                <Link to={userprofilePaths.indexPath(uid)} >
+                  <Avatar src={user_img} />
+                </Link>
               </div>
               <Link
                 to={userprofilePaths.indexPath(uid)}
@@ -95,12 +121,7 @@ class WishNote extends React.Component {
                 {user_name}
               </Link>
             </div>
-            { editable &&
-              <div styleName="delete">
-                <IconDelete />
-                <span styleName="delete-text">刪除</span>
-              </div>
-            }
+            {deletable && this.renderDelete()}
           </div>
         </div>
       </div>
