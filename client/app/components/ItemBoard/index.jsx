@@ -20,8 +20,6 @@ import {
 
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
-
-
 import styles from './styles.sass';
 import { CoverContainer } from './styles';
 
@@ -113,7 +111,8 @@ class ItemBoard extends React.Component {
       </div>
     );
   }
-  renderPanel() {
+
+  renderControllPanel() {
     const { type } = this.props;
     switch (type) {
       case CONTROL_TYPE_PUBLIC:
@@ -158,7 +157,7 @@ class ItemBoard extends React.Component {
             </div>
             <span styleName="username">{owner_name}</span>
           </Link>
-          {this.renderPanel()}
+          {this.renderControllPanel()}
         </div>
       </div>
     );
