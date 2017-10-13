@@ -1,4 +1,5 @@
 @import "~styles/color.sass"
+$avatar-height: 27px
 
 .container
   border: 1px solid #e5e5e5
@@ -47,26 +48,34 @@
       margin-top: 15px
       position: relative
       .userprofile
-        margin-right: 50px
+        margin-right: 0
+        &.deletable
+          margin-right: 50px
+          .username
+            max-width: 135px
         .avatar
           display: inline-block
-          width: 27px
-          height: 27px
-          vertical-align: middle
+          width: $avatar-height
+          height: $avatar-height
+          vertical-align: top
           float: left
         .username
+          vertical-align: top
           color: $global-blackColor
           font-weight: 600
           padding-left: 10px
-          max-height: 27px
-          line-height: 27px
-          word-wrap: break-word
+          max-height: $avatar-height
+          line-height: $avatar-height
+          white-space: nowrap
+          max-width: 180px
+          display: inline-block
           overflow: hidden
           &:hover
             color: $global-primaryColor
           &:active
             color: $global-blackColor
       .delete
+        height: $avatar-height
         display: inline-block
         position: absolute
         top: 0

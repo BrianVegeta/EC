@@ -93,11 +93,15 @@ class WishNote extends React.Component {
             <span styleName="title">{pname}</span>
           </Link>
           {description && <div styleName="description">{description}</div>}
-          <div styleName="expect-price">預算 {formatCurrency(expprice)}</div>
+          <div styleName="expect-price">
+            預算: {expprice > 0 ? formatCurrency(expprice) : '議價'}
+          </div>
           <div styleName="footer">
             <div styleName="userprofile">
               <div styleName="avatar">
-                <Avatar src={user_img} />
+                <Link to={userprofilePaths.indexPath(uid)} >
+                  <Avatar src={user_img} />
+                </Link>
               </div>
               <Link
                 to={userprofilePaths.indexPath(uid)}

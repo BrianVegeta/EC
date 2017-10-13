@@ -1,12 +1,12 @@
 import React from 'react';
+import { browserHistory, Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { truncate } from 'lodash';
 import { formatCurrency } from 'lib/currency';
 import { fromNow } from 'lib/time';
 import Picture from 'components/Picture';
 import Avatar from 'components/Avatar';
-import { browserHistory } from 'react-router';
-import { publishWishRouter } from 'lib/paths';
+import { publishWishRouter, userprofilePaths } from 'lib/paths';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
 
@@ -52,6 +52,7 @@ class ShowWish extends React.Component {
   componentWillUnmount() {
     this.props.dispatchReset();
   }
+
   onEdit() {
     const { wishDetail: { id } } = this.props;
     browserHistory.push(publishWishRouter.indexPath(id));
@@ -70,18 +71,21 @@ class ShowWish extends React.Component {
         categoryName,
         city,
         description,
-        create_time,
+        publishAt,
         uid,
       },
       auth: { isLogin, currentUser },
     } = this.props;
+    if (!publishAt) return null;
     return (
       <div styleName="container">
         <div styleName="wishContent">
-          {picture &&
-          <div styleName="picture">
-            <Picture src={picture} />
-          </div>}
+          {
+            picture &&
+            <div styleName="picture">
+              <Picture src={picture} />
+            </div>
+          }
           <div styleName="title">{pname}</div>
           <div styleName="price">預算：{formatCurrency(expprice)}</div>
           <div styleName="category">分類：{categoryName}</div>
@@ -89,12 +93,16 @@ class ShowWish extends React.Component {
           <div styleName="content">{description}</div>
         </div>
         <div styleName="wishFooter">
-          <div styleName="image">
+          <Link styleName="avatar" to={userprofilePaths.indexPath(uid)} >
             <Avatar src={userImg} />
-          </div>
-          <div styleName="content">
-            <div styleName="title">{truncate(userName, { length: 15 })}</div>
-            <div styleName="hour">{fromNow(create_time)}</div>
+          </Link>
+          <div styleName="profile">
+            <Link to={userprofilePaths.indexPath(uid)} >
+              <div styleName="username">
+                {truncate(userName, { length: 15 })}
+              </div>
+            </Link>
+            <div styleName="publish-at">{fromNow(publishAt)}</div>
           </div>
           <div styleName="sendMessage">
             {isLogin && currentUser.uid === uid ?
