@@ -108,7 +108,6 @@ class WishingPond extends React.Component {
             >
               <WishList
                 records={records}
-                editable={false}
                 onShow={this.fetchSingleCard}
                 shouldInitAnimate
               />

@@ -43,6 +43,7 @@ const transformState = ({
   category_name,
   user_img,
   user_name,
+  create_time,
   uid,
 }) => ({
   id,
@@ -58,6 +59,7 @@ const transformState = ({
   categoryName: category_name,
   userImg: user_img,
   userName: user_name,
+  publishAt: create_time,
   uid,
 });
 
@@ -91,6 +93,7 @@ const initialState = {
   categoryName: '',
   userImg: '',
   userName: '',
+  publishAt: null,
   uid: '',
 };
 

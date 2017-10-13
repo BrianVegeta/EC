@@ -1,4 +1,5 @@
 @import "~styles/color.sass"
+$avatar-height: 27px
 
 .container
   border: 1px solid #e5e5e5
@@ -29,44 +30,57 @@
         color: $global-blackColor
     .description
       color: #888
-      font-size: 14px
-      line-height: 14px
+      font-size: 0.8rem
+      line-height: 1.3rem
       margin-top: 11px
-      max-height: 28px
+      max-height: 2.6rem
       -webkit-line-clamp: 2
       -webkit-box-orient: vertical
       overflow: hidden
       text-overflow: ellipsis
       word-wrap: break-word
-    .expect-price
-      color: $global-primaryColor
-      font-size: 15px
-      font-weight: 500
+    .price-desc
       margin-top: 15px
+      .label, .dollar
+        font-size: 15px
+        font-weight: 500
+        color: $global-hoverColor
+      .price
+        font-size: 20px
+        font-weight: 600
+        color: $global-primaryColor
     .footer
       margin-top: 15px
       position: relative
       .userprofile
-        margin-right: 50px
+        margin-right: 0
+        &.deletable
+          margin-right: 50px
+          .username
+            max-width: 135px
         .avatar
           display: inline-block
-          width: 27px
-          height: 27px
-          vertical-align: middle
+          width: $avatar-height
+          height: $avatar-height
+          vertical-align: top
           float: left
         .username
+          vertical-align: top
           color: $global-blackColor
           font-weight: 600
           padding-left: 10px
-          max-height: 27px
-          line-height: 27px
-          word-wrap: break-word
+          max-height: $avatar-height
+          line-height: $avatar-height
+          white-space: nowrap
+          max-width: 180px
+          display: inline-block
           overflow: hidden
           &:hover
             color: $global-primaryColor
           &:active
             color: $global-blackColor
       .delete
+        height: $avatar-height
         display: inline-block
         position: absolute
         top: 0
@@ -74,7 +88,9 @@
         color: $global-middleBlack
         font-size: 14px
         cursor: pointer
-        .delete-text
+        .text
           vertical-align: middle
         &:hover
           color: $global-colorHeart
+          .text
+            color: $global-colorHeart

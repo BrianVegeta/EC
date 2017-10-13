@@ -1,30 +1,28 @@
 import React from 'react';
-// import myPropTypes from 'propTypes';
 import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 import { isEqual } from 'lodash';
-
 import WishNote from 'components/WishNote';
-
 import classnames from 'classnames/bind';
 import CSS from 'react-css-modules';
 import styles from './styles.sass';
-import {
-  ListContainer,
-  ItemContainer,
-} from './styles';
+import { ListContainer, ItemContainer } from './styles';
+
 
 const cx = classnames.bind(styles);
 class WishList extends React.Component {
 
   static defaultProps = {
-    editable: true,
+    deletable: null,
     eachMargin: 26,
     shouldInitAnimate: false,
   };
 
   static propTypes = {
-    editable: PropTypes.bool,
+    deletable: PropTypes.shape({
+      isDeleting: PropTypes.bool.isRequired,
+      onDelete: PropTypes.func.isRequired,
+    }),
     shouldInitAnimate: PropTypes.bool,
     onShow: PropTypes.func.isRequired,
     records: PropTypes.arrayOf(
@@ -64,7 +62,7 @@ class WishList extends React.Component {
   }
 
   render() {
-    const { records, eachMargin, editable, onShow } = this.props;
+    const { records, eachMargin, onShow, deletable } = this.props;
     const { isWaiting } = this.state;
     const mountRecords = isWaiting ? [] : records;
     return (
@@ -80,7 +78,7 @@ class WishList extends React.Component {
                 <WishNote
                   onShow={() => onShow(record.id)}
                   data={record}
-                  editable={editable}
+                  deletable={deletable}
                 />
               </ItemContainer>
             ))}

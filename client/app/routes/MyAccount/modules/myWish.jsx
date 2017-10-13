@@ -1,5 +1,7 @@
-import { asyncXhrPost } from 'lib/xhr';
+import { List } from 'immutable';
+import { asyncXhrPost, asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
+import { REDUCER_KEY as AUTH_REDUCER_KEY } from 'modules/auth';
 
 /* =============================================>>>>>
 = settings =
@@ -15,6 +17,8 @@ const DUPLICATE_ID = 'id';
 // =============================================
 const prefix = action => (`${ACTION_PREFIX}.${action}`);
 
+export const DELETING = prefix('DELETING');
+export const DELETED = prefix('DELETED');
 export const FETCHING = prefix('FETCHING');
 export const FETCHED = prefix('FETCHED');
 export const COUNT_RECURSIVE_TIMES = prefix('COUNT_RECURSIVE_TIMES');
@@ -66,7 +70,7 @@ const RECURSIVE_LIMIT = 10;
  *
  * recursive pagin items
  */
-export function fetchRecords(uid, recursiveRecords = []) {
+export function fetchRecords(uid, recursiveRecords = [], fetchSize = null) {
   return (dispatch, getState) => {
     const { currentUser } = getState().auth;
     const {
@@ -76,12 +80,10 @@ export function fetchRecords(uid, recursiveRecords = []) {
       recursiveTimes,
       lastId,
     } = getState()[REDUCER_KEY];
-
     const requestParams = {
       index: (index + recursiveRecords.length),
-      size: (size - recursiveRecords.length),
+      size: ((fetchSize || size) - recursiveRecords.length),
       uid: currentUser.uid,
-      // last_id: lastId,
     };
 
     /* 增加 RECURSIVE 次數 */
@@ -98,7 +100,7 @@ export function fetchRecords(uid, recursiveRecords = []) {
       const reducedRecords = reduceDuplicateRecords(data, records, DUPLICATE_ID);
       if (reducedRecords.length < data.length && recursiveTimes <= RECURSIVE_LIMIT) {
         /* RECURSIVE AGAIN */
-        dispatch(fetchRecords(uid, lastId, reducedRecords));
+        dispatch(fetchRecords(uid, reducedRecords, fetchSize));
         return;
       }
       /* RESET RECURSIVE FREQUENCY */
@@ -109,12 +111,38 @@ export function fetchRecords(uid, recursiveRecords = []) {
   };
 }
 
+const deleting = () => ({
+  type: DELETING,
+});
+
+const deleted = id => ({
+  type: DELETED,
+  id,
+});
+
+export const remove = id =>
+  (dispatch, getState) => {
+    const { currentUser: { uid } } = getState()[AUTH_REDUCER_KEY];
+    dispatch(deleting());
+    asyncXhrAuthedPost(
+      '/ajax/wish/remove.json',
+      { id },
+      getState(),
+    ).then(() => {
+      dispatch(deleted(id));
+      setTimeout(() => {
+        dispatch(fetchRecords(uid, [], 1));
+      }, 100);
+    });
+  };
+
 
 // =============================================
 // = reducer =
 // =============================================
 const initialState = {
   expireFlag: null,
+  isDeleting: false,
   isPaginable: true,
   isFetching: false,
   records: [],
@@ -126,6 +154,21 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case DELETING:
+      return Object.assign({}, state, {
+        isDeleting: true,
+      });
+
+    case DELETED: {
+      const recordList = List(state.records);
+      const deleteIndex = recordList.findIndex(record => record.id === action.id);
+      return Object.assign({}, state, {
+        isDeleting: false,
+        index: state.index - 1,
+        records: recordList.delete(deleteIndex).toJS(),
+      });
+    }
+
     case FETCHING:
       return Object.assign({}, state, {
         isFetching: true,
