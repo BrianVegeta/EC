@@ -2568,44 +2568,57 @@ ul.DropdownNavs_container_XL8Hv {
         color: #333; }
     .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_description_2_OXx {
       color: #888;
-      font-size: 14px;
-      line-height: 14px;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
       margin-top: 11px;
-      max-height: 28px;
+      max-height: 2.6rem;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
       word-wrap: break-word; }
-    .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_expect-price_3rxSX {
-      color: #31ABBA;
-      font-size: 15px;
-      font-weight: 500;
+    .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_price-desc_2jnuf {
       margin-top: 15px; }
+      .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_price-desc_2jnuf .WishNote_label_3BYIH, .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_price-desc_2jnuf .WishNote_dollar_6xi-K {
+        font-size: 15px;
+        font-weight: 500;
+        color: #53BECE; }
+      .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_price-desc_2jnuf .WishNote_price_3c15E {
+        font-size: 20px;
+        font-weight: 600;
+        color: #31ABBA; }
     .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb {
       margin-top: 15px;
       position: relative; }
       .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF {
-        margin-right: 50px; }
+        margin-right: 0; }
+        .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF.WishNote_deletable_qIQcF {
+          margin-right: 50px; }
+          .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF.WishNote_deletable_qIQcF .WishNote_username_3YaLC {
+            max-width: 135px; }
         .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF .WishNote_avatar_1UcT8 {
           display: inline-block;
           width: 27px;
           height: 27px;
-          vertical-align: middle;
+          vertical-align: top;
           float: left; }
         .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF .WishNote_username_3YaLC {
+          vertical-align: top;
           color: #333;
           font-weight: 600;
           padding-left: 10px;
           max-height: 27px;
           line-height: 27px;
-          word-wrap: break-word;
+          white-space: nowrap;
+          max-width: 180px;
+          display: inline-block;
           overflow: hidden; }
           .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF .WishNote_username_3YaLC:hover {
             color: #31ABBA; }
           .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_userprofile_qUxYF .WishNote_username_3YaLC:active {
             color: #333; }
       .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_delete_ltVkD {
+        height: 27px;
         display: inline-block;
         position: absolute;
         top: 0;
@@ -2613,10 +2626,12 @@ ul.DropdownNavs_container_XL8Hv {
         color: #666;
         font-size: 14px;
         cursor: pointer; }
-        .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_delete_ltVkD .WishNote_delete-text_1zayy {
+        .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_delete_ltVkD .WishNote_text_uF7zA {
           vertical-align: middle; }
         .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_delete_ltVkD:hover {
           color: #FD5053; }
+          .WishNote_container_3BgrE .WishNote_body-container_jNsCf .WishNote_footer_xM-wb .WishNote_delete_ltVkD:hover .WishNote_text_uF7zA {
+            color: #FD5053; }
 .WishList_container_2jV0u {
   margin-bottom: 26px; }
   .WishList_container_2jV0u .WishList_item_cQahl {
@@ -6644,25 +6659,27 @@ h2.Main_sub-title_vuTAo {
   .components_container_32dlJ .components_wishFooter_2PAAz {
     padding: 15px 20px;
     border-top: 1px solid #CECECE; }
-    .components_container_32dlJ .components_wishFooter_2PAAz .components_image_Q45vF {
+    .components_container_32dlJ .components_wishFooter_2PAAz .components_avatar_C27Qe {
       display: inline-block;
       vertical-align: middle;
       width: 70px;
       height: 70px;
       border-radius: 100%; }
-    .components_container_32dlJ .components_wishFooter_2PAAz .components_content_1fs47 {
+    .components_container_32dlJ .components_wishFooter_2PAAz .components_profile_9sUp6 {
       display: inline-block;
       vertical-align: middle;
       white-space: nowrap;
       overflow: hidden;
       max-width: 60%;
       margin: 0px 25px; }
-      .components_container_32dlJ .components_wishFooter_2PAAz .components_content_1fs47 .components_title_kyjue {
+      .components_container_32dlJ .components_wishFooter_2PAAz .components_profile_9sUp6 .components_username_ceqFT {
         color: #333;
         font-size: 22px;
         margin-bottom: 10px;
         font-weight: 600; }
-      .components_container_32dlJ .components_wishFooter_2PAAz .components_content_1fs47 .components_hour_2JqC0 {
+        .components_container_32dlJ .components_wishFooter_2PAAz .components_profile_9sUp6 .components_username_ceqFT:hover {
+          text-decoration: underline; }
+      .components_container_32dlJ .components_wishFooter_2PAAz .components_profile_9sUp6 .components_publish-at_1LVTy {
         color: #666;
         font-size: 12px; }
     .components_container_32dlJ .components_wishFooter_2PAAz .components_sendMessage_1WKsP {
