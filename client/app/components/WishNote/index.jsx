@@ -15,11 +15,14 @@ import styles from './styles.sass';
 class WishNote extends React.Component {
 
   static defaultProps = {
-    editable: true,
+    deletable: null,
   };
 
   static propTypes = {
-    editable: PropTypes.bool,
+    deletable: PropTypes.shape({
+      isDeleting: PropTypes.bool.isRequired,
+      onDelete: PropTypes.func.isRequired,
+    }),
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -32,8 +35,30 @@ class WishNote extends React.Component {
     }).isRequired,
   };
 
+  renderDelete() {
+    const {
+      deletable: {
+        onDelete,
+        isDeleting,
+      },
+      data: {
+        id,
+      },
+    } = this.props;
+    return (
+      <button
+        className="button"
+        styleName="delete"
+        onClick={isDeleting ? null : () => onDelete(id)}
+      >
+        <IconDelete />
+        <span styleName="text">刪除</span>
+      </button>
+    );
+  }
+
   render() {
-    const { editable, data } = this.props;
+    const { deletable, data } = this.props;
     const {
       picture,
       description,
@@ -81,12 +106,7 @@ class WishNote extends React.Component {
                 {user_name}
               </Link>
             </div>
-            { editable &&
-              <div styleName="delete">
-                <IconDelete/>
-                <button className="button" styleName="delete-text" >刪除</button>
-              </div>
-            }
+            {deletable && this.renderDelete()}
           </div>
         </div>
       </div>

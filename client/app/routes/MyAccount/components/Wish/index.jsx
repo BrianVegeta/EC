@@ -15,11 +15,14 @@ class WishListComponent extends React.Component {
     dispatchFetchRecords: PropTypes.func.isRequired,
     dispatchShow: PropTypes.func.isRequired,
     dispatchReset: PropTypes.func.isRequired,
+    dispatchRemove: PropTypes.func.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.fetchSingleCard = this.fetchSingleCard.bind(this);
   }
+
   componentDidMount() {
     this.props.dispatchReset();
     this.props.dispatchFetchRecords();
@@ -37,8 +40,9 @@ class WishListComponent extends React.Component {
   }
 
   render() {
-    const { myWish, dispatchFetchRecords } = this.props;
+    const { myWish, dispatchFetchRecords, dispatchRemove } = this.props;
     const {
+      isDeleting,
       isPaginable,
       isFetching,
       records,
@@ -60,6 +64,10 @@ class WishListComponent extends React.Component {
           >
             <WishList
               editable
+              deletable={{
+                isDeleting,
+                onDelete: dispatchRemove,
+              }}
               onShow={this.fetchSingleCard}
               records={records}
             />

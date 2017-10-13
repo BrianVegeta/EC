@@ -61,6 +61,7 @@ class Ajax::Api::WishlistController < ApplicationController
      params.permit(:id, :pname, :description, :city, :area,
        :expprice, :expcurrency, :expday, :picture, :cat_id).merge(current_uid_params);
    end
+
    def search_params
      # uid : String => Searched UID
      # last_id : Long => 上次搜尋結果ID / paging使用，避免重複; [option]
@@ -69,6 +70,7 @@ class Ajax::Api::WishlistController < ApplicationController
      # locations : List<Object> => 地區列表 [option]
      params.permit(:uid, :last_id, :name, :cat_id, locations: [:city, :area]).merge(paging_params)
    end
+
    def remove_params
      params.permit(:id).merge(current_uid_params)
    end
