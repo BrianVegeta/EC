@@ -20,7 +20,6 @@ class WishNote extends React.Component {
 
   static propTypes = {
     editable: PropTypes.bool,
-    // onShow: PropTypes.func.isRequired,
     data: PropTypes.shape({
       picture: PropTypes.string,
       description: PropTypes.string,
@@ -32,15 +31,6 @@ class WishNote extends React.Component {
       user_name: PropTypes.string.isRequired,
     }).isRequired,
   };
-
-  // renderDeleteButton() {
-  //   return (
-  //     <div styleName="delete">
-  //       <IconDelete />
-  //       <span styleName="delete-text">刪除</span>
-  //     </div>
-  //   );
-  // }
 
   render() {
     const { editable, data } = this.props;
@@ -74,14 +64,10 @@ class WishNote extends React.Component {
           </Link>
         }
         <div styleName="body-container">
-          <Link
-            to={wishRouter.detailPath(id)}
-          >
+          <Link to={wishRouter.detailPath(id)} >
             <span styleName="title">{pname}</span>
           </Link>
-          {description &&
-            <div styleName="description">{description}</div>
-          }
+          {description && <div styleName="description">{description}</div>}
           <div styleName="expect-price">預算 {formatCurrency(expprice)}</div>
           <div styleName="footer">
             <div styleName="userprofile">
@@ -97,8 +83,8 @@ class WishNote extends React.Component {
             </div>
             { editable &&
               <div styleName="delete">
-                <IconDelete />
-                <span styleName="delete-text">刪除</span>
+                <IconDelete/>
+                <button className="button" styleName="delete-text" >刪除</button>
               </div>
             }
           </div>
