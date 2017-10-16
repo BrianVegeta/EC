@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { asyncXhrAuthedPost } from 'lib/xhr';
 import { reduceDuplicateRecords } from 'lib/utils';
 import { itemPath, wishRouter } from 'lib/paths';
@@ -27,6 +28,11 @@ export const TYPE_CONTRACT = 1;
 export const TYPE_ACTIVITY = 0;
 export const TYPE_ITEM = 4;
 export const TYPE_SYSTEM = 6;
+export const TYPE_WISH = 7;
+
+export const CONTENT_TYPE_NONE = 0;
+export const CONTENT_TYPE_WEB = 1;
+export const CONTENT_TYPE_ITEM = 2;
 // =============================================
 // = actions =
 // =============================================
@@ -84,15 +90,16 @@ function checkExpireMore(records, expireFlag) {
 
 export function parseActivityNotify(recordData, lastReadTime) {
   const records = [];
-  recordData.notifications.map((val) => {
-    const json = JSON.parse(val.content);
+  recordData.notifications.map(({ id, content, type, create_time }) => {
+    const json = JSON.parse(content);
     const data = {
-      id: val.id,
+      id,
       message: json.content,
-      type: json.type,
+      contentType: json.type,
+      type,
       url: json.url,
-      createTime: val.create_time,
-      isRead: (val.create_time <= lastReadTime),
+      createTime: create_time,
+      isRead: (create_time <= lastReadTime),
     };
     records.push(data);
     return records;
@@ -100,48 +107,43 @@ export function parseActivityNotify(recordData, lastReadTime) {
   return records;
 }
 
-export function parseContractNotify(recordData, lastReadTime) {
-  const records = [];
-  recordData.notifications.map((val) => {
-    const json = JSON.parse(val.content);
-    const data = {
-      id: val.id,
+export function parseContractNotify({ notifications }, lastReadTime) {
+  if (!notifications || notifications.length === 0) return [];
+  return notifications.map(({ content, id, create_time }) => {
+    const json = JSON.parse(content);
+    return {
+      id,
+      itemImage: json.item_img,
       message: json.content,
       cid: json.cid,
-      createTime: val.create_time,
-      isRead: (val.create_time <= lastReadTime),
+      createTime: create_time,
+      isRead: create_time <= lastReadTime,
     };
-    records.push(data);
-    return records;
   });
-  return records;
 }
 
-export function parseItemNotify(recordData, lastReadTime) {
-  const records = [];
-  recordData.notifications.map((val) => {
-    const json = JSON.parse(val.content);
-    const type = json.type ? json.type : 0;
-    // const id = (val.type === 4) ? json.pid : json.id;
-    const image = (val.type === 4) ? json.item_img : json.user_img;
-    let url = '';
-    if (val.type === 4 && type === 2) {
+export function parseItemNotify({ notifications }, lastReadTime) {
+  if (!notifications || notifications.length === 0) return [];
+  return notifications.map(({ type, content, create_time }) => {
+    const json = JSON.parse(content);
+    const contentType = json.type || 0;
+
+    let url;
+    if (type === TYPE_ITEM && contentType === CONTENT_TYPE_ITEM) {
       url = itemPath('', json.pid);
-    } else if (val.type === 7) {
+    } else if (type === TYPE_WISH) {
       url = wishRouter.detailPath(json.id);
     }
-    const data = {
+
+    return {
       type,
+      contentType,
       url,
-      image,
       message: json.content,
-      createTime: val.create_time,
-      isRead: (val.create_time <= lastReadTime),
+      createTime: create_time,
+      isRead: create_time <= lastReadTime,
     };
-    records.push(data);
-    return records;
   });
-  return records;
 }
 
 

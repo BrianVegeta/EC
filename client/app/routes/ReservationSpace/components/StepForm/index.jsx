@@ -163,12 +163,13 @@ class StepForm extends React.Component {
     const advanceDaysDesc = this.constructor.renderAdvanceDaysDesc(advanceDays);
     return (
       <FormGroup
-        headerText={'開始時間'}
+        headerText="開始時間"
         helperBottom={advanceDays ? advanceDaysDesc : null}
       >
         <SingleDatePicker
           ref={input => (this.datesInput = input)}
           startDate={leasestart}
+          startDateConstraint={publishConstraints.startDate}
           earliestStart={earliestStart}
           onDatesChange={this.onMonthDateChange}
         />
@@ -407,7 +408,7 @@ class StepForm extends React.Component {
             <div styleName="count-container">
               {this.renderMonth(reservation)}
             </div>
-            <div styleName="dates-picker-container">
+            <div styleName="single-date-picker-container">
               {this.renderSingleDatesPicker(reservation, item)}
             </div>
           </div>

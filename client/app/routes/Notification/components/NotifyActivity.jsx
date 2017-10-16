@@ -29,7 +29,6 @@ class NotifyActivity extends React.Component {
   }
 
   render() {
-    // console.log(this.props);
     const { notify } = this.props;
     const { unreadCount, isFetching, records, isPaginable } = notify;
     return (
@@ -37,7 +36,7 @@ class NotifyActivity extends React.Component {
         <Navigation navs={notifyNavs.navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚未收到活動快報' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
@@ -49,6 +48,7 @@ class NotifyActivity extends React.Component {
               <NotifyActivityBoard
                 key={record.id}
                 type={record.type}
+                contentType={record.contentType}
                 url={record.url}
                 message={record.message}
                 createTime={record.createTime}
