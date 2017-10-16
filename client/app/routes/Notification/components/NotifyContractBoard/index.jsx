@@ -1,45 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CSS from 'react-css-modules';
 import { Link } from 'react-router';
-import BellIcon from 'react-icons/lib/md/notifications';
-import colors from 'styles/colorExport.scss';
 import { formatDate } from 'lib/time';
 import { orderDetail } from 'lib/paths';
+import classnames from 'classnames/bind';
+import CSS from 'react-css-modules';
 import styles from './styles.sass';
+import Picture from '../../../../components/Picture';
 
+
+const cx = classnames.bind(styles);
 class NotifyContractBoard extends React.Component {
+
   static propTypes = {
     cid: PropTypes.number.isRequired,
+    itemImage: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
     createTime: PropTypes.number.isRequired,
     isRead: PropTypes.bool.isRequired,
   };
-  render() {
-    const { cid, message, createTime, isRead } = this.props;
-    const bellColor = isRead ? colors.placeholder : colors.orangeColor;
 
+  render() {
+    const { cid, message, createTime, itemImage, isRead } = this.props;
     return (
-      <div
-        styleName="notify-contract-border"
-        className="clear"
-      >
-        <div styleName="notify-contract-icon">
-          <BellIcon
-            size={40}
-            color={bellColor}
-          />
-        </div>
-        <div styleName="notify-contract-content">
+      <div className={`clear ${cx('container', { highlight: !isRead })}`} >
+        <Link to={orderDetail.indexPath(cid)} styleName="cover">
+          <Picture src={itemImage} />
+        </Link>
+        <div styleName="content">
           <Link
-            styleName="notify-contract-link"
+            styleName="link"
             to={orderDetail.indexPath(cid)}
           >
             {message}
           </Link>
-          <div styleName="notify-contract-time">
-            {formatDate(createTime)}
-          </div>
+          <div styleName="time">{formatDate(createTime)}</div>
         </div>
       </div>
     );
