@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import colors from 'styles/colorExport.scss';
 
 class Bell extends React.Component {
 
   static defaultProps = {
     size: 30,
-    color: '#999999',
+    color: colors.primaryColor,
   }
 
   static propTypes = {

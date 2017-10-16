@@ -38,7 +38,7 @@ class NotifyContract extends React.Component {
         <Navigation navs={notifyNavs.navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何通知' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚無任何訂單通知' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
@@ -50,6 +50,7 @@ class NotifyContract extends React.Component {
               <NotifyContractBoard
                 key={record.id}
                 cid={record.cid}
+                itemImage={record.itemImage}
                 message={record.message}
                 createTime={record.createTime}
                 isRead={record.isRead}

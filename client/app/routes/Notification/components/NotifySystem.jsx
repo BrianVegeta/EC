@@ -37,7 +37,7 @@ class SystemActivity extends React.Component {
         <Navigation navs={notifyNavs.navs} unreads={unreadCount} />
         <ListContainer
           minHeight={500}
-          noDataText={(isFetching === false && records.length === 0) ? '尚無任何評價' : null}
+          noDataText={(isFetching === false && records.length === 0) ? '尚未收到任何系統通知' : null}
           isInitialFetching={isFetching && records.length === 0}
         >
           <PaginationContainer
