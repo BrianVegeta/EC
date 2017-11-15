@@ -40,9 +40,9 @@ import {
 const ACTION_PREFIX = 'CHAT';
 const REDUCER_KEY = 'chat';
 
-const XMPP_HOST_IP = 'debug.shareapp.com.tw';
+const XMPP_HOST_IP = '192.168.1.39';
 // const XMPP_HOST_IP = 'chat.shareapp.com.tw';
-const XMPP_HOST_URL = `https://${XMPP_HOST_IP}:17443/http-bind/`;
+const XMPP_HOST_URL = `http://${XMPP_HOST_IP}:17070/http-bind/`;
 // const XMPP_HOST_URL = `https://${XMPP_HOST_IP}:7443/http-bind/`;
 const {
   ATTACHED,  // 8
