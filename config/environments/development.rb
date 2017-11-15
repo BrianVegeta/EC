@@ -60,8 +60,8 @@ Rails.application.configure do
     s3_credentials: {
       s3_host_name: 's3-ap-northeast-1.amazonaws.com',
       bucket: 'shareapisd',
-      access_key_id: 'AKIAJZH63RBM3EU2U43Q',
-      secret_access_key: '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'
+      access_key_id: 'AKIAJNIJFP2SXIKDKXMQ',
+      secret_access_key: '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'
     }
   }
 
